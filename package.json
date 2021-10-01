@@ -1,0 +1,13 @@
+{
+  "name": "@automatisch/root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:5000"
+  }
+}

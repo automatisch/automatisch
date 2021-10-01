@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+const packageJson = require('../package');
+const version = packageJson.version;
+
+console.log(`Automatisch@${version} CLI tool`);
+process.exit(0);

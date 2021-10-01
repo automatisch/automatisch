@@ -1,0 +1,32 @@
+{
+  "name": "@automatisch/cli",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "contributors": [
+    {
+      "name": "automatisch contributors",
+      "url": "https://github.com/automatisch/automatisch/graphs/contributors"
+    }
+  ],
+  "homepage": "https://github.com/automatisch/automatisch#readme",
+  "main": "lib/cli.js",
+  "directories": {
+    "bin": "bin",
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib",
+    "bin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/automatisch/automatisch.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/automatisch/automatisch/issues"
+  }
+}
