@@ -9,13 +9,13 @@
     }
   ],
   "homepage": "https://github.com/automatisch/automatisch#readme",
-  "main": "lib/backend.js",
+  "main": "src/backend.js",
   "directories": {
-    "lib": "lib",
+    "src": "src",
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "src"
   ],
   "repository": {
     "type": "git",

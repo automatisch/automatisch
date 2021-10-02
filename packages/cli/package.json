@@ -9,14 +9,14 @@
     }
   ],
   "homepage": "https://github.com/automatisch/automatisch#readme",
-  "main": "lib/cli.js",
+  "main": "src/cli.js",
   "directories": {
     "bin": "bin",
-    "lib": "lib",
+    "src": "src",
     "test": "__tests__"
   },
   "files": [
-    "lib",
+    "src",
     "bin"
   ],
   "repository": {
