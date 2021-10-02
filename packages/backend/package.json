@@ -1,0 +1,30 @@
+{
+  "name": "@automatisch/backend",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "contributors": [
+    {
+      "name": "automatisch contributors",
+      "url": "https://github.com/automatisch/automatisch/graphs/contributors"
+    }
+  ],
+  "homepage": "https://github.com/automatisch/automatisch#readme",
+  "main": "lib/backend.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/automatisch/automatisch.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/automatisch/automatisch/issues"
+  }
+}
