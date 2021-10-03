@@ -1,3 +1,4 @@
+import appEnv from './config/app-env'
 import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
 import logger from 'morgan';
@@ -5,17 +6,13 @@ import logger from 'morgan';
 import indexRouter from './routes/index';
 
 const app = express();
-const port = process.env.PORT || '3000';
+const port = appEnv.port;
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
-
-app.listen(port, () => {
-  return console.log(`Server is listening on ${port}`)
-})
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {
@@ -32,3 +29,7 @@ app.use(function(err: any, req: Request, res: Response, _next: NextFunction) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(port, () => {
+  return console.log(`Server is listening on ${port}`)
+})
