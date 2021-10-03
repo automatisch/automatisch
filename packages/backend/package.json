@@ -2,6 +2,16 @@
   "name": "@automatisch/backend",
   "version": "0.1.0",
   "description": "> TODO: description",
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  },
   "contributors": [
     {
       "name": "automatisch contributors",
@@ -20,9 +30,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/automatisch/automatisch.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
