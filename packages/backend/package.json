@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "scripts": {
-    "start": "node ./bin/www",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
@@ -33,5 +35,13 @@
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/http-errors": "^1.8.1",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^16.10.2",
+    "nodemon": "^2.0.13",
+    "ts-node": "^10.2.1"
   }
 }
