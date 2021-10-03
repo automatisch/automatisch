@@ -1,6 +1,9 @@
 {
   "name": "@automatisch/root",
   "private": true,
+  "scripts": {
+    "start:web": "lerna run --scope @*/web start"
+  },
   "workspaces": [
     "packages/*"
   ],
