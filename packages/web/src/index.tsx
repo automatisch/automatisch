@@ -5,12 +5,15 @@ import reportWebVitals from './reportWebVitals';
 import ThemeProvider from 'components/ThemeProvider';
 import IntlProvider from 'components/IntlProvider';
 import ApolloProvider from 'components/ApolloProvider';
+import Router from 'components/Router';
 
 ReactDOM.render(
   <ApolloProvider>
     <IntlProvider>
       <ThemeProvider>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </ThemeProvider>
     </IntlProvider>
   </ApolloProvider>,
