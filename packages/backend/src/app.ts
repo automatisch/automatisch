@@ -1,6 +1,8 @@
 import appConfig from './config/app'
 import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import corsOptions from './config/cors-options';
 import { graphqlHTTP } from 'express-graphql';
 import logger from './helpers/logger';
 import morgan from './helpers/morgan';
@@ -14,6 +16,8 @@ const port = appConfig.port;
 app.use(morgan);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(cors(corsOptions))
 
 app.use(
   '/graphql',
