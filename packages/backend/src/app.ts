@@ -1,14 +1,15 @@
-import appEnv from './config/app-env'
+import appConfig from './config/app'
 import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
-import logger from 'morgan';
+import logger from './helpers/logger';
+import morgan from './helpers/morgan';
 
 import indexRouter from './routes/index';
 
 const app = express();
-const port = appEnv.port;
+const port = appConfig.port;
 
-app.use(logger('dev'));
+app.use(morgan);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -31,5 +32,5 @@ app.use(function(err: any, req: Request, res: Response, _next: NextFunction) {
 });
 
 app.listen(port, () => {
-  return console.log(`Server is listening on ${port}`)
+  logger.info(`Server is listening on ${port}`)
 })
