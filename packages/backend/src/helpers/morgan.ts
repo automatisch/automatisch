@@ -7,7 +7,11 @@ const stream: StreamOptions = {
 };
 
 const registerGraphQLToken = () => {
-  morgan.token("graphql-query", (req: Request) => `GraphQL ${req.body.query}`);
+  morgan.token("graphql-query", (req: Request) => {
+    if(req.body.query) {
+      return `GraphQL ${req.body.query}`
+    }
+  });
 };
 
 registerGraphQLToken();
