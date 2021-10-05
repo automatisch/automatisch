@@ -6,7 +6,9 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "db:create": "ts-node ./bin/database/create.ts",
+    "db:drop": "ts-node ./bin/database/drop.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -16,6 +18,7 @@
     "express-graphql": "^0.12.0",
     "http-errors": "~1.6.3",
     "morgan": "^1.10.0",
+    "pg": "^8.7.1",
     "winston": "^3.3.3"
   },
   "contributors": [
@@ -46,6 +49,7 @@
     "@types/http-errors": "^1.8.1",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.10.2",
+    "@types/pg": "^8.6.1",
     "nodemon": "^2.0.13",
     "ts-node": "^10.2.1"
   }
