@@ -1,10 +1,10 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Layout from 'components/Layout';
 
-function App() {
+export default function App() {
   return (
-    <FormattedMessage id="welcomeText" />
+    <Layout>
+      <FormattedMessage id="welcomeText" />
+    </Layout>
   );
 }
-
-export default App;
