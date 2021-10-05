@@ -8,6 +8,7 @@
     "start": "node dist/index.js",
     "test": "echo \"Error: run tests from root\" && exit 1",
     "db:create": "ts-node ./bin/database/create.ts",
+    "db:migration:create": "knex migrate:make",
     "db:drop": "ts-node ./bin/database/drop.ts"
   },
   "dependencies": {
@@ -17,7 +18,9 @@
     "express": "~4.16.1",
     "express-graphql": "^0.12.0",
     "http-errors": "~1.6.3",
+    "knex": "^0.95.11",
     "morgan": "^1.10.0",
+    "objection": "^2.2.17",
     "pg": "^8.7.1",
     "winston": "^3.3.3"
   },
