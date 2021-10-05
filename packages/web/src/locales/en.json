@@ -1,3 +1,5 @@
 {
-  "welcomeText": "Hello world!"
+  "brandText": "automatisch",
+  "searchPlaceholder": "Search...",
+  "welcomeText": "Here comes the dashboard homepage."
 }
