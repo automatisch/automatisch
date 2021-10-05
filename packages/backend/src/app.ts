@@ -7,9 +7,13 @@ import graphQLInstance from './helpers/graphql-instance';
 import logger from './helpers/logger';
 import morgan from './helpers/morgan';
 import errorHandler from './helpers/error-handler'
+import { Model } from 'objection';
 
 const app = express();
 const port = appConfig.port;
+
+import knex from './config/database';
+Model.knex(knex)
 
 app.use(morgan);
 app.use(express.json());
