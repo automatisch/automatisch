@@ -3,16 +3,22 @@ import { DrawerProps } from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AppsIcon from '@mui/icons-material/Apps';
+import LanguageIcon from '@mui/icons-material/Language';
+import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
+
+import ListItemLink from 'components/ListItemLink';
 import HideOnScroll from 'components/HideOnScroll';
+import useFormatMessage from 'hooks/useFormatMessage';
+import * as URLS from 'config/urls';
 import { Drawer as BaseDrawer } from './style';
 
+
 export default function Drawer(props: DrawerProps) {
+  const formatMessage = useFormatMessage();
+
   return (
     <BaseDrawer
       {...props}
@@ -21,27 +27,34 @@ export default function Drawer(props: DrawerProps) {
       <HideOnScroll unmountOnExit>
         <Toolbar />
       </HideOnScroll>
+
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItemLink
+          icon={<DashboardIcon />}
+          primary={formatMessage('drawer.dashboard')}
+          to={URLS.DASHBOARD}
+        />
+
+        <ListItemLink
+          icon={<OfflineBoltIcon />}
+          primary={formatMessage('drawer.flows')}
+          to={URLS.FLOWS}
+        />
+
+        <ListItemLink
+          icon={<AppsIcon />}
+          primary={formatMessage('drawer.apps')}
+          to={URLS.APPS}
+        />
+
+        <ListItemLink
+          icon={<LanguageIcon />}
+          primary={formatMessage('drawer.explore')}
+          to={URLS.EXPLORE}
+        />
       </List>
+
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
     </BaseDrawer>
   );
 }
