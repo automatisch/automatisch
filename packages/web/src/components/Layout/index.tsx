@@ -19,7 +19,7 @@ export default function Layout({ children }: LayoutProps) {
       <Box sx={{ display: 'flex', }}>
         <Drawer open={isDrawerOpen} />
 
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flex: 1 }}>
           <Toolbar />
 
           {children}
