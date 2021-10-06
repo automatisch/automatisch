@@ -1,7 +1,8 @@
-import { Model, QueryContext, ModelOptions } from 'objection';
+import { QueryContext, ModelOptions } from 'objection';
+import Base from './base'
 import bcrypt from 'bcrypt';
 
-class User extends Model {
+class User extends Base {
   id!: number
   email!: string
   password!: string
@@ -14,7 +15,7 @@ class User extends Model {
 
     properties: {
       id: { type: 'integer' },
-      email: { type: 'email', minLength: 1, maxLength: 255 },
+      email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
     }
   }
