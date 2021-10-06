@@ -8,10 +8,12 @@
     "start": "node dist/index.js",
     "test": "echo \"Error: run tests from root\" && exit 1",
     "db:create": "ts-node ./bin/database/create.ts",
+    "db:drop": "ts-node ./bin/database/drop.ts",
     "db:migration:create": "knex migrate:make",
-    "db:drop": "ts-node ./bin/database/drop.ts"
+    "db:migrate": "knex migrate:latest"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
@@ -47,6 +49,7 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/http-errors": "^1.8.1",
