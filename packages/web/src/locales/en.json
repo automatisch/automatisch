@@ -1,5 +1,9 @@
 {
   "brandText": "automatisch",
   "searchPlaceholder": "Search...",
-  "welcomeText": "Here comes the dashboard homepage."
+  "welcomeText": "Here comes the dashboard homepage.",
+  "drawer.dashboard": "Dashboard",
+  "drawer.flows": "Flows",
+  "drawer.apps": "Apps",
+  "drawer.explore": "Explore"
 }
