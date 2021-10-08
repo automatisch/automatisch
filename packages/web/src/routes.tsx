@@ -1,6 +1,7 @@
 import { Route, Switch, Redirect } from "react-router";
 import Dashboard from 'pages/Dashboard';
 import Applications from 'pages/Applications';
+import Application from 'pages/Application';
 import Flows from 'pages/Flows';
 import Explore from 'pages/Explore';
 import * as URLS from 'config/urls';
@@ -21,6 +22,10 @@ export default (
 
     <Route path={URLS.EXPLORE}>
       <Explore />
+    </Route>
+
+    <Route path={URLS.APP_PATH_PATTERN}>
+      <Application />
     </Route>
 
     <Route exact path="/">
