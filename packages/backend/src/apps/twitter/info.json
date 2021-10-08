@@ -1,0 +1,40 @@
+{
+  "name": "Twitter",
+  "iconUrl": "https://automatisch.io/apps/twitter.png",
+  "docUrl": "https://automatisch.io/docs/twitter",
+  "fields": [
+    {
+      "key": "oAuthRedirectUrl",
+      "label": "OAuth Redirect URL",
+      "type": "string",
+      "required": true,
+      "readOnly": true,
+      "placeholder": "http://localhost:3000/sample",
+      "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
+      "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
+      "clickToCopy": true
+    },
+    {
+      "key": "consumerKey",
+      "label": "Consumer Key",
+      "type": "string",
+      "required": true,
+      "readOnly": false,
+      "placeholder": null,
+      "description": null,
+      "docUrl": "https://automatisch.io/docs/twitter#consumer-key",
+      "clickToCopy": false
+    },
+    {
+      "key": "consumerSecret",
+      "label": "Consumer Secret",
+      "type": "string",
+      "required": true,
+      "readOnly": false,
+      "placeholder": null,
+      "description": null,
+      "docUrl": "https://automatisch.io/docs/twitter#consumer-secret",
+      "clickToCopy": false
+    }
+  ]
+}
