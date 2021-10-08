@@ -1,5 +1,15 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme();
+const theme = createTheme({
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        a: {
+          textDecoration: 'none',
+        },
+      },
+    },
+  }
+});
 
 export default theme;

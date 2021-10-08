@@ -5,5 +5,7 @@
   "drawer.dashboard": "Dashboard",
   "drawer.flows": "Flows",
   "drawer.apps": "My Apps",
-  "drawer.explore": "Explore"
+  "drawer.explore": "Explore",
+  "app.connections": "{count} connections",
+  "app.flows": "{count} flows"
 }
