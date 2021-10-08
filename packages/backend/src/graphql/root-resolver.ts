@@ -1,7 +1,9 @@
+import getApps from './queries/get-apps';
+import getAppsByName from './queries/get-apps-by-name';
+
 const rootResolver = {
-  hello: () => {
-    return 'Hello world!';
-  },
+  getApps: getApps,
+  getAppsByName: getAppsByName
 };
 
 export default rootResolver;
