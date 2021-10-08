@@ -4,11 +4,8 @@ class App {
   static folderPath = __dirname + '/../apps'
   static list = fs.readdirSync(this.folderPath);
 
-  static findAll(): string[] {
-    return this.list;
-  }
-
-  static findAllByName(name: string): string[] {
+  static findAll(name?: string): string[] {
+    if(!name) return this.list;
     return this.list.filter((app) => app.includes(name.toLowerCase()));
   }
 }

@@ -2,8 +2,7 @@ import { buildSchema } from 'graphql';
 
 const graphQLSchema = buildSchema(`
   type Query {
-    getApps: [String!]
-    getAppsByName(name: String!): [String!]
+    getApps(name: String): [String!]
   }
 `);
 
