@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles';
-import MuiInputBase from '@mui/material/InputBase';
+import MuiInput from '@mui/material/Input';
 
 export const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -10,6 +10,7 @@ export const Search = styled('div')(({ theme }) => ({
   },
   marginLeft: 0,
   width: '100%',
+  maxWidth: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
     width: 'auto',
@@ -26,14 +27,16 @@ export const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-export const InputBase = styled(MuiInputBase)(({ theme }) => ({
+export const InputBase = styled(MuiInput)(({ theme }) => ({
   color: 'inherit',
-  '& .MuiInputBase-input': {
+  width: '100%',
+  maxWidth: '100%',
+  '& .MuiInput-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+    width: '200',
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
       '&:focus': {

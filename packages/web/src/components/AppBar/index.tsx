@@ -4,20 +4,16 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 
 import HideOnScroll from 'components/HideOnScroll';
 import { FormattedMessage } from 'react-intl';
-import useFormatMessage from 'hooks/useFormatMessage';
-import { Search, SearchIconWrapper, InputBase } from './style';
+import SearchInput from 'components/SearchInput';
 
 type AppBarProps = {
   onMenuClick: () => void;
 };
 
 export default function AppBar({ onMenuClick }: AppBarProps) {
-  const formatMessage = useFormatMessage();
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <HideOnScroll>
@@ -41,19 +37,10 @@ export default function AppBar({ onMenuClick }: AppBarProps) {
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              <FormattedMessage id="automatisch" />
+              <FormattedMessage id="brandText" />
             </Typography>
 
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-
-              <InputBase
-                placeholder={formatMessage('searchPlaceholder')}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
+            <SearchInput />
           </Toolbar>
         </MuiAppBar>
       </HideOnScroll>
