@@ -9,7 +9,7 @@
       "type": "string",
       "required": true,
       "readOnly": true,
-      "placeholder": "http://localhost:3000/sample",
+      "value": "http://localhost:3000/sample",
       "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
       "clickToCopy": true
@@ -20,7 +20,7 @@
       "type": "string",
       "required": true,
       "readOnly": false,
-      "placeholder": null,
+      "value": null,
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitter#consumer-key",
       "clickToCopy": false
@@ -31,7 +31,7 @@
       "type": "string",
       "required": true,
       "readOnly": false,
-      "placeholder": null,
+      "value": null,
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitter#consumer-secret",
       "clickToCopy": false
