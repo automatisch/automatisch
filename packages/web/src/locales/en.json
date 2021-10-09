@@ -6,6 +6,10 @@
   "drawer.flows": "Flows",
   "drawer.apps": "My Apps",
   "drawer.explore": "Explore",
-  "app.connections": "{count} connections",
-  "app.flows": "{count} flows"
+  "app.connectionCount": "{count} connections",
+  "app.flowCount": "{count} flows",
+  "app.addConnection": "Add connection",
+  "app.settings": "Settings",
+  "app.connections": "Connections",
+  "app.flows": "Flows"
 }

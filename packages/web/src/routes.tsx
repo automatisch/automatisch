@@ -24,7 +24,7 @@ export default (
       <Explore />
     </Route>
 
-    <Route path={URLS.APP_PATH_PATTERN}>
+    <Route path={URLS.APP_PATTERN}>
       <Application />
     </Route>
 
