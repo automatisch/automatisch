@@ -41,13 +41,13 @@ function AppRow(props: AppRowProps) {
 
             <Box sx={{ px: 2 }}>
               <Typography variant="body2">
-                {formatMessage('app.connections', { count: countTranslation(Math.round(Math.random() * 100)) })}
+                {formatMessage('app.connectionCount', { count: countTranslation(Math.round(Math.random() * 100)) })}
               </Typography>
             </Box>
 
             <Box sx={{ px: 2 }}>
               <Typography variant="body2">
-                {formatMessage('app.flows', { count: countTranslation(Math.round(Math.random() * 100)) })}
+                {formatMessage('app.flowCount', { count: countTranslation(Math.round(Math.random() * 100)) })}
               </Typography>
             </Box>
 
