@@ -4,7 +4,6 @@ import graphQLSchema from '../graphql/graphql-schema'
 
 const graphQLInstance = graphqlHTTP({
   schema: graphQLSchema,
-  rootValue: rootResolver,
   graphiql: true,
 })
 
