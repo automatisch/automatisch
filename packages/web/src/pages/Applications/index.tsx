@@ -33,7 +33,7 @@ export default function Applications() {
         </Grid>
 
         {data?.getApps?.map((name: string) => (
-          <AppRow key={name} name={name} to={URLS.APP_PATH(name)} />
+          <AppRow key={name} name={name} to={URLS.APP(name)} />
         ))}
       </Container>
     </Box>
