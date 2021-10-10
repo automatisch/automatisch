@@ -38,7 +38,7 @@ export default function Application() {
         <Container>
           <Grid container sx={{ mb: 3 }}>
             <Grid item xs="auto" sx={{ mr: 1.5 }}>
-              <AppIcon url={app.iconUrl} name={app.name} />
+              <AppIcon url={app.iconUrl} color={app.primaryColor} name={app.name} />
             </Grid>
 
             <Grid item xs>
@@ -95,7 +95,7 @@ export default function Application() {
       </Box>
 
       <Route exact path={URLS.APP_ADD_CONNECTION_PATTERN}>
-        <AddAppConnection onClose={goToApplicationPage} />
+        <AddAppConnection onClose={goToApplicationPage} application={app} />
       </Route>
     </>
   );
