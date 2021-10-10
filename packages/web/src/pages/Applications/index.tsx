@@ -8,8 +8,8 @@ import PageTitle from 'components/PageTitle';
 import AppRow from 'components/AppRow';
 import SearchInput from 'components/SearchInput';
 import * as URLS from 'config/urls';
-
 import { GET_APPS } from 'graphql/queries/get-apps';
+import type { App } from 'types/app';
 
 export default function Applications() {
   const [appName, setAppName] = useState(null);
@@ -32,8 +32,8 @@ export default function Applications() {
           </Grid>
         </Grid>
 
-        {data?.getApps?.map((name: string) => (
-          <AppRow key={name} name={name} to={URLS.APP(name)} />
+        {data?.getApps?.map((app: App) => (
+          <AppRow key={app.name} application={app} />
         ))}
       </Container>
     </Box>
