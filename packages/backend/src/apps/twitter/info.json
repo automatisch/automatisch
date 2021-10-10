@@ -2,6 +2,7 @@
   "name": "Twitter",
   "iconUrl": "https://automatisch.io/apps/twitter.png",
   "docUrl": "https://automatisch.io/docs/twitter",
+  "primaryColor": "2DAAE1",
   "fields": [
     {
       "key": "oAuthRedirectUrl",
