@@ -7,6 +7,7 @@ const appType = new GraphQLObjectType({
     name: { type: GraphQLString },
     iconUrl: { type: GraphQLString },
     docUrl: { type: GraphQLString },
+    primaryColor: { type: GraphQLString },
     fields: { type: GraphQLList(fieldType) }
   }
 });

@@ -7,7 +7,7 @@ const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: {
     getApps: {
-      type: GraphQLList(GraphQLString),
+      type: GraphQLList(appType),
       args: {
         name: { type: GraphQLString }
       },

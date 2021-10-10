@@ -1,12 +1,15 @@
 import fs from 'fs';
 
 class App {
-  static folderPath = __dirname + '/../apps'
+  static folderPath = __dirname + '/../apps';
   static list = fs.readdirSync(this.folderPath);
 
-  static findAll(name?: string): string[] {
-    if(!name) return this.list;
-    return this.list.filter((app) => app.includes(name.toLowerCase()));
+  static findAll(name?: string): object[] {
+    if(!name) return this.list.map((name) => this.findOneByName(name));
+
+    return this.list
+      .filter((app) => app.includes(name.toLowerCase()))
+      .map((name) => this.findOneByName(name));
   }
 
   static findOneByName(name: string): object {

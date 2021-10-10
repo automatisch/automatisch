@@ -6,6 +6,7 @@ export const GET_APP = gql`
       name
       iconUrl
       docUrl
+      primaryColor
       fields {
         key
         label
