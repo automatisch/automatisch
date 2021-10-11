@@ -1,30 +1,8 @@
-import { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
-import getApps from './queries/get-apps';
-import getApp from './queries/get-app';
-import appType from './types/app';
+import { GraphQLSchema } from 'graphql';
+import rootQuery from './root-query';
 
-const queryType = new GraphQLObjectType({
-  name: 'Query',
-  fields: {
-    getApps: {
-      type: GraphQLList(appType),
-      args: {
-        name: { type: GraphQLString }
-      },
-      resolve: (_, { name }) => getApps(name)
-    },
-    getApp: {
-      type: appType,
-      args: {
-        name: { type: GraphQLNonNull(GraphQLString) },
-      },
-      resolve: (_, { name }) => getApp(name)
-    },
-  }
-});
-
-var graphQLSchema = new GraphQLSchema({
-  query: queryType,
+const graphQLSchema = new GraphQLSchema({
+  query: rootQuery,
 });
 
 export default graphQLSchema;
