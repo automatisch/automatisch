@@ -5,6 +5,7 @@ const appType = new GraphQLObjectType({
   name: 'App',
   fields: {
     name: { type: GraphQLString },
+    key: { type: GraphQLString },
     iconUrl: { type: GraphQLString },
     docUrl: { type: GraphQLString },
     primaryColor: { type: GraphQLString },
