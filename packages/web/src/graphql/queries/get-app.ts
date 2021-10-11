@@ -4,6 +4,7 @@ export const GET_APP = gql`
   query GetApp($name: String!) {
     getApp (name: $name) {
       name
+      key
       iconUrl
       docUrl
       primaryColor
@@ -13,7 +14,7 @@ export const GET_APP = gql`
         type
         required
         readOnly
-        placeholder
+        value
         description
         docUrl
         clickToCopy

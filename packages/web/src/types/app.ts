@@ -4,18 +4,19 @@ type AppFields = {
   type: string;
   required: boolean,
   readOnly: boolean,
-  placeholder: string;
+  value: string;
   description: string;
   docUrl: string;
   clickToCopy: boolean,
 };
 
 type App = {
+  key: string;
   name: string;
   iconUrl: string;
   docUrl: string;
   primaryColor: string;
-  fields: AppFields;
+  fields: AppFields[];
 };
 
 export type { App, AppFields };

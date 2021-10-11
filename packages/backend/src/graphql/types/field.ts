@@ -8,6 +8,7 @@ const fieldType = new GraphQLObjectType({
     type: { type: GraphQLString },
     required: { type: GraphQLBoolean},
     readOnly: { type: GraphQLBoolean},
+    value: { type: GraphQLString},
     placeholder: { type: GraphQLString},
     description: { type: GraphQLString},
     docUrl: { type: GraphQLString},
