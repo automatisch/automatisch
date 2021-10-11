@@ -1,20 +1,24 @@
-import { Model, QueryContext, ModelOptions } from 'objection';
+import { Model, QueryContext, ModelOptions, snakeCaseMappers, ColumnNameMappers } from 'objection';
 
 class Base extends Model {
-  created_at!: string;
-  updated_at!: string;
+  createdAt!: string;
+  updatedAt!: string;
+
+  static get columnNameMappers(): ColumnNameMappers {
+    return snakeCaseMappers();
+  }
 
   async $beforeInsert(queryContext: QueryContext) {
     await super.$beforeInsert(queryContext);
 
-    this.created_at = new Date().toISOString();
-    this.updated_at = new Date().toISOString();
+    this.createdAt = new Date().toISOString();
+    this.updatedAt = new Date().toISOString();
   }
 
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    this.updated_at = new Date().toISOString();
+    this.updatedAt = new Date().toISOString();
   }
 }
 
