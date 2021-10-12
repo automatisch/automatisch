@@ -1,5 +1,6 @@
 {
   "name": "Twitter",
+  "key": "twitter",
   "iconUrl": "https://automatisch.io/apps/twitter.png",
   "docUrl": "https://automatisch.io/docs/twitter",
   "primaryColor": "2DAAE1",
@@ -14,6 +15,17 @@
       "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
       "clickToCopy": true
+    },
+    {
+      "key": "displayName",
+      "label": "Name",
+      "type": "string",
+      "required": true,
+      "readOnly": false,
+      "value": null,
+      "description": "It's the value you can remember later on while changing connection settings.",
+      "docUrl": "https://automatisch.io/docs/twitter#display-name",
+      "clickToCopy": false
     },
     {
       "key": "consumerKey",
@@ -36,6 +48,37 @@
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitter#consumer-secret",
       "clickToCopy": false
+    }
+  ],
+  "authenticationSteps": [
+    {
+      "step": 1,
+      "type": "mutation",
+      "name": "createCredential",
+      "fields": [
+        {
+          "name": "displayName",
+          "value": "{fields.displayName}"
+        },
+        {
+          "name": "key",
+          "value": "{key}"
+        },
+        {
+          "name": "data",
+          "value": "data",
+          "fields": [
+            {
+              "name": "consumerKey",
+              "value": "{fields.consumerKey}"
+            },
+            {
+              "name": "consumerSecret",
+              "value": "{fields.consumerSecret}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

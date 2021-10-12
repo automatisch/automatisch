@@ -1,5 +1,6 @@
 {
   "name": "Twitch",
+  "key": "twitch",
   "iconUrl": "https://automatisch.io/apps/twitch.png",
   "docUrl": "https://automatisch.io/docs/twitch",
   "primaryColor": "6441a5",
