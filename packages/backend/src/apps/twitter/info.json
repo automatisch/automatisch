@@ -1,6 +1,7 @@
 {
   "name": "Twitter",
   "key": "twitter",
+  "slug": "twitter",
   "iconUrl": "https://automatisch.io/apps/twitter.png",
   "docUrl": "https://automatisch.io/docs/twitter",
   "primaryColor": "2DAAE1",
@@ -12,6 +13,7 @@
       "required": true,
       "readOnly": true,
       "value": "http://localhost:3000/sample",
+      "placeholder": null,
       "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
       "clickToCopy": true
@@ -23,6 +25,7 @@
       "required": true,
       "readOnly": false,
       "value": null,
+      "placeholder": null,
       "description": "It's the value you can remember later on while changing connection settings.",
       "docUrl": "https://automatisch.io/docs/twitter#display-name",
       "clickToCopy": false
@@ -34,6 +37,7 @@
       "required": true,
       "readOnly": false,
       "value": null,
+      "placeholder": null,
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitter#consumer-key",
       "clickToCopy": false
@@ -45,6 +49,7 @@
       "required": true,
       "readOnly": false,
       "value": null,
+      "placeholder": null,
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitter#consumer-secret",
       "clickToCopy": false
