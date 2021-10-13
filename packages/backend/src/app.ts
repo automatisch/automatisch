@@ -8,6 +8,7 @@ import logger from './helpers/logger';
 import morgan from './helpers/morgan';
 import errorHandler from './helpers/error-handler';
 import './config/database';
+import authentication from './helpers/authentication';
 
 const app = express();
 const port = appConfig.port;
@@ -15,7 +16,8 @@ const port = appConfig.port;
 app.use(morgan);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
+app.use(authentication);
 app.use('/graphql', graphQLInstance);
 
 // catch 404 and forward to error handler
