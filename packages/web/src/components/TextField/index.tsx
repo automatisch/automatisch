@@ -1,11 +1,10 @@
-import { useRef } from "react";
-import { Controller, Control, FieldValues } from "react-hook-form";
-import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
+import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField";
 import copyInputValue from 'helpers/copyInputValue';
+import { useRef } from "react";
+import { Control, Controller, FieldValues } from "react-hook-form";
 
 type TextFieldProps = {
   control?: Control<FieldValues>;

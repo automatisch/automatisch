@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLBoolean} from 'graphql';
+import { GraphQLBoolean,GraphQLObjectType, GraphQLString} from 'graphql';
 
 const fieldType = new GraphQLObjectType({
   name: 'field',

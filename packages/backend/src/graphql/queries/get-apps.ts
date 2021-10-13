@@ -1,6 +1,7 @@
-import { GraphQLString, GraphQLList } from 'graphql';
-import appType from '../types/app';
+import { GraphQLList,GraphQLString } from 'graphql';
+
 import App from '../../models/app';
+import appType from '../types/app';
 
 type Params = {
   name: string

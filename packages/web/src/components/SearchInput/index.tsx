@@ -1,7 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
-
 import useFormatMessage from 'hooks/useFormatMessage';
-import { Search, SearchIconWrapper, InputBase } from './style';
+
+import { InputBase,Search, SearchIconWrapper } from './style';
 
 type SearchInputProps = {
   onChange?: (event: React.ChangeEvent) => void;

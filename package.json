@@ -2,14 +2,21 @@
   "name": "@automatisch/root",
   "private": true,
   "scripts": {
-    "start:web": "lerna run --stream --scope @*/web start",
-    "start:backend": "lerna run --stream --scope @*/backend dev"
+    "start": "lerna run --stream --scope=@*/{backend,web} dev",
+    "start:web": "lerna run --stream --scope=@*/web dev",
+    "start:backend": "lerna run --stream --scope=@*/backend dev",
+    "lint": "lerna run --stream --scope=@*/{web,backend} lint"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "lerna": "^4.0.0",
+    "prettier": "^2.4.1"
   },
   "publishConfig": {
     "registry": "http://localhost:5000"

@@ -1,11 +1,12 @@
+import ApolloProvider from 'components/ApolloProvider';
+import IntlProvider from 'components/IntlProvider';
+import Layout from 'components/Layout';
+import Router from 'components/Router';
+import ThemeProvider from 'components/ThemeProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Layout from 'components/Layout';
-import ThemeProvider from 'components/ThemeProvider';
-import IntlProvider from 'components/IntlProvider';
-import ApolloProvider from 'components/ApolloProvider';
-import Router from 'components/Router';
 import routes from 'routes';
+
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(

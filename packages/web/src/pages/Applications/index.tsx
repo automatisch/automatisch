@@ -1,14 +1,12 @@
-import { useCallback, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-
+import AppRow from 'components/AppRow';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
-import AppRow from 'components/AppRow';
 import SearchInput from 'components/SearchInput';
-import * as URLS from 'config/urls';
 import { GET_APPS } from 'graphql/queries/get-apps';
+import { useCallback, useState } from 'react';
 import type { App } from 'types/app';
 
 export default function Applications() {

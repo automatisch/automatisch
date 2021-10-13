@@ -1,6 +1,7 @@
-import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
-import fieldType from './field';
+import { GraphQLList,GraphQLObjectType, GraphQLString } from 'graphql';
+
 import authenticationStepType from './authentication-step';
+import fieldType from './field';
 
 const appType = new GraphQLObjectType({
   name: 'App',

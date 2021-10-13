@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
+import { GraphQLInt,GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
 const authenticationStepType = new GraphQLObjectType({
   name: 'authenticationStep',

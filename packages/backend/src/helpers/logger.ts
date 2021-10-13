@@ -1,4 +1,5 @@
 import winston from 'winston'
+
 import appConfig from '../config/app'
 
 const levels = {

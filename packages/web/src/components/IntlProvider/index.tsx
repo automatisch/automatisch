@@ -1,5 +1,5 @@
-import { IntlProvider as BaseIntlProvider } from 'react-intl';
 import englishMessages from 'locales/en.json';
+import { IntlProvider as BaseIntlProvider } from 'react-intl';
 
 type IntlProviderProps = {
   children: React.ReactNode;

@@ -1,21 +1,19 @@
 import { useQuery } from '@apollo/client';
-import { Link, Route, Redirect, Switch, useParams, useRouteMatch, useHistory } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import SettingsIcon from '@mui/icons-material/Settings';
-
-import useFormatMessage from 'hooks/useFormatMessage';
-import { GET_APP } from 'graphql/queries/get-app';
-import * as URLS from 'config/urls';
-
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import AddAppConnection from 'components/AddAppConnection';
 import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
+import * as URLS from 'config/urls';
+import { GET_APP } from 'graphql/queries/get-app';
+import useFormatMessage from 'hooks/useFormatMessage';
+import { Link, Redirect, Route, Switch, useHistory,useParams, useRouteMatch } from 'react-router-dom';
 
 type ApplicationParams = {
   slug: string;

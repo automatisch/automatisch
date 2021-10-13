@@ -1,6 +1,7 @@
-import { QueryContext, ModelOptions } from 'objection';
-import Base from './base'
 import bcrypt from 'bcrypt';
+import { ModelOptions,QueryContext } from 'objection';
+
+import Base from './base'
 
 class User extends Base {
   id!: number

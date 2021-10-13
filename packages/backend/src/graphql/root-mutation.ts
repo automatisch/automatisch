@@ -1,4 +1,5 @@
 import { GraphQLObjectType } from 'graphql';
+
 import createCredential from './mutations/create-credential';
 
 const rootMutation = new GraphQLObjectType({

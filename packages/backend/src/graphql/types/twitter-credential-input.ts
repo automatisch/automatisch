@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLInputObjectType } from 'graphql';
+import { GraphQLInputObjectType,GraphQLString } from 'graphql';
 
 const twitterCredentialInputType = new GraphQLInputObjectType({
   name: 'twitterCredentialInput',

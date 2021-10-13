@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "../../.eslintrc.json"
+  ],
+  "env": {
+    "node": true
+  },
+  "globals": {
+    "require": true,
+    "process": true
+  }
+}

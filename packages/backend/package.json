@@ -12,7 +12,9 @@
     "db:drop": "ts-node ./bin/database/drop.ts",
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
-    "db:migrate": "knex migrate:latest"
+    "db:migrate": "knex migrate:latest",
+    "lint": "eslint . --ignore-path ../../.eslintignore --ext ts",
+    "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -35,7 +37,7 @@
     }
   ],
   "homepage": "https://github.com/automatisch/automatisch#readme",
-  "main": "src/backend.js",
+  "main": "src/app.ts",
   "directories": {
     "src": "src",
     "test": "__tests__"

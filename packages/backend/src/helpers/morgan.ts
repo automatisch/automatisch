@@ -1,5 +1,6 @@
-import morgan, { StreamOptions } from 'morgan';
 import { Request } from 'express';
+import morgan, { StreamOptions } from 'morgan';
+
 import logger from './logger';
 
 const stream: StreamOptions = {

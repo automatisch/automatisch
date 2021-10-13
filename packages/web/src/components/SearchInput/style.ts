@@ -1,5 +1,5 @@
-import { styled, alpha } from '@mui/material/styles';
 import MuiInput from '@mui/material/Input';
+import { alpha,styled } from '@mui/material/styles';
 
 export const Search = styled('div')(({ theme }) => ({
   position: 'relative',

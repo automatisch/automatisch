@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardActionArea from '@mui/material/CardActionArea';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
-import useFormatMessage from 'hooks/useFormatMessage';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
 import AppIcon from 'components/AppIcon';
 import * as URLS from 'config/urls';
+import useFormatMessage from 'hooks/useFormatMessage';
+import { Link } from 'react-router-dom';
 import type { App } from 'types/app';
-import { CardContent, Typography, DesktopOnlyBreakline } from './style';
+
+import { CardContent, DesktopOnlyBreakline,Typography } from './style';
 
 type AppRowProps = {
   application: App;

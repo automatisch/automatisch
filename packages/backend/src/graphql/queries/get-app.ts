@@ -1,4 +1,5 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLNonNull,GraphQLString } from 'graphql';
+
 import App from '../../models/app';
 import appType from '../types/app';
 

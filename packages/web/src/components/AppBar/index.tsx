@@ -1,13 +1,12 @@
+import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
-
 import HideOnScroll from 'components/HideOnScroll';
-import { FormattedMessage } from 'react-intl';
 import SearchInput from 'components/SearchInput';
+import { FormattedMessage } from 'react-intl';
 
 type AppBarProps = {
   onMenuClick: () => void;

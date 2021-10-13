@@ -1,10 +1,10 @@
-import { Route, Switch, Redirect } from "react-router";
-import Dashboard from 'pages/Dashboard';
-import Applications from 'pages/Applications';
-import Application from 'pages/Application';
-import Flows from 'pages/Flows';
-import Explore from 'pages/Explore';
 import * as URLS from 'config/urls';
+import Application from 'pages/Application';
+import Applications from 'pages/Applications';
+import Dashboard from 'pages/Dashboard';
+import Explore from 'pages/Explore';
+import Flows from 'pages/Flows';
+import { Redirect,Route, Switch } from "react-router";
 
 export default (
   <Switch>

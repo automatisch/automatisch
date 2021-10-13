@@ -1,14 +1,16 @@
-import appConfig from './config/app'
-import createError from 'http-errors';
-import express, { Request, Response, NextFunction } from 'express';
+import './config/database';
+
 import cors from 'cors';
+import express, { NextFunction,Request, Response } from 'express';
+import createError from 'http-errors';
+
+import appConfig from './config/app'
 import corsOptions from './config/cors-options';
+import authentication from './helpers/authentication';
+import errorHandler from './helpers/error-handler';
 import graphQLInstance from './helpers/graphql-instance';
 import logger from './helpers/logger';
 import morgan from './helpers/morgan';
-import errorHandler from './helpers/error-handler';
-import './config/database';
-import authentication from './helpers/authentication';
 
 const app = express();
 const port = appConfig.port;

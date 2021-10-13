@@ -1,5 +1,5 @@
-import { ThemeProvider as BaseThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider as BaseThemeProvider } from '@mui/material/styles';
 import theme from 'styles/theme';
 
 type ThemeProviderProps = {

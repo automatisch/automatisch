@@ -1,14 +1,14 @@
 import { useMutation  } from '@apollo/client';
-import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
-import { FieldValues, SubmitHandler } from 'react-hook-form';
-
+import DialogTitle from '@mui/material/DialogTitle';
 import InputCreator from 'components/InputCreator';
 import { CREATE_CREDENTIALS } from 'graphql/mutations/create-credentials';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 import type { App } from 'types/app';
+
 import { Form } from './style';
 
 type AddAppConnectionProps = {
@@ -18,7 +18,7 @@ type AddAppConnectionProps = {
 
 export default function AddAppConnection(props: AddAppConnectionProps){
   const { application, onClose } = props;
-  const { name, fields } = application;
+  const { fields } = application;
 
   const [createCredentials, { data: newCredentials }] = useMutation(CREATE_CREDENTIALS);
   console.log('newCredentials', newCredentials)

@@ -1,4 +1,4 @@
-import { Model, QueryContext, ModelOptions, snakeCaseMappers, ColumnNameMappers } from 'objection';
+import { ColumnNameMappers,Model, ModelOptions, QueryContext, snakeCaseMappers } from 'objection';
 
 class Base extends Model {
   createdAt!: string;

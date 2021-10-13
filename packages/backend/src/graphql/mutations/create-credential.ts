@@ -1,8 +1,9 @@
-import { GraphQLString, GraphQLNonNull, GraphQLObjectType, GraphQLCompositeType } from 'graphql';
+import { GraphQLCompositeType,GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+
 import Credential from '../../models/credential';
+import User from '../../models/user';
 import credentialType from '../types/credential';
 import twitterCredentialInputType from '../types/twitter-credential-input';
-import User from '../../models/user';
 
 type Params = {
   key: string,

@@ -1,4 +1,5 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql';
+
 import twitterCredentialType from './twitter-credential';
 
 const credentialType = new GraphQLObjectType({

@@ -17,6 +17,8 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.3.0",
     "clipboard-copy": "^4.0.1",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-react": "^7.26.1",
     "graphql": "^15.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -28,10 +30,12 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ignore-path ../../.eslintignore",
+    "lint:fix": "yarn lint --fix"
   },
   "contributors": [
     {
@@ -45,12 +49,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/automatisch/automatisch.git"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
