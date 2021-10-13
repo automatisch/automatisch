@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 import fieldType from './field';
+import authenticationStepType from './authentication-step';
 
 const appType = new GraphQLObjectType({
   name: 'App',
@@ -10,7 +11,8 @@ const appType = new GraphQLObjectType({
     iconUrl: { type: GraphQLString },
     docUrl: { type: GraphQLString },
     primaryColor: { type: GraphQLString },
-    fields: { type: GraphQLList(fieldType) }
+    fields: { type: GraphQLList(fieldType) },
+    authenticationSteps: { type: GraphQLList(authenticationStepType) }
   }
 });
 
