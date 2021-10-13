@@ -1,6 +1,7 @@
 {
   "name": "Twitch",
   "key": "twitch",
+  "slug": "twitch",
   "iconUrl": "https://automatisch.io/apps/twitch.png",
   "docUrl": "https://automatisch.io/docs/twitch",
   "primaryColor": "6441a5",
@@ -12,6 +13,7 @@
       "required": true,
       "readOnly": true,
       "value": "http://localhost:3000/sample",
+      "placeholder": null,
       "description": "When asked to input an OAuth callback or redirect URL in Twitch OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/twitch#oauth-redirect-url",
       "clickToCopy": true
@@ -23,6 +25,7 @@
       "required": true,
       "readOnly": false,
       "value": null,
+      "placeholder": null,
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitch#consumer-key",
       "clickToCopy": false
@@ -34,6 +37,7 @@
       "required": true,
       "readOnly": false,
       "value": null,
+      "placeholder": null,
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitch#consumer-secret",
       "clickToCopy": false
