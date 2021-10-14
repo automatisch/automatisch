@@ -17,6 +17,7 @@ type App = {
   docUrl: string;
   primaryColor: string;
   fields: AppFields[];
+  authenticationSteps: any[];
 };
 
 export type { App, AppFields };
