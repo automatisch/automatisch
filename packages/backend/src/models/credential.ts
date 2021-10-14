@@ -3,7 +3,6 @@ import User from './user'
 
 class Credential extends Base {
   id!: number
-  displayName!: string
   key!: string
   data!: string
   userId!: number
@@ -12,11 +11,10 @@ class Credential extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['displayName', 'key', 'data', 'userId'],
+    required: ['key', 'data', 'userId'],
 
     properties: {
       id: { type: 'integer' },
-      displayName: { type: 'string', minLength: 1, maxLength: 255 },
       key: { type: 'string', minLength: 1, maxLength: 255 },
       data: { type: 'object' },
       userId: { type: 'integer' },
