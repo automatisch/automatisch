@@ -19,6 +19,19 @@ export const GET_APP = gql`
         docUrl
         clickToCopy
       }
+      authenticationSteps {
+        step
+        type
+        name
+        fields {
+          name
+          value
+          fields {
+            name
+            value
+          }
+        }
+      }
     }
   }
 `;

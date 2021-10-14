@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
 
-export const CREATE_CREDENTIALS = gql`
-  mutation CreateCredentials($displayName: String!, $key: String!, $data: twitterCredentialInput!) {
-    createCredential(displayName: $displayName, key: $key, data: $data) {
+export const CREATE_CREDENTIAL = gql`
+  mutation CreateCredential($key: String!, $data: twitterCredentialInput!) {
+    createCredential(key: $key, data: $data) {
       key
-      displayName
+      id
       data {
         consumerKey
         consumerSecret

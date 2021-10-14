@@ -55,7 +55,7 @@
         },
         {
           "name": "data",
-          "value": "data",
+          "value": null,
           "fields": [
             {
               "name": "consumerKey",
@@ -76,7 +76,7 @@
       "fields": [
         {
           "name": "id",
-          "value": "{response.credentialId}"
+          "value": "{createCredential.id}"
         }
       ]
     }

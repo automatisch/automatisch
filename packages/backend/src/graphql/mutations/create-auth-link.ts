@@ -1,15 +1,15 @@
-import { GraphQLNonNull, GraphQLInt } from 'graphql';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 import Credential from '../../models/credential';
 import authLinkType from '../types/auth-link';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  credentialId: number,
+  id: number,
 }
 const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUser) => {
   const credential = await Credential.query().findOne({
     user_id: req.currentUser.id,
-    id: params.credentialId
+    id: params.id
   })
 
   const appClass = (await import(`../../apps/${credential.key}`)).default;
@@ -23,7 +23,7 @@ const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUse
 const createAuthLink = {
   type: authLinkType,
   args: {
-    credentialId: { type: GraphQLNonNull(GraphQLInt) },
+    id: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createAuthLinkResolver(params, req)
 };
