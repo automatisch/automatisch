@@ -4,6 +4,7 @@ import twitterCredentialType from './twitter-credential';
 const credentialType = new GraphQLObjectType({
   name: 'credential',
   fields: {
+    id: { type: GraphQLString },
     key: { type: GraphQLString },
     displayName: { type: GraphQLString },
     data: { type: twitterCredentialType },

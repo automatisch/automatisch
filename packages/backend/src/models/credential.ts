@@ -1,4 +1,5 @@
 import Base from './base'
+import User from './user'
 
 class Credential extends Base {
   id!: number
@@ -22,6 +23,17 @@ class Credential extends Base {
       verified: { type: 'boolean' },
     }
   }
+
+  static relationMappings = () => ({
+    credentials: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: User,
+      join: {
+        from: 'credentials.user_id',
+        to: 'users.id',
+      },
+    }
+  })
 }
 
 export default Credential;
