@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useApolloClient } from '@apollo/client';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -25,14 +25,28 @@ type Response = {
 const BASE_URL = 'http://localhost:3001';
 
 const parseData = (event: any) => {
-  // Do we trust the sender of this message? (might be
-  // different from what we originally opened, for example).
-  if (event.origin !== BASE_URL) {
-    return;
+  const searchParams = new URLSearchParams(event.data);
+
+  return getObjectOfEntries(searchParams.entries());
+};
+
+function getObjectOfEntries(iterator: any) {
+  const result: any = {};
+
+  for (const [key, value] of iterator) {
+    result[key] = value;
   }
 
-  return new URLSearchParams(event.data);
-};
+  return result;
+}
+
+function* authStepGenerator(steps: any[]) {
+  for (const step of steps) {
+    yield step;
+  }
+
+  return;
+}
 
 export default function AddAppConnection(props: AddAppConnectionProps){
   const { application, onClose } = props;
@@ -42,43 +56,69 @@ export default function AddAppConnection(props: AddAppConnectionProps){
 
   useEffect(() => {
     if (window.opener) {
-      window.opener.postMessage(window.location.search);
+      window.opener.postMessage({ source: 'automatisch', payload: window.location.search });
       window.close();
     }
-  });
+  }, []);
 
-  const submitHandler: SubmitHandler<FieldValues> = async (data) => {
+  const submitHandler: SubmitHandler<FieldValues> = useCallback(async (data) => {
     const response: Response = {
       key,
       fields: data,
     };
 
-    for await (const authenticationStep of authenticationSteps) {
-      const variables = computeAuthStepVariables(authenticationStep, response);
+    const stepGenerator = authStepGenerator(authenticationSteps);
 
-      if (authenticationStep.type === 'mutation') {
-        const mutation = MUTATIONS[authenticationStep.name as string];
+    const processStep = async (step: any) => {
+      const variables = computeAuthStepVariables(step, response);
 
-        const mutationResponse: any = await apollo.mutate({
-          mutation,
-          variables,
-        });
+      if (step.type === 'mutation') {
+        const mutation = MUTATIONS[step.name];
+        const mutationResponse = await apollo.mutate({ mutation, variables });
+        const responseData = mutationResponse.data[step.name];
 
-        const responseData = mutationResponse.data[authenticationStep.name];
-        response[authenticationStep.name] = responseData;
-      }
+        response[step.name] = responseData;
 
-      if (authenticationStep.type === 'openWithPopup') {
+        const nextStep = stepGenerator.next();
+
+        if (!nextStep.done) {
+          await processStep(nextStep.value);
+        }
+      } else if (step.type === 'openWithPopup') {
         const windowFeatures = 'toolbar=no, menubar=no, width=600, height=700, top=100, left=100';
         const url = variables.url;
 
         const popup: any = window.open(url, '_blank', windowFeatures);
         popup?.focus();
 
-        window.addEventListener('message', parseData, false);
+        const messageHandler = async (event: any) => {
+          // check origin and data.source to trust the event
+          if (event.origin !== BASE_URL || event.data.source !== 'automatisch') {
+            return;
+          }
+
+          const data = parseData(event);
+          response[step.name] = data;
+
+          const nextStep = stepGenerator.next();
+          if (!nextStep.done) {
+            await processStep(nextStep.value);
+          }
+
+          window.removeEventListener('message', messageHandler);
+        };
+
+        window.addEventListener('message', messageHandler, false);
       }
     }
-  };
+
+    const firstStep = stepGenerator.next();
+
+    if (!firstStep.done) {
+      await processStep(firstStep.value);
+    }
+
+  }, [apollo, authenticationSteps, key]);
 
   return (
     <Dialog open={true} onClose={onClose}>
