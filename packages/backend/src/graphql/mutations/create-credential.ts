@@ -1,24 +1,20 @@
-import { GraphQLString, GraphQLNonNull, GraphQLObjectType, GraphQLCompositeType } from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import Credential from '../../models/credential';
 import credentialType from '../types/credential';
 import twitterCredentialInputType from '../types/twitter-credential-input';
-import User from '../../models/user';
+import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
   key: string,
   displayName: string,
   data: object
 }
-const createCredentialResolver = async (params: Params) => {
-  const user = await User.query().findOne({
-    email: 'user@automatisch.com'
-  })
-
+const createCredentialResolver = async (params: Params, req: RequestWithCurrentUser) => {
   const credential = await Credential.query().insert({
     displayName: params.displayName,
     key: params.key,
     data: params.data,
-    userId: user.id
+    userId: req.currentUser.id
   });
 
   return credential;
@@ -31,7 +27,7 @@ const createCredential = {
     displayName: { type: GraphQLNonNull(GraphQLString) },
     data: { type: GraphQLNonNull(twitterCredentialInputType) }
   },
-  resolve: (_: any, params: Params) => createCredentialResolver(params)
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createCredentialResolver(params, req)
 };
 
 export default createCredential;
