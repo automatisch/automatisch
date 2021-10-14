@@ -1,5 +1,6 @@
 import { QueryContext, ModelOptions } from 'objection';
-import Base from './base'
+import Base from './base';
+import Credential from './credential';
 import bcrypt from 'bcrypt';
 
 class User extends Base {
@@ -19,6 +20,17 @@ class User extends Base {
       password: { type: 'string', minLength: 1, maxLength: 255 },
     }
   }
+
+  static relationMappings = () => ({
+    credentials: {
+      relation: Base.HasManyRelation,
+      modelClass: Credential,
+      join: {
+        from: 'users.id',
+        to: 'credentials.user_id',
+      },
+    }
+  })
 
   async generateHash() {
     this.password = await bcrypt.hash(this.password, 10);
