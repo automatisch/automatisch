@@ -2,7 +2,7 @@
   "name": "@automatisch/root",
   "private": true,
   "scripts": {
-    "start": "lerna run --stream --scope @*/{web,backend} dev",
+    "start": "lerna run --stream --scope=@*/{web,backend} dev",
     "start:web": "lerna run --stream --scope @*/web start",
     "start:backend": "lerna run --stream --scope @*/backend dev"
   },
