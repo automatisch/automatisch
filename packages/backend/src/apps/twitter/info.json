@@ -84,7 +84,12 @@
       "step": 3,
       "type": "openWithPopup",
       "name": "openTwitterAuthPopup",
-      "fields": null
+      "fields": [
+        {
+          "name": "url",
+          "value": "{createAuthLink.url}"
+        }
+      ]
     }
   ]
 }
