@@ -1,18 +1,14 @@
 import { GraphQLNonNull, GraphQLInt } from 'graphql';
 import Credential from '../../models/credential';
 import authLinkType from '../types/auth-link';
-import User from '../../models/user';
+import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
   credentialId: number,
 }
-const createAuthLinkResolver = async (params: Params) => {
-  const user = await User.query().findOne({
-    email: 'user@automatisch.com'
-  })
-
+const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUser) => {
   const credential = await Credential.query().findOne({
-    user_id: user.id,
+    user_id: req.currentUser.id,
     id: params.credentialId
   })
 
@@ -29,7 +25,7 @@ const createAuthLink = {
   args: {
     credentialId: { type: GraphQLNonNull(GraphQLInt) },
   },
-  resolve: (_: any, params: Params) => createAuthLinkResolver(params)
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createAuthLinkResolver(params, req)
 };
 
 export default createAuthLink;
