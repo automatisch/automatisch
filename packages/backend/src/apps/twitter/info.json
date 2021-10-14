@@ -79,6 +79,12 @@
           "value": "{createCredential.id}"
         }
       ]
+    },
+    {
+      "step": 3,
+      "type": "openWithPopup",
+      "name": "openTwitterAuthPopup",
+      "fields": null
     }
   ]
 }
