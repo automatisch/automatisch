@@ -6,7 +6,6 @@ const credentialType = new GraphQLObjectType({
   fields: {
     id: { type: GraphQLString },
     key: { type: GraphQLString },
-    displayName: { type: GraphQLString },
     data: { type: twitterCredentialType },
   }
 })

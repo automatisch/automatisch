@@ -19,18 +19,6 @@
       "clickToCopy": true
     },
     {
-      "key": "displayName",
-      "label": "Name",
-      "type": "string",
-      "required": true,
-      "readOnly": false,
-      "value": null,
-      "placeholder": null,
-      "description": "It's the value you can remember later on while changing connection settings.",
-      "docUrl": "https://automatisch.io/docs/twitter#display-name",
-      "clickToCopy": false
-    },
-    {
       "key": "consumerKey",
       "label": "Consumer Key",
       "type": "string",
@@ -61,10 +49,6 @@
       "type": "mutation",
       "name": "createCredential",
       "fields": [
-        {
-          "name": "displayName",
-          "value": "{fields.displayName}"
-        },
         {
           "name": "key",
           "value": "{key}"
