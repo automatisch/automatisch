@@ -15110,6 +15110,11 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
+twitter-api-v2@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/twitter-api-v2/-/twitter-api-v2-1.6.0.tgz#429a19aed338d2ccf17a0cd890e590b20bb6e768"
+  integrity sha512-MLpHYyw06Ch0FLYZ8JvX4HZethpXRRtUetYe4HtPhcQvJgukvS8xKc1CG1nSuNDVZyZ1KN9ps6W3nHRZVxm+qg==
+
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.4.0.tgz#07b8203bfa7056c0657050e3ccd2c37730bab8f1"
