@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { useApolloClient } from '@apollo/client';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -8,8 +7,8 @@ import Button from '@mui/material/Button';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
+import { processStep } from 'helpers/authenticationSteps';
 import InputCreator from 'components/InputCreator';
-import MUTATIONS from 'graphql/mutations';
 import type { App } from 'types/app';
 import { Form } from './style';
 
@@ -20,24 +19,6 @@ type AddAppConnectionProps = {
 
 type Response = {
   [key: string]: any;
-}
-
-const BASE_URL = 'http://localhost:3001';
-
-const parseData = (event: any) => {
-  const searchParams = new URLSearchParams(event.data);
-
-  return getObjectOfEntries(searchParams.entries());
-};
-
-function getObjectOfEntries(iterator: any) {
-  const result: any = {};
-
-  for (const [key, value] of iterator) {
-    result[key] = value;
-  }
-
-  return result;
 }
 
 function* authStepGenerator(steps: any[]) {
@@ -51,8 +32,6 @@ function* authStepGenerator(steps: any[]) {
 export default function AddAppConnection(props: AddAppConnectionProps){
   const { application, onClose } = props;
   const { key, fields, authenticationSteps } = application;
-
-  const apollo = useApolloClient();
 
   useEffect(() => {
     if (window.opener) {
@@ -69,56 +48,18 @@ export default function AddAppConnection(props: AddAppConnectionProps){
 
     const stepGenerator = authStepGenerator(authenticationSteps);
 
-    const processStep = async (step: any) => {
+    let authenticationStep;
+    while (!(authenticationStep = stepGenerator.next()).done) {
+      const step = authenticationStep.value;
       const variables = computeAuthStepVariables(step, response);
 
-      if (step.type === 'mutation') {
-        const mutation = MUTATIONS[step.name];
-        const mutationResponse = await apollo.mutate({ mutation, variables });
-        const responseData = mutationResponse.data[step.name];
+      const stepResponse = await processStep(step, variables);
 
-        response[step.name] = responseData;
-
-        const nextStep = stepGenerator.next();
-
-        if (!nextStep.done) {
-          await processStep(nextStep.value);
-        }
-      } else if (step.type === 'openWithPopup') {
-        const windowFeatures = 'toolbar=no, menubar=no, width=600, height=700, top=100, left=100';
-        const url = variables.url;
-
-        const popup: any = window.open(url, '_blank', windowFeatures);
-        popup?.focus();
-
-        const messageHandler = async (event: any) => {
-          // check origin and data.source to trust the event
-          if (event.origin !== BASE_URL || event.data.source !== 'automatisch') {
-            return;
-          }
-
-          const data = parseData(event);
-          response[step.name] = data;
-
-          const nextStep = stepGenerator.next();
-          if (!nextStep.done) {
-            await processStep(nextStep.value);
-          }
-
-          window.removeEventListener('message', messageHandler);
-        };
-
-        window.addEventListener('message', messageHandler, false);
-      }
+      response[step.name] = stepResponse;
     }
 
-    const firstStep = stepGenerator.next();
-
-    if (!firstStep.done) {
-      await processStep(firstStep.value);
-    }
-
-  }, [apollo, authenticationSteps, key]);
+    onClose?.();
+  }, [authenticationSteps, key, onClose]);
 
   return (
     <Dialog open={true} onClose={onClose}>
