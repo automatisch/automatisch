@@ -21,14 +21,6 @@ type Response = {
   [key: string]: any;
 }
 
-function* authStepGenerator(steps: any[]) {
-  for (const step of steps) {
-    yield step;
-  }
-
-  return;
-}
-
 export default function AddAppConnection(props: AddAppConnectionProps){
   const { application, onClose } = props;
   const { key, fields, authenticationSteps } = application;
@@ -46,16 +38,16 @@ export default function AddAppConnection(props: AddAppConnectionProps){
       fields: data,
     };
 
-    const stepGenerator = authStepGenerator(authenticationSteps);
-
-    let authenticationStep;
-    while (!(authenticationStep = stepGenerator.next()).done) {
-      const step = authenticationStep.value;
+    let stepIndex = 0;
+    while (stepIndex < authenticationSteps.length) {
+      const step = authenticationSteps[stepIndex];
       const variables = computeAuthStepVariables(step, response);
 
       const stepResponse = await processStep(step, variables);
 
       response[step.name] = stepResponse;
+
+      stepIndex++;
     }
 
     onClose?.();
