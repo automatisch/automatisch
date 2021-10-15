@@ -90,6 +90,27 @@
           "value": "{createAuthLink.url}"
         }
       ]
+    },
+    {
+      "step": 4,
+      "type": "mutation",
+      "name": "updateCredential",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{createCredential.id}"
+        },
+        {
+          "name": "data",
+          "value": null,
+          "fields": [
+            {
+              "name": "oauthVerifier",
+              "value": "{openTwitterAuthPopup.oauth_verifier}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

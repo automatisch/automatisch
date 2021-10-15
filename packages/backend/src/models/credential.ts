@@ -4,8 +4,9 @@ import User from './user'
 class Credential extends Base {
   id!: number
   key!: string
-  data!: string
+  data!: any
   userId!: number
+  verified: boolean
 
   static tableName = 'credentials';
 

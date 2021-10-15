@@ -17,6 +17,16 @@ const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUse
   const appInstance = new appClass(credential.data)
   const authLink = await appInstance.createAuthLink();
 
+  await credential.$query().patch({
+    data: {
+      ...credential.data,
+      url: authLink.url,
+      accessToken: authLink.oauth_token,
+      accessSecret: authLink.oauth_token_secret,
+    },
+    verified: authLink.oauth_callback_confirmed === 'true' ? true : false
+  })
+
   return authLink;
 }
 
