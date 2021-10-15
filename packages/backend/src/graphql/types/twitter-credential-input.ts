@@ -5,6 +5,7 @@ const twitterCredentialInputType = new GraphQLInputObjectType({
   fields: {
     consumerKey: { type: GraphQLString },
     consumerSecret: { type: GraphQLString },
+    oauthVerifier: { type: GraphQLString },
   }
 })
 
