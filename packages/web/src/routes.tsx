@@ -16,7 +16,7 @@ export default (
       <Flows />
     </Route>
 
-    <Route path={URLS.APPS}>
+    <Route path={[URLS.APPS, URLS.NEW_APP_CONNECTION]}>
       <Applications />
     </Route>
 

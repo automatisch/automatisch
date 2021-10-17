@@ -20,7 +20,7 @@ export const Typography = styled(MuiTypography)(({ theme }) => ({
 }));
 
 export const DesktopOnlyBreakline = styled('br')(({ theme }) => ({
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('sm')]: {
     display: 'none',
   }
 }));
