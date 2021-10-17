@@ -18,19 +18,19 @@ import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 
 type ApplicationParams = {
-  slug: string;
+  key: string;
 };
 
 export default function Application() {
   const formatMessage = useFormatMessage();
   const routeMatch = useRouteMatch([URLS.APP_CONNECTIONS_PATTERN, URLS.APP_FLOWS_PATTERN, URLS.APP_PATTERN]);
-  const { slug } = useParams<ApplicationParams>();
+  const { key } = useParams<ApplicationParams>();
   const history = useHistory();
-  const { data } = useQuery(GET_APP, { variables: { name: slug } });
+  const { data } = useQuery(GET_APP, { variables: { key } });
 
   const app = data?.getApp || {};
 
-  const goToApplicationPage = () => history.push(URLS.APP(slug));
+  const goToApplicationPage = () => history.push(URLS.APP(key));
 
   return (
     <>
@@ -50,7 +50,7 @@ export default function Application() {
                 <SettingsIcon />
               </IconButton>
 
-              <Button variant="contained" component={Link} to={URLS.APP_ADD_CONNECTION(slug)}>
+              <Button variant="contained" component={Link} to={URLS.APP_ADD_CONNECTION(key)}>
                 {formatMessage('app.addConnection')}
               </Button>
             </Grid>
@@ -62,14 +62,14 @@ export default function Application() {
                 <Tabs value={routeMatch?.path}>
                   <Tab
                     label={formatMessage('app.connections')}
-                    to={URLS.APP_CONNECTIONS(slug)}
+                    to={URLS.APP_CONNECTIONS(key)}
                     value={URLS.APP_CONNECTIONS_PATTERN}
                     component={Link}
                   />
 
                   <Tab
                     label={formatMessage('app.flows')}
-                    to={URLS.APP_FLOWS(slug)}
+                    to={URLS.APP_FLOWS(key)}
                     value={URLS.APP_FLOWS_PATTERN}
                     component={Link}
                   />
@@ -86,7 +86,7 @@ export default function Application() {
                 </Route>
 
                 <Route exact path={URLS.APP_PATTERN}>
-                  <Redirect to={URLS.APP_CONNECTIONS(slug)} />
+                  <Redirect to={URLS.APP_CONNECTIONS(key)} />
                 </Route>
               </Switch>
             </Grid>

@@ -8,7 +8,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import AppIcon from 'components/AppIcon';
 import * as URLS from 'config/urls';
 import type { App } from 'types/app';
-import { CardContent, Typography, DesktopOnlyBreakline } from './style';
+import { CardContent, Typography } from './style';
 
 type AppRowProps = {
   application: App;
@@ -18,7 +18,7 @@ const countTranslation = (value: React.ReactNode) => (<><strong>{value}</strong>
 
 function AppRow(props: AppRowProps) {
   const formatMessage = useFormatMessage();
-  const { name, primaryColor, iconUrl } = props.application;
+  const { name, primaryColor, iconUrl, connectionCount } = props.application;
 
   return (
     <Link to={URLS.APP(name.toLowerCase())}>
@@ -37,13 +37,13 @@ function AppRow(props: AppRowProps) {
 
             <Box sx={{ px: 2 }}>
               <Typography variant="body2">
-                {formatMessage('app.connectionCount', { count: countTranslation(Math.round(Math.random() * 100)) })}
+                {formatMessage('app.connectionCount', { count: countTranslation(connectionCount) })}
               </Typography>
             </Box>
 
             <Box sx={{ px: 2 }}>
               <Typography variant="body2">
-                {formatMessage('app.flowCount', { count: countTranslation(Math.round(Math.random() * 100)) })}
+                {formatMessage('app.flowCount', { count: countTranslation(0) })}
               </Typography>
             </Box>
 

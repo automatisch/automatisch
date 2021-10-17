@@ -11,7 +11,7 @@ import PageTitle from 'components/PageTitle';
 import AppRow from 'components/AppRow';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage'
-import { GET_APPS } from 'graphql/queries/get-apps';
+import { GET_CONNECTED_APPS } from 'graphql/queries/get-connected-apps';
 import * as URLS from 'config/urls';
 import type { App } from 'types/app';
 
@@ -19,7 +19,7 @@ export default function Applications() {
   const history = useHistory();
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = useState(null);
-  const { data } = useQuery(GET_APPS, { variables: {name: appName } });
+  const { data } = useQuery(GET_CONNECTED_APPS, { variables: {name: appName } });
 
   const onSearchChange = useCallback((event) => {
     setAppName(event.target.value);
@@ -57,7 +57,7 @@ export default function Applications() {
           </Grid>
         </Grid>
 
-        {data?.getApps?.map((app: App) => (
+        {data?.getConnectedApps?.map((app: App) => (
           <AppRow key={app.name} application={app} />
         ))}
 
