@@ -7,6 +7,7 @@ class Connection extends Base {
   data!: any
   userId!: number
   verified: boolean
+  count: number
 
   static tableName = 'connections';
 

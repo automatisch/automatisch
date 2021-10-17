@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
 import fieldType from './field';
 import authenticationStepType from './authentication-step';
 
@@ -7,6 +7,7 @@ const appType = new GraphQLObjectType({
   fields: {
     name: { type: GraphQLString },
     key: { type: GraphQLString },
+    connectionCount: { type: GraphQLInt },
     slug: { type: GraphQLString },
     iconUrl: { type: GraphQLString },
     docUrl: { type: GraphQLString },
