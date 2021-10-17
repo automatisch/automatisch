@@ -16,7 +16,7 @@ export default class Twitter {
     });
 
     this.connectionData = connectionData;
-    this.appData = App.findOneByName('twitter');
+    this.appData = App.findOneByKey('twitter');
   }
 
   async createAuthLink() {
