@@ -1,8 +1,8 @@
 import { GraphQLObjectType, GraphQLString, GraphQLBoolean } from 'graphql';
 import twitterCredentialType from './twitter-credential';
 
-const credentialType = new GraphQLObjectType({
-  name: 'credential',
+const connectionType = new GraphQLObjectType({
+  name: 'connection',
   fields: {
     id: { type: GraphQLString },
     key: { type: GraphQLString },
@@ -11,4 +11,4 @@ const credentialType = new GraphQLObjectType({
   }
 })
 
-export default credentialType;
+export default connectionType;

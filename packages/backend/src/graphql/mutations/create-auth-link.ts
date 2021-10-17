@@ -1,5 +1,5 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
-import Credential from '../../models/credential';
+import Connection from '../../models/connection';
 import authLinkType from '../types/auth-link';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
@@ -7,19 +7,19 @@ type Params = {
   id: number,
 }
 const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  const credential = await Credential.query().findOne({
+  const connection = await Connection.query().findOne({
     user_id: req.currentUser.id,
     id: params.id
   })
 
-  const appClass = (await import(`../../apps/${credential.key}`)).default;
+  const appClass = (await import(`../../apps/${connection.key}`)).default;
 
-  const appInstance = new appClass(credential.data)
+  const appInstance = new appClass(connection.data)
   const authLink = await appInstance.createAuthLink();
 
-  await credential.$query().patch({
+  await connection.$query().patch({
     data: {
-      ...credential.data,
+      ...connection.data,
       url: authLink.url,
       accessToken: authLink.oauth_token,
       accessSecret: authLink.oauth_token_secret,

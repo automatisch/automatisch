@@ -1,14 +1,14 @@
 import { GraphQLObjectType } from 'graphql';
-import createCredential from './mutations/create-credential';
+import createConnection from './mutations/create-connection';
 import createAuthLink from './mutations/create-auth-link';
-import updateCredential from './mutations/update-credential';
+import updateConnection from './mutations/update-connection';
 
 const rootMutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    createCredential: createCredential,
+    createConnection: createConnection,
     createAuthLink: createAuthLink,
-    updateCredential: updateCredential
+    updateConnection: updateConnection
   }
 });
 
