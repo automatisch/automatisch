@@ -11,5 +11,9 @@
   "app.addConnection": "Add connection",
   "app.settings": "Settings",
   "app.connections": "Connections",
-  "app.flows": "Flows"
+  "app.flows": "Flows",
+  "apps.title": "Apps",
+  "apps.addConnection": "Add connection",
+  "apps.addNewAppConnection": "Add a new app connection",
+  "apps.searchApp": "Search for app"
 }

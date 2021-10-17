@@ -14,7 +14,7 @@ type AppRowProps = {
   application: App;
 }
 
-const countTranslation = (value: React.ReactNode) => (<><strong>{value}</strong><DesktopOnlyBreakline /></>);
+const countTranslation = (value: React.ReactNode) => (<><strong>{value}</strong><br /></>);
 
 function AppRow(props: AppRowProps) {
   const formatMessage = useFormatMessage();

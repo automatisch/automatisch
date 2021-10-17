@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "lerna run --stream --scope=@*/{web,backend} dev",
-    "start:web": "lerna run --stream --scope @*/web start",
+    "start:web": "lerna run --stream --scope @*/web dev",
     "start:backend": "lerna run --stream --scope @*/backend dev"
   },
   "workspaces": [

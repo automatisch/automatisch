@@ -10,3 +10,5 @@ export const APP_ADD_CONNECTION = (appSlug: string) => `/app/${appSlug}/connecti
 export const APP_ADD_CONNECTION_PATTERN = '/app/:slug/connections/add';
 export const APP_FLOWS = (appSlug: string) => `/app/${appSlug}/flows`;
 export const APP_FLOWS_PATTERN = '/app/:slug/flows';
+
+export const NEW_APP_CONNECTION = '/apps/new';
