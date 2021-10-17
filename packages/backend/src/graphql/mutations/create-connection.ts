@@ -1,6 +1,6 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
-import Credential from '../../models/credential';
-import credentialType from '../types/credential';
+import Connection from '../../models/connection';
+import connectionType from '../types/connection';
 import twitterCredentialInputType from '../types/twitter-credential-input';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
@@ -8,23 +8,23 @@ type Params = {
   key: string,
   data: object
 }
-const createCredentialResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  const credential = await Credential.query().insert({
+const createConnectionResolver = async (params: Params, req: RequestWithCurrentUser) => {
+  const connection = await Connection.query().insert({
     key: params.key,
     data: params.data,
     userId: req.currentUser.id
   });
 
-  return credential;
+  return connection;
 }
 
-const createCredential = {
-  type: credentialType,
+const createConnection = {
+  type: connectionType,
   args: {
     key: { type: GraphQLNonNull(GraphQLString) },
     data: { type: GraphQLNonNull(twitterCredentialInputType) }
   },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createCredentialResolver(params, req)
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createConnectionResolver(params, req)
 };
 
-export default createCredential;
+export default createConnection;

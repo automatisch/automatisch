@@ -1,6 +1,6 @@
 import { QueryContext, ModelOptions } from 'objection';
 import Base from './base';
-import Credential from './credential';
+import Connection from './connection';
 import bcrypt from 'bcrypt';
 
 class User extends Base {
@@ -22,12 +22,12 @@ class User extends Base {
   }
 
   static relationMappings = () => ({
-    credentials: {
+    connections: {
       relation: Base.HasManyRelation,
-      modelClass: Credential,
+      modelClass: Connection,
       join: {
         from: 'users.id',
-        to: 'credentials.user_id',
+        to: 'connections.user_id',
       },
     }
   })

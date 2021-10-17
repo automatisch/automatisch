@@ -47,7 +47,7 @@
     {
       "step": 1,
       "type": "mutation",
-      "name": "createCredential",
+      "name": "createConnection",
       "fields": [
         {
           "name": "key",
@@ -76,7 +76,7 @@
       "fields": [
         {
           "name": "id",
-          "value": "{createCredential.id}"
+          "value": "{createConnection.id}"
         }
       ]
     },
@@ -94,11 +94,11 @@
     {
       "step": 4,
       "type": "mutation",
-      "name": "updateCredential",
+      "name": "updateConnection",
       "fields": [
         {
           "name": "id",
-          "value": "{createCredential.id}"
+          "value": "{createConnection.id}"
         },
         {
           "name": "data",
