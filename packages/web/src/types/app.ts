@@ -13,6 +13,7 @@ type AppFields = {
 type App = {
   key: string;
   name: string;
+  connectionCount: number;
   iconUrl: string;
   docUrl: string;
   primaryColor: string;
