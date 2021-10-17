@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_APP = gql`
-  query GetApp($name: String!) {
-    getApp (name: $name) {
+  query GetApp($key: String!) {
+    getApp (key: $key) {
       name
       key
       iconUrl
