@@ -13,7 +13,12 @@
         "node_modules/*",
         "src/types/*"
       ]
-    }
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "./src/types",
+      "./src/apps"
+    ]
   },
   "include": [
     "src/**/*"
