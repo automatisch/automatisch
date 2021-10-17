@@ -1,14 +1,14 @@
-import { CREATE_CREDENTIAL } from './create-credentials';
+import { CREATE_CONNECTION } from './create-connection';
 import { CREATE_AUTH_LINK } from './create-auth-link';
-import { UPDATE_CREDENTIAL } from './update-credential';
+import { UPDATE_CONNECTION } from './update-connection';
 
 type Mutations = {
   [key: string]: any,
 }
 
 const mutations: Mutations = {
-  createCredential: CREATE_CREDENTIAL,
-  updateCredential: UPDATE_CREDENTIAL,
+  createConnection: CREATE_CONNECTION,
+  updateConnection: UPDATE_CONNECTION,
   createAuthLink: CREATE_AUTH_LINK,
 };
 
