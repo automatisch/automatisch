@@ -1,14 +1,14 @@
 import Base from './base'
 import User from './user'
 
-class Credential extends Base {
+class Connection extends Base {
   id!: number
   key!: string
   data!: any
   userId!: number
   verified: boolean
 
-  static tableName = 'credentials';
+  static tableName = 'connections';
 
   static jsonSchema = {
     type: 'object',
@@ -24,15 +24,15 @@ class Credential extends Base {
   }
 
   static relationMappings = () => ({
-    credentials: {
+    user: {
       relation: Base.BelongsToOneRelation,
       modelClass: User,
       join: {
-        from: 'credentials.user_id',
+        from: 'connections.user_id',
         to: 'users.id',
       },
     }
   })
 }
 
-export default Credential;
+export default Connection;

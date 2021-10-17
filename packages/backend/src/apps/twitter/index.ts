@@ -4,18 +4,18 @@ import Field from '../../types/field';
 
 export default class Twitter {
   client: any
-  credentialsData: any
+  connectionData: any
   appData: any
 
-  constructor(credentialsData: any) {
+  constructor(connectionData: any) {
     this.client = new TwitterApi({
-      appKey: credentialsData.consumerKey,
-      appSecret: credentialsData.consumerSecret,
-      accessToken: credentialsData.accessToken,
-      accessSecret: credentialsData.accessSecret
+      appKey: connectionData.consumerKey,
+      appSecret: connectionData.consumerSecret,
+      accessToken: connectionData.accessToken,
+      accessSecret: connectionData.accessSecret
     });
 
-    this.credentialsData = credentialsData;
+    this.connectionData = connectionData;
     this.appData = App.findOneByName('twitter');
   }
 
@@ -27,11 +27,11 @@ export default class Twitter {
   }
 
   async verifyCredentials() {
-    const verifiedCredentials = await this.client.login(this.credentialsData.oauthVerifier)
+    const verifiedCredentials = await this.client.login(this.connectionData.oauthVerifier)
 
     return {
-      consumerKey: this.credentialsData.consumerKey,
-      consumerSecret: this.credentialsData.consumerSecret,
+      consumerKey: this.connectionData.consumerKey,
+      consumerSecret: this.connectionData.consumerSecret,
       accessToken: verifiedCredentials.accessToken,
       accessSecret: verifiedCredentials.accessSecret,
       userId: verifiedCredentials.userId,
