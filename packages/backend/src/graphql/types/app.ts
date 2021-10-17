@@ -8,7 +8,6 @@ const appType = new GraphQLObjectType({
     name: { type: GraphQLString },
     key: { type: GraphQLString },
     connectionCount: { type: GraphQLInt },
-    slug: { type: GraphQLString },
     iconUrl: { type: GraphQLString },
     docUrl: { type: GraphQLString },
     primaryColor: { type: GraphQLString },

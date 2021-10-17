@@ -16,6 +16,11 @@ class App {
     const rawAppData = fs.readFileSync(this.folderPath + `/${name}/info.json`, 'utf-8');
     return JSON.parse(rawAppData);
   }
+
+  static findOneByKey(key: string): object {
+    const rawAppData = fs.readFileSync(this.folderPath + `/${key}/info.json`, 'utf-8');
+    return JSON.parse(rawAppData);
+  }
 }
 
 export default App;
