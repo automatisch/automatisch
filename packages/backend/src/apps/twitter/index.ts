@@ -38,4 +38,9 @@ export default class Twitter {
       screenName: verifiedCredentials.screenName
     }
   }
+
+  async isStillVerified() {
+    const userData = await this.client.currentUser();
+    return userData.id ? true : false
+  }
 }
