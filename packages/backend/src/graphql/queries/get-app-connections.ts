@@ -1,5 +1,6 @@
 import { GraphQLList, GraphQLString, GraphQLNonNull } from 'graphql';
 import Connection from '../../models/connection';
+import App from '../../models/app';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 import connectionType from '../types/connection';
 
@@ -8,10 +9,14 @@ type Params = {
 }
 
 const getAppConnectionsResolver = async (params: Params, req: RequestWithCurrentUser) => {
+  const app = await App.findOneByKey(params.key);
   const connections = await Connection.query()
-    .where({ user_id: req.currentUser.id, verified: true, key: params.key })
+    .where({ user_id: req.currentUser.id, key: params.key })
 
-  return connections;
+  return connections.map((connection: any) => ({
+    ...connection,
+    app,
+  }));
 }
 
 const getAppConnections = {

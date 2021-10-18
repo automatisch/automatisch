@@ -32,6 +32,9 @@ export const GET_APP = gql`
           }
         }
       }
+      connections {
+        id
+      }
     }
   }
 `;

@@ -15,5 +15,10 @@
   "apps.title": "Apps",
   "apps.addConnection": "Add connection",
   "apps.addNewAppConnection": "Add a new app connection",
-  "apps.searchApp": "Search for app"
+  "apps.searchApp": "Search for app",
+  "connection.flowCount": "{count} flows",
+  "connection.viewFlows": "View flows",
+  "connection.testConnection": "Test connection",
+  "connection.reconnect": "Reconnect",
+  "connection.delete": "Delete"
 }
