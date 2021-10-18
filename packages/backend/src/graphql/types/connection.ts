@@ -3,11 +3,16 @@ import connectionDataType from './connection-data';
 
 const connectionType = new GraphQLObjectType({
   name: 'connection',
-  fields: {
-    id: { type: GraphQLString },
-    key: { type: GraphQLString },
-    data: { type: connectionDataType },
-    verified: { type: GraphQLBoolean },
+  fields: () => {
+    const appType = require('./app').default;
+
+    return {
+      id: { type: GraphQLString },
+      key: { type: GraphQLString },
+      data: { type: connectionDataType },
+      verified: { type: GraphQLBoolean },
+      app: { type: appType }
+    }
   }
 })
 

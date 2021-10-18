@@ -24,7 +24,7 @@ function AppRow(props: AppRowProps) {
     <Link to={URLS.APP(name.toLowerCase())}>
       <Card sx={{ my: 2 }}>
         <CardActionArea>
-        <CardContent>
+          <CardContent>
             <Box>
               <AppIcon name={name} url={iconUrl} color={primaryColor} />
             </Box>

@@ -9,7 +9,7 @@ type LayoutProps = {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [isDrawerOpen, setDrawerOpen] = useState(true);
   const onMenuClick = useCallback(() => { setDrawerOpen(value => !value) }, []);
 
   return (

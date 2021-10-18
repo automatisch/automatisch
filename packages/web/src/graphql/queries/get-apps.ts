@@ -19,6 +19,9 @@ export const GET_APPS = gql`
         docUrl
         clickToCopy
       }
+      connections {
+        id
+      }
     }
   }
 `;

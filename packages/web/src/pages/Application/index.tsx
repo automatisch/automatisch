@@ -12,6 +12,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { GET_APP } from 'graphql/queries/get-app';
 import * as URLS from 'config/urls';
 
+import AppConnections from 'components/AppConnections';
 import AddAppConnection from 'components/AddAppConnection';
 import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
@@ -78,11 +79,11 @@ export default function Application() {
 
               <Switch>
                 <Route path={URLS.APP_FLOWS_PATTERN}>
-                    Flows come here.
+                  Flows
                 </Route>
 
                 <Route path={URLS.APP_CONNECTIONS_PATTERN}>
-                    Connections come here.
+                  <AppConnections appKey={key} />
                 </Route>
 
                 <Route exact path={URLS.APP_PATTERN}>
