@@ -5,10 +5,6 @@ export const CREATE_CONNECTION = gql`
     createConnection(key: $key, data: $data) {
       key
       id
-      data {
-        consumerKey
-        consumerSecret
-      }
     }
   }
 `;

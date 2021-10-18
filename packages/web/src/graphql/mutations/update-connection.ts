@@ -6,10 +6,6 @@ export const UPDATE_CONNECTION = gql`
       id
       key
       verified
-      data {
-        consumerKey
-        consumerSecret
-      }
     }
   }
 `;
