@@ -19,12 +19,10 @@ export default function InputCreator(props: InputCreatorProps) {
   const {
     key: name,
     label,
-    type,
     required,
     readOnly,
     value,
     description,
-    docUrl,
     clickToCopy,
   } = schema;
 
