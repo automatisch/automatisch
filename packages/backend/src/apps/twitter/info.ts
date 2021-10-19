@@ -1,9 +1,12 @@
-{
-  "name": "Flickr",
-  "key": "flickr",
-  "iconUrl": "https://automatisch.io/apps/flickr.png",
-  "docUrl": "https://automatisch.io/docs/flickr",
-  "primaryColor": "000000",
+import appInfoType from '../../types/app-info';
+import appConfig from '../../config/app';
+
+const appInfo: appInfoType = {
+  "name": "Twitter",
+  "key": "twitter",
+  "iconUrl": `${appConfig.baseUrl}/apps/twitter/assets/favicon.svg`,
+  "docUrl": "https://automatisch.io/docs/twitter",
+  "primaryColor": "2DAAE1",
   "fields": [
     {
       "key": "oAuthRedirectUrl",
@@ -11,10 +14,10 @@
       "type": "string",
       "required": true,
       "readOnly": true,
-      "value": "http://localhost:3001/app/flickr/connections/add",
+      "value": "http://localhost:3001/app/twitter/connections/add",
       "placeholder": null,
-      "description": "When asked to input an OAuth callback or redirect URL in Flickr OAuth, enter the URL above.",
-      "docUrl": "https://automatisch.io/docs/flickr#oauth-redirect-url",
+      "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
+      "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
       "clickToCopy": true
     },
     {
@@ -26,7 +29,7 @@
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/flickr#consumer-key",
+      "docUrl": "https://automatisch.io/docs/twitter#consumer-key",
       "clickToCopy": false
     },
     {
@@ -38,7 +41,7 @@
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/flickr#consumer-secret",
+      "docUrl": "https://automatisch.io/docs/twitter#consumer-secret",
       "clickToCopy": false
     }
   ],
@@ -82,7 +85,7 @@
     {
       "step": 3,
       "type": "openWithPopup",
-      "name": "openAuthPopup",
+      "name": "openTwitterAuthPopup",
       "fields": [
         {
           "name": "url",
@@ -105,7 +108,7 @@
           "fields": [
             {
               "name": "oauthVerifier",
-              "value": "{openAuthPopup.oauth_verifier}"
+              "value": "{openTwitterAuthPopup.oauth_verifier}"
             }
           ]
         }
@@ -113,3 +116,5 @@
     }
   ]
 }
+
+export default appInfo;

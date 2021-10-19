@@ -5,7 +5,7 @@ type Field = {
   required: boolean,
   readOnly: boolean,
   value: string,
-  placeholder: string,
+  placeholder: string | null,
   description: string,
   docUrl: string,
   clickToCopy: boolean

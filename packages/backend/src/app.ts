@@ -6,12 +6,15 @@ import corsOptions from './config/cors-options';
 import graphQLInstance from './helpers/graphql-instance';
 import logger from './helpers/logger';
 import morgan from './helpers/morgan';
+import appAssetsHandler from './helpers/app-assets-handler';
 import errorHandler from './helpers/error-handler';
 import './config/database';
 import authentication from './helpers/authentication';
 
 const app = express();
 const port = appConfig.port;
+
+appAssetsHandler(app)
 
 app.use(morgan);
 app.use(express.json());

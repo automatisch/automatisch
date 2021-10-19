@@ -7,8 +7,9 @@ type AppIconProps = {
 };
 
 export default function AppIcon(props: AppIconProps) {
-  const { color, name, url } = props;
-
+  const { name, url } = props;
+  const color = url ? 'white' : props.color
+  
   return (
     <Avatar component="span" variant="square" sx={{ bgcolor: `#${color}` }} src={url} alt={name} />
   );
