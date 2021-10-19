@@ -1,7 +1,7 @@
 import appConfig from './app'
 
 const corsOptions = {
-  origin: `${appConfig.protocol}://${appConfig.host}:${appConfig.corsPort}`,
+  origin: appConfig.webAppUrl,
   methods: 'POST',
   credentials: true,
   optionsSuccessStatus: 200,
