@@ -9,7 +9,7 @@ type Params = {
 }
 
 const getConnectedAppsResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  let apps = App.findAll(params.name)
+  let apps = await App.findAll(params.name)
 
   const connections = await Connection.query()
     .select('connections.key')

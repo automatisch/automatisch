@@ -1,7 +1,10 @@
-{
+import appInfoType from '../../types/app-info';
+import appConfig from '../../config/app';
+
+const appInfo: appInfoType = {
   "name": "Twitch",
   "key": "twitch",
-  "iconUrl": "https://automatisch.io/apps/twitch.png",
+  "iconUrl": `${appConfig.baseUrl}/apps/twitch/assets/favicon.svg`,
   "docUrl": "https://automatisch.io/docs/twitch",
   "primaryColor": "6441a5",
   "fields": [
@@ -43,3 +46,5 @@
     }
   ]
 }
+
+export default appInfo;

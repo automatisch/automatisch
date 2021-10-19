@@ -11,7 +11,9 @@ type AppConfig = {
   postgresPort: number,
   postgresHost: string,
   postgresUsername: string,
-  postgresPassword: string
+  postgresPassword: string,
+  baseUrl?: string
+  webAppUrl?: string
 }
 
 const appConfig: AppConfig = {
@@ -26,5 +28,11 @@ const appConfig: AppConfig = {
   postgresUsername: process.env.POSTGRES_USERNAME || 'automatish_development_user',
   postgresPassword: process.env.POSTGRESS_PASSWORD,
 }
+
+const webAppUrl = `${appConfig.protocol}://${appConfig.host}:${appConfig.corsPort}`;
+appConfig.webAppUrl = webAppUrl;
+
+const baseUrl = `${appConfig.protocol}://${appConfig.host}:${appConfig.port}`;
+appConfig.baseUrl = baseUrl;
 
 export default appConfig;
