@@ -1,6 +1,7 @@
 import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 import Connection from '../../models/connection';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import connectionType from '../types/connection'
 
 type Params = {
   id: string,
@@ -17,11 +18,15 @@ const testConnectionResolver = async (params: Params, req: RequestWithCurrentUse
   const appInstance = new appClass(connection.data)
   const isStillVerified = await appInstance.isStillVerified();
 
-  return isStillVerified;
+  connection = await connection.$query().patchAndFetch({
+    verified: isStillVerified
+  })
+
+  return connection;
 }
 
 const testConnection = {
-  type: GraphQLBoolean,
+  type: connectionType,
   args: {
     id: { type: GraphQLNonNull(GraphQLString) }
   },
