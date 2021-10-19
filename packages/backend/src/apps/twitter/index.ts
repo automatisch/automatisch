@@ -40,7 +40,11 @@ export default class Twitter {
   }
 
   async isStillVerified() {
-    const userData = await this.client.currentUser();
-    return userData.id ? true : false
+    try {
+      await this.client.currentUser();
+      return true;
+    } catch (error) {
+      return false
+    }
   }
 }
