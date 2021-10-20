@@ -19,11 +19,11 @@ type AppConnectionRowProps = {
 const countTranslation = (value: React.ReactNode) => (<><strong>{value}</strong><br /></>);
 
 function AppConnectionRow(props: AppConnectionRowProps) {
-  const [testConnection, { data: testData, called: testCalled, loading: testLoading }] = useLazyQuery(TEST_CONNECTION);
+  const [testConnection, { called: testCalled, loading: testLoading }] = useLazyQuery(TEST_CONNECTION);
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
   const formatMessage = useFormatMessage();
-  const { id, key, data } = props.connection;
+  const { id, key, data, verified } = props.connection;
 
   const contextButtonRef = React.useRef<SVGSVGElement | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
@@ -39,7 +39,7 @@ function AppConnectionRow(props: AppConnectionRowProps) {
         variables: { id },
         update: (cache, mutationResult) => {
           const connectionCacheId = cache.identify({
-            __typename: 'connection',
+            __typename: 'Connection',
             id,
           });
 
@@ -65,7 +65,7 @@ function AppConnectionRow(props: AppConnectionRowProps) {
             </Box>
 
             <Box>
-              {testCalled && !testLoading && (testData ? 'yes' : 'no')}
+              {testCalled && !testLoading && (verified ? 'yes' : 'no')}
             </Box>
 
             <Box sx={{ px: 2 }}>
@@ -83,6 +83,7 @@ function AppConnectionRow(props: AppConnectionRowProps) {
 
       {anchorEl && <ConnectionContextMenu
         appKey={key}
+        connectionId={id}
         onClose={handleClose}
         onMenuItemClick={onContextMenuAction}
         anchorEl={anchorEl}

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const UPDATE_CONNECTION = gql`
-  mutation UpdateConnection($id: String!, $data: twitterCredentialInput!) {
+  mutation UpdateConnection($id: String!, $data: TwitterCredentialInput!) {
     updateConnection(id: $id, data: $data) {
       id
       key

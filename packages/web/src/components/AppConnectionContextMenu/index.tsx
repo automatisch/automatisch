@@ -13,13 +13,14 @@ type Action = {
 
 type ContextMenuProps = {
   appKey: string;
+  connectionId: string;
   onClose: () => void;
   onMenuItemClick: (event: React.MouseEvent, action: Action) => void;
   anchorEl: PopoverProps['anchorEl'];
 };
 
 export default function ContextMenu(props: ContextMenuProps) {
-  const { appKey, onClose, onMenuItemClick, anchorEl } = props;
+  const { appKey, connectionId, onClose, onMenuItemClick, anchorEl } = props;
   const formatMessage = useFormatMessage();
 
   const createActionHandler = React.useCallback((action: Action) => {
@@ -37,7 +38,11 @@ export default function ContextMenu(props: ContextMenuProps) {
       hideBackdrop={false}
       anchorEl={anchorEl}
     >
-      <MenuItem component={Link} to={URLS.APP_FLOWS(appKey)} onClick={createActionHandler({ type: 'viewFlows' })}>
+      <MenuItem
+        component={Link}
+        to={URLS.APP_FLOWS(appKey)}
+        onClick={createActionHandler({ type: 'viewFlows' })}
+      >
         {formatMessage('connection.viewFlows')}
       </MenuItem>
 
@@ -45,7 +50,11 @@ export default function ContextMenu(props: ContextMenuProps) {
         {formatMessage('connection.testConnection')}
       </MenuItem>
 
-      <MenuItem onClick={createActionHandler({ type: 'reconnect' })}>
+      <MenuItem
+        component={Link}
+        to={URLS.APP_RECONNECT_CONNECTION(appKey, connectionId)}
+        onClick={createActionHandler({ type: 'reconnect' })}
+      >
         {formatMessage('connection.reconnect')}
       </MenuItem>
 

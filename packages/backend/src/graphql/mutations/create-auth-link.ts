@@ -14,7 +14,7 @@ const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUse
 
   const appClass = (await import(`../../apps/${connection.key}`)).default;
 
-  const appInstance = new appClass(connection.data)
+  const appInstance = new appClass({ consumerKey: connection.data.consumerKey, consumerSecret: connection.data.consumerSecret });
   const authLink = await appInstance.createAuthLink();
 
   await connection.$query().patch({

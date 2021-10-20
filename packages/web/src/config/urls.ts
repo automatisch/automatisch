@@ -8,6 +8,8 @@ export const APP_CONNECTIONS = (appKey: string) => `/app/${appKey}/connections`;
 export const APP_CONNECTIONS_PATTERN = '/app/:key/connections';
 export const APP_ADD_CONNECTION = (appKey: string) => `/app/${appKey}/connections/add`;
 export const APP_ADD_CONNECTION_PATTERN = '/app/:key/connections/add';
+export const APP_RECONNECT_CONNECTION = (appKey: string, connectionId: string) => `/app/${appKey}/connections/${connectionId}/reconnect`;
+export const APP_RECONNECT_CONNECTION_PATTERN = '/app/:key/connections/:connectionId/reconnect';
 export const APP_FLOWS = (appKey: string) => `/app/${appKey}/flows`;
 export const APP_FLOWS_PATTERN = '/app/:key/flows';
 

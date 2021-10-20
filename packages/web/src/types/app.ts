@@ -19,6 +19,7 @@ type App = {
   primaryColor: string;
   fields: AppFields[];
   authenticationSteps: any[];
+  reconnectionSteps: any[];
 };
 
 export type { App, AppFields };

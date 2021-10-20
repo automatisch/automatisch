@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Link, Route, Redirect, Switch, useParams, useRouteMatch, useHistory } from 'react-router-dom';
+import { Link, Route, Redirect, Switch, RouteComponentProps, useParams, useRouteMatch, useHistory } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -20,6 +20,7 @@ import PageTitle from 'components/PageTitle';
 
 type ApplicationParams = {
   key: string;
+  connectionId?: string;
 };
 
 export default function Application() {
@@ -95,9 +96,9 @@ export default function Application() {
         </Container>
       </Box>
 
-      <Route exact path={URLS.APP_ADD_CONNECTION_PATTERN}>
-        <AddAppConnection onClose={goToApplicationPage} application={app} />
-      </Route>
+      <Route exact path={[URLS.APP_RECONNECT_CONNECTION_PATTERN, URLS.APP_ADD_CONNECTION_PATTERN]} render={({ match }: RouteComponentProps<ApplicationParams>) => (
+        <AddAppConnection onClose={goToApplicationPage} application={app} connectionId={match.params.connectionId} />
+      )} />
     </>
   );
 };

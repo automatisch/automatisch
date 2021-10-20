@@ -1,7 +1,6 @@
 import TwitterApi from 'twitter-api-v2';
 import App from '../../models/app';
 import Field from '../../types/field';
-import appData from './info';
 
 export default class Twitter {
   client: any
@@ -17,7 +16,7 @@ export default class Twitter {
     });
 
     this.connectionData = connectionData;
-    this.appData = appData;
+    this.appData = App.findOneByKey('twitter');
   }
 
   async createAuthLink() {
