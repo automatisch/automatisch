@@ -14,7 +14,7 @@ const getAppResolver = async (params: Params, req: RequestWithCurrentUser) => {
     throw new Error('No key provided.')
   }
 
-  const app = await App.findOneByKey(params.key);
+  const app = App.findOneByKey(params.key);
 
   if (req.currentUser?.id) {
     const connections = await Connection.query()

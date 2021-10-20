@@ -1,10 +1,7 @@
-import appInfoType from '../../types/app-info';
-import appConfig from '../../config/app';
-
-const appInfo: appInfoType = {
+{
   "name": "Flickr",
   "key": "flickr",
-  "iconUrl": `${appConfig.baseUrl}/apps/flickr/assets/favicon.svg`,
+  "iconUrl": "{BASE_URL}/apps/flickr/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/flickr",
   "primaryColor": "000000",
   "fields": [
@@ -116,5 +113,3 @@ const appInfo: appInfoType = {
     }
   ]
 }
-
-export default appInfo;

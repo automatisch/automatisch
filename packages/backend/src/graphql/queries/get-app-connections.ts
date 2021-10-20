@@ -9,7 +9,7 @@ type Params = {
 }
 
 const getAppConnectionsResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  const app = await App.findOneByKey(params.key);
+  const app = App.findOneByKey(params.key);
   const connections = await Connection.query()
     .where({ user_id: req.currentUser.id, key: params.key })
 
