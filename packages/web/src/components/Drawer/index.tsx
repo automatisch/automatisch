@@ -3,7 +3,6 @@ import { DrawerProps } from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import AppsIcon from '@mui/icons-material/Apps';
 import LanguageIcon from '@mui/icons-material/Language';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
@@ -29,12 +28,6 @@ export default function Drawer(props: DrawerProps) {
       </HideOnScroll>
 
       <List>
-        <ListItemLink
-          icon={<DashboardIcon />}
-          primary={formatMessage('drawer.dashboard')}
-          to={URLS.DASHBOARD}
-        />
-
         <ListItemLink
           icon={<OfflineBoltIcon />}
           primary={formatMessage('drawer.flows')}

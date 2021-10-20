@@ -21,14 +21,17 @@ const updateConnectionResolver = async (params: Params, req: RequestWithCurrentU
     }
   })
 
-  const appClass = (await import(`../../apps/${connection.key}`)).default;
+  // Not every updateConnection mutation can verify credentials as some need to reconnect
+  try {
+    const appClass = (await import(`../../apps/${connection.key}`)).default;
 
-  const appInstance = new appClass(connection.data)
-  const verifiedCredentials = await appInstance.verifyCredentials();
+    const appInstance = new appClass(connection.data)
+    const verifiedCredentials = await appInstance.verifyCredentials();
 
-  connection = await connection.$query().patchAndFetch({
-    data: verifiedCredentials
-  })
+    connection = await connection.$query().patchAndFetch({
+      data: verifiedCredentials
+    })
+  } catch {}
 
   return connection;
 }

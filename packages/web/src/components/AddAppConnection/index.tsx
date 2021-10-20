@@ -15,6 +15,7 @@ import { Form } from './style';
 type AddAppConnectionProps = {
   onClose: () => void;
   application: App;
+  connectionId?: string;
 };
 
 type Response = {
@@ -22,8 +23,8 @@ type Response = {
 }
 
 export default function AddAppConnection(props: AddAppConnectionProps){
-  const { application, onClose } = props;
-  const { key, fields, authenticationSteps } = application;
+  const { application, connectionId, onClose } = props;
+  const { key, fields, authenticationSteps, reconnectionSteps } = application;
 
   useEffect(() => {
     if (window.opener) {
@@ -33,14 +34,21 @@ export default function AddAppConnection(props: AddAppConnectionProps){
   }, []);
 
   const submitHandler: SubmitHandler<FieldValues> = useCallback(async (data) => {
+    const hasConnection = Boolean(connectionId);
+
     const response: Response = {
       key,
+      connection: {
+        id: connectionId
+      },
       fields: data,
     };
 
+    const steps = hasConnection ? reconnectionSteps : authenticationSteps;
+
     let stepIndex = 0;
-    while (stepIndex < authenticationSteps.length) {
-      const step = authenticationSteps[stepIndex];
+    while (stepIndex < steps.length) {
+      const step = steps[stepIndex];
       const variables = computeAuthStepVariables(step, response);
 
       const stepResponse = await processStep(step, variables);
@@ -51,7 +59,7 @@ export default function AddAppConnection(props: AddAppConnectionProps){
     }
 
     onClose?.();
-  }, [authenticationSteps, key, onClose]);
+  }, [connectionId, key, reconnectionSteps, authenticationSteps, onClose]);
 
   return (
     <Dialog open={true} onClose={onClose}>
