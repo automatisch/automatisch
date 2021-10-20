@@ -43,7 +43,7 @@ export default class Twitter {
     try {
       await this.client.currentUser();
       return true;
-    } catch (error) {
+    } catch {
       return false
     }
   }
