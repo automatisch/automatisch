@@ -11,7 +11,7 @@
       "type": "string",
       "required": true,
       "readOnly": true,
-      "value": "http://localhost:3001/app/twitter/connections/add",
+      "value": "https://localhost:3001/app/twitter/connections/add",
       "placeholder": null,
       "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
