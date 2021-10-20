@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
 import fieldType from './field';
 import authenticationStepType from './authentication-step';
+import reconnectionStepType from './reconnection-step';
 
 const appType = new GraphQLObjectType({
   name: 'App',
@@ -16,6 +17,7 @@ const appType = new GraphQLObjectType({
       primaryColor: { type: GraphQLString },
       fields: { type: GraphQLList(fieldType) },
       authenticationSteps: { type: GraphQLList(authenticationStepType) },
+      reconnectionSteps: { type: GraphQLList(reconnectionStepType) },
       connections: { type: GraphQLList(connectionType) },
     }
   }
