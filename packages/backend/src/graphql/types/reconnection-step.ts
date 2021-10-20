@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
 
-const authenticationStepType = new GraphQLObjectType({
-  name: 'AuthenticationStep',
+const reconnectionStepType = new GraphQLObjectType({
+  name: 'ReconnectionStep',
   fields: {
     step: { type: GraphQLInt },
     type: { type: GraphQLString },
@@ -9,14 +9,14 @@ const authenticationStepType = new GraphQLObjectType({
     fields: { 
       type: GraphQLList(
         new GraphQLObjectType({
-          name: 'AuthenticationStepFields',
+          name: 'ReconnectionStepFields',
           fields: {
             name: { type: GraphQLString },
             value: { type: GraphQLString },
             fields: {  
               type: GraphQLList(
                 new GraphQLObjectType({
-                  name: 'TwitterAuthenticationStepFields',
+                  name: 'TwitterReconnectionStepFields',
                   fields: {
                     name: { type: GraphQLString },
                     value: { type: GraphQLString }
@@ -31,4 +31,4 @@ const authenticationStepType = new GraphQLObjectType({
   }
 })
 
-export default authenticationStepType;
+export default reconnectionStepType;
