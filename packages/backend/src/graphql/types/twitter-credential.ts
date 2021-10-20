@@ -1,7 +1,7 @@
 import { GraphQLString, GraphQLObjectType } from 'graphql';
 
 const twitterCredentialInputType = new GraphQLObjectType({
-  name: 'twitterCredential',
+  name: 'TwitterCredential',
   fields: {
     consumerKey: { type: GraphQLString },
     consumerSecret: { type: GraphQLString },

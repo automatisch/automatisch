@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLBoolean} from 'graphql';
 
 const fieldType = new GraphQLObjectType({
-  name: 'field',
+  name: 'Field',
   fields: {
     key: { type: GraphQLString },
     label: { type: GraphQLString },
