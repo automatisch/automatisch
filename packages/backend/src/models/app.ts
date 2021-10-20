@@ -1,31 +1,26 @@
 import fs from 'fs';
+import appInfoConverter from '../helpers/app-info-converter';
 
 class App {
   static folderPath = __dirname + '/../apps';
   static list = fs.readdirSync(this.folderPath);
 
-  static async findAll(name?: string): Promise<object[]> {
-    let appList;
+  static findAll(name?: string): object[] {
+    if(!name) return this.list.map((name) => this.findOneByName(name));
 
-    if(!name) {
-      appList = this.list.map(async (name) => await this.findOneByName(name));
-    } else {
-      appList = this.list
-        .filter((app) => app.includes(name.toLowerCase()))
-        .map(async (name) => await this.findOneByName(name));
-    }
-
-    return Promise.all(appList)
+    return this.list
+      .filter((app) => app.includes(name.toLowerCase()))
+      .map((name) => this.findOneByName(name));
   }
 
-  static async findOneByName(name: string): Promise<object> {
-    const rawAppData = (await import(`../apps/${name}/info`)).default;
-    return rawAppData;
+  static findOneByName(name: string): object {
+    const rawAppData = fs.readFileSync(this.folderPath + `/${name}/info.json`, 'utf-8');
+    return appInfoConverter(rawAppData);
   }
 
-  static async findOneByKey(key: string): Promise<object> {
-    const rawAppData = (await import(`../apps/${key}/info`)).default;
-    return rawAppData;
+  static findOneByKey(key: string): object {
+    const rawAppData = fs.readFileSync(this.folderPath + `/${key}/info.json`, 'utf-8');
+    return appInfoConverter(rawAppData);
   }
 }
 
