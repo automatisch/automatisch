@@ -3,12 +3,24 @@ import App from '../../models/app';
 import Field from '../../types/field';
 
 export default class Flickr {
+  oauthClient: any
   client: any
   connectionData: any
   appData: any
 
   constructor(connectionData: any) {
-    this.client = new FlickrApi.OAuth(connectionData.consumerKey, connectionData.consumerSecret);
+    this.oauthClient = new FlickrApi.OAuth(connectionData.consumerKey, connectionData.consumerSecret);
+
+    if (connectionData.accessToken && connectionData.accessSecret) {
+      this.client = new FlickrApi(
+        FlickrApi.OAuth.createPlugin(
+          connectionData.consumerKey,
+          connectionData.consumerSecret,
+          connectionData.accessToken,
+          connectionData.accessSecret,
+        )
+      );
+    }
 
     this.connectionData = connectionData;
     this.appData = App.findOneByKey('flickr');
@@ -18,8 +30,8 @@ export default class Flickr {
     const appFields = this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl')
     const callbackUrl = appFields.value;
 
-    const oauthData = (await this.client.request(callbackUrl)).body;
-    const url = await this.client.authorizeUrl(oauthData.oauth_token, 'delete');
+    const oauthData = (await this.oauthClient.request(callbackUrl)).body;
+    const url = await this.oauthClient.authorizeUrl(oauthData.oauth_token, 'delete');
 
     return {
       ...oauthData,
@@ -28,7 +40,7 @@ export default class Flickr {
   }
 
   async verifyCredentials() {
-    const verifiedCredentials = (await this.client.verify(
+    const verifiedCredentials = (await this.oauthClient.verify(
       this.connectionData.accessToken,
       this.connectionData.oauthVerifier,
       this.connectionData.accessSecret
@@ -41,6 +53,15 @@ export default class Flickr {
       accessSecret: verifiedCredentials.oauth_token_secret,
       userId: verifiedCredentials.user_nsid,
       screenName: verifiedCredentials.fullname
+    }
+  }
+
+  async isStillVerified() {
+    try {
+      await this.client.test.login();
+      return true;
+    } catch {
+      return false;
     }
   }
 }

@@ -6,6 +6,7 @@ type AppConfig = {
   protocol: string
   port: string,
   corsPort: string,
+  corsProtocol: string,
   appEnv: string,
   postgresDatabase: string,
   postgresPort: number,
@@ -21,6 +22,7 @@ const appConfig: AppConfig = {
   protocol: process.env.PROTOCOL || 'http',
   port: process.env.PORT || '3000',
   corsPort: process.env.CORS_PORT || '3001',
+  corsProtocol: process.env.CORS_PROTOCOL || 'http',
   appEnv: process.env.APP_ENV || 'development',
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
   postgresPort: parseInt(process.env.POSTGRES_PORT) || 5432,
@@ -29,7 +31,7 @@ const appConfig: AppConfig = {
   postgresPassword: process.env.POSTGRESS_PASSWORD,
 }
 
-const webAppUrl = `${appConfig.protocol}://${appConfig.host}:${appConfig.corsPort}`;
+const webAppUrl = `${appConfig.corsProtocol}://${appConfig.host}:${appConfig.corsPort}`;
 appConfig.webAppUrl = webAppUrl;
 
 const baseUrl = `${appConfig.protocol}://${appConfig.host}:${appConfig.port}`;
