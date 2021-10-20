@@ -1,10 +1,7 @@
-import appInfoType from '../../types/app-info';
-import appConfig from '../../config/app';
-
-const appInfo: appInfoType = {
+{
   "name": "Twitter",
   "key": "twitter",
-  "iconUrl": `${appConfig.baseUrl}/apps/twitter/assets/favicon.svg`,
+  "iconUrl": "{BASE_URL}/apps/twitter/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/twitter",
   "primaryColor": "2DAAE1",
   "fields": [
@@ -116,5 +113,3 @@ const appInfo: appInfoType = {
     }
   ]
 }
-
-export default appInfo;
