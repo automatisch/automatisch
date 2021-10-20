@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
 
 const authenticationStepType = new GraphQLObjectType({
-  name: 'authenticationStep',
+  name: 'AuthenticationStep',
   fields: {
     step: { type: GraphQLInt },
     type: { type: GraphQLString },

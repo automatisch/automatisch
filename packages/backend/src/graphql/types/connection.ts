@@ -2,7 +2,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLBoolean } from 'graphql';
 import connectionDataType from './connection-data';
 
 const connectionType = new GraphQLObjectType({
-  name: 'connection',
+  name: 'Connection',
   fields: () => {
     const appType = require('./app').default;
 

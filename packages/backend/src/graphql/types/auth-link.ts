@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql';
 
 const authLinkType = new GraphQLObjectType({
-  name: 'authLink',
+  name: 'AuthLink',
   fields: {
     url: { type: GraphQLString }
   }

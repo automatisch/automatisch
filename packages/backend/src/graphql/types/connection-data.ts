@@ -1,7 +1,7 @@
 import { GraphQLString, GraphQLObjectType } from 'graphql';
 
 const connectionDataType = new GraphQLObjectType({
-  name: 'connectionData',
+  name: 'ConnectionData',
   fields: {
     screenName: { type: GraphQLString },
   }
