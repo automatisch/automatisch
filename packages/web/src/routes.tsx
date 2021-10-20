@@ -1,5 +1,4 @@
 import { Route, Switch, Redirect } from "react-router";
-import Dashboard from 'pages/Dashboard';
 import Applications from 'pages/Applications';
 import Application from 'pages/Application';
 import Flows from 'pages/Flows';
@@ -8,10 +7,6 @@ import * as URLS from 'config/urls';
 
 export default (
   <Switch>
-    <Route path={URLS.DASHBOARD}>
-      <Dashboard />
-    </Route>
-
     <Route path={URLS.FLOWS}>
       <Flows />
     </Route>
@@ -29,7 +24,7 @@ export default (
     </Route>
 
     <Route exact path="/">
-      <Redirect to={URLS.DASHBOARD} />
+      <Redirect to={URLS.FLOWS} />
     </Route>
 
     <Route>

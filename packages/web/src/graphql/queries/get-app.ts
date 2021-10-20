@@ -32,6 +32,19 @@ export const GET_APP = gql`
           }
         }
       }
+      reconnectionSteps {
+        step
+        type
+        name
+        fields {
+          name
+          value
+          fields {
+            name
+            value
+          }
+        }
+      }
       connections {
         id
       }
