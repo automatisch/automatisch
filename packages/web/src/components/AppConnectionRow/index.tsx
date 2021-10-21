@@ -4,6 +4,7 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CardActionArea from '@mui/material/CardActionArea';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { useSnackbar } from 'notistack';
 
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
@@ -19,6 +20,7 @@ type AppConnectionRowProps = {
 const countTranslation = (value: React.ReactNode) => (<><strong>{value}</strong><br /></>);
 
 function AppConnectionRow(props: AppConnectionRowProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const [testConnection, { called: testCalled, loading: testLoading }] = useLazyQuery(TEST_CONNECTION);
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
@@ -33,9 +35,9 @@ function AppConnectionRow(props: AppConnectionRowProps) {
   };
 
   const onContextMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(contextButtonRef.current);
-  const onContextMenuAction = React.useCallback((event, action: { [key: string]: string }) => {
+  const onContextMenuAction = React.useCallback(async (event, action: { [key: string]: string }) => {
     if (action.type === 'delete') {
-      deleteConnection({
+      await deleteConnection({
         variables: { id },
         update: (cache, mutationResult) => {
           const connectionCacheId = cache.identify({
@@ -48,10 +50,12 @@ function AppConnectionRow(props: AppConnectionRowProps) {
           });
         }
       });
+
+      enqueueSnackbar(formatMessage('connection.deletedMessage'), { variant: 'success' });
     } else if (action.type === 'test') {
       testConnection({ variables: { id } });
     }
-  }, [deleteConnection, id, testConnection]);
+  }, [deleteConnection, id, testConnection, formatMessage, enqueueSnackbar]);
 
   return (
     <>
