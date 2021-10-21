@@ -20,5 +20,6 @@
   "connection.viewFlows": "View flows",
   "connection.testConnection": "Test connection",
   "connection.reconnect": "Reconnect",
-  "connection.delete": "Delete"
+  "connection.delete": "Delete",
+  "connection.deletedMessage": "The connection has been deleted."
 }

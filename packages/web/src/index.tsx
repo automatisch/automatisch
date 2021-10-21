@@ -4,6 +4,7 @@ import Layout from 'components/Layout';
 import ThemeProvider from 'components/ThemeProvider';
 import IntlProvider from 'components/IntlProvider';
 import ApolloProvider from 'components/ApolloProvider';
+import SnackbarProvider from 'components/SnackbarProvider';
 import Router from 'components/Router';
 import routes from 'routes';
 import reportWebVitals from './reportWebVitals';
@@ -12,11 +13,13 @@ ReactDOM.render(
   <ApolloProvider>
     <IntlProvider>
       <ThemeProvider>
-        <Router>
-          <Layout>
-            {routes}
-          </Layout>
-        </Router>
+        <SnackbarProvider>
+          <Router>
+            <Layout>
+              {routes}
+            </Layout>
+          </Router>
+        </SnackbarProvider>
       </ThemeProvider>
     </IntlProvider>
   </ApolloProvider>,
