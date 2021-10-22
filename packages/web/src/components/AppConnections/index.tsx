@@ -9,8 +9,8 @@ type AppConnectionsProps = {
 }
 
 export default function AppConnections(props: AppConnectionsProps) {
-  const { appKey: key } = props;
-  const { data } = useQuery(GET_APP_CONNECTIONS, { variables: { key } });
+  const { appKey } = props;
+  const { data } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey } });
   const appConnections: Connection[] = data?.getApp?.connections || [];
 
   return (
