@@ -13,26 +13,27 @@ import { GET_APP } from 'graphql/queries/get-app';
 import * as URLS from 'config/urls';
 
 import AppConnections from 'components/AppConnections';
+import AppFlows from 'components/AppFlows';
 import AddAppConnection from 'components/AddAppConnection';
 import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 
 type ApplicationParams = {
-  key: string;
+  appKey: string;
   connectionId?: string;
 };
 
 export default function Application() {
   const formatMessage = useFormatMessage();
   const routeMatch = useRouteMatch([URLS.APP_CONNECTIONS_PATTERN, URLS.APP_FLOWS_PATTERN, URLS.APP_PATTERN]);
-  const { key } = useParams<ApplicationParams>();
+  const { appKey } = useParams<ApplicationParams>();
   const history = useHistory();
-  const { data } = useQuery(GET_APP, { variables: { key } });
+  const { data } = useQuery(GET_APP, { variables: { key: appKey } });
 
   const app = data?.getApp || {};
 
-  const goToApplicationPage = () => history.push(URLS.APP(key));
+  const goToApplicationPage = () => history.push(URLS.APP(appKey));
 
   return (
     <>
@@ -52,7 +53,7 @@ export default function Application() {
                 <SettingsIcon />
               </IconButton>
 
-              <Button variant="contained" component={Link} to={URLS.APP_ADD_CONNECTION(key)}>
+              <Button variant="contained" component={Link} to={URLS.APP_ADD_CONNECTION(appKey)}>
                 {formatMessage('app.addConnection')}
               </Button>
             </Grid>
@@ -64,14 +65,14 @@ export default function Application() {
                 <Tabs value={routeMatch?.path}>
                   <Tab
                     label={formatMessage('app.connections')}
-                    to={URLS.APP_CONNECTIONS(key)}
+                    to={URLS.APP_CONNECTIONS(appKey)}
                     value={URLS.APP_CONNECTIONS_PATTERN}
                     component={Link}
                   />
 
                   <Tab
                     label={formatMessage('app.flows')}
-                    to={URLS.APP_FLOWS(key)}
+                    to={URLS.APP_FLOWS(appKey)}
                     value={URLS.APP_FLOWS_PATTERN}
                     component={Link}
                   />
@@ -80,15 +81,15 @@ export default function Application() {
 
               <Switch>
                 <Route path={URLS.APP_FLOWS_PATTERN}>
-                  Flows
+                  <AppFlows appKey={appKey} />
                 </Route>
 
                 <Route path={URLS.APP_CONNECTIONS_PATTERN}>
-                  <AppConnections appKey={key} />
+                  <AppConnections appKey={appKey} />
                 </Route>
 
                 <Route exact path={URLS.APP_PATTERN}>
-                  <Redirect to={URLS.APP_CONNECTIONS(key)} />
+                  <Redirect to={URLS.APP_CONNECTIONS(appKey)} />
                 </Route>
               </Switch>
             </Grid>
