@@ -1,15 +1,18 @@
 import { graphqlHTTP } from 'express-graphql';
 import graphQLSchema from '../graphql/graphql-schema'
+import logger from '../helpers/logger';
 
 const graphQLInstance = graphqlHTTP({
   schema: graphQLSchema,
   graphiql: true,
-  customFormatErrorFn: (error) => ({
-    message: error.message,
-    locations: error.locations,
-    stack: error.stack ? error.stack.split('\n') : [],
-    path: error.path,
-  })
+  customFormatErrorFn: (error) => {
+    logger.error(error.path + ' : ' + error.message + '\n' + error.stack)
+
+    return {
+      message: error.message,
+      locations: error.locations
+    }
+  }
 })
 
 export default graphQLInstance;
