@@ -10,19 +10,19 @@ import routes from 'routes';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <ApolloProvider>
-    <IntlProvider>
-      <ThemeProvider>
-        <SnackbarProvider>
-          <Router>
-            <Layout>
-              {routes}
-            </Layout>
-          </Router>
-        </SnackbarProvider>
-      </ThemeProvider>
-    </IntlProvider>
-  </ApolloProvider>,
+  <SnackbarProvider>
+    <ApolloProvider>
+      <IntlProvider>
+        <ThemeProvider>
+            <Router>
+              <Layout>
+                {routes}
+              </Layout>
+            </Router>
+        </ThemeProvider>
+      </IntlProvider>
+    </ApolloProvider>
+  </SnackbarProvider>,
   document.getElementById('root')
 )
 
