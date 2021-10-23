@@ -1,9 +1,9 @@
 {
-  "name": "Twitter",
-  "key": "twitter",
-  "iconUrl": "{BASE_URL}/apps/twitter/assets/favicon.svg",
-  "docUrl": "https://automatisch.io/docs/twitter",
-  "primaryColor": "2DAAE1",
+  "name": "Firebase",
+  "key": "firebase",
+  "iconUrl": "{BASE_URL}/apps/firebase/assets/favicon.svg",
+  "docUrl": "https://automatisch.io/docs/firebase",
+  "primaryColor": "ffca28",
   "fields": [
     {
       "key": "oAuthRedirectUrl",
@@ -11,10 +11,10 @@
       "type": "string",
       "required": true,
       "readOnly": true,
-      "value": "https://localhost:3001/app/twitter/connections/add",
+      "value": "https://localhost:3001/app/firebase/connections/add",
       "placeholder": null,
-      "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
-      "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
+      "description": "When asked to input an OAuth callback or redirect URL in Firebase OAuth, enter the URL above.",
+      "docUrl": "https://automatisch.io/docs/firebase#oauth-redirect-url",
       "clickToCopy": true
     },
     {
@@ -26,7 +26,7 @@
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/twitter#consumer-key",
+      "docUrl": "https://automatisch.io/docs/firebase#consumer-key",
       "clickToCopy": false
     },
     {
@@ -38,7 +38,7 @@
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/twitter#consumer-secret",
+      "docUrl": "https://automatisch.io/docs/firebase#consumer-secret",
       "clickToCopy": false
     }
   ],
@@ -105,7 +105,7 @@
           "fields": [
             {
               "name": "oauthVerifier",
-              "value": "{openAuthPopup.oauth_verifier}"
+              "value": "{openAuthPopup.code}"
             }
           ]
         }
@@ -197,7 +197,7 @@
           "fields": [
             {
               "name": "oauthVerifier",
-              "value": "{openAuthPopup.oauth_verifier}"
+              "value": "{openAuthPopup.code}"
             }
           ]
         }

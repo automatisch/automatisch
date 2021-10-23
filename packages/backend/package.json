@@ -22,6 +22,7 @@
     "express": "~4.16.1",
     "express-graphql": "^0.12.0",
     "flickr-sdk": "^3.10.0",
+    "googleapis": "^89.0.0",
     "graphql-type-json": "^0.3.2",
     "http-errors": "~1.6.3",
     "knex": "^0.95.11",
