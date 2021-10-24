@@ -3,7 +3,7 @@
   "key": "twitch",
   "iconUrl": "{BASE_URL}/apps/twitch/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/twitch",
-  "primaryColor": "6441a5",
+  "primaryColor": "2DAAE1",
   "fields": [
     {
       "key": "oAuthRedirectUrl",
@@ -11,7 +11,7 @@
       "type": "string",
       "required": true,
       "readOnly": true,
-      "value": "http://localhost:3000/sample",
+      "value": "https://localhost:3001/app/twitch/connections/add",
       "placeholder": null,
       "description": "When asked to input an OAuth callback or redirect URL in Twitch OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/twitch#oauth-redirect-url",
@@ -40,6 +40,179 @@
       "description": null,
       "docUrl": "https://automatisch.io/docs/twitch#consumer-secret",
       "clickToCopy": false
+    }
+  ],
+  "authenticationSteps": [
+    {
+      "step": 1,
+      "type": "mutation",
+      "name": "createConnection",
+      "fields": [
+        {
+          "name": "key",
+          "value": "{key}"
+        },
+        {
+          "name": "data",
+          "value": null,
+          "fields": [
+            {
+              "name": "consumerKey",
+              "value": "{fields.consumerKey}"
+            },
+            {
+              "name": "consumerSecret",
+              "value": "{fields.consumerSecret}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "type": "mutation",
+      "name": "createAuthLink",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{createConnection.id}"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "type": "openWithPopup",
+      "name": "openAuthPopup",
+      "fields": [
+        {
+          "name": "url",
+          "value": "{createAuthLink.url}"
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "type": "mutation",
+      "name": "updateConnection",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{createConnection.id}"
+        },
+        {
+          "name": "data",
+          "value": null,
+          "fields": [
+            {
+              "name": "oauthVerifier",
+              "value": "{openAuthPopup.code}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "type": "mutation",
+      "name": "verifyConnection",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{createConnection.id}"
+        }
+      ]
+    }
+  ],
+  "reconnectionSteps": [
+    {
+      "step": 1,
+      "type": "mutation",
+      "name": "resetConnection",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "type": "mutation",
+      "name": "updateConnection",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        },
+        {
+          "name": "data",
+          "value": null,
+          "fields": [
+            {
+              "name": "consumerKey",
+              "value": "{fields.consumerKey}"
+            },
+            {
+              "name": "consumerSecret",
+              "value": "{fields.consumerSecret}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "type": "mutation",
+      "name": "createAuthLink",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "type": "openWithPopup",
+      "name": "openAuthPopup",
+      "fields": [
+        {
+          "name": "url",
+          "value": "{createAuthLink.url}"
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "type": "mutation",
+      "name": "updateConnection",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        },
+        {
+          "name": "data",
+          "value": null,
+          "fields": [
+            {
+              "name": "oauthVerifier",
+              "value": "{openAuthPopup.code}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "type": "mutation",
+      "name": "verifyConnection",
+      "fields": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        }
+      ]
     }
   ]
 }
