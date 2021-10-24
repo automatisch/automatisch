@@ -7530,7 +7530,7 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.3.tgz#c1283ac9f27b368abc1e36d1ff7b04501a30356b"
   integrity sha512-dVsPA/UwQ8+2uoFe5GHtiBMu48dWLTdsuEd7CKGlZlD78r1TTWBvDuFaFGKCo/ZfEr95Uk56vZoX86OsHkUeIg==
 
-flickr-sdk@^3.10.0:
+flickr-sdk@3.10.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/flickr-sdk/-/flickr-sdk-3.10.0.tgz#87eb0221bc2a5380eacac328a0230a86555316d3"
   integrity sha512-JBGWFYTE5xvm6oG34IEQL0TX7FFLuWWFcWjlv2wVeB6Gj7VybVeoOXSvIX35hG1FVUbJTrVYBJRgpbjGf3cl3A==
@@ -8017,7 +8017,7 @@ googleapis-common@^5.0.2:
     url-template "^2.0.8"
     uuid "^8.0.0"
 
-googleapis@^89.0.0:
+googleapis@89.0.0:
   version "89.0.0"
   resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-89.0.0.tgz#03de7b1467c066d48b989f6a8384857ef6971e69"
   integrity sha512-eH91BN+6R/Mp5uulrhKWGwKAbibfDNOIu1Oq8n12aFTiqb23/A9kVdRhituYVqhRqSWLr/kv1dpFbd6n+uN+7Q==

@@ -34,8 +34,9 @@ export default class Flickr {
     const url = await this.oauthClient.authorizeUrl(oauthData.oauth_token, 'delete');
 
     return {
-      ...oauthData,
-      url,
+      accessToken: oauthData.oauth_token,
+      accessSecret: oauthData.oauth_token_secret,
+      url: url,
     };
   }
 
