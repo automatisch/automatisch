@@ -23,7 +23,13 @@ export default class Twitter {
     const appFields = this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl')
     const callbackUrl = appFields.value;
 
-    return this.client.generateAuthLink(callbackUrl);
+    const authLink = await this.client.generateAuthLink(callbackUrl);
+
+    return {
+      url: authLink.url,
+      accessToken: authLink.oauth_token,
+      accessSecret: authLink.oauth_token_secret,
+    }
   }
 
   async verifyCredentials() {

@@ -18,16 +18,14 @@ const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUse
     consumerKey: connection.data.consumerKey,
     consumerSecret: connection.data.consumerSecret
   });
+
   const authLink = await appInstance.createAuthLink();
 
   await connection.$query().patch({
     data: {
       ...connection.data,
-      url: authLink.url,
-      accessToken: authLink.oauth_token,
-      accessSecret: authLink.oauth_token_secret,
-    },
-    verified: authLink.oauth_callback_confirmed === 'true' ? true : false
+      ...authLink
+    }
   })
 
   return authLink;
