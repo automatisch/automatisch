@@ -29,6 +29,7 @@
     "morgan": "^1.10.0",
     "objection": "^2.2.17",
     "pg": "^8.7.1",
+    "twitch-js": "2.0.0-beta.42",
     "twitter-api-v2": "1.6.0",
     "winston": "^3.3.3"
   },
