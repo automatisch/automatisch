@@ -1,7 +1,7 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLJSONObject } from 'graphql-type-json';
 import Connection from '../../models/connection';
 import connectionType from '../types/connection';
-import twitterCredentialInputType from '../types/twitter-credential-input';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
@@ -28,7 +28,7 @@ const updateConnection = {
   type: connectionType,
   args: {
     id: { type: GraphQLNonNull(GraphQLString) },
-    data: { type: GraphQLNonNull(twitterCredentialInputType) }
+    data: { type: GraphQLNonNull(GraphQLJSONObject) }
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => updateConnectionResolver(params, req)
 };
