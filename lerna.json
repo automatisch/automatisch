@@ -9,6 +9,9 @@
   "command": {
     "publish": {
       "registry": "http://localhost:5000"
+    },
+    "add": {
+      "exact": true
     }
   }
 }
