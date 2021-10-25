@@ -18,7 +18,10 @@ const verifyConnectionResolver = async (params: Params, req: RequestWithCurrentU
   const verifiedCredentials = await appInstance.verifyCredentials();
 
   connection = await connection.$query().patchAndFetch({
-    data: verifiedCredentials,
+    data: {
+      ...connection.data,
+      ...verifiedCredentials
+    },
     verified: true
   })
 
