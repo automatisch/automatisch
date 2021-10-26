@@ -6,17 +6,17 @@ type VARIABLES = {
   [key: string]: any
 }
 
-const computeAuthStepVariables = (authStep: any, aggregatedData: any) => {
+const computeAuthStepVariables = (variableSchema: any, aggregatedData: any) => {
   const variables: VARIABLES = {};
 
-  for (const field of authStep.fields) {
-    if (field.fields) {
-      variables[field.name] = computeAuthStepVariables(field, aggregatedData);
+  for (const variable of variableSchema) {
+    if (variable.properties) {
+      variables[variable.name] = computeAuthStepVariables(variable.properties, aggregatedData);
 
       continue;
     }
 
-    variables[field.name] = template(field.value, { interpolate })(aggregatedData);
+    variables[variable.name] = template(variable.value, { interpolate })(aggregatedData);
   }
 
   return variables;
