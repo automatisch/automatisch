@@ -83,7 +83,7 @@
       "step": 1,
       "type": "mutation",
       "name": "createConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "key",
           "value": "{key}"
@@ -91,7 +91,7 @@
         {
           "name": "data",
           "value": null,
-          "fields": [
+          "properties": [
             {
               "name": "host",
               "value": "{fields.host}"
@@ -124,7 +124,7 @@
       "step": 2,
       "type": "mutation",
       "name": "verifyConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{createConnection.id}"
@@ -137,7 +137,7 @@
       "step": 1,
       "type": "mutation",
       "name": "resetConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"
@@ -148,7 +148,7 @@
       "step": 2,
       "type": "mutation",
       "name": "updateConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"
@@ -156,7 +156,7 @@
         {
           "name": "data",
           "value": null,
-          "fields": [
+          "properties": [
             {
               "name": "host",
               "value": "{fields.host}"
@@ -189,7 +189,7 @@
       "step": 3,
       "type": "mutation",
       "name": "verifyConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"

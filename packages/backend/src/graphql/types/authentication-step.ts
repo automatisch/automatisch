@@ -6,17 +6,17 @@ const authenticationStepType = new GraphQLObjectType({
     step: { type: GraphQLInt },
     type: { type: GraphQLString },
     name: { type: GraphQLString },
-    fields: { 
+    arguments: { 
       type: GraphQLList(
         new GraphQLObjectType({
-          name: 'AuthenticationStepFields',
+          name: 'AuthenticationStepArgument',
           fields: {
             name: { type: GraphQLString },
             value: { type: GraphQLString },
-            fields: {  
+            properties: {  
               type: GraphQLList(
                 new GraphQLObjectType({
-                  name: 'TwitterAuthenticationStepFields',
+                  name: 'AuthenticationStepProperty',
                   fields: {
                     name: { type: GraphQLString },
                     value: { type: GraphQLString }
