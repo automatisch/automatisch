@@ -6,17 +6,17 @@ const reconnectionStepType = new GraphQLObjectType({
     step: { type: GraphQLInt },
     type: { type: GraphQLString },
     name: { type: GraphQLString },
-    fields: { 
+    arguments: { 
       type: GraphQLList(
         new GraphQLObjectType({
-          name: 'ReconnectionStepFields',
+          name: 'ReconnectionStepArgument',
           fields: {
             name: { type: GraphQLString },
             value: { type: GraphQLString },
-            fields: {  
+            properties: {  
               type: GraphQLList(
                 new GraphQLObjectType({
-                  name: 'TwitterReconnectionStepFields',
+                  name: 'ReconnectionStepProperty',
                   fields: {
                     name: { type: GraphQLString },
                     value: { type: GraphQLString }

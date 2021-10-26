@@ -47,7 +47,7 @@
       "step": 1,
       "type": "mutation",
       "name": "createConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "key",
           "value": "{key}"
@@ -55,7 +55,7 @@
         {
           "name": "data",
           "value": null,
-          "fields": [
+          "properties": [
             {
               "name": "consumerKey",
               "value": "{fields.consumerKey}"
@@ -72,7 +72,7 @@
       "step": 2,
       "type": "mutation",
       "name": "createAuthData",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{createConnection.id}"
@@ -83,7 +83,7 @@
       "step": 3,
       "type": "openWithPopup",
       "name": "openAuthPopup",
-      "fields": [
+      "arguments": [
         {
           "name": "url",
           "value": "{createAuthData.url}"
@@ -94,7 +94,7 @@
       "step": 4,
       "type": "mutation",
       "name": "updateConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{createConnection.id}"
@@ -102,7 +102,7 @@
         {
           "name": "data",
           "value": null,
-          "fields": [
+          "properties": [
             {
               "name": "oauthVerifier",
               "value": "{openAuthPopup.oauth_verifier}"
@@ -115,7 +115,7 @@
       "step": 5,
       "type": "mutation",
       "name": "verifyConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{createConnection.id}"
@@ -128,7 +128,7 @@
       "step": 1,
       "type": "mutation",
       "name": "resetConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"
@@ -139,7 +139,7 @@
       "step": 2,
       "type": "mutation",
       "name": "updateConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"
@@ -147,7 +147,7 @@
         {
           "name": "data",
           "value": null,
-          "fields": [
+          "properties": [
             {
               "name": "consumerKey",
               "value": "{fields.consumerKey}"
@@ -164,7 +164,7 @@
       "step": 3,
       "type": "mutation",
       "name": "createAuthData",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"
@@ -175,7 +175,7 @@
       "step": 4,
       "type": "openWithPopup",
       "name": "openAuthPopup",
-      "fields": [
+      "arguments": [
         {
           "name": "url",
           "value": "{createAuthData.url}"
@@ -186,7 +186,7 @@
       "step": 5,
       "type": "mutation",
       "name": "updateConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"
@@ -194,7 +194,7 @@
         {
           "name": "data",
           "value": null,
-          "fields": [
+          "properties": [
             {
               "name": "oauthVerifier",
               "value": "{openAuthPopup.oauth_verifier}"
@@ -207,7 +207,7 @@
       "step": 6,
       "type": "mutation",
       "name": "verifyConnection",
-      "fields": [
+      "arguments": [
         {
           "name": "id",
           "value": "{connection.id}"
