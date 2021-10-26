@@ -36,7 +36,7 @@ export default class Twitch {
     return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
   }
 
-  async createAuthLink() {
+  async createAuthData() {
     const { url } = await fetchUtil('https://id.twitch.tv/oauth2/authorize', {
       search: {
         client_id: this.connectionData.consumerKey,

@@ -19,7 +19,7 @@ export default class Twitter {
     this.appData = App.findOneByKey('twitter');
   }
 
-  async createAuthLink() {
+  async createAuthData() {
     const appFields = this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl')
     const callbackUrl = appFields.value;
 
