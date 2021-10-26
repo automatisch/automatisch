@@ -23,10 +23,10 @@ export const GET_APP = gql`
         step
         type
         name
-        fields {
+        arguments {
           name
           value
-          fields {
+          properties {
             name
             value
           }
@@ -36,10 +36,10 @@ export const GET_APP = gql`
         step
         type
         name
-        fields {
+        arguments {
           name
           value
-          fields {
+          properties {
             name
             value
           }
