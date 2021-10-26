@@ -49,7 +49,7 @@ export default function AddAppConnection(props: AddAppConnectionProps){
     let stepIndex = 0;
     while (stepIndex < steps.length) {
       const step = steps[stepIndex];
-      const variables = computeAuthStepVariables(step, response);
+      const variables = computeAuthStepVariables(step.arguments, response);
 
       const stepResponse = await processStep(step, variables);
 
