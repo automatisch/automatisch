@@ -15,9 +15,11 @@
     "db:migrate": "knex migrate:latest"
   },
   "dependencies": {
+    "axios": "0.24.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "discord.js": "13.2.0",
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "express-graphql": "^0.12.0",
@@ -41,7 +43,7 @@
     }
   ],
   "homepage": "https://github.com/automatisch/automatisch#readme",
-  "main": "src/backend.js",
+  "main": "src/app.ts",
   "directories": {
     "src": "src",
     "test": "__tests__"
