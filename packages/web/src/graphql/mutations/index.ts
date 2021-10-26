@@ -3,7 +3,7 @@ import { UPDATE_CONNECTION } from './update-connection';
 import { VERIFY_CONNECTION } from './verify-connection';
 import { RESET_CONNECTION } from './reset-connection';
 import { DELETE_CONNECTION } from './delete-connection';
-import { CREATE_AUTH_LINK } from './create-auth-link';
+import { CREATE_AUTH_DATA } from './create-auth-data';
 
 type Mutations = {
   [key: string]: any,
@@ -15,7 +15,7 @@ const mutations: Mutations = {
   verifyConnection: VERIFY_CONNECTION,
   resetConnection: RESET_CONNECTION,
   deleteConnection: DELETE_CONNECTION,
-  createAuthLink: CREATE_AUTH_LINK,
+  createAuthData: CREATE_AUTH_DATA,
 };
 
 export default mutations;

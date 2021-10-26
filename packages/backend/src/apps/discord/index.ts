@@ -22,7 +22,7 @@ export default class Discord {
     return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
   }
 
-  async createAuthLink() {
+  async createAuthData() {
     const searchParams = new URLSearchParams({
       client_id: this.connectionData.consumerKey,
       redirect_uri: this.oauthRedirectUrl,

@@ -31,7 +31,7 @@ export default class Firebase {
     return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
   }
 
-  async createAuthLink() {
+  async createAuthData() {
     const url = this.oauthClient.generateAuthUrl({
       access_type: 'offline',
       scope: this.scopes
