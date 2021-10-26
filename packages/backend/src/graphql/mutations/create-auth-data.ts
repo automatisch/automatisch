@@ -6,7 +6,7 @@ import RequestWithCurrentUser from '../../types/express/request-with-current-use
 type Params = {
   id: number,
 }
-const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUser) => {
+const createAuthDataResolver = async (params: Params, req: RequestWithCurrentUser) => {
   const connection = await Connection.query().findOne({
     user_id: req.currentUser.id,
     id: params.id
@@ -19,7 +19,7 @@ const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUse
     consumerSecret: connection.data.consumerSecret
   });
 
-  const authLink = await appInstance.createAuthLink();
+  const authLink = await appInstance.createAuthData();
 
   await connection.$query().patch({
     data: {
@@ -31,12 +31,12 @@ const createAuthLinkResolver = async (params: Params, req: RequestWithCurrentUse
   return authLink;
 }
 
-const createAuthLink = {
+const createAuthData = {
   type: authLinkType,
   args: {
     id: { type: GraphQLNonNull(GraphQLString) },
   },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createAuthLinkResolver(params, req)
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createAuthDataResolver(params, req)
 };
 
-export default createAuthLink;
+export default createAuthData;

@@ -26,7 +26,7 @@ export default class Flickr {
     this.appData = App.findOneByKey('flickr');
   }
 
-  async createAuthLink() {
+  async createAuthData() {
     const appFields = this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl')
     const callbackUrl = appFields.value;
 

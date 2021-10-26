@@ -71,7 +71,7 @@
     {
       "step": 2,
       "type": "mutation",
-      "name": "createAuthLink",
+      "name": "createAuthData",
       "fields": [
         {
           "name": "id",
@@ -86,7 +86,7 @@
       "fields": [
         {
           "name": "url",
-          "value": "{createAuthLink.url}"
+          "value": "{createAuthData.url}"
         }
       ]
     },
@@ -163,7 +163,7 @@
     {
       "step": 3,
       "type": "mutation",
-      "name": "createAuthLink",
+      "name": "createAuthData",
       "fields": [
         {
           "name": "id",
@@ -178,7 +178,7 @@
       "fields": [
         {
           "name": "url",
-          "value": "{createAuthLink.url}"
+          "value": "{createAuthData.url}"
         }
       ]
     },
