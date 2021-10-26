@@ -15,6 +15,7 @@
     "db:migrate": "knex migrate:latest"
   },
   "dependencies": {
+    "@octokit/oauth-methods": "^1.2.6",
     "axios": "0.24.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
