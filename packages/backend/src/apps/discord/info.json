@@ -3,7 +3,7 @@
   "key": "discord",
   "iconUrl": "{BASE_URL}/apps/discord/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/discord",
-  "primaryColor": "2DAAE1",
+  "primaryColor": "5865f2",
   "fields": [
     {
       "key": "oAuthRedirectUrl",
