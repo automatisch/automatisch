@@ -1,0 +1,180 @@
+{
+  "name": "PostgreSQL",
+  "key": "postgresql",
+  "iconUrl": "{BASE_URL}/apps/postgresql/assets/favicon.svg",
+  "docUrl": "https://automatisch.io/docs/postgresql",
+  "primaryColor": "2DAAE1",
+  "fields": [
+    {
+      "key": "host",
+      "label": "Host",
+      "type": "string",
+      "required": true,
+      "readOnly": false,
+      "value": null,
+      "placeholder": null,
+      "description": "The host information Automatisch will connect to.",
+      "docUrl": "https://automatisch.io/docs/postgresql#host",
+      "clickToCopy": false
+    },
+    {
+      "key": "port",
+      "label": "Port",
+      "type": "integer",
+      "required": true,
+      "readOnly": false,
+      "value": 5432,
+      "placeholder": null,
+      "description": null,
+      "docUrl": "https://automatisch.io/docs/postgresql#port",
+      "clickToCopy": false
+    },
+    {
+      "key": "database",
+      "label": "Database",
+      "type": "string",
+      "required": true,
+      "readOnly": false,
+      "value": null,
+      "placeholder": null,
+      "description": "The name of the database.",
+      "docUrl": "https://automatisch.io/docs/postgresql#password",
+      "clickToCopy": false
+    },
+    {
+      "key": "username",
+      "label": "Username",
+      "type": "string",
+      "required": true,
+      "readOnly": false,
+      "value": null,
+      "placeholder": null,
+      "description": null,
+      "docUrl": "https://automatisch.io/docs/postgresql#username",
+      "clickToCopy": false
+    },
+    {
+      "key": "password",
+      "label": "Password",
+      "type": "string",
+      "required": false,
+      "readOnly": false,
+      "value": null,
+      "placeholder": null,
+      "description": null,
+      "docUrl": "https://automatisch.io/docs/postgresql#password",
+      "clickToCopy": false
+    }
+  ],
+  "authenticationSteps": [
+    {
+      "step": 1,
+      "type": "mutation",
+      "name": "createConnection",
+      "arguments": [
+        {
+          "name": "key",
+          "value": "{key}"
+        },
+        {
+          "name": "data",
+          "value": null,
+          "properties": [
+            {
+              "name": "host",
+              "value": "{fields.host}"
+            },
+            {
+              "name": "port",
+              "value": "{fields.port}"
+            },
+            {
+              "name": "database",
+              "value": "{fields.database}"
+            },
+            {
+              "name": "username",
+              "value": "{fields.username}"
+            },
+            {
+              "name": "password",
+              "value": "{fields.password}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "type": "mutation",
+      "name": "verifyConnection",
+      "arguments": [
+        {
+          "name": "id",
+          "value": "{createConnection.id}"
+        }
+      ]
+    }
+  ],
+  "reconnectionSteps": [
+    {
+      "step": 1,
+      "type": "mutation",
+      "name": "resetConnection",
+      "arguments": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "type": "mutation",
+      "name": "updateConnection",
+      "arguments": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        },
+        {
+          "name": "data",
+          "value": null,
+          "properties": [
+            {
+              "name": "host",
+              "value": "{fields.host}"
+            },
+            {
+              "name": "port",
+              "value": "{fields.port}"
+            },
+            {
+              "name": "database",
+              "value": "{fields.database}"
+            },
+            {
+              "name": "username",
+              "value": "{fields.username}"
+            },
+            {
+              "name": "password",
+              "value": "{fields.password}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "type": "mutation",
+      "name": "verifyConnection",
+      "arguments": [
+        {
+          "name": "id",
+          "value": "{connection.id}"
+        }
+      ]
+    }
+  ]
+}
