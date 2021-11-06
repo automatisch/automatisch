@@ -2,6 +2,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graph
 import fieldType from './field';
 import authenticationStepType from './authentication-step';
 import reconnectionStepType from './reconnection-step';
+import triggerType from './trigger';
 
 const appType = new GraphQLObjectType({
   name: 'App',
@@ -18,6 +19,7 @@ const appType = new GraphQLObjectType({
       fields: { type: GraphQLList(fieldType) },
       authenticationSteps: { type: GraphQLList(authenticationStepType) },
       reconnectionSteps: { type: GraphQLList(reconnectionStepType) },
+      triggers: { type: GraphQLList(triggerType) },
       connections: { type: GraphQLList(connectionType) },
     }
   }
