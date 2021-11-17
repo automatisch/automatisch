@@ -9,7 +9,6 @@ import morgan from './helpers/morgan';
 import appAssetsHandler from './helpers/app-assets-handler';
 import errorHandler from './helpers/error-handler';
 import './config/database';
-import './helpers/eager-load-apps';
 import authentication from './helpers/authentication';
 
 const app = express();
