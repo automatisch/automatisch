@@ -15,7 +15,7 @@ const verifyConnectionResolver = async (params: Params, req: RequestWithCurrentU
   const appClass = (await import(`../../apps/${connection.key}`)).default;
 
   const appInstance = new appClass(connection.data)
-  const verifiedCredentials = await appInstance.verifyCredentials();
+  const verifiedCredentials = await appInstance.authenticationClient.verifyCredentials();
 
   connection = await connection.$query().patchAndFetch({
     data: {
