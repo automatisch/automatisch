@@ -19,7 +19,7 @@ const createAuthDataResolver = async (params: Params, req: RequestWithCurrentUse
     consumerSecret: connection.data.consumerSecret
   });
 
-  const authLink = await appInstance.createAuthData();
+  const authLink = await appInstance.authenticationClient.createAuthData();
 
   await connection.$query().patch({
     data: {
