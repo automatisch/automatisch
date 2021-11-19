@@ -6,6 +6,7 @@ import resetConnection from './mutations/reset-connection';
 import verifyConnection from './mutations/verify-connection';
 import deleteConnection from './mutations/delete-connection';
 import createStep from './mutations/create-step';
+import executeStep from './mutations/execute-step';
 
 const rootMutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -17,6 +18,7 @@ const rootMutation = new GraphQLObjectType({
     verifyConnection,
     deleteConnection,
     createStep,
+    executeStep
   }
 });
 
