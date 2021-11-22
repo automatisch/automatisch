@@ -1,4 +1,5 @@
 import Base from './base'
+import Flow from './flow'
 
 enum StepEnumType {
   'trigger',
@@ -28,6 +29,17 @@ class Step extends Base {
       parameters: { type: 'object' },
     }
   }
+
+  static relationMappings = () => ({
+    flow: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: Flow,
+      join: {
+        from: 'step.flow_id',
+        to: 'flows.id',
+      },
+    }
+  })
 }
 
 export default Step;

@@ -11,6 +11,7 @@ type Params = {
 }
 const createConnectionResolver = async (params: Params, req: RequestWithCurrentUser) => {
   const app = App.findOneByKey(params.key);
+
   const connection = await Connection.query().insert({
     key: params.key,
     data: params.data,

@@ -226,5 +226,19 @@
       "key": "userTweet",
       "description": "Will be triggered when a specific user tweet something new."
     }
+  ],
+  "actions": [
+    {
+      "name": "Create Tweet",
+      "key": "createTweet",
+      "description": "Will create a tweet.",
+      "parameters" : [
+        {
+          "name": "Message",
+          "key": "message",
+          "required": true
+        }
+      ]
+    }
   ]
 }
