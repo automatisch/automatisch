@@ -11,7 +11,7 @@
       "type": "string",
       "required": true,
       "readOnly": true,
-      "value": "http://localhost:3001/app/flickr/connections/add",
+      "value": "{WEB_APP_URL}/app/flickr/connections/add",
       "placeholder": null,
       "description": "When asked to input an OAuth callback or redirect URL in Flickr OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/flickr#oauth-redirect-url",
