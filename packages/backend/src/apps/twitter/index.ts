@@ -10,6 +10,6 @@ export default class Twitter {
   constructor(connectionData: any) {
     this.authenticationClient = new Authentication(connectionData);
     this.triggers = new Triggers(connectionData);
-    this.actions = new Actions(connectionData);
+    this.actions = new Actions(connectionData, {});
   }
 }
