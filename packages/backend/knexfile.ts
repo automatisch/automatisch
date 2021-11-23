@@ -8,7 +8,7 @@ const knexConfig = {
     user: appConfig.postgresUsername,
     password: appConfig.postgresPassword,
     database: appConfig.postgresDatabase,
-    ssl: true,
+    ssl: appConfig.postgresEnableSsl
   },
   migrations: {
     directory: __dirname + '/src/db/migrations',
