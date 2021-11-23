@@ -11,7 +11,7 @@
       "type": "string",
       "required": true,
       "readOnly": true,
-      "value": "https://localhost:3001/app/twitch/connections/add",
+      "value": "{WEB_APP_URL}/app/twitch/connections/add",
       "placeholder": null,
       "description": "When asked to input an OAuth callback or redirect URL in Twitch OAuth, enter the URL above.",
       "docUrl": "https://automatisch.io/docs/twitch#oauth-redirect-url",

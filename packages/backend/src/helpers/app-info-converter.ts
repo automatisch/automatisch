@@ -2,9 +2,10 @@ import AppInfoType from '../types/app-info';
 import appConfig from '../config/app';
 
 const appInfoConverter = (rawAppData: string) => {
-  const computedRawData = rawAppData.replace('{BASE_URL}', appConfig.baseUrl);
-  const computedJSONData: AppInfoType = JSON.parse(computedRawData)
+  let computedRawData = rawAppData.replace('{BASE_URL}', appConfig.baseUrl);
+  computedRawData = rawAppData.replace('{WEB_APP_URL}', appConfig.webAppUrl);
 
+  const computedJSONData: AppInfoType = JSON.parse(computedRawData)
   return computedJSONData;
 }
 
