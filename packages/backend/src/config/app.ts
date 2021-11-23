@@ -19,7 +19,7 @@ const appConfig: AppConfig = {
   host: process.env.HOST || 'localhost',
   protocol: process.env.PROTOCOL || 'http',
   port: process.env.PORT || '3000',
-  webAppUrl: process.env.webAppUrl || 'https://localhost:3001',
+  webAppUrl: process.env.WEB_APP_URL || 'https://localhost:3001',
   appEnv: process.env.APP_ENV || 'development',
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
   postgresPort: parseInt(process.env.POSTGRES_PORT) || 5432,
