@@ -17,7 +17,11 @@ export default function AppBar({ onMenuClick }: AppBarProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <HideOnScroll>
-        <MuiAppBar sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <MuiAppBar
+          sx={{
+            background: (theme) => theme.palette.primary.dark,
+            zIndex: (theme) => theme.zIndex.drawer + 1
+          }}>
           <Toolbar>
             <IconButton
               size="large"
