@@ -64,6 +64,18 @@
       "description": null,
       "docUrl": "https://automatisch.io/docs/postgresql#password",
       "clickToCopy": false
+    },
+    {
+      "key": "ssl",
+      "label": "Use SSL?",
+      "type": "boolean",
+      "required": true,
+      "readOnly": false,
+      "value": false,
+      "placeholder": null,
+      "description": null,
+      "docUrl": "https://automatisch.io/docs/postgresql#ssl",
+      "clickToCopy": false
     }
   ],
   "authenticationSteps": [
@@ -99,6 +111,10 @@
             {
               "name": "password",
               "value": "{fields.password}"
+            },
+            {
+              "name": "ssl",
+              "value": "{fields.ssl}"
             }
           ]
         }
@@ -160,6 +176,10 @@
             {
               "name": "password",
               "value": "{fields.password}"
+            },
+            {
+              "name": "ssl",
+              "value": "{fields.ssl}"
             }
           ]
         }
