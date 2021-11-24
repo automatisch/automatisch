@@ -13,6 +13,7 @@ export default class Authentication {
       database: connectionData.database,
       user: connectionData.username,
       password: connectionData.password,
+      ssl: connectionData.ssl,
     })
 
     this.connectionData = connectionData;
