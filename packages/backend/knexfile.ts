@@ -10,6 +10,7 @@ const knexConfig = {
     database: appConfig.postgresDatabase,
     ssl: appConfig.postgresEnableSsl
   },
+  pool: { min: 0, max: 20 },
   migrations: {
     directory: __dirname + '/src/db/migrations',
   },
