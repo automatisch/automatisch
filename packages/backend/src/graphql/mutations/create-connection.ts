@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLNonNull, GraphQLEnumType } from 'graphql';
+import { GraphQLNonNull } from 'graphql';
 import Connection from '../../models/connection';
 import App from '../../models/app';
 import connectionType from '../types/connection';
@@ -28,7 +28,7 @@ const createConnectionResolver = async (params: Params, req: RequestWithCurrentU
 const createConnection = {
   type: connectionType,
   args: {
-    key: { type: availableAppsEnumType },
+    key: { type: GraphQLNonNull(availableAppsEnumType) },
     data: { type: GraphQLNonNull(GraphQLJSONObject) }
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createConnectionResolver(params, req)

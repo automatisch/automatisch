@@ -1,8 +1,9 @@
-import { GraphQLList, GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 import Connection from '../../models/connection';
 import App from '../../models/app';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 import connectionType from '../types/connection';
+import availableAppsEnumType from '../types/available-apps-enum-type';
 
 type Params = {
   key: string
@@ -22,7 +23,7 @@ const getAppConnectionsResolver = async (params: Params, req: RequestWithCurrent
 const getAppConnections = {
   type: GraphQLList(connectionType),
   args: {
-    key: { type: GraphQLNonNull(GraphQLString) }
+    key: { type: GraphQLNonNull(availableAppsEnumType) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => getAppConnectionsResolver(params, req)
 }
