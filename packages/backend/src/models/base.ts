@@ -9,13 +9,6 @@ class Base extends Model {
     return snakeCaseMappers();
   }
 
-  static query<M extends Model>(
-    this: Constructor<M>,
-    trxOrKnex?: TransactionOrKnex
-  ): QueryBuilderType<M> {
-    return super.query(trxOrKnex).throwIfNotFound() as QueryBuilderType<M>;
-  };
-
   async $beforeInsert(queryContext: QueryContext) {
     await super.$beforeInsert(queryContext);
 

@@ -11,7 +11,7 @@ const resetConnectionResolver = async (params: Params, req: RequestWithCurrentUs
   let connection = await Connection.query().findOne({
     user_id: req.currentUser.id,
     id: params.id
-  })
+  }).throwIfNotFound();
 
   connection = await connection.$query().patchAndFetch({
     data: { screenName: connection.data.screenName }
