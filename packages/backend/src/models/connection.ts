@@ -38,7 +38,7 @@ class Connection extends Base {
     }
   })
 
-  async encryptData() {
+  encryptData() {
     this.data = AES.encrypt(JSON.stringify(this.data), appConfig.encryptionKey).toString();
   }
 
