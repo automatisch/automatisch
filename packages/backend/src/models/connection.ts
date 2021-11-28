@@ -55,7 +55,7 @@ class Connection extends Base {
 
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$beforeUpdate(opt, queryContext);
-    await this.encryptData();
+    this.encryptData();
   }
 
   async $afterFind(queryContext: QueryContext) {
