@@ -19,6 +19,7 @@ const testConnectionResolver = async (params: Params, req: RequestWithCurrentUse
   const isStillVerified = await appInstance.authenticationClient.isStillVerified();
 
   connection = await connection.$query().patchAndFetch({
+    data: connection.data,
     verified: isStillVerified
   })
 

@@ -1,5 +1,8 @@
+import { QueryContext, ModelOptions } from 'objection';
+import { AES, enc } from 'crypto-js';
 import Base from './base'
 import User from './user'
+import appConfig from '../config/app';
 
 class Connection extends Base {
   id!: number
@@ -34,6 +37,30 @@ class Connection extends Base {
       },
     }
   })
+
+  encryptData() {
+    this.data = AES.encrypt(JSON.stringify(this.data), appConfig.encryptionKey).toString();
+  }
+
+  decryptData() {
+    this.data = JSON.parse(AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8));
+  }
+
+  // TODO: Make another abstraction like beforeSave instead of using
+  // beforeInsert and beforeUpdate separately for the same operation.
+  async $beforeInsert(queryContext: QueryContext) {
+    await super.$beforeInsert(queryContext);
+    this.encryptData();
+  }
+
+  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+    this.encryptData();
+  }
+
+  async $afterFind(queryContext: QueryContext) {
+    this.decryptData();
+  }
 }
 
 export default Connection;
