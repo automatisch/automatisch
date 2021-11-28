@@ -59,7 +59,7 @@ class Connection extends Base {
   }
 
   async $afterFind(queryContext: QueryContext) {
-    await this.decryptData();
+    this.decryptData();
   }
 }
 
