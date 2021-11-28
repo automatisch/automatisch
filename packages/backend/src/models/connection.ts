@@ -39,11 +39,17 @@ class Connection extends Base {
   })
 
   encryptData() {
+    if(!this.eligibleForEncryption()) return;
     this.data = AES.encrypt(JSON.stringify(this.data), appConfig.encryptionKey).toString();
   }
 
   decryptData() {
+    if(!this.eligibleForEncryption()) return;
     this.data = JSON.parse(AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8));
+  }
+
+  eligibleForEncryption() {
+    return this.data ? true : false
   }
 
   // TODO: Make another abstraction like beforeSave instead of using
