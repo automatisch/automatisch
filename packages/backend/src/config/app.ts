@@ -13,7 +13,8 @@ type AppConfig = {
   postgresUsername: string,
   postgresPassword: string,
   postgresEnableSsl: boolean,
-  baseUrl?: string
+  baseUrl?: string,
+  encryptionKey: string
 }
 
 const appConfig: AppConfig = {
@@ -28,6 +29,7 @@ const appConfig: AppConfig = {
   postgresUsername: process.env.POSTGRES_USERNAME || 'automatish_development_user',
   postgresPassword: process.env.POSTGRES_PASSWORD,
   postgresEnableSsl: process.env.POSTGRES_ENABLE_SSL === 'true' ? true : false,
+  encryptionKey: process.env.ENCRYPTION_KEY
 }
 
 const baseUrl = `${appConfig.protocol}://${appConfig.host}:${appConfig.port}`;
