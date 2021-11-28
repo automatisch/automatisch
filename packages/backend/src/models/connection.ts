@@ -50,7 +50,7 @@ class Connection extends Base {
   // beforeInsert and beforeUpdate separately for the same operation.
   async $beforeInsert(queryContext: QueryContext) {
     await super.$beforeInsert(queryContext);
-    await this.encryptData();
+    this.encryptData();
   }
 
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
