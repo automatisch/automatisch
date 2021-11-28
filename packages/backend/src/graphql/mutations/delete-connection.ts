@@ -10,7 +10,7 @@ const deleteConnectionResolver = async (params: Params, req: RequestWithCurrentU
   await Connection.query().delete().findOne({
     user_id: req.currentUser.id,
     id: params.id
-  })
+  }).throwIfNotFound();
 
   return;
 }
