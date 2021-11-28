@@ -42,7 +42,7 @@ class Connection extends Base {
     this.data = AES.encrypt(JSON.stringify(this.data), appConfig.encryptionKey).toString();
   }
 
-  async decryptData() {
+  decryptData() {
     this.data = JSON.parse(AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8));
   }
 
