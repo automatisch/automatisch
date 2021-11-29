@@ -8,7 +8,10 @@ const knexConfig = {
     user: appConfig.postgresUsername,
     password: appConfig.postgresPassword,
     database: appConfig.postgresDatabase,
-    ssl: appConfig.postgresEnableSsl
+    ssl: {
+      require: appConfig.postgresEnableSsl,
+      rejectUnauthorized: false,
+    },
   },
   pool: { min: 0, max: 20 },
   migrations: {

@@ -10,7 +10,7 @@ const verifyConnectionResolver = async (params: Params, req: RequestWithCurrentU
   let connection = await Connection.query().findOne({
     user_id: req.currentUser.id,
     id: params.id
-  }).throwIfNotFound();
+  });
 
   const appClass = (await import(`../../apps/${connection.key}`)).default;
 

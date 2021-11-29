@@ -18,7 +18,7 @@ type AppConfig = {
 }
 
 const appConfig: AppConfig = {
-  host: process.env.HOST || 'localhost',
+  host: process.env.HOST || process.env.RENDER_EXTERNAL_HOSTNAME || 'localhost',
   protocol: process.env.PROTOCOL || 'http',
   port: process.env.PORT || '3000',
   webAppUrl: process.env.WEB_APP_URL || 'https://localhost:3001',
@@ -38,5 +38,7 @@ if(!appConfig.encryptionKey) {
 
 const baseUrl = `${appConfig.protocol}://${appConfig.host}:${appConfig.port}`;
 appConfig.baseUrl = baseUrl;
+
+console.log('appConfig', JSON.stringify(appConfig, null, 2));
 
 export default appConfig;

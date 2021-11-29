@@ -16,7 +16,7 @@ const createStepResolver = async (params: Params, req: RequestWithCurrentUser) =
   const flow = await Flow.query().findOne({
     id: params.flowId,
     user_id: req.currentUser.id
-  }).throwIfNotFound();
+  });
 
   const step = await Step.query().insertAndFetch({
     flowId: flow.id,

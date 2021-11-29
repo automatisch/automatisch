@@ -1,0 +1,72 @@
+services:
+  - type: web
+    name: automatisch-api
+    env: node
+    region: frankfurt
+    buildCommand: yarn && yarn lerna bootstrap
+    startCommand: cd packages/backend && yarn ts-node src/app.ts
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: APP_ENV
+        value: development
+      - key: ENCRYPTION_KEY
+        value: Jd2oaCmKciuBoxXMn6dwrTB3UaOl1mKj
+      - key: NODE_VERSION
+        value: 16.12.0
+      - key: PROTOCOL
+        value: http
+      - key: PORT
+        value: 80
+      - key: POSTGRES_DATABASE
+        fromDatabase:
+          name: database
+          property: database
+      - key: POSTGRES_ENABLE_SSL
+        value: true
+      - key: POSTGRES_HOST
+        fromDatabase:
+          name: database
+          property: host
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: database
+          property: password
+      - key: POSTGRES_PORT
+        fromDatabase:
+          name: database
+          property: port
+      - key: POSTGRES_USERNAME
+        fromDatabase:
+          name: database
+          property: user
+      - key: WEB_APP_URL
+        fromService:
+          name: automatisch-app
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+  - type: web
+    name: automatisch-app
+    env: static
+    buildCommand: yarn && lerna bootstrap && cd ./packages/web && yarn build
+    staticPublishPath: ./packages/web/build
+    pullRequestPreviewsEnabled: true
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /
+    envVars:
+      - key: NODE_VERSION
+        value: 16.12.0
+      - key: PORT
+        value: 80
+      - key: REACT_APP_API_URL
+        fromService:
+          name: automatisch-api
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+
+databases:
+  - name: database
+    region: frankfurt
+    databaseName: main
