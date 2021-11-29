@@ -32,6 +32,10 @@ const appConfig: AppConfig = {
   encryptionKey: process.env.ENCRYPTION_KEY
 }
 
+if(!appConfig.encryptionKey) {
+  throw new Error('ENCRYPTION_KEY environment variable needs to be set!');
+}
+
 const baseUrl = `${appConfig.protocol}://${appConfig.host}:${appConfig.port}`;
 appConfig.baseUrl = baseUrl;
 
