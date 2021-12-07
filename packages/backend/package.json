@@ -8,7 +8,7 @@
     "start": "node dist/index.js",
     "test": "ava",
     "db:create": "ts-node ./bin/database/create.ts",
-    "db:create:user": "ts-node ./bin/database/create-user.ts",
+    "db:seed:user": "ts-node ./bin/database/seed-user.ts",
     "db:drop": "ts-node ./bin/database/drop.ts",
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
