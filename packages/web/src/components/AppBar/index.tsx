@@ -4,10 +4,10 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import HideOnScroll from 'components/HideOnScroll';
 import { FormattedMessage } from 'react-intl';
-import SearchInput from 'components/SearchInput';
 
 type AppBarProps = {
   onMenuClick: () => void;
@@ -17,11 +17,7 @@ export default function AppBar({ onMenuClick }: AppBarProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <HideOnScroll>
-        <MuiAppBar
-          sx={{
-            background: (theme) => theme.palette.primary.dark,
-            zIndex: (theme) => theme.zIndex.drawer + 1
-          }}>
+        <MuiAppBar>
           <Toolbar>
             <IconButton
               size="large"
@@ -31,7 +27,6 @@ export default function AppBar({ onMenuClick }: AppBarProps) {
               onClick={onMenuClick}
               sx={{ mr: 2 }}
             >
-              {/* TODO: make Drawer in Layout togglable. */}
               <MenuIcon />
             </IconButton>
 
@@ -44,7 +39,14 @@ export default function AppBar({ onMenuClick }: AppBarProps) {
               <FormattedMessage id="brandText" />
             </Typography>
 
-            <SearchInput />
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open settings"
+            >
+              <SettingsIcon />
+            </IconButton>
           </Toolbar>
         </MuiAppBar>
       </HideOnScroll>

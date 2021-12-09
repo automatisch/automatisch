@@ -17,7 +17,11 @@ export default function Layout({ children }: LayoutProps) {
       <AppBar onMenuClick={onMenuClick} />
 
       <Box sx={{ display: 'flex', }}>
-        <Drawer open={isDrawerOpen} />
+        <Drawer
+          open={isDrawerOpen}
+          onOpen={onMenuClick}
+          onClose={onMenuClick}
+        />
 
         <Box sx={{ flex: 1 }}>
           <Toolbar />

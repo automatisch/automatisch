@@ -26,9 +26,9 @@ export default function ListItemLink(props: ListItemLinkProps) {
 
   return (
     <li>
-      <ListItem button component={CustomLink}>
+      <ListItem button component={CustomLink} sx={{ pl: { xs: 2, sm: 3 } }}>
         <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={primary} primaryTypographyProps={{ variant: 'body2' }} />
+        <ListItemText primary={primary} primaryTypographyProps={{ variant: 'body1' }} />
       </ListItem>
     </li>
   );
