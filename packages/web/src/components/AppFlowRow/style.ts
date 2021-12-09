@@ -5,7 +5,7 @@ import MuiTypography from '@mui/material/Typography';
 export const CardContent = styled(MuiCardContent)(({ theme }) => ({
   display: 'grid',
   gridTemplateRows: 'auto',
-  gridTemplateColumns: '1fr auto auto auto',
+  gridTemplateColumns: '1fr auto',
   gridColumnGap: theme.spacing(2),
   alignItems: 'center',
 }));

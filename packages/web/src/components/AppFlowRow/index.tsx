@@ -10,7 +10,6 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { CardContent, Typography } from './style';
 
 type AppFlowRowProps = {
-  selected?: boolean;
   flow: any;
 }
 
@@ -18,6 +17,7 @@ const countTranslation = (value: React.ReactNode) => (<><strong>{value}</strong>
 
 function AppFlowRow(props: AppFlowRowProps) {
   const formatMessage = useFormatMessage();
+  const { flow } = props;
 
   return (
     <>
@@ -26,17 +26,7 @@ function AppFlowRow(props: AppFlowRowProps) {
           <CardContent>
             <Box>
               <Typography variant="h6">
-                A flow
-              </Typography>
-            </Box>
-
-            <Box>
-
-            </Box>
-
-            <Box sx={{ px: 2 }}>
-              <Typography variant="body2">
-                {formatMessage('connection.flowCount', { count: countTranslation(0) })}
+                {flow.name}
               </Typography>
             </Box>
 
