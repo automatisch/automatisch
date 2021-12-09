@@ -1,7 +1,7 @@
 import { styled, Theme, CSSObject } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
+import MuiSwipeableDrawer from '@mui/material/SwipeableDrawer';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -18,13 +18,13 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: 0,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(9)} + 1px)`,
   },
 });
 
-export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+export const Drawer = styled(MuiSwipeableDrawer)(
   ({ theme, open }) => ({
     width: drawerWidth,
     flexShrink: 0,

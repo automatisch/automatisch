@@ -1,6 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme();
+const referenceTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#0059F7',
+      dark: '#001F52',
+    }
+  }
+});
 
 const extendedTheme = createTheme({
   palette: {
@@ -10,7 +17,7 @@ const extendedTheme = createTheme({
       dark: '#001F52',
       contrastText: '#fff'
     },
-    divider: '#0000001F',
+    divider: 'rgba(194, 194, 194, .2)',
     common: {
       black: '#1D1D1D',
       white: '#fff'
@@ -52,8 +59,11 @@ const extendedTheme = createTheme({
     },
     background: {
       paper: '#fff',
-      default: '#F3F7FD'
+      default: '#FAFAFA'
     }
+  },
+  shape: {
+    borderRadius: 4,
   },
   typography: {
     fontFamily: [
@@ -65,75 +75,138 @@ const extendedTheme = createTheme({
       'sans-serif',
     ].join(','),
     h1: {
-      fontSize: theme.typography.pxToRem(72),
+      fontSize: referenceTheme.typography.pxToRem(72),
       lineHeight: 1.11,
       fontWeight: 700,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(48),
+      }
     },
     h2: {
-      fontSize: theme.typography.pxToRem(48),
+      fontSize: referenceTheme.typography.pxToRem(48),
       lineHeight: 1.16,
       fontWeight: 700,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(24),
+      }
     },
     h3: {
-      fontSize: theme.typography.pxToRem(32),
+      fontSize: referenceTheme.typography.pxToRem(32),
       lineHeight: 1.16,
       fontWeight: 700,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(24),
+      }
     },
     h4: {
-      fontSize: theme.typography.pxToRem(24),
+      fontSize: referenceTheme.typography.pxToRem(32),
       lineHeight: 1.3,
       fontWeight: 700,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(16),
+      }
     },
     h5: {
-      fontSize: theme.typography.pxToRem(24),
+      fontSize: referenceTheme.typography.pxToRem(24),
       lineHeight: 1.3,
       fontWeight: 400,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(16),
+      }
     },
     h6: {
-      fontSize: theme.typography.pxToRem(20),
+      fontSize: referenceTheme.typography.pxToRem(20),
       lineHeight: 1.2,
       fontWeight: 500,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(20),
+      }
     },
     subtitle1: {
-      fontSize: theme.typography.pxToRem(14),
+      fontSize: referenceTheme.typography.pxToRem(14),
       lineHeight: 1.71,
       fontWeight: 400,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(14),
+      },
       textTransform: 'uppercase',
     },
     subtitle2: {
-      fontSize: theme.typography.pxToRem(14),
+      fontSize: referenceTheme.typography.pxToRem(14),
       lineHeight: 1.14,
       fontWeight: 400,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(14),
+      }
     },
     body1: {
-      fontSize: theme.typography.pxToRem(16),
-      lineHeight: 1.5,
-      fontWeight: 700,
-    },
-    body2: {
-      fontSize: theme.typography.pxToRem(16),
+      fontSize: referenceTheme.typography.pxToRem(16),
       lineHeight: 1.5,
       fontWeight: 400,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(16),
+      }
+    },
+    body2: {
+      fontSize: referenceTheme.typography.pxToRem(16),
+      lineHeight: 1.5,
+      fontWeight: 700,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(16),
+      }
     },
     button: {
+      fontSize: referenceTheme.typography.pxToRem(16),
       fontWeight: 700,
+      [referenceTheme.breakpoints.down('sm')]: {
+        fontSize: referenceTheme.typography.pxToRem(16),
+      }
     }
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          padding: '12px 16px'
+          padding: '12px 16px',
+          textTransform: 'none',
         }
+      }
+    },
+    MuiContainer: {
+      defaultProps: {
+        maxWidth: 'xl',
       }
     },
     MuiCssBaseline: {
       styleOverrides: {
+        html: {
+          scrollBehavior: 'smooth',
+        },
         a: {
           textDecoration: 'none',
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: referenceTheme.palette.primary.main,
+          zIndex: referenceTheme.zIndex.drawer + 1,
+        }
+      },
+      defaultProps: {
+        elevation: 2,
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          '@media all': {
+            paddingRight: referenceTheme.spacing(1.5),
+          }
+        }
+      }
+    }
   }
 });
 

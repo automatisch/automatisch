@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { DrawerProps } from '@mui/material/Drawer';
+import { useTheme } from '@mui/material/styles';
+import { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import AppsIcon from '@mui/icons-material/Apps';
-import LanguageIcon from '@mui/icons-material/Language';
-import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
-
+import SwapCallsIcon from '@mui/icons-material/SwapCalls';
+import ExploreIcon from '@mui/icons-material/Explore';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import ListItemLink from 'components/ListItemLink';
 import HideOnScroll from 'components/HideOnScroll';
@@ -14,14 +15,19 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
 import { Drawer as BaseDrawer } from './style';
 
+const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-export default function Drawer(props: DrawerProps) {
+export default function Drawer(props: SwipeableDrawerProps) {
+  const theme = useTheme();
+  const matchesSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
   const formatMessage = useFormatMessage();
 
   return (
     <BaseDrawer
       {...props}
-      variant="permanent"
+      disableBackdropTransition={!iOS}
+      disableDiscovery={iOS}
+      variant={matchesSmallScreens ? 'temporary' : 'permanent'}
     >
       <HideOnScroll unmountOnExit>
         <Toolbar />
@@ -29,19 +35,19 @@ export default function Drawer(props: DrawerProps) {
 
       <List>
         <ListItemLink
-          icon={<OfflineBoltIcon />}
+          icon={<SwapCallsIcon htmlColor={theme.palette.primary.dark} />}
           primary={formatMessage('drawer.flows')}
           to={URLS.FLOWS}
         />
 
         <ListItemLink
-          icon={<AppsIcon />}
+          icon={<AppsIcon htmlColor={theme.palette.primary.dark} />}
           primary={formatMessage('drawer.apps')}
           to={URLS.APPS}
         />
 
         <ListItemLink
-          icon={<LanguageIcon />}
+          icon={<ExploreIcon htmlColor={theme.palette.primary.dark} />}
           primary={formatMessage('drawer.explore')}
           to={URLS.EXPLORE}
         />
