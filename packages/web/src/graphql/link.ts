@@ -1,5 +1,5 @@
-import { HttpLink, from } from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
+import { HttpLink, from } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 
 type CreateLinkOptions = {
   uri: string;

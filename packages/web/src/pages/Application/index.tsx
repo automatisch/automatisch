@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Link, Route, Redirect, Switch, RouteComponentProps, useParams, useRouteMatch, useHistory } from 'react-router-dom';
+import { Link, Route, Navigate, Routes, useParams, useMatch, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -24,16 +24,30 @@ type ApplicationParams = {
   connectionId?: string;
 };
 
+const ReconnectConnection = (props: any) => {
+  const { application, onClose } = props;
+  const { connectionId } = useParams() as ApplicationParams;
+
+  return (
+    <AddAppConnection
+      onClose={onClose}
+      application={application}
+      connectionId={connectionId}
+    />
+  );
+}
+
+
 export default function Application() {
   const formatMessage = useFormatMessage();
-  const routeMatch = useRouteMatch([URLS.APP_CONNECTIONS_PATTERN, URLS.APP_FLOWS_PATTERN, URLS.APP_PATTERN]);
-  const { appKey } = useParams<ApplicationParams>();
-  const history = useHistory();
+  const connectionsPathMatch = useMatch({ path: URLS.APP_CONNECTIONS_PATTERN, end: false });
+  const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
+  const { appKey } = useParams() as ApplicationParams;
+  const navigate = useNavigate();
   const { data } = useQuery(GET_APP, { variables: { key: appKey } });
 
+  const goToApplicationPage = () => navigate('connections');
   const app = data?.getApp || {};
-
-  const goToApplicationPage = () => history.push(URLS.APP(appKey));
 
   return (
     <>
@@ -62,7 +76,7 @@ export default function Application() {
           <Grid container>
             <Grid item xs>
               <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-                <Tabs value={routeMatch?.path}>
+                <Tabs value={connectionsPathMatch?.pattern?.path || flowsPathMatch?.pattern?.path}>
                   <Tab
                     label={formatMessage('app.connections')}
                     to={URLS.APP_CONNECTIONS(appKey)}
@@ -79,27 +93,34 @@ export default function Application() {
                 </Tabs>
               </Box>
 
-              <Switch>
-                <Route path={URLS.APP_FLOWS_PATTERN}>
-                  <AppFlows appKey={appKey} />
-                </Route>
+              <Routes>
+                <Route path={`${URLS.FLOWS}/*`} element={<AppFlows appKey={appKey} />} />
 
-                <Route path={URLS.APP_CONNECTIONS_PATTERN}>
-                  <AppConnections appKey={appKey} />
-                </Route>
+                <Route path={`${URLS.CONNECTIONS}/*`} element={<AppConnections appKey={appKey} />} />
 
-                <Route exact path={URLS.APP_PATTERN}>
-                  <Redirect to={URLS.APP_CONNECTIONS(appKey)} />
-                </Route>
-              </Switch>
+                <Route path="/" element={<Navigate to={URLS.APP_CONNECTIONS(appKey)} />} />
+              </Routes>
             </Grid>
           </Grid>
         </Container>
       </Box>
 
-      <Route exact path={[URLS.APP_RECONNECT_CONNECTION_PATTERN, URLS.APP_ADD_CONNECTION_PATTERN]} render={({ match }: RouteComponentProps<ApplicationParams>) => (
-        <AddAppConnection onClose={goToApplicationPage} application={app} connectionId={match.params.connectionId} />
-      )} />
+      <Routes>
+        <Route
+          path="/connections/add"
+          element={
+            <AddAppConnection
+              onClose={goToApplicationPage}
+              application={app}
+            />
+          }
+        />
+
+        <Route
+          path="/connections/:connectionId/reconnect"
+          element={<ReconnectConnection application={app} onClose={goToApplicationPage} />}
+        />
+      </Routes>
     </>
   );
 };

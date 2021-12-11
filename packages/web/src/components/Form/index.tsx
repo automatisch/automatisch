@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormProvider, useForm, FieldValues, SubmitHandler, UseFormReturn } from "react-hook-form";
+import { FormProvider, useForm, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 
 type FormProps = {
   children: React.ReactNode;

@@ -4,12 +4,15 @@ import MuiSwipeableDrawer from '@mui/material/SwipeableDrawer';
 const drawerWidth = 300;
 
 const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
+  width: '100vw',
+  [theme.breakpoints.up('sm')]: {
+    width: drawerWidth,
+  },
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
