@@ -190,7 +190,7 @@ const extendedTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          background: referenceTheme.palette.primary.main,
+          background: referenceTheme.palette.primary.dark,
           zIndex: referenceTheme.zIndex.drawer + 1,
         }
       },

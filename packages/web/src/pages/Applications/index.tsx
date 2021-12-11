@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Link, Route, useHistory } from 'react-router-dom';
+import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -16,7 +16,7 @@ import * as URLS from 'config/urls';
 import type { App } from 'types/app';
 
 export default function Applications() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = useState(null);
   const { data } = useQuery(GET_CONNECTED_APPS, { variables: {name: appName } });
@@ -26,8 +26,8 @@ export default function Applications() {
   }, []);
 
   const goToApps = useCallback(() => {
-    history.push(URLS.APPS);
-  }, [history]);
+    navigate(URLS.APPS);
+  }, [navigate]);
 
   return (
     <Box sx={{ py: 3 }}>
@@ -61,9 +61,9 @@ export default function Applications() {
           <AppRow key={app.name} application={app} />
         ))}
 
-        <Route exact path={URLS.NEW_APP_CONNECTION}>
-          <AddNewAppConnection onClose={goToApps} />
-        </Route>
+        <Routes>
+          <Route path="/new" element={<AddNewAppConnection onClose={goToApps} />} />
+        </Routes>
       </Container>
     </Box>
   );

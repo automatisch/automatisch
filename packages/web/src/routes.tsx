@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect } from "react-router";
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Applications from 'pages/Applications';
 import Application from 'pages/Application';
 import Flows from 'pages/Flows';
@@ -6,29 +6,17 @@ import Explore from 'pages/Explore';
 import * as URLS from 'config/urls';
 
 export default (
-  <Switch>
-    <Route path={URLS.FLOWS}>
-      <Flows />
-    </Route>
+  <Routes>
+    <Route path={URLS.FLOWS} element={<Flows />} />
 
-    <Route path={[URLS.APPS, URLS.NEW_APP_CONNECTION]}>
-      <Applications />
-    </Route>
+    <Route path={`${URLS.APPS}/*`} element={<Applications />} />
 
-    <Route path={URLS.EXPLORE}>
-      <Explore />
-    </Route>
+    <Route path={URLS.EXPLORE} element={<Explore />} />
 
-    <Route path={URLS.APP_PATTERN}>
-      <Application />
-    </Route>
+    <Route path={`${URLS.APP_PATTERN}/*`} element={<Application />} />
 
-    <Route exact path="/">
-      <Redirect to={URLS.FLOWS} />
-    </Route>
+    <Route path="/" element={<Navigate to={URLS.FLOWS} />} />
 
-    <Route>
-      404
-    </Route>
-  </Switch>
+    <Route element={<div>404</div>} />
+  </Routes>
 );

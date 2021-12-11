@@ -35,19 +35,19 @@ export default function Drawer(props: SwipeableDrawerProps) {
 
       <List>
         <ListItemLink
-          icon={<SwapCallsIcon htmlColor={theme.palette.primary.dark} />}
+          icon={<SwapCallsIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.flows')}
           to={URLS.FLOWS}
         />
 
         <ListItemLink
-          icon={<AppsIcon htmlColor={theme.palette.primary.dark} />}
+          icon={<AppsIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.apps')}
           to={URLS.APPS}
         />
 
         <ListItemLink
-          icon={<ExploreIcon htmlColor={theme.palette.primary.dark} />}
+          icon={<ExploreIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.explore')}
           to={URLS.EXPLORE}
         />
