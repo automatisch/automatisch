@@ -7,9 +7,12 @@
     "start:backend": "lerna run --stream --scope @*/backend dev",
     "start:docs": "lerna run --stream --scope @*/docs start"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/backend",
+      "packages/web"
+    ]
+  },
   "devDependencies": {
     "lerna": "^4.0.0"
   },
