@@ -5,7 +5,7 @@
     "start": "lerna run --stream --scope=@*/{web,backend} dev",
     "start:web": "lerna run --stream --scope @*/web dev",
     "start:backend": "lerna run --stream --scope @*/backend dev",
-    "start:docs": "lerna run --stream --scope @*/docs start"
+    "build:docs": "cd ./packages/docs && yarn install && yarn build"
   },
   "workspaces": {
     "packages": [
