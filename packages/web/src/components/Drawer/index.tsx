@@ -19,7 +19,7 @@ const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigato
 
 export default function Drawer(props: SwipeableDrawerProps) {
   const theme = useTheme();
-  const matchesSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const formatMessage = useFormatMessage();
 
   return (
@@ -27,13 +27,13 @@ export default function Drawer(props: SwipeableDrawerProps) {
       {...props}
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
-      variant={matchesSmallScreens ? 'temporary' : 'permanent'}
+      variant={matchSmallScreens ? 'temporary' : 'permanent'}
     >
       <HideOnScroll unmountOnExit>
         <Toolbar />
       </HideOnScroll>
 
-      <List>
+      <List sx={{ py: 0, mt: 3 }}>
         <ListItemLink
           icon={<SwapCallsIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.flows')}

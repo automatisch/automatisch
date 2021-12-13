@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import Container from 'components/Container';
 
 export default function Flows() {
   return (

@@ -1,4 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import Box from '@mui/material/Box';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
@@ -9,18 +12,22 @@ type LayoutProps = {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const [isDrawerOpen, setDrawerOpen] = useState(true);
-  const onMenuClick = useCallback(() => { setDrawerOpen(value => !value) }, []);
+  const theme = useTheme();
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), { noSsr: true });
+  const [isDrawerOpen, setDrawerOpen] = useState(!matchSmallScreens);
+
+  const openDrawer = () => setDrawerOpen(true);
+  const closeDrawer = () => setDrawerOpen(false);
 
   return (
     <>
-      <AppBar onMenuClick={onMenuClick} />
+      <AppBar drawerOpen={isDrawerOpen} onDrawerOpen={openDrawer} onDrawerClose={closeDrawer} />
 
       <Box sx={{ display: 'flex', }}>
         <Drawer
           open={isDrawerOpen}
-          onOpen={onMenuClick}
-          onClose={onMenuClick}
+          onOpen={openDrawer}
+          onClose={closeDrawer}
         />
 
         <Box sx={{ flex: 1 }}>
