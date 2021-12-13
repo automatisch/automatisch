@@ -3,8 +3,9 @@ import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 
+import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
 import AddNewAppConnection from 'components/AddNewAppConnection';
 import PageTitle from 'components/PageTitle';
@@ -32,28 +33,28 @@ export default function Applications() {
   return (
     <Box sx={{ py: 3 }}>
       <Container>
-        <Grid container sx={{ mb: 3 }} spacing={1}>
-          <Grid item xs={12} sm>
+        <Grid container sx={{ mb: [2, 5] }} columnSpacing={1.5} rowSpacing={3}>
+          <Grid container item xs sm alignItems="center" order={{ xs: 0 }}>
             <PageTitle>{formatMessage('apps.title')}</PageTitle>
           </Grid>
 
-          <Grid container item xs={12} sm="auto" justifyContent="flex-end" spacing={2}>
-            <Grid item xs={12} sm="auto">
-              <SearchInput onChange={onSearchChange} />
-            </Grid>
+          <Grid item xs={12} sm="auto" order={{ xs: 2, sm: 1 }}>
+            <SearchInput onChange={onSearchChange} />
+          </Grid>
 
-            <Grid item xs={12} sm="auto">
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                component={Link}
-                to={URLS.NEW_APP_CONNECTION}
-                fullWidth
-              >
-                {formatMessage('apps.addConnection')}
-              </Button>
-            </Grid>
+          <Grid container item xs="auto" sm="auto" alignItems="center" order={{ xs: 1, sm: 2 }}>
+            <ConditionalIconButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              component={Link}
+              to={URLS.NEW_APP_CONNECTION}
+              fullWidth
+              Icon={<AddIcon />}
+            >
+              {formatMessage('apps.addConnection')}
+            </ConditionalIconButton>
           </Grid>
         </Grid>
 

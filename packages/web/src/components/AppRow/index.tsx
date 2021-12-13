@@ -29,7 +29,7 @@ function AppRow(props: AppRowProps) {
 
   return (
     <Link to={URLS.APP(name.toLowerCase())}>
-      <Card sx={{ my: 2 }}>
+      <Card sx={{ mb: 1 }}>
         <CardActionArea>
           <CardContent>
             <Box>
@@ -43,13 +43,13 @@ function AppRow(props: AppRowProps) {
             </Box>
 
             <Box sx={{ px: 2 }}>
-              <Typography variant="caption" color="textSecondary">
+              <Typography variant="caption" color="textSecondary" sx={{ display: ['none', 'inline-block'] }}>
                 {formatMessage('app.connectionCount', { count: countTranslation(connectionCount) })}
               </Typography>
             </Box>
 
             <Box sx={{ px: 2 }}>
-              <Typography variant="caption" color="textSecondary">
+              <Typography variant="caption" color="textSecondary" sx={{ display: ['none', 'inline-block'] }}>
                 {formatMessage('app.flowCount', { count: countTranslation(0) })}
               </Typography>
             </Box>

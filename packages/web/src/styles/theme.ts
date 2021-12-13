@@ -1,4 +1,5 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, alpha } from '@mui/material/styles';
+import { cardActionAreaClasses } from '@mui/material/CardActionArea';
 
 const referenceTheme = createTheme({
   palette: {
@@ -164,11 +165,44 @@ const extendedTheme = createTheme({
     }
   },
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: referenceTheme.palette.primary.dark,
+          zIndex: referenceTheme.zIndex.drawer + 1,
+        }
+      },
+      defaultProps: {
+        elevation: 2,
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
-          padding: '12px 16px',
           textTransform: 'none',
+        },
+        sizeLarge: {
+          padding: '14px 22px',
+        },
+        sizeMedium: {
+          padding: '10px 16px',
+        },
+        sizeSmall: {
+          padding: '6px 10px',
+        }
+      }
+    },
+    MuiCardActionArea: {
+      styleOverrides: {
+        root: {
+          borderRadius: referenceTheme.shape.borderRadius,
+          [`& .${cardActionAreaClasses.focusHighlight}`]: {
+            background: 'unset',
+            border: `1px solid ${alpha(referenceTheme.palette.primary.light, 1)}`,
+          },
+          [`&:hover .${cardActionAreaClasses.focusHighlight}`]: {
+            opacity: 1,
+          }
         }
       }
     },
@@ -185,17 +219,6 @@ const extendedTheme = createTheme({
         a: {
           textDecoration: 'none',
         },
-      },
-    },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          background: referenceTheme.palette.primary.dark,
-          zIndex: referenceTheme.zIndex.drawer + 1,
-        }
-      },
-      defaultProps: {
-        elevation: 2,
       },
     },
     MuiToolbar: {

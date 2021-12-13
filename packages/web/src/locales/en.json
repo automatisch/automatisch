@@ -1,6 +1,6 @@
 {
   "brandText": "Automatisch",
-  "searchPlaceholder": "Search...",
+  "searchPlaceholder": "Search",
   "welcomeText": "Here comes the dashboard homepage.",
   "drawer.dashboard": "Dashboard",
   "drawer.flows": "Flows",
@@ -12,7 +12,7 @@
   "app.settings": "Settings",
   "app.connections": "Connections",
   "app.flows": "Flows",
-  "apps.title": "Apps",
+  "apps.title": "My Apps",
   "apps.addConnection": "Add connection",
   "apps.addNewAppConnection": "Add a new app connection",
   "apps.searchApp": "Search for app",
