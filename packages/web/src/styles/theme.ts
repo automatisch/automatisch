@@ -176,6 +176,13 @@ const extendedTheme = createTheme({
         elevation: 2,
       },
     },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          background: 'rgba(0, 8, 20, 0.64)'
+        }
+      }
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -220,6 +227,21 @@ const extendedTheme = createTheme({
           textDecoration: 'none',
         },
       },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paperWidthSm: {
+          margin: referenceTheme.spacing(4, 3),
+          width: `calc(100% - ${referenceTheme.spacing(6)})`,
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          paddingTop: referenceTheme.spacing(3),
+        }
+      }
     },
     MuiToolbar: {
       styleOverrides: {
