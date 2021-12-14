@@ -1,9 +1,11 @@
-import { useCallback, useState } from 'react';
+import * as React from 'react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
+import type { LinkProps } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
+
 
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
@@ -19,16 +21,27 @@ import type { App } from 'types/app';
 export default function Applications() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const [appName, setAppName] = useState(null);
+  const [appName, setAppName] = React.useState(null);
   const { data } = useQuery(GET_CONNECTED_APPS, { variables: {name: appName } });
 
-  const onSearchChange = useCallback((event) => {
+  const onSearchChange = React.useCallback((event) => {
     setAppName(event.target.value);
   }, []);
 
-  const goToApps = useCallback(() => {
+  const goToApps = React.useCallback(() => {
     navigate(URLS.APPS);
   }, [navigate]);
+
+  const NewAppConnectionLink = React.useMemo(
+    () =>
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InlineLink(
+        linkProps,
+        ref,
+      ) {
+        return <Link ref={ref} to={URLS.NEW_APP_CONNECTION} {...linkProps} />;
+      }),
+    [],
+  );
 
   return (
     <Box sx={{ py: 3 }}>
@@ -48,10 +61,9 @@ export default function Applications() {
               variant="contained"
               color="primary"
               size="large"
-              component={Link}
-              to={URLS.NEW_APP_CONNECTION}
+              component={NewAppConnectionLink}
               fullWidth
-              Icon={<AddIcon />}
+              icon={<AddIcon />}
             >
               {formatMessage('apps.addConnection')}
             </ConditionalIconButton>
