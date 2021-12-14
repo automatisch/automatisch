@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { IconButton } from './style';
 
 export default function ConditionalIconButton(props: any) {
-  const { Icon, ...buttonProps } = props;
+  const { icon, ...buttonProps } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -17,9 +17,8 @@ export default function ConditionalIconButton(props: any) {
         type={buttonProps.type}
         size={buttonProps.size}
         component={buttonProps.component}
-        to={buttonProps.to}
       >
-        <Icon />
+        {icon}
       </IconButton>
     )
   }
