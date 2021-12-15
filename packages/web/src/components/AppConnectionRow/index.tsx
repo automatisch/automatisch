@@ -2,9 +2,11 @@ import * as React from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import CardActionArea from '@mui/material/CardActionArea';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useSnackbar } from 'notistack';
+import { DateTime } from 'luxon';
 
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
@@ -17,7 +19,14 @@ type AppConnectionRowProps = {
   connection: Connection;
 }
 
-const countTranslation = (value: React.ReactNode) => (<><strong>{value}</strong><br /></>);
+const countTranslation = (value: React.ReactNode) => (
+  <>
+    <Typography variant="body1">
+      {value}
+    </Typography>
+    <br />
+  </>
+);
 
 function AppConnectionRow(props: AppConnectionRowProps) {
   const { enqueueSnackbar } = useSnackbar();
@@ -25,7 +34,7 @@ function AppConnectionRow(props: AppConnectionRowProps) {
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
   const formatMessage = useFormatMessage();
-  const { id, key, data, verified } = props.connection;
+  const { id, key, data, verified, createdAt } = props.connection;
 
   const contextButtonRef = React.useRef<SVGSVGElement | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
@@ -57,23 +66,34 @@ function AppConnectionRow(props: AppConnectionRowProps) {
     }
   }, [deleteConnection, id, testConnection, formatMessage, enqueueSnackbar]);
 
+  const relativeCreatedAt = DateTime.fromMillis(parseInt(createdAt, 10)).toRelative();
+
   return (
     <>
       <Card sx={{ my: 2 }}>
         <CardActionArea onClick={onContextMenuClick}>
           <CardContent>
-            <Box>
+            <Stack
+              direction="column"
+              justifyContent="center"
+              alignItems="flex-start"
+              spacing={1}
+            >
               <Typography variant="h6">
                 {data.screenName}
               </Typography>
-            </Box>
+
+              <Typography variant="caption">
+                {formatMessage('connection.addedAt', { datetime: relativeCreatedAt })}
+              </Typography>
+            </Stack>
 
             <Box>
               {testCalled && !testLoading && (verified ? 'yes' : 'no')}
             </Box>
 
             <Box sx={{ px: 2 }}>
-              <Typography variant="body2">
+              <Typography variant="caption" color="textSecondary" sx={{ display: ['none', 'inline-block'] }}>
                 {formatMessage('connection.flowCount', { count: countTranslation(0) })}
               </Typography>
             </Box>

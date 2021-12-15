@@ -7,6 +7,7 @@ type Connection = {
   key: string;
   data: ConnectionData;
   verified: boolean;
+  createdAt: string;
 };
 
 export type { Connection, ConnectionData };

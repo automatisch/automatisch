@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
 
-
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
 import AddNewAppConnection from 'components/AddNewAppConnection';

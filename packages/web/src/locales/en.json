@@ -9,9 +9,12 @@
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
   "app.addConnection": "Add connection",
+  "app.createFlow": "Create flow",
   "app.settings": "Settings",
   "app.connections": "Connections",
+  "app.noConnections": "You don't have any connections yet.",
   "app.flows": "Flows",
+  "app.noFlows": "You don't have any flows yet.",
   "apps.title": "My Apps",
   "apps.addConnection": "Add connection",
   "apps.addNewAppConnection": "Add a new app connection",
@@ -21,5 +24,7 @@
   "connection.testConnection": "Test connection",
   "connection.reconnect": "Reconnect",
   "connection.delete": "Delete",
-  "connection.deletedMessage": "The connection has been deleted."
+  "connection.deletedMessage": "The connection has been deleted.",
+  "connection.addedAt": "Added {datetime}"
+
 }

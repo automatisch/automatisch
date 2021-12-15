@@ -1,17 +1,20 @@
+import * as React from 'react';
 import { useQuery } from '@apollo/client';
 import { Link, Route, Navigate, Routes, useParams, useMatch, useNavigate } from 'react-router-dom';
+import type { LinkProps } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import SettingsIcon from '@mui/icons-material/Settings';
+import AddIcon from '@mui/icons-material/Add';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import { GET_APP } from 'graphql/queries/get-app';
 import * as URLS from 'config/urls';
 
+import ConditionalIconButton from 'components/ConditionalIconButton';
 import AppConnections from 'components/AppConnections';
 import AppFlows from 'components/AppFlows';
 import AddAppConnection from 'components/AddAppConnection';
@@ -37,8 +40,9 @@ const ReconnectConnection = (props: any) => {
   );
 }
 
-
 export default function Application() {
+  const theme = useTheme();
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const formatMessage = useFormatMessage();
   const connectionsPathMatch = useMatch({ path: URLS.APP_CONNECTIONS_PATTERN, end: false });
   const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
@@ -49,34 +53,91 @@ export default function Application() {
   const goToApplicationPage = () => navigate('connections');
   const app = data?.getApp || {};
 
+  const NewConnectionLink = React.useMemo(
+    () =>
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InlineLink(
+        linkProps,
+        ref,
+      ) {
+        return <Link ref={ref} to={URLS.APP_ADD_CONNECTION(appKey)} {...linkProps} />;
+      }),
+    [appKey],
+  );
+
+  const NewFlowLink = React.useMemo(
+    () =>
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InlineLink(
+        linkProps,
+        ref,
+      ) {
+        return <Link ref={ref} to={URLS.APP_ADD_CONNECTION(appKey)} {...linkProps} />;
+      }),
+    [appKey],
+  );
+
   return (
     <>
       <Box sx={{ py: 3 }}>
         <Container>
-          <Grid container sx={{ mb: 3 }}>
-            <Grid item xs="auto" sx={{ mr: 1.5 }}>
-              <AppIcon url={app.iconUrl} color={app.primaryColor} name={app.name} />
+          <Grid container sx={{ mb: 3 }} alignItems="center">
+            <Grid item xs="auto" sx={{ mr: 3 }}>
+              <AppIcon
+                url={app.iconUrl}
+                color={app.primaryColor}
+                name={app.name}
+              />
             </Grid>
 
             <Grid item xs>
               <PageTitle>{app.name}</PageTitle>
             </Grid>
 
-            <Grid item xs="auto" justifyContent="flex-end">
-              <IconButton sx={{ mr: 2 }} title={formatMessage('app.settings')}>
-                <SettingsIcon />
-              </IconButton>
+            <Grid item xs="auto">
+              <Routes>
+                <Route
+                  path={`${URLS.FLOWS}/*`}
+                  element={
+                    <ConditionalIconButton
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      component={NewFlowLink}
+                      fullWidth
+                      icon={<AddIcon />}
+                    >
+                      {formatMessage('app.createFlow')}
+                    </ConditionalIconButton>
+                  }
+                />
 
-              <Button variant="contained" component={Link} to={URLS.APP_ADD_CONNECTION(appKey)}>
-                {formatMessage('app.addConnection')}
-              </Button>
+                <Route
+                  path={`${URLS.CONNECTIONS}/*`}
+                  element={
+                    <ConditionalIconButton
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      component={NewConnectionLink}
+                      fullWidth
+                      icon={<AddIcon />}
+                    >
+                      {formatMessage('app.addConnection')}
+                    </ConditionalIconButton>
+                  }
+                />
+              </Routes>
             </Grid>
           </Grid>
 
           <Grid container>
             <Grid item xs>
               <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-                <Tabs value={connectionsPathMatch?.pattern?.path || flowsPathMatch?.pattern?.path}>
+                <Tabs
+                  variant={matchSmallScreens ? 'fullWidth' : undefined}
+                  value={connectionsPathMatch?.pattern?.path || flowsPathMatch?.pattern?.path}
+                >
                   <Tab
                     label={formatMessage('app.connections')}
                     to={URLS.APP_CONNECTIONS(appKey)}
