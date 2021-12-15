@@ -1,4 +1,4 @@
-import { useMemo, forwardRef } from 'react';
+import * as React from 'react';
 import { useMatch } from 'react-router-dom';
 import ListItem from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -9,15 +9,16 @@ type ListItemLinkProps = {
   icon: React.ReactNode;
   primary: string;
   to: string;
+  onClick?: (event: React.SyntheticEvent) => void;
 }
 
 export default function ListItemLink(props: ListItemLinkProps) {
-  const { icon, primary, to } = props;
+  const { icon, primary, to, onClick } = props;
   const selected = useMatch({ path: to, end: false });
 
-  const CustomLink = useMemo(
+  const CustomLink = React.useMemo(
     () =>
-      forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InLineLink(
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InLineLink(
         linkProps,
         ref,
       ) {
@@ -28,7 +29,12 @@ export default function ListItemLink(props: ListItemLinkProps) {
 
   return (
     <li>
-      <ListItem component={CustomLink} sx={{ pl: { xs: 2, sm: 3 } }} selected={!!selected}>
+      <ListItem
+        component={CustomLink}
+        sx={{ pl: { xs: 2, sm: 3 } }}
+        selected={!!selected}
+        onClick={onClick}
+      >
         <ListItemIcon sx={{ minWidth: 52 }}>{icon}</ListItemIcon>
         <ListItemText primary={primary} primaryTypographyProps={{ variant: 'body1', }} />
       </ListItem>

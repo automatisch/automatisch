@@ -180,6 +180,9 @@ const extendedTheme = createTheme({
       styleOverrides: {
         root: {
           background: 'rgba(0, 8, 20, 0.64)'
+        },
+        invisible: {
+          background: 'transparent',
         }
       }
     },
@@ -242,6 +245,15 @@ const extendedTheme = createTheme({
           paddingTop: referenceTheme.spacing(3),
         }
       }
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          [referenceTheme.breakpoints.up('sm')]: {
+            padding: referenceTheme.spacing(1.5, 3),
+          }
+        }
+      },
     },
     MuiToolbar: {
       styleOverrides: {

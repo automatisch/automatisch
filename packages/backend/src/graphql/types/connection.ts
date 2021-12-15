@@ -11,7 +11,8 @@ const connectionType = new GraphQLObjectType({
       key: { type: GraphQLString },
       data: { type: connectionDataType },
       verified: { type: GraphQLBoolean },
-      app: { type: appType }
+      app: { type: appType },
+      createdAt: { type: GraphQLString }
     }
   }
 })

@@ -22,6 +22,12 @@ export default function Drawer(props: SwipeableDrawerProps) {
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const formatMessage = useFormatMessage();
 
+  const closeOnClick = (event: React.SyntheticEvent) => {
+    if (matchSmallScreens) {
+      props.onClose(event);
+    }
+  }
+
   return (
     <BaseDrawer
       {...props}
@@ -38,18 +44,21 @@ export default function Drawer(props: SwipeableDrawerProps) {
           icon={<SwapCallsIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.flows')}
           to={URLS.FLOWS}
+          onClick={closeOnClick}
         />
 
         <ListItemLink
           icon={<AppsIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.apps')}
           to={URLS.APPS}
+          onClick={closeOnClick}
         />
 
         <ListItemLink
           icon={<ExploreIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.explore')}
           to={URLS.EXPLORE}
+          onClick={closeOnClick}
         />
       </List>
 
