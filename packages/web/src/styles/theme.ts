@@ -239,6 +239,15 @@ const extendedTheme = createTheme({
         }
       }
     },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          '&&': {
+            paddingTop: referenceTheme.spacing(2),
+          }
+        },
+      }
+    },
     MuiDialogTitle: {
       styleOverrides: {
         root: {
