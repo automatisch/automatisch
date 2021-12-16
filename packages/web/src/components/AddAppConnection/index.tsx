@@ -1,11 +1,12 @@
-import { useCallback, useEffect } from 'react';
+import * as React from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 
+import useFormatMessage from 'hooks/useFormatMessage';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import { processStep } from 'helpers/authenticationSteps';
 import InputCreator from 'components/InputCreator';
@@ -25,15 +26,18 @@ type Response = {
 export default function AddAppConnection(props: AddAppConnectionProps){
   const { application, connectionId, onClose } = props;
   const { key, fields, authenticationSteps, reconnectionSteps } = application;
+  const formatMessage = useFormatMessage();
+  const [inProgress, setInProgress] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (window.opener) {
       window.opener.postMessage({ source: 'automatisch', payload: window.location.search });
       window.close();
     }
   }, []);
 
-  const submitHandler: SubmitHandler<FieldValues> = useCallback(async (data) => {
+  const submitHandler: SubmitHandler<FieldValues> = React.useCallback(async (data) => {
+    setInProgress(true);
     const hasConnection = Boolean(connectionId);
 
     const response: Response = {
@@ -58,6 +62,7 @@ export default function AddAppConnection(props: AddAppConnectionProps){
       stepIndex++;
     }
 
+    setInProgress(false);
     onClose?.();
   }, [connectionId, key, reconnectionSteps, authenticationSteps, onClose]);
 
@@ -70,7 +75,15 @@ export default function AddAppConnection(props: AddAppConnectionProps){
           <Form onSubmit={submitHandler}>
             {fields?.map(field => (<InputCreator key={field.key} schema={field} />))}
 
-            <Button type="submit" variant="contained" color="primary">Submit</Button>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ boxShadow: 2 }}
+              loading={inProgress}
+            >
+              {formatMessage('addAppConnection.submit')}
+            </LoadingButton>
           </Form>
         </DialogContentText>
       </DialogContent>
