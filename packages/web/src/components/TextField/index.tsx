@@ -22,7 +22,7 @@ const createCopyAdornment = (ref: React.RefObject<HTMLInputElement | null>) => {
       onClick={() => copyInputValue(ref.current as HTMLInputElement)}
       edge="end"
     >
-      <ContentCopyIcon />
+      <ContentCopyIcon color="primary" />
     </IconButton>
   </InputAdornment>
 );

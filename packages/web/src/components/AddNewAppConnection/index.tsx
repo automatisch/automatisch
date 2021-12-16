@@ -45,7 +45,6 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps){
         <FormControl
           variant="outlined"
           fullWidth
-          sx={{ mt: 2 }}
           size={matchSmallScreens ? 'small' : 'medium'}
         >
           <InputLabel
@@ -72,10 +71,11 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps){
           {data?.getApps?.map((app: App) => (
             <ListItem disablePadding key={app.name}>
               <ListItemButton component={Link} to={URLS.APP_ADD_CONNECTION(app.name.toLowerCase())}>
-                <ListItemIcon>
-                  <AppIcon color={app.primaryColor} url={app.iconUrl} name={app.name} />
+                <ListItemIcon sx={{ minWidth: 74 }}>
+                  <AppIcon color="transparent" url={app.iconUrl} name={app.name} />
                 </ListItemIcon>
-                <ListItemText primary={app.name} />
+
+                <ListItemText primary={app.name} primaryTypographyProps={{ sx: { color: (theme) => theme.palette.text.primary }  }} />
               </ListItemButton>
             </ListItem>
           ))}

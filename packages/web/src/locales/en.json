@@ -19,12 +19,16 @@
   "apps.addConnection": "Add connection",
   "apps.addNewAppConnection": "Add a new app connection",
   "apps.searchApp": "Search for app",
+  "addAppConnection.submit": "Submit",
   "connection.flowCount": "{count} flows",
   "connection.viewFlows": "View flows",
   "connection.testConnection": "Test connection",
+  "connection.testSuccessful": "Test successful",
+  "connection.testFailed": "Test failed",
+  "connection.testing": "Testing...",
   "connection.reconnect": "Reconnect",
   "connection.delete": "Delete",
   "connection.deletedMessage": "The connection has been deleted.",
-  "connection.addedAt": "Added {datetime}"
+  "connection.addedAt": "added {datetime}"
 
 }

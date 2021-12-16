@@ -35,6 +35,7 @@ export default function InputCreator(props: InputCreatorProps) {
       readOnly={readOnly}
       onChange={onChange}
       name={name}
+      size="small"
       label={label}
       fullWidth
       helperText={description}
