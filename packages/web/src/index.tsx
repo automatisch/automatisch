@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Layout from 'components/Layout';
 import ThemeProvider from 'components/ThemeProvider';
 import IntlProvider from 'components/IntlProvider';
 import ApolloProvider from 'components/ApolloProvider';
@@ -14,11 +13,9 @@ ReactDOM.render(
     <ApolloProvider>
       <IntlProvider>
         <ThemeProvider>
-            <Router>
-              <Layout>
-                {routes}
-              </Layout>
-            </Router>
+          <Router>
+            {routes}
+          </Router>
         </ThemeProvider>
       </IntlProvider>
     </ApolloProvider>
