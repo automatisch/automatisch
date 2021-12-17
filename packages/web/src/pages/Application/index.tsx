@@ -70,9 +70,9 @@ export default function Application() {
         linkProps,
         ref,
       ) {
-        return <Link ref={ref} to={URLS.APP_ADD_CONNECTION(appKey)} {...linkProps} />;
+        return <Link ref={ref} to={URLS.CREATE_FLOW} {...linkProps} />;
       }),
-    [appKey],
+    [],
   );
 
   return (

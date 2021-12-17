@@ -29,6 +29,6 @@
   "connection.reconnect": "Reconnect",
   "connection.delete": "Delete",
   "connection.deletedMessage": "The connection has been deleted.",
-  "connection.addedAt": "added {datetime}"
-
+  "connection.addedAt": "added {datetime}",
+  "createFlow.creating": "Creating a flow..."
 }
