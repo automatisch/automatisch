@@ -21,7 +21,7 @@ function AppFlowRow(props: AppFlowRowProps) {
         <CardActionArea component={Link} to={URLS.FLOW('dummy')}>
           <CardContent>
             <Box>
-              <Typography variant="h6">
+              <Typography variant="h6" noWrap>
                 {flow.name}
               </Typography>
             </Box>
