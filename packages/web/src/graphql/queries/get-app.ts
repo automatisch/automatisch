@@ -8,6 +8,7 @@ export const GET_APP = gql`
       iconUrl
       docUrl
       primaryColor
+      connectionCount
       fields {
         key
         label
@@ -47,6 +48,11 @@ export const GET_APP = gql`
       }
       connections {
         id
+      }
+      triggers {
+        name
+        key
+        description
       }
     }
   }
