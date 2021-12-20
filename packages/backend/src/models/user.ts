@@ -32,6 +32,10 @@ class User extends Base {
     }
   })
 
+  login(password: string) {
+    return bcrypt.compare(password, this.password);
+  }
+
   async generateHash() {
     this.password = await bcrypt.hash(this.password, 10);
   }
