@@ -5,7 +5,7 @@ import RequestWithCurrentUser from '../../types/express/request-with-current-use
 
 type Params = {
   id: string,
-  data: object
+  name: string
 }
 const updateFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
   let flow = await Flow.query().findOne({
