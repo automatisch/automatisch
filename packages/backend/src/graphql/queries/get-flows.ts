@@ -5,7 +5,8 @@ import flowType from '../types/flow';
 
 const getFlowsResolver = async (req: RequestWithCurrentUser) => {
   const flows = await Flow.query()
-    .where({ user_id: req.currentUser.id});
+    .withGraphJoined('[steps.[connection]]')
+    .where({'flows.user_id': req.currentUser.id});
 
   return flows;
 }

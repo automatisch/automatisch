@@ -8,11 +8,9 @@ type Params = {
 }
 
 const getFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  const flowParams = { user_id: req.currentUser.id, id: params.id }
-
   const flow = await Flow.query()
-    .withGraphFetched('steps')
-    .findOne(flowParams)
+    .withGraphJoined('[steps.[connection]]')
+    .findOne({'flows.user_id': req.currentUser.id, 'flows.id': params.id})
     .throwIfNotFound();
 
   return flow;

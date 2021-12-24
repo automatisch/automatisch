@@ -1,4 +1,5 @@
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLEnumType, GraphQLInt } from 'graphql';
+import ConnectionType from './connection';
 
 const stepType = new GraphQLObjectType({
   name: 'Step',
@@ -15,7 +16,7 @@ const stepType = new GraphQLObjectType({
         }
       })
     },
-    connectionId: { type: GraphQLNonNull(GraphQLInt) }
+    connection: { type: ConnectionType }
   }
 })
 

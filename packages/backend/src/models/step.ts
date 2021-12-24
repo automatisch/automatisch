@@ -1,5 +1,6 @@
 import Base from './base';
 import Flow from './flow';
+import Connection from './connection';
 
 enum StepEnumType {
   'trigger',
@@ -37,8 +38,16 @@ class Step extends Base {
       relation: Base.BelongsToOneRelation,
       modelClass: Flow,
       join: {
-        from: 'step.flow_id',
+        from: 'steps.flow_id',
         to: 'flows.id',
+      },
+    },
+    connection: {
+      relation: Base.HasOneRelation,
+      modelClass: Connection,
+      join: {
+        from: 'steps.connection_id',
+        to: 'connections.id'
       },
     }
   })
