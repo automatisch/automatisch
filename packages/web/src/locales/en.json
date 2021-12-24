@@ -30,5 +30,7 @@
   "connection.delete": "Delete",
   "connection.deletedMessage": "The connection has been deleted.",
   "connection.addedAt": "added {datetime}",
-  "createFlow.creating": "Creating a flow..."
+  "createFlow.creating": "Creating a flow...",
+  "flow.active": "Enabled",
+  "flow.inactive": "Disabled"
 }
