@@ -16,5 +16,6 @@ export const APP_FLOWS = (appKey: string) => `/app/${appKey}/flows`;
 export const APP_FLOWS_PATTERN = '/app/:appKey/flows';
 export const NEW_APP_CONNECTION = '/apps/new';
 export const CREATE_FLOW = '/editor/create';
-export const FLOW = (flowKey: string) => `/flows/${flowKey}`;
-export const FLOW_PATTERN = '/flows/:flowKey';
+export const FLOW_EDITOR = (flowId: string) => `/editor/${flowId}`;
+export const FLOW = (flowId: string) => `/flows/${flowId}`;
+export const FLOW_PATTERN = '/flows/:flowId';

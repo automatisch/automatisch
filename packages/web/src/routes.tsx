@@ -4,7 +4,7 @@ import Applications from 'pages/Applications';
 import Application from 'pages/Application';
 import Flows from 'pages/Flows';
 import Explore from 'pages/Explore';
-import Editor from 'pages/Editor';
+import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
 
 export default (
@@ -17,7 +17,7 @@ export default (
 
     <Route path={`${URLS.APP_PATTERN}/*`} element={<Layout><Application /></Layout>} />
 
-    <Route path={`${URLS.EDITOR}/*`} element={<Editor />} />
+    <Route path={`${URLS.EDITOR}/*`} element={<EditorRoutes />} />
 
     <Route path="/" element={<Navigate to={URLS.FLOWS} />} />
 

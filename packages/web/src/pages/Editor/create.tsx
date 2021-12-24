@@ -21,7 +21,7 @@ export default function CreateFlow() {
       const flowId = response.data?.createFlow?.id;
 
       setTimeout(() => {
-        navigate(URLS.FLOW(flowId));
+        navigate(URLS.FLOW_EDITOR(flowId));
       }, 1234);
     }
 

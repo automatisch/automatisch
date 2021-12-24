@@ -1,11 +1,7 @@
-import * as React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import CreateFlowPage from './create';
+import EditorLayout from 'components/EditorLayout';
 
-export default function Editor() {
+export default function FlowEditor() {
   return (
-    <Routes>
-      <Route path="/create" element={<CreateFlowPage />} />
-    </Routes>
+    <EditorLayout />
   )
 }

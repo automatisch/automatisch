@@ -229,6 +229,9 @@ const extendedTheme = createTheme({
         a: {
           textDecoration: 'none',
         },
+        '#root': {
+          height: '100vh'
+        }
       },
     },
     MuiDialog: {
