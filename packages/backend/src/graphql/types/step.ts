@@ -3,6 +3,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLEnumType, Grap
 const stepType = new GraphQLObjectType({
   name: 'Step',
   fields: {
+    id: { type: GraphQLString },
     key: { type: GraphQLNonNull(GraphQLString) },
     appKey: { type: GraphQLNonNull(GraphQLString) },
     type: {
