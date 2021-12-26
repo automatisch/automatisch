@@ -5,10 +5,11 @@ import FlowStep from 'components/FlowStep';
 import type { Flow } from 'types/flow';
 
 type EditorProps = {
-  flow?: Flow;
+  flow: Flow;
 }
 
 export default function Editor(props: EditorProps) {
+  const [currentStep, setCurrentStep] = React.useState<number | null>(null);
   const { flow } = props;
 
   return (
@@ -17,13 +18,20 @@ export default function Editor(props: EditorProps) {
       flex={1}
       flexDirection="column"
       alignItems="center"
-      width={800}
-      maxWidth="100%"
       alignSelf="center"
       py={3}
       gap={2}
     >
-      {flow?.steps?.map(step => (<FlowStep key={step.id} step={step} />))}
+      {flow?.steps?.map((step, index) => (
+        <FlowStep
+          key={step.id}
+          step={step}
+          index={index + 1}
+          collapsed={currentStep !== index}
+          onOpen={() => setCurrentStep(index)}
+          onClose={() => setCurrentStep(null)}
+        />
+      ))}
     </Box>
   )
 };

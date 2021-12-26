@@ -19,7 +19,7 @@ export default function AppIcon(props: AppIconProps & AvatarProps) {
     <Avatar
       component="span"
       variant="square"
-      sx={{ bgcolor: color, display: 'inline-flex', width: 50, height: 50, ...sx }}
+      sx={{ bgcolor: color, display: 'flex', width: 50, height: 50, ...sx }}
       imgProps={{ style: inlineImgStyle }}
       src={url}
       alt={name}

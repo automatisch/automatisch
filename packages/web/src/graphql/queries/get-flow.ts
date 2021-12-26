@@ -10,7 +10,9 @@ export const GET_FLOW = gql`
         type
         key
         appKey
-        connectionId
+        connection {
+          id
+        }
       }
     }
   }

@@ -1,7 +1,12 @@
+export enum StepType {
+  Trigger = 'trigger',
+  Action = 'action',
+}
+
 export type Step = {
   id: string;
   key: string;
   appKey: string;
-  type: 'trigger' | 'action';
+  type: StepType;
   connectionId: number;
 };
