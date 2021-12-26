@@ -16,7 +16,13 @@ const computeAuthStepVariables = (variableSchema: any, aggregatedData: any) => {
       continue;
     }
 
-    variables[variable.name] = template(variable.value, { interpolate })(aggregatedData);
+    const computedVariable = template(variable.value, { interpolate })(aggregatedData);
+
+    if (variable.type === 'integer') {
+      variables[variable.name] = parseInt(computedVariable, 10);
+    } else {
+      variables[variable.name] = computedVariable;
+    }
   }
 
   return variables;
