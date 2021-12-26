@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLInt, GraphQLNonNull } from 'graphql';
 import App from '../../models/app';
 import Connection from '../../models/connection';
 import Step from '../../models/step';
@@ -6,7 +6,7 @@ import stepType from '../types/step';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: string,
+  id: number,
   data: object
 }
 const executeStepResolver = async (params: Params, req: RequestWithCurrentUser) => {
@@ -28,7 +28,7 @@ const executeStepResolver = async (params: Params, req: RequestWithCurrentUser) 
 const executeStep = {
   type: stepType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLString) }
+    id: { type: GraphQLNonNull(GraphQLInt) }
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => executeStepResolver(params, req)
 };

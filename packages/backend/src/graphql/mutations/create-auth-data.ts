@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLInt } from 'graphql';
 import Connection from '../../models/connection';
 import authLinkType from '../types/auth-link';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
@@ -6,6 +6,7 @@ import RequestWithCurrentUser from '../../types/express/request-with-current-use
 type Params = {
   id: number,
 }
+
 const createAuthDataResolver = async (params: Params, req: RequestWithCurrentUser) => {
   const connection = await Connection.query().findOne({
     user_id: req.currentUser.id,
@@ -34,7 +35,7 @@ const createAuthDataResolver = async (params: Params, req: RequestWithCurrentUse
 const createAuthData = {
   type: authLinkType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLNonNull(GraphQLInt) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createAuthDataResolver(params, req)
 };

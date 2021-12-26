@@ -75,7 +75,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{createConnection.id}"
+          "value": "{createConnection.id}",
+          "type": "integer"
         }
       ]
     },
@@ -97,7 +98,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{createConnection.id}"
+          "value": "{createConnection.id}",
+          "type": "integer"
         },
         {
           "name": "data",
@@ -118,7 +120,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{createConnection.id}"
+          "value": "{createConnection.id}",
+          "type": "integer"
         }
       ]
     }
@@ -131,7 +134,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}"
+          "value": "{connection.id}",
+          "type": "integer"
         }
       ]
     },
@@ -142,7 +146,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}"
+          "value": "{connection.id}",
+          "type": "integer"
         },
         {
           "name": "data",
@@ -167,7 +172,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}"
+          "value": "{connection.id}",
+          "type": "integer"
         }
       ]
     },
@@ -189,7 +195,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}"
+          "value": "{connection.id}",
+          "type": "integer"
         },
         {
           "name": "data",
@@ -210,7 +217,8 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}"
+          "value": "{connection.id}",
+          "type": "integer"
         }
       ]
     }

@@ -4,7 +4,7 @@ import flowType from '../types/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: string,
+  id: number,
   name: string
 }
 const updateFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {

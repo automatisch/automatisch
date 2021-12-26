@@ -1,11 +1,11 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLInt, GraphQLNonNull } from 'graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import Connection from '../../models/connection';
 import connectionType from '../types/connection';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: string,
+  id: number,
   data: object
 }
 const updateConnectionResolver = async (params: Params, req: RequestWithCurrentUser) => {
@@ -27,7 +27,7 @@ const updateConnectionResolver = async (params: Params, req: RequestWithCurrentU
 const updateConnection = {
   type: connectionType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLNonNull(GraphQLInt) },
     data: { type: GraphQLNonNull(GraphQLJSONObject) }
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => updateConnectionResolver(params, req)

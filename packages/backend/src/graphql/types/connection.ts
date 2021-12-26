@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLBoolean } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt } from 'graphql';
 import connectionDataType from './connection-data';
 
 const connectionType = new GraphQLObjectType({
@@ -7,7 +7,7 @@ const connectionType = new GraphQLObjectType({
     const appType = require('./app').default;
 
     return {
-      id: { type: GraphQLString },
+      id: { type: GraphQLInt },
       key: { type: GraphQLString },
       data: { type: connectionDataType },
       verified: { type: GraphQLBoolean },

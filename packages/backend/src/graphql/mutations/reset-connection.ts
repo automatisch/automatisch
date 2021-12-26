@@ -1,10 +1,10 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLInt, GraphQLNonNull } from 'graphql';
 import Connection from '../../models/connection';
 import connectionType from '../types/connection';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: string
+  id: number
 }
 
 const resetConnectionResolver = async (params: Params, req: RequestWithCurrentUser) => {
@@ -23,7 +23,7 @@ const resetConnectionResolver = async (params: Params, req: RequestWithCurrentUs
 const resetConnection = {
   type: connectionType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLNonNull(GraphQLInt) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => resetConnectionResolver(params, req)
 };

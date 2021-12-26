@@ -32,7 +32,7 @@ const createStepResolver = async (params: Params, req: RequestWithCurrentUser) =
 const createStep = {
   type: stepType,
   args: {
-    flowId: { type: GraphQLNonNull(GraphQLString) },
+    flowId: { type: GraphQLNonNull(GraphQLInt) },
     key: { type: GraphQLNonNull(GraphQLString) },
     appKey: { type: GraphQLNonNull(GraphQLString) },
     type: {
