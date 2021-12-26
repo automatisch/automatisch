@@ -1,10 +1,10 @@
-import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
 import StepType from './step';
 
 const flowType = new GraphQLObjectType({
   name: 'Flow',
   fields: {
-    id: { type: GraphQLString },
+    id: { type: GraphQLInt },
     name: { type: GraphQLString },
     steps: {
       type: GraphQLList(StepType),

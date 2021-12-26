@@ -4,7 +4,7 @@ import ConnectionType from './connection';
 const stepType = new GraphQLObjectType({
   name: 'Step',
   fields: {
-    id: { type: GraphQLString },
+    id: { type: GraphQLInt },
     key: { type: GraphQLNonNull(GraphQLString) },
     appKey: { type: GraphQLNonNull(GraphQLString) },
     type: {
