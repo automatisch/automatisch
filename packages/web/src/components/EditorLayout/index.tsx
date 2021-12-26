@@ -9,6 +9,7 @@ import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
+import Container from 'components/Container';
 import Editor from 'components/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { GET_FLOW } from 'graphql/queries/get-flow';
@@ -33,7 +34,7 @@ export default function EditorLayout(props: EditorLayoutProps) {
               <ArrowBackIosNewIcon fontSize="small" />
             </IconButton>
 
-            <Typography variant="body1" noWrap sx={{ width: 300, maxWidth: '300px '}}>
+            <Typography variant="body1" noWrap sx={{ display: 'flex', flex: 1, maxWidth: '50vw' }}>
               {flow?.name}
             </Typography>
           </Box>
@@ -49,11 +50,11 @@ export default function EditorLayout(props: EditorLayoutProps) {
           </Box>
         </Stack>
 
-        <Box display="flex" flex="1" flexDirection="column">
+        <Container maxWidth="md">
           {!flow && 'not found'}
 
           {flow && <Editor flow={flow} />}
-        </Box>
+        </Container>
       </Stack>
     </>
   )

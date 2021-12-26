@@ -32,5 +32,7 @@
   "connection.addedAt": "added {datetime}",
   "createFlow.creating": "Creating a flow...",
   "flow.active": "Enabled",
-  "flow.inactive": "Disabled"
+  "flow.inactive": "Disabled",
+  "flowStep.triggerType": "Trigger",
+  "flowStep.actionType": "Action"
 }
