@@ -27,6 +27,7 @@ export const GET_APP = gql`
         arguments {
           name
           value
+          type
           properties {
             name
             value
@@ -40,6 +41,7 @@ export const GET_APP = gql`
         arguments {
           name
           value
+          type
           properties {
             name
             value
