@@ -1,4 +1,5 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
+import ArgumentEnumType from './argument-enum-type';
 
 const authenticationStepType = new GraphQLObjectType({
   name: 'AuthenticationStep',
@@ -13,6 +14,7 @@ const authenticationStepType = new GraphQLObjectType({
           fields: {
             name: { type: GraphQLString },
             value: { type: GraphQLString },
+            type: { type: ArgumentEnumType },
             properties: {  
               type: GraphQLList(
                 new GraphQLObjectType({
