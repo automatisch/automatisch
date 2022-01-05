@@ -3,6 +3,7 @@ import Layout from 'components/Layout';
 import Applications from 'pages/Applications';
 import Application from 'pages/Application';
 import Flows from 'pages/Flows';
+import Flow from 'pages/Flow';
 import Explore from 'pages/Explore';
 import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
@@ -10,6 +11,8 @@ import * as URLS from 'config/urls';
 export default (
   <Routes>
     <Route path={URLS.FLOWS} element={<Layout><Flows /></Layout>} />
+
+    <Route path={`${URLS.FLOW_PATTERN}/*`} element={<Layout><Flow /></Layout>} />
 
     <Route path={`${URLS.APPS}/*`} element={<Layout><Applications /></Layout>} />
 

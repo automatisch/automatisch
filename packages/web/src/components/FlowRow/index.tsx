@@ -3,22 +3,23 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CardActionArea from '@mui/material/CardActionArea';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+import type { Flow } from 'types/flow';
 import * as URLS from 'config/urls';
 import { CardContent, Typography } from './style';
 
-type AppFlowRowProps = {
-  flow: any;
+type FlowRowProps = {
+  flow: Flow;
 }
 
-function AppFlowRow(props: AppFlowRowProps) {
+export default function FlowRow(props: FlowRowProps) {
   const { flow } = props;
 
   return (
-    <>
-      <Card sx={{ my: 2 }}>
-        <CardActionArea component={Link} to={URLS.FLOW(flow.id)}>
+    <Link to={URLS.FLOW(flow.id)}>
+      <Card sx={{ mb: 1 }}>
+        <CardActionArea>
           <CardContent>
             <Box>
               <Typography variant="h6" noWrap>
@@ -27,13 +28,11 @@ function AppFlowRow(props: AppFlowRowProps) {
             </Box>
 
             <Box>
-              <MoreHorizIcon />
+              <ArrowForwardIosIcon sx={{ color: (theme) => theme.palette.primary.main }} />
             </Box>
           </CardContent>
         </CardActionArea>
       </Card>
-    </>
+    </Link>
   );
 }
-
-export default AppFlowRow;
