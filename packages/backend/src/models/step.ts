@@ -10,8 +10,8 @@ enum StepEnumType {
 class Step extends Base {
   id!: number
   flowId!: number
-  key!: string
-  appKey!: string
+  key: string
+  appKey: string
   type!: StepEnumType
   connectionId!: number
   parameters: any
@@ -20,7 +20,7 @@ class Step extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['key', 'appKey', 'type', 'connectionId'],
+    required: ['type'],
 
     properties: {
       id: { type: 'integer' },

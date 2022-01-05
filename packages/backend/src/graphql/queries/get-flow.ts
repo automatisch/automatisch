@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLInt } from 'graphql';
 import Flow from '../../models/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 import flowType from '../types/flow';
@@ -19,7 +19,7 @@ const getFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
 const getFlow = {
   type: flowType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLNonNull(GraphQLInt) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) => getFlowResolver(params, req)
 }
