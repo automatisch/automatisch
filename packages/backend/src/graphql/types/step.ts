@@ -5,8 +5,8 @@ const stepType = new GraphQLObjectType({
   name: 'Step',
   fields: {
     id: { type: GraphQLInt },
-    key: { type: GraphQLNonNull(GraphQLString) },
-    appKey: { type: GraphQLNonNull(GraphQLString) },
+    key: { type: GraphQLString },
+    appKey: { type: GraphQLString },
     type: {
       type: new GraphQLEnumType({
         name: 'StepEnumType',
