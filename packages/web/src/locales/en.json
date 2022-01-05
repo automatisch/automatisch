@@ -1,7 +1,6 @@
 {
   "brandText": "Automatisch",
   "searchPlaceholder": "Search",
-  "welcomeText": "Here comes the dashboard homepage.",
   "drawer.dashboard": "Dashboard",
   "drawer.flows": "Flows",
   "drawer.apps": "My Apps",
@@ -15,7 +14,7 @@
   "app.noConnections": "You don't have any connections yet.",
   "app.flows": "Flows",
   "app.noFlows": "You don't have any flows yet.",
-  "apps.title": "My Apps",
+  "apps.title": "Apps",
   "apps.addConnection": "Add connection",
   "apps.addNewAppConnection": "Add a new app connection",
   "apps.searchApp": "Search for app",
@@ -34,5 +33,7 @@
   "flow.active": "Enabled",
   "flow.inactive": "Disabled",
   "flowStep.triggerType": "Trigger",
-  "flowStep.actionType": "Action"
+  "flowStep.actionType": "Action",
+  "flows.create": "Create flow",
+  "flows.title": "Flows"
 }
