@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean } from 'graphql';
 
-const triggerType = new GraphQLObjectType({
-  name: 'Trigger',
+const actionType = new GraphQLObjectType({
+  name: 'Action',
   fields: {
     name: { type: GraphQLString },
     key: { type: GraphQLString },
@@ -9,13 +9,13 @@ const triggerType = new GraphQLObjectType({
     subSteps: { 
       type: GraphQLList(
         new GraphQLObjectType({
-          name: 'TriggerSubStep',
+          name: 'ActionSubStep',
           fields: {
             name: { type: GraphQLString },
             arguments: {  
               type: GraphQLList(
                 new GraphQLObjectType({
-                  name: 'TriggerSubStepArgument',
+                  name: 'ActionSubStepArgument',
                   fields: {
                     name: { type: GraphQLString },
                     type: { type: GraphQLString },
@@ -31,4 +31,4 @@ const triggerType = new GraphQLObjectType({
   }
 })
 
-export default triggerType;
+export default actionType;

@@ -3,6 +3,7 @@ import fieldType from './field';
 import authenticationStepType from './authentication-step';
 import reconnectionStepType from './reconnection-step';
 import triggerType from './trigger';
+import actionType from './action';
 
 const appType = new GraphQLObjectType({
   name: 'App',
@@ -20,6 +21,7 @@ const appType = new GraphQLObjectType({
       authenticationSteps: { type: GraphQLList(authenticationStepType) },
       reconnectionSteps: { type: GraphQLList(reconnectionStepType) },
       triggers: { type: GraphQLList(triggerType) },
+      actions: { type: GraphQLList(actionType) },
       connections: { type: GraphQLList(connectionType) },
     }
   }
