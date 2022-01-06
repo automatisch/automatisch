@@ -8,6 +8,7 @@ import deleteConnection from './mutations/delete-connection';
 import createFlow from './mutations/create-flow';
 import updateFlow from './mutations/update-flow';
 import createStep from './mutations/create-step';
+import updateStep from './mutations/update-step';
 import executeStep from './mutations/execute-step';
 import login from './mutations/login';
 
@@ -23,6 +24,7 @@ const rootMutation = new GraphQLObjectType({
     createFlow,
     updateFlow,
     createStep,
+    updateStep,
     executeStep,
     login
   }
