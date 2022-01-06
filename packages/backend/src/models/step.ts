@@ -29,7 +29,7 @@ class Step extends Base {
       appKey: { type: 'string', minLength: 1, maxLength: 255 },
       type: { type: "string", enum: ["action", "trigger"] },
       connectionId: { type: 'integer' },
-      parameters: { type: 'object' },
+      parameters: { type: ['object', null] },
     }
   }
 
