@@ -227,12 +227,44 @@
     {
       "name": "My Tweet",
       "key": "myTweet",
-      "description": "Will be triggered when you tweet something new."
+      "description": "Will be triggered when you tweet something new.",
+      "subSteps": [
+        {
+          "name": "Choose app & event"
+        },
+        {
+          "name": "Choose account"
+        },
+        {
+          "name": "Test trigger"
+        }
+      ]
     },
     {
       "name": "User Tweet",
       "key": "userTweet",
-      "description": "Will be triggered when a specific user tweet something new."
+      "description": "Will be triggered when a specific user tweet something new.",
+      "subSteps": [
+        {
+          "name": "Choose app & event"
+        },
+        {
+          "name": "Choose account"
+        },
+        {
+          "name": "Set up a trigger",
+          "arguments": [
+            {
+              "name": "username",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        {
+          "name": "Test trigger"
+        }
+      ]
     }
   ],
   "actions": [
@@ -240,11 +272,25 @@
       "name": "Create Tweet",
       "key": "createTweet",
       "description": "Will create a tweet.",
-      "parameters" : [
+      "subSteps": [
         {
-          "name": "Message",
-          "key": "message",
-          "required": true
+          "name": "Choose app & event"
+        },
+        {
+          "name": "Choose account"
+        },
+        {
+          "name": "Set up action",
+          "arguments": [
+            {
+              "name": "tweet",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        {
+          "name": "Test action"
         }
       ]
     }
