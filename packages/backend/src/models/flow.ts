@@ -4,6 +4,7 @@ import Step from './step'
 class Flow extends Base {
   id!: number
   userId!: number
+  active: boolean
 
   static tableName = 'flows';
 
@@ -12,7 +13,8 @@ class Flow extends Base {
 
     properties: {
       id: { type: 'integer' },
-      userId: { type: 'integer' }
+      userId: { type: 'integer' },
+      active: { type: 'boolean' }
     }
   }
 
