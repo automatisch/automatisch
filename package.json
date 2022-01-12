@@ -2,16 +2,14 @@
   "name": "@automatisch/root",
   "private": true,
   "scripts": {
-    "start": "lerna run --stream --scope=@*/{web,backend} dev",
+    "start": "lerna run --stream --scope=@*/{web,backend,docs} dev",
     "start:web": "lerna run --stream --scope @*/web dev",
     "start:backend": "lerna run --stream --scope @*/backend dev",
     "build:docs": "cd ./packages/docs && yarn install && yarn build"
   },
   "workspaces": {
-    "packages": [
-      "packages/backend",
-      "packages/web"
-    ]
+    "packages": ["packages/*"],
+    "nohoist": ["**/babel-loader", "**/webpack"]
   },
   "devDependencies": {
     "lerna": "^4.0.0"
