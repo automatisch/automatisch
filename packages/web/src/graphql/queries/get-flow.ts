@@ -5,6 +5,7 @@ export const GET_FLOW = gql`
     getFlow(id: $id) {
       id
       name
+      active
       steps {
         id
         type

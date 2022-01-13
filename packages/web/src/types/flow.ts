@@ -1,7 +1,8 @@
 import type { Step } from './step';
 
 export type Flow = {
-  id: string;
+  id: number;
   name: string;
   steps: Step[];
+  active: boolean;
 };

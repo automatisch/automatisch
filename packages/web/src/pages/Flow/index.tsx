@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  useParams, } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 

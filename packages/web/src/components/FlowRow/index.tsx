@@ -17,7 +17,7 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
   const { flow } = props;
 
   return (
-    <Link to={URLS.FLOW(flow.id)}>
+    <Link to={URLS.FLOW(flow.id.toString())}>
       <Card sx={{ mb: 1 }}>
         <CardActionArea>
           <CardContent>

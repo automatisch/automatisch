@@ -55,6 +55,17 @@ export const GET_APP = gql`
         name
         key
         description
+        subSteps {
+          name
+        }
+      }
+      actions {
+        name
+        key
+        description
+        subSteps {
+          name
+        }
       }
     }
   }
