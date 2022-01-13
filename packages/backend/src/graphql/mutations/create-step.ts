@@ -1,52 +1,54 @@
-import { GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLEnumType } from 'graphql';
+import { GraphQLNonNull } from 'graphql';
 import Step from '../../models/step';
 import Flow from '../../models/flow';
-import stepType from '../types/step';
+import stepType, { stepInputType } from '../types/step';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  flowId: number,
-  key: string,
-  appKey: string,
-  type: string
-  connectionId: number
-}
+  input: {
+    key: string;
+    appKey: string;
+    flow: {
+      id: number;
+    };
+    connection: {
+      id: number;
+    };
+  };
+};
 
-const createStepResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  const flow = await Flow.query().findOne({
-    id: params.flowId,
-    user_id: req.currentUser.id
-  }).throwIfNotFound();
+const createStepResolver = async (
+  params: Params,
+  req: RequestWithCurrentUser
+) => {
+  const { input } = params;
+
+  const flow = await Flow.query()
+    .findOne({
+      id: input.flow.id,
+      user_id: req.currentUser.id,
+    })
+    .throwIfNotFound();
 
   const step = await Step.query().insertAndFetch({
     flowId: flow.id,
-    key: params.key,
-    appKey: params.appKey,
-    type: params.type,
-    connectionId: params.connectionId,
+    key: input.key,
+    appKey: input.appKey,
+    type: 'action',
+    connectionId: input.connection?.id,
+    position: 1,
   });
 
   return step;
-}
+};
 
 const createStep = {
   type: stepType,
   args: {
-    flowId: { type: GraphQLNonNull(GraphQLInt) },
-    key: { type: GraphQLNonNull(GraphQLString) },
-    appKey: { type: GraphQLNonNull(GraphQLString) },
-    type: {
-      type: new GraphQLEnumType({
-        name: 'StepInputEnumType',
-        values: {
-          trigger: { value: 'trigger' },
-          action: { value: 'action' },
-        }
-      })
-    },
-    connectionId: { type: GraphQLNonNull(GraphQLInt) }
+    input: { type: new GraphQLNonNull(stepInputType) },
   },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => createStepResolver(params, req)
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
+    createStepResolver(params, req),
 };
 
 export default createStep;

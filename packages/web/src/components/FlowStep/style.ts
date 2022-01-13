@@ -3,14 +3,21 @@ import Card from '@mui/material/Card';
 
 export const Wrapper = styled(Card)`
   width: 100%;
+  overflow: unset;
 `;
 
 type HeaderProps = {
-  borderBottom?: boolean;
+  collapsed?: boolean;
 }
 
-export const Header = styled('div', { shouldForwardProp: prop => prop !== 'borderBottom' })<HeaderProps>`
-  border-bottom: 1px solid ${({ theme, borderBottom }) => borderBottom ? alpha(theme.palette.divider, .8) : 'transparent'};
-  padding: ${({ theme }) => theme.spacing(2, 2)};
-  cursor: ${({ borderBottom }) => borderBottom ? 'unset' : 'pointer'};
+export const Header = styled('div', { shouldForwardProp: prop => prop !== 'collapsed' })<HeaderProps>`
+  padding: ${({ theme }) => theme.spacing(2)};
+  cursor: ${({ collapsed }) => collapsed ? 'pointer' : 'unset'};
+`;
+
+export const Content = styled('div')`
+  border: 1px solid ${({ theme }) => alpha(theme.palette.divider, .8)};
+  border-left: none;
+  border-right: none;
+  padding: ${({ theme }) => theme.spacing(2, 0)};
 `;

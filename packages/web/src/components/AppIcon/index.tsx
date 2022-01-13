@@ -3,8 +3,8 @@ import Avatar from '@mui/material/Avatar';
 import type { AvatarProps } from '@mui/material/Avatar';
 
 type AppIconProps = {
-  name: string;
-  url: string;
+  name?: string;
+  url?: string;
   color?: string;
 };
 

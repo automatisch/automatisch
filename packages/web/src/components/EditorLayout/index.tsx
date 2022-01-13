@@ -38,9 +38,9 @@ export default function EditorLayout(): React.ReactElement {
           <Box pr={1}>
             <FormControlLabel
               control={
-                <Switch checked={false} />
+                <Switch checked={flow?.active} />
               }
-              label={formatMessage('flow.inactive')}
+              label={flow?.active ? formatMessage('flow.active') : formatMessage('flow.inactive')}
               labelPlacement="start"
             />
           </Box>

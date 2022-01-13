@@ -20,6 +20,8 @@ type App = {
   fields: AppFields[];
   authenticationSteps: any[];
   reconnectionSteps: any[];
+  triggers: any[];
+  actions: any[];
 };
 
 export type { App, AppFields };

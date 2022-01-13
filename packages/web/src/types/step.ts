@@ -9,5 +9,8 @@ export type Step = {
   name: string;
   appKey: string;
   type: StepType;
-  connectionId: number;
+  previousStepId: number | null;
+  connection: {
+    id: number;
+  };
 };
