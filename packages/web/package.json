@@ -51,12 +51,6 @@
     "type": "git",
     "url": "git+https://github.com/automatisch/automatisch.git"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
