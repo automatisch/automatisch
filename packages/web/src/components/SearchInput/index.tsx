@@ -1,3 +1,4 @@
+import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -10,7 +11,7 @@ type SearchInputProps = {
   onChange?: (event: React.ChangeEvent) => void;
 };
 
-export default function SearchInput({ onChange }: SearchInputProps) {
+export default function SearchInput({ onChange }: SearchInputProps): React.ReactElement {
   const formatMessage = useFormatMessage();
 
   return (

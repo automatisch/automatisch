@@ -1,5 +1,4 @@
 import { URLSearchParams } from 'url';
-import DiscordApi from 'discord.js';
 import axios, { AxiosInstance } from 'axios';
 import App from '../../models/app';
 import Field from '../../types/field';

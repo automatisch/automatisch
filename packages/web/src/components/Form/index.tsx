@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { FormProvider, useForm, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 
 type FormProps = {
@@ -6,7 +6,7 @@ type FormProps = {
   onSubmit: SubmitHandler<FieldValues>;
 }
 
-export default function Form(props: FormProps) {
+export default function Form(props: FormProps): React.ReactElement {
   const { children, onSubmit, ...formProps } = props;
   const methods: UseFormReturn = useForm();
 

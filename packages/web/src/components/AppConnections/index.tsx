@@ -12,7 +12,7 @@ type AppConnectionsProps = {
   appKey: string;
 }
 
-export default function AppConnections(props: AppConnectionsProps) {
+export default function AppConnections(props: AppConnectionsProps): React.ReactElement {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
   const { data } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey } });

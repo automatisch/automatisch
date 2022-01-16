@@ -1,5 +1,6 @@
-import type { AppFields } from 'types/app';
+import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
+import type { AppFields } from 'types/app';
 
 import TextField from 'components/TextField';
 
@@ -8,7 +9,7 @@ type InputCreatorProps = {
   schema: AppFields;
 };
 
-export default function InputCreator(props: InputCreatorProps) {
+export default function InputCreator(props: InputCreatorProps): React.ReactElement {
   const {
     onChange,
     schema,

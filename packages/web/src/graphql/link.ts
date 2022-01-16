@@ -1,4 +1,5 @@
 import { HttpLink, from } from '@apollo/client';
+import type { ApolloLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
 type CreateLinkOptions = {
@@ -6,9 +7,9 @@ type CreateLinkOptions = {
   onError?: (message: string) => void;
 };
 
-const createHttpLink = (uri: CreateLinkOptions['uri']) => new HttpLink({ uri });
+const createHttpLink = (uri: CreateLinkOptions['uri']): ApolloLink => new HttpLink({ uri });
 
-const createErrorLink = (callback: CreateLinkOptions['onError']) => onError(({ graphQLErrors, networkError }) => {
+const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) => {
       callback?.(message);
@@ -24,7 +25,10 @@ const createErrorLink = (callback: CreateLinkOptions['onError']) => onError(({ g
   }
 });
 
-const createLink = ({ uri, onError = function() {} }: CreateLinkOptions) => {
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+
+const createLink = ({ uri, onError = noop }: CreateLinkOptions): ApolloLink => {
   return from([createErrorLink(onError), createHttpLink(uri)]);
 };
 

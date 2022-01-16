@@ -8,7 +8,7 @@ type EditorProps = {
   flow: Flow;
 }
 
-export default function Editor(props: EditorProps) {
+export default function Editor(props: EditorProps): React.ReactElement {
   const [currentStep, setCurrentStep] = React.useState<number | null>(null);
   const { flow } = props;
 

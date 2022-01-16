@@ -1,20 +1,18 @@
 import { GraphQLInt, GraphQLNonNull } from 'graphql';
-import App from '../../models/app';
 import Connection from '../../models/connection';
 import Step from '../../models/step';
 import stepType from '../types/step';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
   id: number,
-  data: object
+  data: Record<string, unknown>
 }
-const executeStepResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  let step = await Step.query().findOne({
+const executeStepResolver = async (params: Params): Promise<any> => {
+  const step = await Step.query().findOne({
     id: params.id
   }).throwIfNotFound();
 
-  let connection = await Connection.query().findOne({
+  const connection = await Connection.query().findOne({
     id: step.connectionId
   }).throwIfNotFound();
 
@@ -30,7 +28,7 @@ const executeStep = {
   args: {
     id: { type: GraphQLNonNull(GraphQLInt) }
   },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => executeStepResolver(params, req)
+  resolve: (_: any, params: Params) => executeStepResolver(params)
 };
 
 export default executeStep;

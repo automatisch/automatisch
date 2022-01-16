@@ -15,11 +15,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import type { Flow } from 'types/flow';
 
-type EditorLayoutProps = {
-  children?: React.ReactNode;
-}
-
-export default function EditorLayout(props: EditorLayoutProps) {
+export default function EditorLayout(): React.ReactElement {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();
   const { data } = useQuery(GET_FLOW, { variables: { id: Number(flowId) }});

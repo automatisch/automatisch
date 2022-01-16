@@ -12,7 +12,7 @@ const inlineImgStyle: React.CSSProperties = {
   objectFit: 'contain',
 };
 
-export default function AppIcon(props: AppIconProps & AvatarProps) {
+export default function AppIcon(props: AppIconProps & AvatarProps): React.ReactElement {
   const { name, url, color, sx = {}, ...restProps } = props;
 
   return (

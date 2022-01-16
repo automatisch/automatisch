@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql';
 
 const actionType = new GraphQLObjectType({
   name: 'Action',
@@ -6,13 +6,13 @@ const actionType = new GraphQLObjectType({
     name: { type: GraphQLString },
     key: { type: GraphQLString },
     description: { type: GraphQLString },
-    subSteps: { 
+    subSteps: {
       type: GraphQLList(
         new GraphQLObjectType({
           name: 'ActionSubStep',
           fields: {
             name: { type: GraphQLString },
-            arguments: {  
+            arguments: {
               type: GraphQLList(
                 new GraphQLObjectType({
                   name: 'ActionSubStepArgument',

@@ -17,7 +17,7 @@ import { Drawer as BaseDrawer } from './style';
 
 const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-export default function Drawer(props: SwipeableDrawerProps) {
+export default function Drawer(props: SwipeableDrawerProps): React.ReactElement {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const formatMessage = useFormatMessage();

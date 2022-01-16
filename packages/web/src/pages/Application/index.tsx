@@ -27,7 +27,7 @@ type ApplicationParams = {
   connectionId?: string;
 };
 
-const ReconnectConnection = (props: any) => {
+const ReconnectConnection = (props: any): React.ReactElement => {
   const { application, onClose } = props;
   const { connectionId } = useParams() as ApplicationParams;
 
@@ -40,7 +40,7 @@ const ReconnectConnection = (props: any) => {
   );
 }
 
-export default function Application() {
+export default function Application(): React.ReactElement {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const formatMessage = useFormatMessage();
@@ -155,7 +155,7 @@ export default function Application() {
               </Box>
 
               <Routes>
-                <Route path={`${URLS.FLOWS}/*`} element={<AppFlows appKey={appKey} />} />
+                <Route path={`${URLS.FLOWS}/*`} element={<AppFlows />} />
 
                 <Route path={`${URLS.CONNECTIONS}/*`} element={<AppConnections appKey={appKey} />} />
 

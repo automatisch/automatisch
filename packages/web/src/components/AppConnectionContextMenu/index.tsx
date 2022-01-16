@@ -19,7 +19,7 @@ type ContextMenuProps = {
   anchorEl: PopoverProps['anchorEl'];
 };
 
-export default function ContextMenu(props: ContextMenuProps) {
+export default function ContextMenu(props: ContextMenuProps): React.ReactElement {
   const { appKey, connectionId, onClose, onMenuItemClick, anchorEl } = props;
   const formatMessage = useFormatMessage();
 

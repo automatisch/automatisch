@@ -1,7 +1,6 @@
 import { GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql';
 import Flow from '../../models/flow';
 import Step from '../../models/step';
-import flowType from '../types/flow';
 import stepType from '../types/step';
 import availableAppsEnumType from '../types/available-apps-enum-type';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';

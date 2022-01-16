@@ -7,7 +7,7 @@ type ApolloProviderProps = {
   children: React.ReactNode;
 };
 
-const ApolloProvider = (props: ApolloProviderProps) => {
+const ApolloProvider = (props: ApolloProviderProps): React.ReactElement => {
   const { enqueueSnackbar } = useSnackbar();
 
   const onError = React.useCallback((message) => {

@@ -1,4 +1,4 @@
-import TwitchApi, { ApiVersions } from 'twitch-js';
+import TwitchApi from 'twitch-js';
 import fetchUtil from 'twitch-js/lib/utils/fetch';
 import App from '../../models/app';
 import Field from '../../types/field';

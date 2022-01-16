@@ -17,7 +17,7 @@ import { GET_CONNECTED_APPS } from 'graphql/queries/get-connected-apps';
 import * as URLS from 'config/urls';
 import type { App } from 'types/app';
 
-export default function Applications() {
+export default function Applications(): React.ReactElement {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState(null);
