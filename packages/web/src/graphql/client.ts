@@ -12,7 +12,7 @@ const client = new ApolloClient({
   link: createLink({ uri: appConfig.graphqlUrl })
 });
 
-export function setLink({ onError }: CreateClientOptions) {
+export function setLink({ onError }: CreateClientOptions): typeof client {
   const link = createLink({ uri: appConfig.graphqlUrl, onError });
 
   client.setLink(link);

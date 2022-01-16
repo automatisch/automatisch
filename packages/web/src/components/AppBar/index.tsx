@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MuiAppBar from '@mui/material/AppBar';
@@ -18,7 +19,7 @@ type AppBarProps = {
   onDrawerClose: () => void;
 };
 
-export default function AppBar({ drawerOpen, onDrawerOpen, onDrawerClose }: AppBarProps) {
+export default function AppBar({ drawerOpen, onDrawerOpen, onDrawerClose }: AppBarProps): React.ReactElement {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 

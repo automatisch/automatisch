@@ -7,7 +7,14 @@ enum AuthenticationSteps {
   OpenWithPopup = 'openWithPopup',
 }
 
-const processMutation = async (step: any, variables: any) => {
+type Step = {
+  name: string;
+  variables: Record<string, unknown>;
+  process: (step: any, variables: Record<string, unknown>) => Promise<any>;
+  type: AuthenticationSteps.Mutation | AuthenticationSteps.OpenWithPopup;
+};
+
+const processMutation = async (step: Step, variables: Record<string, unknown>) => {
   const mutation = MUTATIONS[step.name];
   const mutationResponse = await apolloClient.mutate({ mutation, variables });
   const responseData = mutationResponse.data[step.name];
@@ -31,8 +38,8 @@ function getObjectOfEntries(iterator: any) {
   return result;
 }
 
-const processOpenWithPopup = (step: any, variables: any) => {
-  return new Promise((resolve, reject) => {
+const processOpenWithPopup = (step: Step, variables: Record<string, string>) => {
+  return new Promise((resolve) => {
     const windowFeatures = 'toolbar=no, menubar=no, width=600, height=700, top=100, left=100';
     const url = variables.url;
 
@@ -55,16 +62,10 @@ const processOpenWithPopup = (step: any, variables: any) => {
   });
 };
 
-export const processStep = (step: any, variables: any) => {
-  return new Promise(async (resolve, reject) => {
-    let response;
-
-    if (step.type === AuthenticationSteps.Mutation) {
-      response = await processMutation(step, variables);
-    } else if (step.type === AuthenticationSteps.OpenWithPopup) {
-      response = await processOpenWithPopup(step, variables);
-    }
-
-    resolve(response);
-  });
+export const processStep = async (step: Step, variables: Record<string, string>): Promise<any> => {
+  if (step.type === AuthenticationSteps.Mutation) {
+    return processMutation(step, variables);
+  } else if (step.type === AuthenticationSteps.OpenWithPopup) {
+    return processOpenWithPopup(step, variables);
+  }
 };

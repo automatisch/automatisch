@@ -1,4 +1,5 @@
 import { QueryContext, ModelOptions } from 'objection';
+import type { RelationMappings } from 'objection';
 import { AES, enc } from 'crypto-js';
 import Base from './base'
 import User from './user'
@@ -27,7 +28,7 @@ class Connection extends Base {
     }
   }
 
-  static relationMappings = () => ({
+  static relationMappings = (): RelationMappings => ({
     user: {
       relation: Base.BelongsToOneRelation,
       modelClass: User,
@@ -38,33 +39,33 @@ class Connection extends Base {
     }
   })
 
-  encryptData() {
+  encryptData(): void {
     if(!this.eligibleForEncryption()) return;
     this.data = AES.encrypt(JSON.stringify(this.data), appConfig.encryptionKey).toString();
   }
 
-  decryptData() {
+  decryptData(): void {
     if(!this.eligibleForEncryption()) return;
     this.data = JSON.parse(AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8));
   }
 
-  eligibleForEncryption() {
+  eligibleForEncryption(): boolean {
     return this.data ? true : false
   }
 
   // TODO: Make another abstraction like beforeSave instead of using
   // beforeInsert and beforeUpdate separately for the same operation.
-  async $beforeInsert(queryContext: QueryContext) {
+  async $beforeInsert(queryContext: QueryContext): Promise<void> {
     await super.$beforeInsert(queryContext);
     this.encryptData();
   }
 
-  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
+  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext): Promise<void> {
     await super.$beforeUpdate(opt, queryContext);
     this.encryptData();
   }
 
-  async $afterFind(queryContext: QueryContext) {
+  async $afterFind(): Promise<void> {
     this.decryptData();
   }
 }

@@ -12,7 +12,7 @@ type NoResultFoundProps = {
   to: string;
 }
 
-export default function NoResultFound(props: NoResultFoundProps) {
+export default function NoResultFound(props: NoResultFoundProps): React.ReactElement {
   const { text, to } = props;
 
   const ActionAreaLink = React.useMemo(

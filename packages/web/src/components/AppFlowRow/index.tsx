@@ -12,7 +12,7 @@ type AppFlowRowProps = {
   flow: any;
 }
 
-function AppFlowRow(props: AppFlowRowProps) {
+function AppFlowRow(props: AppFlowRowProps): React.ReactElement {
   const { flow } = props;
 
   return (

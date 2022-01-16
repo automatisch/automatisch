@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
@@ -23,7 +24,7 @@ const countTranslation = (value: React.ReactNode) => (
   </>
 );
 
-function AppRow(props: AppRowProps) {
+function AppRow(props: AppRowProps): React.ReactElement {
   const formatMessage = useFormatMessage();
   const { name, primaryColor, iconUrl, connectionCount } = props.application;
 

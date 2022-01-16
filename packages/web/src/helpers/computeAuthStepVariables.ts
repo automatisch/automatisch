@@ -2,12 +2,23 @@ import template from 'lodash.template';
 
 const interpolate = /{([\s\S]+?)}/g;
 
-type VARIABLES = {
+type Variables = {
   [key: string]: any
 }
 
-const computeAuthStepVariables = (variableSchema: any, aggregatedData: any) => {
-  const variables: VARIABLES = {};
+type VariableSchema = {
+  properties: VariableSchema[];
+  name: string;
+  type: 'string' | 'integer';
+  value: string;
+}
+
+type AggregatedData = {
+  [key: string]: Record<string, unknown> | string;
+}
+
+const computeAuthStepVariables = (variableSchema: VariableSchema[], aggregatedData: AggregatedData): Variables => {
+  const variables: Variables = {};
 
   for (const variable of variableSchema) {
     if (variable.properties) {

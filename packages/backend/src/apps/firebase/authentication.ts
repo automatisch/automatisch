@@ -1,4 +1,4 @@
-import { google, google as GoogleApi } from 'googleapis';
+import { google as GoogleApi } from 'googleapis';
 import App from '../../models/app';
 import Field from '../../types/field';
 

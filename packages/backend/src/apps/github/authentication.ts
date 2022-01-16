@@ -16,11 +16,11 @@ export default class Authentication {
     this.appData = App.findOneByKey('github');
   }
 
-  get oauthRedirectUrl() {
+  get oauthRedirectUrl(): string {
     return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
   }
 
-  async createAuthData() {
+  async createAuthData(): { url: string } {
     const { url } = await getWebFlowAuthorizationUrl({
       clientType: "oauth-app",
       clientId: this.connectionData.consumerKey,
@@ -33,8 +33,8 @@ export default class Authentication {
     };
   }
 
-  async verifyCredentials() {
-    const { data, authentication } = await exchangeWebFlowCode({
+  async verifyCredentials(): any {
+    const { data } = await exchangeWebFlowCode({
       clientType: "oauth-app",
       clientId: this.connectionData.consumerKey,
       clientSecret: this.connectionData.consumerSecret,
@@ -65,7 +65,7 @@ export default class Authentication {
     });
   }
 
-  async isStillVerified() {
+  async isStillVerified(): boolean {
     try {
       await this.getTokenInfo();
 

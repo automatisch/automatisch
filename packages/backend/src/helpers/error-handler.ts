@@ -1,7 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import logger from './logger';
 
-const errorHandler = (err: any, req: Request, res: Response, _next: NextFunction) => {
+type Error = {
+  message: string;
+}
+
+const errorHandler = (err: Error, req: Request, res: Response): void => {
   if(err.message === 'Not Found') {
     res.status(404).end()
   } else {

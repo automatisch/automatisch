@@ -10,7 +10,7 @@ import { CREATE_FLOW } from 'graphql/mutations/create-flow';
 
 import Box from '@mui/material/Box';
 
-export default function CreateFlow() {
+export default function CreateFlow(): React.ReactElement {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [createFlow] = useMutation(CREATE_FLOW);

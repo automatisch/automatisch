@@ -12,7 +12,7 @@ type ListItemLinkProps = {
   onClick?: (event: React.SyntheticEvent) => void;
 }
 
-export default function ListItemLink(props: ListItemLinkProps) {
+export default function ListItemLink(props: ListItemLinkProps): React.ReactElement {
   const { icon, primary, to, onClick } = props;
   const selected = useMatch({ path: to, end: false });
 

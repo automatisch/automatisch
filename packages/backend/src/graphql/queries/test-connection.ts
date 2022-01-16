@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import Connection from '../../models/connection';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 import connectionType from '../types/connection'

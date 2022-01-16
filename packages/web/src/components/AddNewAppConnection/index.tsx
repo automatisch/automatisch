@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import * as React from 'react';
 import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
@@ -27,12 +27,12 @@ type AddNewAppConnectionProps = {
   onClose: () => void;
 };
 
-export default function AddNewAppConnection(props: AddNewAppConnectionProps){
+export default function AddNewAppConnection(props: AddNewAppConnectionProps): React.ReactElement {
   const { onClose } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
   const formatMessage = useFormatMessage();
-  const [appName, setAppName] = useState<string | null>(null);
+  const [appName, setAppName] = React.useState<string | null>(null);
   const { data } = useQuery(GET_APPS, { variables: {name: appName } });
 
   return (

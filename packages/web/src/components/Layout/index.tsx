@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -11,10 +11,10 @@ type LayoutProps = {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children }: LayoutProps): React.ReactElement {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), { noSsr: true });
-  const [isDrawerOpen, setDrawerOpen] = useState(!matchSmallScreens);
+  const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
 
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);

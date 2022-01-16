@@ -4,11 +4,7 @@ import { GET_FLOWS } from 'graphql/queries/get-flows';
 import AppFlowRow from 'components/AppFlowRow';
 import type { Flow } from 'types/flow';
 
-type AppFlowsProps = {
-  appKey: String;
-}
-
-export default function AppFlows(props: AppFlowsProps) {
+export default function AppFlows(): React.ReactElement {
   const { data } = useQuery(GET_FLOWS);
   const appFlows: Flow[] = data?.getFlows || [];
 

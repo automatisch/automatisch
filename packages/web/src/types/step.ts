@@ -6,6 +6,7 @@ export enum StepType {
 export type Step = {
   id: string;
   key: string;
+  name: string;
   appKey: string;
   type: StepType;
   connectionId: number;

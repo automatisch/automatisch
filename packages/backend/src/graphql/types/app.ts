@@ -8,6 +8,7 @@ import actionType from './action';
 const appType = new GraphQLObjectType({
   name: 'App',
   fields: () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const connectionType = require('./connection').default;
 
     return {

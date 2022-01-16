@@ -31,7 +31,7 @@ const countTranslation = (value: React.ReactNode) => (
   </>
 );
 
-function AppConnectionRow(props: AppConnectionRowProps) {
+function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
   const { enqueueSnackbar } = useSnackbar();
   const [verificationVisible, setVerificationVisible] = React.useState(false);
   const [testConnection, { called: testCalled, loading: testLoading }] = useLazyQuery(TEST_CONNECTION, {
@@ -51,12 +51,12 @@ function AppConnectionRow(props: AppConnectionRowProps) {
     setAnchorEl(null);
   };
 
-  const onContextMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(contextButtonRef.current);
+  const onContextMenuClick = () => setAnchorEl(contextButtonRef.current);
   const onContextMenuAction = React.useCallback(async (event, action: { [key: string]: string }) => {
     if (action.type === 'delete') {
       await deleteConnection({
         variables: { id },
-        update: (cache, mutationResult) => {
+        update: (cache) => {
           const connectionCacheId = cache.identify({
             __typename: 'Connection',
             id,

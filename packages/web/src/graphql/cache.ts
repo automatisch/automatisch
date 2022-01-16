@@ -9,7 +9,7 @@ const cache = new InMemoryCache({
       mutationType: true,
       fields: {
         createConnection: {
-          merge(existing, newConnection, { args, readField, cache }) {
+          merge(existing, newConnection, { readField, cache }) {
             const appKey = readField('key', newConnection);
             const appCacheId = cache.identify({
               __typename: 'App',

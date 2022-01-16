@@ -23,7 +23,7 @@ type Response = {
   [key: string]: any;
 }
 
-export default function AddAppConnection(props: AddAppConnectionProps){
+export default function AddAppConnection(props: AddAppConnectionProps): React.ReactElement {
   const { application, connectionId, onClose } = props;
   const { key, fields, authenticationSteps, reconnectionSteps } = application;
   const formatMessage = useFormatMessage();

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import * as React from 'react';
 import { Controller, Control, FieldValues } from 'react-hook-form';
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -15,7 +15,7 @@ type TextFieldProps = {
   readOnly?: boolean;
 } & MuiTextFieldProps;
 
-const createCopyAdornment = (ref: React.RefObject<HTMLInputElement | null>) => {
+const createCopyAdornment = (ref: React.RefObject<HTMLInputElement | null>): React.ReactElement => {
   return (
   <InputAdornment position="end">
     <IconButton
@@ -28,8 +28,8 @@ const createCopyAdornment = (ref: React.RefObject<HTMLInputElement | null>) => {
 );
 }
 
-export default function TextField(props: TextFieldProps) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+export default function TextField(props: TextFieldProps): React.ReactElement {
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
   const {
     control,
     required,

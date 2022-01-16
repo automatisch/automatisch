@@ -11,7 +11,7 @@ export const CardContent = styled(MuiCardContent)(({ theme }) => ({
 }));
 
 
-export const Typography = styled(MuiTypography)(({ theme }) => ({
+export const Typography = styled(MuiTypography)(() => ({
   '&.MuiTypography-h6': {
     textTransform: 'capitalize',
   },

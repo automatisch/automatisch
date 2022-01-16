@@ -13,7 +13,7 @@ type FlowRowProps = {
   flow: Flow;
 }
 
-export default function FlowRow(props: FlowRowProps) {
+export default function FlowRow(props: FlowRowProps): React.ReactElement {
   const { flow } = props;
 
   return (

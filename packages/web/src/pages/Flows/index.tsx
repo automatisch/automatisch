@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, Routes, Route, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import type { LinkProps } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
@@ -16,7 +16,7 @@ import { GET_FLOWS } from 'graphql/queries/get-flows';
 import * as URLS from 'config/urls';
 import type { Flow } from 'types/flow';
 
-export default function Flows() {
+export default function Flows(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [flowName, setFlowName] = React.useState('');
   const { data } = useQuery(GET_FLOWS);

@@ -19,7 +19,7 @@ type FlowStepProps = {
   onClose?: () => void;
 }
 
-export default function FlowStep(props: FlowStepProps) {
+export default function FlowStep(props: FlowStepProps): React.ReactElement | null {
   const { collapsed, index, step } = props;
   const formatMessage = useFormatMessage();
   const { data } = useQuery(GET_APP, { variables: { key: step?.appKey }})
