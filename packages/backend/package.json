@@ -7,6 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "ava",
+    "lint": "eslint . --ignore-path ../../.eslintignore",
     "db:create": "ts-node ./bin/database/create.ts",
     "db:seed:user": "ts-node ./bin/database/seed-user.ts",
     "db:drop": "ts-node ./bin/database/drop.ts",
@@ -72,6 +73,7 @@
     "@types/nodemailer": "^6.4.4",
     "@types/pg": "^8.6.1",
     "ava": "^3.15.0",
+    "eslint": "8.7.0",
     "nodemon": "^2.0.13",
     "sinon": "^11.1.2",
     "ts-node": "^10.2.1"
