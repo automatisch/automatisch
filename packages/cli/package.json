@@ -24,9 +24,13 @@
     "url": "git+https://github.com/automatisch/automatisch.git"
   },
   "scripts": {
+    "lint": "eslint . --ignore-path ../../.eslintignore",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
+  },
+  "devDependencies": {
+    "eslint": "8.7.0"
   }
 }
