@@ -5,20 +5,22 @@ import RequestWithCurrentUser from '../../types/express/request-with-current-use
 
 const createFlowResolver = async (req: RequestWithCurrentUser) => {
   const flow = await Flow.query().insert({
-    userId: req.currentUser.id
+    userId: req.currentUser.id,
   });
 
   await Step.query().insert({
     flowId: flow.id,
-    type: 'trigger'
-  })
+    type: 'trigger',
+    position: 1,
+  });
 
   return flow;
-}
+};
 
 const createFlow = {
   type: flowType,
-  resolve: (_: any, _params: any, req: RequestWithCurrentUser) => createFlowResolver(req)
+  resolve: (_: any, _params: any, req: RequestWithCurrentUser) =>
+    createFlowResolver(req),
 };
 
 export default createFlow;

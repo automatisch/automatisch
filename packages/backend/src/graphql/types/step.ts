@@ -1,4 +1,9 @@
-import { GraphQLObjectType, GraphQLString, GraphQLEnumType, GraphQLInt } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLEnumType,
+  GraphQLInt,
+} from 'graphql';
 import ConnectionType from './connection';
 
 const stepType = new GraphQLObjectType({
@@ -13,11 +18,12 @@ const stepType = new GraphQLObjectType({
         values: {
           trigger: { value: 'trigger' },
           action: { value: 'action' },
-        }
-      })
+        },
+      }),
     },
-    connection: { type: ConnectionType }
-  }
-})
+    connection: { type: ConnectionType },
+    position: { type: GraphQLInt },
+  },
+});
 
 export default stepType;
