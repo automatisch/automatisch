@@ -8,13 +8,14 @@ enum StepEnumType {
 }
 
 class Step extends Base {
-  id!: number
-  flowId!: number
-  key: string
-  appKey: string
-  type!: StepEnumType
-  connectionId!: number
-  parameters: any
+  id!: number;
+  flowId!: number;
+  key: string;
+  appKey: string;
+  type!: StepEnumType;
+  connectionId!: number;
+  position: number;
+  parameters: any;
 
   static tableName = 'steps';
 
@@ -27,11 +28,12 @@ class Step extends Base {
       flowId: { type: 'integer' },
       key: { type: 'string', minLength: 1, maxLength: 255 },
       appKey: { type: 'string', minLength: 1, maxLength: 255 },
-      type: { type: "string", enum: ["action", "trigger"] },
+      type: { type: 'string', enum: ['action', 'trigger'] },
       connectionId: { type: 'integer' },
+      position: { type: 'integer' },
       parameters: { type: ['object', null] },
-    }
-  }
+    },
+  };
 
   static relationMappings = () => ({
     flow: {
@@ -47,10 +49,10 @@ class Step extends Base {
       modelClass: Connection,
       join: {
         from: 'steps.connection_id',
-        to: 'connections.id'
+        to: 'connections.id',
       },
-    }
-  })
+    },
+  });
 }
 
 export default Step;
