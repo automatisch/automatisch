@@ -20,5 +20,6 @@ export const CREATE_FLOW = '/editor/create';
 export const FLOW_EDITOR = (flowId: string): string => `/editor/${flowId}`;
 
 export const FLOWS = '/flows';
-export const FLOW = (flowId: string): string => `/flows/${flowId}`;
+// TODO: revert this back to /flows/:flowId once we have a proper single flow page
+export const FLOW = (flowId: string): string => `/editor/${flowId}`;
 export const FLOW_PATTERN = '/flows/:flowId';

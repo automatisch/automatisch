@@ -15,7 +15,7 @@ class Step extends Base {
   type!: StepEnumType;
   connectionId: number;
   position: number;
-  parameters: any;
+  parameters: string;
 
   static tableName = 'steps';
 
@@ -31,7 +31,7 @@ class Step extends Base {
       type: { type: 'string', enum: ['action', 'trigger'] },
       connectionId: { type: ['integer', null] },
       position: { type: 'integer' },
-      parameters: { type: ['object', null] },
+      parameters: { type: ['string', null] },
     },
   };
 

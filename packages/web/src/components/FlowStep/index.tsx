@@ -27,21 +27,37 @@ type FlowStepProps = {
   onChange?: (step: Step) => void;
 }
 
-const optionGenerator = (app: App): { label: string; value: string; } => ({
-  label: app.name,
-  value: app.key,
+const optionGenerator = (app: Record<string, unknown>): { label: string; value: string; } => ({
+  label: app.name as string,
+  value: app.key as string,
 });
 
-const getOption = (options: Record<string, unknown>[], appKey: string) => options.find(app => app.value === appKey);
+const getOption = (options: Record<string, unknown>[], appKey: unknown) => options.find(app => app.value === appKey as string);
+
+const parseStep = (step: any) => {
+  try {
+    const parameters = JSON.parse(step.parameters);
+    return {
+      ...step,
+      parameters,
+    }
+  } catch (err) {
+    // highly likely that step does not have any parameters and thus, the error is thrown
+    return step;
+  }
+};
 
 export default function FlowStep(props: FlowStepProps): React.ReactElement | null {
   const { collapsed, index, onChange } = props;
-  const [step, setStep] = React.useState<Step>(props.step);
+  const [step, setStep] = React.useState<Step>(() => parseStep(props.step));
+  const isTrigger = step.type === StepType.Trigger;
+  const isAction = step.type === StepType.Action;
   const initialRender = React.useRef<boolean>(true);
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(0);
   const { data } = useQuery(GET_APPS)
   const apps: App[] = data?.getApps;
+  const app = apps?.find((currentApp: App) => currentApp.key === step.appKey);
 
   // emit the step change to the parent component
   React.useEffect(() => {
@@ -52,20 +68,34 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
     }
   }, [step, onChange]);
 
-  const appAndEventOptions = React.useMemo(() => apps?.map(optionGenerator), [apps]);
+  const appAndEventOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
+  const actionOptions = React.useMemo(() => app?.triggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
 
-  const onAppAndEventChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
+  const onAppChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
     if (typeof selectedOption === 'object') {
       const typedSelectedOption = selectedOption as { value: string; };
       const option: { value: string } = typedSelectedOption;
       const appKey = option.value as string;
-      setStep((step) => ({ ...step, appKey }));
+      setStep((step) => ({ ...step, appKey, parameters: {} }));
+    }
+  }, []);
+
+  const onEventChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
+    if (typeof selectedOption === 'object') {
+      const typedSelectedOption = selectedOption as { value: string; };
+      const option: { value: string } = typedSelectedOption;
+      const eventKey = option.value as string;
+      setStep((step) => ({
+        ...step,
+        parameters: {
+          ...step.parameters,
+          eventKey,
+        }
+      }));
     }
   }, []);
 
   if  (!apps) return null;
-
-  const app = apps.find((currentApp: App) => currentApp.key === step.appKey);
 
   const onOpen = () => collapsed && props.onOpen?.();
   const onClose = () => props.onClose?.();
@@ -81,7 +111,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
           <div>
             <Typography variant="caption">
               {
-                step.type === StepType.Trigger ?
+                isTrigger ?
                   formatMessage('flowStep.triggerType') :
                   formatMessage('flowStep.actionType')
               }
@@ -110,7 +140,25 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
                     sx={{ width: 300 }}
                     renderInput={(params) => <TextField {...params} label="Choose app & event" />}
                     value={getOption(appAndEventOptions, step.appKey)}
-                    onChange={onAppAndEventChange}
+                    onChange={onAppChange}
+                  />
+                </ListItem>
+              </Collapse>
+
+
+              <ListItemButton onClick={() => toggleSubstep(1)}>
+                Action event
+              </ListItemButton>
+              <Collapse in={currentSubstep === 1} timeout="auto" unmountOnExit>
+                <ListItem sx={{ pt: 2 }}>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={actionOptions}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => <TextField {...params} label="Choose app & event" />}
+                    value={getOption(actionOptions, step?.parameters?.eventKey)}
+                    onChange={onEventChange}
                   />
                 </ListItem>
               </Collapse>

@@ -14,6 +14,7 @@ export const GET_FLOW = gql`
         connection {
           id
         }
+        parameters
       }
     }
   }

@@ -7,15 +7,16 @@ import RequestWithCurrentUser from '../../types/express/request-with-current-use
 
 type Params = {
   input: {
-    id: number,
-    key: string,
-    appKey: string,
+    id: number;
+    key: string;
+    appKey: string;
+    parameters: string;
     flow: {
-      id: number,
-    },
+      id: number;
+    };
     connection: {
-      id: number
-    },
+      id: number;
+    };
   }
 }
 const updateStepResolver = async (params: Params, req: RequestWithCurrentUser) => {
@@ -35,6 +36,7 @@ const updateStepResolver = async (params: Params, req: RequestWithCurrentUser) =
     key: input.key,
     appKey: input.appKey,
     connectionId: input.connection.id,
+    parameters: input.parameters,
   });
 
   return step;
