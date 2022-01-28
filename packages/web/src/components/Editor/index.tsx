@@ -53,7 +53,6 @@ export default function Editor(props: EditorProps): React.ReactElement {
     const mutationInput: Record<string, unknown> = {
       id: step.id,
       key: step.key,
-      previousStepId: step.previousStepId,
       connection: {
         id: step.connection?.id
       },
@@ -71,7 +70,9 @@ export default function Editor(props: EditorProps): React.ReactElement {
 
   const addStep = React.useCallback((previousStepId) => {
     const mutationInput = {
-      previousStepId: previousStepId,
+      previousStep: {
+        id: previousStepId,
+      },
       flow: {
         id: flow.id,
       },

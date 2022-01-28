@@ -45,7 +45,6 @@ const createStepResolver = async (
     key: input.key,
     appKey: input.appKey,
     type: 'action',
-    connectionId: input.connection?.id,
     position: previousStep.position + 1,
   });
 
