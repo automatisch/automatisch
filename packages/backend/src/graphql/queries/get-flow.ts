@@ -1,5 +1,4 @@
 import { GraphQLNonNull, GraphQLInt } from 'graphql';
-import Flow from '../../models/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 import flowType from '../types/flow';
 
@@ -8,10 +7,11 @@ type Params = {
 };
 
 const getFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  const flow = await Flow.query()
+  const flow = await req.currentUser
+    .$relatedQuery('flows')
     .withGraphJoined('[steps.[connection]]')
     .orderBy('steps.position', 'asc')
-    .findOne({ 'flows.user_id': req.currentUser.id, 'flows.id': params.id })
+    .findOne({ 'flows.id': params.id })
     .throwIfNotFound();
 
   return flow;
