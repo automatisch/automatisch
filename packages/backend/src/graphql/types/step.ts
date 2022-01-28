@@ -23,6 +23,7 @@ const stepType = new GraphQLObjectType({
         },
       }),
     },
+    parameters: { type: GraphQLString },
     connection: { type: ConnectionType },
     position: { type: GraphQLInt },
   },
@@ -51,6 +52,7 @@ export const stepInputType = new GraphQLInputObjectType({
         },
       }),
     },
+    parameters: { type: GraphQLString },
     previousStep: {
       type: new GraphQLInputObjectType({
         name: 'PreviousStepInput',

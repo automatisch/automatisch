@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -14,6 +14,7 @@ import Editor from 'components/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import type { Flow } from 'types/flow';
+import * as URLS from 'config/urls';
 
 export default function EditorLayout(): React.ReactElement {
   const { flowId } = useParams();
@@ -26,7 +27,11 @@ export default function EditorLayout(): React.ReactElement {
       <Stack direction="column" height="100%">
         <Stack direction="row" bgcolor="white" justifyContent="space-between" alignItems="center" boxShadow={1} py={1} px={1}>
           <Box display="flex" flex={1} alignItems="center">
-            <IconButton size="small">
+            <IconButton
+              size="small"
+              component={Link}
+              to={URLS.APPS}
+            >
               <ArrowBackIosNewIcon fontSize="small" />
             </IconButton>
 
