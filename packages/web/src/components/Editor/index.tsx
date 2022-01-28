@@ -50,10 +50,9 @@ export default function Editor(props: EditorProps): React.ReactElement {
   const { flow } = props;
 
   const onStepChange = React.useCallback((step: any) => {
-    const mutationInput = {
+    const mutationInput: Record<string, unknown> = {
       id: step.id,
       key: step.key,
-      appKey: step.appKey,
       previousStepId: step.previousStepId,
       connection: {
         id: step.connection?.id
@@ -62,6 +61,10 @@ export default function Editor(props: EditorProps): React.ReactElement {
         id: flow.id,
       },
     };
+
+    if (step.appKey) {
+      mutationInput.appKey = step.appKey;
+    }
 
     updateStep({ variables: { input: mutationInput } });
   }, [updateStep, flow.id]);

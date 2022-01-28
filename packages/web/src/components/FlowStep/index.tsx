@@ -37,6 +37,7 @@ const getOption = (options: Record<string, unknown>[], appKey: string) => option
 export default function FlowStep(props: FlowStepProps): React.ReactElement | null {
   const { collapsed, index, onChange } = props;
   const [step, setStep] = React.useState<Step>(props.step);
+  const initialRender = React.useRef<boolean>(true);
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(0);
   const { data } = useQuery(GET_APPS)
@@ -44,10 +45,23 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
 
   // emit the step change to the parent component
   React.useEffect(() => {
-    onChange?.(step);
+    if (!initialRender.current) {
+      onChange?.(step);
+    } else {
+      initialRender.current = false;
+    }
   }, [step, onChange]);
 
   const appAndEventOptions = React.useMemo(() => apps?.map(optionGenerator), [apps]);
+
+  const onAppAndEventChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
+    if (typeof selectedOption === 'object') {
+      const typedSelectedOption = selectedOption as { value: string; };
+      const option: { value: string } = typedSelectedOption;
+      const appKey = option.value as string;
+      setStep((step) => ({ ...step, appKey }));
+    }
+  }, []);
 
   if  (!apps) return null;
 
@@ -57,16 +71,6 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
   const onClose = () => props.onClose?.();
 
   const toggleSubstep = (substepIndex: number) => setCurrentSubstep((value) => value !== substepIndex ? substepIndex : null);
-
-  const onAppAndEventChange = (event: React.SyntheticEvent, selectedOption: unknown) => {
-    if (typeof selectedOption === 'object') {
-      const typedSelectedOption = selectedOption as { value: string; };
-      const option: { value: string } = typedSelectedOption;
-      const appKey = option.value as string;
-      const updatedStep = { ...step, appKey };
-      setStep(updatedStep);
-    }
-  }
 
   return (
     <Wrapper elevation={collapsed ? 1 : 4} onClick={onOpen}>
