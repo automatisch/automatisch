@@ -40,18 +40,26 @@ export const stepInputType = new GraphQLInputObjectType({
         name: 'StepConnectionInput',
         fields: {
           id: { type: GraphQLInt },
-        }
-      })
+        },
+      }),
     },
     flow: {
       type: new GraphQLInputObjectType({
         name: 'StepFlowInput',
         fields: {
           id: { type: GraphQLInt },
-        }
-      })
-    }
-  }
-})
+        },
+      }),
+    },
+    previousStep: {
+      type: new GraphQLInputObjectType({
+        name: 'PreviousStepInput',
+        fields: {
+          id: { type: GraphQLInt },
+        },
+      }),
+    },
+  },
+});
 
 export default stepType;

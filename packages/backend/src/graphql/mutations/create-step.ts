@@ -14,6 +14,9 @@ type Params = {
     connection: {
       id: number;
     };
+    previousStep: {
+      id: number;
+    };
   };
 };
 
@@ -30,14 +33,37 @@ const createStepResolver = async (
     })
     .throwIfNotFound();
 
+  const previousStep = await Step.query()
+    .findOne({
+      id: input.previousStep.id,
+      flow_id: flow.id,
+    })
+    .throwIfNotFound();
+
   const step = await Step.query().insertAndFetch({
     flowId: flow.id,
     key: input.key,
     appKey: input.appKey,
     type: 'action',
     connectionId: input.connection?.id,
-    position: 1,
+    position: previousStep.position + 1,
   });
+
+  const nextSteps = await Step.query()
+    .where({
+      flow_id: flow.id,
+    })
+    .andWhere('position', '>=', step.position)
+    .whereNot('id', step.id);
+
+  const nextStepQueries = nextSteps.map(async (nextStep, index) => {
+    await nextStep.$query().patchAndFetch({
+      ...nextStep,
+      position: step.position + index + 1,
+    });
+  });
+
+  await Promise.all(nextStepQueries);
 
   return step;
 };
