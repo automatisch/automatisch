@@ -9,9 +9,9 @@ export type Step = {
   name: string;
   appKey: string;
   type: StepType;
-  previousStepId: number | null;
+  previousStepId: string | null;
   parameters: Record<string, unknown>;
   connection: {
-    id: number;
+    id: string;
   };
 };

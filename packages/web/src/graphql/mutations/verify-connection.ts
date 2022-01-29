@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const VERIFY_CONNECTION = gql`
-  mutation VerifyConnection($id: Int!) {
+  mutation VerifyConnection($id: String!) {
     verifyConnection(id: $id) {
       id
       verified

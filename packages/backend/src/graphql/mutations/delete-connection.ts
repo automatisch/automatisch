@@ -1,8 +1,8 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLBoolean } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: number;
+  id: string;
   data: object;
 };
 const deleteConnectionResolver = async (
@@ -23,7 +23,7 @@ const deleteConnectionResolver = async (
 const deleteConnection = {
   type: GraphQLBoolean,
   args: {
-    id: { type: GraphQLNonNull(GraphQLInt) },
+    id: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     deleteConnectionResolver(params, req),

@@ -1,9 +1,9 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLBoolean } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 import Step from '../../models/step';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: number;
+  id: string;
 };
 
 const deleteStepResolver = async (
@@ -24,7 +24,7 @@ const deleteStepResolver = async (
 const deleteStep = {
   type: GraphQLBoolean,
   args: {
-    id: { type: GraphQLNonNull(GraphQLInt) },
+    id: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     deleteStepResolver(params, req),

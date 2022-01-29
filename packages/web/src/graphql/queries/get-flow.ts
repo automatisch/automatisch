@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_FLOW = gql`
-  query GetFlow($id: Int!) {
+  query GetFlow($id: String!) {
     getFlow(id: $id) {
       id
       name

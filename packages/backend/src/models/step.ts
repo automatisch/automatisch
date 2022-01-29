@@ -27,7 +27,7 @@ class Step extends Base {
       id: { type: 'integer' },
       flowId: { type: 'integer' },
       key: { type: ['string', null] },
-      appKey: { type: 'string', minLength: 1, maxLength: 255 },
+      appKey: { type: ['string', null], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
       connectionId: { type: ['integer', null] },
       position: { type: 'integer' },

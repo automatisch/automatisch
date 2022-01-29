@@ -10,8 +10,8 @@ import ConnectionType from './connection';
 const stepType = new GraphQLObjectType({
   name: 'Step',
   fields: {
-    id: { type: GraphQLInt },
-    previousStepId: { type: GraphQLInt },
+    id: { type: GraphQLString },
+    previousStepId: { type: GraphQLString },
     key: { type: GraphQLString },
     appKey: { type: GraphQLString },
     type: {
@@ -32,15 +32,15 @@ const stepType = new GraphQLObjectType({
 export const stepInputType = new GraphQLInputObjectType({
   name: 'StepInput',
   fields: {
-    id: { type: GraphQLInt },
-    previousStepId: { type: GraphQLInt },
+    id: { type: GraphQLString },
+    previousStepId: { type: GraphQLString },
     key: { type: GraphQLString },
     appKey: { type: GraphQLString },
     connection: {
       type: new GraphQLInputObjectType({
         name: 'StepConnectionInput',
         fields: {
-          id: { type: GraphQLInt },
+          id: { type: GraphQLString },
         },
       }),
     },
@@ -48,7 +48,7 @@ export const stepInputType = new GraphQLInputObjectType({
       type: new GraphQLInputObjectType({
         name: 'StepFlowInput',
         fields: {
-          id: { type: GraphQLInt },
+          id: { type: GraphQLString },
         },
       }),
     },
@@ -57,7 +57,7 @@ export const stepInputType = new GraphQLInputObjectType({
       type: new GraphQLInputObjectType({
         name: 'PreviousStepInput',
         fields: {
-          id: { type: GraphQLInt },
+          id: { type: GraphQLString },
         },
       }),
     },

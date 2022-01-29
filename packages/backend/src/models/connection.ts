@@ -1,23 +1,23 @@
 import { QueryContext, ModelOptions } from 'objection';
 import type { RelationMappings } from 'objection';
 import { AES, enc } from 'crypto-js';
-import Base from './base'
-import User from './user'
+import Base from './base';
+import User from './user';
 import appConfig from '../config/app';
 
 class Connection extends Base {
-  id!: number
-  key!: string
-  data!: any
-  userId!: number
-  verified: boolean
-  count: number
+  id!: number;
+  key!: string;
+  data!: any;
+  userId!: number;
+  verified: boolean;
+  count: number;
 
   static tableName = 'connections';
 
   static jsonSchema = {
     type: 'object',
-    required: ['key', 'data', 'userId'],
+    required: ['key', 'data'],
 
     properties: {
       id: { type: 'integer' },
@@ -25,8 +25,8 @@ class Connection extends Base {
       data: { type: 'object' },
       userId: { type: 'integer' },
       verified: { type: 'boolean' },
-    }
-  }
+    },
+  };
 
   static relationMappings = (): RelationMappings => ({
     user: {
@@ -36,21 +36,26 @@ class Connection extends Base {
         from: 'connections.user_id',
         to: 'users.id',
       },
-    }
-  })
+    },
+  });
 
   encryptData(): void {
-    if(!this.eligibleForEncryption()) return;
-    this.data = AES.encrypt(JSON.stringify(this.data), appConfig.encryptionKey).toString();
+    if (!this.eligibleForEncryption()) return;
+    this.data = AES.encrypt(
+      JSON.stringify(this.data),
+      appConfig.encryptionKey
+    ).toString();
   }
 
   decryptData(): void {
-    if(!this.eligibleForEncryption()) return;
-    this.data = JSON.parse(AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8));
+    if (!this.eligibleForEncryption()) return;
+    this.data = JSON.parse(
+      AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8)
+    );
   }
 
   eligibleForEncryption(): boolean {
-    return this.data ? true : false
+    return this.data ? true : false;
   }
 
   // TODO: Make another abstraction like beforeSave instead of using
@@ -60,7 +65,10 @@ class Connection extends Base {
     this.encryptData();
   }
 
-  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext): Promise<void> {
+  async $beforeUpdate(
+    opt: ModelOptions,
+    queryContext: QueryContext
+  ): Promise<void> {
     await super.$beforeUpdate(opt, queryContext);
     this.encryptData();
   }
