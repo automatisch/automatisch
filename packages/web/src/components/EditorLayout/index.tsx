@@ -19,7 +19,7 @@ import * as URLS from 'config/urls';
 export default function EditorLayout(): React.ReactElement {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();
-  const { data } = useQuery(GET_FLOW, { variables: { id: Number(flowId) }});
+  const { data } = useQuery(GET_FLOW, { variables: { id: flowId }});
   const flow: Flow = data?.getFlow;
 
   return (
