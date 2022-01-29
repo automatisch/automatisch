@@ -5,15 +5,15 @@ import RequestWithCurrentUser from '../../types/express/request-with-current-use
 
 type Params = {
   input: {
-    id: number;
+    id: string;
     key: string;
     appKey: string;
     parameters: string;
     flow: {
-      id: number;
+      id: string;
     };
     connection: {
-      id: number;
+      id: string;
     };
   };
 };

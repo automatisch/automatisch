@@ -1,10 +1,11 @@
-import { GraphQLInt, GraphQLNonNull } from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import connectionType from '../types/connection';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: number;
+  id: string;
 };
+
 const verifyConnectionResolver = async (
   params: Params,
   req: RequestWithCurrentUser
@@ -36,7 +37,7 @@ const verifyConnectionResolver = async (
 const verifyConnection = {
   type: connectionType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLInt) },
+    id: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     verifyConnectionResolver(params, req),

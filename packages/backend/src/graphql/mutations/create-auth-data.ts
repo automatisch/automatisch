@@ -1,10 +1,9 @@
-import { GraphQLNonNull, GraphQLInt } from 'graphql';
-import Connection from '../../models/connection';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 import authLinkType from '../types/auth-link';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: number;
+  id: string;
 };
 
 const createAuthDataResolver = async (
@@ -40,7 +39,7 @@ const createAuthDataResolver = async (
 const createAuthData = {
   type: authLinkType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLInt) },
+    id: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     createAuthDataResolver(params, req),

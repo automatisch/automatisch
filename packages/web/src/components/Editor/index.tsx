@@ -14,13 +14,10 @@ import type { Step } from 'types/step';
 
 type EditorProps = {
   flow: Flow;
-}
+};
 
-function updateHandlerFactory(flowId: number, previousStepId: number) {
-  return function createStepUpdateHandler(
-    cache: any,
-    mutationResult: any,
-  ) {
+function updateHandlerFactory(flowId: string, previousStepId: string) {
+  return function createStepUpdateHandler(cache: any, mutationResult: any) {
     const { data } = mutationResult;
     const { createStep: createdStep } = data;
     const { getFlow: flow } = cache.readQuery({
@@ -40,7 +37,7 @@ function updateHandlerFactory(flowId: number, previousStepId: number) {
       variables: { id: flowId },
       data: { getFlow: { ...flow, steps } },
     });
-  }
+  };
 }
 
 export default function Editor(props: EditorProps): React.ReactElement {
@@ -49,41 +46,47 @@ export default function Editor(props: EditorProps): React.ReactElement {
   const [currentStep, setCurrentStep] = React.useState<number | null>(0);
   const { flow } = props;
 
-  const onStepChange = React.useCallback((step: any) => {
-    const mutationInput: Record<string, unknown> = {
-      id: step.id,
-      key: step.key,
-      parameters: JSON.stringify(step.parameters, null, 2),
-      connection: {
-        id: step.connection?.id
-      },
-      flow: {
-        id: flow.id,
-      },
-    };
+  const onStepChange = React.useCallback(
+    (step: any) => {
+      const mutationInput: Record<string, unknown> = {
+        id: step.id,
+        key: step.key,
+        parameters: JSON.stringify(step.parameters, null, 2),
+        connection: {
+          id: step.connection?.id,
+        },
+        flow: {
+          id: flow.id,
+        },
+      };
 
-    if (step.appKey) {
-      mutationInput.appKey = step.appKey;
-    }
+      if (step.appKey) {
+        mutationInput.appKey = step.appKey;
+      }
 
-    updateStep({ variables: { input: mutationInput } });
-  }, [updateStep, flow.id]);
+      updateStep({ variables: { input: mutationInput } });
+    },
+    [updateStep, flow.id]
+  );
 
-  const addStep = React.useCallback((previousStepId) => {
-    const mutationInput = {
-      previousStep: {
-        id: previousStepId,
-      },
-      flow: {
-        id: flow.id,
-      },
-    };
+  const addStep = React.useCallback(
+    (previousStepId) => {
+      const mutationInput = {
+        previousStep: {
+          id: previousStepId,
+        },
+        flow: {
+          id: flow.id,
+        },
+      };
 
-    createStep({
-      variables: { input: mutationInput },
-      update: updateHandlerFactory(flow.id, previousStepId),
-    });
-  }, [createStep, flow.id]);
+      createStep({
+        variables: { input: mutationInput },
+        update: updateHandlerFactory(flow.id, previousStepId),
+      });
+    },
+    [createStep, flow.id]
+  );
 
   return (
     <Box
@@ -113,5 +116,5 @@ export default function Editor(props: EditorProps): React.ReactElement {
         </React.Fragment>
       ))}
     </Box>
-  )
-};
+  );
+}
