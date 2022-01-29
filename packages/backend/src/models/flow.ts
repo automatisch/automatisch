@@ -1,10 +1,11 @@
-import Base from './base'
-import Step from './step'
+import Base from './base';
+import Step from './step';
 
 class Flow extends Base {
-  id!: number
-  userId!: number
-  active: boolean
+  id!: number;
+  userId!: number;
+  active: boolean;
+  steps?: [Step];
 
   static tableName = 'flows';
 
@@ -14,9 +15,9 @@ class Flow extends Base {
     properties: {
       id: { type: 'integer' },
       userId: { type: 'integer' },
-      active: { type: 'boolean' }
-    }
-  }
+      active: { type: 'boolean' },
+    },
+  };
 
   static relationMappings = () => ({
     steps: {
@@ -26,8 +27,8 @@ class Flow extends Base {
         from: 'flows.id',
         to: 'steps.flow_id',
       },
-    }
-  })
+    },
+  });
 }
 
 export default Flow;

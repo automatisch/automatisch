@@ -1,12 +1,9 @@
-import Flow from '../../models/flow';
 import Step from '../../models/step';
 import flowType from '../types/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 const createFlowResolver = async (req: RequestWithCurrentUser) => {
-  const flow = await Flow.query().insert({
-    userId: req.currentUser.id,
-  });
+  const flow = await req.currentUser.$relatedQuery('flows').insert();
 
   await Step.query().insert({
     flowId: flow.id,
