@@ -10,8 +10,8 @@ const deleteStepResolver = async (
   params: Params,
   req: RequestWithCurrentUser
 ) => {
-  // TODO: This logic should be revised by using current user
-  await Step.query()
+  await req.currentUser
+    .$relatedQuery('steps')
     .delete()
     .findOne({
       id: params.id,

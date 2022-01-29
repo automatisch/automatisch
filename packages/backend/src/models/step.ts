@@ -16,6 +16,7 @@ class Step extends Base {
   connectionId: number;
   position: number;
   parameters: string;
+  connection?: Connection;
 
   static tableName = 'steps';
 

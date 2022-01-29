@@ -2,6 +2,7 @@ import { QueryContext, ModelOptions } from 'objection';
 import Base from './base';
 import Connection from './connection';
 import Flow from './flow';
+import Step from './step';
 import bcrypt from 'bcrypt';
 
 class User extends Base {
@@ -10,6 +11,7 @@ class User extends Base {
   password!: string;
   connections?: [Connection];
   flows?: [Flow];
+  steps?: [Step];
 
   static tableName = 'users';
 
@@ -39,6 +41,18 @@ class User extends Base {
       join: {
         from: 'users.id',
         to: 'flows.user_id',
+      },
+    },
+    steps: {
+      relation: Base.ManyToManyRelation,
+      modelClass: Step,
+      join: {
+        from: 'users.id',
+        through: {
+          from: 'flows.user_id',
+          to: 'flows.id',
+        },
+        to: 'steps.flow_id',
       },
     },
   });
