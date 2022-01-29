@@ -1,8 +1,6 @@
-import { GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql';
-import Flow from '../../models/flow';
+import { GraphQLNonNull } from 'graphql';
 import Step from '../../models/step';
 import stepType, { stepInputType } from '../types/step';
-import availableAppsEnumType from '../types/available-apps-enum-type';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
@@ -17,20 +15,27 @@ type Params = {
     connection: {
       id: number;
     };
-  }
-}
-const updateStepResolver = async (params: Params, req: RequestWithCurrentUser) => {
+  };
+};
+const updateStepResolver = async (
+  params: Params,
+  req: RequestWithCurrentUser
+) => {
   const { input } = params;
 
-  const flow = await Flow.query().findOne({
-    user_id: req.currentUser.id,
-    id: input.flow.id
-  }).throwIfNotFound();
+  const flow = await req.currentUser
+    .$relatedQuery('flows')
+    .findOne({
+      id: input.flow.id,
+    })
+    .throwIfNotFound();
 
-  let step = await Step.query().findOne({
-    flow_id: flow.id,
-    id: input.id
-  }).throwIfNotFound();
+  let step = await flow
+    .$relatedQuery('steps')
+    .findOne({
+      id: input.id,
+    })
+    .throwIfNotFound();
 
   step = await Step.query().patchAndFetchById(input.id, {
     key: input.key,
@@ -40,14 +45,15 @@ const updateStepResolver = async (params: Params, req: RequestWithCurrentUser) =
   });
 
   return step;
-}
+};
 
 const updateStep = {
   type: stepType,
   args: {
-    input: { type: new GraphQLNonNull(stepInputType) }
+    input: { type: new GraphQLNonNull(stepInputType) },
   },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) => updateStepResolver(params, req)
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
+    updateStepResolver(params, req),
 };
 
 export default updateStep;

@@ -1,6 +1,4 @@
 import { GraphQLNonNull } from 'graphql';
-import Step from '../../models/step';
-import Flow from '../../models/flow';
 import stepType, { stepInputType } from '../types/step';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
@@ -26,33 +24,30 @@ const createStepResolver = async (
 ) => {
   const { input } = params;
 
-  const flow = await Flow.query()
+  const flow = await req.currentUser
+    .$relatedQuery('flows')
     .findOne({
       id: input.flow.id,
-      user_id: req.currentUser.id,
     })
     .throwIfNotFound();
 
-  const previousStep = await Step.query()
+  const previousStep = await flow
+    .$relatedQuery('steps')
     .findOne({
       id: input.previousStep.id,
-      flow_id: flow.id,
     })
     .throwIfNotFound();
 
-  const step = await Step.query().insertAndFetch({
-    flowId: flow.id,
+  const step = await flow.$relatedQuery('steps').insertAndFetch({
     key: input.key,
     appKey: input.appKey,
     type: 'action',
     position: previousStep.position + 1,
   });
 
-  const nextSteps = await Step.query()
-    .where({
-      flow_id: flow.id,
-    })
-    .andWhere('position', '>=', step.position)
+  const nextSteps = await flow
+    .$relatedQuery('steps')
+    .where('position', '>=', step.position)
     .whereNot('id', step.id);
 
   const nextStepQueries = nextSteps.map(async (nextStep, index) => {
