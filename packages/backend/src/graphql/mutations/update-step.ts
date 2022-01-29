@@ -23,17 +23,11 @@ const updateStepResolver = async (
 ) => {
   const { input } = params;
 
-  const flow = await req.currentUser
-    .$relatedQuery('flows')
-    .findOne({
-      id: input.flow.id,
-    })
-    .throwIfNotFound();
-
-  let step = await flow
+  let step = await req.currentUser
     .$relatedQuery('steps')
     .findOne({
-      id: input.id,
+      'steps.id': input.id,
+      flow_id: input.flow.id,
     })
     .throwIfNotFound();
 

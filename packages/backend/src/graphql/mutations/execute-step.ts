@@ -1,27 +1,25 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
-import Connection from '../../models/connection';
-import Step from '../../models/step';
 import stepType from '../types/step';
+import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
   id: string;
   data: Record<string, unknown>;
 };
-const executeStepResolver = async (params: Params): Promise<any> => {
-  const step = await Step.query()
+const executeStepResolver = async (
+  params: Params,
+  req: RequestWithCurrentUser
+): Promise<any> => {
+  const step = await req.currentUser
+    .$relatedQuery('steps')
+    .withGraphFetched('connection')
     .findOne({
-      id: params.id,
-    })
-    .throwIfNotFound();
-
-  const connection = await Connection.query()
-    .findOne({
-      id: step.connectionId,
+      'steps.id': params.id,
     })
     .throwIfNotFound();
 
   const appClass = (await import(`../../apps/${step.appKey}`)).default;
-  const appInstance = new appClass(connection.data);
+  const appInstance = new appClass(step.connection.data);
   await appInstance.triggers[step.key].run();
 
   return step;
@@ -32,7 +30,8 @@ const executeStep = {
   args: {
     id: { type: GraphQLNonNull(GraphQLString) },
   },
-  resolve: (_: any, params: Params) => executeStepResolver(params),
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
+    executeStepResolver(params, req),
 };
 
 export default executeStep;
