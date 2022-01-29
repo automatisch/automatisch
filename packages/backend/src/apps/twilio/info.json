@@ -63,8 +63,7 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{createConnection.id}",
-          "type": "integer"
+          "value": "{createConnection.id}"
         }
       ]
     }
@@ -77,8 +76,7 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}",
-          "type": "integer"
+          "value": "{connection.id}"
         }
       ]
     },
@@ -89,8 +87,7 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}",
-          "type": "integer"
+          "value": "{connection.id}"
         },
         {
           "name": "data",
@@ -115,8 +112,7 @@
       "arguments": [
         {
           "name": "id",
-          "value": "{connection.id}",
-          "type": "integer"
+          "value": "{connection.id}"
         }
       ]
     }
