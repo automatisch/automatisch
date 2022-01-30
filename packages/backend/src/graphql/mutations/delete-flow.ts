@@ -5,12 +5,12 @@ type Params = {
   id: string;
 };
 
-const deleteConnectionResolver = async (
+const deleteFlowResolver = async (
   params: Params,
   req: RequestWithCurrentUser
 ) => {
   await req.currentUser
-    .$relatedQuery('connections')
+    .$relatedQuery('flows')
     .delete()
     .findOne({
       id: params.id,
@@ -20,13 +20,13 @@ const deleteConnectionResolver = async (
   return;
 };
 
-const deleteConnection = {
+const deleteFlow = {
   type: GraphQLBoolean,
   args: {
     id: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    deleteConnectionResolver(params, req),
+    deleteFlowResolver(params, req),
 };
 
-export default deleteConnection;
+export default deleteFlow;
