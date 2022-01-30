@@ -11,7 +11,9 @@ type Params = {
 const createFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
   const appKey = params?.input?.triggerAppKey;
 
-  const flow = await req.currentUser.$relatedQuery('flows').insert({});
+  const flow = await req.currentUser.$relatedQuery('flows').insert({
+    name: 'Name your flow',
+  });
 
   await Step.query().insert({
     flowId: flow.id,

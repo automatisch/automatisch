@@ -3,6 +3,7 @@ import Step from './step';
 
 class Flow extends Base {
   id!: number;
+  name: string;
   userId!: number;
   active: boolean;
   steps?: [Step];
@@ -14,6 +15,7 @@ class Flow extends Base {
 
     properties: {
       id: { type: 'integer' },
+      name: { type: 'string' },
       userId: { type: 'integer' },
       active: { type: 'boolean' },
     },
