@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
@@ -11,22 +11,29 @@ import { CREATE_FLOW } from 'graphql/mutations/create-flow';
 import Box from '@mui/material/Box';
 
 export default function CreateFlow(): React.ReactElement {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [createFlow] = useMutation(CREATE_FLOW);
 
+  const appKey = searchParams.get('appKey');
+
   React.useEffect(() => {
     async function initiate() {
-      const response = await createFlow();
+      const response = await createFlow({
+        variables: {
+          input: {
+            triggerAppKey: appKey,
+          }
+        }
+      });
       const flowId = response.data?.createFlow?.id;
 
-      setTimeout(() => {
-        navigate(URLS.FLOW_EDITOR(flowId));
-      }, 1234);
+      navigate(URLS.FLOW_EDITOR(flowId));
     }
 
     initiate();
-  }, [createFlow, navigate]);
+  }, [createFlow, navigate, appKey]);
 
   return (
     <Box sx={{ display: 'flex', flex: 1, height: '100vh', justifyContent: 'center', alignItems: 'center', gap: 2 }}>

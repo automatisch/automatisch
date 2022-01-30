@@ -70,9 +70,9 @@ export default function Application(): React.ReactElement {
         linkProps,
         ref,
       ) {
-        return <Link ref={ref} to={URLS.CREATE_FLOW} {...linkProps} />;
+        return <Link ref={ref} to={URLS.CREATE_FLOW_WITH_APP(appKey)} {...linkProps} />;
       }),
-    [],
+    [appKey],
   );
 
   return (

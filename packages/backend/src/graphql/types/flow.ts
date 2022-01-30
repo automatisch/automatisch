@@ -1,6 +1,7 @@
 import {
   GraphQLList,
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLString,
   GraphQLBoolean,
 } from 'graphql';
@@ -15,6 +16,13 @@ const flowType = new GraphQLObjectType({
     steps: {
       type: GraphQLList(StepType),
     },
+  },
+});
+
+export const flowInputType = new GraphQLInputObjectType({
+  name: 'FlowInput',
+  fields: {
+    triggerAppKey: { type: GraphQLString },
   },
 });
 

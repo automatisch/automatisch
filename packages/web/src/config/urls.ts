@@ -16,7 +16,8 @@ export const APP_FLOWS = (appKey: string): string => `/app/${appKey}/flows`;
 export const APP_FLOWS_PATTERN = '/app/:appKey/flows';
 
 export const EDITOR = '/editor';
-export const CREATE_FLOW = '/editor/create';
+export const CREATE_FLOW ='/editor/create';
+export const CREATE_FLOW_WITH_APP = (appKey: string) => `/editor/create?appKey=${appKey}`;
 export const FLOW_EDITOR = (flowId: string): string => `/editor/${flowId}`;
 
 export const FLOWS = '/flows';
