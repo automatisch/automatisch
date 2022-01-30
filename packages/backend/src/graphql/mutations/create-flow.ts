@@ -1,14 +1,23 @@
 import Step from '../../models/step';
-import flowType from '../types/flow';
+import flowType, { flowInputType} from '../types/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
-const createFlowResolver = async (req: RequestWithCurrentUser) => {
+type Params = {
+  input: {
+    triggerAppKey: string;
+  };
+};
+
+const createFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
+  const appKey = params?.input?.triggerAppKey;
+
   const flow = await req.currentUser.$relatedQuery('flows').insert({});
 
   await Step.query().insert({
     flowId: flow.id,
     type: 'trigger',
     position: 1,
+    appKey,
   });
 
   return flow;
@@ -16,8 +25,11 @@ const createFlowResolver = async (req: RequestWithCurrentUser) => {
 
 const createFlow = {
   type: flowType,
-  resolve: (_: any, _params: any, req: RequestWithCurrentUser) =>
-    createFlowResolver(req),
+  args: {
+    input: { type: flowInputType },
+  },
+  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
+    createFlowResolver(params, req),
 };
 
 export default createFlow;
