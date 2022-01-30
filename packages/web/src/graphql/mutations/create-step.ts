@@ -7,6 +7,7 @@ export const CREATE_STEP = gql`
       type
       key
       appKey
+      parameters
       connection {
         id
       }
