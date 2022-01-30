@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useMutation } from '@apollo/client';
-import { ApolloCache, FetchResult } from '@apollo/client';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
@@ -10,7 +9,6 @@ import { CREATE_STEP } from 'graphql/mutations/create-step';
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
 import FlowStep from 'components/FlowStep';
 import type { Flow } from 'types/flow';
-import type { Step } from 'types/step';
 
 type EditorProps = {
   flow: Flow;
@@ -42,7 +40,7 @@ function updateHandlerFactory(flowId: string, previousStepId: string) {
 
 export default function Editor(props: EditorProps): React.ReactElement {
   const [updateStep] = useMutation(UPDATE_STEP);
-  const [createStep] = useMutation(CREATE_STEP);
+  const [createStep, { loading: creationInProgress }] = useMutation(CREATE_STEP);
   const [currentStep, setCurrentStep] = React.useState<number | null>(0);
   const { flow } = props;
 
@@ -96,7 +94,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
       alignItems="center"
       alignSelf="center"
       py={3}
-      gap={2}
+      gap={1}
     >
       {flow?.steps?.map((step, index) => (
         <React.Fragment key={`${step}-${index}`}>
@@ -110,7 +108,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
             onChange={onStepChange}
           />
 
-          <IconButton onClick={() => addStep(step.id)} color="primary">
+          <IconButton onClick={() => addStep(step.id)} color="primary" disabled={creationInProgress}>
             <AddIcon />
           </IconButton>
         </React.Fragment>

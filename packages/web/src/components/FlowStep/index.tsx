@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
@@ -9,7 +10,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import IconButton from '@mui/material/IconButton';
 
+import FlowStepContextMenu from 'components/FlowStepContextMenu';
 import AppIcon from 'components/AppIcon';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -49,7 +53,9 @@ const parseStep = (step: any) => {
 
 export default function FlowStep(props: FlowStepProps): React.ReactElement | null {
   const { collapsed, index, onChange } = props;
+  const contextButtonRef = React.useRef<HTMLButtonElement  | null>(null);
   const [step, setStep] = React.useState<Step>(() => parseStep(props.step));
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement  | null>(null);
   const isTrigger = step.type === StepType.Trigger;
   const isAction = step.type === StepType.Action;
   const initialRender = React.useRef<boolean>(true);
@@ -97,6 +103,14 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
 
   if  (!apps) return null;
 
+  const onContextMenuClose = (event: React.SyntheticEvent) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  }
+  const onContextMenuClick = (event: React.SyntheticEvent) => {
+    event.stopPropagation();
+    setAnchorEl(contextButtonRef.current);
+  }
   const onOpen = () => collapsed && props.onOpen?.();
   const onClose = () => props.onClose?.();
 
@@ -121,6 +135,13 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
               {index}. {app?.name}
             </Typography>
           </div>
+
+          <Box display="flex" flex={1} justifyContent="end">
+            {/* as there are no other actions besides "delete step", we hide the context menu. */}
+            {!isTrigger && <IconButton color="primary" onClick={onContextMenuClick} ref={contextButtonRef}>
+              <MoreHorizIcon />
+            </IconButton>}
+          </Box>
         </Stack>
       </Header>
 
@@ -170,6 +191,13 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
           </Button>
         </Collapse>
       )}
+
+      {anchorEl && <FlowStepContextMenu
+        stepId={step.id}
+        deletable={!isTrigger}
+        onClose={onContextMenuClose}
+        anchorEl={anchorEl}
+      />}
     </Wrapper>
   )
 };
