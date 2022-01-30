@@ -16,8 +16,8 @@ const rootQuery = new GraphQLObjectType({
     getAppConnections,
     testConnection,
     getFlow,
-    getFlows
-  }
+    getFlows,
+  },
 });
 
 export default rootQuery;

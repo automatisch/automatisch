@@ -9,23 +9,29 @@ import ConnectionType from './connection';
 
 const stepType = new GraphQLObjectType({
   name: 'Step',
-  fields: {
-    id: { type: GraphQLString },
-    previousStepId: { type: GraphQLString },
-    key: { type: GraphQLString },
-    appKey: { type: GraphQLString },
-    type: {
-      type: new GraphQLEnumType({
-        name: 'StepEnumType',
-        values: {
-          trigger: { value: 'trigger' },
-          action: { value: 'action' },
-        },
-      }),
-    },
-    parameters: { type: GraphQLString },
-    connection: { type: ConnectionType },
-    position: { type: GraphQLInt },
+  fields: () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const FlowType = require('./flow').default;
+
+    return {
+      id: { type: GraphQLString },
+      previousStepId: { type: GraphQLString },
+      key: { type: GraphQLString },
+      appKey: { type: GraphQLString },
+      type: {
+        type: new GraphQLEnumType({
+          name: 'StepEnumType',
+          values: {
+            trigger: { value: 'trigger' },
+            action: { value: 'action' },
+          },
+        }),
+      },
+      parameters: { type: GraphQLString },
+      connection: { type: ConnectionType },
+      flow: { type: FlowType },
+      position: { type: GraphQLInt },
+    };
   },
 });
 

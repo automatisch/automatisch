@@ -1,6 +1,6 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
-import Step from '../../models/step';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import stepType from '../types/step';
 
 type Params = {
   id: string;
@@ -10,19 +10,39 @@ const deleteStepResolver = async (
   params: Params,
   req: RequestWithCurrentUser
 ) => {
-  await req.currentUser
+  const step = await req.currentUser
     .$relatedQuery('steps')
-    .delete()
+    .withGraphFetched('flow')
     .findOne({
-      id: params.id,
+      'steps.id': params.id,
     })
     .throwIfNotFound();
 
-  return;
+  await step.$query().delete();
+
+  const nextSteps = await step.flow
+    .$relatedQuery('steps')
+    .where('position', '>', step.position);
+
+  const nextStepQueries = nextSteps.map(async (nextStep) => {
+    await nextStep.$query().patch({
+      ...nextStep,
+      position: nextStep.position - 1,
+    });
+  });
+
+  await Promise.all(nextStepQueries);
+
+  step.flow = await step.flow
+    .$query()
+    .withGraphJoined('steps')
+    .orderBy('steps.position', 'asc');
+
+  return step;
 };
 
 const deleteStep = {
-  type: GraphQLBoolean,
+  type: stepType,
   args: {
     id: { type: GraphQLNonNull(GraphQLString) },
   },
