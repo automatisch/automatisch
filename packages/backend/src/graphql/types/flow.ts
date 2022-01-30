@@ -5,17 +5,21 @@ import {
   GraphQLString,
   GraphQLBoolean,
 } from 'graphql';
-import StepType from './step';
 
 const flowType = new GraphQLObjectType({
   name: 'Flow',
-  fields: {
-    id: { type: GraphQLString },
-    name: { type: GraphQLString },
-    active: { type: GraphQLBoolean },
-    steps: {
-      type: GraphQLList(StepType),
-    },
+  fields: () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const StepType = require('./step').default;
+
+    return {
+      id: { type: GraphQLString },
+      name: { type: GraphQLString },
+      active: { type: GraphQLBoolean },
+      steps: {
+        type: GraphQLList(StepType),
+      },
+    };
   },
 });
 
