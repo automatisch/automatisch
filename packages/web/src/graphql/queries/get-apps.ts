@@ -58,6 +58,11 @@ export const GET_APPS = gql`
         description
         subSteps {
           name
+          arguments {
+            name
+            type
+            required
+          }
         }
       }
       actions {
@@ -66,6 +71,11 @@ export const GET_APPS = gql`
         description
         subSteps {
           name
+          arguments {
+            name
+            type
+            required
+          }
         }
       }
     }
