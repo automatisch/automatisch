@@ -17,7 +17,8 @@ const actionType = new GraphQLObjectType({
                 new GraphQLObjectType({
                   name: 'ActionSubStepArgument',
                   fields: {
-                    name: { type: GraphQLString },
+                    label: { type: GraphQLString },
+                    key: { type: GraphQLString },
                     type: { type: GraphQLString },
                     required: { type: GraphQLBoolean }
                   }

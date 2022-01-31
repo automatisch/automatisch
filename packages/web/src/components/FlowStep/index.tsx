@@ -13,11 +13,13 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 
+import Form from 'components/Form';
+import InputCreator from 'components/InputCreator';
 import FlowStepContextMenu from 'components/FlowStepContextMenu';
 import AppIcon from 'components/AppIcon';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
-import type { App } from 'types/app';
+import type { App, AppFields } from 'types/app';
 import type { Step } from 'types/step';
 import { StepType } from 'types/step';
 import { Content, Header, Wrapper } from './style';
@@ -99,6 +101,18 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
         parameters: {},
       }));
     }
+  }, []);
+
+  const onParameterChange = React.useCallback((event: React.SyntheticEvent) => {
+    const { name, value } = event.target as HTMLInputElement;
+
+    setStep((step) => ({
+      ...step,
+      parameters: {
+        ...step.parameters,
+        [name]: value
+      }
+    }));
   }, []);
 
   if  (!apps) return null;
@@ -183,20 +197,24 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
               </ListItem>
             </Collapse>
 
-            {substeps?.length > 0 && substeps.map((substep: Record<string, unknown>, index: number) => (
-              <React.Fragment key={substep?.key as string}>
-                <ListItemButton onClick={() => toggleSubstep(index + 1)} selected={currentSubstep === (index + 1)} divider>
-                  <Typography variant="body2">
-                    {substep.name as string}
-                  </Typography>
-                </ListItemButton>
-                <Collapse in={currentSubstep === (index + 1)} timeout="auto" unmountOnExit>
-                  <ListItem sx={{ pt: 2 }}>
-
-                  </ListItem>
-                </Collapse>
-              </React.Fragment>
-            ))}
+            <Form defaultValues={step.parameters}>
+              {substeps?.length > 0 && substeps.map((substep: { name: string, arguments: AppFields[] }, index: number) => (
+                <React.Fragment key={`${substep?.name}-${index}`}>
+                  <ListItemButton onClick={() => toggleSubstep(index + 1)} selected={currentSubstep === (index + 1)} divider>
+                    <Typography variant="body2">
+                      {substep.name as string}
+                    </Typography>
+                  </ListItemButton>
+                  <Collapse in={currentSubstep === (index + 1)} timeout="auto" unmountOnExit>
+                    <ListItem sx={{ pt: 2 }}>
+                      {substep?.arguments?.map((argument: AppFields) => (
+                        <InputCreator key={argument?.key} schema={argument} onBlur={onParameterChange} />
+                      ))}
+                    </ListItem>
+                  </Collapse>
+                </React.Fragment>
+              ))}
+            </Form>
           </List>
         </Content>
 

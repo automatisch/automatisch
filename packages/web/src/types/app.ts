@@ -1,5 +1,6 @@
 type AppFields = {
   key: string;
+  name: string;
   label: string;
   type: string;
   required: boolean,

@@ -241,7 +241,8 @@
           "name": "Set up a trigger",
           "arguments": [
             {
-              "name": "username",
+              "label": "Username",
+              "key": "username",
               "type": "string",
               "required": true
             }
@@ -266,7 +267,8 @@
           "name": "Set up action",
           "arguments": [
             {
-              "name": "tweet",
+              "label": "Tweet body",
+              "key": "tweet",
               "type": "string",
               "required": true
             }
