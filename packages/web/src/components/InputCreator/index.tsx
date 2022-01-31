@@ -6,12 +6,14 @@ import TextField from 'components/TextField';
 
 type InputCreatorProps = {
   onChange?: React.ChangeEventHandler;
+  onBlur?: React.FocusEventHandler;
   schema: AppFields;
 };
 
 export default function InputCreator(props: InputCreatorProps): React.ReactElement {
   const {
     onChange,
+    onBlur,
     schema,
   } = props;
 
@@ -21,7 +23,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     key: name,
     label,
     required,
-    readOnly,
+    readOnly = false,
     value,
     description,
     clickToCopy,
@@ -35,6 +37,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
       disabled={readOnly}
       readOnly={readOnly}
       onChange={onChange}
+      onBlur={onBlur}
       name={name}
       size="small"
       label={label}

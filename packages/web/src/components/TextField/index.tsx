@@ -38,6 +38,8 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
     shouldUnregister,
     clickToCopy,
     readOnly,
+    onBlur,
+    onChange,
     ...textFieldProps
   } = props;
 
@@ -48,10 +50,12 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
       defaultValue={defaultValue || ''}
       control={control}
       shouldUnregister={shouldUnregister}
-      render={({ field: { ref, ...field } }) => (
+      render={({ field: { ref, onChange: controllerOnChange, onBlur: controllerOnBlur, ...field } }) => (
         <MuiTextField
           {...textFieldProps}
           {...field}
+          onChange={(...args) => { controllerOnChange(...args); onChange?.(...args); }}
+          onBlur={(...args) => { controllerOnBlur(); onBlur?.(...args); }}
           inputRef={(element) => { inputRef.current = element; ref(element); }}
           InputProps={{ readOnly, endAdornment: clickToCopy ? createCopyAdornment(inputRef) : null}}
         />

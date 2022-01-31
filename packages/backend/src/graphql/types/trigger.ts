@@ -17,7 +17,8 @@ const triggerType = new GraphQLObjectType({
                 new GraphQLObjectType({
                   name: 'TriggerSubStepArgument',
                   fields: {
-                    name: { type: GraphQLString },
+                    label: { type: GraphQLString },
+                    key: { type: GraphQLString },
                     type: { type: GraphQLString },
                     required: { type: GraphQLBoolean }
                   }
