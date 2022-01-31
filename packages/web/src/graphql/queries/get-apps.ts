@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_APPS = gql`
-  query GetApps($name: String) {
-    getApps(name: $name) {
+  query GetApps($name: String, $onlyWithTriggers: Boolean) {
+    getApps(name: $name, onlyWithTriggers: $onlyWithTriggers) {
       name
       key
       iconUrl
