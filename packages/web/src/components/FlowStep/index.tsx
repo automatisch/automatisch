@@ -75,13 +75,15 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
   }, [step, onChange]);
 
   const appAndEventOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
-  const actionOptions = React.useMemo(() => app?.triggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
+  const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
+  const actionOptions = React.useMemo(() => actionsOrTriggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
+  const substeps = React.useMemo(() => actionsOrTriggers?.find(({ key }) => key === step.key)?.subSteps, [actionsOrTriggers, step?.key]);
 
   const onAppChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
     if (typeof selectedOption === 'object') {
       const typedSelectedOption = selectedOption as { value: string; };
       const option: { value: string } = typedSelectedOption;
-      const appKey = option.value as string;
+      const appKey = option?.value as string;
       setStep((step) => ({ ...step, appKey, parameters: {} }));
     }
   }, []);
@@ -90,13 +92,11 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
     if (typeof selectedOption === 'object') {
       const typedSelectedOption = selectedOption as { value: string; };
       const option: { value: string } = typedSelectedOption;
-      const eventKey = option.value as string;
+      const eventKey = option?.value as string;
       setStep((step) => ({
         ...step,
-        parameters: {
-          ...step.parameters,
-          eventKey,
-        }
+        key: eventKey,
+        parameters: {},
       }));
     }
   }, []);
@@ -145,52 +145,65 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
         </Stack>
       </Header>
 
-      {true && (
-        <Collapse in={!collapsed}>
-          <Content>
-            <List>
-              <ListItemButton onClick={() => toggleSubstep(0)}>
+      <Collapse in={!collapsed}>
+        <Content>
+          <List>
+            <ListItemButton onClick={() => toggleSubstep(0)} selected={currentSubstep === 0} divider>
+              <Typography variant="body2">
                 Choose app & event
-              </ListItemButton>
-              <Collapse in={currentSubstep === 0} timeout="auto" unmountOnExit>
-                <ListItem sx={{ pt: 2 }}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={appAndEventOptions}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label="Choose app & event" />}
-                    value={getOption(appAndEventOptions, step.appKey)}
-                    onChange={onAppChange}
-                  />
-                </ListItem>
-              </Collapse>
+              </Typography>
+            </ListItemButton>
+            <Collapse in={currentSubstep === 0} timeout="auto" unmountOnExit>
+              <ListItem sx={{ pt: 2, flexDirection: 'column', alignItems: 'flex-start' }}>
+                <Autocomplete
+                  fullWidth
+                  disablePortal
+                  options={appAndEventOptions}
+                  renderInput={(params) => <TextField {...params} label="Choose app" />}
+                  value={getOption(appAndEventOptions, step.appKey)}
+                  onChange={onAppChange}
+                />
 
+                {step.appKey && (
+                  <Box display="flex" width="100%" pt={2} flexDirection="column">
+                    <Typography variant="subtitle2" pb={2} gutterBottom>
+                      Action event
+                    </Typography>
 
-              <ListItemButton onClick={() => toggleSubstep(1)}>
-                Action event
-              </ListItemButton>
-              <Collapse in={currentSubstep === 1} timeout="auto" unmountOnExit>
-                <ListItem sx={{ pt: 2 }}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={actionOptions}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label="Choose app & event" />}
-                    value={getOption(actionOptions, step?.parameters?.eventKey)}
-                    onChange={onEventChange}
-                  />
-                </ListItem>
-              </Collapse>
-            </List>
-          </Content>
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      options={actionOptions}
+                      renderInput={(params) => <TextField {...params} label="Choose an event" />}
+                      value={getOption(actionOptions, step.key)}
+                      onChange={onEventChange}
+                    />
+                  </Box>
+                )}
+              </ListItem>
+            </Collapse>
 
-          <Button onClick={onClose}>
-            Close
-          </Button>
-        </Collapse>
-      )}
+            {substeps?.length > 0 && substeps.map((substep: Record<string, unknown>, index: number) => (
+              <React.Fragment key={substep?.key as string}>
+                <ListItemButton onClick={() => toggleSubstep(index + 1)} selected={currentSubstep === (index + 1)} divider>
+                  <Typography variant="body2">
+                    {substep.name as string}
+                  </Typography>
+                </ListItemButton>
+                <Collapse in={currentSubstep === (index + 1)} timeout="auto" unmountOnExit>
+                  <ListItem sx={{ pt: 2 }}>
+
+                  </ListItem>
+                </Collapse>
+              </React.Fragment>
+            ))}
+          </List>
+        </Content>
+
+        <Button onClick={onClose}>
+          Close
+        </Button>
+      </Collapse>
 
       {anchorEl && <FlowStepContextMenu
         stepId={step.id}
