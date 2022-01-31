@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
+import EditableTypography from 'components/EditableTypography';
 import Container from 'components/Container';
 import Editor from 'components/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import type { Flow } from 'types/flow';
 import * as URLS from 'config/urls';
@@ -19,8 +20,25 @@ import * as URLS from 'config/urls';
 export default function EditorLayout(): React.ReactElement {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();
-  const { data } = useQuery(GET_FLOW, { variables: { id: flowId }});
+  const [updateFlow] = useMutation(UPDATE_FLOW);
+  const { data, loading } = useQuery(GET_FLOW, { variables: { id: flowId }});
   const flow: Flow = data?.getFlow;
+
+  const onFlowNameUpdate = React.useCallback(async (name: string) => {
+    await updateFlow({
+      variables: {
+        id: flowId,
+        name,
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        updateFlow: {
+          id: flow?.id,
+          name,
+        }
+      }
+    });
+  }, [flow?.id]);
 
   return (
     <>
@@ -35,9 +53,16 @@ export default function EditorLayout(): React.ReactElement {
               <ArrowBackIosNewIcon fontSize="small" />
             </IconButton>
 
-            <Typography variant="body1" noWrap sx={{ display: 'flex', flex: 1, maxWidth: '50vw' }}>
-              {flow?.name}
-            </Typography>
+            {!loading && (
+              <EditableTypography
+                variant="body1"
+                onNameSubmit={onFlowNameUpdate}
+                noWrap
+                sx={{ display: 'flex', flex: 1, maxWidth: '50vw', ml: 2 }}
+              >
+                {flow?.name}
+              </EditableTypography>
+            )}
           </Box>
 
           <Box pr={1}>
@@ -52,7 +77,7 @@ export default function EditorLayout(): React.ReactElement {
         </Stack>
 
         <Container maxWidth="md">
-          {!flow && 'not found'}
+          {!flow && !loading && 'not found'}
 
           {flow && <Editor flow={flow} />}
         </Container>

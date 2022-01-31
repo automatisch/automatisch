@@ -2,7 +2,7 @@ import Base from './base';
 import Step from './step';
 
 class Flow extends Base {
-  id!: number;
+  id!: string;
   name: string;
   userId!: number;
   active: boolean;
@@ -14,7 +14,7 @@ class Flow extends Base {
     type: 'object',
 
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'string' },
       name: { type: 'string' },
       userId: { type: 'integer' },
       active: { type: 'boolean' },
