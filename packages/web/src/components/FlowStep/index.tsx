@@ -63,7 +63,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
   const initialRender = React.useRef<boolean>(true);
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(0);
-  const { data } = useQuery(GET_APPS)
+  const { data } = useQuery(GET_APPS, { variables: { onlyWithTriggers: isTrigger }});
   const apps: App[] = data?.getApps;
   const app = apps?.find((currentApp: App) => currentApp.key === step.appKey);
 
