@@ -13,6 +13,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 
+import ChooseAccountSubstep from 'components/ChooseAccountSubstep';
 import Form from 'components/Form';
 import InputCreator from 'components/InputCreator';
 import FlowStepContextMenu from 'components/FlowStepContextMenu';
@@ -38,7 +39,7 @@ const optionGenerator = (app: Record<string, unknown>): { label: string; value: 
   value: app.key as string,
 });
 
-const getOption = (options: Record<string, unknown>[], appKey: unknown) => options.find(app => app.value === appKey as string);
+const getOption = (options: Record<string, unknown>[], appKey: unknown) => options.find(app => app.value === appKey as string) || null;
 
 const parseStep = (step: any) => {
   try {
@@ -76,7 +77,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
     }
   }, [step, onChange]);
 
-  const appAndEventOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
+  const appOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
   const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
   const actionOptions = React.useMemo(() => actionsOrTriggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
   const substeps = React.useMemo(() => actionsOrTriggers?.find(({ key }) => key === step.key)?.subSteps, [actionsOrTriggers, step?.key]);
@@ -101,6 +102,15 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
         parameters: {},
       }));
     }
+  }, []);
+
+  const onAccountChange = React.useCallback((connectionId: string) => {
+    setStep((step) => ({
+      ...step,
+      connection: {
+        id: connectionId,
+      },
+    }));
   }, []);
 
   const onParameterChange = React.useCallback((event: React.SyntheticEvent) => {
@@ -172,9 +182,9 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
                 <Autocomplete
                   fullWidth
                   disablePortal
-                  options={appAndEventOptions}
-                  renderInput={(params) => <TextField {...params} label="Choose app" />}
-                  value={getOption(appAndEventOptions, step.appKey)}
+                  options={appOptions}
+                  renderInput={(params) => <TextField {...params} label="Choose an app" />}
+                  value={getOption(appOptions, step.appKey)}
                   onChange={onAppChange}
                 />
 
@@ -207,9 +217,21 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
                   </ListItemButton>
                   <Collapse in={currentSubstep === (index + 1)} timeout="auto" unmountOnExit>
                     <ListItem sx={{ pt: 2 }}>
-                      {substep?.arguments?.map((argument: AppFields) => (
-                        <InputCreator key={argument?.key} schema={argument} onBlur={onParameterChange} />
-                      ))}
+                      {substep.name === 'Choose account' && (
+                        <ChooseAccountSubstep
+                          appKey={step.appKey}
+                          connectionId={step.connection?.id as string}
+                          onChange={onAccountChange}
+                        />
+                      )}
+
+                      {substep.name !== 'Choose account' && (
+                        <React.Fragment>
+                          {substep?.arguments?.map((argument: AppFields) => (
+                            <InputCreator key={argument?.key} schema={argument} onBlur={onParameterChange} />
+                          ))}
+                        </React.Fragment>
+                      )}
                     </ListItem>
                   </Collapse>
                 </React.Fragment>

@@ -11,6 +11,16 @@ type AppFields = {
   clickToCopy: boolean,
 };
 
+type AppConnection = {
+  id: string;
+  key: string;
+  verified: boolean;
+  createdAt: string;
+  data: {
+    [key: string]: any;
+  };
+};
+
 type App = {
   key: string;
   name: string;
@@ -23,6 +33,7 @@ type App = {
   reconnectionSteps: any[];
   triggers: any[];
   actions: any[];
+  connections: AppConnection[];
 };
 
-export type { App, AppFields };
+export type { App, AppFields, AppConnection };
