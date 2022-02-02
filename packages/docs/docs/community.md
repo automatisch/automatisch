@@ -1,9 +1,9 @@
 ---
-sidebar_position: 1
-slug: /
+sidebar_position: 7
+slug: /community
 ---
 
-# Introduction
+# Community
 
 Let's discover **Docusaurus in less than 5 minutes**.
 

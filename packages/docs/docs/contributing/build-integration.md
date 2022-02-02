@@ -1,8 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Translate your site
+# Build Integration
 
 Let's translate `docs/intro.md` to French.
 
