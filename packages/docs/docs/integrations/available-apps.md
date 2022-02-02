@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Manage Docs Versions
+# Available Apps
 
 Docusaurus can manage multiple versions of your docs.
 
