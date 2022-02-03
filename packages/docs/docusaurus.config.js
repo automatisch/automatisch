@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Docs',
+  title: 'Automatisch Docs',
   tagline: 'Automatisch Docs',
   url: 'https://docs.automatisch.io',
   baseUrl: '/',
@@ -71,7 +71,19 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
+                label: 'Getting Started',
+                to: '/docs/intro',
+              },
+              {
+                label: 'Integrations',
+                to: '/docs/intro',
+              },
+              {
+                label: 'License',
+                to: '/docs/intro',
+              },
+              {
+                label: 'F.A.Q.',
                 to: '/docs/intro',
               },
             ],
@@ -79,6 +91,10 @@ const config = {
           {
             title: 'Community',
             items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/automatisch/automatisch',
+              },
               {
                 label: 'Discord',
                 href: 'https://discord.gg/dJSah9CVrC',
@@ -90,10 +106,10 @@ const config = {
             ],
           },
           {
-            title: 'More',
+            title: 'Explore',
             items: [
               {
-                label: 'GitHub',
+                label: 'Read our blog',
                 href: 'https://github.com/automatisch/automatisch',
               },
             ],
@@ -104,6 +120,9 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      colorMode: {
+        disableSwitch: true,
       },
     }),
 };

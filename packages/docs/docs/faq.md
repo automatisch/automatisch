@@ -3,7 +3,7 @@ sidebar_position: 8
 slug: /faq
 ---
 
-# F.A.Q
+# F.A.Q.
 
 Let's discover **Docusaurus in less than 5 minutes**.
 
