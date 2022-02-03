@@ -7,7 +7,7 @@ slug: /
 
 :::info
 
-Automatisch is still in development mode. We try our best not to introduce breaking changes, but be cautious until v1 is released.
+Automatisch is still in early phase of development. We try our best not to introduce breaking changes, but be cautious until v1 is released.
 
 :::
 
@@ -16,8 +16,6 @@ Automatisch is still in development mode. We try our best not to introduce break
 💸 You don't need to invest time or money to automate your workflows. Programming knowledge is also **not needed** to use Automatisch.
 
 💥 Ready for more? Use advanced features like multi-step flows, filters, formatters, and webhook support.
-
-<!-- Let's discover **Automatisch in less than 5 minutes**. -->
 
 ## How it works?
 
