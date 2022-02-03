@@ -1,9 +1,9 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
-import stepType from '../types/step';
+import { GraphQLJSONObject } from 'graphql-type-json';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
-  id: string;
+  stepId: string;
   data: Record<string, unknown>;
 };
 const executeStepResolver = async (
@@ -14,21 +14,21 @@ const executeStepResolver = async (
     .$relatedQuery('steps')
     .withGraphFetched('connection')
     .findOne({
-      'steps.id': params.id,
+      'steps.id': params.stepId,
     })
     .throwIfNotFound();
 
   const appClass = (await import(`../../apps/${step.appKey}`)).default;
   const appInstance = new appClass(step.connection.data);
-  await appInstance.triggers[step.key].run();
+  const data = await appInstance.triggers[step.key].run();
 
-  return step;
+  return { data };
 };
 
 const executeStep = {
-  type: stepType,
+  type: GraphQLJSONObject,
   args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
+    stepId: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     executeStepResolver(params, req),
