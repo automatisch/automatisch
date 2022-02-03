@@ -7,11 +7,12 @@ import verifyConnection from './mutations/verify-connection';
 import deleteConnection from './mutations/delete-connection';
 import createFlow from './mutations/create-flow';
 import updateFlow from './mutations/update-flow';
+import executeFlow from './mutations/execute-flow';
 import deleteFlow from './mutations/delete-flow';
 import createStep from './mutations/create-step';
 import deleteStep from './mutations/delete-step';
 import updateStep from './mutations/update-step';
-import executeStep from './mutations/execute-step';
+
 import login from './mutations/login';
 
 const rootMutation = new GraphQLObjectType({
@@ -29,7 +30,7 @@ const rootMutation = new GraphQLObjectType({
     createStep,
     updateStep,
     deleteStep,
-    executeStep,
+    executeFlow,
     login,
   },
 });
