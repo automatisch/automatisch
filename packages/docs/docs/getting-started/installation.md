@@ -4,40 +4,45 @@ sidebar_position: 1
 
 # Installation
 
-Add **Markdown or React** files to `src/pages` to create a **standalone page**:
+<!-- TODO: Add instructions to install PostgreSQL and specify supported node versions -->
 
-- `src/pages/index.js` -> `localhost:3000/`
-- `src/pages/foo.md` -> `localhost:3000/foo`
-- `src/pages/foo/bar.js` -> `localhost:3000/foo/bar`
+Automatisch supports both npm and docker installation.
 
-## Create your first React Page
+### npm
 
-Create a file at `src/pages/my-react-page.js`:
+You can try Automatisch without installing by using [npx](https://docs.npmjs.com/cli/v8/commands/npx).
 
-```jsx title="src/pages/my-react-page.js"
-import React from 'react';
-import Layout from '@theme/Layout';
-
-export default function MyReactPage() {
-  return (
-    <Layout>
-      <h1>My React page</h1>
-      <p>This is a React page</p>
-    </Layout>
-  );
-}
+```bash
+npx automatisch
 ```
 
-A new page is now available at `http://localhost:3000/my-react-page`.
+Or you can install Automatisch globally via [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-## Create your first Markdown Page
-
-Create a file at `src/pages/my-markdown-page.md`:
-
-```mdx title="src/pages/my-markdown-page.md"
-# My Markdown page
-
-This is a Markdown page
+```bash
+npm install automatisch -g
 ```
 
-A new page is now available at `http://localhost:3000/my-markdown-page`.
+You need to run the start command after the installation.
+
+```bash
+automatisch start
+```
+
+### docker
+
+You can also use [docker](https://docs.docker.com/get-docker/) to install Automatisch.
+
+```bash
+docker run -it \
+	--name automatisch \
+	-p 3000:3000 \
+	automatisch start
+```
+
+<!-- TODO: Check requirements of https usage and revise the document accordingly -->
+
+## Let's discover!
+
+✌️ That's it; you have Automatisch running. Let's check it out by browsing [http://localhost:3000](http://localhost:3000)
+
+If you see any problem while installing Automatisch, let us know via [github issues](https://github.com/automatisch/automatisch/issues) or our [discord server](https://discord.gg/dJSah9CVrC).

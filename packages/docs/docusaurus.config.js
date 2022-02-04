@@ -119,7 +119,7 @@ const config = {
         copyright: `© 2021 Automatisch. All rights reserved.`,
       },
       prism: {
-        theme: lightCodeTheme,
+        theme: require('prism-react-renderer/themes/dracula'),
         darkTheme: darkCodeTheme,
       },
       colorMode: {
