@@ -11,6 +11,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
 
 import ChooseAccountSubstep from 'components/ChooseAccountSubstep';
@@ -82,6 +84,8 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
   const actionOptions = React.useMemo(() => actionsOrTriggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
   const substeps = React.useMemo(() => actionsOrTriggers?.find(({ key }) => key === step.key)?.subSteps, [actionsOrTriggers, step?.key]);
 
+  const expandNextStep = React.useCallback(() => { setCurrentSubstep((currentSubstep) => (currentSubstep ?? 0) + 1); }, []);
+
   const onAppChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
     if (typeof selectedOption === 'object') {
       const typedSelectedOption = selectedOption as { value: string; };
@@ -101,6 +105,8 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
         key: eventKey,
         parameters: {},
       }));
+
+      expandNextStep();
     }
   }, []);
 
@@ -111,6 +117,8 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
         id: connectionId,
       },
     }));
+
+    expandNextStep();
   }, []);
 
   const onParameterChange = React.useCallback((event: React.SyntheticEvent) => {
@@ -173,15 +181,17 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
         <Content>
           <List>
             <ListItemButton onClick={() => toggleSubstep(0)} selected={currentSubstep === 0} divider>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
+                {currentSubstep === 0 ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 Choose app & event
               </Typography>
             </ListItemButton>
             <Collapse in={currentSubstep === 0} timeout="auto" unmountOnExit>
-              <ListItem sx={{ pt: 2, flexDirection: 'column', alignItems: 'flex-start' }}>
+              <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
                 <Autocomplete
                   fullWidth
                   disablePortal
+                  disableClearable
                   options={appOptions}
                   renderInput={(params) => <TextField {...params} label="Choose an app" />}
                   value={getOption(appOptions, step.appKey)}
@@ -197,6 +207,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
                     <Autocomplete
                       fullWidth
                       disablePortal
+                      disableClearable
                       options={actionOptions}
                       renderInput={(params) => <TextField {...params} label="Choose an event" />}
                       value={getOption(actionOptions, step.key)}
@@ -211,12 +222,13 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
               {substeps?.length > 0 && substeps.map((substep: { name: string, arguments: AppFields[] }, index: number) => (
                 <React.Fragment key={`${substep?.name}-${index}`}>
                   <ListItemButton onClick={() => toggleSubstep(index + 1)} selected={currentSubstep === (index + 1)} divider>
-                    <Typography variant="body2">
+                    <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
+                      {currentSubstep === (index + 1) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                       {substep.name as string}
                     </Typography>
                   </ListItemButton>
                   <Collapse in={currentSubstep === (index + 1)} timeout="auto" unmountOnExit>
-                    <ListItem sx={{ pt: 2 }}>
+                    <ListItem sx={{ pt: 2, pb: 3 }}>
                       {substep.name === 'Choose account' && (
                         <ChooseAccountSubstep
                           appKey={step.appKey}
@@ -240,7 +252,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
           </List>
         </Content>
 
-        <Button onClick={onClose}>
+        <Button fullWidth onClick={onClose}>
           Close
         </Button>
       </Collapse>
