@@ -49,9 +49,6 @@ export const GET_APPS = gql`
           }
         }
       }
-      connections {
-        id
-      }
       triggers {
         name
         key

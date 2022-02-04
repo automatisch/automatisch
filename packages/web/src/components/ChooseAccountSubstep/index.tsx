@@ -23,10 +23,7 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
   const { appKey, connectionId, onChange } = props;
   const { data, loading } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey }});
 
-  const app: App = data?.getApp;
-  const connections = app?.connections || [];
-
-  const connectionOptions = React.useMemo(() => connections.map((connection) => optionGenerator(connection)), [connections]);
+  const connectionOptions = React.useMemo(() => (data?.getApp as App)?.connections?.map((connection) => optionGenerator(connection)) || [], [data]);
 
   const handleChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
     if (typeof selectedOption === 'object') {
