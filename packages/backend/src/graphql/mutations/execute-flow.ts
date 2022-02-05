@@ -1,12 +1,12 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
-import { GraphQLJSONObject } from 'graphql-type-json';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import executeFlowType from '../types/execute-flow';
 
 type Params = {
   stepId: string;
   data: Record<string, unknown>;
 };
-const executeStepResolver = async (
+const executeFlowResolver = async (
   params: Params,
   req: RequestWithCurrentUser
 ): Promise<any> => {
@@ -22,16 +22,20 @@ const executeStepResolver = async (
   const appInstance = new appClass(step.connection.data);
   const data = await appInstance.triggers[step.key].run();
 
-  return { data };
+  await step.$query().patch({
+    status: 'completed',
+  });
+
+  return { data, step };
 };
 
-const executeStep = {
-  type: GraphQLJSONObject,
+const executeFlow = {
+  type: executeFlowType,
   args: {
     stepId: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    executeStepResolver(params, req),
+    executeFlowResolver(params, req),
 };
 
-export default executeStep;
+export default executeFlow;

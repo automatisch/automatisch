@@ -14,6 +14,7 @@ class Step extends Base {
   appKey: string;
   type!: StepEnumType;
   connectionId: string;
+  status: string;
   position: number;
   parameters: string;
   connection?: Connection;
@@ -32,6 +33,7 @@ class Step extends Base {
       appKey: { type: ['string', null], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
       connectionId: { type: ['string', null] },
+      status: { type: 'string', enum: ['incomplete', 'completed'] },
       position: { type: 'integer' },
       parameters: { type: ['string', null] },
     },
