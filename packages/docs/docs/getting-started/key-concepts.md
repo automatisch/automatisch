@@ -4,52 +4,29 @@ sidebar_position: 2
 
 # Key Concepts
 
-Documents are **groups of pages** connected through:
+We will cover four main terms of Automatisch before creating our first flow.
 
-- a **sidebar**
-- **previous/next navigation**
-- **versioning**
+# App
 
-## Create your first Doc
+👉 Apps are the third-party services you can use with Automatisch like Twitter, Github, Twilio. You can check the complete list of available apps [here](/integrations/available-apps). Automatisch aims to connect those apps to build workflows. So whenever you work with other concepts of Automatisch, you will use apps.
 
-Create a markdown file at `docs/hello.md`:
+:::tip
 
-```md title="docs/hello.md"
-# Hello
+You can request a new integration [here](/integrations/request-integration). We will collect all the requests and prioritize the most requested ones.
 
-This is my **first Docusaurus document**!
-```
+:::
 
-A new document is now available at `http://localhost:3000/docs/hello`.
+# Connection
 
-## Configure the Sidebar
+📪 To use an app, you need to add a connection first. Connection is essentially the place where you pass the credentials of the specified service like consumer key, consumer secret, etc., to let Automatisch connect third-party apps on your behalf. Required fields for the connection will be asked when you click 'Add connection' and choose an app. You can also add multiple connections to the same app if you have more than one account to use.
 
-Docusaurus automatically **creates a sidebar** from the `docs` folder.
+# Flow
 
-Add metadatas to customize the sidebar label and position:
+🛠️ Flow is the most crucial part of Automatisch. It's a place to arrange the business workflow by connecting multiple steps. So, for example, we can define a flow which does:
 
-```md title="docs/hello.md" {1-4}
----
-sidebar_label: 'Hi!'
-sidebar_position: 3
----
+- **Search tweets** for the "Automatisch" keyword
+- **Send those tweets as an email** to the contributors of Automatisch.
 
-# Hello
+# Step
 
-This is my **first Docusaurus document**!
-```
-
-It is also possible to create your sidebar explicitly in `sidebars.js`:
-
-```diff title="sidebars.js"
-module.exports = {
-  tutorialSidebar: [
-    {
-      type: 'category',
-      label: 'Tutorial',
--     items: [...],
-+     items: ['hello'],
-    },
-  ],
-};
-```
+📄 Steps are the individual items in the flow. In our example, **searching tweets** and **sending an email** are both steps in our flow. Flows can also have more than two steps. Steps have two different types, which are trigger and action. The first step of each flow should be the trigger step, and the following steps should be action steps.
