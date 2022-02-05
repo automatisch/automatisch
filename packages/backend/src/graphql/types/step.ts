@@ -31,6 +31,7 @@ const stepType = new GraphQLObjectType({
       connection: { type: ConnectionType },
       flow: { type: FlowType },
       position: { type: GraphQLInt },
+      status: { type: GraphQLString },
     };
   },
 });
