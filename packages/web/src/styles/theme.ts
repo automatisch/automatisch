@@ -1,14 +1,7 @@
 import { createTheme, alpha } from '@mui/material/styles';
 import { cardActionAreaClasses } from '@mui/material/CardActionArea';
 
-const referenceTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#0059F7',
-      dark: '#001F52',
-    }
-  }
-});
+const referenceTheme = createTheme();
 
 const extendedTheme = createTheme({
   palette: {
@@ -167,10 +160,10 @@ const extendedTheme = createTheme({
   components: {
     MuiAppBar: {
       styleOverrides: {
-        root: {
-          background: referenceTheme.palette.primary.dark,
-          zIndex: referenceTheme.zIndex.drawer + 1,
-        }
+        root: ({ theme }) => ({
+          background: theme.palette.primary.dark,
+          zIndex: theme.zIndex.drawer + 1,
+        }),
       },
       defaultProps: {
         elevation: 2,
@@ -204,16 +197,16 @@ const extendedTheme = createTheme({
     },
     MuiCardActionArea: {
       styleOverrides: {
-        root: {
-          borderRadius: referenceTheme.shape.borderRadius,
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
           [`& .${cardActionAreaClasses.focusHighlight}`]: {
             background: 'unset',
-            border: `1px solid ${alpha(referenceTheme.palette.primary.light, 1)}`,
+            border: `1px solid ${alpha(theme.palette.primary.light, 1)}`,
           },
           [`&:hover .${cardActionAreaClasses.focusHighlight}`]: {
             opacity: 1,
           }
-        }
+        })
       }
     },
     MuiContainer: {
@@ -236,52 +229,52 @@ const extendedTheme = createTheme({
     },
     MuiDialog: {
       styleOverrides: {
-        paperWidthSm: {
-          margin: referenceTheme.spacing(4, 3),
-          width: `calc(100% - ${referenceTheme.spacing(6)})`,
-        }
+        paperWidthSm: ({ theme }) => ({
+          margin: theme.spacing(4, 3),
+          width: `calc(100% - ${theme.spacing(6)})`,
+        })
       }
     },
     MuiDialogContent: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           '&&': {
-            paddingTop: referenceTheme.spacing(2),
+            paddingTop: theme.spacing(2),
           }
-        },
+        }),
       }
     },
     MuiDialogTitle: {
       styleOverrides: {
-        root: {
-          paddingTop: referenceTheme.spacing(3),
-        }
+        root: ({ theme }) => ({
+          paddingTop: theme.spacing(3),
+        })
       }
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        inputSizeSmall: {
+        inputSizeSmall: ({ theme }) => ({
           // 1.5625 = 12.5px based on 1 = 8px
-          padding: referenceTheme.spacing(1.5625, 1.75),
-        }
+          padding: theme.spacing(1.5625, 1.75),
+        }),
       }
     },
     MuiTab: {
       styleOverrides: {
-        root: {
-          [referenceTheme.breakpoints.up('sm')]: {
-            padding: referenceTheme.spacing(1.5, 3),
+        root: ({ theme }) => ({
+          [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(1.5, 3),
           }
-        }
+        }),
       },
     },
     MuiToolbar: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           '@media all': {
-            paddingRight: referenceTheme.spacing(1.5),
-          }
-        }
+            paddingRight: theme.spacing(1.5),
+          },
+        }),
       }
     }
   }
