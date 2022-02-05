@@ -15,6 +15,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
 
+import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import ChooseAccountSubstep from 'components/ChooseAccountSubstep';
 import Form from 'components/Form';
 import InputCreator from 'components/InputCreator';
@@ -56,6 +57,28 @@ const parseStep = (step: any) => {
   }
 };
 
+const validateSubstep = (substep: any, step: Step, substepIndex: number, substepCount: number) => {
+  if (!substep) return true;
+
+  if (substepCount < substepIndex + 1) {
+    return null;
+  }
+
+  if (substep.name === 'Choose account') {
+    return Boolean(step.connection?.id);
+  }
+
+  const args: AppFields[] = substep.arguments || [];
+
+  return args.every(arg => {
+    if (arg.required === false) { return true; }
+
+    const argValue = step.parameters[arg.key];
+
+    return argValue !== null && argValue !== undefined;
+  });
+};
+
 export default function FlowStep(props: FlowStepProps): React.ReactElement | null {
   const { collapsed, index, onChange } = props;
   const contextButtonRef = React.useRef<HTMLButtonElement  | null>(null);
@@ -82,7 +105,8 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
   const appOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
   const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
   const actionOptions = React.useMemo(() => actionsOrTriggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
-  const substeps = React.useMemo(() => actionsOrTriggers?.find(({ key }) => key === step.key)?.subSteps, [actionsOrTriggers, step?.key]);
+  const substeps = React.useMemo(() => actionsOrTriggers?.find(({ key }) => key === step.key)?.subSteps || [], [actionsOrTriggers, step?.key]);
+  const substepCount = substeps.length + 1;
 
   const expandNextStep = React.useCallback(() => { setCurrentSubstep((currentSubstep) => (currentSubstep ?? 0) + 1); }, []);
 
@@ -180,12 +204,12 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
       <Collapse in={!collapsed}>
         <Content>
           <List>
-            <ListItemButton onClick={() => toggleSubstep(0)} selected={currentSubstep === 0} divider>
-              <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
-                {currentSubstep === 0 ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                Choose app & event
-              </Typography>
-            </ListItemButton>
+            <FlowSubstepTitle
+              expanded={currentSubstep === 0}
+              onClick={() => toggleSubstep(0)}
+              title="Choose app & event"
+              valid={substepCount === 1 ? null : !!step.appKey && !!step.key}
+            />
             <Collapse in={currentSubstep === 0} timeout="auto" unmountOnExit>
               <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
                 <Autocomplete
@@ -221,31 +245,35 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
             <Form defaultValues={step.parameters}>
               {substeps?.length > 0 && substeps.map((substep: { name: string, arguments: AppFields[] }, index: number) => (
                 <React.Fragment key={`${substep?.name}-${index}`}>
-                  <ListItemButton onClick={() => toggleSubstep(index + 1)} selected={currentSubstep === (index + 1)} divider>
-                    <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
-                      {currentSubstep === (index + 1) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                      {substep.name as string}
-                    </Typography>
-                  </ListItemButton>
-                  <Collapse in={currentSubstep === (index + 1)} timeout="auto" unmountOnExit>
-                    <ListItem sx={{ pt: 2, pb: 3 }}>
-                      {substep.name === 'Choose account' && (
-                        <ChooseAccountSubstep
-                          appKey={step.appKey}
-                          connectionId={step.connection?.id as string}
-                          onChange={onAccountChange}
-                        />
-                      )}
+                  {validateSubstep(substeps[index - 1], step, index, substepCount) && (
+                    <React.Fragment>
+                      <FlowSubstepTitle
+                        expanded={currentSubstep === (index + 1)}
+                        onClick={() => toggleSubstep(index + 1)}
+                        title={substep.name}
+                        valid={validateSubstep(substep, step, index + 1, substepCount)}
+                      />
+                      <Collapse in={currentSubstep === (index + 1)} timeout="auto" unmountOnExit>
+                        <ListItem sx={{ pt: 2, pb: 3 }}>
+                          {substep.name === 'Choose account' && (
+                            <ChooseAccountSubstep
+                              appKey={step.appKey}
+                              connectionId={step.connection?.id as string}
+                              onChange={onAccountChange}
+                            />
+                          )}
 
-                      {substep.name !== 'Choose account' && (
-                        <React.Fragment>
-                          {substep?.arguments?.map((argument: AppFields) => (
-                            <InputCreator key={argument?.key} schema={argument} onBlur={onParameterChange} />
-                          ))}
-                        </React.Fragment>
-                      )}
-                    </ListItem>
-                  </Collapse>
+                          {substep.name !== 'Choose account' && (
+                            <React.Fragment>
+                              {substep?.arguments?.map((argument: AppFields) => (
+                                <InputCreator key={argument?.key} schema={argument} onBlur={onParameterChange} />
+                              ))}
+                            </React.Fragment>
+                          )}
+                        </ListItem>
+                      </Collapse>
+                    </React.Fragment>
+                  )}
                 </React.Fragment>
               ))}
             </Form>

@@ -38,6 +38,7 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
     <Autocomplete
       fullWidth
       disablePortal
+      disableClearable
       options={connectionOptions}
       renderInput={(params) => <TextField {...params} label="Choose account" />}
       value={getOption(connectionOptions, connectionId)}
