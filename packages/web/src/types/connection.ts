@@ -6,7 +6,7 @@ type Connection = {
   id: string;
   key: string;
   data: ConnectionData;
-  verified: boolean;
+  verified?: boolean;
   createdAt: string;
 };
 

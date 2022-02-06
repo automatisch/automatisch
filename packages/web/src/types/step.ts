@@ -1,3 +1,6 @@
+import type { AppFields } from './app';
+import type { Connection } from './connection';
+
 export enum StepType {
   Trigger = 'trigger',
   Action = 'action',
@@ -5,13 +8,16 @@ export enum StepType {
 
 export type Step = {
   id: string;
-  key: string;
+  key: string | null;
   name: string;
-  appKey: string;
+  appKey: string | null;
   type: StepType;
   previousStepId: string | null;
   parameters: Record<string, unknown>;
-  connection: {
-    id: string;
-  };
+  connection: Pick<Connection, 'id' | 'verified'>;
+};
+
+export type Substep = {
+  name: string;
+  arguments: AppFields[];
 };

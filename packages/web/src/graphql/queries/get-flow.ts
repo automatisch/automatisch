@@ -13,6 +13,8 @@ export const GET_FLOW = gql`
         appKey
         connection {
           id
+          verified
+          createdAt
         }
         parameters
       }
