@@ -31,12 +31,14 @@ const updateStepResolver = async (
     })
     .throwIfNotFound();
 
-  step = await Step.query().patchAndFetchById(input.id, {
-    key: input.key,
-    appKey: input.appKey,
-    connectionId: input.connection.id,
-    parameters: input.parameters,
-  });
+  step = await Step.query()
+    .patchAndFetchById(input.id, {
+      key: input.key,
+      appKey: input.appKey,
+      connectionId: input.connection.id,
+      parameters: input.parameters,
+    })
+    .withGraphFetched('connection');
 
   return step;
 };
