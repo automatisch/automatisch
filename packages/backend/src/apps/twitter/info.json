@@ -222,9 +222,11 @@
       "description": "Will be triggered when you tweet something new.",
       "subSteps": [
         {
+          "key": "chooseAccount",
           "name": "Choose account"
         },
         {
+          "key": "testStep",
           "name": "Test trigger"
         }
       ]
@@ -235,9 +237,11 @@
       "description": "Will be triggered when a specific user tweet something new.",
       "subSteps": [
         {
+          "key": "chooseAccount",
           "name": "Choose account"
         },
         {
+          "key": "chooseTrigger",
           "name": "Set up a trigger",
           "arguments": [
             {
@@ -249,6 +253,7 @@
           ]
         },
         {
+          "key": "testStep",
           "name": "Test trigger"
         }
       ]
@@ -261,9 +266,11 @@
       "description": "Will create a tweet.",
       "subSteps": [
         {
+          "key": "chooseAccount",
           "name": "Choose account"
         },
         {
+          "key": "chooseAction",
           "name": "Set up action",
           "arguments": [
             {
@@ -275,6 +282,7 @@
           ]
         },
         {
+          "key": "testStep",
           "name": "Test action"
         }
       ]

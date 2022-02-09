@@ -13,6 +13,9 @@ type FlowSubstepTitleProps = {
   valid?: boolean | null;
 };
 
+const validIcon = <CheckCircleIcon color="success" />;
+const errorIcon = <ErrorIcon color="error" />;
+
 function FlowSubstepTitle(props: FlowSubstepTitleProps): React.ReactElement {
   const {
     expanded = false,
@@ -22,9 +25,6 @@ function FlowSubstepTitle(props: FlowSubstepTitleProps): React.ReactElement {
   } = props;
 
   const hasValidation = valid !== null;
-
-  const validIcon = <CheckCircleIcon color="success" />;
-  const errorIcon = <ErrorIcon color="error" />;
   const validationStatusIcon = valid ? validIcon : errorIcon;
 
   return (

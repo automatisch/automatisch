@@ -11,6 +11,7 @@ const actionType = new GraphQLObjectType({
         new GraphQLObjectType({
           name: 'ActionSubStep',
           fields: {
+            key: { type: GraphQLString },
             name: { type: GraphQLString },
             arguments: {
               type: GraphQLList(

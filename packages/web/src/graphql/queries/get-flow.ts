@@ -11,6 +11,7 @@ export const GET_FLOW = gql`
         type
         key
         appKey
+        status
         connection {
           id
           verified

@@ -8,7 +8,10 @@ import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
+import ErrorIcon from '@mui/icons-material/Error';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
+import TestSubstep from 'components/TestSubstep';
 import FlowSubstep from 'components/FlowSubstep';
 import ChooseAppAndEventSubstep from 'components/ChooseAppAndEventSubstep';
 import ChooseAccountSubstep from 'components/ChooseAccountSubstep';
@@ -20,7 +23,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import type { App, AppFields } from 'types/app';
 import type { Step } from 'types/step';
 import { StepType } from 'types/step';
-import { Content, Header, Wrapper } from './style';
+import { AppIconWrapper, AppIconStatusIconWrapper, Content, Header, Wrapper } from './style';
 
 type FlowStepProps = {
   collapsed?: boolean;
@@ -47,6 +50,9 @@ const parseStep = (step: Step) => {
     };
   }
 };
+
+const validIcon = <CheckCircleIcon color="success" />;
+const errorIcon = <ErrorIcon color="error" />;
 
 export default function FlowStep(props: FlowStepProps): React.ReactElement | null {
   const { collapsed, index, onChange } = props;
@@ -86,11 +92,19 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
 
   const toggleSubstep = (substepIndex: number) => setCurrentSubstep((value) => value !== substepIndex ? substepIndex : null);
 
+  const validationStatusIcon = step.status === 'completed' ? validIcon : errorIcon;
+
   return (
     <Wrapper elevation={collapsed ? 1 : 4} onClick={onOpen}>
       <Header collapsed={collapsed}>
         <Stack direction="row" alignItems="center" gap={2}>
-          <AppIcon url={app?.iconUrl} name={app?.name} />
+          <AppIconWrapper>
+            <AppIcon url={app?.iconUrl} name={app?.name} />
+
+            <AppIconStatusIconWrapper>
+              {validationStatusIcon}
+            </AppIconStatusIconWrapper>
+          </AppIconWrapper>
 
           <div>
             <Typography variant="caption">
@@ -129,9 +143,9 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
             />
 
             <Form defaultValues={step.parameters}>
-              {substeps?.length > 0 && substeps.map((substep: { name: string, arguments: AppFields[] }, index: number) => (
+              {substeps?.length > 0 && substeps.map((substep: { name: string, key: string, arguments: AppFields[] }, index: number) => (
                 <React.Fragment key={`${substep?.name}-${index}`}>
-                  {substep.name === 'Choose account' && (
+                  {substep.key === 'chooseAccount' && (
                     <ChooseAccountSubstep
                       expanded={currentSubstep === (index + 1)}
                       substep={substep}
@@ -143,7 +157,19 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
                     />
                   )}
 
-                  {substep.name !== 'Choose account' && (
+                  {substep.key === 'testStep' && (
+                    <TestSubstep
+                      expanded={currentSubstep === (index + 1)}
+                      substep={substep}
+                      onExpand={() => toggleSubstep((index + 1))}
+                      onCollapse={() => toggleSubstep((index + 1))}
+                      onSubmit={expandNextStep}
+                      onChange={handleChange}
+                      step={step}
+                    />
+                  )}
+
+                  {['chooseAccount', 'testStep'].includes(substep.key) === false && (
                     <FlowSubstep
                       expanded={currentSubstep === (index + 1)}
                       substep={substep}
