@@ -94,7 +94,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
         });
       }
     }
-  }, [step, onChange]);;
+  }, [step, onChange]);
 
   const onToggle = expanded ? onCollapse : onExpand;
 

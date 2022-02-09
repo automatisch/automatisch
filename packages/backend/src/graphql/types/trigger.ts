@@ -11,6 +11,7 @@ const triggerType = new GraphQLObjectType({
         new GraphQLObjectType({
           name: 'TriggerSubStep',
           fields: {
+            key: { type: GraphQLString },
             name: { type: GraphQLString },
             arguments: {
               type: GraphQLList(

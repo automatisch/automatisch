@@ -15,6 +15,7 @@ export type Step = {
   previousStepId: string | null;
   parameters: Record<string, unknown>;
   connection: Pick<Connection, 'id' | 'verified'>;
+  status: 'completed' | 'incomplete';
 };
 
 export type Substep = {

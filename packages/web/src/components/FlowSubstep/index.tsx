@@ -78,13 +78,11 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
-          {substep.name !== 'Choose account' && (
-            <React.Fragment>
-              {args?.map((argument) => (
-                <InputCreator key={argument?.key} schema={argument} onBlur={handleChangeOnBlur} />
-              ))}
-            </React.Fragment>
-          )}
+          <React.Fragment>
+            {args?.map((argument) => (
+              <InputCreator key={argument?.key} schema={argument} onBlur={handleChangeOnBlur} />
+            ))}
+          </React.Fragment>
 
           <Button
             fullWidth

@@ -54,6 +54,7 @@ export const GET_APPS = gql`
         key
         description
         subSteps {
+          key
           name
           arguments {
             label
@@ -68,6 +69,7 @@ export const GET_APPS = gql`
         key
         description
         subSteps {
+          key
           name
           arguments {
             label
