@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useFormContext } from 'react-hook-form';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
@@ -26,9 +27,9 @@ const validateSubstep = (substep: Substep, step: Step) => {
   return args.every(arg => {
     if (arg.required === false) { return true; }
 
-    const argValue = step.parameters[arg.key];
+    const argValue = step.parameters?.[arg.key];
 
-    return argValue !== null && argValue !== undefined;
+    return Boolean(argValue);
   });
 };
 
@@ -48,25 +49,39 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
     arguments: args,
   } = substep;
 
-  const handleChangeOnBlur = React.useCallback((event: React.SyntheticEvent) => {
-    const { name, value: newValue } = event.target as HTMLInputElement;
-    const currentValue = step.parameters?.[name];
+  const formContext = useFormContext();
+  const [validationStatus, setValidationStatus] = React.useState<boolean | null>(validateSubstep(substep, formContext.getValues() as Step));
 
-    if (currentValue !== newValue) {
-      onChange({
-        step: {
-          ...step,
-          parameters: {
-            ...step.parameters,
-            [name]: newValue,
-          }
-        },
-      });
+
+  const handleChangeOnBlur = React.useCallback((key: string) => {
+    return (value: string) => {
+      const currentValue = step.parameters?.[key];
+
+      if (currentValue !== value) {
+        onChange({
+          step: {
+            ...step,
+            parameters: {
+              ...step.parameters,
+              [key]: value,
+            }
+          },
+        });
+      }
     }
   }, [step, onChange]);
 
+  React.useEffect(() => {
+    function validate (step: unknown) {
+      const validationResult = validateSubstep(substep, step as Step);
+      setValidationStatus(validationResult);
+    };
+    const subscription = formContext.watch(validate);
+
+    return () => subscription.unsubscribe();
+  }, [substep, formContext.watch]);
+
   const onToggle = expanded ? onCollapse : onExpand;
-  const valid = validateSubstep(substep, step);
 
   return (
     <React.Fragment>
@@ -74,22 +89,25 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
         expanded={expanded}
         onClick={onToggle}
         title={name}
-        valid={valid}
+        valid={validationStatus}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
-          <React.Fragment>
-            {args?.map((argument) => (
-              <InputCreator key={argument?.key} schema={argument} onBlur={handleChangeOnBlur} />
-            ))}
-          </React.Fragment>
+          {args?.map((argument) => (
+            <InputCreator
+              key={argument.key}
+              schema={argument}
+              namePrefix="parameters"
+            />
+          ))}
 
           <Button
             fullWidth
             variant="contained"
             onClick={onSubmit}
             sx={{ mt: 2 }}
-            disabled={!valid}
+            disabled={!validationStatus}
+            type="submit"
           >
             Continue
           </Button>

@@ -19,10 +19,7 @@ const updateFlowResolver = async (
     })
     .throwIfNotFound();
 
-  flow = await flow.$query().patchAndFetch({
-    ...flow,
-    ...params,
-  });
+  flow = await flow.$query().patchAndFetch(params);
 
   return flow;
 };

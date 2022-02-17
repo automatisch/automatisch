@@ -76,6 +76,8 @@ export const GET_APPS = gql`
             key
             type
             required
+            description
+            variables
           }
         }
       }

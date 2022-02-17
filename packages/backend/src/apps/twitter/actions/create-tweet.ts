@@ -12,9 +12,7 @@ export default class CreateTweet {
       accessSecret: connectionData.accessSecret,
     });
 
-    if (parameters) {
-      this.parameters = JSON.parse(parameters);
-    }
+    this.parameters = parameters;
   }
 
   async run() {

@@ -54,7 +54,6 @@ const createStepResolver = async (
 
   const nextStepQueries = nextSteps.map(async (nextStep, index) => {
     await nextStep.$query().patchAndFetch({
-      ...nextStep,
       position: step.position + index + 1,
     });
   });

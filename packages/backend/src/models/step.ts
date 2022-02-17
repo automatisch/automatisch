@@ -10,7 +10,7 @@ class Step extends Base {
   key: string;
   appKey: string;
   type!: StepEnumType;
-  connectionId: string;
+  connectionId?: string;
   status: string;
   position: number;
   parameters: Record<string, unknown>;

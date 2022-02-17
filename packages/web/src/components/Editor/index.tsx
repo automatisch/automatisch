@@ -49,7 +49,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
       const mutationInput: Record<string, unknown> = {
         id: step.id,
         key: step.key,
-        parameters: JSON.stringify(step.parameters, null, 2),
+        parameters: step.parameters,
         connection: {
           id: step.connection?.id,
         },

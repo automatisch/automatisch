@@ -16,6 +16,10 @@ export default function Form(props: FormProps): React.ReactElement {
     defaultValues,
   });
 
+  React.useEffect(() => {
+    methods.reset(defaultValues);
+  }, [defaultValues]);
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} {...formProps}>

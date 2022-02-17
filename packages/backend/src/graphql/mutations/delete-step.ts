@@ -26,7 +26,6 @@ const deleteStepResolver = async (
 
   const nextStepQueries = nextSteps.map(async (nextStep) => {
     await nextStep.$query().patch({
-      ...nextStep,
       position: nextStep.position - 1,
     });
   });
