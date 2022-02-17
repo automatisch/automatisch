@@ -21,7 +21,9 @@ const actionType = new GraphQLObjectType({
                     label: { type: GraphQLString },
                     key: { type: GraphQLString },
                     type: { type: GraphQLString },
-                    required: { type: GraphQLBoolean }
+                    description: { type: GraphQLString },
+                    required: { type: GraphQLBoolean },
+                    variables: { type: GraphQLBoolean }
                   }
                 })
               )

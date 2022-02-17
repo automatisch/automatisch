@@ -23,7 +23,7 @@ type ChooseAccountSubstepProps = {
 };
 
 const optionGenerator = (connection: AppConnection): { label: string; value: string; } => ({
-  label: connection?.data?.screenName as string,
+  label: connection?.data?.screenName as string ?? 'Unnamed',
   value: connection?.id as string,
 });
 

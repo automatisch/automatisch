@@ -40,10 +40,10 @@ function getObjectOfEntries(iterator: any) {
 
 const processOpenWithPopup = (step: Step, variables: Record<string, string>) => {
   return new Promise((resolve) => {
-    const windowFeatures = 'toolbar=no, menubar=no, width=600, height=700, top=100, left=100';
+    const windowFeatures = 'toolbar=no, titlebar=no, menubar=no, width=500, height=700, top=100, left=100';
     const url = variables.url;
 
-    const popup: any = window.open(url, '_blank', windowFeatures);
+    const popup = window.open(url, '_blank', windowFeatures) as WindowProxy;
     popup?.focus();
 
     const messageHandler = async (event: any) => {

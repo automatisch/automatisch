@@ -277,7 +277,9 @@
               "label": "Tweet body",
               "key": "tweet",
               "type": "string",
-              "required": true
+              "required": true,
+              "description": "The content of your new tweet.",
+              "variables": true
             }
           ]
         },

@@ -2,12 +2,14 @@ import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { AppFields } from 'types/app';
 
+import PowerInput from 'components/PowerInput';
 import TextField from 'components/TextField';
 
 type InputCreatorProps = {
   onChange?: React.ChangeEventHandler;
   onBlur?: React.FocusEventHandler;
   schema: AppFields;
+  namePrefix?: string;
 };
 
 export default function InputCreator(props: InputCreatorProps): React.ReactElement {
@@ -15,6 +17,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     onChange,
     onBlur,
     schema,
+    namePrefix,
   } = props;
 
   const { control } = useFormContext();
@@ -27,7 +30,23 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     value,
     description,
     clickToCopy,
+    variables,
   } = schema;
+
+  const computedName = namePrefix ? `${namePrefix}.${name}` : name;
+
+  if (variables) {
+    return (
+      <PowerInput
+        label={label}
+        description={description}
+        control={control}
+        name={computedName}
+        required={required}
+        // onBlur={onBlur}
+      />
+    );
+  }
 
   return (
     <TextField
@@ -38,7 +57,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
       readOnly={readOnly}
       onChange={onChange}
       onBlur={onBlur}
-      name={name}
+      name={computedName}
       size="small"
       label={label}
       fullWidth

@@ -3,12 +3,13 @@ type AppFields = {
   name: string;
   label: string;
   type: string;
-  required: boolean,
-  readOnly: boolean,
+  required: boolean;
+  readOnly: boolean;
   value: string;
   description: string;
   docUrl: string;
-  clickToCopy: boolean,
+  clickToCopy: boolean;
+  variables?: boolean;
 };
 
 type AppConnection = {
