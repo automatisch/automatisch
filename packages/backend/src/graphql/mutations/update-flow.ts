@@ -1,10 +1,11 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 import flowType from '../types/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 
 type Params = {
   id: string;
   name: string;
+  active: boolean;
 };
 
 const updateFlowResolver = async (
@@ -31,6 +32,7 @@ const updateFlow = {
   args: {
     id: { type: GraphQLNonNull(GraphQLString) },
     name: { type: GraphQLNonNull(GraphQLString) },
+    active: { type: GraphQLBoolean },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     updateFlowResolver(params, req),

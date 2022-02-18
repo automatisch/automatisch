@@ -1,3 +1,4 @@
+import { ModelOptions, QueryContext, ValidationError } from 'objection';
 import Base from './base';
 import Step from './step';
 
@@ -31,6 +32,33 @@ class Flow extends Base {
       },
     },
   });
+
+  async $beforeUpdate(): Promise<void> {
+    if (!this.active) return;
+
+    const incompleteStep = await this.$relatedQuery('steps').findOne({
+      status: 'incomplete',
+    });
+
+    if (incompleteStep) {
+      throw new ValidationError({
+        message: 'All steps should be completed before updating flow status!',
+        type: 'incompleteStepsError',
+      });
+    }
+
+    const allSteps = await this.$relatedQuery('steps');
+
+    if (allSteps.length < 2) {
+      throw new ValidationError({
+        message:
+          'There should be at least one trigger and one action steps in the flow!',
+        type: 'insufficientStepsError',
+      });
+    }
+
+    return;
+  }
 }
 
 export default Flow;
