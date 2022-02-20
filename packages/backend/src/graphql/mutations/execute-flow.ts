@@ -1,6 +1,7 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 import executeFlowType from '../types/execute-flow';
+import Processor from '../../services/processor';
 
 type Params = {
   stepId: string;
@@ -18,9 +19,8 @@ const executeFlowResolver = async (
     })
     .throwIfNotFound();
 
-  const appClass = (await import(`../../apps/${step.appKey}`)).default;
-  const appInstance = new appClass(step.connection.data);
-  const data = await appInstance.triggers[step.key].run();
+  const flow = await step.$relatedQuery('flow');
+  const data = await new Processor(flow, step).run();
 
   await step.$query().patch({
     status: 'completed',

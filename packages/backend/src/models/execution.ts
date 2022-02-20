@@ -1,10 +1,12 @@
 import Base from './base';
 import Flow from './flow';
+import ExecutionStep from './execution-step';
 
 class Execution extends Base {
   id!: string;
   flowId!: number;
   testRun: boolean;
+  executionSteps: ExecutionStep[];
 
   static tableName = 'executions';
 
@@ -25,6 +27,14 @@ class Execution extends Base {
       join: {
         from: 'executions.flow_id',
         to: 'flows.id',
+      },
+    },
+    executionSteps: {
+      relation: Base.HasManyRelation,
+      modelClass: ExecutionStep,
+      join: {
+        from: 'executions.id',
+        to: 'execution_steps.execution_id',
       },
     },
   });
