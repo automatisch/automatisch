@@ -24,25 +24,25 @@ class Processor {
     });
 
     let previousExecutionStep: ExecutionStep;
-    let fetchedActionData;
+    let fetchedData;
 
     for await (const step of steps) {
       if (step.type.toString() === 'trigger') {
         const appClass = (await import(`../apps/${step.appKey}`)).default;
         const appInstance = new appClass(step.connection.data);
-        const fetchedTriggerData = await appInstance.triggers[step.key].run();
+        fetchedData = await appInstance.triggers[step.key].run();
 
         previousExecutionStep = await execution
           .$relatedQuery('executionSteps')
           .insertAndFetch({
             stepId: step.id,
             status: 'success',
-            dataOut: fetchedTriggerData,
+            dataOut: fetchedData,
           });
       } else {
         const appClass = (await import(`../apps/${step.appKey}`)).default;
         const appInstance = new appClass(step.connection.data, step.parameters);
-        fetchedActionData = await appInstance.actions[step.key].run();
+        fetchedData = await appInstance.actions[step.key].run();
 
         previousExecutionStep = await execution
           .$relatedQuery('executionSteps')
@@ -50,12 +50,16 @@ class Processor {
             stepId: step.id,
             status: 'success',
             dataIn: previousExecutionStep.dataOut,
-            dataOut: fetchedActionData,
+            dataOut: fetchedData,
           });
+      }
+
+      if (step.id === this.untilStep.id) {
+        return fetchedData;
       }
     }
 
-    return fetchedActionData;
+    return fetchedData;
   }
 }
 
