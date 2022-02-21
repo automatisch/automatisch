@@ -1,5 +1,6 @@
 import Base from './base';
 import Execution from './execution';
+import Step from './step';
 
 class ExecutionStep extends Base {
   id!: string;
@@ -31,6 +32,14 @@ class ExecutionStep extends Base {
       join: {
         from: 'execution_steps.execution_id',
         to: 'executions.id',
+      },
+    },
+    step: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: Step,
+      join: {
+        from: 'execution_steps.step_id',
+        to: 'steps.id',
       },
     },
   });

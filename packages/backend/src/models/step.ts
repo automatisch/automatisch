@@ -1,6 +1,7 @@
 import Base from './base';
 import Flow from './flow';
 import Connection from './connection';
+import ExecutionStep from './execution-step';
 
 enum StepEnumType {
   'trigger',
@@ -19,6 +20,7 @@ class Step extends Base {
   parameters: string;
   connection?: Connection;
   flow?: Flow;
+  executionSteps?: [ExecutionStep];
 
   static tableName = 'steps';
 
@@ -54,6 +56,14 @@ class Step extends Base {
       join: {
         from: 'steps.connection_id',
         to: 'connections.id',
+      },
+    },
+    executionSteps: {
+      relation: Base.HasManyRelation,
+      modelClass: ExecutionStep,
+      join: {
+        from: 'steps.id',
+        to: 'execution_steps.step_id',
       },
     },
   });
