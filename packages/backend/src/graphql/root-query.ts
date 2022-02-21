@@ -6,6 +6,7 @@ import getAppConnections from './queries/get-app-connections';
 import testConnection from './queries/test-connection';
 import getFlow from './queries/get-flow';
 import getFlows from './queries/get-flows';
+import getStepWithTestExecutions from './queries/get-step-with-test-executions';
 
 const rootQuery = new GraphQLObjectType({
   name: 'Query',
@@ -17,6 +18,7 @@ const rootQuery = new GraphQLObjectType({
     testConnection,
     getFlow,
     getFlows,
+    getStepWithTestExecutions,
   },
 });
 

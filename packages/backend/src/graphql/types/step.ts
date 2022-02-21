@@ -5,6 +5,7 @@ import {
   GraphQLInt,
   GraphQLInputObjectType,
 } from 'graphql';
+import { GraphQLJSONObject } from 'graphql-type-json';
 import ConnectionType from './connection';
 
 const stepType = new GraphQLObjectType({
@@ -27,9 +28,10 @@ const stepType = new GraphQLObjectType({
           },
         }),
       },
-      parameters: { type: GraphQLString },
+      parameters: { type: GraphQLJSONObject },
       connection: { type: ConnectionType },
       flow: { type: FlowType },
+      output: { type: GraphQLJSONObject },
       position: { type: GraphQLInt },
       status: { type: GraphQLString },
     };
