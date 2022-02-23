@@ -32,6 +32,7 @@
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
+  "main": "index.js",
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
