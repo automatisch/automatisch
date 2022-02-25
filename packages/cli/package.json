@@ -9,28 +9,59 @@
     }
   ],
   "homepage": "https://github.com/automatisch/automatisch#readme",
-  "main": "src/cli.js",
-  "directories": {
-    "bin": "bin",
-    "src": "src",
-    "test": "__tests__"
+  "main": "dist/index.js",
+  "bin": {
+    "automatisch": "./bin/automatisch"
   },
   "files": [
-    "src",
-    "bin"
+    "/bin",
+    "/dist",
+    "oclif.manifest.json"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/automatisch/automatisch.git"
   },
   "scripts": {
-    "lint": "eslint . --ignore-path ../../.eslintignore",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "shx rm -rf dist && tsc -b",
+    "lint": "eslint . --ext .ts --config .eslintrc",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "yarn lint",
+    "prepack": "yarn build && oclif manifest && oclif readme",
+    "version": "oclif readme && git add README.md"
+  },
+  "dependencies": {
+    "@oclif/core": "^1",
+    "@oclif/plugin-help": "^5",
+    "@oclif/plugin-plugins": "^2.0.1"
+  },
+  "devDependencies": {
+    "@oclif/test": "^2",
+    "@types/node": "^16.9.4",
+    "eslint": "^7.32.0",
+    "eslint-config-oclif": "^4",
+    "eslint-config-oclif-typescript": "^1.0.2",
+    "globby": "^11",
+    "oclif": "^2",
+    "shx": "^0.3.3",
+    "ts-node": "^10.2.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.3"
+  },
+  "oclif": {
+    "bin": "automatisch",
+    "dirname": "automatisch",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ]
+  },
+  "engines": {
+    "node": ">=12.0.0"
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
   },
-  "devDependencies": {
-    "eslint": "8.7.0"
-  }
+  "types": "dist/index.d.ts"
 }
