@@ -8,7 +8,7 @@ type Params = {
     id: string;
     key: string;
     appKey: string;
-    parameters: string;
+    parameters: Record<string, unknown>;
     flow: {
       id: string;
     };

@@ -4,7 +4,7 @@ import ExecutionStep from './execution-step';
 
 class Execution extends Base {
   id!: string;
-  flowId!: number;
+  flowId!: string;
   testRun: boolean;
   executionSteps: ExecutionStep[];
 

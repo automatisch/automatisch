@@ -1,6 +1,7 @@
 import Step from '../../models/step';
-import flowType, { flowInputType} from '../types/flow';
+import flowType, { flowInputType } from '../types/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import StepEnumType from '../../types/step-enum-type';
 
 type Params = {
   input: {
@@ -8,7 +9,10 @@ type Params = {
   };
 };
 
-const createFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
+const createFlowResolver = async (
+  params: Params,
+  req: RequestWithCurrentUser
+) => {
   const appKey = params?.input?.triggerAppKey;
 
   const flow = await req.currentUser.$relatedQuery('flows').insert({
@@ -17,7 +21,7 @@ const createFlowResolver = async (params: Params, req: RequestWithCurrentUser) =
 
   await Step.query().insert({
     flowId: flow.id,
-    type: 'trigger',
+    type: StepEnumType.Trigger,
     position: 1,
     appKey,
   });
