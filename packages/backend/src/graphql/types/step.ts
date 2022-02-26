@@ -61,7 +61,7 @@ export const stepInputType = new GraphQLInputObjectType({
         },
       }),
     },
-    parameters: { type: GraphQLString },
+    parameters: { type: GraphQLJSONObject },
     previousStep: {
       type: new GraphQLInputObjectType({
         name: 'PreviousStepInput',
