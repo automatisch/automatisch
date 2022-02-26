@@ -2642,7 +2642,7 @@ is-docker@^2.0.0:
 
 is-extglob@^2.1.1:
   version "2.1.1"
-  resolved "https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz"
+  resolved "https://registry.yarnpkg.com/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
   integrity sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=
 
 is-fullwidth-code-point@^1.0.0:
@@ -2664,7 +2664,7 @@ is-fullwidth-code-point@^3.0.0:
 
 is-glob@^4.0.0, is-glob@^4.0.1:
   version "4.0.3"
-  resolved "https://registry.npmjs.org/is-glob/-/is-glob-4.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-4.0.3.tgz#64f61e42cbbb2eec2071a9dac0b28ba1e65d5084"
   integrity sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==
   dependencies:
     is-extglob "^2.1.1"
