@@ -7,8 +7,8 @@ export default class Twitter {
   triggers: any;
   actions: any;
 
-  constructor(connectionData: any, parameters: any) {
-    this.authenticationClient = new Authentication(connectionData);
+  constructor(appData: any, connectionData: any, parameters: any) {
+    this.authenticationClient = new Authentication(appData, connectionData);
     this.triggers = new Triggers(connectionData);
     this.actions = new Actions(connectionData, parameters);
   }

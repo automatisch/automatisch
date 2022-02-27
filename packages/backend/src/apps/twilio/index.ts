@@ -3,7 +3,7 @@ import Authentication from './authentication';
 export default class Twilio {
   authenticationClient: any;
 
-  constructor(connectionData: any) {
-    this.authenticationClient = new Authentication(connectionData);
+  constructor(appData: any, connectionData: any) {
+    this.authenticationClient = new Authentication(appData, connectionData);
   }
 }

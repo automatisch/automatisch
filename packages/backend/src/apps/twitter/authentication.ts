@@ -1,26 +1,27 @@
 import TwitterApi from 'twitter-api-v2';
-import App from '../../models/app';
 import Field from '../../types/field';
 
 export default class Authentication {
-  client: any
-  connectionData: any
-  appData: any
+  client: any;
+  connectionData: any;
+  appData: any;
 
-  constructor(connectionData: any) {
+  constructor(appData: any, connectionData: any) {
+    this.appData = appData;
+    this.connectionData = connectionData;
+
     this.client = new TwitterApi({
       appKey: connectionData.consumerKey,
       appSecret: connectionData.consumerSecret,
       accessToken: connectionData.accessToken,
-      accessSecret: connectionData.accessSecret
+      accessSecret: connectionData.accessSecret,
     });
-
-    this.connectionData = connectionData;
-    this.appData = App.findOneByKey('twitter');
   }
 
   async createAuthData() {
-    const appFields = this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl')
+    const appFields = this.appData.fields.find(
+      (field: Field) => field.key == 'oAuthRedirectUrl'
+    );
     const callbackUrl = appFields.value;
 
     const authLink = await this.client.generateAuthLink(callbackUrl);
@@ -29,11 +30,13 @@ export default class Authentication {
       url: authLink.url,
       accessToken: authLink.oauth_token,
       accessSecret: authLink.oauth_token_secret,
-    }
+    };
   }
 
   async verifyCredentials() {
-    const verifiedCredentials = await this.client.login(this.connectionData.oauthVerifier)
+    const verifiedCredentials = await this.client.login(
+      this.connectionData.oauthVerifier
+    );
 
     return {
       consumerKey: this.connectionData.consumerKey,
@@ -41,8 +44,8 @@ export default class Authentication {
       accessToken: verifiedCredentials.accessToken,
       accessSecret: verifiedCredentials.accessSecret,
       userId: verifiedCredentials.userId,
-      screenName: verifiedCredentials.screenName
-    }
+      screenName: verifiedCredentials.screenName,
+    };
   }
 
   async isStillVerified() {
@@ -50,7 +53,7 @@ export default class Authentication {
       await this.client.currentUser();
       return true;
     } catch {
-      return false
+      return false;
     }
   }
 }

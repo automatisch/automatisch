@@ -1,6 +1,5 @@
 import TwitchApi from 'twitch-js';
 import fetchUtil from 'twitch-js/lib/utils/fetch';
-import App from '../../models/app';
 import Field from '../../types/field';
 
 type TwitchTokenResponse = {
@@ -11,13 +10,13 @@ type TwitchTokenResponse = {
 };
 
 export default class Authentication {
-  client: any
-  connectionData: any
-  appData: any
+  client: any;
+  connectionData: any;
+  appData: any;
 
-  constructor(connectionData: any) {
+  constructor(appData: any, connectionData: any) {
     this.connectionData = connectionData;
-    this.appData = App.findOneByKey('twitch');
+    this.appData = appData;
 
     if (this.clientOptions.token) {
       this.client = new TwitchApi(this.clientOptions);
@@ -28,12 +27,14 @@ export default class Authentication {
     return {
       token: this.connectionData.accessToken,
       clientId: this.connectionData.consumerKey,
-      log: { enabled: true }
+      log: { enabled: true },
     };
   }
 
   get oauthRedirectUrl() {
-    return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
+    return this.appData.fields.find(
+      (field: Field) => field.key == 'oAuthRedirectUrl'
+    ).value;
   }
 
   async createAuthData() {
@@ -43,23 +44,26 @@ export default class Authentication {
         redirect_uri: this.oauthRedirectUrl,
         response_type: 'code',
         scope: 'user:read:email',
-      }
+      },
     });
 
     return { url };
   }
 
   async verifyCredentials() {
-    const verifiedCredentials = await fetchUtil('https://id.twitch.tv/oauth2/token', {
-      method: 'post',
-      search: {
-        client_id: this.connectionData.consumerKey,
-        client_secret: this.connectionData.consumerSecret,
-        code: this.connectionData.oauthVerifier,
-        grant_type: 'authorization_code',
-        redirect_uri: this.oauthRedirectUrl
+    const verifiedCredentials = (await fetchUtil(
+      'https://id.twitch.tv/oauth2/token',
+      {
+        method: 'post',
+        search: {
+          client_id: this.connectionData.consumerKey,
+          client_secret: this.connectionData.consumerSecret,
+          code: this.connectionData.oauthVerifier,
+          grant_type: 'authorization_code',
+          redirect_uri: this.oauthRedirectUrl,
+        },
       }
-    }) as TwitchTokenResponse;
+    )) as TwitchTokenResponse;
 
     this.connectionData.accessToken = verifiedCredentials.accessToken;
 
@@ -77,7 +81,7 @@ export default class Authentication {
       tokenType: verifiedCredentials.tokenType,
       userId: user.id,
       screenName: user.displayName,
-    }
+    };
   }
 
   async isStillVerified() {
@@ -90,7 +94,7 @@ export default class Authentication {
 
       return true;
     } catch (err) {
-      return false
+      return false;
     }
   }
 }

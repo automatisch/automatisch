@@ -3,26 +3,27 @@ import {
   exchangeWebFlowCode,
   checkToken,
 } from '@octokit/oauth-methods';
-import App from '../../models/app';
 import Field from '../../types/field';
 
 export default class Authentication {
-  connectionData: any
-  appData: any
-  scopes: string[] = ['repo']
+  connectionData: any;
+  appData: any;
+  scopes: string[] = ['repo'];
 
-  constructor(connectionData: any) {
+  constructor(appData: any, connectionData: any) {
     this.connectionData = connectionData;
-    this.appData = App.findOneByKey('github');
+    this.appData = appData;
   }
 
   get oauthRedirectUrl(): string {
-    return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
+    return this.appData.fields.find(
+      (field: Field) => field.key == 'oAuthRedirectUrl'
+    ).value;
   }
 
   async createAuthData(): { url: string } {
     const { url } = await getWebFlowAuthorizationUrl({
-      clientType: "oauth-app",
+      clientType: 'oauth-app',
       clientId: this.connectionData.consumerKey,
       redirectUrl: this.oauthRedirectUrl,
       scopes: this.scopes,
@@ -35,7 +36,7 @@ export default class Authentication {
 
   async verifyCredentials(): any {
     const { data } = await exchangeWebFlowCode({
-      clientType: "oauth-app",
+      clientType: 'oauth-app',
       clientId: this.connectionData.consumerKey,
       clientSecret: this.connectionData.consumerSecret,
       code: this.connectionData.oauthVerifier,
@@ -53,12 +54,12 @@ export default class Authentication {
       tokenType: data.token_type,
       userId: tokenInfo.data.user.id,
       screenName: tokenInfo.data.user.login,
-    }
+    };
   }
 
   async getTokenInfo() {
     return checkToken({
-      clientType: "oauth-app",
+      clientType: 'oauth-app',
       clientId: this.connectionData.consumerKey,
       clientSecret: this.connectionData.consumerSecret,
       token: this.connectionData.accessToken,

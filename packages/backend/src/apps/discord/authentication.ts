@@ -1,24 +1,25 @@
 import { URLSearchParams } from 'url';
 import axios, { AxiosInstance } from 'axios';
-import App from '../../models/app';
 import Field from '../../types/field';
 
 export default class Authentication {
-  client?: any
-  connectionData: any
-  appData: any
-  scope: string[] = ['identify', 'email']
+  client?: any;
+  connectionData: any;
+  appData: any;
+  scope: string[] = ['identify', 'email'];
   httpClient: AxiosInstance = axios.create({
-    baseURL: 'https://discord.com/api/'
-  })
+    baseURL: 'https://discord.com/api/',
+  });
 
-  constructor(connectionData: any) {
+  constructor(appData: any, connectionData: any) {
+    this.appData = appData;
     this.connectionData = connectionData;
-    this.appData = App.findOneByKey('discord');
   }
 
   get oauthRedirectUrl() {
-    return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
+    return this.appData.fields.find(
+      (field: Field) => field.key == 'oAuthRedirectUrl'
+    ).value;
   }
 
   async createAuthData() {
@@ -44,7 +45,10 @@ export default class Authentication {
       code: this.connectionData.oauthVerifier,
       grant_type: 'authorization_code',
     });
-    const { data: verifiedCredentials }: any = await this.httpClient.post('/oauth2/token', params.toString());
+    const { data: verifiedCredentials }: any = await this.httpClient.post(
+      '/oauth2/token',
+      params.toString()
+    );
 
     const {
       access_token: accessToken,
@@ -84,7 +88,7 @@ export default class Authentication {
 
       return true;
     } catch {
-      return false
+      return false;
     }
   }
 }
