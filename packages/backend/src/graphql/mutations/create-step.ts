@@ -44,6 +44,7 @@ const createStepResolver = async (
     appKey: input.appKey,
     type: StepEnumType.Action,
     position: previousStep.position + 1,
+    parameters: {},
   });
 
   const nextSteps = await flow
