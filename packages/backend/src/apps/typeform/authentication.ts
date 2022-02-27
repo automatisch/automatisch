@@ -1,13 +1,11 @@
 import { URLSearchParams } from 'url';
-import axios, { AxiosInstance } from
- 'axios';
-import App from '../../models/app';
+import axios, { AxiosInstance } from 'axios';
 import Field from '../../types/field';
 
 export default class Authentication {
-  client?: any
-  connectionData: any
-  appData: any
+  client?: any;
+  connectionData: any;
+  appData: any;
   scope: string[] = [
     'forms:read',
     'forms:write',
@@ -16,18 +14,20 @@ export default class Authentication {
     'responses:read',
     'accounts:read',
     'workspaces:read',
-  ]
+  ];
   httpClient: AxiosInstance = axios.create({
-    baseURL: 'https://api.typeform.com'
-  })
+    baseURL: 'https://api.typeform.com',
+  });
 
-  constructor(connectionData: any) {
+  constructor(appData: any, connectionData: any) {
     this.connectionData = connectionData;
-    this.appData = App.findOneByKey('typeform');
+    this.appData = appData;
   }
 
   get oauthRedirectUrl() {
-    return this.appData.fields.find((field: Field) => field.key == 'oAuthRedirectUrl').value;
+    return this.appData.fields.find(
+      (field: Field) => field.key == 'oAuthRedirectUrl'
+    ).value;
   }
 
   async createAuthData() {
@@ -51,7 +51,10 @@ export default class Authentication {
       redirect_uri: this.oauthRedirectUrl,
     });
 
-    const { data: verifiedCredentials }: any = await this.httpClient.post('/oauth/token', params.toString());
+    const { data: verifiedCredentials }: any = await this.httpClient.post(
+      '/oauth/token',
+      params.toString()
+    );
 
     const {
       access_token: accessToken,
@@ -87,7 +90,7 @@ export default class Authentication {
 
       return true;
     } catch {
-      return false
+      return false;
     }
   }
 }

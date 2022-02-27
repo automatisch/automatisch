@@ -1,6 +1,7 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import authLinkType from '../types/auth-link';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import App from '../../models/app';
 
 type Params = {
   id: string;
@@ -18,8 +19,9 @@ const createAuthDataResolver = async (
     .throwIfNotFound();
 
   const appClass = (await import(`../../apps/${connection.key}`)).default;
+  const appData = App.findOneByKey(connection.key);
 
-  const appInstance = new appClass({
+  const appInstance = new appClass(appData, {
     consumerKey: connection.data.consumerKey,
     consumerSecret: connection.data.consumerSecret,
   });

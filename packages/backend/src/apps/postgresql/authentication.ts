@@ -1,12 +1,11 @@
 import { Client } from 'pg';
-import App from '../../models/app';
 
 export default class Authentication {
-  client: any
-  connectionData: any
-  appData: any
+  client: any;
+  connectionData: any;
+  appData: any;
 
-  constructor(connectionData: any) {
+  constructor(appData: any, connectionData: any) {
     this.client = new Client({
       host: connectionData.host,
       port: connectionData.port,
@@ -14,26 +13,26 @@ export default class Authentication {
       user: connectionData.username,
       password: connectionData.password,
       ssl: connectionData.ssl,
-    })
+    });
 
     this.connectionData = connectionData;
-    this.appData = App.findOneByKey('postgresql');
+    this.appData = appData;
   }
 
   async verifyCredentials() {
-    await this.client.connect()
+    await this.client.connect();
 
     return {
-      screenName: this.connectionData.database
-    }
+      screenName: this.connectionData.database,
+    };
   }
 
   async isStillVerified() {
     try {
-      await this.client.connect()
+      await this.client.connect();
       return true;
-    } catch(error) {
-      return false
+    } catch (error) {
+      return false;
     }
   }
 }

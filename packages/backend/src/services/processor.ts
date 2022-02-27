@@ -1,3 +1,4 @@
+import App from '../models/app';
 import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
@@ -27,9 +28,11 @@ class Processor {
     let fetchedData;
 
     for await (const step of steps) {
+      const appData = App.findOneByKey(step.appKey);
+
       if (step.type.toString() === 'trigger') {
         const appClass = (await import(`../apps/${step.appKey}`)).default;
-        const appInstance = new appClass(step.connection.data);
+        const appInstance = new appClass(appData, step.connection.data);
         fetchedData = await appInstance.triggers[step.key].run();
 
         previousExecutionStep = await execution
@@ -41,7 +44,11 @@ class Processor {
           });
       } else {
         const appClass = (await import(`../apps/${step.appKey}`)).default;
-        const appInstance = new appClass(step.connection.data, step.parameters);
+        const appInstance = new appClass(
+          appData,
+          step.connection.data,
+          step.parameters
+        );
         fetchedData = await appInstance.actions[step.key].run();
 
         previousExecutionStep = await execution

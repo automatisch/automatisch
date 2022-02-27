@@ -1,6 +1,7 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import connectionType from '../types/connection';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import App from '../../models/app';
 
 type Params = {
   id: string;
@@ -18,8 +19,9 @@ const verifyConnectionResolver = async (
     .throwIfNotFound();
 
   const appClass = (await import(`../../apps/${connection.key}`)).default;
+  const appData = App.findOneByKey(connection.key);
 
-  const appInstance = new appClass(connection.data);
+  const appInstance = new appClass(appData, connection.data);
   const verifiedCredentials =
     await appInstance.authenticationClient.verifyCredentials();
 
