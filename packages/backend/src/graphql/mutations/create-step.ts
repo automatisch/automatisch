@@ -1,7 +1,7 @@
 import { GraphQLNonNull } from 'graphql';
 import stepType, { stepInputType } from '../types/step';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import StepEnumType from '../../types/step-enum-type';
+import { StepType } from '../../types/step';
 
 type Params = {
   input: {
@@ -42,7 +42,7 @@ const createStepResolver = async (
   const step = await flow.$relatedQuery('steps').insertAndFetch({
     key: input.key,
     appKey: input.appKey,
-    type: StepEnumType.Action,
+    type: StepType.Action,
     position: previousStep.position + 1,
     parameters: {},
   });
