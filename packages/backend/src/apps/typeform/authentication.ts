@@ -3,9 +3,12 @@ import axios, { AxiosInstance } from 'axios';
 import Field from '../../types/field';
 
 export default class Authentication {
-  client?: any;
-  connectionData: any;
   appData: any;
+  connectionData: any;
+  client: AxiosInstance = axios.create({
+    baseURL: 'https://api.typeform.com',
+  });
+
   scope: string[] = [
     'forms:read',
     'forms:write',
@@ -15,9 +18,6 @@ export default class Authentication {
     'accounts:read',
     'workspaces:read',
   ];
-  httpClient: AxiosInstance = axios.create({
-    baseURL: 'https://api.typeform.com',
-  });
 
   constructor(appData: any, connectionData: any) {
     this.connectionData = connectionData;
@@ -51,7 +51,7 @@ export default class Authentication {
       redirect_uri: this.oauthRedirectUrl,
     });
 
-    const { data: verifiedCredentials }: any = await this.httpClient.post(
+    const { data: verifiedCredentials }: any = await this.client.post(
       '/oauth/token',
       params.toString()
     );
@@ -62,7 +62,7 @@ export default class Authentication {
       token_type: tokenType,
     } = verifiedCredentials;
 
-    const { data: user }: any = await this.httpClient.get('/me', {
+    const { data: user }: any = await this.client.get('/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -82,7 +82,7 @@ export default class Authentication {
 
   async isStillVerified() {
     try {
-      await this.httpClient.get('/me', {
+      await this.client.get('/me', {
         headers: {
           Authorization: `Bearer ${this.connectionData.accessToken}`,
         },

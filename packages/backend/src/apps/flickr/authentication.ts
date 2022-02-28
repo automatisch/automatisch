@@ -2,10 +2,10 @@ import FlickrApi from 'flickr-sdk';
 import Field from '../../types/field';
 
 export default class Authentication {
-  oauthClient: any;
-  client: any;
-  connectionData: any;
   appData: any;
+  connectionData: any;
+  client: any;
+  oauthClient: any;
 
   constructor(appData: any, connectionData: any) {
     this.oauthClient = new FlickrApi.OAuth(

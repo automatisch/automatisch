@@ -6,8 +6,8 @@ import {
 import Field from '../../types/field';
 
 export default class Authentication {
-  connectionData: any;
   appData: any;
+  connectionData: any;
   scopes: string[] = ['repo'];
 
   constructor(appData: any, connectionData: any) {

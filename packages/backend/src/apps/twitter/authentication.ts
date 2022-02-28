@@ -2,9 +2,9 @@ import TwitterApi from 'twitter-api-v2';
 import Field from '../../types/field';
 
 export default class Authentication {
-  client: any;
-  connectionData: any;
   appData: any;
+  connectionData: any;
+  client: any;
 
   constructor(appData: any, connectionData: any) {
     this.appData = appData;
