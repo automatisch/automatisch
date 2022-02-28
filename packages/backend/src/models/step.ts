@@ -2,14 +2,14 @@ import Base from './base';
 import Flow from './flow';
 import Connection from './connection';
 import ExecutionStep from './execution-step';
-import StepEnumType from '../types/step-enum-type';
+import { StepType } from '../types/step';
 
 class Step extends Base {
   id!: number;
   flowId!: string;
   key: string;
   appKey: string;
-  type!: StepEnumType;
+  type!: StepType;
   connectionId?: string;
   status: string;
   position: number;
