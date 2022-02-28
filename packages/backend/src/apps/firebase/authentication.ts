@@ -2,9 +2,9 @@ import { google as GoogleApi } from 'googleapis';
 import Field from '../../types/field';
 
 export default class Authentication {
-  oauthClient: any;
-  connectionData: any;
   appData: any;
+  connectionData: any;
+  client: any;
 
   scopes: string[] = [
     'https://www.googleapis.com/auth/datastore',
@@ -17,13 +17,13 @@ export default class Authentication {
     this.appData = appData;
     this.connectionData = connectionData;
 
-    this.oauthClient = new GoogleApi.auth.OAuth2(
+    this.client = new GoogleApi.auth.OAuth2(
       connectionData.consumerKey,
       connectionData.consumerSecret,
       this.oauthRedirectUrl
     );
 
-    GoogleApi.options({ auth: this.oauthClient });
+    GoogleApi.options({ auth: this.client });
   }
 
   get oauthRedirectUrl() {
@@ -33,7 +33,7 @@ export default class Authentication {
   }
 
   async createAuthData() {
-    const url = this.oauthClient.generateAuthUrl({
+    const url = this.client.generateAuthUrl({
       access_type: 'offline',
       scope: this.scopes,
     });
@@ -42,10 +42,10 @@ export default class Authentication {
   }
 
   async verifyCredentials() {
-    const { tokens } = await this.oauthClient.getToken(
+    const { tokens } = await this.client.getToken(
       this.connectionData.oauthVerifier
     );
-    this.oauthClient.setCredentials(tokens);
+    this.client.setCredentials(tokens);
 
     const people = GoogleApi.people('v1');
 
@@ -74,7 +74,7 @@ export default class Authentication {
 
   async isStillVerified() {
     try {
-      await this.oauthClient.getTokenInfo(this.connectionData.accessToken);
+      await this.client.getTokenInfo(this.connectionData.accessToken);
       return true;
     } catch {
       return false;

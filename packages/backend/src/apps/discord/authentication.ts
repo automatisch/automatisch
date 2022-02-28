@@ -3,13 +3,13 @@ import axios, { AxiosInstance } from 'axios';
 import Field from '../../types/field';
 
 export default class Authentication {
-  client?: any;
-  connectionData: any;
   appData: any;
-  scope: string[] = ['identify', 'email'];
-  httpClient: AxiosInstance = axios.create({
+  connectionData: any;
+  client: AxiosInstance = axios.create({
     baseURL: 'https://discord.com/api/',
   });
+
+  scope: string[] = ['identify', 'email'];
 
   constructor(appData: any, connectionData: any) {
     this.appData = appData;
@@ -45,7 +45,7 @@ export default class Authentication {
       code: this.connectionData.oauthVerifier,
       grant_type: 'authorization_code',
     });
-    const { data: verifiedCredentials }: any = await this.httpClient.post(
+    const { data: verifiedCredentials }: any = await this.client.post(
       '/oauth2/token',
       params.toString()
     );
@@ -58,7 +58,7 @@ export default class Authentication {
       token_type: tokenType,
     } = verifiedCredentials;
 
-    const { data: user }: any = await this.httpClient.get('/users/@me', {
+    const { data: user }: any = await this.client.get('/users/@me', {
       headers: {
         Authorization: `${tokenType} ${accessToken}`,
       },
@@ -80,7 +80,7 @@ export default class Authentication {
 
   async isStillVerified() {
     try {
-      await this.httpClient.get('/users/@me', {
+      await this.client.get('/users/@me', {
         headers: {
           Authorization: `${this.connectionData.tokenType} ${this.connectionData.accessToken}`,
         },
