@@ -1,11 +1,13 @@
-import nodemailer from 'nodemailer';
+import nodemailer, { Transporter, TransportOptions } from 'nodemailer';
+import AppInfo from '../../types/app-info';
+import JSONObject from '../../types/interfaces/json-object';
 
 export default class Authentication {
-  appData: any;
-  connectionData: any;
-  client: any;
+  appData: AppInfo;
+  connectionData: JSONObject;
+  client: Transporter;
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.client = nodemailer.createTransport({
       host: connectionData.host,
       port: connectionData.port,
@@ -14,7 +16,7 @@ export default class Authentication {
         user: connectionData.username,
         pass: connectionData.password,
       },
-    });
+    } as TransportOptions);
 
     this.connectionData = connectionData;
     this.appData = appData;

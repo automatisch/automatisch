@@ -1,10 +1,14 @@
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
 import { google as GoogleApi } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
 import Field from '../../types/field';
+import AppInfo from '../../types/app-info';
+import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
-  client: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
+  client: OAuth2Client;
 
   scopes: string[] = [
     'https://www.googleapis.com/auth/datastore',
@@ -13,13 +17,13 @@ export default class Authentication {
     'profile',
   ];
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.appData = appData;
     this.connectionData = connectionData;
 
     this.client = new GoogleApi.auth.OAuth2(
-      connectionData.consumerKey,
-      connectionData.consumerSecret,
+      connectionData.consumerKey as string,
+      connectionData.consumerSecret as string,
       this.oauthRedirectUrl
     );
 
@@ -43,7 +47,7 @@ export default class Authentication {
 
   async verifyCredentials() {
     const { tokens } = await this.client.getToken(
-      this.connectionData.oauthVerifier
+      this.connectionData.oauthVerifier as string
     );
     this.client.setCredentials(tokens);
 
@@ -74,7 +78,7 @@ export default class Authentication {
 
   async isStillVerified() {
     try {
-      await this.client.getTokenInfo(this.connectionData.accessToken);
+      await this.client.getTokenInfo(this.connectionData.accessToken as string);
       return true;
     } catch {
       return false;

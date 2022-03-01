@@ -1,13 +1,16 @@
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
 import FlickrApi from 'flickr-sdk';
+import AppInfo from '../../types/app-info';
 import Field from '../../types/field';
+import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
-  client: any;
-  oauthClient: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
+  client: typeof FlickrApi;
+  oauthClient: typeof FlickrApi;
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.oauthClient = new FlickrApi.OAuth(
       connectionData.consumerKey,
       connectionData.consumerSecret

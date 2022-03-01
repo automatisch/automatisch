@@ -1,21 +1,26 @@
-import TwitterApi from 'twitter-api-v2';
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import TwitterApi, { TwitterApiTokens } from 'twitter-api-v2';
+import AppInfo from '../../types/app-info';
 import Field from '../../types/field';
+import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
-  client: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
+  client: TwitterApi;
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.appData = appData;
     this.connectionData = connectionData;
 
-    this.client = new TwitterApi({
+    const clientParams = {
       appKey: connectionData.consumerKey,
       appSecret: connectionData.consumerSecret,
       accessToken: connectionData.accessToken,
       accessSecret: connectionData.accessSecret,
-    });
+    } as TwitterApiTokens;
+
+    this.client = new TwitterApi(clientParams);
   }
 
   async createAuthData() {
@@ -35,7 +40,7 @@ export default class Authentication {
 
   async verifyCredentials() {
     const verifiedCredentials = await this.client.login(
-      this.connectionData.oauthVerifier
+      this.connectionData.oauthVerifier as string
     );
 
     return {

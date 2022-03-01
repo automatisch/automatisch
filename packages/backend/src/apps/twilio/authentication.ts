@@ -1,14 +1,17 @@
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
 import TwilioApi from 'twilio';
+import AppInfo from '../../types/app-info';
+import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
-  client: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
+  client: TwilioApi.Twilio;
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.client = TwilioApi(
-      connectionData.accountSid,
-      connectionData.authToken
+      connectionData.accountSid as string,
+      connectionData.authToken as string
     );
 
     this.connectionData = connectionData;
