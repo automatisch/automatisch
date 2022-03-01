@@ -5,12 +5,12 @@ import Box from '@mui/material/Box';
 import CardActionArea from '@mui/material/CardActionArea';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-import type { Flow } from 'types/flow';
+import type { IFlow } from '@automatisch/types';
 import * as URLS from 'config/urls';
 import { CardContent, Typography } from './style';
 
 type FlowRowProps = {
-  flow: Flow;
+  flow: IFlow;
 }
 
 export default function FlowRow(props: FlowRowProps): React.ReactElement {

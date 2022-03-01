@@ -6,7 +6,7 @@ import Step from './step';
 import bcrypt from 'bcrypt';
 
 class User extends Base {
-  id!: number;
+  id!: string;
   email!: string;
   password!: string;
   connections?: [Connection];
@@ -20,7 +20,7 @@ class User extends Base {
     required: ['email', 'password'],
 
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'string' },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
     },

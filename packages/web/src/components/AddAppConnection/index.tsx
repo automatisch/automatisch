@@ -10,12 +10,12 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import { processStep } from 'helpers/authenticationSteps';
 import InputCreator from 'components/InputCreator';
-import type { App } from 'types/app';
+import type { IApp, IField } from '@automatisch/types';
 import { Form } from './style';
 
 type AddAppConnectionProps = {
   onClose: () => void;
-  application: App;
+  application: IApp;
   connectionId?: string;
 };
 
@@ -73,7 +73,7 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
       <DialogContent>
         <DialogContentText tabIndex={-1} component="div">
           <Form onSubmit={submitHandler}>
-            {fields?.map(field => (<InputCreator key={field.key} schema={field} />))}
+            {fields?.map((field: IField) => (<InputCreator key={field.key} schema={field} />))}
 
             <LoadingButton
               type="submit"

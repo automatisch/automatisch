@@ -1,4 +1,5 @@
 import template from 'lodash.template';
+import type { IAuthenticationStepField, IJSONObject } from '@automatisch/types';
 
 const interpolate = /{([\s\S]+?)}/g;
 
@@ -6,18 +7,9 @@ type Variables = {
   [key: string]: any
 }
 
-type VariableSchema = {
-  properties: VariableSchema[];
-  name: string;
-  type: 'string' | 'integer';
-  value: string;
-}
+type IVariable = Omit<IAuthenticationStepField, "properties"> & Partial<Pick<IAuthenticationStepField, "properties">>;
 
-type AggregatedData = {
-  [key: string]: Record<string, unknown> | string;
-}
-
-const computeAuthStepVariables = (variableSchema: VariableSchema[], aggregatedData: AggregatedData): Variables => {
+const computeAuthStepVariables = (variableSchema: IVariable[], aggregatedData: IJSONObject): IJSONObject => {
   const variables: Variables = {};
 
   for (const variable of variableSchema) {
@@ -27,11 +19,9 @@ const computeAuthStepVariables = (variableSchema: VariableSchema[], aggregatedDa
       continue;
     }
 
-    const computedVariable = template(variable.value, { interpolate })(aggregatedData);
+    if (variable.value) {
+      const computedVariable = template(variable.value, { interpolate })(aggregatedData);
 
-    if (variable.type === 'integer') {
-      variables[variable.name] = parseInt(computedVariable, 10);
-    } else {
       variables[variable.name] = computedVariable;
     }
   }

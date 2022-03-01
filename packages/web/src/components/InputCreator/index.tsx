@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { AppFields } from 'types/app';
+import type { IField } from '@automatisch/types';
 
 import PowerInput from 'components/PowerInput';
 import TextField from 'components/TextField';
@@ -8,7 +8,7 @@ import TextField from 'components/TextField';
 type InputCreatorProps = {
   onChange?: React.ChangeEventHandler;
   onBlur?: React.FocusEventHandler;
-  schema: AppFields;
+  schema: IField;
   namePrefix?: string;
 };
 

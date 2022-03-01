@@ -1,11 +1,11 @@
+import type { IApp } from '@automatisch/types';
 import { GraphQLEnumType } from 'graphql';
 import App from '../../models/app';
-import appInfoType from '../../types/app-info'
 
 const apps = App.findAll();
 const availableAppEnumValues: any = {}
 
-apps.forEach((app: appInfoType) => {
+apps.forEach((app: IApp) => {
   availableAppEnumValues[app.key] = { value: app.key }
 })
 

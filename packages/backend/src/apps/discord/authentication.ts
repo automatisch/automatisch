@@ -1,6 +1,6 @@
+import type { IField } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import axios, { AxiosInstance } from 'axios';
-import Field from '../../types/field';
 
 export default class Authentication {
   appData: any;
@@ -18,7 +18,7 @@ export default class Authentication {
 
   get oauthRedirectUrl() {
     return this.appData.fields.find(
-      (field: Field) => field.key == 'oAuthRedirectUrl'
+      (field: IField) => field.key == 'oAuthRedirectUrl'
     ).value;
   }
 

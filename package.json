@@ -15,7 +15,8 @@
     "nohoist": [
       "**/babel-loader",
       "**/webpack",
-      "**/@automatisch/web"
+      "**/@automatisch/web",
+      "**/@automatisch/types"
     ]
   },
   "devDependencies": {

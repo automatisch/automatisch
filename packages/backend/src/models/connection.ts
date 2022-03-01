@@ -6,10 +6,10 @@ import User from './user';
 import appConfig from '../config/app';
 
 class Connection extends Base {
-  id!: number;
+  id!: string;
   key!: string;
   data!: any;
-  userId!: number;
+  userId!: string;
   verified: boolean;
   count: number;
 

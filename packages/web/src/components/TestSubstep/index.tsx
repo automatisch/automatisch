@@ -6,17 +6,16 @@ import Button from '@mui/material/Button';
 
 import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { Step, Substep } from 'types/step';
-import type { AppFields } from 'types/app';
+import type { IStep, ISubstep } from '@automatisch/types';
 
 type TestSubstepProps = {
-  substep: Substep,
+  substep: ISubstep,
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
-  onChange?: ({ step }: { step: Step }) => void;
+  onChange?: ({ step }: { step: IStep }) => void;
   onSubmit?: () => void;
-  step: Step;
+  step: IStep;
 };
 
 function TestSubstep(props: TestSubstepProps): React.ReactElement {

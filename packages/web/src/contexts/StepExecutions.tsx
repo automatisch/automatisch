@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Step } from 'types/step';
+import type { IStep } from '@automatisch/types';
 
-export const StepExecutionsContext = React.createContext<Step[]>([]);
+export const StepExecutionsContext = React.createContext<IStep[]>([]);
 
 type StepExecutionsProviderProps = {
   children: React.ReactNode;
-  value: Step[];
+  value: IStep[];
 }
 
 export const StepExecutionsProvider = (props: StepExecutionsProviderProps): React.ReactElement => {

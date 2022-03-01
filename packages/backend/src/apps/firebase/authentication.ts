@@ -1,13 +1,15 @@
-import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import { google as GoogleApi } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
-import Field from '../../types/field';
-import AppInfo from '../../types/app-info';
-import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication implements AuthenticationInterface {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: OAuth2Client;
 
   scopes: string[] = [
@@ -17,7 +19,7 @@ export default class Authentication implements AuthenticationInterface {
     'profile',
   ];
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.appData = appData;
     this.connectionData = connectionData;
 
@@ -32,7 +34,7 @@ export default class Authentication implements AuthenticationInterface {
 
   get oauthRedirectUrl() {
     return this.appData.fields.find(
-      (field: Field) => field.key == 'oAuthRedirectUrl'
+      (field: IField) => field.key == 'oAuthRedirectUrl'
     ).value;
   }
 

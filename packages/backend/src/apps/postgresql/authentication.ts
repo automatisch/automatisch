@@ -1,14 +1,17 @@
-import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import { Client } from 'pg';
-import AppInfo from '../../types/app-info';
-import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication implements AuthenticationInterface {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: Client;
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.client = new Client({
       host: connectionData.host as string,
       port: connectionData.port as number,

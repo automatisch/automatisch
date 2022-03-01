@@ -1,0 +1,17 @@
+{
+  "name": "@automatisch/types",
+  "version": "0.1.0",
+  "description": "Type definitions for automatisch",
+  "homepage": "https://github.com/automatisch/automatisch",
+  "types": "./index.d.ts",
+  "scripts": {},
+  "dependencies": {},
+  "typeScriptVersion": "4.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/automatisch/automatisch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/automatisch/automatisch/issues"
+  }
+}

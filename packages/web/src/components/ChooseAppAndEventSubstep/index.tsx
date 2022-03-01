@@ -10,26 +10,24 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 import { GET_APPS } from 'graphql/queries/get-apps';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { App } from 'types/app';
-import type { Step, Substep } from 'types/step';
-import { StepType } from 'types/step';
+import type { IApp, IStep, ISubstep } from '@automatisch/types';
 
 type ChooseAppAndEventSubstepProps = {
-  substep: Substep,
+  substep: ISubstep,
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
-  onChange: ({ step }: { step: Step}) => void;
+  onChange: ({ step }: { step: IStep }) => void;
   onSubmit: () => void;
-  step: Step;
+  step: IStep;
 };
 
-const optionGenerator = (app: Record<string, unknown>): { label: string; value: string; } => ({
+const optionGenerator = (app: IApp): { label: string; value: string; } => ({
   label: app.name as string,
   value: app.key as string,
 });
 
-const getOption = (options: Record<string, unknown>[], appKey: unknown) => options.find(app => app.value === appKey as string) || null;
+const getOption = (options: Record<string, unknown>[], appKey: IApp["key"]) => options.find(option => option.value === appKey as string) || null;
 
 function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.ReactElement {
   const {
@@ -42,11 +40,11 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
     onChange,
   } = props;
 
-  const isTrigger = step.type === StepType.Trigger;
+  const isTrigger = step.type === 'trigger';
 
   const { data } = useQuery(GET_APPS, { variables: { onlyWithTriggers: isTrigger }});
-  const apps: App[] = data?.getApps;
-  const app = apps?.find((currentApp: App) => currentApp.key === step.appKey);
+  const apps: IApp[] = data?.getApps;
+  const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
   const appOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
   const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
@@ -88,7 +86,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
         onChange({
           step: {
             ...step,
-            key: null,
+            key: '',
             appKey,
           },
         });

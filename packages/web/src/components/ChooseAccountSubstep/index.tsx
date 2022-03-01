@@ -7,22 +7,21 @@ import ListItem from '@mui/material/ListItem';
 import Autocomplete from '@mui/material/Autocomplete';
 
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { App, AppConnection } from 'types/app';
-import type { Step, Substep } from 'types/step';
+import type { IApp, IConnection, IStep, ISubstep, IJSONObject } from '@automatisch/types';
 import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 
 type ChooseAccountSubstepProps = {
-  substep: Substep,
+  substep: ISubstep,
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
-  onChange: ({ step }: { step: Step}) => void;
+  onChange: ({ step }: { step: IStep }) => void;
   onSubmit: () => void;
-  step: Step;
+  step: IStep;
 };
 
-const optionGenerator = (connection: AppConnection): { label: string; value: string; } => ({
+const optionGenerator = (connection: IConnection<IJSONObject>): { label: string; value: string; } => ({
   label: connection?.data?.screenName as string ?? 'Unnamed',
   value: connection?.id as string,
 });
@@ -62,7 +61,7 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
     // intentionally no dependencies for initial test
   }, []);
 
-  const connectionOptions = React.useMemo(() => (data?.getApp as App)?.connections?.map((connection) => optionGenerator(connection)) || [], [data]);
+  const connectionOptions = React.useMemo(() => (data?.getApp as IApp)?.connections?.map((connection) => optionGenerator(connection)) || [], [data]);
 
   const { name } = substep;
 
