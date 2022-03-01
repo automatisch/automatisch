@@ -1,15 +1,17 @@
-import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import TwitterApi, { TwitterApiTokens } from 'twitter-api-v2';
-import AppInfo from '../../types/app-info';
-import Field from '../../types/field';
-import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication implements AuthenticationInterface {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: TwitterApi;
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.appData = appData;
     this.connectionData = connectionData;
 
@@ -25,7 +27,7 @@ export default class Authentication implements AuthenticationInterface {
 
   async createAuthData() {
     const appFields = this.appData.fields.find(
-      (field: Field) => field.key == 'oAuthRedirectUrl'
+      (field: IField) => field.key == 'oAuthRedirectUrl'
     );
     const callbackUrl = appFields.value;
 

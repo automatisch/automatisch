@@ -1,9 +1,11 @@
-import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import TwitchApi, { TwitchJsOptions } from 'twitch-js';
 import fetchUtil from 'twitch-js/lib/utils/fetch';
-import AppInfo from '../../types/app-info';
-import Field from '../../types/field';
-import JSONObject from '../../types/interfaces/json-object';
 
 type TwitchTokenResponse = {
   accessToken: string;
@@ -12,12 +14,12 @@ type TwitchTokenResponse = {
   tokenType: string;
 };
 
-export default class Authentication implements AuthenticationInterface {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: TwitchApi;
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
 
@@ -36,7 +38,7 @@ export default class Authentication implements AuthenticationInterface {
 
   get oauthRedirectUrl() {
     return this.appData.fields.find(
-      (field: Field) => field.key == 'oAuthRedirectUrl'
+      (field: IField) => field.key == 'oAuthRedirectUrl'
     ).value;
   }
 

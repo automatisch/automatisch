@@ -1,7 +1,6 @@
 import Step from '../../models/step';
 import flowType, { flowInputType } from '../types/flow';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import { StepType } from '../../types/step';
 
 type Params = {
   input: {
@@ -21,7 +20,7 @@ const createFlowResolver = async (
 
   await Step.query().insert({
     flowId: flow.id,
-    type: StepType.Trigger,
+    type: 'trigger',
     position: 1,
     appKey,
   });

@@ -1,13 +1,15 @@
-import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import axios, { AxiosInstance } from 'axios';
-import AppInfo from '../../types/app-info';
-import Field from '../../types/field';
-import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication implements AuthenticationInterface {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: AxiosInstance = axios.create({
     baseURL: 'https://api.typeform.com',
   });
@@ -22,14 +24,14 @@ export default class Authentication implements AuthenticationInterface {
     'workspaces:read',
   ];
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
   }
 
   get oauthRedirectUrl() {
     return this.appData.fields.find(
-      (field: Field) => field.key == 'oAuthRedirectUrl'
+      (field: IField) => field.key == 'oAuthRedirectUrl'
     ).value;
   }
 

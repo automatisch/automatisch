@@ -1,4 +1,4 @@
-import { Step } from 'types/step';
+import type { IStep } from '@automatisch/types';
 
 const joinBy = (delimiter = '.', ...args: string[]) => args.filter(Boolean).join(delimiter);
 
@@ -32,10 +32,10 @@ const process = (data: any, parentKey?: any, index?: number): any[] => {
   });
 };
 
-export const processStepWithExecutions = (steps: Step[]): any[] => {
+export const processStepWithExecutions = (steps: IStep[]): any[] => {
   if (!steps) return [];
 
-  return steps.map((step: Step, index: number) => ({
+  return steps.map((step: IStep, index: number) => ({
     id: step.id,
     // TODO: replace with step.name once introduced
     name: `${index + 1}. ${step.appKey}`,

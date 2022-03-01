@@ -1,16 +1,18 @@
-import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import FlickrApi from 'flickr-sdk';
-import AppInfo from '../../types/app-info';
-import Field from '../../types/field';
-import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication implements AuthenticationInterface {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: typeof FlickrApi;
   oauthClient: typeof FlickrApi;
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.oauthClient = new FlickrApi.OAuth(
       connectionData.consumerKey,
       connectionData.consumerSecret
@@ -33,7 +35,7 @@ export default class Authentication implements AuthenticationInterface {
 
   async createAuthData() {
     const appFields = this.appData.fields.find(
-      (field: Field) => field.key == 'oAuthRedirectUrl'
+      (field: IField) => field.key == 'oAuthRedirectUrl'
     );
     const callbackUrl = appFields.value;
 

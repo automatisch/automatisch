@@ -16,10 +16,10 @@ import ListItemText from '@mui/material/ListItemText';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
+import type { IApp } from '@automatisch/types';
 
 import * as URLS from 'config/urls';
 import AppIcon from 'components/AppIcon';
-import type { App } from 'types/app';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
 
@@ -68,7 +68,7 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
         </FormControl>
 
         <List sx={{ pt: 2 }}>
-          {data?.getApps?.map((app: App) => (
+          {data?.getApps?.map((app: IApp) => (
             <ListItem disablePadding key={app.name}>
               <ListItemButton component={Link} to={URLS.APP_ADD_CONNECTION(app.name.toLowerCase())}>
                 <ListItemIcon sx={{ minWidth: 74 }}>

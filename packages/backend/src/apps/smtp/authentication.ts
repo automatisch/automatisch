@@ -1,13 +1,16 @@
 import nodemailer, { Transporter, TransportOptions } from 'nodemailer';
-import AppInfo from '../../types/app-info';
-import JSONObject from '../../types/interfaces/json-object';
+import type {
+  IAuthentication,
+  IApp,
+  IJSONObject,
+} from '@automatisch/types';
 
-export default class Authentication {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: Transporter;
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.client = nodemailer.createTransport({
       host: connectionData.host,
       port: connectionData.port,

@@ -8,10 +8,10 @@ import { GET_FLOW } from 'graphql/queries/get-flow';
 import { CREATE_STEP } from 'graphql/mutations/create-step';
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
 import FlowStep from 'components/FlowStep';
-import type { Flow } from 'types/flow';
+import type { IFlow } from '@automatisch/types';
 
 type EditorProps = {
-  flow: Flow;
+  flow: IFlow;
 };
 
 function updateHandlerFactory(flowId: string, previousStepId: string) {

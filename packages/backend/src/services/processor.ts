@@ -4,7 +4,6 @@ import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
 import ExecutionStep from '../models/execution-step';
-import { StepType } from '../types/step';
 
 type ExecutionSteps = Record<string, ExecutionStep>;
 
@@ -44,7 +43,7 @@ class Processor {
         parameters: rawParameters = {},
         id
       } = step;
-      const isTrigger = type === StepType.Trigger;
+      const isTrigger = type === 'trigger';
       const AppClass = (await import(`../apps/${appKey}`)).default;
       const computedParameters = Processor.computeParameters(rawParameters, priorExecutionSteps);
       const appInstance = new AppClass(appData, connection.data, computedParameters);

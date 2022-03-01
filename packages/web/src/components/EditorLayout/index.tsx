@@ -14,7 +14,7 @@ import Editor from 'components/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
 import { GET_FLOW } from 'graphql/queries/get-flow';
-import type { Flow } from 'types/flow';
+import type { IFlow } from '@automatisch/types';
 import * as URLS from 'config/urls';
 
 export default function EditorLayout(): React.ReactElement {
@@ -22,7 +22,7 @@ export default function EditorLayout(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [updateFlow] = useMutation(UPDATE_FLOW);
   const { data, loading } = useQuery(GET_FLOW, { variables: { id: flowId }});
-  const flow: Flow = data?.getFlow;
+  const flow: IFlow = data?.getFlow;
 
   const onFlowNameUpdate = React.useCallback(async (name: string) => {
     await updateFlow({

@@ -8,11 +8,12 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import useFormatMessage from 'hooks/useFormatMessage';
 import AppIcon from 'components/AppIcon';
 import * as URLS from 'config/urls';
-import type { App } from 'types/app';
+import type { IApp } from '@automatisch/types';
+
 import { CardContent, Typography } from './style';
 
 type AppRowProps = {
-  application: App;
+  application: IApp;
 }
 
 const countTranslation = (value: React.ReactNode) => (

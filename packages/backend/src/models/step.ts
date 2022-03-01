@@ -2,14 +2,14 @@ import Base from './base';
 import Flow from './flow';
 import Connection from './connection';
 import ExecutionStep from './execution-step';
-import { StepType } from '../types/step';
+import type { IStep } from '@automatisch/types';
 
 class Step extends Base {
-  id!: number;
+  id!: string;
   flowId!: string;
   key: string;
   appKey: string;
-  type!: StepType;
+  type!: IStep["type"];
   connectionId?: string;
   status: string;
   position: number;
@@ -25,7 +25,7 @@ class Step extends Base {
     required: ['type'],
 
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'string' },
       flowId: { type: 'string' },
       key: { type: ['string', 'null'] },
       appKey: { type: ['string', 'null'], minLength: 1, maxLength: 255 },

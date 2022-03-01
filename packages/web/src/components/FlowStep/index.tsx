@@ -10,6 +10,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import type { IApp, IField, IStep } from '@automatisch/types';
 
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
@@ -22,18 +23,15 @@ import AppIcon from 'components/AppIcon';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import { GET_STEP_WITH_TEST_EXECUTIONS } from 'graphql/queries/get-step-with-test-executions';
 import useFormatMessage from 'hooks/useFormatMessage';
-import type { App, AppFields } from 'types/app';
-import type { Step } from 'types/step';
-import { StepType } from 'types/step';
 import { AppIconWrapper, AppIconStatusIconWrapper, Content, Header, Wrapper } from './style';
 
 type FlowStepProps = {
   collapsed?: boolean;
-  step: Step;
+  step: IStep;
   index?: number;
   onOpen?: () => void;
   onClose?: () => void;
-  onChange: (step: Step) => void;
+  onChange: (step: IStep) => void;
 }
 
 const validIcon = <CheckCircleIcon color="success" />;
@@ -42,9 +40,9 @@ const errorIcon = <ErrorIcon color="error" />;
 export default function FlowStep(props: FlowStepProps): React.ReactElement | null {
   const { collapsed, index, onChange } = props;
   const contextButtonRef = React.useRef<HTMLButtonElement  | null>(null);
-  const step: Step = props.step;
+  const step: IStep = props.step;
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement  | null>(null);
-  const isTrigger = step.type === StepType.Trigger;
+  const isTrigger = step.type === 'trigger';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(2);
   const { data } = useQuery(GET_APPS, { variables: { onlyWithTriggers: isTrigger }});
@@ -70,13 +68,13 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
     }
   }, [collapsed, stepWithTestExecutionsCalled, getStepWithTestExecutions, step.id, isTrigger]);
 
-  const apps: App[] = data?.getApps;
-  const app = apps?.find((currentApp: App) => currentApp.key === step.appKey);
+  const apps: IApp[] = data?.getApps;
+  const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
   const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
   const substeps = React.useMemo(() => actionsOrTriggers?.find(({ key }) => key === step.key)?.subSteps || [], [actionsOrTriggers, step?.key]);
 
-  const handleChange = React.useCallback(({ step }: { step: Step }) => {
+  const handleChange = React.useCallback(({ step }: { step: IStep }) => {
     onChange(step);
   }, [])
 
@@ -85,7 +83,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
   }, []);
 
   const handleSubmit = (val: any) => {
-    handleChange({ step: val as Step });
+    handleChange({ step: val as IStep });
   }
 
   if  (!apps) return null;
@@ -143,7 +141,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
       <Collapse in={!collapsed} unmountOnExit>
         <Content>
           <List>
-            <StepExecutionsProvider value={stepWithTestExecutionsData?.getStepWithTestExecutions as Step[]}>
+            <StepExecutionsProvider value={stepWithTestExecutionsData?.getStepWithTestExecutions as IStep[]}>
               <Form defaultValues={step} onSubmit={handleSubmit}>
                 <ChooseAppAndEventSubstep
                   expanded={currentSubstep === 0}
@@ -155,7 +153,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
                   step={step}
                 />
 
-                {substeps?.length > 0 && substeps.map((substep: { name: string, key: string, arguments: AppFields[] }, index: number) => (
+                {substeps?.length > 0 && substeps.map((substep: { name: string, key: string, arguments: IField[] }, index: number) => (
                   <React.Fragment key={`${substep?.name}-${index}`}>
                     {substep.key === 'chooseAccount' && (
                       <ChooseAccountSubstep

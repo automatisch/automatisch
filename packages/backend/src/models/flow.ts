@@ -1,11 +1,11 @@
-import { ModelOptions, QueryContext, ValidationError } from 'objection';
+import { ValidationError } from 'objection';
 import Base from './base';
 import Step from './step';
 
 class Flow extends Base {
   id!: string;
   name: string;
-  userId!: number;
+  userId!: string;
   active: boolean;
   steps?: [Step];
 
@@ -17,7 +17,7 @@ class Flow extends Base {
     properties: {
       id: { type: 'string' },
       name: { type: 'string' },
-      userId: { type: 'integer' },
+      userId: { type: 'string' },
       active: { type: 'boolean' },
     },
   };

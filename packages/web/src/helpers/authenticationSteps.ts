@@ -1,3 +1,4 @@
+import type { IAuthenticationStep } from '@automatisch/types';
 import apolloClient from 'graphql/client';
 import MUTATIONS from 'graphql/mutations';
 import appConfig from 'config/app';
@@ -7,14 +8,7 @@ enum AuthenticationSteps {
   OpenWithPopup = 'openWithPopup',
 }
 
-type Step = {
-  name: string;
-  variables: Record<string, unknown>;
-  process: (step: any, variables: Record<string, unknown>) => Promise<any>;
-  type: AuthenticationSteps.Mutation | AuthenticationSteps.OpenWithPopup;
-};
-
-const processMutation = async (step: Step, variables: Record<string, unknown>) => {
+const processMutation = async (step: IAuthenticationStep, variables: Record<string, unknown>) => {
   const mutation = MUTATIONS[step.name];
   const mutationResponse = await apolloClient.mutate({ mutation, variables });
   const responseData = mutationResponse.data[step.name];
@@ -38,7 +32,7 @@ function getObjectOfEntries(iterator: any) {
   return result;
 }
 
-const processOpenWithPopup = (step: Step, variables: Record<string, string>) => {
+const processOpenWithPopup = (step: IAuthenticationStep, variables: Record<string, string>) => {
   return new Promise((resolve) => {
     const windowFeatures = 'toolbar=no, titlebar=no, menubar=no, width=500, height=700, top=100, left=100';
     const url = variables.url;
@@ -62,7 +56,7 @@ const processOpenWithPopup = (step: Step, variables: Record<string, string>) => 
   });
 };
 
-export const processStep = async (step: Step, variables: Record<string, string>): Promise<any> => {
+export const processStep = async (step: IAuthenticationStep, variables: Record<string, string>): Promise<any> => {
   if (step.type === AuthenticationSteps.Mutation) {
     return processMutation(step, variables);
   } else if (step.type === AuthenticationSteps.OpenWithPopup) {

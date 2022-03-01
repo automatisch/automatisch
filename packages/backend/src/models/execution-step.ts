@@ -4,8 +4,8 @@ import Step from './step';
 
 class ExecutionStep extends Base {
   id!: string;
-  executionId!: number;
-  stepId!: number;
+  executionId!: string;
+  stepId!: string;
   dataIn!: any;
   dataOut!: any;
   status: string;
@@ -17,8 +17,8 @@ class ExecutionStep extends Base {
 
     properties: {
       id: { type: 'string' },
-      executionId: { type: 'integer' },
-      stepId: { type: 'integer' },
+      executionId: { type: 'string' },
+      stepId: { type: 'string' },
       dataIn: { type: 'object' },
       dataOut: { type: 'object' },
       status: { type: 'string', enum: ['success', 'failure'] },

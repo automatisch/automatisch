@@ -1,10 +1,10 @@
-import AuthenticationStepField from '../types/authentication-step-field';
+import type { IAuthenticationStepField } from '@automatisch/types';
 
 type AuthenticationStep = {
   step: number,
   type: string,
   name: string,
-  fields: AuthenticationStepField[];
+  fields: IAuthenticationStepField[];
 }
 
 export default AuthenticationStep;

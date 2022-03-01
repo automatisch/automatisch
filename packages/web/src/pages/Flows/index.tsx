@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
+import type { IFlow } from '@automatisch/types';
 
 import FlowRow from 'components/FlowRow';
 import ConditionalIconButton from 'components/ConditionalIconButton';
@@ -14,14 +15,13 @@ import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage'
 import { GET_FLOWS } from 'graphql/queries/get-flows';
 import * as URLS from 'config/urls';
-import type { Flow } from 'types/flow';
 
 export default function Flows(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [flowName, setFlowName] = React.useState('');
   const { data } = useQuery(GET_FLOWS);
 
-  const flows: Flow[] = data?.getFlows?.filter((flow: Flow) => flow.name?.toLowerCase().includes(flowName.toLowerCase()));
+  const flows: IFlow[] = data?.getFlows?.filter((flow: IFlow) => flow.name?.toLowerCase().includes(flowName.toLowerCase()));
 
   const onSearchChange = React.useCallback((event) => {
     setFlowName(event.target.value);

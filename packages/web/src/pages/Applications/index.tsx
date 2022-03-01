@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
+import type { IApp } from '@automatisch/types';
 
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
@@ -15,7 +16,6 @@ import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage'
 import { GET_CONNECTED_APPS } from 'graphql/queries/get-connected-apps';
 import * as URLS from 'config/urls';
-import type { App } from 'types/app';
 
 export default function Applications(): React.ReactElement {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ export default function Applications(): React.ReactElement {
           </Grid>
         </Grid>
 
-        {data?.getConnectedApps?.map((app: App) => (
+        {data?.getConnectedApps?.map((app: IApp) => (
           <AppRow key={app.name} application={app} />
         ))}
 

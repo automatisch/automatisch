@@ -10,7 +10,7 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { Step } from 'types/step';
+import type { IStep } from '@automatisch/types';
 
 const ListItemText = styled(MuiListItemText)``;
 
@@ -61,7 +61,7 @@ const Suggestions = (props: SuggestionsProps) => {
       <List
         disablePadding
       >
-        {data.map((option: Step, index: number) => (
+        {data.map((option: IStep, index: number) => (
           <>
             <ListItemButton
               divider

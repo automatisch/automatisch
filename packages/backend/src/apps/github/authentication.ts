@@ -1,16 +1,18 @@
-import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import {
   getWebFlowAuthorizationUrl,
   exchangeWebFlowCode,
   checkToken,
 } from '@octokit/oauth-methods';
-import AppInfo from '../../types/app-info';
-import Field from '../../types/field';
-import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication implements AuthenticationInterface {
-  appData: AppInfo;
-  connectionData: JSONObject;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   scopes: string[] = ['repo'];
   client: {
     getWebFlowAuthorizationUrl: typeof getWebFlowAuthorizationUrl;
@@ -18,7 +20,7 @@ export default class Authentication implements AuthenticationInterface {
     checkToken: typeof checkToken;
   };
 
-  constructor(appData: AppInfo, connectionData: JSONObject) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
 
@@ -31,7 +33,7 @@ export default class Authentication implements AuthenticationInterface {
 
   get oauthRedirectUrl(): string {
     return this.appData.fields.find(
-      (field: Field) => field.key == 'oAuthRedirectUrl'
+      (field: IField) => field.key == 'oAuthRedirectUrl'
     ).value;
   }
 

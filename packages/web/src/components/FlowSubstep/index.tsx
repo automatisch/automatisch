@@ -6,23 +6,22 @@ import Button from '@mui/material/Button';
 
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
-import type { Step, Substep } from 'types/step';
-import type { AppFields } from 'types/app';
+import type { IField, IStep, ISubstep } from '@automatisch/types';
 
 type FlowSubstepProps = {
-  substep: Substep,
+  substep: ISubstep,
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
-  onChange: ({ step }: { step: Step }) => void;
+  onChange: ({ step }: { step: IStep }) => void;
   onSubmit: () => void;
-  step: Step;
+  step: IStep;
 };
 
-const validateSubstep = (substep: Substep, step: Step) => {
+const validateSubstep = (substep: ISubstep, step: IStep) => {
   if (!substep) return true;
 
-  const args: AppFields[] = substep.arguments || [];
+  const args: IField[] = substep.arguments || [];
 
   return args.every(arg => {
     if (arg.required === false) { return true; }
@@ -50,7 +49,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
   } = substep;
 
   const formContext = useFormContext();
-  const [validationStatus, setValidationStatus] = React.useState<boolean | null>(validateSubstep(substep, formContext.getValues() as Step));
+  const [validationStatus, setValidationStatus] = React.useState<boolean | null>(validateSubstep(substep, formContext.getValues() as IStep));
 
 
   const handleChangeOnBlur = React.useCallback((key: string) => {
@@ -73,7 +72,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
 
   React.useEffect(() => {
     function validate (step: unknown) {
-      const validationResult = validateSubstep(substep, step as Step);
+      const validationResult = validateSubstep(substep, step as IStep);
       setValidationStatus(validationResult);
     };
     const subscription = formContext.watch(validate);

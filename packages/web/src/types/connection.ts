@@ -1,13 +1,3 @@
-type ConnectionData = {
-  screenName: string;
-}
+import type { IConnection, IJSONObject } from '@automatisch/types';
 
-type Connection = {
-  id: string;
-  key: string;
-  data: ConnectionData;
-  verified?: boolean;
-  createdAt: string;
-};
-
-export type { Connection, ConnectionData };
+export type Connection = IConnection<IJSONObject>;
