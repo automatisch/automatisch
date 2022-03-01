@@ -9,18 +9,9 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "node_modules/*",
-        "src/types/*"
-      ]
+      "*": ["node_modules/*", "src/types/*"]
     },
-    "typeRoots": [
-      "node_modules/@types",
-      "./src/types",
-      "./src/apps"
-    ]
+    "typeRoots": ["node_modules/@types", "./src/types", "./src/apps/*/types"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

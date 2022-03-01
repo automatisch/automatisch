@@ -1,6 +1,9 @@
-import TwitchApi from 'twitch-js';
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
+import TwitchApi, { TwitchJsOptions } from 'twitch-js';
 import fetchUtil from 'twitch-js/lib/utils/fetch';
+import AppInfo from '../../types/app-info';
 import Field from '../../types/field';
+import JSONObject from '../../types/interfaces/json-object';
 
 type TwitchTokenResponse = {
   accessToken: string;
@@ -9,17 +12,17 @@ type TwitchTokenResponse = {
   tokenType: string;
 };
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
-  client: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
+  client: TwitchApi;
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
 
     if (this.clientOptions.token) {
-      this.client = new TwitchApi(this.clientOptions);
+      this.client = new TwitchApi(this.clientOptions as TwitchJsOptions);
     }
   }
 
@@ -67,7 +70,7 @@ export default class Authentication {
 
     this.connectionData.accessToken = verifiedCredentials.accessToken;
 
-    const { api } = new TwitchApi(this.clientOptions);
+    const { api } = new TwitchApi(this.clientOptions as TwitchJsOptions);
 
     const { data } = await api.get('users');
     const [user] = data;

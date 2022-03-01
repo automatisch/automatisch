@@ -1,18 +1,21 @@
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
 import { Client } from 'pg';
+import AppInfo from '../../types/app-info';
+import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
-  client: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
+  client: Client;
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.client = new Client({
-      host: connectionData.host,
-      port: connectionData.port,
-      database: connectionData.database,
-      user: connectionData.username,
-      password: connectionData.password,
-      ssl: connectionData.ssl,
+      host: connectionData.host as string,
+      port: connectionData.port as number,
+      database: connectionData.database as string,
+      user: connectionData.username as string,
+      password: connectionData.password as string,
+      ssl: connectionData.ssl as boolean,
     });
 
     this.connectionData = connectionData;

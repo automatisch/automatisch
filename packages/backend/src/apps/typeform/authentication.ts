@@ -1,10 +1,13 @@
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
 import { URLSearchParams } from 'url';
 import axios, { AxiosInstance } from 'axios';
+import AppInfo from '../../types/app-info';
 import Field from '../../types/field';
+import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
   client: AxiosInstance = axios.create({
     baseURL: 'https://api.typeform.com',
   });
@@ -19,7 +22,7 @@ export default class Authentication {
     'workspaces:read',
   ];
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
   }
@@ -32,7 +35,7 @@ export default class Authentication {
 
   async createAuthData() {
     const searchParams = new URLSearchParams({
-      client_id: this.connectionData.consumerKey,
+      client_id: this.connectionData.consumerKey as string,
       redirect_uri: this.oauthRedirectUrl,
       scope: this.scope.join(' '),
     });
@@ -45,9 +48,9 @@ export default class Authentication {
   async verifyCredentials() {
     const params = new URLSearchParams({
       grant_type: 'authorization_code',
-      code: this.connectionData.oauthVerifier,
-      client_id: this.connectionData.consumerKey,
-      client_secret: this.connectionData.consumerSecret,
+      code: this.connectionData.oauthVerifier as string,
+      client_id: this.connectionData.consumerKey as string,
+      client_secret: this.connectionData.consumerSecret as string,
       redirect_uri: this.oauthRedirectUrl,
     });
 

@@ -1,18 +1,32 @@
+import AuthenticationInterface from '../../types/interfaces/authentication-interface';
 import {
   getWebFlowAuthorizationUrl,
   exchangeWebFlowCode,
   checkToken,
 } from '@octokit/oauth-methods';
+import AppInfo from '../../types/app-info';
 import Field from '../../types/field';
+import JSONObject from '../../types/interfaces/json-object';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
+export default class Authentication implements AuthenticationInterface {
+  appData: AppInfo;
+  connectionData: JSONObject;
   scopes: string[] = ['repo'];
+  client: {
+    getWebFlowAuthorizationUrl: typeof getWebFlowAuthorizationUrl;
+    exchangeWebFlowCode: typeof exchangeWebFlowCode;
+    checkToken: typeof checkToken;
+  };
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: AppInfo, connectionData: JSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
+
+    this.client = {
+      getWebFlowAuthorizationUrl,
+      exchangeWebFlowCode,
+      checkToken,
+    };
   }
 
   get oauthRedirectUrl(): string {
@@ -21,10 +35,10 @@ export default class Authentication {
     ).value;
   }
 
-  async createAuthData(): { url: string } {
-    const { url } = await getWebFlowAuthorizationUrl({
+  async createAuthData(): Promise<{ url: string }> {
+    const { url } = await this.client.getWebFlowAuthorizationUrl({
       clientType: 'oauth-app',
-      clientId: this.connectionData.consumerKey,
+      clientId: this.connectionData.consumerKey as string,
       redirectUrl: this.oauthRedirectUrl,
       scopes: this.scopes,
     });
@@ -34,12 +48,12 @@ export default class Authentication {
     };
   }
 
-  async verifyCredentials(): any {
-    const { data } = await exchangeWebFlowCode({
+  async verifyCredentials() {
+    const { data } = await this.client.exchangeWebFlowCode({
       clientType: 'oauth-app',
-      clientId: this.connectionData.consumerKey,
-      clientSecret: this.connectionData.consumerSecret,
-      code: this.connectionData.oauthVerifier,
+      clientId: this.connectionData.consumerKey as string,
+      clientSecret: this.connectionData.consumerSecret as string,
+      code: this.connectionData.oauthVerifier as string,
     });
 
     this.connectionData.accessToken = data.access_token;
@@ -58,15 +72,15 @@ export default class Authentication {
   }
 
   async getTokenInfo() {
-    return checkToken({
+    return this.client.checkToken({
       clientType: 'oauth-app',
-      clientId: this.connectionData.consumerKey,
-      clientSecret: this.connectionData.consumerSecret,
-      token: this.connectionData.accessToken,
+      clientId: this.connectionData.consumerKey as string,
+      clientSecret: this.connectionData.consumerSecret as string,
+      token: this.connectionData.accessToken as string,
     });
   }
 
-  async isStillVerified(): boolean {
+  async isStillVerified() {
     try {
       await this.getTokenInfo();
 
