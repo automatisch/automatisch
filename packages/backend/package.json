@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/src/app.js",
     "test": "ava",
     "lint": "eslint . --ignore-path ../../.eslintignore",
     "db:create": "ts-node ./bin/database/create.ts",
@@ -75,6 +75,7 @@
     "@types/node": "^16.10.2",
     "@types/nodemailer": "^6.4.4",
     "@types/pg": "^8.6.1",
+    "@types/pino": "^7.0.5",
     "ava": "^3.15.0",
     "eslint": "8.7.0",
     "nodemon": "^2.0.13",
