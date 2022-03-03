@@ -4,9 +4,11 @@ import {
   GraphQLEnumType,
   GraphQLInt,
   GraphQLInputObjectType,
+  GraphQLList,
 } from 'graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import ConnectionType from './connection';
+import ExecutionStepType from './execution-step';
 
 const stepType = new GraphQLObjectType({
   name: 'Step',
@@ -34,6 +36,9 @@ const stepType = new GraphQLObjectType({
       output: { type: GraphQLJSONObject },
       position: { type: GraphQLInt },
       status: { type: GraphQLString },
+      executionSteps: {
+        type: GraphQLList(ExecutionStepType),
+      },
     };
   },
 });

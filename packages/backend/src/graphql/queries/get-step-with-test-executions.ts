@@ -18,7 +18,6 @@ const getStepWithTestExecutionsResolver = async (
   const previousStepsWithCurrentStep = await req.currentUser
     .$relatedQuery('steps')
     .withGraphJoined('executionSteps')
-    .select('steps.*', 'executionSteps.data_out as output')
     .where('flow_id', '=', step.flowId)
     .andWhere('position', '<', step.position)
     .distinctOn('executionSteps.step_id')
