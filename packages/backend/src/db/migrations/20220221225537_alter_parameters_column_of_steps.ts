@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.alterTable('steps', (table) => {
-    table.jsonb('parameters').alter();
+    table.jsonb('parameters').defaultTo('{}').alter();
   });
 }
 

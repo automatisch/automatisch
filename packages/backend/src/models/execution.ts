@@ -14,8 +14,8 @@ class Execution extends Base {
     type: 'object',
 
     properties: {
-      id: { type: 'string' },
-      flowId: { type: 'integer' },
+      id: { type: 'string', format: 'uuid' },
+      flowId: { type: 'string', format: 'uuid' },
       testRun: { type: 'boolean' },
     },
   };

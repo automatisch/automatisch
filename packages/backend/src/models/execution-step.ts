@@ -16,8 +16,8 @@ class ExecutionStep extends Base {
     type: 'object',
 
     properties: {
-      id: { type: 'string' },
-      executionId: { type: 'string' },
+      id: { type: 'string', format: 'uuid' },
+      executionId: { type: 'string', format: 'uuid' },
       stepId: { type: 'string' },
       dataIn: { type: 'object' },
       dataOut: { type: 'object' },

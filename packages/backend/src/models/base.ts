@@ -1,5 +1,6 @@
-import { Model, snakeCaseMappers } from 'objection';
+import { AjvValidator, Model, snakeCaseMappers } from 'objection';
 import type { QueryContext, ModelOptions, ColumnNameMappers } from 'objection';
+import addFormats from 'ajv-formats';
 
 class Base extends Model {
   createdAt!: string;
@@ -7,6 +8,19 @@ class Base extends Model {
 
   static get columnNameMappers(): ColumnNameMappers {
     return snakeCaseMappers();
+  }
+
+  static createValidator() {
+    return new AjvValidator({
+      onCreateAjv: (ajv) => {
+        addFormats.default(ajv);
+      },
+      options: {
+        allErrors: true,
+        validateSchema: true,
+        ownProperties: true,
+      },
+    });
   }
 
   async $beforeInsert(queryContext: QueryContext): Promise<void> {

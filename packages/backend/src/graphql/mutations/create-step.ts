@@ -7,13 +7,13 @@ type Params = {
     key: string;
     appKey: string;
     flow: {
-      id: number;
+      id: string;
     };
     connection: {
-      id: number;
+      id: string;
     };
     previousStep: {
-      id: number;
+      id: string;
     };
   };
 };
@@ -43,7 +43,6 @@ const createStepResolver = async (
     appKey: input.appKey,
     type: 'action',
     position: previousStep.position + 1,
-    parameters: {},
   });
 
   const nextSteps = await flow

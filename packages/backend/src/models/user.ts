@@ -20,7 +20,7 @@ class User extends Base {
     required: ['email', 'password'],
 
     properties: {
-      id: { type: 'string' },
+      id: { type: 'string', format: 'uuid' },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
     },

@@ -3,7 +3,7 @@ import { Knex } from "knex";
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.table('steps', (table) => {
     table
-      .integer('flow_id')
+      .uuid('flow_id')
       .references('id')
       .inTable('flows');
   });
