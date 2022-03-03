@@ -2,9 +2,9 @@ import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('flows', (table) => {
-    table.increments('id');
+    table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'))
     table.string('name');
-    table.integer('user_id').references('id').inTable('users');
+    table.uuid('user_id').references('id').inTable('users');
 
     table.timestamps(true, true);
   });

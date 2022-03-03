@@ -20,10 +20,10 @@ class Connection extends Base {
     required: ['key', 'data'],
 
     properties: {
-      id: { type: 'string' },
+      id: { type: 'string', format: 'uuid' },
       key: { type: 'string', minLength: 1, maxLength: 255 },
       data: { type: 'object' },
-      userId: { type: 'string' },
+      userId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean' },
     },
   };

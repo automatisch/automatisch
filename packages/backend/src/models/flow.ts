@@ -15,9 +15,9 @@ class Flow extends Base {
     type: 'object',
 
     properties: {
-      id: { type: 'string' },
+      id: { type: 'string', format: 'uuid' },
       name: { type: 'string' },
-      userId: { type: 'string' },
+      userId: { type: 'string', format: 'uuid' },
       active: { type: 'boolean' },
     },
   };
