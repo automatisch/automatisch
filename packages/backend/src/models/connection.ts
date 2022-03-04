@@ -19,7 +19,7 @@ class Connection extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['key', 'data'],
+    required: ['key'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
@@ -44,14 +44,18 @@ class Connection extends Base {
 
   encryptData(): void {
     if (!this.eligibleForEncryption()) return;
+
     this.data = AES.encrypt(
       JSON.stringify(this.formattedData),
       appConfig.encryptionKey
     ).toString();
+
+    delete this['formattedData'];
   }
 
   decryptData(): void {
-    if (!this.eligibleForEncryption()) return;
+    if (!this.eligibleForDecryption()) return;
+
     this.formattedData = JSON.parse(
       AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8)
     );
@@ -59,6 +63,10 @@ class Connection extends Base {
 
   eligibleForEncryption(): boolean {
     return this.formattedData ? true : false;
+  }
+
+  eligibleForDecryption(): boolean {
+    return this.data ? true : false;
   }
 
   // TODO: Make another abstraction like beforeSave instead of using

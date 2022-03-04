@@ -41,7 +41,7 @@
           "value": "{key}"
         },
         {
-          "name": "data",
+          "name": "formattedData",
           "value": null,
           "properties": [
             {
@@ -90,7 +90,7 @@
           "value": "{connection.id}"
         },
         {
-          "name": "data",
+          "name": "formattedData",
           "value": null,
           "properties": [
             {
