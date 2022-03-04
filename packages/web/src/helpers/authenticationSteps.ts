@@ -1,4 +1,4 @@
-import type { IAuthenticationStep } from '@automatisch/types';
+import type { IAuthenticationStep, IJSONObject } from '@automatisch/types';
 import apolloClient from 'graphql/client';
 import MUTATIONS from 'graphql/mutations';
 import appConfig from 'config/app';
@@ -8,7 +8,7 @@ enum AuthenticationSteps {
   OpenWithPopup = 'openWithPopup',
 }
 
-const processMutation = async (step: IAuthenticationStep, variables: Record<string, unknown>) => {
+const processMutation = async (step: IAuthenticationStep, variables: IJSONObject) => {
   const mutation = MUTATIONS[step.name];
   const mutationResponse = await apolloClient.mutate({ mutation, variables });
   const responseData = mutationResponse.data[step.name];
@@ -32,15 +32,15 @@ function getObjectOfEntries(iterator: any) {
   return result;
 }
 
-const processOpenWithPopup = (step: IAuthenticationStep, variables: Record<string, string>) => {
+const processOpenWithPopup = (step: IAuthenticationStep, variables: IJSONObject) => {
   return new Promise((resolve) => {
     const windowFeatures = 'toolbar=no, titlebar=no, menubar=no, width=500, height=700, top=100, left=100';
     const url = variables.url;
 
-    const popup = window.open(url, '_blank', windowFeatures) as WindowProxy;
+    const popup = window.open(url as string, '_blank', windowFeatures) as WindowProxy;
     popup?.focus();
 
-    const messageHandler = async (event: any) => {
+    const messageHandler = async (event: MessageEvent) => {
       // check origin and data.source to trust the event
       if (event.origin !== appConfig.baseUrl || event.data.source !== 'automatisch') {
         return;
@@ -56,7 +56,7 @@ const processOpenWithPopup = (step: IAuthenticationStep, variables: Record<strin
   });
 };
 
-export const processStep = async (step: IAuthenticationStep, variables: Record<string, string>): Promise<any> => {
+export const processStep = async (step: IAuthenticationStep, variables: IJSONObject): Promise<any> => {
   if (step.type === AuthenticationSteps.Mutation) {
     return processMutation(step, variables);
   } else if (step.type === AuthenticationSteps.OpenWithPopup) {

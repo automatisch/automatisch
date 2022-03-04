@@ -5,7 +5,7 @@ export const VERIFY_CONNECTION = gql`
     verifyConnection(id: $id) {
       id
       verified
-      data {
+      formattedData {
         screenName
       }
     }

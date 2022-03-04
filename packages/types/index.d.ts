@@ -6,10 +6,11 @@ export interface IJSONObject {
   [x: string]: IJSONValue;
 }
 
-export interface IConnection<D extends IJSONObject | string> {
+export interface IConnection {
   id: string;
   key: string;
-  data: D;
+  data: string;
+  formattedData: IJSONObject;
   userId: string;
   verified: boolean;
   count: number;
@@ -43,7 +44,7 @@ export interface IStep {
   status: string;
   position: number;
   parameters: Record<string, unknown>;
-  connection: IConnection;
+  connection: Partial<IConnection>;
   flow: IFlow;
   executionSteps: IExecutionStep[];
   // FIXME: remove this property once execution steps are properly exposed via queries

@@ -21,12 +21,12 @@ type ChooseAccountSubstepProps = {
   step: IStep;
 };
 
-const optionGenerator = (connection: IConnection<IJSONObject>): { label: string; value: string; } => ({
-  label: connection?.data?.screenName as string ?? 'Unnamed',
+const optionGenerator = (connection: IConnection): { label: string; value: string; } => ({
+  label: connection?.formattedData?.screenName as string ?? 'Unnamed',
   value: connection?.id as string,
 });
 
-const getOption = (options: Record<string, unknown>[], connectionId: string) => options.find(connection => connection.value === connectionId) || null;
+const getOption = (options: Record<string, unknown>[], connectionId?: string) => options.find(connection => connection.value === connectionId) || null;
 
 function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElement {
   const {

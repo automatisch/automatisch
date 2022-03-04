@@ -8,7 +8,7 @@ export const GET_APP_CONNECTIONS = gql`
         id
         key
         verified
-        data {
+        formattedData {
           screenName
         }
         createdAt

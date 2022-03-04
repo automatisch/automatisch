@@ -1,3 +1,3 @@
-import type { IConnection, IJSONObject } from '@automatisch/types';
+import type { IConnection } from '@automatisch/types';
 
-export type Connection = IConnection<IJSONObject>;
+export type Connection = IConnection;
