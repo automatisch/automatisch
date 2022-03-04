@@ -16,6 +16,8 @@ type AppConfig = {
   baseUrl?: string;
   encryptionKey: string;
   serveWebAppSeparately: boolean;
+  redisHost: string;
+  redisPort: number;
 };
 
 const appConfig: AppConfig = {
@@ -33,6 +35,8 @@ const appConfig: AppConfig = {
   encryptionKey: process.env.ENCRYPTION_KEY,
   serveWebAppSeparately:
     process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false,
+  redisHost: process.env.REDIS_HOST || '127.0.0.1',
+  redisPort: parseInt(process.env.REDIS_PORT) || 6379,
 };
 
 if (appConfig.serveWebAppSeparately) {
