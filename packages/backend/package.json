@@ -4,6 +4,7 @@
   "description": "> TODO: description",
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
+    "worker": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/worker.ts",
     "build": "tsc",
     "start": "node dist/src/app.js",
     "test": "ava",
@@ -21,6 +22,7 @@
     "ajv-formats": "^2.1.1",
     "axios": "0.24.0",
     "bcrypt": "^5.0.1",
+    "bullmq": "^1.76.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "debug": "~2.6.9",
