@@ -39,6 +39,6 @@ export const processStepWithExecutions = (steps: IStep[]): any[] => {
     id: step.id,
     // TODO: replace with step.name once introduced
     name: `${index + 1}. ${step.appKey}`,
-    output: process(step.output, `step.${step.id}`),
+    output: process(step.executionSteps?.[0]?.dataOut || {}, `step.${step.id}`),
   }));
 };

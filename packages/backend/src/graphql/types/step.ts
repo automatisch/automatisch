@@ -33,7 +33,6 @@ const stepType = new GraphQLObjectType({
       parameters: { type: GraphQLJSONObject },
       connection: { type: ConnectionType },
       flow: { type: FlowType },
-      output: { type: GraphQLJSONObject },
       position: { type: GraphQLInt },
       status: { type: GraphQLString },
       executionSteps: {
