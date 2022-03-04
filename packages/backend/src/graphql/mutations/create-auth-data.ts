@@ -22,15 +22,15 @@ const createAuthDataResolver = async (
   const appData = App.findOneByKey(connection.key);
 
   const appInstance = new appClass(appData, {
-    consumerKey: connection.data.consumerKey,
-    consumerSecret: connection.data.consumerSecret,
+    consumerKey: connection.formattedData.consumerKey,
+    consumerSecret: connection.formattedData.consumerSecret,
   });
 
   const authLink = await appInstance.authenticationClient.createAuthData();
 
   await connection.$query().patch({
-    data: {
-      ...connection.data,
+    formattedData: {
+      ...connection.formattedData,
       ...authLink,
     },
   });

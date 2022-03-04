@@ -18,7 +18,7 @@ const resetConnectionResolver = async (
     .throwIfNotFound();
 
   connection = await connection.$query().patchAndFetch({
-    data: { screenName: connection.data.screenName },
+    formattedData: { screenName: connection.formattedData.screenName },
   });
 
   return connection;
