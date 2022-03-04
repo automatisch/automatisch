@@ -13,6 +13,7 @@ import {
   useSelected,
   useFocused,
 } from 'slate-react';
+import type { IExecutionStep, IStep } from '@automatisch/types';
 
 import {
   serialize,

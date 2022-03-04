@@ -5,7 +5,13 @@ export const GET_STEP_WITH_TEST_EXECUTIONS = gql`
     getStepWithTestExecutions(stepId: $stepId) {
       id
       appKey
-      output
+      executionSteps {
+        id
+        executionId
+        stepId
+        status
+        dataOut
+      }
     }
   }
 `;

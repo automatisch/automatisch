@@ -4,6 +4,7 @@ import { GraphQLJSONObject } from 'graphql-type-json';
 const executionStepType = new GraphQLObjectType({
   name: 'ExecutionStep',
   fields: {
+    id: { type: GraphQLString },
     executionId: { type: GraphQLString },
     stepId: { type: GraphQLString },
     status: { type: GraphQLString },
