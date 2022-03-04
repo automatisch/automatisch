@@ -34,7 +34,7 @@ const updateConnection = {
   type: connectionType,
   args: {
     id: { type: GraphQLNonNull(GraphQLString) },
-    data: { type: GraphQLNonNull(GraphQLJSONObject) },
+    formattedData: { type: GraphQLNonNull(GraphQLJSONObject) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     updateConnectionResolver(params, req),

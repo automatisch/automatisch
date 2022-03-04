@@ -5,7 +5,6 @@ import Processor from '../../services/processor';
 
 type Params = {
   stepId: string;
-  data: Record<string, unknown>;
 };
 const executeFlowResolver = async (
   params: Params,
