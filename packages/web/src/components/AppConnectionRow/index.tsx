@@ -42,7 +42,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
   const formatMessage = useFormatMessage();
-  const { id, key, data, verified, createdAt } = props.connection;
+  const { id, key, formattedData, verified, createdAt } = props.connection;
 
   const contextButtonRef = React.useRef<SVGSVGElement | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
@@ -88,7 +88,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
               spacing={1}
             >
               <Typography variant="h6">
-                {data.screenName}
+                {formattedData?.screenName}
               </Typography>
 
               <Typography variant="caption">
