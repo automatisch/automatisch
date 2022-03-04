@@ -21,13 +21,13 @@ const verifyConnectionResolver = async (
   const appClass = (await import(`../../apps/${connection.key}`)).default;
   const appData = App.findOneByKey(connection.key);
 
-  const appInstance = new appClass(appData, connection.data);
+  const appInstance = new appClass(appData, connection.formattedData);
   const verifiedCredentials =
     await appInstance.authenticationClient.verifyCredentials();
 
   connection = await connection.$query().patchAndFetch({
-    data: {
-      ...connection.data,
+    formattedData: {
+      ...connection.formattedData,
       ...verifiedCredentials,
     },
     verified: true,

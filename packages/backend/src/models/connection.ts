@@ -4,11 +4,13 @@ import { AES, enc } from 'crypto-js';
 import Base from './base';
 import User from './user';
 import appConfig from '../config/app';
+import { IJSONObject } from '@automatisch/types';
 
 class Connection extends Base {
   id!: string;
   key!: string;
-  data!: any;
+  data: string;
+  formattedData!: IJSONObject;
   userId!: string;
   verified: boolean;
   count: number;
@@ -22,7 +24,8 @@ class Connection extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string', minLength: 1, maxLength: 255 },
-      data: { type: 'object' },
+      data: { type: 'string' },
+      formattedData: { type: 'object' },
       userId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean' },
     },
@@ -42,20 +45,20 @@ class Connection extends Base {
   encryptData(): void {
     if (!this.eligibleForEncryption()) return;
     this.data = AES.encrypt(
-      JSON.stringify(this.data),
+      JSON.stringify(this.formattedData),
       appConfig.encryptionKey
     ).toString();
   }
 
   decryptData(): void {
     if (!this.eligibleForEncryption()) return;
-    this.data = JSON.parse(
+    this.formattedData = JSON.parse(
       AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8)
     );
   }
 
   eligibleForEncryption(): boolean {
-    return this.data ? true : false;
+    return this.formattedData ? true : false;
   }
 
   // TODO: Make another abstraction like beforeSave instead of using

@@ -4,10 +4,11 @@ import connectionType from '../types/connection';
 import availableAppsEnumType from '../types/available-apps-enum-type';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
 import { GraphQLJSONObject } from 'graphql-type-json';
+import { IJSONObject } from '@automatisch/types';
 
 type Params = {
   key: string;
-  data: object;
+  formattedData: IJSONObject;
 };
 const createConnectionResolver = async (
   params: Params,
@@ -17,7 +18,7 @@ const createConnectionResolver = async (
 
   const connection = await req.currentUser.$relatedQuery('connections').insert({
     key: params.key,
-    data: params.data,
+    formattedData: params.formattedData,
   });
 
   return {
@@ -30,7 +31,7 @@ const createConnection = {
   type: connectionType,
   args: {
     key: { type: GraphQLNonNull(availableAppsEnumType) },
-    data: { type: GraphQLNonNull(GraphQLJSONObject) },
+    formattedData: { type: GraphQLNonNull(GraphQLJSONObject) },
   },
   resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
     createConnectionResolver(params, req),

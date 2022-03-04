@@ -10,7 +10,7 @@ const connectionType = new GraphQLObjectType({
     return {
       id: { type: GraphQLString },
       key: { type: GraphQLString },
-      data: { type: connectionDataType },
+      formattedData: { type: connectionDataType },
       verified: { type: GraphQLBoolean },
       app: { type: appType },
       createdAt: { type: GraphQLString },

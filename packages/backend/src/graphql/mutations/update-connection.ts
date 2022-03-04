@@ -2,10 +2,11 @@ import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import connectionType from '../types/connection';
 import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import { IJSONObject } from '@automatisch/types';
 
 type Params = {
   id: string;
-  data: object;
+  formattedData: IJSONObject;
 };
 
 const updateConnectionResolver = async (
@@ -20,9 +21,9 @@ const updateConnectionResolver = async (
     .throwIfNotFound();
 
   connection = await connection.$query().patchAndFetch({
-    data: {
-      ...connection.data,
-      ...params.data,
+    formattedData: {
+      ...connection.formattedData,
+      ...params.formattedData,
     },
   });
 

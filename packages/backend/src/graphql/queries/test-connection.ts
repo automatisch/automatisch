@@ -21,12 +21,12 @@ const testConnectionResolver = async (
   const appClass = (await import(`../../apps/${connection.key}`)).default;
   const appData = App.findOneByKey(connection.key);
 
-  const appInstance = new appClass(appData, connection.data);
+  const appInstance = new appClass(appData, connection.formattedData);
   const isStillVerified =
     await appInstance.authenticationClient.isStillVerified();
 
   connection = await connection.$query().patchAndFetch({
-    data: connection.data,
+    formattedData: connection.formattedData,
     verified: isStillVerified,
   });
 
