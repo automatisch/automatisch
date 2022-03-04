@@ -1,9 +1,9 @@
 // Type definitions for automatisch
 
-export type IJSONValue = string | number | boolean | JSONObject | JSONArray;
-export type IJSONArray = Array<JSONValue>;
+export type IJSONValue = string | number | boolean | IJSONObject | IJSONArray;
+export type IJSONArray = Array<IJSONValue>;
 export interface IJSONObject {
-  [x: string]: JSONValue;
+  [x: string]: IJSONValue;
 }
 
 export interface IConnection<D extends IJSONObject | string> {
