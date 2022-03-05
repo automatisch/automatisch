@@ -11,7 +11,7 @@ class Processor {
   flow: Flow;
   untilStep: Step;
 
-  static variableRegExp = /({{step\.\d*\..+?}})/g;
+  static variableRegExp = /({{step\..+\..+}})/g;
 
   constructor(flow: Flow, untilStep: Step) {
     this.flow = flow;
