@@ -15,6 +15,7 @@ type AppConfig = {
   postgresEnableSsl: boolean;
   baseUrl?: string;
   encryptionKey: string;
+  appSecretKey: string;
   serveWebAppSeparately: boolean;
   redisHost: string;
   redisPort: number;
@@ -33,6 +34,7 @@ const appConfig: AppConfig = {
   postgresPassword: process.env.POSTGRES_PASSWORD,
   postgresEnableSsl: process.env.POSTGRES_ENABLE_SSL === 'true' ? true : false,
   encryptionKey: process.env.ENCRYPTION_KEY,
+  appSecretKey: process.env.APP_SECRET_KEY,
   serveWebAppSeparately:
     process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false,
   redisHost: process.env.REDIS_HOST || '127.0.0.1',
