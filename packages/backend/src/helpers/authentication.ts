@@ -20,14 +20,19 @@ const isAuthenticated = rule()(async (_parent, _args, req) => {
   }
 });
 
-const authentication = shield({
-  Query: {
-    '*': isAuthenticated,
+const authentication = shield(
+  {
+    Query: {
+      '*': isAuthenticated,
+    },
+    Mutation: {
+      '*': isAuthenticated,
+      login: allow,
+    },
   },
-  Mutation: {
-    '*': isAuthenticated,
-    login: allow,
-  },
-});
+  {
+    allowExternalErrors: true,
+  }
+);
 
 export default authentication;
