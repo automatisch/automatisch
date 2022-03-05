@@ -1,30 +1,35 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import User from '../../models/user';
-import userType from '../types/user';
+import authType from '../types/auth';
+import jwt from 'jsonwebtoken';
+import appConfig from '../../config/app';
 
 type Params = {
-  email: string,
-  password: string
-}
+  email: string;
+  password: string;
+};
+
 const loginResolver = async (params: Params) => {
   const user = await User.query().findOne({
     email: params.email,
   });
 
-  if (user && await user.login(params.password)) {
-    return user;
+  if (user && (await user.login(params.password))) {
+    const token = jwt.sign({ userId: user.id }, appConfig.appSecretKey);
+
+    return { token, user };
   }
 
-  throw new Error('User could not be found.')
-}
+  throw new Error('User could not be found.');
+};
 
 const login = {
-  type: userType,
+  type: authType,
   args: {
     email: { type: GraphQLNonNull(GraphQLString) },
-    password: { type: GraphQLNonNull(GraphQLString) }
+    password: { type: GraphQLNonNull(GraphQLString) },
   },
-  resolve: (_: any, params: any) => loginResolver(params)
+  resolve: (_: any, params: any) => loginResolver(params),
 };
 
 export default login;

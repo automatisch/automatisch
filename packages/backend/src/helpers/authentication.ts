@@ -1,14 +1,33 @@
-import { Response, NextFunction } from 'express';
+import { rule, shield, allow } from 'graphql-shield';
+import jwt from 'jsonwebtoken';
 import User from '../models/user';
-import RequestWithCurrentUser from '../types/express/request-with-current-user';
+import appConfig from '../config/app';
 
-const authentication = async (req: RequestWithCurrentUser, _res: Response, next: NextFunction): Promise<void> => {
-  // We set authentication to use the sample user we created temporarily.
-  req.currentUser = await User.query().findOne({
-    email: 'user@automatisch.com'
-  }).throwIfNotFound();
+const isAuthenticated = rule()(async (_parent, _args, req) => {
+  const token = req.headers['authorization'];
 
-  next()
-}
+  if (token == null) return false;
+
+  try {
+    const { userId } = jwt.verify(token, appConfig.appSecretKey) as {
+      userId: string;
+    };
+    req.currentUser = await User.query().findById(userId).throwIfNotFound();
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+});
+
+const authentication = shield({
+  Query: {
+    '*': isAuthenticated,
+  },
+  Mutation: {
+    '*': isAuthenticated,
+    login: allow,
+  },
+});
 
 export default authentication;
