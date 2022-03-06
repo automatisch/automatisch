@@ -1,19 +1,19 @@
-import { GraphQLList, GraphQLString } from 'graphql';
 import App from '../../models/app';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import appType from '../types/app';
+import Context from '../../types/express/context';
+import { IApp, IConnection } from '@automatisch/types';
 
 type Params = {
   name: string;
 };
 
-const getConnectedAppsResolver = async (
+const getConnectedApps = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
   let apps = App.findAll(params.name);
 
-  const connections = await req.currentUser
+  const connections = await context.currentUser
     .$relatedQuery('connections')
     .select('connections.key')
     .count('connections.id as count')
@@ -23,10 +23,10 @@ const getConnectedAppsResolver = async (
   const connectionKeys = connections.map((connection) => connection.key);
 
   apps = apps
-    .filter((app: any) => connectionKeys.includes(app.key))
-    .map((app: any) => {
+    .filter((app: IApp) => connectionKeys.includes(app.key))
+    .map((app: IApp) => {
       const connection = connections.find(
-        (connection: any) => connection.key === app.key
+        (connection: IConnection) => connection.key === app.key
       );
 
       app.connectionCount = connection.count;
@@ -34,15 +34,6 @@ const getConnectedAppsResolver = async (
     });
 
   return apps;
-};
-
-const getConnectedApps = {
-  type: GraphQLList(appType),
-  args: {
-    name: { type: GraphQLString },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    getConnectedAppsResolver(params, req),
 };
 
 export default getConnectedApps;

@@ -1,21 +1,20 @@
-import { GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import stepType from '../types/step';
+import Context from '../../types/express/context';
 
 type Params = {
   stepId: string;
 };
 
-const getStepWithTestExecutionsResolver = async (
+const getStepWithTestExecutions = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
-  const step = await req.currentUser
+  const step = await context.currentUser
     .$relatedQuery('steps')
     .findOne({ 'steps.id': params.stepId })
     .throwIfNotFound();
 
-  const previousStepsWithCurrentStep = await req.currentUser
+  const previousStepsWithCurrentStep = await context.currentUser
     .$relatedQuery('steps')
     .withGraphJoined('executionSteps')
     .where('flow_id', '=', step.flowId)
@@ -27,15 +26,6 @@ const getStepWithTestExecutionsResolver = async (
     ]);
 
   return previousStepsWithCurrentStep;
-};
-
-const getStepWithTestExecutions = {
-  type: GraphQLList(stepType),
-  args: {
-    stepId: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    getStepWithTestExecutionsResolver(params, req),
 };
 
 export default getStepWithTestExecutions;

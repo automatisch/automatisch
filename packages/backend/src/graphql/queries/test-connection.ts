@@ -1,17 +1,17 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import connectionType from '../types/connection';
+import Context from '../../types/express/context';
 import App from '../../models/app';
 
 type Params = {
   id: string;
   data: object;
 };
-const testConnectionResolver = async (
+
+const testConnection = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
-  let connection = await req.currentUser
+  let connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
       id: params.id,
@@ -31,15 +31,6 @@ const testConnectionResolver = async (
   });
 
   return connection;
-};
-
-const testConnection = {
-  type: connectionType,
-  args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    testConnectionResolver(params, req),
 };
 
 export default testConnection;

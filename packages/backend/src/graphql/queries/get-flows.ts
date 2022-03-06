@@ -1,21 +1,15 @@
-import { GraphQLList } from 'graphql';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import flowType from '../types/flow';
+import Context from '../../types/express/context';
 
-const getFlowsResolver = async (
-  req: RequestWithCurrentUser
-): Promise<any[]> => {
-  const flows = await req.currentUser
+const getFlows = async (
+  _parent: unknown,
+  _params: unknown,
+  context: Context
+) => {
+  const flows = await context.currentUser
     .$relatedQuery('flows')
     .withGraphJoined('[steps.[connection]]');
 
   return flows;
-};
-
-const getFlows = {
-  type: GraphQLList(flowType),
-  resolve: (_: any, _params: any, req: RequestWithCurrentUser) =>
-    getFlowsResolver(req),
 };
 
 export default getFlows;

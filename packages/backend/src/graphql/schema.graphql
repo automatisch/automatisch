@@ -1,0 +1,272 @@
+type Query {
+  getApps(name: String, onlyWithTriggers: Boolean): [App]
+  getApp(key: AvailableAppsEnumType!): App
+  getConnectedApps(name: String): [App]
+  getAppConnections(key: AvailableAppsEnumType!): [Connection]
+  testConnection(id: String!): Connection
+  getFlow(id: String!): Flow
+  getFlows: [Flow]
+  getStepWithTestExecutions(stepId: String!): [Step]
+}
+
+type Mutation {
+  createConnection(
+    key: AvailableAppsEnumType!
+    formattedData: JSONObject!
+  ): Connection
+  createAuthData(id: String!): AuthLink
+  updateConnection(id: String!, formattedData: JSONObject!): Connection
+  resetConnection(id: String!): Connection
+  verifyConnection(id: String!): Connection
+  deleteConnection(id: String!): Boolean
+  createFlow(input: FlowInput): Flow
+  updateFlow(id: String!, name: String!, active: Boolean): Flow
+  deleteFlow(id: String!): Boolean
+  createStep(input: StepInput!): Step
+  updateStep(input: StepInput!): Step
+  deleteStep(id: String!): Step
+  executeFlow(stepId: String!): executeFlowType
+  login(email: String!, password: String!): Auth
+}
+
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
+directive @specifiedBy(
+  """
+  The URL that specifies the behaviour of this scalar.
+  """
+  url: String!
+) on SCALAR
+
+type Action {
+  name: String
+  key: String
+  description: String
+  subSteps: [ActionSubStep]
+}
+
+type ActionSubStep {
+  key: String
+  name: String
+  arguments: [ActionSubStepArgument]
+}
+
+type ActionSubStepArgument {
+  label: String
+  key: String
+  type: String
+  description: String
+  required: Boolean
+  variables: Boolean
+}
+
+type App {
+  name: String
+  key: String
+  connectionCount: Int
+  iconUrl: String
+  docUrl: String
+  primaryColor: String
+  fields: [Field]
+  authenticationSteps: [AuthenticationStep]
+  reconnectionSteps: [ReconnectionStep]
+  triggers: [Trigger]
+  actions: [Action]
+  connections: [Connection]
+}
+
+enum ArgumentEnumType {
+  integer
+  string
+}
+
+type Auth {
+  user: User
+  token: String
+}
+
+type AuthenticationStep {
+  step: Int
+  type: String
+  name: String
+  arguments: [AuthenticationStepArgument]
+}
+
+type AuthenticationStepArgument {
+  name: String
+  value: String
+  type: ArgumentEnumType
+  properties: [AuthenticationStepProperty]
+}
+
+type AuthenticationStepProperty {
+  name: String
+  value: String
+}
+
+type AuthLink {
+  url: String
+}
+
+enum AvailableAppsEnumType {
+  discord
+  firebase
+  flickr
+  github
+  postgresql
+  smtp
+  twilio
+  twitch
+  twitter
+  typeform
+}
+
+type Connection {
+  id: String
+  key: String
+  formattedData: ConnectionData
+  verified: Boolean
+  app: App
+  createdAt: String
+}
+
+type ConnectionData {
+  screenName: String
+}
+
+type executeFlowType {
+  data: JSONObject
+  step: Step
+}
+
+type ExecutionStep {
+  id: String
+  executionId: String
+  stepId: String
+  status: String
+  dataIn: JSONObject
+  dataOut: JSONObject
+}
+
+type Field {
+  key: String
+  label: String
+  type: String
+  required: Boolean
+  readOnly: Boolean
+  value: String
+  placeholder: String
+  description: String
+  docUrl: String
+  clickToCopy: Boolean
+}
+
+type Flow {
+  id: String
+  name: String
+  active: Boolean
+  steps: [Step]
+}
+
+input FlowInput {
+  triggerAppKey: String
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+input PreviousStepInput {
+  id: String
+}
+
+type ReconnectionStep {
+  step: Int
+  type: String
+  name: String
+  arguments: [ReconnectionStepArgument]
+}
+
+type ReconnectionStepArgument {
+  name: String
+  value: String
+  type: ArgumentEnumType
+  properties: [ReconnectionStepProperty]
+}
+
+type ReconnectionStepProperty {
+  name: String
+  value: String
+}
+
+type Step {
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  type: StepEnumType
+  parameters: JSONObject
+  connection: Connection
+  flow: Flow
+  position: Int
+  status: String
+  executionSteps: [ExecutionStep]
+}
+
+input StepConnectionInput {
+  id: String
+}
+
+enum StepEnumType {
+  trigger
+  action
+}
+
+input StepFlowInput {
+  id: String
+}
+
+input StepInput {
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  connection: StepConnectionInput
+  flow: StepFlowInput
+  parameters: JSONObject
+  previousStep: PreviousStepInput
+}
+
+type Trigger {
+  name: String
+  key: String
+  description: String
+  subSteps: [TriggerSubStep]
+}
+
+type TriggerSubStep {
+  key: String
+  name: String
+  arguments: [TriggerSubStepArgument]
+}
+
+type TriggerSubStepArgument {
+  label: String
+  key: String
+  type: String
+  required: Boolean
+}
+
+type User {
+  id: String
+  email: String
+  createdAt: String
+  updatedAt: String
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

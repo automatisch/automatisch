@@ -1,13 +1,11 @@
-import { GraphQLNonNull, GraphQLString } from 'graphql';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import flowType from '../types/flow';
+import Context from '../../types/express/context';
 
 type Params = {
   id: string;
 };
 
-const getFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
-  const flow = await req.currentUser
+const getFlow = async (_parent: unknown, params: Params, context: Context) => {
+  const flow = await context.currentUser
     .$relatedQuery('flows')
     .withGraphJoined('[steps.[connection]]')
     .orderBy('steps.position', 'asc')
@@ -15,15 +13,6 @@ const getFlowResolver = async (params: Params, req: RequestWithCurrentUser) => {
     .throwIfNotFound();
 
   return flow;
-};
-
-const getFlow = {
-  type: flowType,
-  args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    getFlowResolver(params, req),
 };
 
 export default getFlow;

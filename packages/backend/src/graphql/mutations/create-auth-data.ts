@@ -1,17 +1,16 @@
-import { GraphQLNonNull, GraphQLString } from 'graphql';
-import authLinkType from '../types/auth-link';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import Context from '../../types/express/context';
 import App from '../../models/app';
 
 type Params = {
   id: string;
 };
 
-const createAuthDataResolver = async (
+const createAuthData = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
-  const connection = await req.currentUser
+  const connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
       id: params.id,
@@ -36,15 +35,6 @@ const createAuthDataResolver = async (
   });
 
   return authLink;
-};
-
-const createAuthData = {
-  type: authLinkType,
-  args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    createAuthDataResolver(params, req),
 };
 
 export default createAuthData;
