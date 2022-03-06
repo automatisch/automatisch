@@ -1,6 +1,4 @@
-import { GraphQLNonNull } from 'graphql';
-import stepType, { stepInputType } from '../types/step';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import Context from '../../types/express/context';
 
 type Params = {
   input: {
@@ -18,13 +16,14 @@ type Params = {
   };
 };
 
-const createStepResolver = async (
+const createStep = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
   const { input } = params;
 
-  const flow = await req.currentUser
+  const flow = await context.currentUser
     .$relatedQuery('flows')
     .findOne({
       id: input.flow.id,
@@ -59,15 +58,6 @@ const createStepResolver = async (
   await Promise.all(nextStepQueries);
 
   return step;
-};
-
-const createStep = {
-  type: stepType,
-  args: {
-    input: { type: new GraphQLNonNull(stepInputType) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    createStepResolver(params, req),
 };
 
 export default createStep;

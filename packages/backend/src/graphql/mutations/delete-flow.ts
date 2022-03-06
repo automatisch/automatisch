@@ -1,15 +1,15 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import Context from '../../types/express/context';
 
 type Params = {
   id: string;
 };
 
-const deleteFlowResolver = async (
+const deleteFlow = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
-  await req.currentUser
+  await context.currentUser
     .$relatedQuery('flows')
     .delete()
     .findOne({
@@ -18,15 +18,6 @@ const deleteFlowResolver = async (
     .throwIfNotFound();
 
   return;
-};
-
-const deleteFlow = {
-  type: GraphQLBoolean,
-  args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    deleteFlowResolver(params, req),
 };
 
 export default deleteFlow;

@@ -1,6 +1,4 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
-import flowType from '../types/flow';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import Context from '../../types/express/context';
 
 type Params = {
   id: string;
@@ -8,11 +6,12 @@ type Params = {
   active: boolean;
 };
 
-const updateFlowResolver = async (
+const updateFlow = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
-  let flow = await req.currentUser
+  let flow = await context.currentUser
     .$relatedQuery('flows')
     .findOne({
       id: params.id,
@@ -22,17 +21,6 @@ const updateFlowResolver = async (
   flow = await flow.$query().patchAndFetch(params);
 
   return flow;
-};
-
-const updateFlow = {
-  type: flowType,
-  args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
-    name: { type: GraphQLNonNull(GraphQLString) },
-    active: { type: GraphQLBoolean },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    updateFlowResolver(params, req),
 };
 
 export default updateFlow;

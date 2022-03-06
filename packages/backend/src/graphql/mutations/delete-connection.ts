@@ -1,15 +1,15 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import Context from '../../types/express/context';
 
 type Params = {
   id: string;
 };
 
-const deleteConnectionResolver = async (
+const deleteConnection = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
-  await req.currentUser
+  await context.currentUser
     .$relatedQuery('connections')
     .delete()
     .findOne({
@@ -18,15 +18,6 @@ const deleteConnectionResolver = async (
     .throwIfNotFound();
 
   return;
-};
-
-const deleteConnection = {
-  type: GraphQLBoolean,
-  args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    deleteConnectionResolver(params, req),
 };
 
 export default deleteConnection;

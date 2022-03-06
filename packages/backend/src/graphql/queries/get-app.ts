@@ -1,18 +1,15 @@
-import { GraphQLNonNull } from 'graphql';
 import App from '../../models/app';
-import appType from '../types/app';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import availableAppsEnumType from '../types/available-apps-enum-type';
+import Context from '../../types/express/context';
 
 type Params = {
   key: string;
 };
 
-const getAppResolver = async (params: Params, req: RequestWithCurrentUser) => {
+const getApp = async (_parent: unknown, params: Params, context: Context) => {
   const app = App.findOneByKey(params.key);
 
-  if (req.currentUser) {
-    const connections = await req.currentUser
+  if (context.currentUser) {
+    const connections = await context.currentUser
       .$relatedQuery('connections')
       .where({
         key: params.key,
@@ -25,15 +22,6 @@ const getAppResolver = async (params: Params, req: RequestWithCurrentUser) => {
   }
 
   return app;
-};
-
-const getApp = {
-  type: appType,
-  args: {
-    key: { type: GraphQLNonNull(availableAppsEnumType) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    getAppResolver(params, req),
 };
 
 export default getApp;

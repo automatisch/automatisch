@@ -1,7 +1,5 @@
-import { GraphQLNonNull } from 'graphql';
 import Step from '../../models/step';
-import stepType, { stepInputType } from '../types/step';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import Context from '../../types/express/context';
 
 type Params = {
   input: {
@@ -17,13 +15,15 @@ type Params = {
     };
   };
 };
-const updateStepResolver = async (
+
+const updateStep = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
   const { input } = params;
 
-  let step = await req.currentUser
+  let step = await context.currentUser
     .$relatedQuery('steps')
     .findOne({
       'steps.id': input.id,
@@ -41,15 +41,6 @@ const updateStepResolver = async (
     .withGraphFetched('connection');
 
   return step;
-};
-
-const updateStep = {
-  type: stepType,
-  args: {
-    input: { type: new GraphQLNonNull(stepInputType) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    updateStepResolver(params, req),
 };
 
 export default updateStep;

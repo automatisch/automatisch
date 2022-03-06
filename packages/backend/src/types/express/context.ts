@@ -1,8 +1,8 @@
 import { Request } from 'express';
 import User from '../../models/user';
 
-interface RequestWithCurrentUser extends Request {
+interface Context extends Request {
   currentUser: User;
 }
 
-export default RequestWithCurrentUser;
+export default Context;

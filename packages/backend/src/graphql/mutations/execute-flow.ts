@@ -1,17 +1,17 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import executeFlowType from '../types/execute-flow';
+import Context from '../../types/express/context';
 import Processor from '../../services/processor';
 import processorQueue from '../../queues/processor';
 
 type Params = {
   stepId: string;
 };
-const executeFlowResolver = async (
+
+const executeFlow = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
-): Promise<any> => {
-  const step = await req.currentUser
+  context: Context
+) => {
+  const step = await context.currentUser
     .$relatedQuery('steps')
     .withGraphFetched('connection')
     .findOne({
@@ -33,15 +33,6 @@ const executeFlowResolver = async (
   });
 
   return { data, step };
-};
-
-const executeFlow = {
-  type: executeFlowType,
-  args: {
-    stepId: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    executeFlowResolver(params, req),
 };
 
 export default executeFlow;

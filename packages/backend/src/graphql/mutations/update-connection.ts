@@ -1,7 +1,4 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
-import { GraphQLJSONObject } from 'graphql-type-json';
-import connectionType from '../types/connection';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
+import Context from '../../types/express/context';
 import { IJSONObject } from '@automatisch/types';
 
 type Params = {
@@ -9,11 +6,12 @@ type Params = {
   formattedData: IJSONObject;
 };
 
-const updateConnectionResolver = async (
+const updateConnection = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
-  let connection = await req.currentUser
+  let connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
       id: params.id,
@@ -28,16 +26,6 @@ const updateConnectionResolver = async (
   });
 
   return connection;
-};
-
-const updateConnection = {
-  type: connectionType,
-  args: {
-    id: { type: GraphQLNonNull(GraphQLString) },
-    formattedData: { type: GraphQLNonNull(GraphQLJSONObject) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    updateConnectionResolver(params, req),
 };
 
 export default updateConnection;

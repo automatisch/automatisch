@@ -1,36 +1,27 @@
-import { GraphQLList, GraphQLNonNull } from 'graphql';
 import App from '../../models/app';
-import RequestWithCurrentUser from '../../types/express/request-with-current-user';
-import connectionType from '../types/connection';
-import availableAppsEnumType from '../types/available-apps-enum-type';
+import Context from '../../types/express/context';
 
 type Params = {
   key: string;
 };
 
-const getAppConnectionsResolver = async (
+const getAppConnections = async (
+  _parent: unknown,
   params: Params,
-  req: RequestWithCurrentUser
+  context: Context
 ) => {
   const app = App.findOneByKey(params.key);
 
-  const connections = await req.currentUser.$relatedQuery('connections').where({
-    key: params.key,
-  });
+  const connections = await context.currentUser
+    .$relatedQuery('connections')
+    .where({
+      key: params.key,
+    });
 
   return connections.map((connection) => ({
     ...connection,
     app,
   }));
-};
-
-const getAppConnections = {
-  type: GraphQLList(connectionType),
-  args: {
-    key: { type: GraphQLNonNull(availableAppsEnumType) },
-  },
-  resolve: (_: any, params: Params, req: RequestWithCurrentUser) =>
-    getAppConnectionsResolver(params, req),
 };
 
 export default getAppConnections;
