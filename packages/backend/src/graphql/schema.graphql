@@ -27,6 +27,7 @@ type Mutation {
   createStep(input: StepInput!): Step
   updateStep(input: StepInput!): Step
   deleteStep(id: String!): Step
+  updateUser(email: String, password: String): User
   login(email: String!, password: String!): Auth
 }
 
