@@ -1,5 +1,6 @@
 import Context from '../../types/express/context';
 import Processor from '../../services/processor';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import processorQueue from '../../queues/processor';
 
 type Params = {

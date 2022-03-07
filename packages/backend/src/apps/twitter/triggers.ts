@@ -1,9 +1,10 @@
 import MyTweet from './triggers/my-tweet';
+import { IJSONObject } from '@automatisch/types';
 
 export default class Triggers {
-  myTweet: any
+  myTweet: MyTweet;
 
-  constructor(connectionData: any) {
-    this.myTweet = new MyTweet(connectionData)
+  constructor(connectionData: IJSONObject) {
+    this.myTweet = new MyTweet(connectionData);
   }
 }

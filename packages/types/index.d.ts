@@ -114,11 +114,15 @@ export interface IApp {
   connections: IConnection[];
 }
 
+export interface IService {
+  authenticationClient: IAuthentication;
+}
+
 export interface IAuthentication {
   appData: IApp;
   connectionData: IJSONObject;
   client: unknown;
-  verifyCredentials(): Promise<JSONObject>;
+  verifyCredentials(): Promise<IJSONObject>;
   isStillVerified(): Promise<boolean>;
 }
 

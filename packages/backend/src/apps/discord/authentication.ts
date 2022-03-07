@@ -1,17 +1,22 @@
-import type { IField } from '@automatisch/types';
+import type {
+  IAuthentication,
+  IApp,
+  IField,
+  IJSONObject,
+} from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import axios, { AxiosInstance } from 'axios';
 
-export default class Authentication {
-  appData: any;
-  connectionData: any;
+export default class Authentication implements IAuthentication {
+  appData: IApp;
+  connectionData: IJSONObject;
   client: AxiosInstance = axios.create({
     baseURL: 'https://discord.com/api/',
   });
 
   scope: string[] = ['identify', 'email'];
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.appData = appData;
     this.connectionData = connectionData;
   }
@@ -24,7 +29,7 @@ export default class Authentication {
 
   async createAuthData() {
     const searchParams = new URLSearchParams({
-      client_id: this.connectionData.consumerKey,
+      client_id: this.connectionData.consumerKey as string,
       redirect_uri: this.oauthRedirectUrl,
       response_type: 'code',
       scope: this.scope.join(' '),
@@ -37,15 +42,15 @@ export default class Authentication {
 
   async verifyCredentials() {
     const params = new URLSearchParams({
-      client_id: this.connectionData.consumerKey,
+      client_id: this.connectionData.consumerKey as string,
       redirect_uri: this.oauthRedirectUrl,
       response_type: 'code',
       scope: this.scope.join(' '),
-      client_secret: this.connectionData.consumerSecret,
-      code: this.connectionData.oauthVerifier,
+      client_secret: this.connectionData.consumerSecret as string,
+      code: this.connectionData.oauthVerifier as string,
       grant_type: 'authorization_code',
     });
-    const { data: verifiedCredentials }: any = await this.client.post(
+    const { data: verifiedCredentials } = await this.client.post(
       '/oauth2/token',
       params.toString()
     );
@@ -58,7 +63,7 @@ export default class Authentication {
       token_type: tokenType,
     } = verifiedCredentials;
 
-    const { data: user }: any = await this.client.get('/users/@me', {
+    const { data: user } = await this.client.get('/users/@me', {
       headers: {
         Authorization: `${tokenType} ${accessToken}`,
       },
