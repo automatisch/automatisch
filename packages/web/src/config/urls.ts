@@ -2,6 +2,8 @@ export const DASHBOARD = '/dashboard';
 export const CONNECTIONS = '/connections';
 export const EXPLORE = '/explore';
 
+export const LOGIN = '/login';
+
 export const APPS = '/apps';
 export const NEW_APP_CONNECTION = '/apps/new';
 export const APP = (appKey: string): string => `/app/${appKey}`;

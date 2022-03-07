@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useFormContext } from 'react-hook-form';
 import type { IField } from '@automatisch/types';
 
 import PowerInput from 'components/PowerInput';
@@ -20,8 +19,6 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     namePrefix,
   } = props;
 
-  const { control } = useFormContext();
-
   const {
     key: name,
     label,
@@ -40,7 +37,6 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
       <PowerInput
         label={label}
         description={description}
-        control={control}
         name={computedName}
         required={required}
         // onBlur={onBlur}
@@ -62,7 +58,6 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
       label={label}
       fullWidth
       helperText={description}
-      control={control}
       clickToCopy={clickToCopy}
     />
   );
