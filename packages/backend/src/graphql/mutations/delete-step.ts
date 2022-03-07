@@ -1,7 +1,9 @@
 import Context from '../../types/express/context';
 
 type Params = {
-  id: string;
+  input: {
+    id: string;
+  };
 };
 
 const deleteStep = async (
@@ -13,7 +15,7 @@ const deleteStep = async (
     .$relatedQuery('steps')
     .withGraphFetched('flow')
     .findOne({
-      'steps.id': params.id,
+      'steps.id': params.input.id,
     })
     .throwIfNotFound();
 

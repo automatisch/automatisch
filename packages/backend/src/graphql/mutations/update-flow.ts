@@ -1,8 +1,10 @@
 import Context from '../../types/express/context';
 
 type Params = {
-  id: string;
-  name: string;
+  input: {
+    id: string;
+    name: string;
+  };
 };
 
 const updateFlow = async (
@@ -13,12 +15,12 @@ const updateFlow = async (
   let flow = await context.currentUser
     .$relatedQuery('flows')
     .findOne({
-      id: params.id,
+      id: params.input.id,
     })
     .throwIfNotFound();
 
   flow = await flow.$query().patchAndFetch({
-    name: params.name,
+    name: params.input.name,
   });
 
   return flow;

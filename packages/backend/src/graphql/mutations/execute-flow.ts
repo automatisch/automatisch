@@ -4,7 +4,9 @@ import Processor from '../../services/processor';
 import processorQueue from '../../queues/processor';
 
 type Params = {
-  stepId: string;
+  input: {
+    stepId: string;
+  };
 };
 
 const executeFlow = async (
@@ -16,7 +18,7 @@ const executeFlow = async (
     .$relatedQuery('steps')
     .withGraphFetched('connection')
     .findOne({
-      'steps.id': params.stepId,
+      'steps.id': params.input.stepId,
     })
     .throwIfNotFound();
 

@@ -1,8 +1,10 @@
 import Context from '../../types/express/context';
 
 type Params = {
-  email: string;
-  password: string;
+  input: {
+    email: string;
+    password: string;
+  };
 };
 
 const updateUser = async (
@@ -11,8 +13,8 @@ const updateUser = async (
   context: Context
 ) => {
   const user = await context.currentUser.$query().patchAndFetch({
-    email: params.email,
-    password: params.password,
+    email: params.input.email,
+    password: params.input.password,
   });
 
   return user;

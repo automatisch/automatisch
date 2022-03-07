@@ -1,7 +1,9 @@
 import Context from '../../types/express/context';
 
 type Params = {
-  id: string;
+  input: {
+    id: string;
+  };
 };
 
 const deleteConnection = async (
@@ -13,7 +15,7 @@ const deleteConnection = async (
     .$relatedQuery('connections')
     .delete()
     .findOne({
-      id: params.id,
+      id: params.input.id,
     })
     .throwIfNotFound();
 
