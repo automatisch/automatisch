@@ -6,6 +6,7 @@ import verifyConnection from './mutations/verify-connection';
 import deleteConnection from './mutations/delete-connection';
 import createFlow from './mutations/create-flow';
 import updateFlow from './mutations/update-flow';
+import updateFlowStatus from './mutations/update-flow-status';
 import executeFlow from './mutations/execute-flow';
 import deleteFlow from './mutations/delete-flow';
 import createStep from './mutations/create-step';
@@ -22,6 +23,7 @@ const mutationResolvers = {
   deleteConnection,
   createFlow,
   updateFlow,
+  updateFlowStatus,
   executeFlow,
   deleteFlow,
   createStep,

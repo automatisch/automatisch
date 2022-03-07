@@ -2,10 +2,10 @@ import Context from '../../types/express/context';
 
 type Params = {
   id: string;
-  name: string;
+  active: boolean;
 };
 
-const updateFlow = async (
+const updateFlowStatus = async (
   _parent: unknown,
   params: Params,
   context: Context
@@ -17,11 +17,15 @@ const updateFlow = async (
     })
     .throwIfNotFound();
 
+  if (flow.active === params.active) {
+    return flow;
+  }
+
   flow = await flow.$query().patchAndFetch({
-    name: params.name,
+    active: params.active,
   });
 
   return flow;
 };
 
-export default updateFlow;
+export default updateFlowStatus;
