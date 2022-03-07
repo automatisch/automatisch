@@ -20,12 +20,13 @@ type Mutation {
   verifyConnection(id: String!): Connection
   deleteConnection(id: String!): Boolean
   createFlow(input: FlowInput): Flow
-  updateFlow(id: String!, name: String!, active: Boolean): Flow
+  updateFlow(id: String!, name: String!): Flow
+  updateFlowStatus(id: String!, active: Boolean!): Flow
+  executeFlow(stepId: String!): executeFlowType
   deleteFlow(id: String!): Boolean
   createStep(input: StepInput!): Step
   updateStep(input: StepInput!): Step
   deleteStep(id: String!): Step
-  executeFlow(stepId: String!): executeFlowType
   login(email: String!, password: String!): Auth
 }
 
