@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { ContainerProps } from '@mui/material/Container';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MuiAppBar from '@mui/material/AppBar';
@@ -10,6 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import SettingsIcon from '@mui/icons-material/Settings';
 
+import Container from 'components/Container';
 import HideOnScroll from 'components/HideOnScroll';
 import { FormattedMessage } from 'react-intl';
 
@@ -17,16 +19,24 @@ type AppBarProps = {
   drawerOpen: boolean;
   onDrawerOpen: () => void;
   onDrawerClose: () => void;
+  maxWidth?: ContainerProps["maxWidth"];
 };
 
-export default function AppBar({ drawerOpen, onDrawerOpen, onDrawerClose }: AppBarProps): React.ReactElement {
+export default function AppBar(props: AppBarProps): React.ReactElement {
+  const {
+    drawerOpen,
+    onDrawerOpen,
+    onDrawerClose,
+    maxWidth = false,
+  } = props;
+
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <HideOnScroll>
-        <MuiAppBar>
+    <HideOnScroll>
+      <MuiAppBar>
+        <Container maxWidth={maxWidth} disableGutters>
           <Toolbar>
             <IconButton
               size="large"
@@ -57,8 +67,8 @@ export default function AppBar({ drawerOpen, onDrawerOpen, onDrawerClose }: AppB
               <SettingsIcon />
             </IconButton>
           </Toolbar>
-        </MuiAppBar>
-      </HideOnScroll>
-    </Box>
+        </Container>
+      </MuiAppBar>
+    </HideOnScroll>
   );
 }

@@ -2,10 +2,9 @@ import * as React from 'react';
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import Chip from '@mui/material/Chip';
 import Popper from '@mui/material/Popper';
-import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import { Controller, Control, FieldValues } from 'react-hook-form';
+import { Controller, Control, FieldValues, useFormContext } from 'react-hook-form';
 import { Editor, Transforms, Range, createEditor } from 'slate';
 import {
   Slate,
@@ -13,7 +12,6 @@ import {
   useSelected,
   useFocused,
 } from 'slate-react';
-import type { IExecutionStep, IStep } from '@automatisch/types';
 
 import {
   serialize,
@@ -29,7 +27,6 @@ import { VariableElement } from './types';
 import { processStepWithExecutions } from './data';
 
 type PowerInputProps = {
-  control?: Control<FieldValues>;
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
   defaultValue?: string;
@@ -44,8 +41,8 @@ type PowerInputProps = {
 }
 
 const PowerInput = (props: PowerInputProps) => {
+  const { control } = useFormContext();
   const {
-    control,
     defaultValue = '',
     onBlur,
     name,
