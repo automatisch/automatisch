@@ -1,9 +1,4 @@
-import type {
-  IAuthentication,
-  IApp,
-  IField,
-  IJSONObject,
-} from '@automatisch/types';
+import type { IAuthentication, IApp, IJSONObject } from '@automatisch/types';
 import { Client } from 'pg';
 
 export default class Authentication implements IAuthentication {

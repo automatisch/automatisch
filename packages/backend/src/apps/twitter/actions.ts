@@ -1,9 +1,10 @@
 import CreateTweet from './actions/create-tweet';
+import { IJSONObject } from '@automatisch/types';
 
 export default class Actions {
-  createTweet: any
+  createTweet: CreateTweet;
 
-  constructor(connectionData: any, parameters: any) {
-    this.createTweet = new CreateTweet(connectionData, parameters)
+  constructor(connectionData: IJSONObject, parameters: IJSONObject) {
+    this.createTweet = new CreateTweet(connectionData, parameters);
   }
 }

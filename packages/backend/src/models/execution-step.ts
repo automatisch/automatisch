@@ -6,8 +6,8 @@ class ExecutionStep extends Base {
   id!: string;
   executionId!: string;
   stepId!: string;
-  dataIn!: any;
-  dataOut!: any;
+  dataIn!: Record<string, unknown>;
+  dataOut!: Record<string, unknown>;
   status: string;
 
   static tableName = 'execution_steps';

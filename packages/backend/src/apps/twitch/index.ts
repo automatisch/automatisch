@@ -1,9 +1,15 @@
 import Authentication from './authentication';
+import {
+  IService,
+  IAuthentication,
+  IApp,
+  IJSONObject,
+} from '@automatisch/types';
 
-export default class Twitch {
-  authenticationClient: any;
+export default class Twitch implements IService {
+  authenticationClient: IAuthentication;
 
-  constructor(appData: any, connectionData: any) {
+  constructor(appData: IApp, connectionData: IJSONObject) {
     this.authenticationClient = new Authentication(appData, connectionData);
   }
 }

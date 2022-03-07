@@ -56,7 +56,7 @@ export default class Authentication implements IAuthentication {
       redirect_uri: this.oauthRedirectUrl,
     });
 
-    const { data: verifiedCredentials }: any = await this.client.post(
+    const { data: verifiedCredentials } = await this.client.post(
       '/oauth/token',
       params.toString()
     );
@@ -67,7 +67,7 @@ export default class Authentication implements IAuthentication {
       token_type: tokenType,
     } = verifiedCredentials;
 
-    const { data: user }: any = await this.client.get('/me', {
+    const { data: user } = await this.client.get('/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
