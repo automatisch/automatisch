@@ -2,7 +2,9 @@ import Context from '../../types/express/context';
 import App from '../../models/app';
 
 type Params = {
-  id: string;
+  input: {
+    id: string;
+  };
 };
 
 const createAuthData = async (
@@ -13,7 +15,7 @@ const createAuthData = async (
   const connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
-      id: params.id,
+      id: params.input.id,
     })
     .throwIfNotFound();
 

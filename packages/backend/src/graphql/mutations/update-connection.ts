@@ -2,8 +2,10 @@ import Context from '../../types/express/context';
 import { IJSONObject } from '@automatisch/types';
 
 type Params = {
-  id: string;
-  formattedData: IJSONObject;
+  input: {
+    id: string;
+    formattedData: IJSONObject;
+  };
 };
 
 const updateConnection = async (
@@ -14,14 +16,14 @@ const updateConnection = async (
   let connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
-      id: params.id,
+      id: params.input.id,
     })
     .throwIfNotFound();
 
   connection = await connection.$query().patchAndFetch({
     formattedData: {
       ...connection.formattedData,
-      ...params.formattedData,
+      ...params.input.formattedData,
     },
   });
 

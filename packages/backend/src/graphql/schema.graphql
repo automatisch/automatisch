@@ -10,25 +10,22 @@ type Query {
 }
 
 type Mutation {
-  createConnection(
-    key: AvailableAppsEnumType!
-    formattedData: JSONObject!
-  ): Connection
-  createAuthData(id: String!): AuthLink
-  updateConnection(id: String!, formattedData: JSONObject!): Connection
-  resetConnection(id: String!): Connection
-  verifyConnection(id: String!): Connection
-  deleteConnection(id: String!): Boolean
-  createFlow(input: FlowInput): Flow
-  updateFlow(id: String!, name: String!): Flow
-  updateFlowStatus(id: String!, active: Boolean!): Flow
-  executeFlow(stepId: String!): executeFlowType
-  deleteFlow(id: String!): Boolean
-  createStep(input: StepInput!): Step
-  updateStep(input: StepInput!): Step
-  deleteStep(id: String!): Step
-  updateUser(email: String, password: String): User
-  login(email: String!, password: String!): Auth
+  createConnection(input: CreateConnectionInput): Connection
+  createAuthData(input: CreateAuthDataInput): AuthLink
+  updateConnection(input: UpdateConnectionInput): Connection
+  resetConnection(input: ResetConnectionInput): Connection
+  verifyConnection(input: VerifyConnectionInput): Connection
+  deleteConnection(input: DeleteConnectionInput): Boolean
+  createFlow(input: CreateFlowInput): Flow
+  updateFlow(input: UpdateFlowInput): Flow
+  updateFlowStatus(input: UpdateFlowStatusInput): Flow
+  executeFlow(input: ExecuteFlowInput): executeFlowType
+  deleteFlow(input: DeleteFlowInput): Boolean
+  createStep(input: CreateStepInput): Step
+  updateStep(input: UpdateStepInput): Step
+  deleteStep(input: DeleteStepInput): Step
+  updateUser(input: UpdateUserInput): User
+  login(input: LoginInput): Auth
 }
 
 """
@@ -171,8 +168,74 @@ type Flow {
   steps: [Step]
 }
 
-input FlowInput {
+input CreateConnectionInput {
+  key: AvailableAppsEnumType!
+  formattedData: JSONObject!
+}
+
+input CreateAuthDataInput {
+  id: String!
+}
+
+input UpdateConnectionInput {
+  id: String!
+  formattedData: JSONObject!
+}
+
+input ResetConnectionInput {
+  id: String!
+}
+
+input VerifyConnectionInput {
+  id: String!
+}
+
+input DeleteConnectionInput {
+  id: String!
+}
+
+input CreateFlowInput {
   triggerAppKey: String
+}
+
+input UpdateFlowInput {
+  id: String!
+  name: String!
+}
+
+input UpdateFlowStatusInput {
+  id: String!
+  active: Boolean!
+}
+
+input ExecuteFlowInput {
+  stepId: String!
+}
+
+input DeleteFlowInput {
+  id: String!
+}
+
+input CreateStepInput {
+  input: StepInput!
+}
+
+input UpdateStepInput {
+  input: StepInput!
+}
+
+input DeleteStepInput {
+  id: String!
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 """

@@ -1,8 +1,10 @@
 import Context from '../../types/express/context';
 
 type Params = {
-  id: string;
-  active: boolean;
+  input: {
+    id: string;
+    active: boolean;
+  };
 };
 
 const updateFlowStatus = async (
@@ -13,16 +15,16 @@ const updateFlowStatus = async (
   let flow = await context.currentUser
     .$relatedQuery('flows')
     .findOne({
-      id: params.id,
+      id: params.input.id,
     })
     .throwIfNotFound();
 
-  if (flow.active === params.active) {
+  if (flow.active === params.input.active) {
     return flow;
   }
 
   flow = await flow.$query().patchAndFetch({
-    active: params.active,
+    active: params.input.active,
   });
 
   return flow;

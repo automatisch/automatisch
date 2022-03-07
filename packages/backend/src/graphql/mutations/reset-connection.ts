@@ -1,7 +1,9 @@
 import Context from '../../types/express/context';
 
 type Params = {
-  id: string;
+  input: {
+    id: string;
+  };
 };
 
 const resetConnection = async (
@@ -12,7 +14,7 @@ const resetConnection = async (
   let connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
-      id: params.id,
+      id: params.input.id,
     })
     .throwIfNotFound();
 
