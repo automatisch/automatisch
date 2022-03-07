@@ -18,7 +18,10 @@ const updateFlow = async (
     })
     .throwIfNotFound();
 
-  flow = await flow.$query().patchAndFetch(params);
+  flow = await flow.$query().patchAndFetch({
+    name: params.name,
+    active: params.active,
+  });
 
   return flow;
 };
