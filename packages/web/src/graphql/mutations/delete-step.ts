@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const DELETE_STEP = gql`
-  mutation DeleteStep($id: String!) {
-    deleteStep(id: $id) {
+  mutation DeleteStep($input: DeleteStepInput) {
+    deleteStep(input: $input) {
       id
       flow {
         id

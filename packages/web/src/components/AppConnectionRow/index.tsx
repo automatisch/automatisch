@@ -55,7 +55,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
   const onContextMenuAction = React.useCallback(async (event, action: { [key: string]: string }) => {
     if (action.type === 'delete') {
       await deleteConnection({
-        variables: { id },
+        variables: { input: { id } },
         update: (cache) => {
           const connectionCacheId = cache.identify({
             __typename: 'Connection',
@@ -71,7 +71,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
       enqueueSnackbar(formatMessage('connection.deletedMessage'), { variant: 'success' });
     } else if (action.type === 'test') {
       setVerificationVisible(true);
-      testConnection({ variables: { id } });
+      testConnection({ variables: { input: { id } } });
     }
   }, [deleteConnection, id, testConnection, formatMessage, enqueueSnackbar]);
 

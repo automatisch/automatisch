@@ -217,11 +217,25 @@ input DeleteFlowInput {
 }
 
 input CreateStepInput {
-  input: StepInput!
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  connection: StepConnectionInput
+  flow: StepFlowInput
+  parameters: JSONObject
+  previousStep: PreviousStepInput
 }
 
 input UpdateStepInput {
-  input: StepInput!
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  connection: StepConnectionInput
+  flow: StepFlowInput
+  parameters: JSONObject
+  previousStep: PreviousStepInput
 }
 
 input DeleteStepInput {

@@ -39,8 +39,10 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
   const handleSubmit = React.useCallback(() => {
     executeFlow({
       variables: {
-        stepId: step.id,
-      }
+        input: {
+          stepId: step.id,
+        },
+      },
     })
   }, [onSubmit, step.id]);
   const onToggle = expanded ? onCollapse : onExpand;

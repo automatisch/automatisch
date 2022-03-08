@@ -33,7 +33,7 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState<string | null>(null);
-  const { data } = useQuery(GET_APPS, { variables: {name: appName } });
+  const { data } = useQuery(GET_APPS, { variables: { name: appName } });
 
   return (
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>

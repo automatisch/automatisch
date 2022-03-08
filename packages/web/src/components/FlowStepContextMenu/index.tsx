@@ -21,7 +21,7 @@ function FlowStepContextMenu(props: FlowStepContextMenuProps): React.ReactElemen
 
   const deleteActionHandler = React.useCallback(async (event: React.SyntheticEvent) => {
     event.stopPropagation();
-    await deleteStep({ variables: { id: stepId }});
+    await deleteStep({ variables: { input: { id: stepId } } });
   }, [stepId]);
 
   return (

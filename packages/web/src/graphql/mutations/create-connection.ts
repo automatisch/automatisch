@@ -2,10 +2,9 @@ import { gql } from '@apollo/client';
 
 export const CREATE_CONNECTION = gql`
   mutation CreateConnection(
-    $key: AvailableAppsEnumType!
-    $formattedData: JSONObject!
+    $input: CreateConnectionInput
   ) {
-    createConnection(key: $key, formattedData: $formattedData) {
+    createConnection(input: $input) {
       id
       key
       verified

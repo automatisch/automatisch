@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const EXECUTE_FLOW = gql`
-  mutation ExecuteFlow($stepId: String!) {
-    executeFlow(stepId: $stepId) {
+  mutation ExecuteFlow($input: ExecuteFlowInput) {
+    executeFlow(input: $input) {
       step {
         id
         status

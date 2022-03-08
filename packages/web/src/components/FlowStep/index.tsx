@@ -51,8 +51,6 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
     {
       data: stepWithTestExecutionsData,
       called: stepWithTestExecutionsCalled,
-      loading: stepWithTestExecutionsLoading,
-      error: stepWithTestExecutionsError
     },
   ] = useLazyQuery(GET_STEP_WITH_TEST_EXECUTIONS, {
     fetchPolicy: 'network-only',
@@ -62,7 +60,9 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
     if (!stepWithTestExecutionsCalled && !collapsed && !isTrigger) {
       getStepWithTestExecutions({
         variables: {
-          stepId: step.id,
+          input: {
+            stepId: step.id,
+          },
         },
       });
     }
