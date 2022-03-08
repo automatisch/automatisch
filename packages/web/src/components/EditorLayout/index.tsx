@@ -27,8 +27,10 @@ export default function EditorLayout(): React.ReactElement {
   const onFlowNameUpdate = React.useCallback(async (name: string) => {
     await updateFlow({
       variables: {
-        id: flowId,
-        name,
+        input: {
+          id: flowId,
+          name,
+        },
       },
       optimisticResponse: {
         __typename: 'Mutation',

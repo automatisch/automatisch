@@ -50,12 +50,21 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
       loading: testResultLoading,
       refetch: retestConnection
     }
-  ] = useLazyQuery (TEST_CONNECTION, { variables: { id: connection?.id, }});
+  ] = useLazyQuery(
+    TEST_CONNECTION,
+    {
+      variables: {
+        input: { id: connection?.id, }
+      }
+    }
+  );
 
   React.useEffect(() => {
     if (connection?.id) {
       testConnection({
-        variables: { id: connection?.id },
+        variables: {
+          input: { id: connection.id, }
+        }
       });
     }
     // intentionally no dependencies for initial test
@@ -88,7 +97,9 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
   React.useEffect(() => {
     if (step.connection?.id) {
       retestConnection({
-        id: step.connection.id,
+        input: {
+          id: step.connection.id,
+        },
       });
     }
   }, [step.connection?.id, retestConnection])
