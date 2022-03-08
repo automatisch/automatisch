@@ -4,21 +4,24 @@ import ThemeProvider from 'components/ThemeProvider';
 import IntlProvider from 'components/IntlProvider';
 import ApolloProvider from 'components/ApolloProvider';
 import SnackbarProvider from 'components/SnackbarProvider';
+import { AuthenticationProvider } from 'contexts/Authentication';
 import Router from 'components/Router';
 import routes from 'routes';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <SnackbarProvider>
-    <ApolloProvider>
-      <IntlProvider>
-        <ThemeProvider>
-          <Router>
-            {routes}
-          </Router>
-        </ThemeProvider>
-      </IntlProvider>
-    </ApolloProvider>
+    <AuthenticationProvider>
+      <ApolloProvider>
+        <IntlProvider>
+          <ThemeProvider>
+            <Router>
+              {routes}
+            </Router>
+          </ThemeProvider>
+        </IntlProvider>
+      </ApolloProvider>
+    </AuthenticationProvider>
   </SnackbarProvider>,
   document.getElementById('root')
 )
