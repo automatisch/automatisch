@@ -54,7 +54,7 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
     TEST_CONNECTION,
     {
       variables: {
-        input: { id: connection?.id, }
+        id: connection?.id,
       }
     }
   );
@@ -63,7 +63,7 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
     if (connection?.id) {
       testConnection({
         variables: {
-          input: { id: connection.id, }
+          id: connection.id,
         }
       });
     }
@@ -97,9 +97,7 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
   React.useEffect(() => {
     if (step.connection?.id) {
       retestConnection({
-        input: {
-          id: step.connection.id,
-        },
+        id: step.connection.id,
       });
     }
   }, [step.connection?.id, retestConnection])

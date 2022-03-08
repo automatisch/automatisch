@@ -71,7 +71,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
       enqueueSnackbar(formatMessage('connection.deletedMessage'), { variant: 'success' });
     } else if (action.type === 'test') {
       setVerificationVisible(true);
-      testConnection({ variables: { input: { id } } });
+      testConnection({ variables: { id } });
     }
   }, [deleteConnection, id, testConnection, formatMessage, enqueueSnackbar]);
 
