@@ -5,6 +5,7 @@ import appConfig from 'config/app';
 
 type CreateClientOptions = {
   onError?: (message: string) => void;
+  token?: string | null;
 };
 
 const client = new ApolloClient({
@@ -12,8 +13,9 @@ const client = new ApolloClient({
   link: createLink({ uri: appConfig.graphqlUrl })
 });
 
-export function setLink({ onError }: CreateClientOptions): typeof client {
-  const link = createLink({ uri: appConfig.graphqlUrl, onError });
+export function setLink(options: CreateClientOptions): typeof client {
+  const { onError, token } = options;
+  const link = createLink({ uri: appConfig.graphqlUrl, token, onError });
 
   client.setLink(link);
 

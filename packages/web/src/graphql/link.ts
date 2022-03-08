@@ -3,16 +3,17 @@ import type { ApolloLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
 import * as URLS from 'config/urls';
-import { getItem } from 'helpers/storage';
 
 type CreateLinkOptions = {
   uri: string;
+  token?: string | null;
   onError?: (message: string) => void;
 };
 
-const createHttpLink = (uri: CreateLinkOptions['uri']): ApolloLink => {
+const createHttpLink = (options: Pick<CreateLinkOptions, 'uri' | 'token'>): ApolloLink => {
+  const { uri, token } = options;
   const headers = {
-    authorization: getItem('token') || '',
+    authorization: token,
   };
   return new HttpLink({ uri, headers });
 }
@@ -41,8 +42,16 @@ const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
-const createLink = ({ uri, onError = noop }: CreateLinkOptions): ApolloLink => {
-  return from([createErrorLink(onError), createHttpLink(uri)]);
+const createLink = (options: CreateLinkOptions): ApolloLink => {
+  const {
+    uri,
+    onError = noop,
+    token,
+  } = options;
+
+  const httpOptions = { uri, token };
+
+  return from([createErrorLink(onError), createHttpLink(httpOptions)]);
 };
 
 export default createLink;

@@ -1,4 +1,3 @@
-export const DASHBOARD = '/dashboard';
 export const CONNECTIONS = '/connections';
 export const EXPLORE = '/explore';
 
@@ -26,3 +25,6 @@ export const FLOWS = '/flows';
 // TODO: revert this back to /flows/:flowId once we have a proper single flow page
 export const FLOW = (flowId: string): string => `/editor/${flowId}`;
 export const FLOW_PATTERN = '/flows/:flowId';
+
+
+export const DASHBOARD = FLOWS;

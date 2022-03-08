@@ -1,7 +1,19 @@
-import { getItem } from 'helpers/storage';
+import * as React from 'react';
+import { AuthenticationContext } from 'contexts/Authentication';
+import type { AuthenticationContextParams } from 'contexts/Authentication';
 
-export default function useAuthentication(): boolean {
-  const token = getItem('token');
+type UseAuthenticationReturn = {
+  isAuthenticated: boolean;
+  token: AuthenticationContextParams["token"];
+  updateToken: AuthenticationContextParams["updateToken"];
+};
 
-  return Boolean(token);
+export default function useAuthentication(): UseAuthenticationReturn {
+  const authenticationContext = React.useContext(AuthenticationContext);
+
+  return {
+    token: authenticationContext.token,
+    updateToken: authenticationContext.updateToken,
+    isAuthenticated: Boolean(authenticationContext.token),
+  };
 }

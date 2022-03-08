@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
 import { setItem } from 'helpers/storage';
 import { LOGIN } from 'graphql/mutations/login';
@@ -38,6 +39,7 @@ function renderFields(props: { loading: boolean }) {
           required
           fullWidth
           margin="dense"
+          autoComplete="current-password"
         />
 
         <LoadingButton
@@ -57,7 +59,14 @@ function renderFields(props: { loading: boolean }) {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const authentication = useAuthentication();
   const [login, { loading }] = useMutation(LOGIN);
+
+  React.useEffect(() => {
+    if (authentication.isAuthenticated) {
+      navigate(URLS.DASHBOARD);
+    }
+  }, [authentication.isAuthenticated]);
 
   const handleSubmit = async (values: any) => {
     const { data } = await login({
@@ -68,9 +77,7 @@ function LoginForm() {
 
     const { token } = data.login;
 
-    setItem('token', token);
-
-    navigate(URLS.FLOWS);
+    authentication.updateToken(token);
   };
 
   const render = React.useMemo(() => renderFields({ loading }), [loading]);
