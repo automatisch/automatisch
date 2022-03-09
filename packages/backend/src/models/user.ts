@@ -3,6 +3,7 @@ import Base from './base';
 import Connection from './connection';
 import Flow from './flow';
 import Step from './step';
+import Execution from './execution';
 import bcrypt from 'bcrypt';
 
 class User extends Base {
@@ -53,6 +54,18 @@ class User extends Base {
           to: 'flows.id',
         },
         to: 'steps.flow_id',
+      },
+    },
+    executions: {
+      relation: Base.ManyToManyRelation,
+      modelClass: Execution,
+      join: {
+        from: 'users.id',
+        through: {
+          from: 'flows.user_id',
+          to: 'flows.id',
+        },
+        to: 'executions.flow_id',
       },
     },
   });
