@@ -6,6 +6,7 @@ import testConnection from './queries/test-connection';
 import getFlow from './queries/get-flow';
 import getFlows from './queries/get-flows';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions';
+import getExecutions from './queries/get-executions';
 
 const queryResolvers = {
   getApps,
@@ -16,6 +17,7 @@ const queryResolvers = {
   getFlow,
   getFlows,
   getStepWithTestExecutions,
+  getExecutions,
 };
 
 export default queryResolvers;

@@ -1,6 +1,7 @@
 import { ValidationError } from 'objection';
 import Base from './base';
 import Step from './step';
+import Execution from './execution';
 
 class Flow extends Base {
   id!: string;
@@ -29,6 +30,14 @@ class Flow extends Base {
       join: {
         from: 'flows.id',
         to: 'steps.flow_id',
+      },
+    },
+    executions: {
+      relation: Base.HasManyRelation,
+      modelClass: Execution,
+      join: {
+        from: 'flows.id',
+        to: 'executions.flow_id',
       },
     },
   });

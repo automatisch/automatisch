@@ -7,6 +7,7 @@ type Query {
   getFlow(id: String!): Flow
   getFlows: [Flow]
   getStepWithTestExecutions(stepId: String!): [Step]
+  getExecutions: [Execution]
 }
 
 type Mutation {
@@ -166,6 +167,14 @@ type Flow {
   name: String
   active: Boolean
   steps: [Step]
+}
+
+type Execution {
+  id: String
+  testRun: Boolean
+  createdAt: String
+  updatedAt: String
+  flow: Flow
 }
 
 input CreateConnectionInput {
