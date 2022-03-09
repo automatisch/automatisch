@@ -30,6 +30,7 @@ function renderFields(props: { loading: boolean }) {
           required
           fullWidth
           margin="dense"
+          autoComplete="username"
         />
 
         <TextField

@@ -2,6 +2,7 @@ import { HttpLink, from } from '@apollo/client';
 import type { ApolloLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
+import { setItem } from 'helpers/storage';
 import * as URLS from 'config/urls';
 
 type CreateLinkOptions = {
@@ -29,6 +30,7 @@ const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => 
       );
 
       if (message === NOT_AUTHORISED) {
+        setItem('token', '');
         window.location.href = URLS.LOGIN;
       }
     });
