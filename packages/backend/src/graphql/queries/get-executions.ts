@@ -1,16 +1,22 @@
 import Context from '../../types/express/context';
+import paginate from '../../helpers/pagination';
+
+type Params = {
+  limit: number;
+  offset: number;
+};
 
 const getExecutions = async (
   _parent: unknown,
-  _params: unknown,
+  params: Params,
   context: Context
 ) => {
-  const executions = await context.currentUser
+  const executions = context.currentUser
     .$relatedQuery('executions')
     .withGraphFetched('flow')
-    .orderBy('created_at', 'asc');
+    .orderBy('created_at', 'desc');
 
-  return executions;
+  return paginate(executions, params.limit, params.offset);
 };
 
 export default getExecutions;
