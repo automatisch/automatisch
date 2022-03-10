@@ -7,7 +7,7 @@ type Query {
   getFlow(id: String!): Flow
   getFlows: [Flow]
   getStepWithTestExecutions(stepId: String!): [Step]
-  getExecutions: [Execution]
+  getExecutions(limit: Int!, offset: Int!): ExecutionConnection
 }
 
 type Mutation {
@@ -352,6 +352,20 @@ type User {
   email: String
   createdAt: String
   updatedAt: String
+}
+
+type PageInfo {
+  currentPage: Int!
+  totalPages: Int!
+}
+
+type ExecutionEdge {
+  node: Execution
+}
+
+type ExecutionConnection {
+  edges: [ExecutionEdge]
+  pageInfo: PageInfo
 }
 
 schema {
