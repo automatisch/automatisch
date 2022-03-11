@@ -6,6 +6,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import AppsIcon from '@mui/icons-material/Apps';
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
+import HistoryIcon from '@mui/icons-material/History';
 import ExploreIcon from '@mui/icons-material/Explore';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -51,6 +52,13 @@ export default function Drawer(props: SwipeableDrawerProps): React.ReactElement 
           icon={<AppsIcon htmlColor={theme.palette.primary.main} />}
           primary={formatMessage('drawer.apps')}
           to={URLS.APPS}
+          onClick={closeOnClick}
+        />
+
+        <ListItemLink
+          icon={<HistoryIcon htmlColor={theme.palette.primary.main} />}
+          primary={formatMessage('drawer.executions')}
+          to={URLS.EXECUTIONS}
           onClick={closeOnClick}
         />
 

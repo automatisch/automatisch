@@ -13,7 +13,7 @@ export const CardContent = styled(MuiCardContent)(({ theme }) => ({
 
 export const Typography = styled(MuiTypography)(() => ({
   display: 'inline-block',
-  width: '100%',
+  width: 500,
   maxWidth: '70%',
 }));
 

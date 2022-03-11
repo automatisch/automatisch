@@ -29,7 +29,7 @@ const cache = new InMemoryCache({
           }
         }
       }
-    }
+    },
   }
 });
 

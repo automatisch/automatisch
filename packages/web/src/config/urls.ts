@@ -1,5 +1,6 @@
 export const CONNECTIONS = '/connections';
 export const EXPLORE = '/explore';
+export const EXECUTIONS = '/executions';
 
 export const LOGIN = '/login';
 

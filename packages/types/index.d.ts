@@ -29,8 +29,10 @@ export interface IExecutionStep {
 export interface IExecution {
   id: string;
   flowId: string;
+  flow: IFlow;
   testRun: boolean;
   executionSteps: IExecutionStep[];
+  createdAt: string;
 }
 
 export interface IStep {
