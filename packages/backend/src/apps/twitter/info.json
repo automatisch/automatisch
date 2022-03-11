@@ -219,6 +219,7 @@
     {
       "name": "My Tweet",
       "key": "myTweet",
+      "interval": "15m",
       "description": "Will be triggered when you tweet something new.",
       "subSteps": [
         {
