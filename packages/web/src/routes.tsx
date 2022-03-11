@@ -4,6 +4,7 @@ import PublicLayout from 'components/PublicLayout';
 import Applications from 'pages/Applications';
 import Application from 'pages/Application';
 import Flows from 'pages/Flows';
+import Executions from 'pages/Executions';
 import Flow from 'pages/Flow';
 import Explore from 'pages/Explore';
 import Login from 'pages/Login';
@@ -12,6 +13,8 @@ import * as URLS from 'config/urls';
 
 export default (
   <Routes>
+    <Route path={URLS.EXECUTIONS} element={<Layout><Executions /></Layout>} />
+
     <Route path={URLS.FLOWS} element={<Layout><Flows /></Layout>} />
 
     <Route path={`${URLS.FLOW_PATTERN}/*`} element={<Layout><Flow /></Layout>} />

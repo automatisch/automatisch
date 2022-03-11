@@ -4,26 +4,38 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CardActionArea from '@mui/material/CardActionArea';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { DateTime } from 'luxon';
 
-import type { IFlow } from '@automatisch/types';
+import type { IExecution } from '@automatisch/types';
 import * as URLS from 'config/urls';
 import { CardContent, Typography } from './style';
 
-type FlowRowProps = {
-  flow: IFlow;
+type ExecutionRowProps = {
+  execution: IExecution;
 }
 
-export default function FlowRow(props: FlowRowProps): React.ReactElement {
-  const { flow } = props;
+const getHumanlyDate = (timestamp: number) => DateTime.fromMillis(timestamp).toLocaleString(DateTime.DATETIME_MED);
+
+export default function ExecutionRow(props: ExecutionRowProps): React.ReactElement {
+  const { execution } = props;
+  const { flow } = execution;
 
   return (
     <Link to={URLS.FLOW(flow.id.toString())}>
       <Card sx={{ mb: 1 }}>
         <CardActionArea>
           <CardContent>
-            <Box display="flex" flex={1}>
+            <Box
+              display="flex"
+              flex={1}
+              flexDirection="column"
+            >
               <Typography variant="h6" noWrap>
                 {flow.name}
+              </Typography>
+
+              <Typography variant="subtitle1" noWrap>
+                {getHumanlyDate(parseInt(execution.createdAt, 10))}
               </Typography>
             </Box>
 
