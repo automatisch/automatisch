@@ -8,6 +8,11 @@ type Query {
   getFlows: [Flow]
   getStepWithTestExecutions(stepId: String!): [Step]
   getExecutions(limit: Int!, offset: Int!): ExecutionConnection
+  getExecutionSteps(
+    executionId: String!
+    limit: Int!
+    offset: Int!
+  ): ExecutionStepConnection
 }
 
 type Mutation {
@@ -363,8 +368,17 @@ type ExecutionEdge {
   node: Execution
 }
 
+type ExecutionStepEdge {
+  node: ExecutionStep
+}
+
 type ExecutionConnection {
   edges: [ExecutionEdge]
+  pageInfo: PageInfo
+}
+
+type ExecutionStepConnection {
+  edges: [ExecutionStepEdge]
   pageInfo: PageInfo
 }
 
