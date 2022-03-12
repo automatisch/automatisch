@@ -50,7 +50,7 @@ export default function EditorLayout(): React.ReactElement {
             <IconButton
               size="small"
               component={Link}
-              to={URLS.APPS}
+              to={URLS.FLOWS}
             >
               <ArrowBackIosNewIcon fontSize="small" />
             </IconButton>
