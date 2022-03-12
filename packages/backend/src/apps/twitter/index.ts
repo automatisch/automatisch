@@ -19,7 +19,7 @@ export default class Twitter implements IService {
     parameters: IJSONObject
   ) {
     this.authenticationClient = new Authentication(appData, connectionData);
-    this.triggers = new Triggers(connectionData);
+    this.triggers = new Triggers(connectionData, parameters);
     this.actions = new Actions(connectionData, parameters);
   }
 }
