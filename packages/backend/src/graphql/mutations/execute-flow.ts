@@ -23,7 +23,7 @@ const executeFlow = async (
     .throwIfNotFound();
 
   const flow = await step.$relatedQuery('flow');
-  const data = await new Processor(flow, step).run();
+  const data = await new Processor(flow, step, { testRun: true }).run();
 
   // TODO: Use this snippet to execute flows with the background job.
   // const data = processorQueue.add('processorJob', {
