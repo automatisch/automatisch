@@ -20,6 +20,6 @@ export default class MyTweet {
     const userTimeline = await this.client.v1.userTimelineByUsername(username);
     const fetchedTweets = userTimeline.tweets;
 
-    return fetchedTweets[0];
+    return fetchedTweets;
   }
 }

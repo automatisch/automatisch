@@ -10,12 +10,14 @@ type ExecutionSteps = Record<string, ExecutionStep>;
 class Processor {
   flow: Flow;
   untilStep: Step;
+  testRun: boolean;
 
   static variableRegExp = /({{step\..+\..+}})/g;
 
-  constructor(flow: Flow, untilStep: Step) {
+  constructor(flow: Flow, untilStep: Step, { testRun = false }) {
     this.flow = flow;
     this.untilStep = untilStep;
+    this.testRun = testRun;
   }
 
   async run() {
@@ -24,56 +26,98 @@ class Processor {
       .withGraphFetched('connection')
       .orderBy('position', 'asc');
 
-    const execution = await Execution.query().insert({
-      flowId: this.flow.id,
-      testRun: true,
-    });
+    const triggerStep = steps.find((step) => step.type === 'trigger');
+    let initialTriggerData = await this.getInitialTriggerData(triggerStep);
 
-    let previousExecutionStep: ExecutionStep;
-    let fetchedData;
-    const priorExecutionSteps: ExecutionSteps = {};
+    if (this.testRun) {
+      initialTriggerData = [initialTriggerData[0]];
+    }
 
-    for await (const step of steps) {
-      const appData = App.findOneByKey(step.appKey);
-      const {
-        appKey,
-        connection,
-        key,
-        type,
-        parameters: rawParameters = {},
-        id,
-      } = step;
-      const isTrigger = type === 'trigger';
-      const AppClass = (await import(`../apps/${appKey}`)).default;
-      const computedParameters = Processor.computeParameters(
-        rawParameters,
-        priorExecutionSteps
-      );
-      const appInstance = new AppClass(
-        appData,
-        connection.formattedData,
-        computedParameters
-      );
-      const commands = isTrigger ? appInstance.triggers : appInstance.actions;
-      const command = commands[key];
-      fetchedData = await command.run();
+    const executions: Execution[] = [];
 
-      previousExecutionStep = await execution
-        .$relatedQuery('executionSteps')
-        .insertAndFetch({
-          stepId: id,
-          status: 'success',
-          dataIn: previousExecutionStep?.dataOut,
-          dataOut: fetchedData,
-        });
+    for await (const data of initialTriggerData) {
+      const execution = await Execution.query().insert({
+        flowId: this.flow.id,
+        testRun: this.testRun,
+      });
 
-      priorExecutionSteps[id] = previousExecutionStep;
+      executions.push(execution);
 
-      if (id === this.untilStep.id) {
-        return fetchedData;
+      let previousExecutionStep: ExecutionStep;
+      const priorExecutionSteps: ExecutionSteps = {};
+      let fetchedActionData = {};
+
+      for await (const step of steps) {
+        const appData = App.findOneByKey(step.appKey);
+
+        const {
+          appKey,
+          connection,
+          key,
+          type,
+          parameters: rawParameters = {},
+          id,
+        } = step;
+
+        const isTrigger = type === 'trigger';
+        const AppClass = (await import(`../apps/${appKey}`)).default;
+
+        const computedParameters = Processor.computeParameters(
+          rawParameters,
+          priorExecutionSteps
+        );
+
+        const appInstance = new AppClass(
+          appData,
+          connection.formattedData,
+          computedParameters
+        );
+
+        if (!isTrigger) {
+          const command = appInstance.actions[key];
+          fetchedActionData = await command.run();
+        }
+
+        previousExecutionStep = await execution
+          .$relatedQuery('executionSteps')
+          .insertAndFetch({
+            stepId: id,
+            status: 'success',
+            dataIn: isTrigger ? rawParameters : previousExecutionStep?.dataOut,
+            dataOut: isTrigger ? data : fetchedActionData,
+          });
+
+        priorExecutionSteps[id] = previousExecutionStep;
+
+        if (id === this.untilStep.id) {
+          break;
+        }
       }
     }
 
+    if (!this.testRun) return;
+
+    const lastExecutionStepFromFirstExecution = await executions[0]
+      .$relatedQuery('executionSteps')
+      .orderBy('created_at', 'desc')
+      .first();
+
+    return lastExecutionStepFromFirstExecution.dataOut;
+  }
+
+  async getInitialTriggerData(step: Step) {
+    const appData = App.findOneByKey(step.appKey);
+    const { appKey, connection, key, parameters: rawParameters = {} } = step;
+
+    const AppClass = (await import(`../apps/${appKey}`)).default;
+    const appInstance = new AppClass(
+      appData,
+      connection.formattedData,
+      rawParameters
+    );
+
+    const command = appInstance.triggers[key];
+    const fetchedData = await command.run();
     return fetchedData;
   }
 
