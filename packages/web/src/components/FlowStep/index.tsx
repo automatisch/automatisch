@@ -60,9 +60,7 @@ export default function FlowStep(props: FlowStepProps): React.ReactElement | nul
     if (!stepWithTestExecutionsCalled && !collapsed && !isTrigger) {
       getStepWithTestExecutions({
         variables: {
-          input: {
-            stepId: step.id,
-          },
+          stepId: step.id,
         },
       });
     }
