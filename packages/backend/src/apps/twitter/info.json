@@ -258,6 +258,33 @@
           "name": "Test trigger"
         }
       ]
+    },
+    {
+      "name": "Search Tweet",
+      "key": "searchTweet",
+      "description": "Will be triggered when any user tweet something containing a specific keyword, phrase, username or hashtag.",
+      "subSteps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "chooseTrigger",
+          "name": "Set up a trigger",
+          "arguments": [
+            {
+              "label": "Search Term",
+              "key": "searchTerm",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
     }
   ],
   "actions": [
