@@ -9,6 +9,7 @@ class ExecutionStep extends Base {
   dataIn!: Record<string, unknown>;
   dataOut!: Record<string, unknown>;
   status: string;
+  step: Step;
 
   static tableName = 'execution_steps';
 

@@ -78,6 +78,16 @@ class Processor {
           fetchedActionData = await command.run();
         }
 
+        console.log(
+          'previous execution step dataOut :',
+          previousExecutionStep?.dataOut
+        );
+
+        console.log(
+          'previous execution step parameters :',
+          previousExecutionStep?.step.parameters
+        );
+
         previousExecutionStep = await execution
           .$relatedQuery('executionSteps')
           .insertAndFetch({
