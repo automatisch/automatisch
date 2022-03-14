@@ -96,5 +96,58 @@
         }
       ]
     }
+  ],
+  "actions": [
+    {
+      "name": "Send a message to channel",
+      "key": "sendMessageToChannel",
+      "description": "Send a message to a specific channel you specify.",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "setupAction",
+          "name": "Set up action",
+          "arguments": [
+            {
+              "label": "Channel",
+              "key": "channel",
+              "type": "dropdown",
+              "required": true,
+              "description": "Pick a channel to send the message to.",
+              "variables": false,
+              "source": {
+                "type": "query",
+                "name": "getData",
+                "arguments": [
+                  {
+                    "name": "stepId",
+                    "value": "{step.id}"
+                  },
+                  {
+                    "name": "key",
+                    "value": "listChannels"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Message text",
+              "key": "message",
+              "type": "string",
+              "required": true,
+              "description": "The content of your new message.",
+              "variables": true
+            }
+          ]
+        },
+        {
+          "key": "testStep",
+          "name": "Test action"
+        }
+      ]
+    }
   ]
 }

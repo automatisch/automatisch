@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const GET_APP = gql`
   query GetApp($key: AvailableAppsEnumType!) {
-    getApp (key: $key) {
+    getApp(key: $key) {
       name
       key
       iconUrl
@@ -54,7 +54,7 @@ export const GET_APP = gql`
         name
         key
         description
-        subSteps {
+        substeps {
           name
         }
       }
@@ -62,7 +62,7 @@ export const GET_APP = gql`
         name
         key
         description
-        subSteps {
+        substeps {
           name
         }
       }

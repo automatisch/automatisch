@@ -13,6 +13,7 @@ type Query {
     limit: Int!
     offset: Int!
   ): ExecutionStepConnection
+  getData(stepId: String!, key: String!): JSONObject
 }
 
 type Mutation {
@@ -48,22 +49,34 @@ type Action {
   name: String
   key: String
   description: String
-  subSteps: [ActionSubStep]
+  substeps: [ActionSubstep]
 }
 
-type ActionSubStep {
+type ActionSubstep {
   key: String
   name: String
-  arguments: [ActionSubStepArgument]
+  arguments: [ActionSubstepArgument]
 }
 
-type ActionSubStepArgument {
+type ActionSubstepArgument {
   label: String
   key: String
   type: String
   description: String
   required: Boolean
   variables: Boolean
+  source: ActionSubstepArgumentSource
+}
+
+type ActionSubstepArgumentSource {
+  type: String
+  name: String
+  arguments: [ActionSubstepArgumentSourceArgument]
+}
+
+type ActionSubstepArgumentSourceArgument {
+  name: String
+  value: String
 }
 
 type App {
@@ -337,16 +350,16 @@ type Trigger {
   name: String
   key: String
   description: String
-  subSteps: [TriggerSubStep]
+  substeps: [TriggerSubstep]
 }
 
-type TriggerSubStep {
+type TriggerSubstep {
   key: String
   name: String
-  arguments: [TriggerSubStepArgument]
+  arguments: [TriggerSubstepArgument]
 }
 
-type TriggerSubStepArgument {
+type TriggerSubstepArgument {
   label: String
   key: String
   type: String

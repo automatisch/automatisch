@@ -70,7 +70,30 @@ export interface IUser {
   steps: IStep[];
 }
 
-export interface IField {
+export interface IFieldDropdown {
+  key: string;
+  label: string;
+  type: 'dropdown';
+  required: boolean;
+  readOnly: boolean;
+  value: string;
+  placeholder: string | null;
+  description: string;
+  docUrl: string;
+  clickToCopy: boolean;
+  name: string;
+  variables: boolean;
+  source: {
+    type: string;
+    name: string;
+    arguments: {
+      name: string;
+      value: string;
+    }[];
+  };
+}
+
+export interface IFieldText {
   key: string;
   label: string;
   type: string;
@@ -84,6 +107,8 @@ export interface IField {
   name: string;
   variables: boolean;
 }
+
+type IField = IFieldDropdown | IFieldText;
 
 export interface IAuthenticationStepField {
   name: string;
