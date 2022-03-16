@@ -19,7 +19,8 @@ const getExecutionSteps = async (
 
   const executionSteps = execution
     .$relatedQuery('executionSteps')
-    .orderBy('created_at', 'desc');
+    .withGraphFetched('step')
+    .orderBy('created_at', 'asc');
 
   return paginate(executionSteps, params.limit, params.offset);
 };

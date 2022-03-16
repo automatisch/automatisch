@@ -4,6 +4,7 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 
+import JSONViewer from 'components/JSONViewer';
 import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import type { IStep, ISubstep } from '@automatisch/types';
@@ -58,9 +59,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
 
           {response && (
-            <pre style={{ whiteSpace: 'pre-wrap', }}>
-              {JSON.stringify(response, null, 2)}
-            </pre>
+            <JSONViewer data={response} />
           )}
 
           <Button

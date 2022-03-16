@@ -144,7 +144,7 @@ export default function FlowStep(
             </Typography>
 
             <Typography variant="body2">
-              {index}. {app?.name}
+              {step.position}. {app?.name}
             </Typography>
           </div>
 

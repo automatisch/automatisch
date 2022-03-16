@@ -20,10 +20,12 @@ export interface IConnection {
 export interface IExecutionStep {
   id: string;
   executionId: string;
-  stepId: string;
+  stepId: IStep["id"];
+  step: IStep;
   dataIn: IJSONObject;
   dataOut: IJSONObject;
   status: string;
+  createdAt: string;
 }
 
 export interface IExecution {

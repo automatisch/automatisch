@@ -5,24 +5,22 @@ import Grid from '@mui/material/Grid';
 
 import Container from 'components/Container';
 
-type ApplicationParams = {
+type FlowParams = {
   flowId: string;
 };
 
 export default function Flow(): React.ReactElement {
-  const { flowId } = useParams() as ApplicationParams;
+  const { flowId } = useParams() as FlowParams;
 
   return (
-    <>
-      <Box sx={{ py: 3 }}>
-        <Container>
-          <Grid container>
-            <Grid item xs>
-              {flowId}
-            </Grid>
+    <Box sx={{ py: 3 }}>
+      <Container>
+        <Grid container>
+          <Grid item xs>
+            {flowId}
           </Grid>
-        </Container>
-      </Box>
-    </>
+        </Grid>
+      </Container>
+    </Box>
   );
 };

@@ -3,8 +3,9 @@ import Layout from 'components/Layout';
 import PublicLayout from 'components/PublicLayout';
 import Applications from 'pages/Applications';
 import Application from 'pages/Application';
-import Flows from 'pages/Flows';
 import Executions from 'pages/Executions';
+import Execution from 'pages/Execution';
+import Flows from 'pages/Flows';
 import Flow from 'pages/Flow';
 import Explore from 'pages/Explore';
 import Login from 'pages/Login';
@@ -15,9 +16,11 @@ export default (
   <Routes>
     <Route path={URLS.EXECUTIONS} element={<Layout><Executions /></Layout>} />
 
+    <Route path={URLS.EXECUTION_PATTERN} element={<Layout><Execution /></Layout>} />
+
     <Route path={URLS.FLOWS} element={<Layout><Flows /></Layout>} />
 
-    <Route path={`${URLS.FLOW_PATTERN}/*`} element={<Layout><Flow /></Layout>} />
+    <Route path={URLS.FLOW_PATTERN} element={<Layout><Flow /></Layout>} />
 
     <Route path={`${URLS.APPS}/*`} element={<Layout><Applications /></Layout>} />
 

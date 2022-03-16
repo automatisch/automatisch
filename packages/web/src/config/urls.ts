@@ -1,6 +1,8 @@
 export const CONNECTIONS = '/connections';
 export const EXPLORE = '/explore';
 export const EXECUTIONS = '/executions';
+export const EXECUTION_PATTERN = '/executions/:executionId';
+export const EXECUTION = (executionId: string): string => `/executions/${executionId}`;
 
 export const LOGIN = '/login';
 

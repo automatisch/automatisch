@@ -1,4 +1,5 @@
 import { InMemoryCache } from '@apollo/client';
+import offsetLimitPagination from './pagination';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -30,6 +31,11 @@ const cache = new InMemoryCache({
         }
       }
     },
+    Query: {
+      fields: {
+        getExecutionSteps: offsetLimitPagination(['executionId', 'limit']),
+      }
+    }
   }
 });
 

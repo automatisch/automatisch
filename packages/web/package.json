@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "dependencies": {
+    "@alenaksu/json-viewer": "^1.0.0",
     "@apollo/client": "^3.4.15",
     "@automatisch/types": "0.1.0",
     "@emotion/react": "^11.4.1",
