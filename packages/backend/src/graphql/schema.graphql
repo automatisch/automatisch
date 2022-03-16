@@ -163,9 +163,12 @@ type ExecutionStep {
   id: String
   executionId: String
   stepId: String
+  step: Step
   status: String
   dataIn: JSONObject
   dataOut: JSONObject
+  createdAt: String
+  updatedAt: String
 }
 
 type Field {

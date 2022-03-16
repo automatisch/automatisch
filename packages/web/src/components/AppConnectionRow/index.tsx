@@ -11,15 +11,15 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { useSnackbar } from 'notistack';
 import { DateTime } from 'luxon';
 
+import type { IConnection } from '@automatisch/types';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import useFormatMessage from 'hooks/useFormatMessage';
-import type { Connection } from 'types/connection';
 import { CardContent, Typography } from './style';
 
 type AppConnectionRowProps = {
-  connection: Connection;
+  connection: IConnection;
 }
 
 const countTranslation = (value: React.ReactNode) => (
