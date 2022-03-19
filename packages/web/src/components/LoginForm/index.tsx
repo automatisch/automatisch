@@ -8,7 +8,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
-import { setItem } from 'helpers/storage';
 import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
