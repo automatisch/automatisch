@@ -7,7 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import Autocomplete from '@mui/material/Autocomplete';
 
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { IApp, IConnection, IStep, ISubstep, IJSONObject } from '@automatisch/types';
+import type { IApp, IConnection, IStep, ISubstep } from '@automatisch/types';
 import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 

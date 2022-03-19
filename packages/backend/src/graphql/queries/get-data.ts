@@ -1,9 +1,5 @@
 import App from '../../models/app';
-import Connection from '../../models/connection';
-import Step from '../../models/step';
-import { IApp } from '@automatisch/types';
 import Context from '../../types/express/context';
-import ListData from '../../apps/slack/data/list-channels';
 
 type Params = {
   stepId: string;

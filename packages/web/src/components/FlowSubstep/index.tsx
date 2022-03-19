@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
@@ -92,13 +93,19 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
-          {args?.map((argument) => (
-            <InputCreator
-              key={argument.key}
-              schema={argument}
-              namePrefix="parameters"
-            />
-          ))}
+          <Stack
+            width='100%'
+            spacing={2}
+          >
+            {args?.map((argument) => (
+              <InputCreator
+                key={argument.key}
+                schema={argument}
+                namePrefix="parameters"
+                stepId={step.id}
+              />
+            ))}
+          </Stack>
 
           <Button
             fullWidth

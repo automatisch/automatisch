@@ -78,6 +78,14 @@ export const GET_APPS = gql`
             required
             description
             variables
+            source {
+              type
+              name
+              arguments {
+                name
+                value
+              }
+            }
           }
         }
       }

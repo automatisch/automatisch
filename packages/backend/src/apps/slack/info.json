@@ -123,10 +123,6 @@
                 "name": "getData",
                 "arguments": [
                   {
-                    "name": "stepId",
-                    "value": "{step.id}"
-                  },
-                  {
                     "name": "key",
                     "value": "listChannels"
                   }

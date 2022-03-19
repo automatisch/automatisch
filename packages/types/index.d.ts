@@ -96,7 +96,7 @@ export interface IFieldDropdown {
 export interface IFieldText {
   key: string;
   label: string;
-  type: string;
+  type: 'string';
   required: boolean;
   readOnly: boolean;
   value: string;
