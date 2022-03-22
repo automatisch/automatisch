@@ -7,13 +7,13 @@ import { Box, TextField } from './style';
 
 type EditableTypographyProps = TypographyProps & {
   children: string;
-  onNameSubmit?: (value: string) => void;
+  onConfirm?: (value: string) => void;
 };
 
 const noop = () => null;
 
 function EditableTypography(props: EditableTypographyProps) {
-  const { children, onNameSubmit = noop, sx, ...typographyProps } = props;
+  const { children, onConfirm = noop, sx, ...typographyProps } = props;
   const [editing, setEditing] = React.useState(false);
 
   const handleClick = React.useCallback(() => {
@@ -28,7 +28,7 @@ function EditableTypography(props: EditableTypographyProps) {
     const target = event.target as HTMLInputElement;
     if (event.key === 'Enter') {
       if (target.value !== children) {
-        await onNameSubmit(target.value);
+        await onConfirm(target.value);
       }
 
       setEditing(false);
@@ -39,11 +39,11 @@ function EditableTypography(props: EditableTypographyProps) {
     const value = event.target.value;
 
     if (value !== children) {
-      await onNameSubmit(value);
+      await onConfirm(value);
     }
 
     setEditing(false);
-  }, [onNameSubmit, children]);
+  }, [onConfirm, children]);
 
   let component = (
     <Typography {...typographyProps}>
