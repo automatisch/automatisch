@@ -12,6 +12,7 @@ import EditableTypography from 'components/EditableTypography';
 import Container from 'components/Container';
 import Editor from 'components/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { UPDATE_FLOW_STATUS } from 'graphql/mutations/update-flow-status';
 import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import type { IFlow } from '@automatisch/types';
@@ -21,6 +22,7 @@ export default function EditorLayout(): React.ReactElement {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();
   const [updateFlow] = useMutation(UPDATE_FLOW);
+  const [updateFlowStatus] = useMutation(UPDATE_FLOW_STATUS);
   const { data, loading } = useQuery(GET_FLOW, { variables: { id: flowId }});
   const flow: IFlow = data?.getFlow;
 
@@ -33,10 +35,30 @@ export default function EditorLayout(): React.ReactElement {
         },
       },
       optimisticResponse: {
-        __typename: 'Mutation',
         updateFlow: {
+          __typename:  'Flow',
           id: flow?.id,
           name,
+        }
+      }
+    });
+  }, [flow?.id]);
+
+  const onFlowStatusUpdate = React.useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const active = event.target.checked;
+
+    await updateFlowStatus({
+      variables: {
+        input: {
+          id: flowId,
+          active,
+        },
+      },
+      optimisticResponse: {
+        updateFlowStatus: {
+          __typename:  'Flow',
+          id: flow?.id,
+          active,
         }
       }
     });
@@ -58,7 +80,7 @@ export default function EditorLayout(): React.ReactElement {
             {!loading && (
               <EditableTypography
                 variant="body1"
-                onNameSubmit={onFlowNameUpdate}
+                onConfirm={onFlowNameUpdate}
                 noWrap
                 sx={{ display: 'flex', flex: 1, maxWidth: '50vw', ml: 2 }}
               >
@@ -70,7 +92,7 @@ export default function EditorLayout(): React.ReactElement {
           <Box pr={1}>
             <FormControlLabel
               control={
-                <Switch checked={flow?.active ?? false} />
+                <Switch checked={flow?.active ?? false} onChange={onFlowStatusUpdate} />
               }
               label={flow?.active ? formatMessage('flow.active') : formatMessage('flow.inactive')}
               labelPlacement="start"
