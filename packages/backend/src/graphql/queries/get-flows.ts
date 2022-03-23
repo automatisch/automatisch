@@ -7,7 +7,8 @@ const getFlows = async (
 ) => {
   const flows = await context.currentUser
     .$relatedQuery('flows')
-    .withGraphJoined('[steps.[connection]]');
+    .withGraphJoined('[steps.[connection]]')
+    .orderBy('created_at', 'desc');
 
   return flows;
 };

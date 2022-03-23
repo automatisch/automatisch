@@ -19,7 +19,7 @@ export default class SearchTweet {
   async run() {
     const response = await this.client.v2.get('tweets/search/recent', {
       query: this.parameters.searchTerm as string,
-      max_results: 100,
+      max_results: 10,
     });
 
     return response.data;

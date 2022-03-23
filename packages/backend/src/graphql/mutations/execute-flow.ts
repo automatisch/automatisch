@@ -14,7 +14,7 @@ const executeFlow = async (
   params: Params,
   context: Context
 ) => {
-  const step = await context.currentUser
+  const untilStep = await context.currentUser
     .$relatedQuery('steps')
     .withGraphFetched('connection')
     .findOne({
@@ -22,20 +22,18 @@ const executeFlow = async (
     })
     .throwIfNotFound();
 
-  const flow = await step.$relatedQuery('flow');
-  const data = await new Processor(flow, step, { testRun: true }).run();
+  const flow = await untilStep.$relatedQuery('flow');
 
-  // TODO: Use this snippet to execute flows with the background job.
-  // const data = processorQueue.add('processorJob', {
-  //   flowId: flow.id,
-  //   stepId: step.id,
-  // });
+  const data = await new Processor(flow, {
+    untilStep,
+    testRun: true,
+  }).run();
 
-  await step.$query().patch({
+  await untilStep.$query().patch({
     status: 'completed',
   });
 
-  return { data, step };
+  return { data, step: untilStep };
 };
 
 export default executeFlow;
