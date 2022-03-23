@@ -8,8 +8,9 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import SettingsIcon from '@mui/icons-material/Settings';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+import AccountDropdownMenu from 'components/AccountDropdownMenu';
 import Container from 'components/Container';
 import HideOnScroll from 'components/HideOnScroll';
 import { FormattedMessage } from 'react-intl';
@@ -21,6 +22,8 @@ type AppBarProps = {
   maxWidth?: ContainerProps["maxWidth"];
 };
 
+const accountMenuId = 'account-menu';
+
 export default function AppBar(props: AppBarProps): React.ReactElement {
   const {
     drawerOpen,
@@ -31,6 +34,18 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
 
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
+  const [accountMenuAnchorElement, setAccountMenuAnchorElement] = React.useState<null | HTMLElement>(null);
+
+  const isMenuOpen = Boolean(accountMenuAnchorElement);
+
+  const handleAccountMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAccountMenuAnchorElement(event.currentTarget);
+  };
+
+  const handleAccountMenuClose = () => {
+    setAccountMenuAnchorElement(null);
+  };
 
   return (
     <HideOnScroll>
@@ -61,12 +76,21 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
               size="large"
               edge="start"
               color="inherit"
-              aria-label="open settings"
+              onClick={handleAccountMenuOpen}
+              aria-controls={accountMenuId}
+              aria-label="open profile menu"
             >
-              <SettingsIcon />
+              <AccountCircleIcon />
             </IconButton>
           </Toolbar>
         </Container>
+
+        <AccountDropdownMenu
+          anchorEl={accountMenuAnchorElement}
+          id={accountMenuId}
+          open={isMenuOpen}
+          onClose={handleAccountMenuClose}
+        />
       </MuiAppBar>
     </HideOnScroll>
   );

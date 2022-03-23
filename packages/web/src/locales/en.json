@@ -1,6 +1,7 @@
 {
   "brandText": "Automatisch",
   "searchPlaceholder": "Search",
+  "accountDropdownMenu.logout": "Logout",
   "drawer.dashboard": "Dashboard",
   "drawer.flows": "Flows",
   "drawer.apps": "My Apps",

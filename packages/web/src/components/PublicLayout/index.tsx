@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Toolbar from '@mui/material/Toolbar';
-import MuiAppBar from '@mui/material/AppBar';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -16,7 +16,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
 
   return (
     <>
-      <MuiAppBar>
+      <AppBar>
         <Container maxWidth="lg" disableGutters>
           <Toolbar>
             <Typography
@@ -29,7 +29,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
             </Typography>
           </Toolbar>
         </Container>
-      </MuiAppBar>
+      </AppBar>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <Toolbar />
