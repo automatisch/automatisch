@@ -10,9 +10,22 @@ import appAssetsHandler from './helpers/app-assets-handler';
 import webUIHandler from './helpers/web-ui-handler';
 import errorHandler from './helpers/error-handler';
 import './config/database';
+import {
+  createBullBoardHandler,
+  serverAdapter,
+} from './helpers/create-bull-board-handler';
+import injectBullBoardHandler from './helpers/inject-bull-board-handler';
+
+if (appConfig.appEnv === 'development') {
+  createBullBoardHandler(serverAdapter);
+}
 
 const app = express();
 const port = appConfig.port;
+
+if (appConfig.appEnv === 'development') {
+  injectBullBoardHandler(app, serverAdapter);
+}
 
 appAssetsHandler(app);
 

@@ -1,4 +1,5 @@
 import { ValidationError } from 'objection';
+import type { QueryContext, ModelOptions } from 'objection';
 import Base from './base';
 import Step from './step';
 import Execution from './execution';
@@ -42,10 +43,12 @@ class Flow extends Base {
     },
   });
 
-  async $beforeUpdate(): Promise<void> {
+  async $beforeUpdate(opt: ModelOptions): Promise<void> {
     if (!this.active) return;
 
-    const incompleteStep = await this.$relatedQuery('steps').findOne({
+    const oldFlow = opt.old as Flow;
+
+    const incompleteStep = await oldFlow.$relatedQuery('steps').findOne({
       status: 'incomplete',
     });
 
@@ -56,7 +59,7 @@ class Flow extends Base {
       });
     }
 
-    const allSteps = await this.$relatedQuery('steps');
+    const allSteps = await oldFlow.$relatedQuery('steps');
 
     if (allSteps.length < 2) {
       throw new ValidationError({

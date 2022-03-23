@@ -1,8 +1,11 @@
-import { Queue } from 'bullmq';
+import { Queue, QueueScheduler } from 'bullmq';
 import redisConfig from '../config/redis';
 
-const processorQueue = new Queue('processor', {
+const redisConnection = {
   connection: redisConfig,
-});
+};
+
+new QueueScheduler('processor', redisConnection);
+const processorQueue = new Queue('processor', redisConnection);
 
 export default processorQueue;

@@ -7,6 +7,11 @@ import ExecutionStep from '../models/execution-step';
 
 type ExecutionSteps = Record<string, ExecutionStep>;
 
+type ProcessorOptions = {
+  untilStep?: Step;
+  testRun?: boolean;
+};
+
 class Processor {
   flow: Flow;
   untilStep: Step;
@@ -14,10 +19,10 @@ class Processor {
 
   static variableRegExp = /({{step\..+\..+}})/g;
 
-  constructor(flow: Flow, untilStep: Step, { testRun = false }) {
+  constructor(flow: Flow, processorOptions: ProcessorOptions) {
     this.flow = flow;
-    this.untilStep = untilStep;
-    this.testRun = testRun;
+    this.untilStep = processorOptions.untilStep;
+    this.testRun = processorOptions.testRun;
   }
 
   async run() {
@@ -89,7 +94,7 @@ class Processor {
 
         priorExecutionSteps[id] = previousExecutionStep;
 
-        if (id === this.untilStep.id) {
+        if (id === this.untilStep?.id) {
           break;
         }
       }
