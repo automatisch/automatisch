@@ -3,7 +3,7 @@ import '../../src/config/database';
 import logger from '../../src/helpers/logger';
 
 const userParams = {
-  email: 'user@automatisch.com',
+  email: 'user@automatisch.io',
   password: 'sample',
 };
 
