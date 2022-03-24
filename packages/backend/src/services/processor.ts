@@ -121,8 +121,26 @@ class Processor {
       rawParameters
     );
 
+    const lastExecutionStep = await step
+      .$relatedQuery('executionSteps')
+      .orderBy('created_at', 'desc')
+      .first();
+
+    const lastExecutionStepCratedAt = lastExecutionStep?.dataOut
+      ?.created_at as string;
+    const flow = (await step.$relatedQuery('flow')) as Flow;
+
     const command = appInstance.triggers[key];
-    const fetchedData = await command.run();
+
+    const startTime = new Date(lastExecutionStepCratedAt || flow.updatedAt);
+    let fetchedData;
+
+    if (this.testRun) {
+      fetchedData = await command.testRun(startTime);
+    } else {
+      fetchedData = await command.run(startTime);
+    }
+
     return fetchedData;
   }
 

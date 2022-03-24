@@ -16,12 +16,43 @@ export default class SearchTweet {
     this.parameters = parameters;
   }
 
-  async run() {
-    const response = await this.client.v2.get('tweets/search/recent', {
-      query: this.parameters.searchTerm as string,
-      max_results: 10,
-    });
+  async run(startTime: Date) {
+    const tweets = [];
 
-    return response.data;
+    const response = await this.client.v2.search(
+      this.parameters.searchTerm as string,
+      {
+        max_results: 50,
+        'tweet.fields': 'created_at',
+      }
+    );
+
+    for await (const tweet of response.data.data) {
+      if (new Date(tweet.created_at).getTime() <= startTime.getTime()) {
+        break;
+      }
+
+      tweets.push(tweet);
+
+      if (response.data.meta.next_token) {
+        await response.fetchNext();
+      }
+    }
+
+    return tweets;
+  }
+
+  async testRun() {
+    const response = await this.client.v2.search(
+      this.parameters.searchTerm as string,
+      {
+        max_results: 10,
+        'tweet.fields': 'created_at',
+      }
+    );
+
+    const mostRecentTweet = response.data.data[0];
+
+    return [mostRecentTweet];
   }
 }

@@ -1,5 +1,5 @@
 import { ValidationError } from 'objection';
-import type { QueryContext, ModelOptions } from 'objection';
+import type { ModelOptions } from 'objection';
 import Base from './base';
 import Step from './step';
 import Execution from './execution';
