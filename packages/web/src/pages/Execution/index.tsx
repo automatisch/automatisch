@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import type { IExecutionStep } from '@automatisch/types';
 
@@ -39,14 +38,12 @@ export default function Execution(): React.ReactElement {
   }, [executionId, fetchMore, pageInfo]);
 
   return (
-    <Box sx={{ py: 3 }}>
-      <Container>
-        <Grid container item sx={{ mb: [2, 5] }} columnSpacing={1.5} rowGap={3}>
-          {executionSteps?.map((executionStep) => (
-            <ExecutionStep key={executionStep.id} executionStep={executionStep} step={executionStep.step} />
-          ))}
-        </Grid>
-      </Container>
-    </Box>
+    <Container sx={{ py: 3 }}>
+      <Grid container item sx={{ mb: [2, 5] }} rowGap={3}>
+        {executionSteps?.map((executionStep) => (
+          <ExecutionStep key={executionStep.id} executionStep={executionStep} step={executionStep.step} />
+        ))}
+      </Grid>
+    </Container>
   );
 };

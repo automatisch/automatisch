@@ -7,7 +7,7 @@ type FormProps = {
   defaultValues?: UseFormProps['defaultValues'];
   onSubmit?: SubmitHandler<FieldValues>;
   render?: (props: UseFormReturn) => React.ReactNode;
-}
+};
 
 const noop = () => null;
 

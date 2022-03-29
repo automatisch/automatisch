@@ -4,21 +4,28 @@ import { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import AppsIcon from '@mui/icons-material/Apps';
-import SwapCallsIcon from '@mui/icons-material/SwapCalls';
-import HistoryIcon from '@mui/icons-material/History';
-import ExploreIcon from '@mui/icons-material/Explore';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import ListItemLink from 'components/ListItemLink';
 import HideOnScroll from 'components/HideOnScroll';
 import useFormatMessage from 'hooks/useFormatMessage';
-import * as URLS from 'config/urls';
 import { Drawer as BaseDrawer } from './style';
 
 const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-export default function Drawer(props: SwipeableDrawerProps): React.ReactElement {
+type DrawerLink = {
+  Icon: React.ElementType;
+  primary: string;
+  to: string;
+};
+
+type DrawerProps = {
+  links: DrawerLink[];
+  bottomLinks?: DrawerLink[];
+} & SwipeableDrawerProps;
+
+export default function Drawer(props: DrawerProps): React.ReactElement {
+  const { links = [], bottomLinks = [], ...drawerProps } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const formatMessage = useFormatMessage();
@@ -31,46 +38,43 @@ export default function Drawer(props: SwipeableDrawerProps): React.ReactElement 
 
   return (
     <BaseDrawer
-      {...props}
+      {...drawerProps}
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
       variant={matchSmallScreens ? 'temporary' : 'permanent'}
     >
-      <HideOnScroll unmountOnExit>
-        <Toolbar />
-      </HideOnScroll>
+      {/* keep the following encapsulating `div` to have `space-between` children  */}
+      <div>
+        <HideOnScroll unmountOnExit>
+          <Toolbar />
+        </HideOnScroll>
+
+        <List sx={{ py: 0, mt: 3 }}>
+          {links.map(({ Icon, primary, to }, index) => (
+            <ListItemLink
+              key={`${to}-${index}`}
+              icon={<Icon htmlColor={theme.palette.primary.main} />}
+              primary={formatMessage(primary)}
+              to={to}
+              onClick={closeOnClick}
+            />
+          ))}
+        </List>
+
+        <Divider />
+      </div>
 
       <List sx={{ py: 0, mt: 3 }}>
-        <ListItemLink
-          icon={<SwapCallsIcon htmlColor={theme.palette.primary.main} />}
-          primary={formatMessage('drawer.flows')}
-          to={URLS.FLOWS}
-          onClick={closeOnClick}
-        />
-
-        <ListItemLink
-          icon={<AppsIcon htmlColor={theme.palette.primary.main} />}
-          primary={formatMessage('drawer.apps')}
-          to={URLS.APPS}
-          onClick={closeOnClick}
-        />
-
-        <ListItemLink
-          icon={<HistoryIcon htmlColor={theme.palette.primary.main} />}
-          primary={formatMessage('drawer.executions')}
-          to={URLS.EXECUTIONS}
-          onClick={closeOnClick}
-        />
-
-        <ListItemLink
-          icon={<ExploreIcon htmlColor={theme.palette.primary.main} />}
-          primary={formatMessage('drawer.explore')}
-          to={URLS.EXPLORE}
-          onClick={closeOnClick}
-        />
+        {bottomLinks.map(({ Icon, primary, to }, index) => (
+          <ListItemLink
+            key={`${to}-${index}`}
+            icon={<Icon htmlColor={theme.palette.primary.main} />}
+            primary={formatMessage(primary)}
+            to={to}
+            onClick={closeOnClick}
+          />
+        ))}
       </List>
-
-      <Divider />
     </BaseDrawer>
   );
 }

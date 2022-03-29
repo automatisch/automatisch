@@ -29,5 +29,10 @@ export const FLOWS = '/flows';
 export const FLOW = (flowId: string): string => `/editor/${flowId}`;
 export const FLOW_PATTERN = '/flows/:flowId';
 
+export const SETTINGS = '/settings';
+export const SETTINGS_DASHBOARD = SETTINGS;
+export const SETTINGS_PROFILE = '/settings/profile';
+export const PROFILE = 'profile';
+
 
 export const DASHBOARD = FLOWS;
