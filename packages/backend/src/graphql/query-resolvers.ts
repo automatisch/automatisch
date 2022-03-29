@@ -9,6 +9,7 @@ import getStepWithTestExecutions from './queries/get-step-with-test-executions';
 import getExecutions from './queries/get-executions';
 import getExecutionSteps from './queries/get-execution-steps';
 import getData from './queries/get-data';
+import getCurrentUser from './queries/get-current-user';
 
 const queryResolvers = {
   getApps,
@@ -22,6 +23,7 @@ const queryResolvers = {
   getExecutions,
   getExecutionSteps,
   getData,
+  getCurrentUser,
 };
 
 export default queryResolvers;

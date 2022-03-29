@@ -14,6 +14,7 @@ type Query {
     offset: Int!
   ): ExecutionStepConnection
   getData(stepId: String!, key: String!): JSONObject
+  getCurrentUser: User
 }
 
 type Mutation {
