@@ -1,4 +1,5 @@
 import { styled, Theme, CSSObject } from '@mui/material/styles';
+import { drawerClasses } from '@mui/material/Drawer';
 import MuiSwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 const drawerWidth = 300;
@@ -35,11 +36,19 @@ export const Drawer = styled(MuiSwipeableDrawer)(
     boxSizing: 'border-box',
     ...(open && {
       ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
+      [`& .${drawerClasses.paper}`]: {
+        ...openedMixin(theme),
+        display: 'flex',
+        justifyContent: 'space-between'
+      },
     }),
     ...(!open && {
       ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
+      [`& .${drawerClasses.paper}`]: {
+        ...closedMixin(theme),
+        display: 'flex',
+        justifyContent: 'space-between'
+      },
     }),
   }),
 );

@@ -1,12 +1,15 @@
 {
   "brandText": "Automatisch",
   "searchPlaceholder": "Search",
+  "accountDropdownMenu.settings": "Settings",
   "accountDropdownMenu.logout": "Logout",
   "drawer.dashboard": "Dashboard",
   "drawer.flows": "Flows",
   "drawer.apps": "My Apps",
   "drawer.executions": "Executions",
   "drawer.explore": "Explore",
+  "settingsDrawer.myProfile": "My Profile",
+  "settingsDrawer.goBack": "Go to the dashboard",
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
   "app.addConnection": "Add connection",
@@ -38,5 +41,11 @@
   "flowStep.actionType": "Action",
   "flows.create": "Create flow",
   "flows.title": "Flows",
-  "executions.title": "Executions"
+  "executions.title": "Executions",
+  "profileSettings.title": "My Profile",
+  "profileSettings.email": "E-mail",
+  "profileSettings.updateEmail": "Update e-mail",
+  "profileSettings.newPassword": "New password",
+  "profileSettings.confirmNewPassword": "Confirm new password",
+  "profileSettings.updatePassword": "Update password"
 }

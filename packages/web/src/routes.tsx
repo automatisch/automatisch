@@ -11,6 +11,7 @@ import Explore from 'pages/Explore';
 import Login from 'pages/Login';
 import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
+import settingsRoutes from './settingsRoutes';
 
 export default (
   <Routes>
@@ -33,6 +34,10 @@ export default (
     <Route path={URLS.LOGIN} element={<PublicLayout><Login /></PublicLayout>} />
 
     <Route path="/" element={<Navigate to={URLS.FLOWS} />} />
+
+    <Route path={`${URLS.SETTINGS}`}>
+      {settingsRoutes}
+    </Route>
 
     <Route element={<Layout><div>404</div></Layout>} />
   </Routes>

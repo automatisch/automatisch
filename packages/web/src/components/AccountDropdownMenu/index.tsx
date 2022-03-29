@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import Menu, { MenuProps } from '@mui/material/Menu';
+import { Link } from 'react-router-dom';
 
 import * as URLS from 'config/urls';
 import useAuthentication from 'hooks/useAuthentication';
@@ -49,7 +50,18 @@ function AccountDropdownMenu(props: AccountDropdownMenuProps): React.ReactElemen
       open={open}
       onClose={onClose}
     >
-      <MenuItem onClick={logout}>{formatMessage('accountDropdownMenu.logout')}</MenuItem>
+      <MenuItem
+        component={Link}
+        to={URLS.SETTINGS_DASHBOARD}
+      >
+        {formatMessage('accountDropdownMenu.settings')}
+      </MenuItem>
+
+      <MenuItem
+        onClick={logout}
+      >
+        {formatMessage('accountDropdownMenu.logout')}
+      </MenuItem>
     </Menu>
   );
 }
