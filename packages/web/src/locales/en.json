@@ -43,9 +43,11 @@
   "flows.title": "Flows",
   "executions.title": "Executions",
   "profileSettings.title": "My Profile",
-  "profileSettings.email": "E-mail",
-  "profileSettings.updateEmail": "Update e-mail",
+  "profileSettings.email": "Email",
+  "profileSettings.updateEmail": "Update email",
   "profileSettings.newPassword": "New password",
   "profileSettings.confirmNewPassword": "Confirm new password",
+  "profileSettings.updatedEmail": "Your email has been updated.",
+  "profileSettings.updatedPassword": "Your password has been updated.",
   "profileSettings.updatePassword": "Update password"
 }
