@@ -12,6 +12,8 @@ import Login from 'pages/Login';
 import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
 import settingsRoutes from './settingsRoutes';
+import Notifications from 'pages/Notifications';
+
 
 export default (
   <Routes>
@@ -32,6 +34,8 @@ export default (
     <Route path={`${URLS.EDITOR}/*`} element={<EditorRoutes />} />
 
     <Route path={URLS.LOGIN} element={<PublicLayout><Login /></PublicLayout>} />
+
+    <Route path={URLS.UPDATES} element={<Layout><Notifications /></Layout>} />
 
     <Route path="/" element={<Navigate to={URLS.FLOWS} />} />
 

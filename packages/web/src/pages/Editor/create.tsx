@@ -29,7 +29,7 @@ export default function CreateFlow(): React.ReactElement {
       });
       const flowId = response.data?.createFlow?.id;
 
-      navigate(URLS.FLOW_EDITOR(flowId));
+      navigate(URLS.FLOW_EDITOR(flowId), { replace: true });
     }
 
     initiate();

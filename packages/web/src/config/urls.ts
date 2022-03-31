@@ -31,8 +31,8 @@ export const FLOW_PATTERN = '/flows/:flowId';
 
 export const SETTINGS = '/settings';
 export const SETTINGS_DASHBOARD = SETTINGS;
-export const SETTINGS_PROFILE = '/settings/profile';
 export const PROFILE = 'profile';
-
+export const UPDATES = '/updates';
+export const SETTINGS_PROFILE = `${SETTINGS}/${PROFILE}`;
 
 export const DASHBOARD = FLOWS;

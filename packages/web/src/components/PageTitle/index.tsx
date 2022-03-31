@@ -1,16 +1,10 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
-type PageTitleProps = {
-  children: React.ReactNode;
-};
+type PageTitleProps = TypographyProps;
 
 export default function PageTitle(props: PageTitleProps): React.ReactElement {
-  const { children } = props;
-
   return (
-    <Typography variant="h3">
-      {children}
-    </Typography>
+    <Typography variant="h3" {...props} />
   );
 }
