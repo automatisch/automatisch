@@ -10,6 +10,7 @@
   "drawer.explore": "Explore",
   "settingsDrawer.myProfile": "My Profile",
   "settingsDrawer.goBack": "Go to the dashboard",
+  "settingsDrawer.notifications": "Notifications",
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
   "app.addConnection": "Add connection",
@@ -49,5 +50,7 @@
   "profileSettings.confirmNewPassword": "Confirm new password",
   "profileSettings.updatedEmail": "Your email has been updated.",
   "profileSettings.updatedPassword": "Your password has been updated.",
-  "profileSettings.updatePassword": "Update password"
+  "profileSettings.updatePassword": "Update password",
+  "notifications.title": "Notifications",
+  "notification.releasedAt": "Released {relativeDate}"
 }

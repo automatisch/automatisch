@@ -7,6 +7,7 @@ import AppsIcon from '@mui/icons-material/Apps';
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
 import HistoryIcon from '@mui/icons-material/History';
 import ExploreIcon from '@mui/icons-material/Explore';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import * as URLS from 'config/urls';
 import AppBar from 'components/AppBar';
@@ -39,6 +40,14 @@ const drawerLinks = [
   },
 ];
 
+const drawerBottomLinks = [
+  {
+    Icon: NotificationsIcon,
+    primary: 'settingsDrawer.notifications',
+    to: URLS.UPDATES,
+  },
+]
+
 export default function PublicLayout({ children }: PublicLayoutProps): React.ReactElement {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), { noSsr: true });
@@ -54,6 +63,7 @@ export default function PublicLayout({ children }: PublicLayoutProps): React.Rea
       <Box sx={{ display: 'flex', }}>
         <Drawer
           links={drawerLinks}
+          bottomLinks={drawerBottomLinks}
           open={isDrawerOpen}
           onOpen={openDrawer}
           onClose={closeDrawer}
