@@ -6,7 +6,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import AppsIcon from '@mui/icons-material/Apps';
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
 import HistoryIcon from '@mui/icons-material/History';
-import ExploreIcon from '@mui/icons-material/Explore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import * as URLS from 'config/urls';
@@ -32,11 +31,6 @@ const drawerLinks = [
     Icon: HistoryIcon,
     primary: 'drawer.executions',
     to: URLS.EXECUTIONS,
-  },
-  {
-    Icon: ExploreIcon,
-    primary: 'drawer.explore',
-    to: URLS.EXPLORE,
   },
 ];
 

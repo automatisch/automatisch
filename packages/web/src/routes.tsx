@@ -7,7 +7,6 @@ import Executions from 'pages/Executions';
 import Execution from 'pages/Execution';
 import Flows from 'pages/Flows';
 import Flow from 'pages/Flow';
-import Explore from 'pages/Explore';
 import Login from 'pages/Login';
 import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
@@ -26,8 +25,6 @@ export default (
     <Route path={URLS.FLOW_PATTERN} element={<Layout><Flow /></Layout>} />
 
     <Route path={`${URLS.APPS}/*`} element={<Layout><Applications /></Layout>} />
-
-    <Route path={URLS.EXPLORE} element={<Layout><Explore /></Layout>} />
 
     <Route path={`${URLS.APP_PATTERN}/*`} element={<Layout><Application /></Layout>} />
 
