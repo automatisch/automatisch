@@ -1,6 +1,7 @@
-import { Model } from 'objection';
-import knexInstance from 'knex';
+import knex from 'knex';
+import type { Knex } from 'knex';
 import knexConfig from '../../knexfile';
 
-const knex = knexInstance(knexConfig)
-Model.knex(knex)
+const knexInstance: Knex = knex(knexConfig);
+
+export default knexInstance;

@@ -31,9 +31,11 @@
     "version": "oclif readme && git add README.md"
   },
   "dependencies": {
+    "@automatisch/backend": "^0.1.0",
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^2.0.1"
+    "@oclif/plugin-plugins": "^2.0.1",
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
     "@oclif/test": "^2",

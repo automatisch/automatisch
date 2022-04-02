@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
+    "dev": "nodemon --watch 'src/**/*.ts' 'bin/www.ts' --exec 'ts-node' bin/www.ts",
     "worker": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/worker.ts",
     "build": "tsc",
-    "start": "node dist/src/app.js",
+    "start": "node dist/bin/www.js",
     "test": "ava",
     "lint": "eslint . --ignore-path ../../.eslintignore",
     "db:create": "ts-node ./bin/database/create.ts",

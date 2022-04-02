@@ -1,5 +1,5 @@
 import User from '../../src/models/user';
-import '../../src/config/database';
+import '../../src/config/orm';
 import logger from '../../src/helpers/logger';
 
 const userParams = {
