@@ -46,7 +46,7 @@ const appConfig: AppConfig = {
   postgresPort: parseInt(process.env.POSTGRES_PORT|| '5432'),
   postgresHost: process.env.POSTGRES_HOST || 'localhost',
   postgresUsername:
-    process.env.POSTGRES_USERNAME || 'automatish_development_user',
+    process.env.POSTGRES_USERNAME || 'automatisch_development_user',
   postgresPassword: process.env.POSTGRES_PASSWORD,
   postgresEnableSsl: process.env.POSTGRES_ENABLE_SSL === 'true' ? true : false,
   encryptionKey: process.env.ENCRYPTION_KEY || '',
