@@ -9,7 +9,7 @@ export default class Start extends Command {
       multiple: true,
       char: 'e',
     }),
-    'env-file': Flags.string()
+    'env-file': Flags.string(),
   }
 
   async run(): Promise<void> {
@@ -26,7 +26,7 @@ export default class Start extends Command {
       }
     }
 
-    const database = (await import('@automatisch/backend/src/config/database')).default;
+    const database = (await import('@automatisch/backend/dist/src/config/database')).default;
     const migrator = database.migrate;
 
     const [, pendingMigrations] = await migrator.list();
