@@ -19,6 +19,8 @@ const deleteStep = async (
     })
     .throwIfNotFound();
 
+  if (!step) return;
+
   await step.$query().delete();
 
   const nextSteps = await step.flow

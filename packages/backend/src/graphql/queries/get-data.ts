@@ -12,7 +12,11 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
     .withGraphFetched('connection')
     .findById(params.stepId);
 
+  if (!step) return null;
+
   const connection = step.connection;
+
+  if (!connection || !step.appKey) return null;
 
   const appData = App.findOneByKey(step.appKey);
   const AppClass = (await import(`../../apps/${step.appKey}`)).default;

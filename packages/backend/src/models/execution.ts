@@ -5,8 +5,8 @@ import ExecutionStep from './execution-step';
 class Execution extends Base {
   id!: string;
   flowId!: string;
-  testRun: boolean;
-  executionSteps: ExecutionStep[];
+  testRun = false;
+  executionSteps: ExecutionStep[] = [];
 
   static tableName = 'executions';
 

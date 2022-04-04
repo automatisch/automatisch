@@ -22,6 +22,8 @@ const createAuthData = async (
   const appClass = (await import(`../../apps/${connection.key}`)).default;
   const appData = App.findOneByKey(connection.key);
 
+  if (!connection.formattedData) { return null; }
+
   const appInstance = new appClass(appData, {
     consumerKey: connection.formattedData.consumerKey,
     consumerSecret: connection.formattedData.consumerSecret,
