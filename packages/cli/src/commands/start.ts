@@ -12,7 +12,7 @@ export default class Start extends Command {
     'env-file': Flags.string(),
   }
 
-  async run(): Promise<void> {
+  async prepareEnvVars(): Promise<void> {
     const { flags } = await this.parse(Start);
 
     if (flags['env-file']) {
@@ -26,6 +26,10 @@ export default class Start extends Command {
       }
     }
 
+    delete process.env.SERVE_WEB_APP_SEPARATELY;
+  }
+
+  async runMigrationsIfNeeded(): Promise<void> {
     const database = (await import('@automatisch/backend/dist/src/config/database')).default;
     const migrator = database.migrate;
 
@@ -36,5 +40,17 @@ export default class Start extends Command {
     if (needsToMigrate) {
       await migrator.latest();
     }
+  }
+
+  async runApp(): Promise<void> {
+    await import('@automatisch/backend/dist/src/server');
+  }
+
+  async run(): Promise<void> {
+    await this.prepareEnvVars();
+
+    await this.runMigrationsIfNeeded();
+
+    await this.runApp();
   }
 }
