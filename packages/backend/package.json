@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "worker": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/worker.ts",
-    "build": "tsc && yarn copy-schemas",
+    "build": "tsc && yarn copy-statics",
     "start": "node dist/src/server.js",
     "test": "ava",
     "lint": "eslint . --ignore-path ../../.eslintignore",
@@ -15,7 +15,7 @@
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
     "db:migrate": "knex migrate:latest",
-    "copy-schemas": "copyfiles src/**/*.graphql dist"
+    "copy-statics": "copyfiles src/**/*.{graphql,json} dist"
   },
   "dependencies": {
     "@automatisch/web": "0.1.0",
