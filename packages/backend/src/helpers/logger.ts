@@ -10,7 +10,7 @@ const levels = {
 }
 
 const level = () => {
-  return appConfig.appEnv === 'development' ? 'debug' : 'warn'
+  return appConfig.appEnv === 'development' ? 'debug' : 'info'
 }
 
 const colors = {
