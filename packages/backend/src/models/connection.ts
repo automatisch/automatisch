@@ -13,7 +13,7 @@ class Connection extends Base {
   formattedData?: IJSONObject;
   userId!: string;
   verified = false;
-  count: number;
+  count?: number;
 
   static tableName = 'connections';
 

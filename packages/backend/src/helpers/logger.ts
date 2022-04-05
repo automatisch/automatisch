@@ -1,5 +1,5 @@
-import winston from 'winston'
-import appConfig from '../config/app'
+import * as winston from 'winston';
+import appConfig from '../config/app';
 
 const levels = {
   error: 0,
@@ -7,11 +7,11 @@ const levels = {
   info: 2,
   http: 3,
   debug: 4,
-}
+};
 
 const level = () => {
   return appConfig.appEnv === 'development' ? 'debug' : 'info'
-}
+};
 
 const colors = {
   error: 'red',
@@ -19,9 +19,9 @@ const colors = {
   info: 'green',
   http: 'magenta',
   debug: 'white',
-}
+};
 
-winston.addColors(colors)
+winston.addColors(colors);
 
 const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
@@ -29,7 +29,7 @@ const format = winston.format.combine(
   winston.format.printf(
     (info) => `${info.timestamp} [${info.level}]: ${info.message}`,
   ),
-)
+);
 
 const transports = [
   new winston.transports.Console(),
@@ -38,13 +38,13 @@ const transports = [
     level: 'error',
   }),
   new winston.transports.File({ filename: 'logs/server.log' }),
-]
+];
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   level: level(),
   levels,
   format,
   transports,
-})
+});
 
-export default logger
+export default logger;
