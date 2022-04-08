@@ -17,7 +17,6 @@ const knexConfig = {
     directory: __dirname + '/src/db/migrations',
     extension: fileExtension,
     loadExtensions: [`.${fileExtension}`],
-    disableMigrationsListValidation: true,
   },
   seeds: {
     directory: __dirname + '/src/db/seeds',
