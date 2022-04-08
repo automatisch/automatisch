@@ -5,7 +5,8 @@
     "start": "lerna run --stream --parallel --scope=@*/{web,docs,backend} dev",
     "start:web": "lerna run --stream --scope=@*/web dev",
     "start:backend": "lerna run --stream --scope=@*/backend dev",
-    "lint": "lerna run --no-bail --stream --scope=@*/{web,backend,cli} lint",
+    "lint": "lerna run --no-bail --stream --parallel --scope=@*/{web,backend,cli} lint",
+    "build:watch": "lerna run --no-bail --stream --parallel --scope=@*/{web,backend,cli} build:watch",
     "build:docs": "cd ./packages/docs && yarn install && yarn build"
   },
   "workspaces": {

@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'shx rm -rf dist && tsc -b' --ext 'ts'",
+    "build:watch": "nodemon --watch 'src/**/*.ts' --exec 'shx rm -rf dist && tsc -b' --ext 'ts'",
     "lint": "eslint . --ext .ts --ignore-path ../../.eslintignore",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
