@@ -6,9 +6,9 @@ import Execution from './execution';
 
 class Flow extends Base {
   id!: string;
-  name: string;
+  name!: string;
   userId!: string;
-  active: boolean;
+  active = false;
   steps?: [Step];
 
   static tableName = 'flows';

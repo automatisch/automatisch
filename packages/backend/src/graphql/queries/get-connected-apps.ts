@@ -26,10 +26,13 @@ const getConnectedApps = async (
     .filter((app: IApp) => connectionKeys.includes(app.key))
     .map((app: IApp) => {
       const connection = connections.find(
-        (connection: IConnection) => connection.key === app.key
+        (connection) => (connection as IConnection).key === app.key
       );
 
-      app.connectionCount = connection.count;
+      if (connection) {
+        app.connectionCount = connection.count;
+      }
+
       return app;
     });
 

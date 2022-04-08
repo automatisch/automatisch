@@ -4,12 +4,11 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import corsOptions from './config/cors-options';
 import graphQLInstance from './helpers/graphql-instance';
-import logger from './helpers/logger';
 import morgan from './helpers/morgan';
 import appAssetsHandler from './helpers/app-assets-handler';
 import webUIHandler from './helpers/web-ui-handler';
 import errorHandler from './helpers/error-handler';
-import './config/database';
+import './config/orm';
 import {
   createBullBoardHandler,
   serverAdapter,
@@ -21,7 +20,6 @@ if (appConfig.appEnv === 'development') {
 }
 
 const app = express();
-const port = appConfig.port;
 
 if (appConfig.appEnv === 'development') {
   injectBullBoardHandler(app, serverAdapter);
@@ -44,6 +42,4 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  logger.info(`Server is listening on ${port}`);
-});
+export default app;

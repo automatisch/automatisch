@@ -14,8 +14,8 @@ type ProcessorOptions = {
 
 class Processor {
   flow: Flow;
-  untilStep: Step;
-  testRun: boolean;
+  untilStep?: Step;
+  testRun?: boolean;
 
   static variableRegExp = /({{step\..+\..+}})/g;
 
@@ -32,7 +32,8 @@ class Processor {
       .orderBy('position', 'asc');
 
     const triggerStep = steps.find((step) => step.type === 'trigger');
-    let initialTriggerData = await this.getInitialTriggerData(triggerStep);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let initialTriggerData = await this.getInitialTriggerData(triggerStep!);
 
     if (this.testRun) {
       initialTriggerData = [initialTriggerData[0]];
@@ -53,6 +54,8 @@ class Processor {
       let fetchedActionData = {};
 
       for await (const step of steps) {
+        if (!step.appKey) continue;
+
         const appData = App.findOneByKey(step.appKey);
 
         const {
@@ -74,11 +77,11 @@ class Processor {
 
         const appInstance = new AppClass(
           appData,
-          connection.formattedData,
+          connection?.formattedData,
           computedParameters
         );
 
-        if (!isTrigger) {
+        if (!isTrigger && key) {
           const command = appInstance.actions[key];
           fetchedActionData = await command.run();
         }
@@ -107,17 +110,21 @@ class Processor {
       .orderBy('created_at', 'desc')
       .first();
 
-    return lastExecutionStepFromFirstExecution.dataOut;
+    return lastExecutionStepFromFirstExecution?.dataOut;
   }
 
   async getInitialTriggerData(step: Step) {
+    if (!step.appKey) return null;
+
     const appData = App.findOneByKey(step.appKey);
     const { appKey, connection, key, parameters: rawParameters = {} } = step;
+
+    if (!key) return null;
 
     const AppClass = (await import(`../apps/${appKey}`)).default;
     const appInstance = new AppClass(
       appData,
-      connection.formattedData,
+      connection?.formattedData,
       rawParameters
     );
 
@@ -149,30 +156,34 @@ class Processor {
     executionSteps: ExecutionSteps
   ): Step['parameters'] {
     const entries = Object.entries(parameters);
-    return entries.reduce((result, [key, value]: [string, string]) => {
-      const parts = value.split(Processor.variableRegExp);
+    return entries.reduce((result, [key, value]: [string, unknown]) => {
+      if (typeof value === 'string') {
+        const parts = value.split(Processor.variableRegExp);
 
-      const computedValue = parts
-        .map((part: string) => {
-          const isVariable = part.match(Processor.variableRegExp);
-          if (isVariable) {
-            const stepIdAndKeyPath = part.replace(/{{step.|}}/g, '') as string;
-            const [stepId, ...keyPaths] = stepIdAndKeyPath.split('.');
-            const keyPath = keyPaths.join('.');
-            const executionStep = executionSteps[stepId.toString() as string];
-            const data = executionStep?.dataOut;
-            const dataValue = get(data, keyPath);
-            return dataValue;
-          }
+        const computedValue = parts
+          .map((part: string) => {
+            const isVariable = part.match(Processor.variableRegExp);
+            if (isVariable) {
+              const stepIdAndKeyPath = part.replace(/{{step.|}}/g, '') as string;
+              const [stepId, ...keyPaths] = stepIdAndKeyPath.split('.');
+              const keyPath = keyPaths.join('.');
+              const executionStep = executionSteps[stepId.toString() as string];
+              const data = executionStep?.dataOut;
+              const dataValue = get(data, keyPath);
+              return dataValue;
+            }
 
-          return part;
-        })
-        .join('');
+            return part;
+          })
+          .join('');
 
-      return {
-        ...result,
-        [key]: computedValue,
-      };
+        return {
+          ...result,
+          [key]: computedValue,
+        };
+      }
+
+      return result;
     }, {});
   }
 }

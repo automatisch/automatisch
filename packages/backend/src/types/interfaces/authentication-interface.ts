@@ -1,10 +1,9 @@
-import type { IApp } from '@automatisch/types';
-import JSONObject from './json-object';
+import type { IApp, IJSONObject } from '@automatisch/types';
 
 export default interface AuthenticationInterface {
   appData: IApp;
   connectionData: IJSONObject;
   client: unknown;
-  verifyCredentials(): Promise<JSONObject>;
+  verifyCredentials(): Promise<IJSONObject>;
   isStillVerified(): Promise<boolean>;
 }

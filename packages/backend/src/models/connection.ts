@@ -9,10 +9,10 @@ import { IJSONObject } from '@automatisch/types';
 class Connection extends Base {
   id!: string;
   key!: string;
-  data: string;
-  formattedData!: IJSONObject;
+  data = '';
+  formattedData?: IJSONObject;
   userId!: string;
-  verified: boolean;
+  verified = false;
   count: number;
 
   static tableName = 'connections';
@@ -50,7 +50,7 @@ class Connection extends Base {
       appConfig.encryptionKey
     ).toString();
 
-    delete this['formattedData'];
+    delete this.formattedData;
   }
 
   decryptData(): void {

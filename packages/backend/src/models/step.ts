@@ -7,15 +7,15 @@ import type { IStep } from '@automatisch/types';
 class Step extends Base {
   id!: string;
   flowId!: string;
-  key: string;
-  appKey: string;
+  key?: string;
+  appKey?: string;
   type!: IStep["type"];
   connectionId?: string;
-  status: string;
-  position: number;
-  parameters: Record<string, unknown>;
+  status = 'incomplete';
+  position!: number;
+  parameters: Record<string, unknown> = {};
   connection?: Connection;
-  flow?: Flow;
+  flow: Flow;
   executionSteps?: [ExecutionStep];
 
   static tableName = 'steps';

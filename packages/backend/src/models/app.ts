@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { dirname, join } from 'path';
+import { IApp } from '@automatisch/types';
 import appInfoConverter from '../helpers/app-info-converter';
 
 class App {
@@ -7,7 +8,7 @@ class App {
   static folderPath = join(dirname(this.backendPath), 'apps');
   static list = fs.readdirSync(this.folderPath);
 
-  static findAll(name?: string): object[] {
+  static findAll(name?: string): IApp[] {
     if (!name) return this.list.map((name) => this.findOneByName(name));
 
     return this.list
@@ -15,7 +16,7 @@ class App {
       .map((name) => this.findOneByName(name));
   }
 
-  static findOneByName(name: string): object {
+  static findOneByName(name: string): IApp {
     const rawAppData = fs.readFileSync(
       this.folderPath + `/${name}/info.json`,
       'utf-8'
@@ -23,7 +24,7 @@ class App {
     return appInfoConverter(rawAppData);
   }
 
-  static findOneByKey(key: string): object {
+  static findOneByKey(key: string): IApp {
     const rawAppData = fs.readFileSync(
       this.folderPath + `/${key}/info.json`,
       'utf-8'

@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "esModuleInterop": true,
     "importHelpers": true,
+    "lib": ["es2021"],
     "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "dist",
     "rootDir": "src",
+    "skipLibCheck": true,
     "strict": true,
-    "target": "es2019",
+    "target": "es2021",
+    "traceResolution": false,
     "typeRoots": ["node_modules/@types", "./src/types"]
   },
   "include": ["src/**/*"]

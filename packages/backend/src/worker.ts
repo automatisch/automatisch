@@ -1,2 +1,2 @@
-import './config/database';
+import './config/orm';
 import './workers/processor';
