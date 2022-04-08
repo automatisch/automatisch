@@ -11,7 +11,6 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2021",
-    "traceResolution": false,
     "typeRoots": ["node_modules/@types", "./src/types"]
   },
   "include": ["src/**/*"]

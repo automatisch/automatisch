@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+    "dev": "nodemon --watch 'src/**/*.ts' --watch 'bin/**/*.ts' --exec 'ts-node' src/server.ts",
     "worker": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/worker.ts",
     "build": "tsc && yarn copy-statics",
+    "build:watch": "nodemon --watch 'src/**/*.ts' --watch 'bin/**/*.ts' --exec yarn build --ext ts",
     "start": "node dist/src/server.js",
     "test": "ava",
     "lint": "eslint . --ignore-path ../../.eslintignore",
@@ -53,7 +54,7 @@
     "twilio": "3.70.0",
     "twitch-js": "2.0.0-beta.42",
     "twitter-api-v2": "1.6.0",
-    "winston": "^3.3.3"
+    "winston": "^3.7.1"
   },
   "contributors": [
     {
@@ -64,11 +65,19 @@
   "homepage": "https://github.com/automatisch/automatisch#readme",
   "main": "dist/src/app",
   "directories": {
+    "bin": "bin",
     "src": "src",
     "test": "__tests__"
   },
   "files": [
-    "src"
+    "bin",
+    "src",
+    "server.js",
+    "server.d.ts",
+    "logger.js",
+    "logger.d.ts",
+    "database.js",
+    "database.d.ts"
   ],
   "repository": {
     "type": "git",
