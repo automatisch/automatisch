@@ -16,7 +16,7 @@
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
     "db:migrate": "knex migrate:latest",
-    "copy-statics": "copyfiles src/**/*.{graphql,json} dist"
+    "copy-statics": "copyfiles src/**/*.{graphql,json,svg} dist"
   },
   "dependencies": {
     "@automatisch/web": "0.1.0",
