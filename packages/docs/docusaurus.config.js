@@ -9,7 +9,7 @@ const config = {
   title: 'Automatisch Docs',
   tagline: 'Automatisch Docs',
   url: 'https://docs.automatisch.io',
-  baseUrl: '/',
+  baseUrl: process.env.BASE_URL ? process.env.BASE_URL : '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
