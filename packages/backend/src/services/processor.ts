@@ -133,13 +133,12 @@ class Processor {
       .orderBy('created_at', 'desc')
       .first();
 
-    const lastExecutionStepCratedAt = lastExecutionStep?.dataOut
-      ?.created_at as string;
+    const lastExecutionStepCreatedAt = lastExecutionStep?.createdAt as string;
     const flow = (await step.$relatedQuery('flow')) as Flow;
 
     const command = appInstance.triggers[key];
 
-    const startTime = new Date(lastExecutionStepCratedAt || flow.updatedAt);
+    const startTime = new Date(lastExecutionStepCreatedAt || flow.updatedAt);
     let fetchedData;
 
     if (this.testRun) {
