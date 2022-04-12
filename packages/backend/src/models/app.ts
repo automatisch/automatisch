@@ -1,11 +1,10 @@
 import fs from 'fs';
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { IApp } from '@automatisch/types';
 import appInfoConverter from '../helpers/app-info-converter';
 
 class App {
-  static backendPath = require.resolve('@automatisch/backend');
-  static folderPath = join(dirname(this.backendPath), 'apps');
+  static folderPath = join(__dirname, '../apps');
   static list = fs.readdirSync(this.folderPath);
 
   static findAll(name?: string): IApp[] {

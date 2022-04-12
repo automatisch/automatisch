@@ -11,7 +11,8 @@
     "paths": {
       "*": [
         "node_modules/*",
-        "src/types/*"
+        "src/types/*",
+        "src/apps/*"
       ]
     },
     "skipLibCheck": true,
@@ -20,7 +21,7 @@
     "typeRoots": [
       "node_modules/@types",
       "./src/types",
-      "./src/apps/*/types"
+      "./src/apps"
     ]
   },
   "include": [

@@ -214,5 +214,23 @@
         }
       ]
     }
+  ],
+  "triggers": [
+    {
+      "name": "New favorite photo",
+      "key": "favoritePhoto",
+      "interval": "15m",
+      "description": "Will be triggered when you favorite a photo.",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
+    }
   ]
 }

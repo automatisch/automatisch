@@ -55,15 +55,23 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
       const step = steps[stepIndex];
       const variables = computeAuthStepVariables(step.arguments, response);
 
-      const stepResponse = await processStep(step, variables);
+      try {
+        const stepResponse = await processStep(step, variables);
 
-      response[step.name] = stepResponse;
+        response[step.name] = stepResponse;
+      } catch (err) {
+        console.log(err);
+        break;
+      }
 
       stepIndex++;
+
+      if (stepIndex === steps.length) {
+        onClose();
+      }
     }
 
     setInProgress(false);
-    onClose?.();
   }, [connectionId, key, reconnectionSteps, authenticationSteps, onClose]);
 
   return (

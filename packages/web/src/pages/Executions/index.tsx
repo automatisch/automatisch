@@ -25,7 +25,11 @@ export default function Executions(): React.ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
 
-  const { data, refetch } = useQuery(GET_EXECUTIONS, { variables: getLimitAndOffset(page), fetchPolicy: 'cache-and-network' });
+  const { data, refetch } = useQuery(GET_EXECUTIONS, {
+    variables: getLimitAndOffset(page),
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 5000,
+  });
   const getExecutions = data?.getExecutions || {};
   const { pageInfo, edges } = getExecutions;
 
