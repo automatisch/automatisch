@@ -13,7 +13,7 @@ class Step extends Base {
   connectionId?: string;
   status = 'incomplete';
   position!: number;
-  parameters: Record<string, unknown> = {};
+  parameters: Record<string, unknown>;
   connection?: Connection;
   flow: Flow;
   executionSteps?: [ExecutionStep];

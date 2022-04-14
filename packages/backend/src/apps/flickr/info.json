@@ -218,13 +218,52 @@
   "triggers": [
     {
       "name": "New favorite photo",
-      "key": "favoritePhoto",
+      "key": "newFavoritePhoto",
       "interval": "15m",
-      "description": "Will be triggered when you favorite a photo.",
+      "description": "Triggers when you favorite a photo.",
       "substeps": [
         {
           "key": "chooseAccount",
           "name": "Choose account"
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
+    },
+    {
+      "name": "New photo in album",
+      "key": "newPhotoInAlbum",
+      "interval": "15m",
+      "description": "Triggers when you add a new photo in an album.",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "chooseTrigger",
+          "name": "Set up a trigger",
+          "arguments": [
+            {
+              "label": "Album",
+              "key": "album",
+              "type": "dropdown",
+              "required": true,
+              "variables": false,
+              "source": {
+                "type": "query",
+                "name": "getData",
+                "arguments": [
+                  {
+                    "name": "key",
+                    "value": "listAlbums"
+                  }
+                ]
+              }
+            }
+          ]
         },
         {
           "key": "testStep",
