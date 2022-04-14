@@ -367,7 +367,21 @@ type TriggerSubstepArgument {
   label: String
   key: String
   type: String
+  description: String
   required: Boolean
+  variables: Boolean
+  source: TriggerSubstepArgumentSource
+}
+
+type TriggerSubstepArgumentSource {
+  type: String
+  name: String
+  arguments: [TriggerSubstepArgumentSourceArgument]
+}
+
+type TriggerSubstepArgumentSourceArgument {
+  name: String
+  value: String
 }
 
 type User {

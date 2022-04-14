@@ -24,7 +24,7 @@ export default class FavoritePhoto {
   }
 
   async run(startTime: Date) {
-    const { photos } = (await this.client.favorites.getList({ per_page: 1, })).body;
+    const { photos } = (await this.client.favorites.getList()).body;
     const favPhotos = [...photos.photo];
     const newFavPhotos = [];
 
@@ -45,7 +45,7 @@ export default class FavoritePhoto {
 
       if (isLastItem && page < photos.pages) {
         page = page + 1;
-        const { photos } = (await this.client.favorites.getList({ page, per_page: 1, })).body;
+        const { photos } = (await this.client.favorites.getList({ page, })).body;
         favPhotos.push(...photos.photo);
       }
     }
