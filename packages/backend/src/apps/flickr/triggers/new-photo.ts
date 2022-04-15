@@ -1,11 +1,12 @@
+import { DateTime } from 'luxon';
 import FlickrApi from 'flickr-sdk';
 import { IJSONObject } from '@automatisch/types';
 
-export default class NewPhotoInAlbum {
+export default class NewPhoto {
   client?: typeof FlickrApi;
   connectionData?: IJSONObject;
-  albumId?: string;
   extraFields = [
+    'description',
     'license',
     'date_upload',
     'date_taken',
@@ -23,11 +24,16 @@ export default class NewPhotoInAlbum {
     'url_sq',
     'url_t',
     'url_s',
+    'url_q',
     'url_m',
-    'url_o'
+    'url_n',
+    'url_z',
+    'url_c',
+    'url_l',
+    'url_o',
   ].join(',');
 
-  constructor(connectionData: IJSONObject, parameters: IJSONObject) {
+  constructor(connectionData: IJSONObject) {
     if (
       connectionData.consumerKey &&
       connectionData.consumerSecret &&
@@ -45,35 +51,37 @@ export default class NewPhotoInAlbum {
 
       this.connectionData = connectionData;
     }
-
-    if (parameters?.album) {
-      this.albumId = parameters.album as string;
-    }
   }
 
-  async getAlbumPhotos(options: { perPage?: number, page?: number } = {}) {
-    const { perPage, page } = options;
+  async getPhotos(options: { perPage?: number, page?: number, minUploadDate?: string } = {}) {
+    const { perPage, page, minUploadDate } = options;
     const payload = {
       page,
       per_page: perPage,
-      photoset_id: this.albumId,
       user_id: this.connectionData.userId,
       extras: this.extraFields,
+      min_upload_date: minUploadDate,
     };
-    const { photoset } = (await this.client.photosets.getPhotos(payload)).body;
+    const { photos } = (await this.client.photos.search(payload)).body;
 
-    return photoset;
+    return photos;
   }
 
-  async run() {
-    // TODO: implement pagination on undated entries
-    const { photo } = await this.getAlbumPhotos({ page: 1 });
+  async run(startTime: Date) {
+    const minUploadDate = DateTime.fromJSDate(startTime).toSeconds().toString();
+    const photos = await this.getPhotos({ page: 1, minUploadDate });
+    const allPhotos = [...photos.photo];
 
-    return photo;
+    for (let page = photos.page + 1; page <= photos.pages; page++) {
+      const photos = (await this.getPhotos({ page, minUploadDate }));
+      allPhotos.push(...photos.photo);
+    }
+
+    return allPhotos;
   }
 
-  async testRun() {
-    const { photo } = await this.getAlbumPhotos({ perPage: 1 });
+  async testRun(startTime: Date) {
+    const { photo } = await this.getPhotos({ perPage: 1 });
 
     return photo;
   }
