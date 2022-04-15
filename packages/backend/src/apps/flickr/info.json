@@ -286,6 +286,22 @@
           "name": "Test trigger"
         }
       ]
+    },
+    {
+      "name": "New album",
+      "key": "newAlbum",
+      "interval": "15m",
+      "description": "Triggers when you create a new album.",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
     }
   ]
 }
