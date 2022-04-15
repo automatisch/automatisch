@@ -270,6 +270,22 @@
           "name": "Test trigger"
         }
       ]
+    },
+    {
+      "name": "New photo",
+      "key": "newPhoto",
+      "interval": "15m",
+      "description": "Triggers when you add a new photo.",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
     }
   ]
 }
