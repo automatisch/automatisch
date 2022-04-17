@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import FlickrApi from 'flickr-sdk';
 import { IJSONObject } from '@automatisch/types';
 
-export default class FavoritePhoto {
+export default class NewFavoritePhoto {
   client?: typeof FlickrApi;
 
   constructor(connectionData: IJSONObject) {
