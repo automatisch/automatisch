@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useMutation } from '@apollo/client';
+import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
@@ -59,7 +60,9 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
 
           {response && (
-            <JSONViewer data={response} />
+            <Box sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }}>
+              <JSONViewer data={response} />
+            </Box>
           )}
 
           <Button
