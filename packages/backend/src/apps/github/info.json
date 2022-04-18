@@ -214,5 +214,23 @@
         }
       ]
     }
+  ],
+  "triggers": [
+    {
+      "name": "New repository",
+      "key": "newRepository",
+      "interval": "15m",
+      "description": "Triggers when a new repository is created",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
+    }
   ]
 }
