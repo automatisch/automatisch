@@ -13,7 +13,11 @@ import {
 export default class Authentication implements IAuthentication {
   appData: IApp;
   connectionData: IJSONObject;
-  scopes: string[] = ['repo'];
+  scopes: string[] = [
+    'read:org',
+    'repo',
+    'user',
+  ];
   client: {
     getWebFlowAuthorizationUrl: typeof getWebFlowAuthorizationUrl;
     exchangeWebFlowCode: typeof exchangeWebFlowCode;

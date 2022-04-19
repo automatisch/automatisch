@@ -231,6 +231,22 @@
           "name": "Test trigger"
         }
       ]
+    },
+    {
+      "name": "New organization",
+      "key": "newOrganization",
+      "interval": "15m",
+      "description": "Triggers when a new organization is created",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
     }
   ]
 }
