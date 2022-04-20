@@ -6,10 +6,12 @@ import {
 } from '@automatisch/types';
 import Authentication from './authentication';
 import Triggers from './triggers';
+import Data from './data';
 
 export default class Github implements IService {
   authenticationClient: IAuthentication;
   triggers: Triggers;
+  data: Data;
 
   constructor(
     appData: IApp,
@@ -17,6 +19,7 @@ export default class Github implements IService {
     parameters: IJSONObject
   ) {
     this.authenticationClient = new Authentication(appData, connectionData);
+    this.data = new Data(connectionData);
     this.triggers = new Triggers(connectionData, parameters);
   }
 }
