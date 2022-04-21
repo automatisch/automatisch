@@ -4,7 +4,7 @@ import Chip from '@mui/material/Chip';
 import Popper from '@mui/material/Popper';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import { Controller, Control, FieldValues, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Editor, Transforms, Range, createEditor } from 'slate';
 import {
   Slate,

@@ -75,15 +75,15 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
         name={computedName}
         fullWidth
         disablePortal
-        disableClearable={true}
+        disableClearable={required}
         options={options}
         renderInput={(params) => <MuiTextField {...params} label={label} />}
         value={getOption(options, value)}
         onChange={console.log}
+        description={description}
       />
     );
   }
-
 
   if (type === 'string') {
     if (variables) {
