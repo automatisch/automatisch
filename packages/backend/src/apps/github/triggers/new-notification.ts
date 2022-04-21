@@ -65,7 +65,7 @@ export default class NewNotification {
 
   async run(startTime: Date) {
     const options = {
-      since: DateTime.fromJSDate(startTime).toLocaleString(DateTime.TIME_24_SIMPLE),
+      since: DateTime.fromJSDate(startTime).toISO(),
     };
 
     if (this.hasRepo) {
