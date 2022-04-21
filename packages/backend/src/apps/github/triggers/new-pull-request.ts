@@ -32,13 +32,15 @@ export default class NewPullRequest {
   }
 
   async run(startTime: Date) {
-    const iterator = await this.client.paginate.iterator(this.client.rest.pulls.list, this.options);
+    const iterator = await this.client.paginate.iterator(
+      this.client.rest.pulls.list,
+      this.options
+    );
     const newPullRequests = [];
 
     const startTimeDateObject = DateTime.fromJSDate(startTime);
 
-    pullRequestIterator:
-    for await (const { data: pullRequests } of iterator) {
+    pullRequestIterator: for await (const { data: pullRequests } of iterator) {
       for (const pullRequest of pullRequests) {
         const createdAtDateObject = DateTime.fromISO(pullRequest.created_at);
 
