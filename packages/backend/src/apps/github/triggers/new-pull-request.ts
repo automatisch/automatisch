@@ -2,7 +2,7 @@ import { Octokit } from 'octokit';
 import { DateTime } from 'luxon';
 import { IJSONObject } from '@automatisch/types';
 
-export default class NewBranch {
+export default class NewPullRequest {
   client?: Octokit;
   repoOwner?: string;
   repo?: string;
