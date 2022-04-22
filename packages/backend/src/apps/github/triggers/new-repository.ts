@@ -16,7 +16,7 @@ export default class NewRepository {
 
   async run(startTime: Date) {
     const options = {
-      since: DateTime.fromJSDate(startTime).toLocaleString(DateTime.TIME_24_SIMPLE),
+      since: DateTime.fromJSDate(startTime).toISO(),
     };
     return await this.client.paginate(this.client.rest.repos.listForAuthenticatedUser, options);
   }
