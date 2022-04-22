@@ -7,6 +7,7 @@ import NewPullRequest from './triggers/new-pull-request';
 import NewWatcher from './triggers/new-watcher';
 import NewMilestone from './triggers/new-milestone';
 import NewCommitComment from './triggers/new-commit-comment';
+import NewLabel from './triggers/new-label';
 
 export default class Triggers {
   newRepository: NewRepository;
@@ -17,6 +18,7 @@ export default class Triggers {
   newWatcher: NewWatcher;
   newMilestone: NewMilestone;
   newCommitComment: NewCommitComment;
+  newLabel: NewLabel;
 
   constructor(connectionData: IJSONObject, parameters: IJSONObject) {
     this.newRepository = new NewRepository(connectionData);
@@ -27,5 +29,6 @@ export default class Triggers {
     this.newWatcher = new NewWatcher(connectionData, parameters);
     this.newMilestone = new NewMilestone(connectionData, parameters);
     this.newCommitComment = new NewCommitComment(connectionData, parameters);
+    this.newLabel = new NewLabel(connectionData, parameters);
   }
 }
