@@ -4,6 +4,7 @@ import NewOrganization from './triggers/new-organization';
 import NewBranch from './triggers/new-branch';
 import NewNotification from './triggers/new-notification';
 import NewPullRequest from './triggers/new-pull-request';
+import NewWatcher from './triggers/new-watcher';
 
 export default class Triggers {
   newRepository: NewRepository;
@@ -11,6 +12,7 @@ export default class Triggers {
   newBranch: NewBranch;
   newNotification: NewNotification;
   newPullRequest: NewPullRequest;
+  newWatcher: NewWatcher;
 
   constructor(connectionData: IJSONObject, parameters: IJSONObject) {
     this.newRepository = new NewRepository(connectionData);
@@ -18,5 +20,6 @@ export default class Triggers {
     this.newBranch = new NewBranch(connectionData, parameters);
     this.newNotification = new NewNotification(connectionData, parameters);
     this.newPullRequest = new NewPullRequest(connectionData, parameters);
+    this.newWatcher = new NewWatcher(connectionData, parameters);
   }
 }
