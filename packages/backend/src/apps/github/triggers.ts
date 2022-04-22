@@ -9,6 +9,7 @@ import NewMilestone from './triggers/new-milestone';
 import NewCommitComment from './triggers/new-commit-comment';
 import NewLabel from './triggers/new-label';
 import NewCollaborator from './triggers/new-collaborator';
+import NewRelease from './triggers/new-release';
 
 export default class Triggers {
   newRepository: NewRepository;
@@ -21,6 +22,7 @@ export default class Triggers {
   newCommitComment: NewCommitComment;
   newLabel: NewLabel;
   newCollaborator: NewCollaborator;
+  newRelease: NewRelease;
 
   constructor(connectionData: IJSONObject, parameters: IJSONObject) {
     this.newRepository = new NewRepository(connectionData);
@@ -33,5 +35,6 @@ export default class Triggers {
     this.newCommitComment = new NewCommitComment(connectionData, parameters);
     this.newLabel = new NewLabel(connectionData, parameters);
     this.newCollaborator = new NewCollaborator(connectionData, parameters);
+    this.newRelease = new NewRelease(connectionData, parameters);
   }
 }
