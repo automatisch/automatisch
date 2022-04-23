@@ -15,7 +15,7 @@ type Option = {
   value: string;
 }
 
-const getOption = (options: readonly Option[], value: string) => options.find(option => option.value === value);
+const getOption = (options: readonly Option[], value: string) => options.find(option => option.value === value) || null;
 
 function ControlledAutocomplete(props: ControlledAutocompleteProps): React.ReactElement {
   const { control } = useFormContext();
@@ -28,10 +28,9 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
     onBlur,
     onChange,
     description,
+    options = [],
     ...autocompleteProps
   } = props;
-
-  if (!autocompleteProps.options) return (<React.Fragment />);
 
   return (
     <Controller
@@ -40,13 +39,14 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
       defaultValue={defaultValue || ''}
       control={control}
       shouldUnregister={shouldUnregister}
-      render={({ field: { ref, onChange: controllerOnChange, onBlur: controllerOnBlur, ...field } }) => (
+      render={({ field: { ref, onChange: controllerOnChange, onBlur: controllerOnBlur, ...field }, fieldState }) => (
         <div>
           {/* encapsulated with an element such as div to vertical spacing delegated from parent */}
           <Autocomplete
             {...autocompleteProps}
             {...field}
-            value={getOption(autocompleteProps.options, field.value)}
+            options={options}
+            value={getOption(options, field.value)}
             onChange={(event, selectedOption, reason, details) => {
               const typedSelectedOption = selectedOption as Option;
               if (typedSelectedOption?.value) {
@@ -63,8 +63,9 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
 
           <FormHelperText
             variant="outlined"
+            error={Boolean(fieldState.isTouched && fieldState.error)}
           >
-            {description}
+            {fieldState.isTouched ? fieldState.error?.message || description : description}
           </FormHelperText>
         </div>
       )}

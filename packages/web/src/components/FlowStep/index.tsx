@@ -10,7 +10,10 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import type { IApp, IField, IStep } from '@automatisch/types';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import type { BaseSchema } from 'yup';
+import type { IApp, IField, IStep, ISubstep } from '@automatisch/types';
 
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
@@ -43,10 +46,57 @@ type FlowStepProps = {
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
 
+function generateValidationSchema(substeps: ISubstep[]) {
+  const fieldValidations = substeps?.reduce((allValidations, { arguments: args }) => {
+    if (!args || !Array.isArray(args)) return allValidations;
+
+    const substepArgumentValidations: Record<string, BaseSchema> = {};
+
+    for (const arg of args) {
+      const { key, required, dependsOn } = arg;
+
+      // base validation for the field if not exists
+      if (!substepArgumentValidations[key]) {
+        substepArgumentValidations[key] = yup.string();
+      }
+
+      if (typeof substepArgumentValidations[key] === 'object') {
+        // if the field is required, add the required validation
+        if (required) {
+          substepArgumentValidations[key] = substepArgumentValidations[key].required(`${key} is required.`);
+        }
+
+        // if the field depends on another field, add the dependsOn required validation
+        if (dependsOn?.length > 0) {
+          for (const dependsOnKey of dependsOn) {
+            // TODO: make `dependsOnKey` agnostic to the field. However, nested validation schema is not supported.
+            // So the fields under the `parameters` key are subject to their siblings only and thus, `parameters.` is removed.
+            substepArgumentValidations[key] = substepArgumentValidations[key].when(`${dependsOnKey.replace('parameters.', '')}`, {
+              is: (value: string) => Boolean(value) === false,
+              then: (schema) => schema.required(`We're having trouble loading '${key}' data as required field '${dependsOnKey}' is missing.`),
+            });
+          }
+        }
+      }
+    }
+
+    return {
+      ...allValidations,
+      ...substepArgumentValidations,
+    }
+  }, {});
+
+  const validationSchema = yup.object({
+    parameters: yup.object(fieldValidations),
+  });
+
+  return yupResolver(validationSchema);
+};
+
 export default function FlowStep(
   props: FlowStepProps
 ): React.ReactElement | null {
-  const { collapsed, index, onChange } = props;
+  const { collapsed, onChange } = props;
   const contextButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const step: IStep = props.step;
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -102,6 +152,8 @@ export default function FlowStep(
   const handleSubmit = (val: any) => {
     handleChange({ step: val as IStep });
   };
+
+  const stepValidationSchema = React.useMemo(() => generateValidationSchema(substeps), [substeps]);
 
   if (!apps) return null;
 
@@ -171,7 +223,11 @@ export default function FlowStep(
                 stepWithTestExecutionsData?.getStepWithTestExecutions as IStep[]
               }
             >
-              <Form defaultValues={step} onSubmit={handleSubmit}>
+              <Form
+                defaultValues={step}
+                onSubmit={handleSubmit}
+                resolver={stepValidationSchema}
+              >
                 <ChooseAppAndEventSubstep
                   expanded={currentSubstep === 0}
                   substep={{ name: 'Choose app & event', arguments: [] }}

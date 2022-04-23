@@ -85,6 +85,7 @@ export interface IFieldDropdown {
   clickToCopy: boolean;
   name: string;
   variables: boolean;
+  dependsOn: string[];
   source: {
     type: string;
     name: string;
@@ -108,6 +109,7 @@ export interface IFieldText {
   clickToCopy: boolean;
   name: string;
   variables: boolean;
+  dependsOn: string[];
 }
 
 type IField = IFieldDropdown | IFieldText;

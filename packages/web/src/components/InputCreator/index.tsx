@@ -3,6 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 import MuiTextField from '@mui/material/TextField';
 import type { IField, IFieldDropdown, IJSONObject } from '@automatisch/types';
 
+import useDynamicData from 'hooks/useDynamicData';
 import { GET_DATA } from 'graphql/queries/get-data';
 import PowerInput from 'components/PowerInput';
 import TextField from 'components/TextField';
@@ -26,7 +27,6 @@ type Option = {
   value: string;
 };
 
-const computeArguments = (args: IFieldDropdown["source"]["arguments"]): IJSONObject => args.reduce((result, { name, value }) => ({ ...result, [name as string]: value as string }), {});
 const optionGenerator = (options: RawOption[]): Option[] => options?.map(({ name, value }) => ({ label: name as string, value: value as string }));
 const getOption = (options: Option[], value: string) => options?.find(option => option.value === value);
 
@@ -51,24 +51,11 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     type,
   } = schema;
 
-  const [getData, { called, data }] = useLazyQuery(GET_DATA);
-
-  React.useEffect(() => {
-    if (schema.type === 'dropdown' && stepId && schema.source && !called) {
-      getData({
-        variables: {
-          stepId,
-          ...computeArguments(schema.source.arguments),
-        }
-      })
-    }
-  }, [getData, called, stepId, schema]);
-
-
+  const { data, loading } = useDynamicData(stepId, schema);
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
 
   if (type === 'dropdown') {
-    const options = optionGenerator(data?.getData);
+    const options = optionGenerator(data);
 
     return (
       <ControlledAutocomplete
@@ -81,6 +68,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
         value={getOption(options, value)}
         onChange={console.log}
         description={description}
+        loading={loading}
       />
     );
   }

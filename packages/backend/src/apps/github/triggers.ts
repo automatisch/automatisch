@@ -6,6 +6,7 @@ import NewNotification from './triggers/new-notification';
 import NewPullRequest from './triggers/new-pull-request';
 import NewWatcher from './triggers/new-watcher';
 import NewMilestone from './triggers/new-milestone';
+import NewCommit from './triggers/new-commit';
 import NewCommitComment from './triggers/new-commit-comment';
 import NewLabel from './triggers/new-label';
 import NewCollaborator from './triggers/new-collaborator';
@@ -19,6 +20,7 @@ export default class Triggers {
   newPullRequest: NewPullRequest;
   newWatcher: NewWatcher;
   newMilestone: NewMilestone;
+  newCommit: NewCommit;
   newCommitComment: NewCommitComment;
   newLabel: NewLabel;
   newCollaborator: NewCollaborator;
@@ -32,6 +34,7 @@ export default class Triggers {
     this.newPullRequest = new NewPullRequest(connectionData, parameters);
     this.newWatcher = new NewWatcher(connectionData, parameters);
     this.newMilestone = new NewMilestone(connectionData, parameters);
+    this.newCommit = new NewCommit(connectionData, parameters);
     this.newCommitComment = new NewCommitComment(connectionData, parameters);
     this.newLabel = new NewLabel(connectionData, parameters);
     this.newCollaborator = new NewCollaborator(connectionData, parameters);

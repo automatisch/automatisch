@@ -2,6 +2,8 @@ import { Octokit } from 'octokit';
 import { DateTime } from 'luxon';
 import { IJSONObject } from '@automatisch/types';
 
+import { assignOwnerAndRepo } from '../utils';
+
 export default class NewNotification {
   client?: Octokit;
   connectionData?: IJSONObject;
@@ -19,12 +21,7 @@ export default class NewNotification {
       });
     }
 
-    if (parameters?.repo) {
-      const [owner, repo] = (parameters.repo as string).split('/');
-
-      this.repoOwner = owner;
-      this.repo = repo;
-    }
+    assignOwnerAndRepo(this, parameters?.repo as string);
   }
 
   get hasRepo() {

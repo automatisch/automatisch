@@ -13,7 +13,7 @@ type Query {
     limit: Int!
     offset: Int!
   ): ExecutionStepConnection
-  getData(stepId: String!, key: String!): JSONObject
+  getData(stepId: String!, key: String!, parameters: JSONObject): JSONObject
   getCurrentUser: User
 }
 
@@ -67,6 +67,7 @@ type ActionSubstepArgument {
   required: Boolean
   variables: Boolean
   source: ActionSubstepArgumentSource
+  dependsOn: [String]
 }
 
 type ActionSubstepArgumentSource {
@@ -371,6 +372,7 @@ type TriggerSubstepArgument {
   required: Boolean
   variables: Boolean
   source: TriggerSubstepArgumentSource
+  dependsOn: [String]
 }
 
 type TriggerSubstepArgumentSource {

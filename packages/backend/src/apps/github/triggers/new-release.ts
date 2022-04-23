@@ -2,6 +2,8 @@ import { Octokit } from 'octokit';
 import { DateTime } from 'luxon';
 import { IJSONObject } from '@automatisch/types';
 
+import { assignOwnerAndRepo } from '../utils';
+
 export default class NewRelease {
   client?: Octokit;
   repoOwner?: string;
@@ -14,12 +16,7 @@ export default class NewRelease {
       });
     }
 
-    if (parameters?.repo) {
-      const [owner, repo] = (parameters.repo as string).split('/');
-
-      this.repoOwner = 'facebook' || owner;
-      this.repo = 'react' || repo;
-    }
+    assignOwnerAndRepo(this, parameters?.repo as string);
   }
 
   get options() {

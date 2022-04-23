@@ -1,9 +1,11 @@
+import { IJSONObject } from '@automatisch/types';
 import App from '../../models/app';
 import Context from '../../types/express/context';
 
 type Params = {
   stepId: string;
   key: string;
+  parameters: IJSONObject;
 };
 
 const getData = async (_parent: unknown, params: Params, context: Context) => {
@@ -21,7 +23,7 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
   const appData = App.findOneByKey(step.appKey);
   const AppClass = (await import(`../../apps/${step.appKey}`)).default;
 
-  const appInstance = new AppClass(appData, connection.formattedData);
+  const appInstance = new AppClass(appData, connection.formattedData, params.parameters);
   const command = appInstance.data[params.key];
   const fetchedData = await command.run();
 

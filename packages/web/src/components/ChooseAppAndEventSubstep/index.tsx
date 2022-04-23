@@ -88,6 +88,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
             ...step,
             key: '',
             appKey,
+            parameters: {},
           },
         });
       }
