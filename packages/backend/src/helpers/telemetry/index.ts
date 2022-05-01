@@ -2,6 +2,7 @@ import Analytics, { apiObject } from '@rudderstack/rudder-sdk-node';
 import organizationId from './organization-id';
 import instanceId from './instance-id';
 import appConfig from '../../config/app';
+import Step from '../../models/step';
 
 const WRITE_KEY = '284Py4VgK2MsNYV7xlKzyrALx0v';
 const DATA_PLANE_URL = 'https://telemetry.automatisch.io/v1/batch';
@@ -31,11 +32,28 @@ class Telemetry {
     });
   }
 
-  // Example implementation of telemetry methods.
-  // TODO: Revise properties for the step.
-  // stepUpdated(key: string, appKey: string) {
-  //   this.track('Step updated', { key, appKey });
-  // }
+  stepCreated(step: Step) {
+    this.track('stepCreated', {
+      stepId: step.id,
+      flowId: step.flowId,
+      createdAt: step.createdAt,
+      updatedAt: step.updatedAt,
+    });
+  }
+
+  stepUpdated(step: Step) {
+    this.track('stepUpdated', {
+      stepId: step.id,
+      flowId: step.flowId,
+      key: step.key,
+      appKey: step.appKey,
+      type: step.type,
+      position: step.position,
+      status: step.status,
+      createdAt: step.createdAt,
+      updatedAt: step.updatedAt,
+    });
+  }
 }
 
 const telemetry = new Telemetry();

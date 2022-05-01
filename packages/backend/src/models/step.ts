@@ -1,15 +1,17 @@
+import { QueryContext, ModelOptions } from 'objection';
 import Base from './base';
 import Flow from './flow';
 import Connection from './connection';
 import ExecutionStep from './execution-step';
 import type { IStep } from '@automatisch/types';
+import Telemetry from '../helpers/telemetry';
 
 class Step extends Base {
   id!: string;
   flowId!: string;
   key?: string;
   appKey?: string;
-  type!: IStep["type"];
+  type!: IStep['type'];
   connectionId?: string;
   status = 'incomplete';
   position!: number;
@@ -63,6 +65,16 @@ class Step extends Base {
       },
     },
   });
+
+  async $afterInsert(queryContext: QueryContext) {
+    await super.$afterInsert(queryContext);
+    Telemetry.stepCreated(this);
+  }
+
+  async $afterUpdate(opt: ModelOptions, queryContext: QueryContext) {
+    await super.$afterUpdate(opt, queryContext);
+    Telemetry.stepUpdated(this);
+  }
 }
 
 export default Step;
