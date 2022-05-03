@@ -21,6 +21,7 @@
   "dependencies": {
     "@automatisch/web": "0.1.0",
     "@bull-board/express": "^3.10.1",
+    "@gitbeaker/node": "^35.6.0",
     "@graphql-tools/graphql-file-loader": "^7.3.4",
     "@graphql-tools/load": "^7.5.2",
     "@octokit/oauth-methods": "^1.2.6",

@@ -133,6 +133,7 @@ enum AvailableAppsEnumType {
   firebase
   flickr
   github
+  gitlab
   postgresql
   smtp
   twilio
