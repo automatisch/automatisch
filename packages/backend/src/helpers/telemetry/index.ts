@@ -3,6 +3,7 @@ import organizationId from './organization-id';
 import instanceId from './instance-id';
 import appConfig from '../../config/app';
 import Step from '../../models/step';
+import Flow from '../../models/flow';
 
 const WRITE_KEY = '284Py4VgK2MsNYV7xlKzyrALx0v';
 const DATA_PLANE_URL = 'https://telemetry.automatisch.io/v1/batch';
@@ -52,6 +53,26 @@ class Telemetry {
       status: step.status,
       createdAt: step.createdAt,
       updatedAt: step.updatedAt,
+    });
+  }
+
+  flowCreated(flow: Flow) {
+    this.track('flowCreated', {
+      flowId: flow.id,
+      name: flow.name,
+      active: flow.active,
+      createdAt: flow.createdAt,
+      updatedAt: flow.updatedAt,
+    });
+  }
+
+  flowUpdated(flow: Flow) {
+    this.track('flowUpdated', {
+      flowId: flow.id,
+      name: flow.name,
+      active: flow.active,
+      createdAt: flow.createdAt,
+      updatedAt: flow.updatedAt,
     });
   }
 }
