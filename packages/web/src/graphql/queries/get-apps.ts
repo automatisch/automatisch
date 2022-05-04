@@ -63,6 +63,7 @@ export const GET_APPS = gql`
             required
             description
             variables
+            dependsOn
             source {
               type
               name
@@ -88,6 +89,7 @@ export const GET_APPS = gql`
             required
             description
             variables
+            dependsOn
             source {
               type
               name

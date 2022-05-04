@@ -19,7 +19,7 @@ export default class Github implements IService {
     parameters: IJSONObject
   ) {
     this.authenticationClient = new Authentication(appData, connectionData);
-    this.data = new Data(connectionData);
+    this.data = new Data(connectionData, parameters);
     this.triggers = new Triggers(connectionData, parameters);
   }
 }

@@ -2,6 +2,8 @@ import { Octokit } from 'octokit';
 import { DateTime } from 'luxon';
 import { IJSONObject } from '@automatisch/types';
 
+import { assignOwnerAndRepo } from '../utils';
+
 export default class NewMilestone {
   client?: Octokit;
   repoOwner?: string;
@@ -14,12 +16,7 @@ export default class NewMilestone {
       });
     }
 
-    if (parameters?.repo) {
-      const [owner, repo] = (parameters.repo as string).split('/');
-
-      this.repoOwner = owner;
-      this.repo = repo;
-    }
+    assignOwnerAndRepo(this, parameters?.repo as string);
   }
 
   get options() {

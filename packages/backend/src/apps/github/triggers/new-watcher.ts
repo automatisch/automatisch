@@ -1,6 +1,8 @@
 import { Octokit } from 'octokit';
 import { IJSONObject } from '@automatisch/types';
 
+import { assignOwnerAndRepo } from '../utils';
+
 export default class NewWatcher {
   client?: Octokit;
   repoOwner?: string;
@@ -13,12 +15,7 @@ export default class NewWatcher {
       });
     }
 
-    if (parameters?.repo) {
-      const [owner, repo] = (parameters.repo as string).split('/');
-
-      this.repoOwner = owner;
-      this.repo = repo;
-    }
+    assignOwnerAndRepo(this, parameters?.repo as string);
   }
 
   get options() {

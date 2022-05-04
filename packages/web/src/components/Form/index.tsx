@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormProvider, useForm, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
+import { FormProvider, useForm, useWatch, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import type { UseFormProps } from 'react-hook-form';
 
 type FormProps = {
@@ -20,14 +20,25 @@ export default function Form(props: FormProps): React.ReactElement {
     defaultValues,
     resolver,
     render,
-    mode,
+    mode = 'all',
     ...formProps
   } = props;
+
   const methods: UseFormReturn = useForm({
     defaultValues,
+    reValidateMode: 'onBlur',
     resolver,
     mode,
   });
+
+  const form = useWatch({ control: methods.control, });
+
+  /**
+   * For fields having `dependsOn` fields, we need to re-validate the form.
+   */
+  React.useEffect(() => {
+    methods.trigger();
+  }, [methods.trigger, form]);
 
   React.useEffect(() => {
     methods.reset(defaultValues);
