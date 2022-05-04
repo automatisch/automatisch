@@ -24,11 +24,7 @@ const createAuthData = async (
 
   if (!connection.formattedData) { return null; }
 
-  const appInstance = new appClass(appData, {
-    consumerKey: connection.formattedData.consumerKey,
-    consumerSecret: connection.formattedData.consumerSecret,
-  });
-
+  const appInstance = new appClass(appData, connection.formattedData);
   const authLink = await appInstance.authenticationClient.createAuthData();
 
   await connection.$query().patch({
