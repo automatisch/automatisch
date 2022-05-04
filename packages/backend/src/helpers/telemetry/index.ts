@@ -5,6 +5,7 @@ import appConfig from '../../config/app';
 import Step from '../../models/step';
 import Flow from '../../models/flow';
 import Execution from '../../models/execution';
+import ExecutionStep from '../../models/execution-step';
 
 const WRITE_KEY = '284Py4VgK2MsNYV7xlKzyrALx0v';
 const DATA_PLANE_URL = 'https://telemetry.automatisch.io/v1/batch';
@@ -84,6 +85,17 @@ class Telemetry {
       testRun: execution.testRun,
       createdAt: execution.createdAt,
       updatedAt: execution.updatedAt,
+    });
+  }
+
+  executionStepCreated(executionStep: ExecutionStep) {
+    this.track('executionStepCreated', {
+      executionStepId: executionStep.id,
+      executionId: executionStep.executionId,
+      stepId: executionStep.stepId,
+      status: executionStep.status,
+      createdAt: executionStep.createdAt,
+      updatedAt: executionStep.updatedAt,
     });
   }
 }
