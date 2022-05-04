@@ -6,6 +6,7 @@ import Step from '../../models/step';
 import Flow from '../../models/flow';
 import Execution from '../../models/execution';
 import ExecutionStep from '../../models/execution-step';
+import Connection from '../../models/connection';
 
 const WRITE_KEY = '284Py4VgK2MsNYV7xlKzyrALx0v';
 const DATA_PLANE_URL = 'https://telemetry.automatisch.io/v1/batch';
@@ -96,6 +97,26 @@ class Telemetry {
       status: executionStep.status,
       createdAt: executionStep.createdAt,
       updatedAt: executionStep.updatedAt,
+    });
+  }
+
+  connectionCreated(connection: Connection) {
+    this.track('connectionCreated', {
+      connectionId: connection.id,
+      key: connection.key,
+      verified: connection.verified,
+      createdAt: connection.createdAt,
+      updatedAt: connection.updatedAt,
+    });
+  }
+
+  connectionUpdated(connection: Connection) {
+    this.track('connectionUpdated', {
+      connectionId: connection.id,
+      key: connection.key,
+      verified: connection.verified,
+      createdAt: connection.createdAt,
+      updatedAt: connection.updatedAt,
     });
   }
 }
