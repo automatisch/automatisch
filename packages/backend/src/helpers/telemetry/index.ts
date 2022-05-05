@@ -7,9 +7,12 @@ import Flow from '../../models/flow';
 import Execution from '../../models/execution';
 import ExecutionStep from '../../models/execution-step';
 import Connection from '../../models/connection';
+import os from 'os';
 
 const WRITE_KEY = '284Py4VgK2MsNYV7xlKzyrALx0v';
 const DATA_PLANE_URL = 'https://telemetry.automatisch.io/v1/batch';
+const CPUS = os.cpus();
+const SIX_HOURS_IN_MILLISECONDS = 21600000;
 
 class Telemetry {
   organizationId: string;
@@ -119,8 +122,27 @@ class Telemetry {
       updatedAt: connection.updatedAt,
     });
   }
+
+  diagnosticInfo() {
+    this.track('diagnosticInfo', {
+      automatischVersion: process.env.npm_package_version,
+      operatingSystem: {
+        type: os.type(),
+        version: os.version(),
+      },
+      memory: os.totalmem() / (1024 * 1024), // To get as megabytes
+      cpus: {
+        count: CPUS.length,
+        model: CPUS[0].model,
+        speed: CPUS[0].speed,
+      },
+    });
+
+    setTimeout(this.diagnosticInfo, SIX_HOURS_IN_MILLISECONDS);
+  }
 }
 
 const telemetry = new Telemetry();
+telemetry.diagnosticInfo();
 
 export default telemetry;
