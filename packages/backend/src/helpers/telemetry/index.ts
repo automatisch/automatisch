@@ -126,6 +126,7 @@ class Telemetry {
   diagnosticInfo() {
     this.track('diagnosticInfo', {
       automatischVersion: process.env.npm_package_version,
+      serveWebAppSeparately: appConfig.serveWebAppSeparately,
       operatingSystem: {
         type: os.type(),
         version: os.version(),
