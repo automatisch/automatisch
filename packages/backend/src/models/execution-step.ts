@@ -1,6 +1,8 @@
+import type { QueryContext } from 'objection';
 import Base from './base';
 import Execution from './execution';
 import Step from './step';
+import Telemetry from '../helpers/telemetry';
 
 class ExecutionStep extends Base {
   id!: string;
@@ -44,6 +46,11 @@ class ExecutionStep extends Base {
       },
     },
   });
+
+  async $afterInsert(queryContext: QueryContext) {
+    await super.$afterInsert(queryContext);
+    Telemetry.executionStepCreated(this);
+  }
 }
 
 export default ExecutionStep;
