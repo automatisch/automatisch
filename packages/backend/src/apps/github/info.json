@@ -219,7 +219,6 @@
     {
       "name": "New repository",
       "key": "newRepository",
-      "interval": "15m",
       "description": "Triggers when a new repository is created",
       "substeps": [
         {
@@ -235,7 +234,6 @@
     {
       "name": "New organization",
       "key": "newOrganization",
-      "interval": "15m",
       "description": "Triggers when a new organization is created",
       "substeps": [
         {
@@ -251,7 +249,6 @@
     {
       "name": "New branch",
       "key": "newBranch",
-      "interval": "15m",
       "description": "Triggers when a new branch is created",
       "substeps": [
         {
@@ -290,7 +287,6 @@
     {
       "name": "New notification",
       "key": "newNotification",
-      "interval": "15m",
       "description": "Triggers when a new notification is created",
       "substeps": [
         {
@@ -330,7 +326,6 @@
     {
       "name": "New pull request",
       "key": "newPullRequest",
-      "interval": "15m",
       "description": "Triggers when a new pull request is created",
       "substeps": [
         {
@@ -369,7 +364,6 @@
     {
       "name": "New watcher",
       "key": "newWatcher",
-      "interval": "15m",
       "description": "Triggers when a new watcher is added to a repo",
       "substeps": [
         {
@@ -408,7 +402,6 @@
     {
       "name": "New milestone",
       "key": "newMilestone",
-      "interval": "15m",
       "description": "Triggers when a new milestone is created",
       "substeps": [
         {
@@ -447,7 +440,6 @@
     {
       "name": "New commit comment",
       "key": "newCommitComment",
-      "interval": "15m",
       "description": "Triggers when a new commit comment is created",
       "substeps": [
         {
@@ -486,7 +478,6 @@
     {
       "name": "New label",
       "key": "newLabel",
-      "interval": "15m",
       "description": "Triggers when a new label is created",
       "substeps": [
         {
@@ -525,7 +516,6 @@
     {
       "name": "New collaborator",
       "key": "newCollaborator",
-      "interval": "15m",
       "description": "Triggers when a new collaborator is added to a repo",
       "substeps": [
         {
@@ -564,7 +554,6 @@
     {
       "name": "New release",
       "key": "newRelease",
-      "interval": "15m",
       "description": "Triggers when a new release is created",
       "substeps": [
         {
@@ -603,7 +592,6 @@
     {
       "name": "New commit",
       "key": "newCommit",
-      "interval": "15m",
       "description": "Triggers when a new commit is created",
       "substeps": [
         {

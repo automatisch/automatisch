@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useLazyQuery } from '@apollo/client';
 import MuiTextField from '@mui/material/TextField';
-import type { IField, IFieldDropdown, IJSONObject } from '@automatisch/types';
+import type { IField, IFieldDropdown, IFieldDropdownOption, IJSONObject } from '@automatisch/types';
 
 import useDynamicData from 'hooks/useDynamicData';
 import { GET_DATA } from 'graphql/queries/get-data';
@@ -22,13 +22,9 @@ type RawOption = {
   value: string;
 };
 
-type Option = {
-  label: string;
-  value: string;
-};
-
-const optionGenerator = (options: RawOption[]): Option[] => options?.map(({ name, value }) => ({ label: name as string, value: value as string }));
-const getOption = (options: Option[], value: string) => options?.find(option => option.value === value);
+const computeArguments = (args: IFieldDropdown["source"]["arguments"]): IJSONObject => args.reduce((result, { name, value }) => ({ ...result, [name as string]: value }), {});
+const optionGenerator = (options: RawOption[]): IFieldDropdownOption[] => options?.map(({ name, value }) => ({ label: name as string, value: value }));
+const getOption = (options: IFieldDropdownOption[], value: string) => options?.find(option => option.value === value);
 
 export default function InputCreator(props: InputCreatorProps): React.ReactElement {
   const {
@@ -55,7 +51,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
 
   if (type === 'dropdown') {
-    const options = optionGenerator(data);
+    const preparedOptions = schema.options || optionGenerator(data?.getData);
 
     return (
       <ControlledAutocomplete
@@ -63,9 +59,9 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
         fullWidth
         disablePortal
         disableClearable={required}
-        options={options}
+        options={preparedOptions}
         renderInput={(params) => <MuiTextField {...params} label={label} />}
-        value={getOption(options, value)}
+        value={getOption(preparedOptions, value)}
         onChange={console.log}
         description={description}
         loading={loading}

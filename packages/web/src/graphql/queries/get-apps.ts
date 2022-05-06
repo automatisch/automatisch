@@ -64,6 +64,10 @@ export const GET_APPS = gql`
             description
             variables
             dependsOn
+            options {
+              label
+              value
+            }
             source {
               type
               name

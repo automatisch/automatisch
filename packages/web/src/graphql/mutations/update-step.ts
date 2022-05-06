@@ -8,6 +8,7 @@ export const UPDATE_STEP = gql`
       key
       appKey
       parameters
+      status
       connection {
         id
       }

@@ -374,12 +374,18 @@ type TriggerSubstepArgument {
   variables: Boolean
   source: TriggerSubstepArgumentSource
   dependsOn: [String]
+  options: [TriggerSubstepArgumentOption]
 }
 
 type TriggerSubstepArgumentSource {
   type: String
   name: String
   arguments: [TriggerSubstepArgumentSourceArgument]
+}
+
+type TriggerSubstepArgumentOption {
+  label: String
+  value: JSONObject
 }
 
 type TriggerSubstepArgumentSourceArgument {

@@ -219,7 +219,6 @@
     {
       "name": "New favorite photo",
       "key": "newFavoritePhoto",
-      "interval": "15m",
       "description": "Triggers when you favorite a photo.",
       "substeps": [
         {
@@ -235,7 +234,6 @@
     {
       "name": "New photo in album",
       "key": "newPhotoInAlbum",
-      "interval": "15m",
       "description": "Triggers when you add a new photo in an album.",
       "substeps": [
         {
@@ -274,7 +272,6 @@
     {
       "name": "New photo",
       "key": "newPhoto",
-      "interval": "15m",
       "description": "Triggers when you add a new photo.",
       "substeps": [
         {
@@ -290,7 +287,6 @@
     {
       "name": "New album",
       "key": "newAlbum",
-      "interval": "15m",
       "description": "Triggers when you create a new album.",
       "substeps": [
         {

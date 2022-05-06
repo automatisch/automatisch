@@ -57,7 +57,7 @@ function generateValidationSchema(substeps: ISubstep[]) {
 
       // base validation for the field if not exists
       if (!substepArgumentValidations[key]) {
-        substepArgumentValidations[key] = yup.string();
+        substepArgumentValidations[key] = yup.mixed();
       }
 
       if (typeof substepArgumentValidations[key] === 'object') {

@@ -29,6 +29,9 @@ const validateSubstep = (substep: ISubstep, step: IStep) => {
 
     const argValue = step.parameters?.[arg.key];
 
+    // `false` is an exceptional valid value
+    if (argValue === false) return true;
+
     return Boolean(argValue);
   });
 };
@@ -51,7 +54,6 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
 
   const formContext = useFormContext();
   const [validationStatus, setValidationStatus] = React.useState<boolean | null>(validateSubstep(substep, formContext.getValues() as IStep));
-
 
   const handleChangeOnBlur = React.useCallback((key: string) => {
     return (value: string) => {

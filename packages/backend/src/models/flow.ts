@@ -82,6 +82,12 @@ class Flow extends Base {
     await super.$afterUpdate(opt, queryContext);
     Telemetry.flowUpdated(this);
   }
+
+  async getTriggerStep(): Promise<Step> {
+    return await this.$relatedQuery('steps').findOne({
+      type: 'trigger',
+    });
+  }
 }
 
 export default Flow;
