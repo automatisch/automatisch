@@ -2,20 +2,16 @@ import * as React from 'react';
 import FormHelperText from '@mui/material/FormHelperText';
 import { Controller, useFormContext } from 'react-hook-form';
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete';
+import type { IFieldDropdownOption } from '@automatisch/types';
 
-interface ControlledAutocompleteProps extends AutocompleteProps<Option, boolean, boolean, boolean> {
+interface ControlledAutocompleteProps extends AutocompleteProps<IFieldDropdownOption, boolean, boolean, boolean> {
   shouldUnregister?: boolean;
   name: string;
   required?: boolean;
   description?: string;
 }
 
-type Option = {
-  label: string;
-  value: string;
-}
-
-const getOption = (options: readonly Option[], value: string) => options.find(option => option.value === value) || null;
+const getOption = (options: readonly IFieldDropdownOption[], value: string) => options.find(option => option.value === value);
 
 function ControlledAutocomplete(props: ControlledAutocompleteProps): React.ReactElement {
   const { control } = useFormContext();
@@ -48,8 +44,8 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
             options={options}
             value={getOption(options, field.value)}
             onChange={(event, selectedOption, reason, details) => {
-              const typedSelectedOption = selectedOption as Option;
-              if (typedSelectedOption?.value) {
+              const typedSelectedOption = selectedOption as IFieldDropdownOption;
+              if (Object.prototype.hasOwnProperty.call(typedSelectedOption, 'value')) {
                 controllerOnChange(typedSelectedOption.value);
               } else {
                 controllerOnChange(typedSelectedOption);

@@ -1,5 +1,6 @@
 import { QueryContext, ModelOptions } from 'objection';
 import Base from './base';
+import App from './app';
 import Flow from './flow';
 import Connection from './connection';
 import ExecutionStep from './execution-step';
@@ -74,6 +75,27 @@ class Step extends Base {
   async $afterUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$afterUpdate(opt, queryContext);
     Telemetry.stepUpdated(this);
+  }
+
+  get isTrigger(): boolean {
+    return this.type === 'trigger';
+  }
+
+  async getTrigger() {
+    if (!this.isTrigger) return null;
+
+    const { appKey, connection, key, parameters = {} } = this;
+
+    const appData = App.findOneByKey(appKey);
+    const AppClass = (await import(`../apps/${appKey}`)).default;
+    const appInstance = new AppClass(
+      appData,
+      connection?.formattedData,
+      parameters,
+    );
+    const command = appInstance.triggers[key];
+
+    return command;
   }
 }
 

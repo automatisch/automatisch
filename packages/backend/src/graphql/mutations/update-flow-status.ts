@@ -9,9 +9,7 @@ type Params = {
 };
 
 const JOB_NAME = 'processorJob';
-const REPEAT_OPTIONS = {
-  every: 60000, // 1 minute
-};
+const EVERY_15_MINUTES_CRON = '*/15 * * * *';
 
 const updateFlowStatus = async (
   _parent: unknown,
@@ -33,17 +31,27 @@ const updateFlowStatus = async (
     active: params.input.active,
   });
 
+  const triggerStep = await flow.getTriggerStep();
+  const trigger = await triggerStep.getTrigger();
+  const interval = trigger.interval;
+  const repeatOptions = {
+    cron: interval || EVERY_15_MINUTES_CRON,
+  }
+
   if (flow.active) {
     await processorQueue.add(
       JOB_NAME,
       { flowId: flow.id },
       {
-        repeat: REPEAT_OPTIONS,
+        repeat: repeatOptions,
         jobId: flow.id,
       }
     );
   } else {
-    await processorQueue.removeRepeatable(JOB_NAME, REPEAT_OPTIONS, flow.id);
+    const repeatableJobs = await processorQueue.getRepeatableJobs();
+    const job = repeatableJobs.find(job => job.id === flow.id);
+
+    await processorQueue.removeRepeatableByKey(job.key);
   }
 
   return flow;

@@ -1,0 +1,46 @@
+{
+  "name": "Schedule",
+  "key": "schedule",
+  "iconUrl": "{BASE_URL}/apps/schedule/assets/favicon.svg",
+  "docUrl": "https://automatisch.io/docs/schedule",
+  "primaryColor": "0059F7",
+  "requiresAuthentication": false,
+  "triggers": [
+    {
+      "name": "Every hour",
+      "key": "everyHour",
+      "description": "Triggers every hour.",
+      "substeps": [
+        {
+          "key": "chooseTrigger",
+          "name": "Set up a trigger",
+          "arguments": [
+            {
+              "label": "Trigger on weekends?",
+              "key": "triggersOnWeekend",
+              "type": "dropdown",
+              "description": "Should this flow trigger on Saturday and Sunday?",
+              "required": true,
+              "value": true,
+              "variables": false,
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": true
+                },
+                {
+                  "label": "No",
+                  "value": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
+    }
+  ]
+}

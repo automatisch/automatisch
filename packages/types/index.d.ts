@@ -86,6 +86,7 @@ export interface IFieldDropdown {
   name: string;
   variables: boolean;
   dependsOn: string[];
+  options: IFieldDropdownOption[];
   source: {
     type: string;
     name: string;
@@ -94,6 +95,11 @@ export interface IFieldDropdown {
       value: string;
     }[];
   };
+}
+
+export interface IFieldDropdownOption {
+  label: string;
+  value: boolean | string;
 }
 
 export interface IFieldText {
@@ -146,7 +152,15 @@ export interface IApp {
 }
 
 export interface IService {
-  authenticationClient: IAuthentication;
+  authenticationClient?: IAuthentication;
+  triggers?: any;
+  actions?: any;
+  data?: any;
+}
+
+export interface ITrigger {
+  run(startTime?: Date): Promise<IJSONValue>;
+  testRun(startTime?: Date): Promise<IJSONValue>;
 }
 
 export interface IAuthentication {
