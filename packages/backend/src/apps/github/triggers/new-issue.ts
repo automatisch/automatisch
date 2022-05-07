@@ -4,16 +4,14 @@ import { IJSONObject } from '@automatisch/types';
 
 import { assignOwnerAndRepo } from '../utils';
 
-export default class NewNotification {
+export default class NewIssue {
   client?: Octokit;
   connectionData?: IJSONObject;
   repoOwner?: string;
   repo?: string;
   hasRepo?: boolean;
-  baseOptions = {
-    all: true,
-    participating: false,
-  };
+  label?: string;
+  issueType?: string;
 
   constructor(connectionData: IJSONObject, parameters: IJSONObject) {
     if (connectionData.accessToken) {
@@ -25,36 +23,43 @@ export default class NewNotification {
     assignOwnerAndRepo(this, parameters?.repo as string);
   }
 
-  async listRepoNotifications(options = {}, paginate = false) {
-    const listRepoNotifications = this.client.rest.activity.listRepoNotificationsForAuthenticatedUser;
-
-    const extendedOptions = {
-      ...this.baseOptions,
-      repo: this.repo,
-      owner: this.repoOwner,
-      ...options,
-    };
-
-    if (paginate) {
-      return await this.client.paginate(listRepoNotifications, extendedOptions);
+  get options() {
+    return {
+      labels: this.label,
     }
-
-    return (await listRepoNotifications(extendedOptions)).data;
   }
 
-  async listNotifications(options = {}, paginate = false) {
-    const listNotifications = this.client.rest.activity.listNotificationsForAuthenticatedUser;
+  async listRepoIssues(options = {}, paginate = false) {
+    const listRepoIssues = this.client.rest.issues.listForRepo;
 
     const extendedOptions = {
-      ...this.baseOptions,
+      ...this.options,
+      repo: this.repo,
+      owner: this.repoOwner,
+      filter: this.issueType,
       ...options,
     };
 
     if (paginate) {
-      return await this.client.paginate(listNotifications, extendedOptions);
+      return await this.client.paginate(listRepoIssues, extendedOptions);
     }
 
-    return (await listNotifications(extendedOptions)).data;
+    return (await listRepoIssues(extendedOptions)).data;
+  }
+
+  async listIssues(options = {}, paginate = false) {
+    const listIssues = this.client.rest.issues.listForAuthenticatedUser;
+
+    const extendedOptions = {
+      ...this.options,
+      ...options,
+    };
+
+    if (paginate) {
+      return await this.client.paginate(listIssues, extendedOptions);
+    }
+
+    return (await listIssues(extendedOptions)).data;
   }
 
   async run(startTime: Date) {
@@ -63,10 +68,10 @@ export default class NewNotification {
     };
 
     if (this.hasRepo) {
-      return await this.listRepoNotifications(options, true);
+      return await this.listRepoIssues(options, true);
     }
 
-    return await this.listNotifications(options, true);
+    return await this.listIssues(options, true);
   }
 
   async testRun() {
@@ -75,9 +80,9 @@ export default class NewNotification {
     };
 
     if (this.hasRepo) {
-      return await this.listRepoNotifications(options, false);
+      return await this.listRepoIssues(options, false);
     }
 
-    return await this.listNotifications(options, false);
+    return await this.listIssues(options, false);
   }
 }
