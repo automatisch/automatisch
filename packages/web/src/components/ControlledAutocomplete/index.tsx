@@ -11,7 +11,7 @@ interface ControlledAutocompleteProps extends AutocompleteProps<IFieldDropdownOp
   description?: string;
 }
 
-const getOption = (options: readonly IFieldDropdownOption[], value: string) => options.find(option => option.value === value);
+const getOption = (options: readonly IFieldDropdownOption[], value: string) => options.find(option => option.value === value) || null;
 
 function ControlledAutocomplete(props: ControlledAutocompleteProps): React.ReactElement {
   const { control } = useFormContext();
@@ -45,7 +45,7 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
             value={getOption(options, field.value)}
             onChange={(event, selectedOption, reason, details) => {
               const typedSelectedOption = selectedOption as IFieldDropdownOption;
-              if (Object.prototype.hasOwnProperty.call(typedSelectedOption, 'value')) {
+              if (typedSelectedOption !== null && Object.prototype.hasOwnProperty.call(typedSelectedOption, 'value')) {
                 controllerOnChange(typedSelectedOption.value);
               } else {
                 controllerOnChange(typedSelectedOption);
