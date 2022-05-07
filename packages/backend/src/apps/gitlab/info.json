@@ -234,5 +234,76 @@
         }
       ]
     }
+  ],
+  "actions": [
+    {
+      "name": "Find project merge requests",
+      "key": "findProjectMergeRequests",
+      "description": "Find merge requests for a project.",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "setupAction",
+          "name": "Set up action",
+          "arguments": [
+            {
+              "label": "Project",
+              "key": "project",
+              "type": "dropdown",
+              "required": true,
+              "description": "Search for merge requests in this project.",
+              "variables": false,
+              "source": {
+                "type": "query",
+                "name": "getData",
+                "arguments": [
+                  {
+                    "name": "key",
+                    "value": "listProjects"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "State",
+              "key": "state",
+              "type": "dropdown",
+              "required": true,
+              "description": "Filter merge requests by their state.",
+              "variables": false,
+              "options": [
+                {
+                  "label": "All",
+                  "value": "all"
+                },
+                {
+                  "label": "Opened",
+                  "value": "opened"
+                },
+                {
+                  "label": "Closed",
+                  "value": "closed"
+                },
+                {
+                  "label": "Locked",
+                  "value": "locked"
+                },
+                {
+                  "label": "Merged",
+                  "value": "merged"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "testStep",
+          "name": "Test action"
+        }
+      ]
+    }
   ]
 }

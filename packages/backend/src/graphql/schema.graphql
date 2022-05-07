@@ -68,12 +68,18 @@ type ActionSubstepArgument {
   variables: Boolean
   source: ActionSubstepArgumentSource
   dependsOn: [String]
+  options: [TriggerSubstepArgumentOption]
 }
 
 type ActionSubstepArgumentSource {
   type: String
   name: String
   arguments: [ActionSubstepArgumentSourceArgument]
+}
+
+type TriggerSubstepArgumentOption {
+  label: String
+  value: JSONObject
 }
 
 type ActionSubstepArgumentSourceArgument {
