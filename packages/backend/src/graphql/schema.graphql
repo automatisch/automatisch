@@ -5,7 +5,7 @@ type Query {
   getAppConnections(key: AvailableAppsEnumType!): [Connection]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
-  getFlows: [Flow]
+  getFlows(appKey: String): [Flow]
   getStepWithTestExecutions(stepId: String!): [Step]
   getExecutions(limit: Int!, offset: Int!): ExecutionConnection
   getExecutionSteps(
