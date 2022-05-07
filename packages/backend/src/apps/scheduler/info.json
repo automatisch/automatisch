@@ -1,8 +1,8 @@
 {
-  "name": "Schedule",
-  "key": "schedule",
-  "iconUrl": "{BASE_URL}/apps/schedule/assets/favicon.svg",
-  "docUrl": "https://automatisch.io/docs/schedule",
+  "name": "Scheduler",
+  "key": "scheduler",
+  "iconUrl": "{BASE_URL}/apps/scheduler/assets/favicon.svg",
+  "docUrl": "https://automatisch.io/docs/scheduler",
   "primaryColor": "0059F7",
   "requiresAuthentication": false,
   "triggers": [

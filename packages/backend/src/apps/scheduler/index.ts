@@ -5,7 +5,7 @@ import {
   IJSONObject,
 } from '@automatisch/types';
 
-export default class Schedule implements IService {
+export default class Scheduler implements IService {
   triggers: Triggers;
 
   constructor(
