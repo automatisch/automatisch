@@ -51,7 +51,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
 
   if (type === 'dropdown') {
-    const preparedOptions = schema.options || optionGenerator(data?.getData);
+    const preparedOptions = schema.options || optionGenerator(data);
 
     return (
       <ControlledAutocomplete
