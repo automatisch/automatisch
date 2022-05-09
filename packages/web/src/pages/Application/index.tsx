@@ -155,7 +155,7 @@ export default function Application(): React.ReactElement {
               </Box>
 
               <Routes>
-                <Route path={`${URLS.FLOWS}/*`} element={<AppFlows />} />
+                <Route path={`${URLS.FLOWS}/*`} element={<AppFlows appKey={appKey} />} />
 
                 <Route path={`${URLS.CONNECTIONS}/*`} element={<AppConnections appKey={appKey} />} />
 
