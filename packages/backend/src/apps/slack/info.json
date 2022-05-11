@@ -97,6 +97,65 @@
       ]
     }
   ],
+  "triggers": [
+    {
+      "name": "New message posted to a channel",
+      "key": "newMessageToChannel",
+      "description": "Triggers when a new message is posted to a channel",
+      "substeps": [
+        {
+          "key": "chooseAccount",
+          "name": "Choose account"
+        },
+        {
+          "key": "chooseTrigger",
+          "name": "Set up a trigger",
+          "arguments": [
+            {
+              "label": "Channel",
+              "key": "channel",
+              "type": "dropdown",
+              "required": true,
+              "variables": false,
+              "source": {
+                "type": "query",
+                "name": "getData",
+                "arguments": [
+                  {
+                    "name": "key",
+                    "value": "listChannels"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Trigger for Bot Messages?",
+              "key": "triggerForBotMessages",
+              "type": "dropdown",
+              "description": "Should this flow trigger for bot messages?",
+              "required": true,
+              "value": true,
+              "variables": false,
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": true
+                },
+                {
+                  "label": "No",
+                  "value": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
+    }
+  ],
   "actions": [
     {
       "name": "Send a message to channel",
