@@ -15,13 +15,13 @@ import {
 } from './helpers/create-bull-board-handler';
 import injectBullBoardHandler from './helpers/inject-bull-board-handler';
 
-if (appConfig.appEnv === 'development') {
+if (appConfig.enableBullMQDashboard) {
   createBullBoardHandler(serverAdapter);
 }
 
 const app = express();
 
-if (appConfig.appEnv === 'development') {
+if (appConfig.enableBullMQDashboard) {
   injectBullBoardHandler(app, serverAdapter);
 }
 
