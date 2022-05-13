@@ -84,14 +84,16 @@ class Step extends Base {
   async getTrigger() {
     if (!this.isTrigger) return null;
 
-    const { appKey, connection, key, parameters = {} } = this;
+    const { appKey, key, parameters = {} } = this;
+
+    const connection = await this.$relatedQuery('connection');
 
     const appData = App.findOneByKey(appKey);
     const AppClass = (await import(`../apps/${appKey}`)).default;
     const appInstance = new AppClass(
       appData,
       connection?.formattedData,
-      parameters,
+      parameters
     );
     const command = appInstance.triggers[key];
 
