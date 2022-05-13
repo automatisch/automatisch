@@ -20,12 +20,14 @@ type AppConfig = {
   serveWebAppSeparately: boolean;
   redisHost: string;
   redisPort: number;
+  enableBullMQDashboard: boolean;
 };
 
 const host = process.env.HOST || 'localhost';
 const protocol = process.env.PROTOCOL || 'http';
 const port = process.env.PORT || '3000';
-const serveWebAppSeparately = process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
+const serveWebAppSeparately =
+  process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
 
 let webAppUrl = `${protocol}://${host}:${port}`;
 if (serveWebAppSeparately) {
@@ -43,7 +45,7 @@ const appConfig: AppConfig = {
   appEnv: appEnv,
   isDev: appEnv === 'development',
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
-  postgresPort: parseInt(process.env.POSTGRES_PORT|| '5432'),
+  postgresPort: parseInt(process.env.POSTGRES_PORT || '5432'),
   postgresHost: process.env.POSTGRES_HOST || 'localhost',
   postgresUsername:
     process.env.POSTGRES_USERNAME || 'automatisch_development_user',
@@ -54,6 +56,8 @@ const appConfig: AppConfig = {
   serveWebAppSeparately,
   redisHost: process.env.REDIS_HOST || '127.0.0.1',
   redisPort: parseInt(process.env.REDIS_PORT || '6379'),
+  enableBullMQDashboard:
+    process.env.ENABLE_BULLMQ_DASHBOARD === 'true' ? true : false,
   baseUrl,
   webAppUrl,
 };
