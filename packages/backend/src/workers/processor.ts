@@ -24,3 +24,7 @@ worker.on('failed', (job, err) => {
     `JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed with ${err.message}`
   );
 });
+
+process.on('SIGTERM', async () => {
+  await worker.close();
+});

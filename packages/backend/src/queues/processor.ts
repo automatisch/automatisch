@@ -10,7 +10,11 @@ const redisConnection = {
 };
 
 const processorQueue = new Queue('processor', redisConnection);
-new QueueScheduler('processor', redisConnection);
+const queueScheduler = new QueueScheduler('processor', redisConnection);
+
+process.on('SIGTERM', async () => {
+  await queueScheduler.close();
+});
 
 processorQueue.on('error', (err) => {
   if ((err as any).code === CONNECTION_REFUSED) {
