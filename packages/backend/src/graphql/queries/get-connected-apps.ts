@@ -17,7 +17,6 @@ const getConnectedApps = async (
     .$relatedQuery('connections')
     .select('connections.key')
     .count('connections.id as count')
-    .where({ verified: true })
     .groupBy('connections.key');
 
   const connectionKeys = connections.map((connection) => connection.key);
