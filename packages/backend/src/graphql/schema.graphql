@@ -142,6 +142,7 @@ enum AvailableAppsEnumType {
   twitter
   typeform
   slack
+  scheduler
 }
 
 type Connection {
