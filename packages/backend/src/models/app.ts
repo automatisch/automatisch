@@ -7,10 +7,21 @@ class App {
   static folderPath = join(__dirname, '../apps');
   static list = fs.readdirSync(this.folderPath);
 
-  static findAll(name?: string): IApp[] {
-    if (!name) return this.list.map((name) => this.findOneByName(name));
+  // Temporaryly restrict the apps we expose until
+  // their actions/triggers are implemented!
+  static temporaryList = [
+    'slack',
+    'twitter',
+    'github',
+    'scheduler',
+    'typeform',
+  ];
 
-    return this.list
+  static findAll(name?: string): IApp[] {
+    if (!name)
+      return this.temporaryList.map((name) => this.findOneByName(name));
+
+    return this.temporaryList
       .filter((app) => app.includes(name.toLowerCase()))
       .map((name) => this.findOneByName(name));
   }
