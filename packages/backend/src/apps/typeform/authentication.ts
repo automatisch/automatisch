@@ -5,14 +5,12 @@ import type {
   IJSONObject,
 } from '@automatisch/types';
 import { URLSearchParams } from 'url';
-import axios, { AxiosInstance } from 'axios';
+import HttpClient from '../../helpers/http-client';
 
 export default class Authentication implements IAuthentication {
   appData: IApp;
   connectionData: IJSONObject;
-  client: AxiosInstance = axios.create({
-    baseURL: 'https://api.typeform.com',
-  });
+  client: HttpClient;
 
   scope: string[] = [
     'forms:read',
@@ -27,6 +25,7 @@ export default class Authentication implements IAuthentication {
   constructor(appData: IApp, connectionData: IJSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
+    this.client = new HttpClient({ baseURL: 'https://api.typeform.com' });
   }
 
   get oauthRedirectUrl() {
