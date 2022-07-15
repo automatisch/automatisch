@@ -175,3 +175,7 @@ export interface ISubstep {
   name: string;
   arguments: IField[];
 }
+
+export type IHttpClientParams = {
+  baseURL: string;
+}
