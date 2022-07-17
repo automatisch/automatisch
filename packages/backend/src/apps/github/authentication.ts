@@ -4,35 +4,19 @@ import type {
   IField,
   IJSONObject,
 } from '@automatisch/types';
-import {
-  getWebFlowAuthorizationUrl,
-  exchangeWebFlowCode,
-  checkToken,
-} from '@octokit/oauth-methods';
+import HttpClient from '../../helpers/http-client';
+import { URLSearchParams } from 'url';
 
 export default class Authentication implements IAuthentication {
   appData: IApp;
   connectionData: IJSONObject;
-  scopes: string[] = [
-    'read:org',
-    'repo',
-    'user',
-  ];
-  client: {
-    getWebFlowAuthorizationUrl: typeof getWebFlowAuthorizationUrl;
-    exchangeWebFlowCode: typeof exchangeWebFlowCode;
-    checkToken: typeof checkToken;
-  };
+  scopes: string[] = ['read:org', 'repo', 'user'];
+  client: HttpClient;
 
   constructor(appData: IApp, connectionData: IJSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
-
-    this.client = {
-      getWebFlowAuthorizationUrl,
-      exchangeWebFlowCode,
-      checkToken,
-    };
+    this.client = new HttpClient({ baseURL: 'https://github.com' });
   }
 
   get oauthRedirectUrl(): string {
@@ -42,25 +26,27 @@ export default class Authentication implements IAuthentication {
   }
 
   async createAuthData(): Promise<{ url: string }> {
-    const { url } = await this.client.getWebFlowAuthorizationUrl({
-      clientType: 'oauth-app',
-      clientId: this.connectionData.consumerKey as string,
-      redirectUrl: this.oauthRedirectUrl,
-      scopes: this.scopes,
+    const searchParams = new URLSearchParams({
+      client_id: this.connectionData.consumerKey as string,
+      redirect_uri: this.oauthRedirectUrl,
+      scope: this.scopes.join(','),
     });
 
+    const url = `https://github.com/login/oauth/authorize?${searchParams.toString()}`;
+
     return {
-      url: url,
+      url,
     };
   }
 
   async verifyCredentials() {
-    const { data } = await this.client.exchangeWebFlowCode({
-      clientType: 'oauth-app',
-      clientId: this.connectionData.consumerKey as string,
-      clientSecret: this.connectionData.consumerSecret as string,
-      code: this.connectionData.oauthVerifier as string,
+    const response = await this.client.post('/login/oauth/access_token', {
+      client_id: this.connectionData.consumerKey,
+      client_secret: this.connectionData.consumerSecret,
+      code: this.connectionData.oauthVerifier,
     });
+
+    const data = Object.fromEntries(new URLSearchParams(response.data));
 
     this.connectionData.accessToken = data.access_token;
 
@@ -78,12 +64,23 @@ export default class Authentication implements IAuthentication {
   }
 
   async getTokenInfo() {
-    return this.client.checkToken({
-      clientType: 'oauth-app',
-      clientId: this.connectionData.consumerKey as string,
-      clientSecret: this.connectionData.consumerSecret as string,
-      token: this.connectionData.accessToken as string,
-    });
+    const basicAuthToken = Buffer.from(
+      this.connectionData.consumerKey + ':' + this.connectionData.consumerSecret
+    ).toString('base64');
+
+    const headers = {
+      Authorization: `Basic ${basicAuthToken}`,
+    };
+
+    const body = {
+      access_token: this.connectionData.accessToken,
+    };
+
+    return await this.client.post(
+      `https://api.github.com/applications/${this.connectionData.consumerKey}/token`,
+      body,
+      { headers }
+    );
   }
 
   async isStillVerified() {

@@ -3744,7 +3744,7 @@
   resolved "https://registry.yarnpkg.com/@octokit/oauth-authorization-url/-/oauth-authorization-url-4.3.3.tgz#6a6ef38f243086fec882b62744f39b517528dfb9"
   integrity sha512-lhP/t0i8EwTmayHG4dqLXgU+uPVys4WD/qUNvC+HfB1S1dyqULm5Yx9uKc1x79aP66U1Cb4OZeW8QU/RA9A4XA==
 
-"@octokit/oauth-methods@^1.1.0", "@octokit/oauth-methods@^1.2.2", "@octokit/oauth-methods@^1.2.6":
+"@octokit/oauth-methods@^1.1.0", "@octokit/oauth-methods@^1.2.2":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@octokit/oauth-methods/-/oauth-methods-1.2.6.tgz#b9ac65e374b2cc55ee9dd8dcdd16558550438ea7"
   integrity sha512-nImHQoOtKnSNn05uk2o76om1tJWiAo4lOu2xMAHYsNr0fwopP+Dv+2MlGvaMMlFjoqVd3fF3X5ZDTKCsqgmUaQ==
