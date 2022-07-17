@@ -24,7 +24,6 @@
     "@gitbeaker/node": "^35.6.0",
     "@graphql-tools/graphql-file-loader": "^7.3.4",
     "@graphql-tools/load": "^7.5.2",
-    "@octokit/oauth-methods": "^1.2.6",
     "@rudderstack/rudder-sdk-node": "^1.1.2",
     "@slack/bolt": "3.10.0",
     "@types/luxon": "^2.3.1",
