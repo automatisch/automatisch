@@ -52,6 +52,7 @@
     "luxon": "2.3.1",
     "morgan": "^1.10.0",
     "nodemailer": "6.7.0",
+    "oauth-1.0a": "^2.2.6",
     "objection": "^3.0.0",
     "octokit": "^1.7.1",
     "pg": "^8.7.1",
