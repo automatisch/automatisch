@@ -19,26 +19,26 @@
     },
     {
       "key": "consumerKey",
-      "label": "Consumer Key",
+      "label": "Client ID",
       "type": "string",
       "required": true,
       "readOnly": false,
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/github#consumer-key",
+      "docUrl": "https://automatisch.io/docs/github#client-id",
       "clickToCopy": false
     },
     {
       "key": "consumerSecret",
-      "label": "Consumer Secret",
+      "label": "Client Secret",
       "type": "string",
       "required": true,
       "readOnly": false,
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/github#consumer-secret",
+      "docUrl": "https://automatisch.io/docs/github#client-secret",
       "clickToCopy": false
     }
   ],
