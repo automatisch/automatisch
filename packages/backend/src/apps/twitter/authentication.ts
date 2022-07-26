@@ -106,7 +106,7 @@ export default class Authentication implements IAuthentication {
       };
 
       const requestData = {
-        url: `${Authentication.baseUrl}/1.1/account/verify_credentials.json`,
+        url: `${Authentication.baseUrl}/2/users/me`,
         method: 'GET',
       };
 
@@ -114,7 +114,7 @@ export default class Authentication implements IAuthentication {
         this.oauthClient.authorize(requestData, token)
       );
 
-      await this.client.get(`/1.1/account/verify_credentials.json`, {
+      await this.client.get(`/2/users/me`, {
         headers: { ...authHeader },
       });
 
