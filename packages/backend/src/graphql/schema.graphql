@@ -2,7 +2,6 @@ type Query {
   getApps(name: String, onlyWithTriggers: Boolean): [App]
   getApp(key: AvailableAppsEnumType!): App
   getConnectedApps(name: String): [App]
-  getAppConnections(key: AvailableAppsEnumType!): [Connection]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
   getFlows(appKey: String): [Flow]
