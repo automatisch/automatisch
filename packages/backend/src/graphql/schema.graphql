@@ -14,6 +14,7 @@ type Query {
   ): ExecutionStepConnection
   getData(stepId: String!, key: String!, parameters: JSONObject): JSONObject
   getCurrentUser: User
+  healthcheck: AppHealth
 }
 
 type Mutation {
@@ -421,6 +422,10 @@ type ExecutionConnection {
 type ExecutionStepConnection {
   edges: [ExecutionStepEdge]
   pageInfo: PageInfo
+}
+
+type AppHealth {
+  version: String
 }
 
 schema {
