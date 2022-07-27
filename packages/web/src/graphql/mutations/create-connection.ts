@@ -11,9 +11,6 @@ export const CREATE_CONNECTION = gql`
       formattedData {
         screenName
       }
-      app {
-        key
-      }
     }
   }
 `;

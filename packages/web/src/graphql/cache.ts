@@ -1,6 +1,10 @@
 import { InMemoryCache } from '@apollo/client';
 import offsetLimitPagination from './pagination';
 
+interface IRef {
+  __ref: string;
+}
+
 const cache = new InMemoryCache({
   typePolicies: {
     App: {
@@ -9,9 +13,9 @@ const cache = new InMemoryCache({
     Mutation: {
       mutationType: true,
       fields: {
-        createConnection: {
-          merge(existing, newConnection, { readField, cache }) {
-            const appKey = readField('key', newConnection);
+        verifyConnection: {
+          merge(existing, verifiedConnection, { readField, cache }) {
+            const appKey = readField('key', verifiedConnection);
             const appCacheId = cache.identify({
               __typename: 'App',
               key: appKey,
@@ -21,12 +25,22 @@ const cache = new InMemoryCache({
               id: appCacheId,
               fields: {
                 connections: (existingConnections) => {
-                  return [...existingConnections, newConnection];
+                  const existingConnectionIndex = existingConnections.findIndex((connection: IRef) => {
+                    return connection.__ref === verifiedConnection.__ref;
+                  });
+                  const connectionExists = existingConnectionIndex !== -1;
+
+                  // newly created and verified connection
+                  if (!connectionExists) {
+                    return [verifiedConnection, ...existingConnections];
+                  }
+
+                  return existingConnections;
                 }
               }
             });
 
-            return newConnection;
+            return verifiedConnection;
           }
         }
       }
