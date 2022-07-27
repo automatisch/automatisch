@@ -4,85 +4,24 @@ sidebar_position: 4
 
 # Twitter
 
-Let's translate `docs/intro.md` to French.
-
-## Configure i18n
-
-Modify `docusaurus.config.js` to add support for the `fr` locale:
-
-```js title="docusaurus.config.js"
-module.exports = {
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'fr'],
-  },
-};
-```
-
-## Translate a doc
-
-Copy the `docs/intro.md` file to the `i18n/fr` folder:
-
-```bash
-mkdir -p i18n/fr/docusaurus-plugin-content-docs/current/
-
-cp docs/intro.md i18n/fr/docusaurus-plugin-content-docs/current/intro.md
-```
-
-Translate `i18n/fr/docusaurus-plugin-content-docs/current/intro.md` in French.
-
-## Start your localized site
-
-Start your site on the French locale:
-
-```bash
-npm run start -- --locale fr
-```
-
-Your localized site is accessible at `http://localhost:3000/fr/` and the `Getting Started` page is translated.
+1. Go to the [Twitter Developer Portal](https://developer.twitter.com/en/portal/projects-and-apps),complete the questionnaire and click the **Let's do this** button.
+2. Accept terms & conditions on the following page and click **Submit**.
 
 :::caution
 
-In development, you can only use one locale at a same time.
+If you see an error saying `There was a problem completing your request. User must have a verified phone number on file prior to submitting application.` Go to the [phone settings page](https://twitter.com/settings/phone) and set up your phone number to be able to continue on step 2.
 
 :::
 
-## Add a Locale Dropdown
-
-To navigate seamlessly across languages, add a locale dropdown.
-
-Modify the `docusaurus.config.js` file:
-
-```js title="docusaurus.config.js"
-module.exports = {
-  themeConfig: {
-    navbar: {
-      items: [
-        // highlight-start
-        {
-          type: 'localeDropdown',
-        },
-        // highlight-end
-      ],
-    },
-  },
-};
-```
-
-The locale dropdown now appears in your navbar:
-
-![Locale Dropdown](/img/tutorial/localeDropdown.png)
-
-## Build your localized site
-
-Build your site for a specific locale:
-
-```bash
-npm run build -- --locale fr
-```
-
-Or build your site to include all the locales at once:
-
-```bash
-npm run build
-```
+3. You will get a verification email from Twitter. Click on **Confirm your email** button.
+4. Fill out the **App name** field and click on the **Get keys** button.
+5. Copy **API Key** and **API Key Secret** values and save them to use later.
+6. Click **Dashboard** and **Yes, I saved them** buttons, respectively.
+7. Go to the **App settings** link in the project section you have created.
+8. Go to the **User authentication settings** section and click **Set up**.
+9. Enable **OAuth 1.0a** on the following page.
+10. In the **OAuth 1.0A Settings** section, select **Read and write** option.
+11. Copy **OAuth Redirect URL** from Automatisch and paste it to the **Callback URI / Redirect URL** field.
+12. Fill **Website URL** and click **Save**.
+13. Paste **API Key** and **API Key Secret** values you have saved from the 5th step and paste them into Automatisch as **Consumer Key** and **Consumer Secret**, respectively.
+14. Congrats! You can start using the new Twitter connection!
