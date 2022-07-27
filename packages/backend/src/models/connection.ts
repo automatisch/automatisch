@@ -14,6 +14,7 @@ class Connection extends Base {
   formattedData?: IJSONObject;
   userId!: string;
   verified = false;
+  draft: boolean;
   count?: number;
 
   static tableName = 'connections';
@@ -29,6 +30,7 @@ class Connection extends Base {
       formattedData: { type: 'object' },
       userId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean' },
+      draft: { type: 'boolean' },
     },
   };
 

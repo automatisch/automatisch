@@ -32,6 +32,7 @@ const verifyConnection = async (
       ...verifiedCredentials,
     },
     verified: true,
+    draft: false,
   });
 
   return connection;
