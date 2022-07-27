@@ -5,6 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Badge from '@mui/material/Badge';
 
 import ListItemLink from 'components/ListItemLink';
 import HideOnScroll from 'components/HideOnScroll';
@@ -17,6 +18,7 @@ type DrawerLink = {
   Icon: React.ElementType;
   primary: string;
   to: string;
+  badgeContent?: React.ReactNode;
 };
 
 type DrawerProps = {
@@ -65,10 +67,14 @@ export default function Drawer(props: DrawerProps): React.ReactElement {
       </div>
 
       <List sx={{ py: 0, mt: 3 }}>
-        {bottomLinks.map(({ Icon, primary, to }, index) => (
+        {bottomLinks.map(({ Icon, badgeContent, primary, to }, index) => (
           <ListItemLink
             key={`${to}-${index}`}
-            icon={<Icon htmlColor={theme.palette.primary.main} />}
+            icon={(
+              <Badge badgeContent={badgeContent} color="secondary" max={99}>
+                <Icon htmlColor={theme.palette.primary.main} />
+              </Badge>
+            )}
             primary={formatMessage(primary)}
             to={to}
             onClick={closeOnClick}

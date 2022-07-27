@@ -9,6 +9,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import * as URLS from 'config/urls';
+import useVersion from 'hooks/useVersion';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 
@@ -34,21 +35,27 @@ const drawerLinks = [
   },
 ];
 
-const drawerBottomLinks = [
+const generateDrawerBottomLinks = ({ notificationBadgeContent = 0 }) => [
   {
     Icon: NotificationsIcon,
     primary: 'settingsDrawer.notifications',
     to: URLS.UPDATES,
+    badgeContent: notificationBadgeContent,
   },
 ]
 
 export default function PublicLayout({ children }: PublicLayoutProps): React.ReactElement {
+  const version = useVersion();
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), { noSsr: true });
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
 
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
+
+  const drawerBottomLinks = generateDrawerBottomLinks({
+    notificationBadgeContent: version.newVersionCount,
+  });
 
   return (
     <>
