@@ -20,9 +20,9 @@ const verifyConnection = async (
     .throwIfNotFound();
 
   const appClass = (await import(`../../apps/${connection.key}`)).default;
-  const appData = App.findOneByKey(connection.key);
+  const app = App.findOneByKey(connection.key);
 
-  const appInstance = new appClass(appData, connection.formattedData);
+  const appInstance = new appClass(app, connection.formattedData);
   const verifiedCredentials =
     await appInstance.authenticationClient.verifyCredentials();
 
@@ -35,7 +35,10 @@ const verifyConnection = async (
     draft: false,
   });
 
-  return connection;
+  return {
+    ...connection,
+    app,
+  };
 };
 
 export default verifyConnection;
