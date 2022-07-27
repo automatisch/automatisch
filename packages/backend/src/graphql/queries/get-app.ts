@@ -13,6 +13,7 @@ const getApp = async (_parent: unknown, params: Params, context: Context) => {
       .$relatedQuery('connections')
       .where({
         key: params.key,
+        draft: false,
       })
       .orderBy('created_at', 'desc');
 
