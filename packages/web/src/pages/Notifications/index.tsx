@@ -2,13 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-import appConfig from 'config/app';
+import useNotifications from 'hooks/useNotifications';
 import Container from 'components/Container';
 import NotificationCard from 'components/NotificationCard';
 import PageTitle from 'components/PageTitle';
 import useFormatMessage from 'hooks/useFormatMessage';
 
-interface IUpdate {
+interface INotification {
   name: string;
   createdAt: string;
   documentationUrl: string;
@@ -17,18 +17,7 @@ interface IUpdate {
 
 export default function Updates(): React.ReactElement {
   const formatMessage = useFormatMessage();
-  const [updates, setUpdates] = React.useState<IUpdate[]>([]);
-
-  React.useEffect(() => {
-    fetch(`${appConfig.notificationsUrl}/notifications.json`)
-      .then((response) => response.json())
-      .then((updates) => {
-        if (Array.isArray(updates) && updates.length) {
-          setUpdates(updates);
-        }
-      })
-      .catch(console.error);
-  }, []);
+  const notifications = useNotifications();
 
   return (
     <Box sx={{ py: 3 }}>
@@ -40,13 +29,13 @@ export default function Updates(): React.ReactElement {
         <Stack
           gap={2}
         >
-          {updates.map((update: IUpdate) => (
+          {notifications.map((notification: INotification) => (
             <NotificationCard
-              key={update.name}
-              name={`Version ${update.name}`}
-              description={update.description}
-              createdAt={update.createdAt}
-              documentationUrl={update.documentationUrl}
+              key={notification.name}
+              name={`Version ${notification.name}`}
+              description={notification.description}
+              createdAt={notification.createdAt}
+              documentationUrl={notification.documentationUrl}
             />
           ))}
         </Stack>
