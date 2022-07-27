@@ -139,7 +139,7 @@ class Telemetry {
       },
     });
 
-    setTimeout(this.diagnosticInfo, SIX_HOURS_IN_MILLISECONDS);
+    setTimeout(() => this.diagnosticInfo(), SIX_HOURS_IN_MILLISECONDS);
   }
 }
 
