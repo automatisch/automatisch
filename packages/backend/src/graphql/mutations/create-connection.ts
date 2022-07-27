@@ -1,4 +1,3 @@
-import App from '../../models/app';
 import Context from '../../types/express/context';
 import { IJSONObject } from '@automatisch/types';
 
@@ -13,19 +12,12 @@ const createConnection = async (
   params: Params,
   context: Context
 ) => {
-  const app = App.findOneByKey(params.input.key);
-
-  const connection = await context.currentUser
+  return await context.currentUser
     .$relatedQuery('connections')
     .insert({
       key: params.input.key,
       formattedData: params.input.formattedData,
     });
-
-  return {
-    ...connection,
-    app,
-  };
 };
 
 export default createConnection;
