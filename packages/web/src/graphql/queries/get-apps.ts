@@ -9,6 +9,7 @@ export const GET_APPS = gql`
       docUrl
       primaryColor
       connectionCount
+      supportsConnections
       fields {
         key
         label

@@ -40,7 +40,7 @@ const ReconnectConnection = (props: any): React.ReactElement => {
   );
 }
 
-export default function Application(): React.ReactElement {
+export default function Application(): React.ReactElement | null {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const formatMessage = useFormatMessage();
@@ -48,7 +48,7 @@ export default function Application(): React.ReactElement {
   const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
   const { appKey } = useParams() as ApplicationParams;
   const navigate = useNavigate();
-  const { data } = useQuery(GET_APP, { variables: { key: appKey } });
+  const { data, loading } = useQuery(GET_APP, { variables: { key: appKey } });
 
   const goToApplicationPage = () => navigate('connections');
   const app = data?.getApp || {};
@@ -74,6 +74,8 @@ export default function Application(): React.ReactElement {
       }),
     [appKey],
   );
+
+  if (loading) return null;
 
   return (
     <>
@@ -142,6 +144,7 @@ export default function Application(): React.ReactElement {
                     label={formatMessage('app.connections')}
                     to={URLS.APP_CONNECTIONS(appKey)}
                     value={URLS.APP_CONNECTIONS_PATTERN}
+                    disabled={!app.supportsConnections}
                     component={Link}
                   />
 
@@ -159,7 +162,12 @@ export default function Application(): React.ReactElement {
 
                 <Route path={`${URLS.CONNECTIONS}/*`} element={<AppConnections appKey={appKey} />} />
 
-                <Route path="/" element={<Navigate to={URLS.APP_CONNECTIONS(appKey)} />} />
+                <Route
+                  path="/"
+                  element={(
+                    <Navigate to={app.supportsConnections ? URLS.APP_CONNECTIONS(appKey) : URLS.APP_FLOWS(appKey)} />
+                  )}
+                />
               </Routes>
             </Grid>
           </Grid>

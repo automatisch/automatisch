@@ -4,6 +4,7 @@
   "iconUrl": "{BASE_URL}/apps/scheduler/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/scheduler",
   "primaryColor": "0059F7",
+  "supportsConnections": false,
   "requiresAuthentication": false,
   "triggers": [
     {

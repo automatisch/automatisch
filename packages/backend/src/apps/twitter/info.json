@@ -4,6 +4,7 @@
   "iconUrl": "{BASE_URL}/apps/twitter/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/twitter",
   "primaryColor": "2DAAE1",
+  "supportsConnections": true,
   "fields": [
     {
       "key": "oAuthRedirectUrl",

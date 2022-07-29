@@ -4,6 +4,7 @@
   "iconUrl": "{BASE_URL}/apps/typeform/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/typeform",
   "primaryColor": "5865f2",
+  "supportsConnections": true,
   "fields": [
     {
       "key": "oAuthRedirectUrl",

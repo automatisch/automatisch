@@ -87,6 +87,7 @@ type App {
   iconUrl: String
   docUrl: String
   primaryColor: String
+  supportsConnections: Boolean
   fields: [Field]
   authenticationSteps: [AuthenticationStep]
   reconnectionSteps: [ReconnectionStep]

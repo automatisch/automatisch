@@ -8,6 +8,7 @@ export const GET_APP = gql`
       iconUrl
       docUrl
       primaryColor
+      supportsConnections
       fields {
         key
         label
