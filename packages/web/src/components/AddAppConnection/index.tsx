@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Alert from '@mui/material/Alert';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -27,7 +28,10 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
   const { application, connectionId, onClose } = props;
   const { key, fields, authenticationSteps, reconnectionSteps } = application;
   const formatMessage = useFormatMessage();
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [inProgress, setInProgress] = React.useState(false);
+  const hasConnection = Boolean(connectionId);
+  const steps = hasConnection ? reconnectionSteps : authenticationSteps;
 
   React.useEffect(() => {
     if (window.opener) {
@@ -38,7 +42,7 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
 
   const submitHandler: SubmitHandler<FieldValues> = React.useCallback(async (data) => {
     setInProgress(true);
-    const hasConnection = Boolean(connectionId);
+    setErrorMessage(null);
 
     const response: Response = {
       key,
@@ -47,8 +51,6 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
       },
       fields: data,
     };
-
-    const steps = hasConnection ? reconnectionSteps : authenticationSteps;
 
     let stepIndex = 0;
     while (stepIndex < steps.length) {
@@ -60,7 +62,9 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
 
         response[step.name] = stepResponse;
       } catch (err) {
-        console.log(err);
+        const error = err as Error;
+        console.log(error);
+        setErrorMessage(error.message);
         break;
       }
 
@@ -72,11 +76,17 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
     }
 
     setInProgress(false);
-  }, [connectionId, key, reconnectionSteps, authenticationSteps, onClose]);
+  }, [connectionId, key, steps, onClose]);
 
   return (
     <Dialog open={true} onClose={onClose}>
-      <DialogTitle>Add connection</DialogTitle>
+      <DialogTitle>{hasConnection ? formatMessage('app.reconnectConnection') : formatMessage('app.addConnection')}</DialogTitle>
+
+      {errorMessage && (
+        <Alert severity="error" sx={{ mb: 1, fontWeight: 500 }}>
+          {errorMessage}
+        </Alert>
+      )}
 
       <DialogContent>
         <DialogContentText tabIndex={-1} component="div">

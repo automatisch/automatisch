@@ -14,6 +14,7 @@
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
   "app.addConnection": "Add connection",
+  "app.reconnectConnection": "Reconnect connection",
   "app.createFlow": "Create flow",
   "app.settings": "Settings",
   "app.connections": "Connections",
