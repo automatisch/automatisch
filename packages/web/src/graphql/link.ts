@@ -20,10 +20,15 @@ const createHttpLink = (options: Pick<CreateLinkOptions, 'uri' | 'token'>): Apol
 }
 
 const NOT_AUTHORISED = 'Not Authorised!';
-const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => onError(({ graphQLErrors, networkError }) => {
+const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => onError(({ graphQLErrors, networkError, operation }) => {
+  const context = operation.getContext();
+  const autoSnackbar = context.autoSnackbar ?? true;
+
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) => {
-      callback?.(message);
+      if (autoSnackbar) {
+        callback?.(message);
+      }
 
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
@@ -36,7 +41,9 @@ const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => 
     });
 
   if (networkError) {
-    callback?.(networkError.toString())
+    if (autoSnackbar) {
+      callback?.(networkError.toString())
+    }
     console.log(`[Network error]: ${networkError}`);
   }
 });

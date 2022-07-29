@@ -10,7 +10,13 @@ enum AuthenticationSteps {
 
 const processMutation = async (step: IAuthenticationStep, variables: IJSONObject) => {
   const mutation = MUTATIONS[step.name];
-  const mutationResponse = await apolloClient.mutate({ mutation, variables: { input: variables } });
+  const mutationResponse = await apolloClient.mutate({
+    mutation,
+    variables: { input: variables },
+    context: {
+      autoSnackbar: false,
+    },
+   });
   const responseData = mutationResponse.data[step.name];
 
   return responseData;
