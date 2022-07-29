@@ -23,6 +23,14 @@ import AppIcon from 'components/AppIcon';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
 
+function createConnectionOrFlow(appKey: string, supportsConnections = false) {
+  if (!supportsConnections) {
+    return URLS.CREATE_FLOW_WITH_APP(appKey);
+  }
+
+  return URLS.APP_ADD_CONNECTION(appKey);
+};
+
 type AddNewAppConnectionProps = {
   onClose: () => void;
 };
@@ -70,7 +78,7 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
         <List sx={{ pt: 2 }}>
           {data?.getApps?.map((app: IApp) => (
             <ListItem disablePadding key={app.name}>
-              <ListItemButton component={Link} to={URLS.APP_ADD_CONNECTION(app.name.toLowerCase())}>
+              <ListItemButton component={Link} to={createConnectionOrFlow(app.name.toLowerCase(), app.supportsConnections)}>
                 <ListItemIcon sx={{ minWidth: 74 }}>
                   <AppIcon color="transparent" url={app.iconUrl} name={app.name} />
                 </ListItemIcon>

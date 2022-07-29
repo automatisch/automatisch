@@ -142,6 +142,7 @@ export interface IApp {
   iconUrl: string;
   docUrl: string;
   primaryColor: string;
+  supportsConnections: boolean;
   fields: IField[];
   authenticationSteps: IAuthenticationStep[];
   reconnectionSteps: IAuthenticationStep[];

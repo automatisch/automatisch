@@ -4,6 +4,7 @@
   "iconUrl": "{BASE_URL}/apps/discord/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/discord",
   "primaryColor": "5865f2",
+  "supportsConnections": true,
   "fields": [
     {
       "key": "oAuthRedirectUrl",

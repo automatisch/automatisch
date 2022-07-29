@@ -4,6 +4,7 @@
   "iconUrl": "{BASE_URL}/apps/flickr/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/flickr",
   "primaryColor": "000000",
+  "supportsConnections": true,
   "fields": [
     {
       "key": "oAuthRedirectUrl",

@@ -4,6 +4,7 @@
   "iconUrl": "{BASE_URL}/apps/slack/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/slack",
   "primaryColor": "2DAAE1",
+  "supportsConnections": true,
   "fields": [
     {
       "key": "accessToken",
