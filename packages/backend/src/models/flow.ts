@@ -44,7 +44,9 @@ class Flow extends Base {
     },
   });
 
-  async $beforeUpdate(opt: ModelOptions): Promise<void> {
+  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext): Promise<void> {
+    await super.$beforeUpdate(opt, queryContext);
+
     if (!this.active) return;
 
     const oldFlow = opt.old as Flow;

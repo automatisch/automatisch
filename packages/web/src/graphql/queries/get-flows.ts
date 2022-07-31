@@ -5,6 +5,8 @@ export const GET_FLOWS = gql`
     getFlows(appKey: $appKey) {
       id
       name
+      createdAt
+      updatedAt
     }
   }
 `;
