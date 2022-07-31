@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
 import CardActionArea from '@mui/material/CardActionArea';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { DateTime } from 'luxon';
 
 import type { IFlow } from '@automatisch/types';
+import AppIcon from 'components/AppIcon';
 import FlowContextMenu from 'components/FlowContextMenu';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
-import { CardContent, Typography } from './style';
+import { Apps, CardContent, ContextMenu, Title, Typography } from './style';
 
 type FlowRowProps = {
   flow: IFlow;
@@ -45,10 +44,22 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
       <Card sx={{ mb: 1 }}>
         <CardActionArea component={Link} to={URLS.FLOW(flow.id)}>
           <CardContent>
-            <Stack
+            <Apps direction="row" gap={1} sx={{gridArea:"apps"}}>
+              {["Twitter", "+3", "Github"].map((app) => (
+                <AppIcon
+                  name={app}
+                  color="lightpink"
+                  variant="rounded"
+                  url="httpss://via.placeholder.com/50"
+                />
+              ))}
+            </Apps>
+
+            <Title
               justifyContent="center"
               alignItems="flex-start"
               spacing={1}
+              sx={{gridArea:"title"}}
             >
               <Typography variant="h6" noWrap>
                 {flow?.name}
@@ -58,9 +69,9 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
                 {isUpdated && formatMessage('flow.updatedAt', { datetime: relativeUpdatedAt })}
                 {!isUpdated && formatMessage('flow.createdAt', { datetime: relativeCreatedAt })}
               </Typography>
-            </Stack>
+            </Title>
 
-            <Box>
+            <ContextMenu>
               <IconButton
                 size="large"
                 edge="start"
@@ -71,7 +82,7 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
               >
                 <MoreHorizIcon />
               </IconButton>
-            </Box>
+            </ContextMenu>
           </CardContent>
         </CardActionArea>
       </Card>
