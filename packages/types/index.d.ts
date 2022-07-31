@@ -26,6 +26,7 @@ export interface IExecutionStep {
   dataOut: IJSONObject;
   status: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface IExecution {
@@ -34,6 +35,7 @@ export interface IExecution {
   flow: IFlow;
   testRun: boolean;
   executionSteps: IExecutionStep[];
+  updatedAt: string;
   createdAt: string;
 }
 
@@ -61,6 +63,8 @@ export interface IFlow {
   userId: string;
   active: boolean;
   steps: IStep[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IUser {

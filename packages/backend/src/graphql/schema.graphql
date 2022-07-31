@@ -203,6 +203,8 @@ type Flow {
   name: String
   active: Boolean
   steps: [Step]
+  createdAt: String
+  updatedAt: String
 }
 
 type Execution {

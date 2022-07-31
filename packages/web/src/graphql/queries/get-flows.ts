@@ -11,6 +11,8 @@ export const GET_FLOWS = gql`
         node {
           id
           name
+      createdAt
+      updatedAt
         }
       }
     }
