@@ -10,10 +10,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+import * as URLS from 'config/urls';
 import AccountDropdownMenu from 'components/AccountDropdownMenu';
 import Container from 'components/Container';
 import HideOnScroll from 'components/HideOnScroll';
 import { FormattedMessage } from 'react-intl';
+import { Link } from './style';
 
 type AppBarProps = {
   drawerOpen: boolean;
@@ -63,14 +65,17 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
               {drawerOpen && matchSmallScreens ? <MenuOpenIcon /> : <MenuIcon />}
             </IconButton>
 
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              <FormattedMessage id="brandText" />
-            </Typography>
+            <div style={{ flexGrow: 1 }}>
+              <Link to={URLS.DASHBOARD}>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  noWrap
+                >
+                  <FormattedMessage id="brandText" />
+                </Typography>
+              </Link>
+            </div>
 
             <IconButton
               size="large"
