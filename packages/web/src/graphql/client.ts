@@ -10,7 +10,12 @@ type CreateClientOptions = {
 
 const client = new ApolloClient({
   cache,
-  link: createLink({ uri: appConfig.graphqlUrl })
+  link: createLink({ uri: appConfig.graphqlUrl }),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    }
+  }
 });
 
 export function mutateAndGetClient(options: CreateClientOptions): typeof client {
