@@ -165,7 +165,7 @@ export default function Application(): React.ReactElement | null {
                 <Route
                   path="/"
                   element={(
-                    <Navigate to={app.supportsConnections ? URLS.APP_CONNECTIONS(appKey) : URLS.APP_FLOWS(appKey)} />
+                    <Navigate to={app.supportsConnections ? URLS.APP_CONNECTIONS(appKey) : URLS.APP_FLOWS(appKey)} replace />
                   )}
                 />
               </Routes>
