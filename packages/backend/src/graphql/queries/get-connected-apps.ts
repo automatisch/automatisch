@@ -16,8 +16,8 @@ const getConnectedApps = async (
   const connections = await context.currentUser
     .$relatedQuery('connections')
     .select('connections.key')
+    .where({ draft: false })
     .count('connections.id as count')
-    .where({ verified: true })
     .groupBy('connections.key');
 
   const connectionKeys = connections.map((connection) => connection.key);
