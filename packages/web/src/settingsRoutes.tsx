@@ -8,6 +8,6 @@ export default (
   <>
     <Route path={URLS.SETTINGS_PROFILE} element={<SettingsLayout><ProfileSettings /></SettingsLayout>} />
 
-    <Route path={URLS.SETTINGS} element={<Navigate to={URLS.SETTINGS_PROFILE} />} />
+    <Route path={URLS.SETTINGS} element={<Navigate to={URLS.SETTINGS_PROFILE} replace />} />
   </>
 );

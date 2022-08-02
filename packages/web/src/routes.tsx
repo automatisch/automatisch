@@ -34,7 +34,7 @@ export default (
 
     <Route path={URLS.UPDATES} element={<Layout><Notifications /></Layout>} />
 
-    <Route path="/" element={<Navigate to={URLS.FLOWS} />} />
+    <Route path="/" element={<Navigate to={URLS.FLOWS} replace />} />
 
     <Route path={`${URLS.SETTINGS}`}>
       {settingsRoutes}
