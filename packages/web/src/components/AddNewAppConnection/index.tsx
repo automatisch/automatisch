@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
+import debounce from 'lodash/debounce';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -8,6 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import Dialog from '@mui/material/Dialog';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
+import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -33,7 +35,27 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState<string | null>(null);
-  const { data } = useQuery(GET_APPS, { variables: { name: appName } });
+  const [loading, setLoading] = React.useState(false);
+  const [getApps, { data }] = useLazyQuery(GET_APPS, {
+    onCompleted: () => { setLoading(false); },
+  });
+
+  const fetchData = React.useMemo(
+    () => debounce((name) => getApps({ variables: { name }}), 300),
+    [getApps]
+  );
+
+  React.useEffect(function fetchAppsOnAppNameChange() {
+    setLoading(true);
+
+    fetchData(appName);
+  }, [fetchData, appName]);
+
+  React.useEffect(function cancelDebounceOnUnmount() {
+    return () => {
+      fetchData.cancel();
+    }
+  }, []);
 
   return (
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
@@ -57,6 +79,7 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
             id="search-app"
             type="text"
             fullWidth
+            autoFocus
             onChange={(event) => setAppName(event.target.value)}
             endAdornment={
               <InputAdornment position="end">
@@ -67,8 +90,10 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
           />
         </FormControl>
 
-        <List sx={{ pt: 2 }}>
-          {data?.getApps?.map((app: IApp) => (
+        <List sx={{ pt: 2, width: '100%' }}>
+          {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
+
+          {!loading && data?.getApps?.map((app: IApp) => (
             <ListItem disablePadding key={app.name}>
               <ListItemButton component={Link} to={URLS.APP_ADD_CONNECTION(app.name.toLowerCase())}>
                 <ListItemIcon sx={{ minWidth: 74 }}>
