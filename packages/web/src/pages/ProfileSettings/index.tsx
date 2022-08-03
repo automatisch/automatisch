@@ -92,14 +92,14 @@ function ProfileSettings() {
             resolver={yupResolver(emailValidationSchema)}
             mode="onChange"
             sx={{ mb: 2 }}
-            render={({ formState: { errors, isDirty, isValid, isSubmitting } }) => (
+            render={({ formState: { errors, touchedFields, isDirty, isValid, isSubmitting } }) => (
               <>
                <TextField
                   fullWidth
                   name="email"
                   label={formatMessage('profileSettings.email')}
                   margin="normal"
-                  error={!!errors?.email}
+                  error={touchedFields.email && !!errors?.email}
                   helperText={errors?.email?.message || ' '}
                 />
 
@@ -119,7 +119,7 @@ function ProfileSettings() {
             onSubmit={handlePasswordUpdate}
             resolver={yupResolver(passwordValidationSchema)}
             mode="onChange"
-            render={({ formState: { errors, isDirty, isValid, isSubmitting } }) => (
+            render={({ formState: { errors, touchedFields, isDirty, isValid, isSubmitting } }) => (
               <>
                 <TextField
                   fullWidth
@@ -127,7 +127,7 @@ function ProfileSettings() {
                   label={formatMessage('profileSettings.newPassword')}
                   margin="normal"
                   type="password"
-                  error={!!errors?.password}
+                  error={touchedFields.password && !!errors?.password}
                   helperText={errors?.password?.message || ' '}
                 />
 
@@ -137,7 +137,7 @@ function ProfileSettings() {
                   label={formatMessage('profileSettings.confirmNewPassword')}
                   margin="normal"
                   type="password"
-                  error={!!errors?.confirmPassword}
+                  error={touchedFields.confirmPassword && !!errors?.confirmPassword}
                   helperText={errors?.confirmPassword?.message || ' '}
                 />
 
