@@ -13,6 +13,7 @@ type AppConfig = {
   postgresHost: string;
   postgresUsername: string;
   postgresPassword?: string;
+  version: string;
   postgresEnableSsl: boolean;
   baseUrl: string;
   encryptionKey: string;
@@ -44,6 +45,7 @@ const appConfig: AppConfig = {
   port,
   appEnv: appEnv,
   isDev: appEnv === 'development',
+  version: process.env.npm_package_version,
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
   postgresPort: parseInt(process.env.POSTGRES_PORT || '5432'),
   postgresHost: process.env.POSTGRES_HOST || 'localhost',
