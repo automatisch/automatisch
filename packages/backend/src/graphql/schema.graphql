@@ -85,6 +85,7 @@ type App {
   name: String
   key: String
   connectionCount: Int
+  flowCount: Int
   iconUrl: String
   docUrl: String
   primaryColor: String

@@ -147,6 +147,7 @@ export interface IApp {
   authenticationSteps: IAuthenticationStep[];
   reconnectionSteps: IAuthenticationStep[];
   connectionCount: number;
+  flowCount: number;
   triggers: any[];
   actions: any[];
   connections: IConnection[];
