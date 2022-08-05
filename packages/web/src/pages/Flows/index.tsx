@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import type { LinkProps } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
 import type { IFlow } from '@automatisch/types';
 
 import FlowRow from 'components/FlowRow';
@@ -16,12 +18,29 @@ import useFormatMessage from 'hooks/useFormatMessage'
 import { GET_FLOWS } from 'graphql/queries/get-flows';
 import * as URLS from 'config/urls';
 
+const FLOW_PER_PAGE = 10;
+
+const getLimitAndOffset = (page: number) => ({
+  limit: FLOW_PER_PAGE,
+  offset: (page - 1) * FLOW_PER_PAGE,
+});
+
 export default function Flows(): React.ReactElement {
   const formatMessage = useFormatMessage();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const [flowName, setFlowName] = React.useState('');
-  const { data } = useQuery(GET_FLOWS);
+  const { data } = useQuery(GET_FLOWS, {
+    variables: getLimitAndOffset(page),
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const flows: IFlow[] = data?.getFlows?.filter((flow: IFlow) => flow.name?.toLowerCase().includes(flowName.toLowerCase()));
+  const getFlows = data?.getFlows || {};
+  const { pageInfo, edges } = getFlows;
+
+  const flows: IFlow[] = edges
+    ?.map(({ node }: { node: IFlow }) => node)
+    .filter((flow: IFlow) => flow.name?.toLowerCase().includes(flowName.toLowerCase()));
 
   const onSearchChange = React.useCallback((event) => {
     setFlowName(event.target.value);
@@ -66,6 +85,20 @@ export default function Flows(): React.ReactElement {
         </Grid>
 
         {flows?.map((flow) => (<FlowRow key={flow.id} flow={flow} />))}
+
+        {pageInfo && pageInfo.totalPages > 1 && <Pagination
+          sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+          page={pageInfo?.currentPage}
+          count={pageInfo?.totalPages}
+          onChange={(event, page) => setSearchParams({ page: page.toString() })}
+          renderItem={(item) => (
+            <PaginationItem
+              component={Link}
+              to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
+              {...item}
+            />
+          )}
+        />}
       </Container>
     </Box>
   );
