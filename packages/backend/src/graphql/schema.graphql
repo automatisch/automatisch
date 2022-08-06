@@ -330,6 +330,7 @@ type Step {
   previousStepId: String
   key: String
   appKey: String
+  iconUrl: String
   type: StepEnumType
   parameters: JSONObject
   connection: Connection
