@@ -17,6 +17,7 @@ const getFlows = async (_parent: unknown, params: Params, context: Context) => {
         builder.where('steps.app_key', params.appKey);
       }
     })
+    .groupBy('flows.id')
     .orderBy('updated_at', 'desc');
 
   return paginate(flowsQuery, params.limit, params.offset);
