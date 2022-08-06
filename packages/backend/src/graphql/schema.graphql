@@ -4,7 +4,7 @@ type Query {
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
-  getFlows(appKey: String): [Flow]
+  getFlows(limit: Int!, offset: Int!, appKey: String): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
   getExecutions(limit: Int!, offset: Int!): ExecutionConnection
   getExecutionSteps(
@@ -187,6 +187,15 @@ type Field {
   description: String
   docUrl: String
   clickToCopy: Boolean
+}
+
+type FlowConnection {
+  edges: [FlowEdge]
+  pageInfo: PageInfo
+}
+
+type FlowEdge {
+  node: Flow
 }
 
 type Flow {
