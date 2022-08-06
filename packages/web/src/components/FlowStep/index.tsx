@@ -106,7 +106,7 @@ export default function FlowStep(
   );
   const isTrigger = step.type === 'trigger';
   const formatMessage = useFormatMessage();
-  const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(2);
+  const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(0);
   const { data } = useQuery(GET_APPS, {
     variables: { onlyWithTriggers: isTrigger },
   });

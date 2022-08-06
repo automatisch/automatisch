@@ -6,6 +6,7 @@ type AppIconProps = {
   name?: string;
   url?: string;
   color?: string;
+  variant?: AvatarProps['variant'];
 };
 
 const inlineImgStyle: React.CSSProperties = {
@@ -13,16 +14,26 @@ const inlineImgStyle: React.CSSProperties = {
 };
 
 export default function AppIcon(props: AppIconProps & AvatarProps): React.ReactElement {
-  const { name, url, color, sx = {}, ...restProps } = props;
+  const {
+    name,
+    url,
+    color,
+    sx = {},
+    variant = "square",
+    ...restProps
+  } = props;
+
+  const initialLetter = name?.[0];
 
   return (
     <Avatar
       component="span"
-      variant="square"
+      variant={variant}
       sx={{ bgcolor: color, display: 'flex', width: 50, height: 50, ...sx }}
       imgProps={{ style: inlineImgStyle }}
       src={url}
       alt={name}
+      children={initialLetter}
       {...restProps}
     />
   );
