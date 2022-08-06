@@ -1,6 +1,5 @@
 import Context from '../../types/express/context';
 import paginate from '../../helpers/pagination';
-import Flow from '../../models/flow';
 
 type Params = {
   appKey?: string;
@@ -9,11 +8,11 @@ type Params = {
 };
 
 const getFlows = async (_parent: unknown, params: Params, context: Context) => {
-  const flowsQuery = Flow.query()
+  const flowsQuery = context.currentUser
+    .$relatedQuery('flows')
     .joinRelated('steps')
     .withGraphFetched('steps.[connection]')
-    .where('flows.user_id', context.currentUser.id)
-    .andWhere((builder) => {
+    .where((builder) => {
       if (params.appKey) {
         builder.where('steps.app_key', params.appKey);
       }
