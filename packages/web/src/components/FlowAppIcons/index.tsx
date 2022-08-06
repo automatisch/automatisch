@@ -12,9 +12,8 @@ export default function FlowAppIcons(props: FlowAppIconsProps) {
   const { steps } = props;
   const stepsCount = steps.length;
   const firstStep = steps[0];
-  const lastStep = steps[stepsCount - 1];
+  const lastStep = steps.length > 1 && steps[stepsCount - 1];
   const intermeaditeStepCount = stepsCount - 2;
-
 
   return (
     <>
@@ -27,11 +26,11 @@ export default function FlowAppIcons(props: FlowAppIconsProps) {
 
       {intermeaditeStepCount > 0 && <IntermediateStepCount count={intermeaditeStepCount} />}
 
-      <AppIcon
+      {lastStep && <AppIcon
         name=" "
         variant="rounded"
         url={lastStep.iconUrl}
-      />
+      />}
     </>
   )
 };
