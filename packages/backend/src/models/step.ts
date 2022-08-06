@@ -6,6 +6,7 @@ import Connection from './connection';
 import ExecutionStep from './execution-step';
 import type { IStep } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
+import appConfig from '../config/app';
 
 class Step extends Base {
   id!: string;
@@ -40,6 +41,10 @@ class Step extends Base {
     },
   };
 
+  static get virtualAttributes() {
+    return ['iconUrl'];
+  }
+
   static relationMappings = () => ({
     flow: {
       relation: Base.BelongsToOneRelation,
@@ -66,6 +71,10 @@ class Step extends Base {
       },
     },
   });
+
+  get iconUrl() {
+    return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
+  }
 
   async $afterInsert(queryContext: QueryContext) {
     await super.$afterInsert(queryContext);
