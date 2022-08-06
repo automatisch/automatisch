@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "dependencies": {
-    "@apollo/client": "^3.4.15",
+    "@apollo/client": "^3.6.9",
     "@automatisch/types": "0.1.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
