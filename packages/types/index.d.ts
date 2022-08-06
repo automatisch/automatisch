@@ -45,6 +45,7 @@ export interface IStep {
   flowId: string;
   key: string;
   appKey: string;
+  iconUrl: string;
   type: 'action' | 'trigger';
   connectionId: string;
   status: string;

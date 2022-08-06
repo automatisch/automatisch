@@ -7,8 +7,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { DateTime } from 'luxon';
 
 import type { IFlow } from '@automatisch/types';
-import IntermediateStepCount from 'components/IntermediateStepCount';
-import AppIcon from 'components/AppIcon';
+import FlowAppIcons from 'components/FlowAppIcons';
 import FlowContextMenu from 'components/FlowContextMenu';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
@@ -46,21 +45,7 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
         <CardActionArea component={Link} to={URLS.FLOW(flow.id)}>
           <CardContent>
             <Apps direction="row" gap={1} sx={{gridArea:"apps"}}>
-              <AppIcon
-                name="Twitter"
-                color="lightpink"
-                variant="rounded"
-                url="httpss://via.placeholder.com/50"
-              />
-
-              <IntermediateStepCount count={99} />
-
-              <AppIcon
-                name="Github"
-                color="lightpink"
-                variant="rounded"
-                url="httpss://via.placeholder.com/50"
-              />
+              <FlowAppIcons steps={flow.steps} />
             </Apps>
 
             <Title

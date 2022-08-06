@@ -7,6 +7,6 @@ export const Container = styled('div')(({ theme }) => ({
   alignItems: 'center',
   minWidth: 50,
   height: 50,
-  border: '1px solid #000',
+  border: `1px solid ${theme.palette.text.disabled}`,
   borderRadius: theme.shape.borderRadius,
 }));

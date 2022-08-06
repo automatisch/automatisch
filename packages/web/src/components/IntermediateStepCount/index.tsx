@@ -12,7 +12,7 @@ export default function IntermediateStepCount(props: IntermediateStepCountProps)
 
   return (
     <Container>
-      <Typography variant="body2">
+      <Typography variant="subtitle1" sx={{ }}>
         +{count}
       </Typography>
     </Container>

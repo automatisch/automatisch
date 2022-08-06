@@ -13,6 +13,9 @@ export const GET_FLOWS = gql`
           name
           createdAt
           updatedAt
+          steps {
+            iconUrl
+          }
         }
       }
     }
