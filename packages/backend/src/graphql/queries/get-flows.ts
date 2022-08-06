@@ -1,22 +1,26 @@
 import Context from '../../types/express/context';
+import paginate from '../../helpers/pagination';
+import Flow from '../../models/flow';
 
 type Params = {
   appKey?: string;
+  limit: number;
+  offset: number;
 };
 
 const getFlows = async (_parent: unknown, params: Params, context: Context) => {
-  const flowsQuery = context.currentUser
-    .$relatedQuery('flows')
-    .withGraphJoined('[steps.[connection]]')
-    .orderBy('created_at', 'desc');
+  const flowsQuery = Flow.query()
+    .joinRelated('steps')
+    .withGraphFetched('steps.[connection]')
+    .where('flows.user_id', context.currentUser.id)
+    .andWhere((builder) => {
+      if (params.appKey) {
+        builder.where('steps.app_key', params.appKey);
+      }
+    })
+    .orderBy('updated_at', 'desc');
 
-  if (params.appKey) {
-    flowsQuery.where('steps.app_key', params.appKey);
-  }
-
-  const flows = await flowsQuery;
-
-  return flows;
+  return paginate(flowsQuery, params.limit, params.offset);
 };
 
 export default getFlows;
