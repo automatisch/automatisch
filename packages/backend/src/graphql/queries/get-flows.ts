@@ -1,5 +1,6 @@
 import Context from '../../types/express/context';
 import paginate from '../../helpers/pagination';
+import Flow from '../../models/flow';
 
 type Params = {
   appKey?: string;
@@ -8,22 +9,16 @@ type Params = {
 };
 
 const getFlows = async (_parent: unknown, params: Params, context: Context) => {
-  const userStepsQuery = context.currentUser
-    .$relatedQuery('steps')
-    .select('flow_id')
-    .distinctOn('flow_id');
-
-  if (params.appKey) {
-    userStepsQuery.where('app_key', params.appKey);
-  }
-
-  const flowsQuery = context.currentUser
-    .$relatedQuery('flows')
-    .withGraphFetched('[steps.[connection]]')
-    .whereIn(
-      'flows.id',
-      userStepsQuery
-    );
+  const flowsQuery = Flow.query()
+    .joinRelated('steps')
+    .withGraphFetched('steps.[connection]')
+    .where('flows.user_id', context.currentUser.id)
+    .andWhere((builder) => {
+      if (params.appKey) {
+        builder.where('steps.app_key', params.appKey);
+      }
+    })
+    .orderBy('updated_at', 'desc');
 
   return paginate(flowsQuery, params.limit, params.offset);
 };
