@@ -10,12 +10,15 @@ type AppFlowsProps = {
 
 export default function AppFlows(props: AppFlowsProps): React.ReactElement {
   const { appKey } = props;
-  const { data } = useQuery(GET_FLOWS, { variables: { appKey }});
-  const appFlows: IFlow[] = data?.getFlows || [];
+  const { data } = useQuery(GET_FLOWS, { variables: { appKey, limit: 100, offset: 0 }});
+  const getFlows = data?.getFlows || {};
+  const { edges } = getFlows;
+
+  const appFlows: IFlow[] = edges?.map(({ node }: { node: IFlow }) => node);
 
   return (
     <>
-      {appFlows.map((appFlow: IFlow) => (
+      {appFlows?.map((appFlow: IFlow) => (
         <AppFlowRow key={appFlow.id} flow={appFlow} />
       ))}
     </>
