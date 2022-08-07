@@ -9,7 +9,8 @@ import { DateTime } from 'luxon';
 
 import type { IExecution } from '@automatisch/types';
 import * as URLS from 'config/urls';
-import { CardContent, Typography } from './style';
+import FlowAppIcons from 'components/FlowAppIcons';
+import { Apps, CardContent, Typography } from './style';
 
 type ExecutionRowProps = {
   execution: IExecution;
@@ -26,6 +27,10 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
       <Card sx={{ mb: 1 }}>
         <CardActionArea>
           <CardContent>
+            <Apps direction="row" gap={1} sx={{gridArea:"apps"}}>
+              <FlowAppIcons steps={flow.steps} />
+            </Apps>
+
             <Stack
               justifyContent="center"
               alignItems="flex-start"

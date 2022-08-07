@@ -17,6 +17,9 @@ export const GET_EXECUTIONS = gql`
             id
             name
             active
+            steps {
+              iconUrl
+            }
           }
         }
       }

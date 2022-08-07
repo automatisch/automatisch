@@ -13,7 +13,11 @@ const getExecutions = async (
 ) => {
   const executions = context.currentUser
     .$relatedQuery('executions')
-    .withGraphFetched('flow')
+    .withGraphFetched({
+      flow: {
+        steps: true
+      }
+    })
     .orderBy('created_at', 'desc');
 
   return paginate(executions, params.limit, params.offset);
