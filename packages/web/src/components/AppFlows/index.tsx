@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { GET_FLOWS } from 'graphql/queries/get-flows';
 
-import AppFlowRow from 'components/AppFlowRow';
+import AppFlowRow from 'components/FlowRow';
 import type { IFlow } from '@automatisch/types';
 
 type AppFlowsProps = {
