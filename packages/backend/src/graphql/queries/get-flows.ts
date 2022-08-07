@@ -3,6 +3,7 @@ import paginate from '../../helpers/pagination';
 
 type Params = {
   appKey?: string;
+  name?: string;
   limit: number;
   offset: number;
 };
@@ -13,6 +14,10 @@ const getFlows = async (_parent: unknown, params: Params, context: Context) => {
     .joinRelated('steps')
     .withGraphFetched('steps.[connection]')
     .where((builder) => {
+      if (params.name) {
+        builder.where('flows.name', 'like', `%${params.name}%`);
+      }
+
       if (params.appKey) {
         builder.where('steps.app_key', params.appKey);
       }

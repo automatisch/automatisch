@@ -4,7 +4,12 @@ type Query {
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
-  getFlows(limit: Int!, offset: Int!, appKey: String): FlowConnection
+  getFlows(
+    limit: Int!
+    offset: Int!
+    appKey: String
+    name: String
+  ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
   getExecutions(limit: Int!, offset: Int!): ExecutionConnection
   getExecutionSteps(
