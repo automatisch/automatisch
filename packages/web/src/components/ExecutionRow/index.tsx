@@ -6,9 +6,10 @@ import Stack from '@mui/material/Stack';
 import CardActionArea from '@mui/material/CardActionArea';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { DateTime } from 'luxon';
-
 import type { IExecution } from '@automatisch/types';
+
 import * as URLS from 'config/urls';
+import useFormatMessage from 'hooks/useFormatMessage';
 import FlowAppIcons from 'components/FlowAppIcons';
 import { Apps, CardContent, Typography } from './style';
 
@@ -16,11 +17,13 @@ type ExecutionRowProps = {
   execution: IExecution;
 }
 
-const getHumanlyDate = (timestamp: number) => DateTime.fromMillis(timestamp).toLocaleString(DateTime.DATETIME_MED);
-
 export default function ExecutionRow(props: ExecutionRowProps): React.ReactElement {
+  const formatMessage = useFormatMessage();
   const { execution } = props;
   const { flow } = execution;
+
+  const createdAt = DateTime.fromMillis(parseInt(execution.createdAt, 10));
+  const relativeCreatedAt = createdAt.toRelative();
 
   return (
     <Link to={URLS.EXECUTION(execution.id)}>
@@ -41,7 +44,7 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
               </Typography>
 
               <Typography variant="caption" noWrap>
-                {getHumanlyDate(parseInt(execution.createdAt, 10))}
+                {formatMessage('execution.executedAt', { datetime: relativeCreatedAt })}
               </Typography>
             </Stack>
 
