@@ -21,7 +21,7 @@ export default function FlowAppIcons(props: FlowAppIconsProps) {
         name=" "
         variant="rounded"
         url={firstStep.iconUrl}
-        imgProps={{ width: 30, height: 30}}
+        sx={{ width: 30, height: 30 }}
       />
 
       {intermeaditeStepCount > 0 && <IntermediateStepCount count={intermeaditeStepCount} />}
@@ -30,6 +30,7 @@ export default function FlowAppIcons(props: FlowAppIconsProps) {
         name=" "
         variant="rounded"
         url={lastStep.iconUrl}
+        sx={{ width: 30, height: 30 }}
       />}
     </>
   )
