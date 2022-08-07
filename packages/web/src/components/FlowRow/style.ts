@@ -7,7 +7,7 @@ import MuiTypography from '@mui/material/Typography';
 export const CardContent = styled(MuiCardContent)(({ theme }) => ({
   display: 'grid',
   gridTemplateRows: 'auto',
-  gridTemplateColumns: 'calc(50px * 3 + 8px * 2) minmax(0, auto) min-content',
+  gridTemplateColumns: 'calc(30px * 3 + 8px * 2) minmax(0, auto) min-content',
   gridGap: theme.spacing(2),
   gridTemplateAreas: `
     "apps title menu"

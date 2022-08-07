@@ -5,8 +5,8 @@ export const Container = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  minWidth: 50,
-  height: 50,
+  minWidth: 30,
+  height: 30,
   border: `1px solid ${theme.palette.text.disabled}`,
   borderRadius: theme.shape.borderRadius,
 }));
