@@ -25,6 +25,12 @@ const createFlow = async (
     appKey,
   });
 
+  await Step.query().insert({
+    flowId: flow.id,
+    type: 'action',
+    position: 2,
+  });
+
   return flow;
 };
 
