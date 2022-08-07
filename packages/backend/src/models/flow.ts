@@ -1,5 +1,5 @@
 import { ValidationError } from 'objection';
-import type { ModelOptions, QueryContext } from 'objection';
+import type { ModelOptions, QueryContext, QueryBuilder } from 'objection';
 import Base from './base';
 import Step from './step';
 import Execution from './execution';
@@ -33,6 +33,9 @@ class Flow extends Base {
         from: 'flows.id',
         to: 'steps.flow_id',
       },
+      filter(builder: QueryBuilder<Step>) {
+        builder.orderBy('position', 'asc');
+      },
     },
     executions: {
       relation: Base.HasManyRelation,
@@ -44,7 +47,10 @@ class Flow extends Base {
     },
   });
 
-  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext): Promise<void> {
+  async $beforeUpdate(
+    opt: ModelOptions,
+    queryContext: QueryContext
+  ): Promise<void> {
     await super.$beforeUpdate(opt, queryContext);
 
     if (!this.active) return;
