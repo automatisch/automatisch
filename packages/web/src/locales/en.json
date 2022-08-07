@@ -48,6 +48,7 @@
   "flows.create": "Create flow",
   "flows.title": "Flows",
   "executions.title": "Executions",
+  "execution.executedAt": "executed {datetime}",
   "profileSettings.title": "My Profile",
   "profileSettings.email": "Email",
   "profileSettings.updateEmail": "Update email",
