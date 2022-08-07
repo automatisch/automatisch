@@ -15,7 +15,7 @@ const getFlows = async (_parent: unknown, params: Params, context: Context) => {
     .withGraphFetched('steps.[connection]')
     .where((builder) => {
       if (params.name) {
-        builder.where('flows.name', 'like', `%${params.name}%`);
+        builder.where('flows.name', 'ilike', `%${params.name}%`);
       }
 
       if (params.appKey) {
