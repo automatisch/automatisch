@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import type { LinkProps } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
+import debounce from 'lodash/debounce';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
+import CircularProgress from '@mui/material/CircularProgress';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import type { IFlow } from '@automatisch/types';
@@ -30,17 +32,44 @@ export default function Flows(): React.ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const [flowName, setFlowName] = React.useState('');
-  const { data } = useQuery(GET_FLOWS, {
-    variables: getLimitAndOffset(page),
-    fetchPolicy: 'cache-and-network',
+  const [loading, setLoading] = React.useState(false);
+  const [getFlows, { data }] = useLazyQuery(GET_FLOWS, {
+    onCompleted: () => { setLoading(false); },
   });
 
-  const getFlows = data?.getFlows || {};
-  const { pageInfo, edges } = getFlows;
+  const fetchData = React.useMemo(
+    () => debounce((name) => getFlows(
+      {
+        variables: {
+          ...getLimitAndOffset(page),
+          name
+        }
+      }),
+      300
+    ),
+    [page, getFlows]
+  );
 
-  const flows: IFlow[] = edges
-    ?.map(({ node }: { node: IFlow }) => node)
-    .filter((flow: IFlow) => flow.name?.toLowerCase().includes(flowName.toLowerCase()));
+  React.useEffect(function fetchFlowsOnSearch() {
+    setLoading(true);
+
+    fetchData(flowName);
+  }, [fetchData, flowName]);
+
+  React.useEffect(function resetPageOnSearch() {
+    // reset search params which only consists of `page`
+    setSearchParams({})
+  }, [flowName]);
+
+  React.useEffect(function cancelDebounceOnUnmount() {
+    return () => {
+      fetchData.cancel();
+    }
+  }, []);
+
+  const { pageInfo, edges } = data?.getFlows || {};
+
+  const flows: IFlow[] = edges?.map(({ node }: { node: IFlow }) => node);
 
   const onSearchChange = React.useCallback((event) => {
     setFlowName(event.target.value);
@@ -84,9 +113,11 @@ export default function Flows(): React.ReactElement {
           </Grid>
         </Grid>
 
-        {flows?.map((flow) => (<FlowRow key={flow.id} flow={flow} />))}
+        {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
 
-        {pageInfo && pageInfo.totalPages > 1 && <Pagination
+        {!loading && flows?.map((flow) => (<FlowRow key={flow.id} flow={flow} />))}
+
+        {!loading && pageInfo && pageInfo.totalPages > 1 && <Pagination
           sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
           page={pageInfo?.currentPage}
           count={pageInfo?.totalPages}
