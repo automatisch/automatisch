@@ -223,8 +223,8 @@
       "description": "Triggers when a new repository is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "testStep",
@@ -238,8 +238,8 @@
       "description": "Triggers when a new organization is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "testStep",
@@ -253,8 +253,8 @@
       "description": "Triggers when a new branch is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -291,8 +291,8 @@
       "description": "Triggers when a new notification is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -330,8 +330,8 @@
       "description": "Triggers when a new pull request is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -368,8 +368,8 @@
       "description": "Triggers when a new watcher is added to a repo",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -406,8 +406,8 @@
       "description": "Triggers when a new milestone is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -444,8 +444,8 @@
       "description": "Triggers when a new commit comment is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -482,8 +482,8 @@
       "description": "Triggers when a new label is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -520,8 +520,8 @@
       "description": "Triggers when a new collaborator is added to a repo",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -558,8 +558,8 @@
       "description": "Triggers when a new release is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -596,8 +596,8 @@
       "description": "Triggers when a new commit is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -657,8 +657,8 @@
       "description": "Triggers when a new issue is created",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",

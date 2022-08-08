@@ -105,8 +105,8 @@
       "description": "Triggers when a new message is posted to a channel",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -164,8 +164,8 @@
       "description": "Send a message to a specific channel you specify.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "setupAction",

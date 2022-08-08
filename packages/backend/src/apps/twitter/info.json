@@ -223,8 +223,8 @@
       "description": "Will be triggered when you tweet something new.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "testStep",
@@ -238,8 +238,8 @@
       "description": "Will be triggered when a specific user tweet something new.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -265,8 +265,8 @@
       "description": "Will be triggered when any user tweet something containing a specific keyword, phrase, username or hashtag.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -294,8 +294,8 @@
       "description": "Will create a tweet.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseAction",

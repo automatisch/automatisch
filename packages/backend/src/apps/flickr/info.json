@@ -223,8 +223,8 @@
       "description": "Triggers when you favorite a photo.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "testStep",
@@ -238,8 +238,8 @@
       "description": "Triggers when you add a new photo in an album.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "chooseTrigger",
@@ -276,8 +276,8 @@
       "description": "Triggers when you add a new photo.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "testStep",
@@ -291,8 +291,8 @@
       "description": "Triggers when you create a new album.",
       "substeps": [
         {
-          "key": "chooseAccount",
-          "name": "Choose account"
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "testStep",
