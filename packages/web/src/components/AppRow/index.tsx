@@ -27,7 +27,7 @@ const countTranslation = (value: React.ReactNode) => (
 
 function AppRow(props: AppRowProps): React.ReactElement {
   const formatMessage = useFormatMessage();
-  const { name, primaryColor, iconUrl, connectionCount } = props.application;
+  const { name, primaryColor, iconUrl, connectionCount, flowCount } = props.application;
 
   return (
     <Link to={URLS.APP(name.toLowerCase())}>
@@ -52,7 +52,7 @@ function AppRow(props: AppRowProps): React.ReactElement {
 
             <Box sx={{ px: 2 }}>
               <Typography variant="caption" color="textSecondary" sx={{ display: ['none', 'inline-block'] }}>
-                {formatMessage('app.flowCount', { count: countTranslation(0) })}
+                {formatMessage('app.flowCount', { count: countTranslation(flowCount) })}
               </Typography>
             </Box>
 

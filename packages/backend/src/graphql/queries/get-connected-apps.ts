@@ -20,18 +20,37 @@ const getConnectedApps = async (
     .count('connections.id as count')
     .groupBy('connections.key');
 
-  const connectionKeys = connections.map((connection) => connection.key);
+  const flows = await context.currentUser
+    .$relatedQuery('flows')
+    .withGraphJoined('steps')
+    .orderBy('created_at', 'desc');
+
+  const duplicatedUsedApps = flows
+    .map((flow) => flow.steps.map((step) => step.appKey))
+    .flat()
+    .filter(Boolean);
+
+  const usedApps = [...new Set(duplicatedUsedApps)];
 
   apps = apps
-    .filter((app: IApp) => connectionKeys.includes(app.key))
+    .filter((app: IApp) => {
+      return usedApps.includes(app.key);
+    })
     .map((app: IApp) => {
       const connection = connections.find(
         (connection) => (connection as IConnection).key === app.key
       );
 
-      if (connection) {
-        app.connectionCount = connection.count;
-      }
+      app.connectionCount = connection?.count || 0;
+      app.flowCount = 0;
+
+      flows.forEach((flow) => {
+        const usedFlow = flow.steps.find((step) => step.appKey === app.key);
+
+        if (usedFlow) {
+          app.flowCount += 1;
+        }
+      });
 
       return app;
     });

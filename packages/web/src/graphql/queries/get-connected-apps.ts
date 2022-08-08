@@ -9,6 +9,7 @@ export const GET_CONNECTED_APPS = gql`
       docUrl
       primaryColor
       connectionCount
+      flowCount
       supportsConnections
     }
   }
