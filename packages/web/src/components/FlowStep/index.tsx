@@ -19,7 +19,7 @@ import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
 import FlowSubstep from 'components/FlowSubstep';
 import ChooseAppAndEventSubstep from 'components/ChooseAppAndEventSubstep';
-import ChooseAccountSubstep from 'components/ChooseAccountSubstep';
+import ChooseConnectionSubstep from 'components/ChooseConnectionSubstep';
 import Form from 'components/Form';
 import FlowStepContextMenu from 'components/FlowStepContextMenu';
 import AppIcon from 'components/AppIcon';
@@ -251,8 +251,8 @@ export default function FlowStep(
                       index: number
                     ) => (
                       <React.Fragment key={`${substep?.name}-${index}`}>
-                        {substep.key === 'chooseAccount' && (
-                          <ChooseAccountSubstep
+                        {substep.key === 'chooseConnection' && (
+                          <ChooseConnectionSubstep
                             expanded={currentSubstep === index + 1}
                             substep={substep}
                             onExpand={() => toggleSubstep(index + 1)}
@@ -275,7 +275,7 @@ export default function FlowStep(
                           />
                         )}
 
-                        {['chooseAccount', 'testStep'].includes(substep.key) ===
+                        {['chooseConnection', 'testStep'].includes(substep.key) ===
                           false && (
                           <FlowSubstep
                             expanded={currentSubstep === index + 1}

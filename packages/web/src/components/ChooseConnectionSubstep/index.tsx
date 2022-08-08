@@ -11,7 +11,7 @@ import type { IApp, IConnection, IStep, ISubstep } from '@automatisch/types';
 import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 
-type ChooseAccountSubstepProps = {
+type ChooseConnectionSubstepProps = {
   substep: ISubstep,
   expanded?: boolean;
   onExpand: () => void;
@@ -28,7 +28,7 @@ const optionGenerator = (connection: IConnection): { label: string; value: strin
 
 const getOption = (options: Record<string, unknown>[], connectionId?: string) => options.find(connection => connection.value === connectionId) || null;
 
-function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElement {
+function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.ReactElement {
   const {
     substep,
     expanded = false,
@@ -119,7 +119,7 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
             disablePortal
             disableClearable
             options={connectionOptions}
-            renderInput={(params) => <TextField {...params} label="Choose account" />}
+            renderInput={(params) => <TextField {...params} label="Choose connection" />}
             value={getOption(connectionOptions, connection?.id)}
             onChange={handleChange}
             loading={loading}
@@ -140,4 +140,4 @@ function ChooseAccountSubstep(props: ChooseAccountSubstepProps): React.ReactElem
   );
 }
 
-export default ChooseAccountSubstep;
+export default ChooseConnectionSubstep;
