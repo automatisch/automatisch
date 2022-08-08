@@ -16,10 +16,11 @@ class Flow extends Base {
 
   static jsonSchema = {
     type: 'object',
+    required: ['name'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
-      name: { type: 'string' },
+      name: { type: 'string', minLength: 1 },
       userId: { type: 'string', format: 'uuid' },
       active: { type: 'boolean' },
     },
