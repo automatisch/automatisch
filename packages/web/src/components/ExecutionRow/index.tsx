@@ -11,7 +11,7 @@ import type { IExecution } from '@automatisch/types';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import FlowAppIcons from 'components/FlowAppIcons';
-import { Apps, CardContent, Typography } from './style';
+import { Apps, CardContent, ArrowContainer, Title, Typography } from './style';
 
 type ExecutionRowProps = {
   execution: IExecution;
@@ -34,7 +34,7 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
               <FlowAppIcons steps={flow.steps} />
             </Apps>
 
-            <Stack
+            <Title
               justifyContent="center"
               alignItems="flex-start"
               spacing={1}
@@ -46,11 +46,11 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
               <Typography variant="caption" noWrap>
                 {formatMessage('execution.executedAt', { datetime: relativeCreatedAt })}
               </Typography>
-            </Stack>
+            </Title>
 
-            <Box>
+            <ArrowContainer>
               <ArrowForwardIosIcon sx={{ color: (theme) => theme.palette.primary.main }} />
-            </Box>
+            </ArrowContainer>
           </CardContent>
         </CardActionArea>
       </Card>
