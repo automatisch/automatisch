@@ -171,8 +171,6 @@ export interface ITrigger {
 }
 
 export interface IAuthentication {
-  appData: IApp;
-  connectionData: IJSONObject;
   client: unknown;
   verifyCredentials(): Promise<IJSONObject>;
   isStillVerified(): Promise<boolean>;
