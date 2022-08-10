@@ -8,6 +8,7 @@ type Query {
     limit: Int!
     offset: Int!
     appKey: String
+    connectionId: String
     name: String
   ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
