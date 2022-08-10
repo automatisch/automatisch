@@ -16,7 +16,8 @@ const getExecution = async (
         steps: true
       }
     })
-    .findById(params.executionId);
+    .findById(params.executionId)
+    .throwIfNotFound();
 
   return execution;
 };
