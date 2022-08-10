@@ -12,6 +12,7 @@ type Query {
     name: String
   ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
+  getExecution(executionId: String!): Execution
   getExecutions(limit: Int!, offset: Int!): ExecutionConnection
   getExecutionSteps(
     executionId: String!

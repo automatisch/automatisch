@@ -5,6 +5,7 @@ import testConnection from './queries/test-connection';
 import getFlow from './queries/get-flow';
 import getFlows from './queries/get-flows';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions';
+import getExecution from './queries/get-execution';
 import getExecutions from './queries/get-executions';
 import getExecutionSteps from './queries/get-execution-steps';
 import getData from './queries/get-data';
@@ -19,6 +20,7 @@ const queryResolvers = {
   getFlow,
   getFlows,
   getStepWithTestExecutions,
+  getExecution,
   getExecutions,
   getExecutionSteps,
   getData,
