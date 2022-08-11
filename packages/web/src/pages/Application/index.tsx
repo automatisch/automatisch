@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useQuery } from '@apollo/client';
-import { Link, Route, Navigate, Routes, useParams, useMatch, useNavigate } from 'react-router-dom';
+import { Link, Route, Navigate, Routes, useParams, useSearchParams, useMatch, useNavigate } from 'react-router-dom';
 import type { LinkProps } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -46,10 +46,12 @@ export default function Application(): React.ReactElement | null {
   const formatMessage = useFormatMessage();
   const connectionsPathMatch = useMatch({ path: URLS.APP_CONNECTIONS_PATTERN, end: false });
   const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
+  const [searchParams] = useSearchParams();
   const { appKey } = useParams() as ApplicationParams;
   const navigate = useNavigate();
   const { data, loading } = useQuery(GET_APP, { variables: { key: appKey } });
 
+  const connectionId = searchParams.get('connectionId') || undefined;
   const goToApplicationPage = () => navigate('connections');
   const app = data?.getApp || {};
 
@@ -70,9 +72,9 @@ export default function Application(): React.ReactElement | null {
         linkProps,
         ref,
       ) {
-        return <Link ref={ref} to={URLS.CREATE_FLOW_WITH_APP(appKey)} {...linkProps} />;
+        return <Link ref={ref} to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(appKey, connectionId)} {...linkProps} />;
       }),
-    [appKey],
+    [appKey, connectionId],
   );
 
   if (loading) return null;

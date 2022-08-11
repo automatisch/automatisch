@@ -251,6 +251,7 @@ input DeleteConnectionInput {
 
 input CreateFlowInput {
   triggerAppKey: String
+  connectionId: String
 }
 
 input UpdateFlowInput {

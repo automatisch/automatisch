@@ -17,14 +17,23 @@ export default function CreateFlow(): React.ReactElement {
   const [createFlow] = useMutation(CREATE_FLOW);
 
   const appKey = searchParams.get('appKey');
+  const connectionId = searchParams.get('connectionId');
 
   React.useEffect(() => {
     async function initiate() {
+      const variables: { [key: string]: string } = {};
+
+      if (appKey) {
+        variables.triggerAppKey = appKey;
+      }
+
+      if (connectionId) {
+        variables.connectionId = connectionId;
+      }
+
       const response = await createFlow({
         variables: {
-          input: {
-            triggerAppKey: appKey,
-          }
+          input: variables
         }
       });
       const flowId = response.data?.createFlow?.id;
@@ -33,7 +42,7 @@ export default function CreateFlow(): React.ReactElement {
     }
 
     initiate();
-  }, [createFlow, navigate, appKey]);
+  }, [createFlow, navigate, appKey, connectionId]);
 
   return (
     <Box sx={{ display: 'flex', flex: 1, height: '100vh', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
