@@ -1,96 +1,37 @@
-import type {
-  IAuthentication,
-  IApp,
-  IField,
-  IJSONObject,
-} from '@automatisch/types';
-import HttpClient from '../../helpers/http-client';
-import OAuth from 'oauth-1.0a';
-import crypto from 'crypto';
+import type { IAuthentication, IField } from '@automatisch/types';
 import { URLSearchParams } from 'url';
+import TwitterClient from './client';
 
 export default class Authentication implements IAuthentication {
-  appData: IApp;
-  connectionData: IJSONObject;
+  client: TwitterClient;
 
-  client: HttpClient;
-  oauthClient: OAuth;
-
-  static baseUrl = 'https://api.twitter.com';
-
-  constructor(appData: IApp, connectionData: IJSONObject) {
-    this.appData = appData;
-    this.connectionData = connectionData;
-    this.client = new HttpClient({ baseURL: Authentication.baseUrl });
-    this.oauthClient = new OAuth({
-      consumer: {
-        key: this.connectionData.consumerKey as string,
-        secret: this.connectionData.consumerSecret as string,
-      },
-      signature_method: 'HMAC-SHA1',
-      hash_function(base_string, key) {
-        return crypto
-          .createHmac('sha1', key)
-          .update(base_string)
-          .digest('base64');
-      },
-    });
+  constructor(client: TwitterClient) {
+    this.client = client;
   }
 
   async createAuthData() {
-    const appFields = this.appData.fields.find(
+    const appFields = this.client.appData.fields.find(
       (field: IField) => field.key == 'oAuthRedirectUrl'
     );
     const callbackUrl = appFields.value;
 
-    const requestData = {
-      url: `${Authentication.baseUrl}/oauth/request_token`,
-      method: 'POST',
-      data: { oauth_callback: callbackUrl },
+    const response = await this.client.oauthRequestToken.run(callbackUrl);
+    const responseData = Object.fromEntries(new URLSearchParams(response.data));
+
+    return {
+      url: `${TwitterClient.baseUrl}/oauth/authorize?oauth_token=${responseData.oauth_token}`,
+      accessToken: responseData.oauth_token,
+      accessSecret: responseData.oauth_token_secret,
     };
-
-    const authHeader = this.oauthClient.toHeader(
-      this.oauthClient.authorize(requestData)
-    );
-
-    try {
-      const response = await this.client.post(`/oauth/request_token`, null, {
-        headers: { ...authHeader },
-      });
-
-      const responseData = Object.fromEntries(
-        new URLSearchParams(response.data)
-      );
-
-      return {
-        url: `${Authentication.baseUrl}/oauth/authorize?oauth_token=${responseData.oauth_token}`,
-        accessToken: responseData.oauth_token,
-        accessSecret: responseData.oauth_token_secret,
-      };
-    } catch (error) {
-      const errorMessages = error.response.data.errors
-        .map((error: IJSONObject) => error.message)
-        .join(' ');
-
-      throw new Error(
-        `Error occured while verifying credentials: ${errorMessages}`
-      );
-    }
   }
 
   async verifyCredentials() {
-    const verifiedCredentials = await this.client.post(
-      `/oauth/access_token?oauth_verifier=${this.connectionData.oauthVerifier}&oauth_token=${this.connectionData.accessToken}`,
-      null
-    );
-
-    const responseData = Object.fromEntries(
-      new URLSearchParams(verifiedCredentials.data)
-    );
+    const response = await this.client.verifyAccessToken.run();
+    const responseData = Object.fromEntries(new URLSearchParams(response.data));
 
     return {
-      consumerKey: this.connectionData.consumerKey,
-      consumerSecret: this.connectionData.consumerSecret,
+      consumerKey: this.client.connectionData.consumerKey,
+      consumerSecret: this.client.connectionData.consumerSecret,
       accessToken: responseData.oauth_token,
       accessSecret: responseData.oauth_token_secret,
       userId: responseData.user_id,
@@ -100,24 +41,7 @@ export default class Authentication implements IAuthentication {
 
   async isStillVerified() {
     try {
-      const token = {
-        key: this.connectionData.accessToken as string,
-        secret: this.connectionData.accessSecret as string,
-      };
-
-      const requestData = {
-        url: `${Authentication.baseUrl}/2/users/me`,
-        method: 'GET',
-      };
-
-      const authHeader = this.oauthClient.toHeader(
-        this.oauthClient.authorize(requestData, token)
-      );
-
-      await this.client.get(`/2/users/me`, {
-        headers: { ...authHeader },
-      });
-
+      await this.client.getCurrentUser.run();
       return true;
     } catch (error) {
       return false;

@@ -30,7 +30,8 @@ const getConnectedApps = async (
     .flat()
     .filter(Boolean);
 
-  const usedApps = [...new Set(duplicatedUsedApps)];
+  const connectionKeys = connections.map((connection) => connection.key);
+  const usedApps = [...new Set([...duplicatedUsedApps, ...connectionKeys])];
 
   apps = apps
     .filter((app: IApp) => {

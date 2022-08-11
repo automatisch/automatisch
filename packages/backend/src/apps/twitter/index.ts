@@ -7,8 +7,11 @@ import {
 import Authentication from './authentication';
 import Triggers from './triggers';
 import Actions from './actions';
+import TwitterClient from './client';
 
 export default class Twitter implements IService {
+  client: TwitterClient;
+
   authenticationClient: IAuthentication;
   triggers: Triggers;
   actions: Actions;
@@ -18,8 +21,10 @@ export default class Twitter implements IService {
     connectionData: IJSONObject,
     parameters: IJSONObject
   ) {
-    this.authenticationClient = new Authentication(appData, connectionData);
-    this.triggers = new Triggers(connectionData, parameters);
-    this.actions = new Actions(connectionData, parameters);
+    this.client = new TwitterClient(appData, connectionData, parameters);
+
+    this.authenticationClient = new Authentication(this.client);
+    this.triggers = new Triggers(this.client);
+    // this.actions = new Actions(connectionData, parameters);
   }
 }
