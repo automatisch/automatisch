@@ -4,7 +4,10 @@ import { GET_FLOWS } from 'graphql/queries/get-flows';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 
+import * as URLS from 'config/urls';
 import AppFlowRow from 'components/FlowRow';
+import NoResultFound from 'components/NoResultFound';
+import useFormatMessage from 'hooks/useFormatMessage';
 import type { IFlow } from '@automatisch/types';
 
 type AppFlowsProps = {
@@ -20,8 +23,9 @@ const getLimitAndOffset = (page: number) => ({
 
 export default function AppFlows(props: AppFlowsProps): React.ReactElement {
   const { appKey } = props;
+  const formatMessage = useFormatMessage();
   const [searchParams, setSearchParams] = useSearchParams();
-  const connectionId = searchParams.get('connectionId') || null;
+  const connectionId = searchParams.get('connectionId') || undefined;
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const { data } = useQuery(GET_FLOWS, { variables: {
     appKey,
@@ -31,11 +35,21 @@ export default function AppFlows(props: AppFlowsProps): React.ReactElement {
   const getFlows = data?.getFlows || {};
   const { pageInfo, edges } = getFlows;
 
-  const appFlows: IFlow[] = edges?.map(({ node }: { node: IFlow }) => node);
+  const flows: IFlow[] = edges?.map(({ node }: { node: IFlow }) => node);
+  const hasFlows = flows?.length;
+
+  if (!hasFlows) {
+    return (
+      <NoResultFound
+        to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(appKey, connectionId)}
+        text={formatMessage('app.noFlows')}
+      />
+    );
+  }
 
   return (
     <>
-      {appFlows?.map((appFlow: IFlow) => (
+      {flows?.map((appFlow: IFlow) => (
         <AppFlowRow key={appFlow.id} flow={appFlow} />
       ))}
 
