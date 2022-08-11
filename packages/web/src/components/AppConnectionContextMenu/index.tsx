@@ -40,7 +40,7 @@ export default function ContextMenu(props: ContextMenuProps): React.ReactElement
     >
       <MenuItem
         component={Link}
-        to={URLS.APP_FLOWS(appKey)}
+        to={URLS.APP_FLOWS_FOR_CONNECTION(appKey, connectionId)}
         onClick={createActionHandler({ type: 'viewFlows' })}
       >
         {formatMessage('connection.viewFlows')}

@@ -21,8 +21,13 @@ const getLimitAndOffset = (page: number) => ({
 export default function AppFlows(props: AppFlowsProps): React.ReactElement {
   const { appKey } = props;
   const [searchParams, setSearchParams] = useSearchParams();
+  const connectionId = searchParams.get('connectionId') || null;
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
-  const { data } = useQuery(GET_FLOWS, { variables: { appKey, ...getLimitAndOffset(page) }});
+  const { data } = useQuery(GET_FLOWS, { variables: {
+    appKey,
+    connectionId,
+    ...getLimitAndOffset(page)
+  }});
   const getFlows = data?.getFlows || {};
   const { pageInfo, edges } = getFlows;
 
