@@ -3,15 +3,19 @@ import { Link, useSearchParams  } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import type { IExecution } from '@automatisch/types';
 
+import NoResultFound from 'components/NoResultFound';
 import ExecutionRow from 'components/ExecutionRow';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useFormatMessage from 'hooks/useFormatMessage'
 import { GET_EXECUTIONS } from 'graphql/queries/get-executions';
+import * as URLS from 'config/urls';
 
 const EXECUTION_PER_PAGE = 10;
 
@@ -25,7 +29,7 @@ export default function Executions(): React.ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
 
-  const { data, refetch } = useQuery(GET_EXECUTIONS, {
+  const { data, refetch, loading } = useQuery(GET_EXECUTIONS, {
     variables: getLimitAndOffset(page),
     fetchPolicy: 'cache-and-network',
     pollInterval: 5000,
@@ -38,17 +42,26 @@ export default function Executions(): React.ReactElement {
   }, [refetch, page])
 
   const executions: IExecution[] = edges?.map(({ node }: { node: IExecution }) => node);
+  const hasExecutions = executions?.length;
 
   return (
     <Box sx={{ py: 3 }}>
       <Container>
-        <Grid container sx={{ mb: [2, 5] }} columnSpacing={1.5} rowSpacing={3}>
+        <Grid container sx={{ mb: [0, 3] }} columnSpacing={1.5} rowSpacing={3}>
           <Grid container item xs sm alignItems="center" order={{ xs: 0, height: 80 }}>
             <PageTitle>{formatMessage('executions.title')}</PageTitle>
           </Grid>
         </Grid>
 
-        {executions?.map((execution) => (<ExecutionRow key={execution.id} execution={execution} />))}
+        <Divider sx={{ mt: [2, 0], mb: 2 }} />
+
+        {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
+
+        {!loading && !hasExecutions && (<NoResultFound
+          text={formatMessage('executions.noExecutions')}
+        />)}
+
+        {!loading && executions?.map((execution) => (<ExecutionRow key={execution.id} execution={execution} />))}
 
         {pageInfo && pageInfo.totalPages > 1 && <Pagination
           sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}

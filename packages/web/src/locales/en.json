@@ -51,6 +51,7 @@
   "flows.noFlows": "You don't have any flows yet.",
   "flowEditor.goBack": "Go back to flows",
   "executions.title": "Executions",
+  "executions.noExecutions": "There is no execution data point to show.",
   "execution.executedAt": "executed {datetime}",
   "profileSettings.title": "My Profile",
   "profileSettings.email": "Email",
