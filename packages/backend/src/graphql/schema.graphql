@@ -161,6 +161,7 @@ type Connection {
   verified: Boolean
   app: App
   createdAt: String
+  flowCount: Int
 }
 
 type ConnectionData {
