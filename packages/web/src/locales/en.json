@@ -25,6 +25,7 @@
   "apps.addConnection": "Add connection",
   "apps.addNewAppConnection": "Add a new app connection",
   "apps.searchApp": "Search for app",
+  "apps.noConnections": "You don't have any connections yet.",
   "addAppConnection.submit": "Submit",
   "connection.flowCount": "{count} flows",
   "connection.viewFlows": "View flows",
