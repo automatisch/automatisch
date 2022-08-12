@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
@@ -69,13 +70,15 @@ export default function EditorLayout(): React.ReactElement {
       <Stack direction="column" height="100%">
         <Stack direction="row" bgcolor="white" justifyContent="space-between" alignItems="center" boxShadow={1} py={1} px={1}>
           <Box display="flex" flex={1} alignItems="center">
-            <IconButton
-              size="small"
-              component={Link}
-              to={URLS.FLOWS}
-            >
-              <ArrowBackIosNewIcon fontSize="small" />
-            </IconButton>
+            <Tooltip placement="right" title={formatMessage('flowEditor.goBack')} disableInteractive>
+              <IconButton
+                size="small"
+                component={Link}
+                to={URLS.FLOWS}
+              >
+                <ArrowBackIosNewIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
 
             {!loading && (
               <EditableTypography
