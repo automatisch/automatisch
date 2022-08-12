@@ -9,7 +9,7 @@ import { CardContent } from './style';
 
 type NoResultFoundProps = {
   text?: string;
-  to: string;
+  to?: string;
 }
 
 export default function NoResultFound(props: NoResultFoundProps): React.ReactElement {
@@ -21,6 +21,8 @@ export default function NoResultFound(props: NoResultFoundProps): React.ReactEle
         linkProps,
         ref,
       ) {
+        if (!to) return <div>{linkProps.children}</div>;
+
         return <Link ref={ref} to={to} {...linkProps} />;
       }),
     [to],
@@ -30,7 +32,7 @@ export default function NoResultFound(props: NoResultFoundProps): React.ReactEle
     <Card elevation={0}>
       <CardActionArea component={ActionAreaLink} {...props}>
         <CardContent>
-          <AddCircleIcon color="primary" />
+          {!!to && <AddCircleIcon color="primary" />}
 
           <Typography variant="body1">
             {text}
