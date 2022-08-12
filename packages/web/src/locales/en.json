@@ -47,6 +47,7 @@
   "flowStep.actionType": "Action",
   "flows.create": "Create flow",
   "flows.title": "Flows",
+  "flows.noFlows": "You don't have any flows yet.",
   "flowEditor.goBack": "Go back to flows",
   "executions.title": "Executions",
   "execution.executedAt": "executed {datetime}",
