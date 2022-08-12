@@ -42,7 +42,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
   const formatMessage = useFormatMessage();
-  const { id, key, formattedData, verified, createdAt } = props.connection;
+  const { id, key, formattedData, verified, createdAt, flowCount } = props.connection;
 
   const contextButtonRef = React.useRef<SVGSVGElement | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
@@ -121,7 +121,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
 
             <Box sx={{ px: 2 }}>
               <Typography variant="caption" color="textSecondary" sx={{ display: ['none', 'inline-block'] }}>
-                {formatMessage('connection.flowCount', { count: countTranslation(0) })}
+                {formatMessage('connection.flowCount', { count: countTranslation(flowCount) })}
               </Typography>
             </Box>
 

@@ -14,6 +14,7 @@ export interface IConnection {
   userId: string;
   verified: boolean;
   count: number;
+  flowCount: number;
   createdAt: string;
 }
 
