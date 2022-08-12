@@ -7,11 +7,13 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
 import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import type { IFlow } from '@automatisch/types';
 
 import FlowRow from 'components/FlowRow';
+import NoResultFound from 'components/NoResultFound';
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
@@ -70,6 +72,7 @@ export default function Flows(): React.ReactElement {
   const { pageInfo, edges } = data?.getFlows || {};
 
   const flows: IFlow[] = edges?.map(({ node }: { node: IFlow }) => node);
+  const hasFlows = flows?.length;
 
   const onSearchChange = React.useCallback((event) => {
     setFlowName(event.target.value);
@@ -89,7 +92,7 @@ export default function Flows(): React.ReactElement {
   return (
     <Box sx={{ py: 3 }}>
       <Container>
-        <Grid container sx={{ mb: [2, 5] }} columnSpacing={1.5} rowSpacing={3}>
+        <Grid container sx={{ mb: [0, 3] }} columnSpacing={1.5} rowSpacing={3}>
           <Grid container item xs sm alignItems="center" order={{ xs: 0 }}>
             <PageTitle>{formatMessage('flows.title')}</PageTitle>
           </Grid>
@@ -113,9 +116,16 @@ export default function Flows(): React.ReactElement {
           </Grid>
         </Grid>
 
+        <Divider sx={{ mt: [2, 0], mb: 2 }} />
+
         {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
 
         {!loading && flows?.map((flow) => (<FlowRow key={flow.id} flow={flow} />))}
+
+        {!loading && !hasFlows && (<NoResultFound
+          text={formatMessage('flows.noFlows')}
+          to={URLS.CREATE_FLOW}
+        />)}
 
         {!loading && pageInfo && pageInfo.totalPages > 1 && <Pagination
           sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
