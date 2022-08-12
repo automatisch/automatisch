@@ -4,9 +4,12 @@ import type { LinkProps } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
+import CircularProgress from '@mui/material/CircularProgress';
 import AddIcon from '@mui/icons-material/Add';
 import type { IApp } from '@automatisch/types';
 
+import NoResultFound from 'components/NoResultFound';
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
 import AddNewAppConnection from 'components/AddNewAppConnection';
@@ -21,7 +24,10 @@ export default function Applications(): React.ReactElement {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState(null);
-  const { data } = useQuery(GET_CONNECTED_APPS, { variables: {name: appName } });
+  const { data, loading } = useQuery(GET_CONNECTED_APPS, { variables: {name: appName } });
+
+  const apps: IApp[] = data?.getConnectedApps;
+  const hasApps = apps?.length;
 
   const onSearchChange = React.useCallback((event) => {
     setAppName(event.target.value);
@@ -45,7 +51,7 @@ export default function Applications(): React.ReactElement {
   return (
     <Box sx={{ py: 3 }}>
       <Container>
-        <Grid container sx={{ mb: [2, 5] }} columnSpacing={1.5} rowSpacing={3}>
+        <Grid container sx={{ mb: [0, 3] }} columnSpacing={1.5} rowSpacing={3}>
           <Grid container item xs sm alignItems="center" order={{ xs: 0 }}>
             <PageTitle>{formatMessage('apps.title')}</PageTitle>
           </Grid>
@@ -69,7 +75,17 @@ export default function Applications(): React.ReactElement {
           </Grid>
         </Grid>
 
-        {data?.getConnectedApps?.map((app: IApp) => (
+        <Divider sx={{ mt: [2, 0], mb: 2 }} />
+
+        {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
+
+        {!loading && !hasApps && (<NoResultFound
+          text={formatMessage('apps.noConnections')}
+          to={URLS.NEW_APP_CONNECTION}
+        />)}
+
+
+        {!loading && apps?.map((app: IApp) => (
           <AppRow key={app.name} application={app} />
         ))}
 
