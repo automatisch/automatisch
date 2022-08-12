@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
 
+import apolloClient from 'graphql/client';
 import * as URLS from 'config/urls';
 import useAuthentication from 'hooks/useAuthentication';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -27,8 +28,10 @@ function AccountDropdownMenu(props: AccountDropdownMenuProps): React.ReactElemen
     id
   } = props
 
-  const logout = () => {
+  const logout = async () => {
     authentication.updateToken('');
+    await apolloClient.clearStore();
+
     onClose();
 
     navigate(URLS.LOGIN);
