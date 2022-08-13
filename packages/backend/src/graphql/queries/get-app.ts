@@ -11,10 +11,14 @@ const getApp = async (_parent: unknown, params: Params, context: Context) => {
   if (context.currentUser) {
     const connections = await context.currentUser
       .$relatedQuery('connections')
+      .select('connections.*')
+      .fullOuterJoinRelated('steps')
       .where({
-        key: params.key,
-        draft: false,
+        'connections.key': params.key,
+        'connections.draft': false,
       })
+      .countDistinct('steps.flow_id as flowCount')
+      .groupBy('connections.id')
       .orderBy('created_at', 'desc');
 
     return {

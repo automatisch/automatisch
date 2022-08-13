@@ -3,6 +3,7 @@ import type { RelationMappings } from 'objection';
 import { AES, enc } from 'crypto-js';
 import Base from './base';
 import User from './user';
+import Step from './step';
 import appConfig from '../config/app';
 import { IJSONObject } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
@@ -16,6 +17,7 @@ class Connection extends Base {
   verified = false;
   draft: boolean;
   count?: number;
+  flowCount?: number;
 
   static tableName = 'connections';
 
@@ -41,6 +43,14 @@ class Connection extends Base {
       join: {
         from: 'connections.user_id',
         to: 'users.id',
+      },
+    },
+    steps: {
+      relation: Base.HasManyRelation,
+      modelClass: Step,
+      join: {
+        from: 'connections.id',
+        to: 'steps.connection_id',
       },
     },
   });

@@ -8,6 +8,7 @@ export const GET_APP_CONNECTIONS = gql`
         id
         key
         verified
+        flowCount
         formattedData {
           screenName
         }
