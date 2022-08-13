@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Key Concepts
 
 We will cover four main terms of Automatisch before creating our first flow.

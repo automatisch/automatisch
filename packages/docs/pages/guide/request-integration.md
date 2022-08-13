@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Request Integration
 
 You can request a new integration by using [Github discussions](https://github.com/automatisch/automatisch/discussions/categories/integration-request).

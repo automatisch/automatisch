@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Installation
 
 <!-- TODO: Add instructions to install PostgreSQL and specify supported node versions -->

@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Available Apps
 
 Following integrations are currently supported by Automatisch.

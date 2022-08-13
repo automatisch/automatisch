@@ -1,7 +1,3 @@
----
-sidebar_position: 3
----
-
 # Slack
 
 1. Go to the [link](https://api.slack.com/apps?new_app=1) to **create an app** on Slack API.

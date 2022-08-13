@@ -1,16 +1,10 @@
----
-sidebar_position: 4
----
-
 # Twitter
 
 1. Go to the [Twitter Developer Portal](https://developer.twitter.com/en/portal/projects-and-apps),complete the questionnaire and click the **Let's do this** button.
 2. Accept terms & conditions on the following page and click **Submit**.
 
-:::caution
-
+:::warning
 If you see an error saying `There was a problem completing your request. User must have a verified phone number on file prior to submitting application.` Go to the [phone settings page](https://twitter.com/settings/phone) and set up your phone number to be able to continue on step 2.
-
 :::
 
 3. You will get a verification email from Twitter. Click on **Confirm your email** button.
