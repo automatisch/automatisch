@@ -1,17 +1,10 @@
----
-sidebar_position: 1
-slug: /
----
+# What is Automatisch?
 
-# Introduction
-
-:::info
-
+:::warning
 Automatisch is still in early phase of development. We try our best not to introduce breaking changes, but be cautious until v1 is released.
-
 :::
 
-🧐 Automatisch is a **business automation** tool. You can connect different services like Twitter, Github, Typeform, and **[more](/integrations/available-apps)** to automate your business.
+🧐 Automatisch is a **business automation** tool, You can connect different services like Twitter, Github, Typeform, and **[more](/guide/available-apps)** to automate your business.
 
 💸 You don't need to invest time or money to automate your workflows. Programming knowledge is also **not needed** to use Automatisch.
 
@@ -21,7 +14,7 @@ Automatisch is still in early phase of development. We try our best not to intro
 
 Automatisch is a software that connects the services you use to automate workflows without building integration or hiring someone to do it for you.
 
-For example, you can create a workflow by specifying when I have a new follower on Twitter, add this follower to the google sheet document I have created. Using this workflow, you will get a new row on the google sheet document whenever you have a new follower. This example includes only Twitter and Google Sheets as services, but it's not limited to those. You can check the list of integrations [here](/integrations/available-apps).
+For example, you can create a workflow by specifying when I have a new follower on Twitter, add this follower to the google sheet document I have created. Using this workflow, you will get a new row on the google sheet document whenever you have a new follower. This example includes only Twitter and Google Sheets as services, but it's not limited to those. You can check the list of integrations [here](/guide/available-apps).
 
 You need to prepare the workflow once, and it will run continuously until you stop it or the connected account gets unlinked. Depending on the service and trigger you use, the workflow runs at intervals of 15 minutes or instantly.
 
@@ -37,7 +30,7 @@ There are existing solutions in the market like Zapier and Integromat. Having th
 
 ## Let's start!
 
-Visit our [installation guide](/getting-started/installation) to setup Automatisch. It's recommended to read through all the getting started sections in the sidebar and [create your first flow](/getting-started/create-flow).
+Visit our [installation guide](/guide/installation) to setup Automatisch. It's recommended to read through all the getting started sections in the sidebar and [create your first flow](/guide/create-flow).
 
 ## Something missing?
 

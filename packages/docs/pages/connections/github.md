@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Github
 
 1. Go to the [link](https://github.com/settings/applications/new) to register a **new OAuth application** on Github.

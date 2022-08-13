@@ -1,7 +1,3 @@
----
-sidebar_position: 5
----
-
 # Typeform
 
 1. Go to the [link](https://admin.typeform.com/user) and click on **Developer apps** in the sidebar.

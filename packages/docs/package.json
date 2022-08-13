@@ -3,29 +3,13 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "dev": "docusaurus start --port 3002",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "clear": "docusaurus clear",
-    "serve": "docusaurus serve",
-    "lint": "eslint . --ignore-path ../../.eslintignore",
-    "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "dev": "vitepress dev pages --port 3002",
+    "build": "vitepress build pages",
+    "serve": "vitepress serve pages"
   },
-  "dependencies": {
-    "@docusaurus/core": "2.0.0-beta.9",
-    "@docusaurus/preset-classic": "2.0.0-beta.9",
-    "@mdx-js/react": "^1.6.21",
-    "@svgr/webpack": "^5.5.0",
-    "clsx": "^1.1.1",
-    "file-loader": "^6.2.0",
-    "prism-react-renderer": "^1.2.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "url-loader": "^4.1.1"
+  "devDependencies": {
+    "vitepress": "^1.0.0-alpha.4",
+    "vue": "^3.2.37"
   },
   "contributors": [
     {
@@ -40,17 +24,5 @@
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
-  },
-  "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
