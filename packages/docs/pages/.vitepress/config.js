@@ -93,7 +93,8 @@ export default defineConfig({
       { icon: 'discord', link: 'https://discord.gg/dJSah9CVrC' },
     ],
     editLink: {
-      pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path',
+      pattern:
+        'https://github.com/automatisch/automatisch/edit/main/packages/docs/pages/:path',
       text: 'Edit this page on GitHub',
     },
     footer: {
