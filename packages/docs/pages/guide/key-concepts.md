@@ -4,11 +4,11 @@ We will cover four main terms of Automatisch before creating our first flow.
 
 ## App
 
-👉 Apps are the third-party services you can use with Automatisch like Twitter, Github, Twilio. You can check the complete list of available apps [here](/integrations/available-apps). Automatisch aims to connect those apps to build workflows. So whenever you work with other concepts of Automatisch, you will use apps.
+👉 Apps are the third-party services you can use with Automatisch like Twitter, Github, Twilio. You can check the complete list of available apps [here](/guide/available-apps). Automatisch aims to connect those apps to build workflows. So whenever you work with other concepts of Automatisch, you will use apps.
 
 :::tip
 
-You can request a new integration [here](/integrations/request-integration). We will collect all the requests and prioritize the most requested ones.
+You can request a new integration [here](/guide/request-integration). We will collect all the requests and prioritize the most requested ones.
 
 :::
 

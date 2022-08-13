@@ -39,6 +39,6 @@ docker run -it \
 
 ## Let's discover!
 
-✌️ That's it; you have Automatisch running. Let's check it out by browsing [http://localhost:3000](http://localhost:3000)
+✌️ That's it; you have Automatisch running. Let's check it out by browsing [http://localhost:3000](#)
 
-If you see any problem while installing Automatisch, let us know via [github issues](https://github.com/automatisch/automatisch/issues) or our [discord server](https://discord.gg/dJSah9CVrC).
+If you see any problem while installing Automatisch, let us know via [github issues](#) or our [discord server](https://discord.gg/dJSah9CVrC).
