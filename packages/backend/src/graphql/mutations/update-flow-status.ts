@@ -36,9 +36,13 @@ const updateFlowStatus = async (
   const interval = trigger.interval;
   const repeatOptions = {
     cron: interval || EVERY_15_MINUTES_CRON,
-  }
+  };
 
   if (flow.active) {
+    flow = await flow.$query().patchAndFetch({
+      published_at: new Date().toISOString(),
+    });
+
     await processorQueue.add(
       JOB_NAME,
       { flowId: flow.id },
@@ -49,7 +53,7 @@ const updateFlowStatus = async (
     );
   } else {
     const repeatableJobs = await processorQueue.getRepeatableJobs();
-    const job = repeatableJobs.find(job => job.id === flow.id);
+    const job = repeatableJobs.find((job) => job.id === flow.id);
 
     await processorQueue.removeRepeatableByKey(job.key);
   }
