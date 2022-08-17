@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 
 import JSONViewer from 'components/JSONViewer';
@@ -30,8 +31,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     step,
   } = props;
 
-  const [executeFlow, { data }] = useMutation(EXECUTE_FLOW);
-
+  const [executeFlow, { data, error }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
   const response = data?.executeFlow?.data;
 
   const {
@@ -58,6 +58,9 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
+          {error?.graphQLErrors?.length && <Alert severity="error" sx={{ mb: 1, fontWeight: 500, width: '100%' }}>
+            {error?.graphQLErrors.map((error) => (<>{error.message}<br /></>))}
+          </Alert>}
 
           {response && (
             <Box sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }}>
