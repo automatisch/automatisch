@@ -7,6 +7,7 @@ import VerifyAccessToken from './endpoints/verify-access-token';
 import GetCurrentUser from './endpoints/get-current-user';
 import GetUserByUsername from './endpoints/get-user-by-username';
 import GetUserTweets from './endpoints/get-user-tweets';
+import CreateTweet from './endpoints/create-tweet';
 
 export default class TwitterClient {
   appData: IApp;
@@ -20,6 +21,7 @@ export default class TwitterClient {
   getCurrentUser: GetCurrentUser;
   getUserByUsername: GetUserByUsername;
   getUserTweets: GetUserTweets;
+  createTweet: CreateTweet;
 
   static baseUrl = 'https://api.twitter.com';
 
@@ -55,5 +57,6 @@ export default class TwitterClient {
     this.getCurrentUser = new GetCurrentUser(this);
     this.getUserByUsername = new GetUserByUsername(this);
     this.getUserTweets = new GetUserTweets(this);
+    this.createTweet = new CreateTweet(this);
   }
 }

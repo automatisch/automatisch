@@ -1,23 +1,17 @@
-import TwitterApi, { TwitterApiTokens } from 'twitter-api-v2';
-import { IJSONObject } from '@automatisch/types';
+import TwitterClient from '../client';
 
 export default class CreateTweet {
-  client: TwitterApi;
-  parameters: IJSONObject;
+  client: TwitterClient;
 
-  constructor(connectionData: IJSONObject, parameters: IJSONObject) {
-    this.client = new TwitterApi({
-      appKey: connectionData.consumerKey,
-      appSecret: connectionData.consumerSecret,
-      accessToken: connectionData.accessToken,
-      accessSecret: connectionData.accessSecret,
-    } as TwitterApiTokens);
-
-    this.parameters = parameters;
+  constructor(client: TwitterClient) {
+    this.client = client;
   }
 
   async run() {
-    const tweet = await this.client.v1.tweet(this.parameters.tweet as string);
-    return tweet;
+    const response = await this.client.createTweet.run(
+      this.client.parameters.tweet as string
+    );
+
+    return response.data.data;
   }
 }
