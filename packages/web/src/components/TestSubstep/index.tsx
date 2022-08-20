@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import JSONViewer from 'components/JSONViewer';
 import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
@@ -31,7 +31,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     step,
   } = props;
 
-  const [executeFlow, { data, error }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
+  const [executeFlow, { data, error, loading }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
   const response = data?.executeFlow?.data;
 
   const {
@@ -68,14 +68,16 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             </Box>
           )}
 
-          <Button
+          <LoadingButton
             fullWidth
             variant="contained"
             onClick={handleSubmit}
             sx={{ mt: 2 }}
+            loading={loading}
+            color="primary"
           >
             Test & Continue
-          </Button>
+          </LoadingButton>
         </ListItem>
       </Collapse>
     </React.Fragment>
