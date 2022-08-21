@@ -4,6 +4,7 @@ import { AES, enc } from 'crypto-js';
 import Base from './base';
 import User from './user';
 import Step from './step';
+import App from './app';
 import appConfig from '../config/app';
 import { IJSONObject } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
@@ -54,6 +55,10 @@ class Connection extends Base {
       },
     },
   });
+
+  get appData() {
+    return App.findOneByKey(this.key);
+  }
 
   encryptData(): void {
     if (!this.eligibleForEncryption()) return;

@@ -1,5 +1,4 @@
 import Context from '../../types/express/context';
-import App from '../../models/app';
 
 type Params = {
   id: string;
@@ -19,9 +18,8 @@ const testConnection = async (
     .throwIfNotFound();
 
   const appClass = (await import(`../../apps/${connection.key}`)).default;
-  const appData = App.findOneByKey(connection.key);
+  const appInstance = new appClass(connection);
 
-  const appInstance = new appClass(appData, connection.formattedData);
   const isStillVerified =
     await appInstance.authenticationClient.isStillVerified();
 

@@ -10,8 +10,8 @@ export default class GetUserTweets {
 
   async run(userId: string) {
     const token = {
-      key: this.client.connectionData.accessToken as string,
-      secret: this.client.connectionData.accessSecret as string,
+      key: this.client.connection.formattedData.accessToken as string,
+      secret: this.client.connection.formattedData.accessSecret as string,
     };
 
     const requestPath = `/2/users/${userId}/tweets`;

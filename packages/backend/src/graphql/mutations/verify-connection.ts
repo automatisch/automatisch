@@ -22,7 +22,7 @@ const verifyConnection = async (
   const appClass = (await import(`../../apps/${connection.key}`)).default;
   const app = App.findOneByKey(connection.key);
 
-  const appInstance = new appClass(app, connection.formattedData);
+  const appInstance = new appClass(connection);
   const verifiedCredentials =
     await appInstance.authenticationClient.verifyCredentials();
 

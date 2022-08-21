@@ -10,7 +10,7 @@ export default class VerifyAccessToken {
   async run() {
     try {
       return await this.client.httpClient.post(
-        `/oauth/access_token?oauth_verifier=${this.client.connectionData.oauthVerifier}&oauth_token=${this.client.connectionData.accessToken}`,
+        `/oauth/access_token?oauth_verifier=${this.client.connection.formattedData.oauthVerifier}&oauth_token=${this.client.connection.formattedData.accessToken}`,
         null
       );
     } catch (error) {

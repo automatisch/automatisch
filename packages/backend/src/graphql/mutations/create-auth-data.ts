@@ -1,5 +1,4 @@
 import Context from '../../types/express/context';
-import App from '../../models/app';
 import axios from 'axios';
 
 type Params = {
@@ -21,13 +20,12 @@ const createAuthData = async (
     .throwIfNotFound();
 
   const appClass = (await import(`../../apps/${connection.key}`)).default;
-  const appData = App.findOneByKey(connection.key);
 
   if (!connection.formattedData) {
     return null;
   }
 
-  const appInstance = new appClass(appData, connection.formattedData);
+  const appInstance = new appClass(connection);
   const authLink = await appInstance.authenticationClient.createAuthData();
 
   try {

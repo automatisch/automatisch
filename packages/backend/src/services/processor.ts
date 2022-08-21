@@ -1,5 +1,4 @@
 import get from 'lodash.get';
-import App from '../models/app';
 import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
@@ -56,16 +55,7 @@ class Processor {
       for await (const step of steps) {
         if (!step.appKey) continue;
 
-        const appData = App.findOneByKey(step.appKey);
-
-        const {
-          appKey,
-          connection,
-          key,
-          type,
-          parameters: rawParameters = {},
-          id,
-        } = step;
+        const { appKey, key, type, parameters: rawParameters = {}, id } = step;
 
         const isTrigger = type === 'trigger';
         const AppClass = (await import(`../apps/${appKey}`)).default;
@@ -75,11 +65,7 @@ class Processor {
           priorExecutionSteps
         );
 
-        const appInstance = new AppClass(
-          appData,
-          connection?.formattedData,
-          computedParameters
-        );
+        const appInstance = new AppClass(step.connection, this.flow, step);
 
         if (!isTrigger && key) {
           const command = appInstance.actions[key];
@@ -114,19 +100,10 @@ class Processor {
   }
 
   async getInitialTriggerData(step: Step) {
-    if (!step.appKey) return null;
+    if (!step.appKey || !step.key) return null;
 
-    const appData = App.findOneByKey(step.appKey);
-    const { appKey, connection, key, parameters: rawParameters = {} } = step;
-
-    if (!key) return null;
-
-    const AppClass = (await import(`../apps/${appKey}`)).default;
-    const appInstance = new AppClass(
-      appData,
-      connection?.formattedData,
-      rawParameters
-    );
+    const AppClass = (await import(`../apps/${step.appKey}`)).default;
+    const appInstance = new AppClass(step.connection, this.flow, step);
 
     const lastExecutionStep = await step
       .$relatedQuery('executionSteps')
@@ -136,7 +113,7 @@ class Processor {
     const lastExecutionStepCreatedAt = lastExecutionStep?.createdAt as string;
     const flow = (await step.$relatedQuery('flow')) as Flow;
 
-    const command = appInstance.triggers[key];
+    const command = appInstance.triggers[step.key];
 
     const startTime = new Date(lastExecutionStepCreatedAt || flow.updatedAt);
     let fetchedData;
@@ -163,7 +140,10 @@ class Processor {
           .map((part: string) => {
             const isVariable = part.match(Processor.variableRegExp);
             if (isVariable) {
-              const stepIdAndKeyPath = part.replace(/{{step.|}}/g, '') as string;
+              const stepIdAndKeyPath = part.replace(
+                /{{step.|}}/g,
+                ''
+              ) as string;
               const [stepId, ...keyPaths] = stepIdAndKeyPath.split('.');
               const keyPath = keyPaths.join('.');
               const executionStep = executionSteps[stepId.toString() as string];
