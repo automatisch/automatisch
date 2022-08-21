@@ -9,7 +9,7 @@ export default class CreateTweet {
 
   async run() {
     const response = await this.client.createTweet.run(
-      this.client.parameters.tweet as string
+      this.client.step.parameters.tweet as string
     );
 
     return response.data.data;

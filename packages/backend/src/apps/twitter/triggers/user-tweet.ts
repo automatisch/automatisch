@@ -17,7 +17,7 @@ export default class UserTweet {
 
   async getTweets() {
     const userResponse = await this.client.getUserByUsername.run(
-      this.client.parameters.username as string
+      this.client.step.parameters.username as string
     );
 
     const userId = userResponse.data.data.id;

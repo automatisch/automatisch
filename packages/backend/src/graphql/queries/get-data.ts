@@ -1,5 +1,4 @@
 import { IJSONObject } from '@automatisch/types';
-import App from '../../models/app';
 import Context from '../../types/express/context';
 
 type Params = {
@@ -11,7 +10,7 @@ type Params = {
 const getData = async (_parent: unknown, params: Params, context: Context) => {
   const step = await context.currentUser
     .$relatedQuery('steps')
-    .withGraphFetched('connection')
+    .withGraphFetched('connection, flow')
     .findById(params.stepId);
 
   if (!step) return null;
@@ -20,10 +19,9 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
 
   if (!connection || !step.appKey) return null;
 
-  const appData = App.findOneByKey(step.appKey);
   const AppClass = (await import(`../../apps/${step.appKey}`)).default;
+  const appInstance = new AppClass(connection, step.flow, step);
 
-  const appInstance = new AppClass(appData, connection.formattedData, params.parameters);
   const command = appInstance.data[params.key];
   const fetchedData = await command.run();
 

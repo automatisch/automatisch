@@ -1,4 +1,4 @@
-import { IJSONObject, IApp } from '@automatisch/types';
+import { IFlow, IStep, IConnection } from '@automatisch/types';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 import HttpClient from '../../../helpers/http-client';
@@ -10,9 +10,9 @@ import GetUserTweets from './endpoints/get-user-tweets';
 import CreateTweet from './endpoints/create-tweet';
 
 export default class TwitterClient {
-  appData: IApp;
-  connectionData: IJSONObject;
-  parameters: IJSONObject;
+  flow: IFlow;
+  step: IStep;
+  connection: IConnection;
   oauthClient: OAuth;
   httpClient: HttpClient;
 
@@ -25,20 +25,16 @@ export default class TwitterClient {
 
   static baseUrl = 'https://api.twitter.com';
 
-  constructor(
-    appData: IApp,
-    connectionData: IJSONObject,
-    parameters: IJSONObject
-  ) {
-    this.connectionData = connectionData;
-    this.appData = appData;
-    this.parameters = parameters;
+  constructor(connection: IConnection, flow?: IFlow, step?: IStep) {
+    this.connection = connection;
+    this.flow = flow;
+    this.step = step;
 
     this.httpClient = new HttpClient({ baseURL: TwitterClient.baseUrl });
 
     const consumerData = {
-      key: this.connectionData.consumerKey as string,
-      secret: this.connectionData.consumerSecret as string,
+      key: this.connection.formattedData.consumerKey as string,
+      secret: this.connection.formattedData.consumerSecret as string,
     };
 
     this.oauthClient = new OAuth({

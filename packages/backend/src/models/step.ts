@@ -78,6 +78,10 @@ class Step extends Base {
     return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
+  get appData() {
+    return App.findOneByKey(this.appKey);
+  }
+
   async $afterInsert(queryContext: QueryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.stepCreated(this);
@@ -95,17 +99,13 @@ class Step extends Base {
   async getTrigger() {
     if (!this.isTrigger) return null;
 
-    const { appKey, key, parameters = {} } = this;
+    const { appKey, key } = this;
 
     const connection = await this.$relatedQuery('connection');
+    const flow = await this.$relatedQuery('flow');
 
-    const appData = App.findOneByKey(appKey);
     const AppClass = (await import(`../apps/${appKey}`)).default;
-    const appInstance = new AppClass(
-      appData,
-      connection?.formattedData,
-      parameters
-    );
+    const appInstance = new AppClass(connection, flow, this);
     const command = appInstance.triggers[key];
 
     return command;

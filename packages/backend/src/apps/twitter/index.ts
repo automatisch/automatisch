@@ -1,8 +1,9 @@
 import {
   IService,
   IAuthentication,
-  IApp,
-  IJSONObject,
+  IFlow,
+  IStep,
+  IConnection,
 } from '@automatisch/types';
 import Authentication from './authentication';
 import Triggers from './triggers';
@@ -16,12 +17,8 @@ export default class Twitter implements IService {
   triggers: Triggers;
   actions: Actions;
 
-  constructor(
-    appData: IApp,
-    connectionData: IJSONObject,
-    parameters: IJSONObject
-  ) {
-    this.client = new TwitterClient(appData, connectionData, parameters);
+  constructor(connection: IConnection, flow?: IFlow, step?: IStep) {
+    this.client = new TwitterClient(connection, flow, step);
 
     this.authenticationClient = new Authentication(this.client);
     this.triggers = new Triggers(this.client);

@@ -15,6 +15,7 @@ export interface IConnection {
   verified: boolean;
   count: number;
   flowCount: number;
+  appData?: IApp;
   createdAt: string;
 }
 
@@ -57,6 +58,7 @@ export interface IStep {
   executionSteps: IExecutionStep[];
   // FIXME: remove this property once execution steps are properly exposed via queries
   output: IJSONObject;
+  appData?: IApp;
 }
 
 export interface IFlow {
