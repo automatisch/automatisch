@@ -40,6 +40,8 @@
   "createFlow.creating": "Creating a flow...",
   "flow.active": "ON",
   "flow.inactive": "OFF",
+  "flow.published": "Published",
+  "flow.draft": "Draft",
   "flowEditor.publish": "PUBLISH",
   "flowEditor.unpublish": "UNPUBLISH",
   "flowEditor.publishFlowCannotBeUpdated": "To edit this flow, you must first unpublish it.",

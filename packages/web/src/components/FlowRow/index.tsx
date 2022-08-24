@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import CardActionArea from '@mui/material/CardActionArea';
+import Chip from '@mui/material/Chip';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { DateTime } from 'luxon';
 
@@ -65,6 +66,13 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
             </Title>
 
             <ContextMenu>
+              <Chip
+                size="small"
+                color={flow?.active ? 'success' : 'info'}
+                variant={flow?.active ? 'filled': 'outlined'}
+                label={formatMessage(flow?.active ? 'flow.published' : 'flow.draft')}
+              />
+
               <IconButton
                 size="large"
                 edge="start"

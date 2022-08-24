@@ -31,6 +31,10 @@ export const Title = styled(MuiStack)(() => ({
 }));
 
 export const ContextMenu = styled(MuiBox)(() => ({
+  flexDirection: 'row',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 10,
   gridArea: 'menu',
 }));
 export const Typography = styled(MuiTypography)(() => ({
