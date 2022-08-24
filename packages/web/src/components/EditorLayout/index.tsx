@@ -3,12 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import Snackbar from '@mui/material/Snackbar';
 
+import { EditorProvider } from 'contexts/Editor';
 import EditableTypography from 'components/EditableTypography';
 import Container from 'components/Container';
 import Editor from 'components/Editor';
@@ -45,9 +46,7 @@ export default function EditorLayout(): React.ReactElement {
     });
   }, [flow?.id]);
 
-  const onFlowStatusUpdate = React.useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const active = event.target.checked;
-
+  const onFlowStatusUpdate = React.useCallback(async (active: boolean) => {
     await updateFlowStatus({
       variables: {
         input: {
@@ -93,22 +92,32 @@ export default function EditorLayout(): React.ReactElement {
           </Box>
 
           <Box pr={1}>
-            <FormControlLabel
-              control={
-                <Switch checked={flow?.active ?? false} onChange={onFlowStatusUpdate} />
-              }
-              label={flow?.active ? formatMessage('flow.active') : formatMessage('flow.inactive')}
-              labelPlacement="start"
-            />
+            <Button variant="contained" size="small" onClick={() => onFlowStatusUpdate(!flow.active)}>
+              {flow?.active ? formatMessage('flowEditor.unpublish') : formatMessage('flowEditor.publish')}
+            </Button>
           </Box>
         </Stack>
 
         <Container maxWidth="md">
-          {!flow && !loading && 'not found'}
+          <EditorProvider value={{ readOnly: !!flow?.active }}>
+            {!flow && !loading && 'not found'}
 
-          {flow && <Editor flow={flow} />}
+            {flow && <Editor flow={flow} />}
+          </EditorProvider>
         </Container>
       </Stack>
+
+      <Snackbar
+        open={!!flow?.active}
+        message={formatMessage('flowEditor.publishFlowCannotBeUpdated')}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+        ContentProps={{ sx: { fontWeight: 300 }}}
+        action={(
+          <Button variant="contained" size="small" onClick={() => onFlowStatusUpdate(!flow.active)}>
+            {flow?.active ? formatMessage('flowEditor.unpublish') : formatMessage('flowEditor.publish')}
+          </Button>
+        )}
+      />
     </>
   )
 }

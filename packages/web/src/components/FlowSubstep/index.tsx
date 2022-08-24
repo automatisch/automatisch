@@ -5,6 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
+import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import type { IField, IStep, ISubstep } from '@automatisch/types';
@@ -52,6 +53,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
     arguments: args,
   } = substep;
 
+  const editorContext = React.useContext(EditorContext);
   const formContext = useFormContext();
   const [validationStatus, setValidationStatus] = React.useState<boolean | null>(validateSubstep(substep, formContext.getValues() as IStep));
 
@@ -105,6 +107,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
                 schema={argument}
                 namePrefix="parameters"
                 stepId={step.id}
+                disabled={editorContext.readOnly}
               />
             ))}
           </Stack>
@@ -114,7 +117,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
             variant="contained"
             onClick={onSubmit}
             sx={{ mt: 2 }}
-            disabled={!validationStatus}
+            disabled={!validationStatus || editorContext.readOnly}
             type="submit"
           >
             Continue

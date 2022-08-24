@@ -38,6 +38,7 @@ type PowerInputProps = {
   description?: string;
   docUrl?: string;
   clickToCopy?: boolean;
+  disabled?: boolean;
 }
 
 const PowerInput = (props: PowerInputProps) => {
@@ -49,6 +50,7 @@ const PowerInput = (props: PowerInputProps) => {
     label,
     required,
     description,
+    disabled,
   } = props;
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef<HTMLDivElement | null>(null);
@@ -161,11 +163,11 @@ const PowerInput = (props: PowerInputProps) => {
           <ClickAwayListener onClickAway={() => setSearch(null)}>
             {/* ref-able single child for ClickAwayListener */}
             <div style={{ width: '100%' }}>
-              <FakeInput>
+              <FakeInput disabled={disabled}>
                 <InputLabelWrapper>
                   <InputLabel
                     shrink={true}
-                    // focused
+                    disabled={disabled}
                     variant="outlined"
                     sx={{ bgcolor: 'white', display: 'inline-block', px: .75 }}
                   >
@@ -174,6 +176,7 @@ const PowerInput = (props: PowerInputProps) => {
                 </InputLabelWrapper>
 
                 <Editable
+                  readOnly={disabled}
                   style={{ width: '100%' }}
                   renderElement={renderElement}
                   onKeyDown={onKeyDown}

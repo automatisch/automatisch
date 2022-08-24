@@ -8,6 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import { EditorContext } from 'contexts/Editor';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import type { IApp, IStep, ISubstep } from '@automatisch/types';
@@ -39,6 +40,8 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
     onSubmit,
     onChange,
   } = props;
+
+  const editorContext = React.useContext(EditorContext);
 
   const isTrigger = step.type === 'trigger';
 
@@ -111,6 +114,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
             fullWidth
             disablePortal
             disableClearable
+            disabled={editorContext.readOnly}
             options={appOptions}
             renderInput={(params) => <TextField {...params} label="Choose an app" />}
             value={getOption(appOptions, step.appKey)}
@@ -127,6 +131,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
                 fullWidth
                 disablePortal
                 disableClearable
+                disabled={editorContext.readOnly}
                 options={actionOptions}
                 renderInput={(params) => <TextField {...params} label="Choose an event" />}
                 value={getOption(actionOptions, step.key)}
@@ -140,7 +145,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
             variant="contained"
             onClick={onSubmit}
             sx={{ mt: 2 }}
-            disabled={!valid}
+            disabled={!valid || editorContext.readOnly}
           >
             Continue
           </Button>

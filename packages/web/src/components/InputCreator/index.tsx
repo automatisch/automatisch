@@ -15,6 +15,7 @@ type InputCreatorProps = {
   schema: IField;
   namePrefix?: string;
   stepId?: string;
+  disabled?: boolean;
 };
 
 type RawOption = {
@@ -33,6 +34,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     schema,
     namePrefix,
     stepId,
+    disabled,
   } = props;
 
   const {
@@ -65,6 +67,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
         onChange={console.log}
         description={description}
         loading={loading}
+        disabled={disabled}
       />
     );
   }
@@ -77,6 +80,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
           description={description}
           name={computedName}
           required={required}
+          disabled={disabled}
         />
       );
     }
@@ -86,8 +90,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
         defaultValue={value}
         required={required}
         placeholder=""
-        disabled={readOnly}
-        readOnly={readOnly}
+        readOnly={readOnly || disabled}
         onChange={onChange}
         onBlur={onBlur}
         name={computedName}

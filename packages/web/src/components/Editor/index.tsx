@@ -3,12 +3,12 @@ import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import type { IFlow } from '@automatisch/types';
 
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import { CREATE_STEP } from 'graphql/mutations/create-step';
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
 import FlowStep from 'components/FlowStep';
-import type { IFlow } from '@automatisch/types';
 
 type EditorProps = {
   flow: IFlow;
