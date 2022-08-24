@@ -6,6 +6,7 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import type { IApp, IConnection, IStep, ISubstep } from '@automatisch/types';
 import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
@@ -42,6 +43,7 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
     connection,
     appKey,
   } = step;
+  const editorContext = React.useContext(EditorContext);
   const { data, loading } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey }});
   // TODO: show detailed error when connection test/verification fails
   const [
@@ -118,6 +120,7 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             fullWidth
             disablePortal
             disableClearable
+            disabled={editorContext.readOnly}
             options={connectionOptions}
             renderInput={(params) => <TextField {...params} label="Choose connection" />}
             value={getOption(connectionOptions, connection?.id)}
@@ -130,7 +133,7 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             variant="contained"
             onClick={onSubmit}
             sx={{ mt: 2 }}
-            disabled={testResultLoading || !connection?.verified}
+            disabled={testResultLoading || !connection?.verified || editorContext.readOnly}
           >
             Continue
           </Button>

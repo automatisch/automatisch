@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import type { BaseSchema } from 'yup';
 import type { IApp, IField, IStep, ISubstep } from '@automatisch/types';
 
+import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
 import FlowSubstep from 'components/FlowSubstep';
@@ -99,6 +100,7 @@ export default function FlowStep(
   props: FlowStepProps
 ): React.ReactElement | null {
   const { collapsed, onChange } = props;
+  const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const step: IStep = props.step;
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -204,7 +206,7 @@ export default function FlowStep(
 
           <Box display="flex" flex={1} justifyContent="end">
             {/* as there are no other actions besides "delete step", we hide the context menu. */}
-            {!isTrigger && (
+            {!isTrigger && !editorContext.readOnly && (
               <IconButton
                 color="primary"
                 onClick={onContextMenuClick}

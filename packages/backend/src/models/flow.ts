@@ -9,7 +9,7 @@ class Flow extends Base {
   id!: string;
   name!: string;
   userId!: string;
-  active = false;
+  active: boolean;
   steps?: [Step];
   published_at: string;
 

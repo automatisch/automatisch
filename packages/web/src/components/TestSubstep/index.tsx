@@ -6,6 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+import { EditorContext } from 'contexts/Editor';
 import JSONViewer from 'components/JSONViewer';
 import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
@@ -31,6 +32,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     step,
   } = props;
 
+  const editorContext = React.useContext(EditorContext);
   const [executeFlow, { data, error, loading }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
   const response = data?.executeFlow?.data;
 
@@ -74,6 +76,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             onClick={handleSubmit}
             sx={{ mt: 2 }}
             loading={loading}
+            disabled={editorContext.readOnly}
             color="primary"
           >
             Test & Continue
