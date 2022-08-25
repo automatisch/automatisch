@@ -8,7 +8,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Badge from '@mui/material/Badge';
 
 import ListItemLink from 'components/ListItemLink';
-import HideOnScroll from 'components/HideOnScroll';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { Drawer as BaseDrawer } from './style';
 
@@ -47,9 +46,7 @@ export default function Drawer(props: DrawerProps): React.ReactElement {
     >
       {/* keep the following encapsulating `div` to have `space-between` children  */}
       <div>
-        <HideOnScroll unmountOnExit>
-          <Toolbar />
-        </HideOnScroll>
+        <Toolbar />
 
         <List sx={{ py: 0, mt: 3 }}>
           {links.map(({ Icon, primary, to }, index) => (
