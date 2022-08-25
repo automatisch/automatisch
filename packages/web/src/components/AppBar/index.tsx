@@ -13,7 +13,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import * as URLS from 'config/urls';
 import AccountDropdownMenu from 'components/AccountDropdownMenu';
 import Container from 'components/Container';
-import HideOnScroll from 'components/HideOnScroll';
 import { FormattedMessage } from 'react-intl';
 import { Link } from './style';
 
@@ -50,53 +49,51 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
   };
 
   return (
-    <HideOnScroll>
-      <MuiAppBar>
-        <Container maxWidth={maxWidth} disableGutters>
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={drawerOpen ? onDrawerClose : onDrawerOpen}
-              sx={{ mr: 2 }}
-            >
-              {drawerOpen && matchSmallScreens ? <MenuOpenIcon /> : <MenuIcon />}
-            </IconButton>
+    <MuiAppBar>
+      <Container maxWidth={maxWidth} disableGutters>
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={drawerOpen ? onDrawerClose : onDrawerOpen}
+            sx={{ mr: 2 }}
+          >
+            {drawerOpen && matchSmallScreens ? <MenuOpenIcon /> : <MenuIcon />}
+          </IconButton>
 
-            <div style={{ flexGrow: 1 }}>
-              <Link to={URLS.DASHBOARD}>
-                <Typography
-                  variant="h6"
-                  component="h1"
-                  noWrap
-                >
-                  <FormattedMessage id="brandText" />
-                </Typography>
-              </Link>
-            </div>
+          <div style={{ flexGrow: 1 }}>
+            <Link to={URLS.DASHBOARD}>
+              <Typography
+                variant="h6"
+                component="h1"
+                noWrap
+              >
+                <FormattedMessage id="brandText" />
+              </Typography>
+            </Link>
+          </div>
 
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              onClick={handleAccountMenuOpen}
-              aria-controls={accountMenuId}
-              aria-label="open profile menu"
-            >
-              <AccountCircleIcon />
-            </IconButton>
-          </Toolbar>
-        </Container>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            onClick={handleAccountMenuOpen}
+            aria-controls={accountMenuId}
+            aria-label="open profile menu"
+          >
+            <AccountCircleIcon />
+          </IconButton>
+        </Toolbar>
+      </Container>
 
-        <AccountDropdownMenu
-          anchorEl={accountMenuAnchorElement}
-          id={accountMenuId}
-          open={isMenuOpen}
-          onClose={handleAccountMenuClose}
-        />
-      </MuiAppBar>
-    </HideOnScroll>
+      <AccountDropdownMenu
+        anchorEl={accountMenuAnchorElement}
+        id={accountMenuId}
+        open={isMenuOpen}
+        onClose={handleAccountMenuClose}
+      />
+    </MuiAppBar>
   );
 }
