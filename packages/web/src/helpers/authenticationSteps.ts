@@ -47,8 +47,7 @@ const processOpenWithPopup = (step: IAuthenticationStep, variables: IJSONObject)
     popup?.focus();
 
     const messageHandler = async (event: MessageEvent) => {
-      // check origin and data.source to trust the event
-      if (event.origin !== appConfig.baseUrl || event.data.source !== 'automatisch') {
+      if (event.data.source !== 'automatisch') {
         return;
       }
 
