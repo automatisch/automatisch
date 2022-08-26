@@ -2,6 +2,7 @@
   "name": "@automatisch/docs",
   "version": "0.1.0",
   "description": "> TODO: description",
+  "private": true,
   "scripts": {
     "dev": "vitepress dev pages --port 3002",
     "build": "vitepress build pages",

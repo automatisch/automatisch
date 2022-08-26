@@ -5,7 +5,6 @@
   "homepage": "https://github.com/automatisch/automatisch",
   "types": "./index.d.ts",
   "scripts": {},
-  "dependencies": {},
   "typeScriptVersion": "4.1",
   "repository": {
     "type": "git",

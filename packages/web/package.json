@@ -47,8 +47,12 @@
     "build:watch": "yarn nodemon --exec react-scripts build --watch 'src/**/*.ts' --watch 'public/**/*' --ext ts,html",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ignore-path ../../.eslintignore"
+    "lint": "eslint . --ignore-path ../../.eslintignore",
+    "prepack": "REACT_APP_GRAPHQL_URL=/graphql yarn build"
   },
+  "files": [
+    "/build"
+  ],
   "contributors": [
     {
       "name": "automatisch contributors",

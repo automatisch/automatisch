@@ -13,6 +13,10 @@ export default class Start extends Command {
     'env-file': Flags.string(),
   }
 
+  get isProduction() {
+    return process.env.APP_ENV === 'production';
+  }
+
   async prepareEnvVars(): Promise<void> {
     const { flags } = await this.parse(Start);
 
@@ -38,7 +42,7 @@ export default class Start extends Command {
   }
 
   async createDatabaseAndUser(): Promise<void> {
-    const { utils } = await import('@automatisch/backend/database');
+    const utils = await import('@automatisch/backend/database-utils');
 
     await utils.createDatabaseAndUser(
       process.env.POSTGRES_DATABASE,
@@ -48,7 +52,7 @@ export default class Start extends Command {
 
   async runMigrationsIfNeeded(): Promise<void> {
     const { logger } = await import('@automatisch/backend/logger');
-    const { database } = await import('@automatisch/backend/database');
+    const database = await import('@automatisch/backend/database');
     const migrator = database.client.migrate;
 
     const [, pendingMigrations] = await migrator.list();
@@ -66,7 +70,7 @@ export default class Start extends Command {
   }
 
   async seedUser(): Promise<void> {
-    const { utils } = await import('@automatisch/backend/database');
+    const utils = await import('@automatisch/backend/database-utils');
 
     await utils.createUser();
   }
@@ -78,7 +82,9 @@ export default class Start extends Command {
   async run(): Promise<void> {
     await this.prepareEnvVars();
 
-    await this.createDatabaseAndUser();
+    if (!this.isProduction) {
+      await this.createDatabaseAndUser();
+    }
 
     await this.runMigrationsIfNeeded();
 

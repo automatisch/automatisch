@@ -16,7 +16,8 @@
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
     "db:migrate": "knex migrate:latest",
-    "copy-statics": "copyfiles src/**/*.{graphql,json,svg} dist"
+    "copy-statics": "copyfiles src/**/*.{graphql,json,svg} dist",
+    "prepack": "yarn build"
   },
   "dependencies": {
     "@automatisch/web": "0.1.0",
@@ -75,6 +76,7 @@
     "test": "__tests__"
   },
   "files": [
+    "dist",
     "bin",
     "src",
     "server.js",
@@ -82,7 +84,9 @@
     "logger.js",
     "logger.d.ts",
     "database.js",
-    "database.d.ts"
+    "database.d.ts",
+    "database-utils.js",
+    "database-utils.d.ts"
   ],
   "repository": {
     "type": "git",
