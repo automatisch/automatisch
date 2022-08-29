@@ -8,6 +8,7 @@ class Execution extends Base {
   id!: string;
   flowId!: string;
   testRun = false;
+  internalId!: string;
   executionSteps: ExecutionStep[] = [];
 
   static tableName = 'executions';
@@ -19,6 +20,7 @@ class Execution extends Base {
       id: { type: 'string', format: 'uuid' },
       flowId: { type: 'string', format: 'uuid' },
       testRun: { type: 'boolean' },
+      internalId: { type: 'string' },
     },
   };
 

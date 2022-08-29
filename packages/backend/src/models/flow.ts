@@ -49,6 +49,14 @@ class Flow extends Base {
     },
   });
 
+  async lastInternalId() {
+    const lastInternalIdFetched: any = await this.$relatedQuery(
+      'executions'
+    ).max('internal_id');
+
+    return lastInternalIdFetched[0].max;
+  }
+
   async $beforeUpdate(
     opt: ModelOptions,
     queryContext: QueryContext

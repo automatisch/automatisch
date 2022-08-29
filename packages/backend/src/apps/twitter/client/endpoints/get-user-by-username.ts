@@ -39,6 +39,6 @@ export default class GetUserByUsername {
       );
     }
 
-    return response;
+    return response.data.data;
   }
 }
