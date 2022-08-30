@@ -36,6 +36,14 @@ class Processor {
     let initialTriggerData = await this.getInitialTriggerData(triggerStep!);
 
     if (initialTriggerData.length === 0) {
+      const lastInternalId = await this.flow.lastInternalId();
+
+      await Execution.query().insert({
+        flowId: this.flow.id,
+        testRun: this.testRun,
+        internalId: lastInternalId,
+      });
+
       return;
     }
 
