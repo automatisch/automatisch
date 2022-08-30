@@ -24,8 +24,12 @@ export default class GetCurrentUser {
       this.client.oauthClient.authorize(requestData, token)
     );
 
-    return await this.client.httpClient.get(requestPath, {
+    const response = await this.client.httpClient.get(requestPath, {
       headers: { ...authHeader },
     });
+
+    const currentUser = response.data.data;
+
+    return currentUser;
   }
 }

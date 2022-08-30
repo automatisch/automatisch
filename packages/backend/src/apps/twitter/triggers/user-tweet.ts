@@ -20,6 +20,8 @@ export default class UserTweet {
       this.client.step.parameters.username as string
     );
 
-    return await this.client.getUserTweets.run(user.id, lastInternalId);
+    const tweets = await this.client.getUserTweets.run(user.id, lastInternalId);
+
+    return tweets;
   }
 }
