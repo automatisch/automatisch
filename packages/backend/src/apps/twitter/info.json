@@ -260,8 +260,8 @@
       ]
     },
     {
-      "name": "Search Tweet",
-      "key": "searchTweet",
+      "name": "Search Tweets",
+      "key": "searchTweets",
       "description": "Will be triggered when any user tweet something containing a specific keyword, phrase, username or hashtag.",
       "substeps": [
         {
