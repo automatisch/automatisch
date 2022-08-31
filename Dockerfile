@@ -2,6 +2,9 @@
 FROM node:16
 WORKDIR /automatisch
 
+RUN apt-get update && apt-get install -y postgresql-client
+COPY ./docker/wait-for-postgres.sh /automatisch/wait-for-postgres.sh
+
 # npm registry for dev purposes
 RUN npm config set fetch-retry-maxtimeout 5000
 RUN npm config set fetch-retry-mintimeout 3000
@@ -15,4 +18,4 @@ RUN echo "APP_SECRET_KEY=$(openssl rand -base64 36)" >> /automatisch/storage/.en
 RUN yarn global add @automatisch/cli
 
 EXPOSE 3000
-CMD ["automatisch", "start", "--env-file=/automatisch/storage/.env"]
+CMD sh /automatisch/wait-for-postgres.sh automatisch start --env-file=/automatisch/storage/.env
