@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  automatisch:
+    build:
+      context: .
+      network: host
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - HOST=localhost
+      - PROTOCOL=http
+      - PORT=3000
+      - APP_ENV=production
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DATABASE=automatisch
+      - POSTGRES_USERNAME=automatisch_user
+  postgres:
+    image: "postgres:14.5"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: automatisch
+      POSTGRES_USER: automatisch_user
+  redis:
+    image: "redis:7.0.4"
+    ports:
+      - "6379:6379"
