@@ -20,7 +20,7 @@
     },
     {
       "key": "consumerKey",
-      "label": "Consumer Key",
+      "label": "API Key",
       "type": "string",
       "required": true,
       "readOnly": false,
@@ -32,7 +32,7 @@
     },
     {
       "key": "consumerSecret",
-      "label": "Consumer Secret",
+      "label": "API Secret",
       "type": "string",
       "required": true,
       "readOnly": false,

@@ -7,23 +7,20 @@ export default class UserTweet {
     this.client = client;
   }
 
-  async run() {
-    return this.getTweets();
+  async run(lastInternalId: string) {
+    return this.getTweets(lastInternalId);
   }
 
   async testRun() {
     return this.getTweets();
   }
 
-  async getTweets() {
-    const userResponse = await this.client.getUserByUsername.run(
+  async getTweets(lastInternalId?: string) {
+    const user = await this.client.getUserByUsername.run(
       this.client.step.parameters.username as string
     );
 
-    const userId = userResponse.data.data.id;
-
-    const tweetsResponse = await this.client.getUserTweets.run(userId);
-    const tweets = tweetsResponse.data.data;
+    const tweets = await this.client.getUserTweets.run(user.id, lastInternalId);
 
     return tweets;
   }

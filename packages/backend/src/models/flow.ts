@@ -4,6 +4,7 @@ import Base from './base';
 import Step from './step';
 import Execution from './execution';
 import Telemetry from '../helpers/telemetry';
+import { IExecution } from '@automatisch/types';
 
 class Flow extends Base {
   id!: string;
@@ -48,6 +49,14 @@ class Flow extends Base {
       },
     },
   });
+
+  async lastInternalId() {
+    const lastExecution = await this.$relatedQuery('executions')
+      .orderBy('created_at', 'desc')
+      .first();
+
+    return (lastExecution as Execution).internalId;
+  }
 
   async $beforeUpdate(
     opt: ModelOptions,

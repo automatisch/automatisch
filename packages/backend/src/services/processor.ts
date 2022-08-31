@@ -3,6 +3,7 @@ import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
 import ExecutionStep from '../models/execution-step';
+import { IJSONObject } from '@automatisch/types';
 
 type ExecutionSteps = Record<string, ExecutionStep>;
 
@@ -34,8 +35,28 @@ class Processor {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     let initialTriggerData = await this.getInitialTriggerData(triggerStep!);
 
+    if (initialTriggerData.length === 0) {
+      const lastInternalId = await this.flow.lastInternalId();
+
+      await Execution.query().insert({
+        flowId: this.flow.id,
+        testRun: this.testRun,
+        internalId: lastInternalId,
+      });
+
+      return;
+    }
+
     if (this.testRun) {
       initialTriggerData = [initialTriggerData[0]];
+    }
+
+    if (initialTriggerData.length > 1) {
+      initialTriggerData = initialTriggerData.sort(
+        (item: IJSONObject, nextItem: IJSONObject) => {
+          return (item.id as number) - (nextItem.id as number);
+        }
+      );
     }
 
     const executions: Execution[] = [];
@@ -44,6 +65,7 @@ class Processor {
       const execution = await Execution.query().insert({
         flowId: this.flow.id,
         testRun: this.testRun,
+        internalId: data.id,
       });
 
       executions.push(execution);
@@ -64,6 +86,8 @@ class Processor {
           rawParameters,
           priorExecutionSteps
         );
+
+        step.parameters = computedParameters;
 
         const appInstance = new AppClass(step.connection, this.flow, step);
 
@@ -105,23 +129,16 @@ class Processor {
     const AppClass = (await import(`../apps/${step.appKey}`)).default;
     const appInstance = new AppClass(step.connection, this.flow, step);
 
-    const lastExecutionStep = await step
-      .$relatedQuery('executionSteps')
-      .orderBy('created_at', 'desc')
-      .first();
-
-    const lastExecutionStepCreatedAt = lastExecutionStep?.createdAt as string;
-    const flow = (await step.$relatedQuery('flow')) as Flow;
-
     const command = appInstance.triggers[step.key];
 
-    const startTime = new Date(lastExecutionStepCreatedAt || flow.updatedAt);
     let fetchedData;
 
+    const lastInternalId = await this.flow.lastInternalId();
+
     if (this.testRun) {
-      fetchedData = await command.testRun(startTime);
+      fetchedData = await command.testRun();
     } else {
-      fetchedData = await command.run(startTime);
+      fetchedData = await command.run(lastInternalId);
     }
 
     return fetchedData;

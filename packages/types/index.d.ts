@@ -69,6 +69,7 @@ export interface IFlow {
   steps: IStep[];
   createdAt: string;
   updatedAt: string;
+  lastInternalId: () => Promise<string>;
 }
 
 export interface IUser {
