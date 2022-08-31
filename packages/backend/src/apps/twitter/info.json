@@ -233,8 +233,8 @@
       ]
     },
     {
-      "name": "User Tweet",
-      "key": "userTweet",
+      "name": "User Tweets",
+      "key": "userTweets",
       "description": "Will be triggered when a specific user tweet something new.",
       "substeps": [
         {

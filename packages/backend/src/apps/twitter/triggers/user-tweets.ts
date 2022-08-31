@@ -1,6 +1,6 @@
 import TwitterClient from '../client';
 
-export default class UserTweet {
+export default class UserTweets {
   client: TwitterClient;
 
   constructor(client: TwitterClient) {

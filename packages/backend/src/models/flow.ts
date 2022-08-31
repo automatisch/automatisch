@@ -55,7 +55,7 @@ class Flow extends Base {
       .orderBy('created_at', 'desc')
       .first();
 
-    return (lastExecution as Execution).internalId;
+    return lastExecution ? (lastExecution as Execution).internalId : null;
   }
 
   async $beforeUpdate(
