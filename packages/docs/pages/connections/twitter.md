@@ -17,5 +17,5 @@ If you see an error saying `There was a problem completing your request. User mu
 10. In the **OAuth 1.0A Settings** section, select **Read and write** option.
 11. Copy **OAuth Redirect URL** from Automatisch and paste it to the **Callback URI / Redirect URL** field.
 12. Fill **Website URL** and click **Save**.
-13. Paste **API Key** and **API Key Secret** values you have saved from the 5th step and paste them into Automatisch as **Consumer Key** and **Consumer Secret**, respectively.
+13. Paste **API Key** and **API Key Secret** values you have saved from the 5th step and paste them into Automatisch as **API Key** and **API Secret**, respectively.
 14. Congrats! You can start using the new Twitter connection!
