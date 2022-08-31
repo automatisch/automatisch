@@ -26,9 +26,7 @@ export default class GetUserTweets {
         pagination_token: response?.data?.meta?.next_token,
       };
 
-      const queryParams = new URLSearchParams({
-        ...omitBy(params, isEmpty),
-      });
+      const queryParams = new URLSearchParams(omitBy(params, isEmpty));
 
       const requestPath = `/2/users/${userId}/tweets${
         queryParams.toString() ? `?${queryParams.toString()}` : ''
