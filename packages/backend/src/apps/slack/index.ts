@@ -23,9 +23,8 @@ export default class Slack implements IService {
     this.client = new SlackClient(connection, flow, step);
 
     this.authenticationClient = new Authentication(this.client);
-
     // this.triggers = new Triggers(this.client);
-    // this.actions = new Actions(this.client);
+    this.actions = new Actions(this.client);
     this.data = new Data(this.client);
   }
 }

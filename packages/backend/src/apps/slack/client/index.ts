@@ -1,6 +1,7 @@
 import { IFlow, IStep, IConnection } from '@automatisch/types';
 import HttpClient from '../../../helpers/http-client';
 import VerifyAccessToken from './endpoints/verify-access-token';
+import PostMessageToChannel from './endpoints/post-message-to-channel';
 
 export default class SlackClient {
   flow: IFlow;
@@ -9,6 +10,7 @@ export default class SlackClient {
   httpClient: HttpClient;
 
   verifyAccessToken: VerifyAccessToken;
+  postMessageToChannel: PostMessageToChannel;
 
   static baseUrl = 'https://slack.com/api';
 
@@ -19,5 +21,6 @@ export default class SlackClient {
 
     this.httpClient = new HttpClient({ baseURL: SlackClient.baseUrl });
     this.verifyAccessToken = new VerifyAccessToken(this);
+    this.postMessageToChannel = new PostMessageToChannel(this);
   }
 }
