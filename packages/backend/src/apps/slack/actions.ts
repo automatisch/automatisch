@@ -1,13 +1,12 @@
 import SendMessageToChannel from './actions/send-message-to-channel';
-import { IJSONObject } from '@automatisch/types';
+import SlackClient from './client';
 
 export default class Actions {
+  client: SlackClient;
   sendMessageToChannel: SendMessageToChannel;
 
-  constructor(connectionData: IJSONObject, parameters: IJSONObject) {
-    this.sendMessageToChannel = new SendMessageToChannel(
-      connectionData,
-      parameters
-    );
+  constructor(client: SlackClient) {
+    this.client = client;
+    this.sendMessageToChannel = new SendMessageToChannel(client);
   }
 }

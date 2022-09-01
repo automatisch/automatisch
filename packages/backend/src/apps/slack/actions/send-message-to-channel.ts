@@ -1,21 +1,18 @@
-import { WebClient } from '@slack/web-api';
-import { IJSONObject } from '@automatisch/types';
+import SlackClient from '../client';
 
 export default class SendMessageToChannel {
-  client: WebClient;
-  parameters: IJSONObject;
+  client: SlackClient;
 
-  constructor(connectionData: IJSONObject, parameters: IJSONObject) {
-    this.client = new WebClient(connectionData.accessToken as string);
-    this.parameters = parameters;
+  constructor(client: SlackClient) {
+    this.client = client;
   }
 
   async run() {
-    const result = await this.client.chat.postMessage({
-      channel: this.parameters.channel as string,
-      text: this.parameters.message as string,
-    });
+    const channelId = this.client.step.parameters.channel as string;
+    const text = this.client.step.parameters.message as string;
 
-    return result;
+    const message = await this.client.postMessageToChannel.run(channelId, text);
+
+    return message;
   }
 }
