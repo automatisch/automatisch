@@ -9,13 +9,7 @@ class App {
 
   // Temporaryly restrict the apps we expose until
   // their actions/triggers are implemented!
-  static temporaryList = [
-    'slack',
-    'twitter',
-    'github',
-    'scheduler',
-    'typeform',
-  ];
+  static temporaryList = ['slack', 'twitter', 'scheduler'];
 
   static findAll(name?: string): IApp[] {
     if (!name)
