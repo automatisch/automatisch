@@ -285,6 +285,21 @@
           "name": "Test trigger"
         }
       ]
+    },
+    {
+      "name": "New follower of me",
+      "key": "myFollowers",
+      "description": "Will be triggered when you have a new follower.",
+      "substeps": [
+        {
+          "key": "chooseConnection",
+          "name": "Choose connection"
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
     }
   ],
   "actions": [
