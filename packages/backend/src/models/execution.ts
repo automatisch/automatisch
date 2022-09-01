@@ -8,7 +8,7 @@ class Execution extends Base {
   id!: string;
   flowId!: string;
   testRun = false;
-  internalId!: string;
+  internalId: string;
   executionSteps: ExecutionStep[] = [];
 
   static tableName = 'executions';
