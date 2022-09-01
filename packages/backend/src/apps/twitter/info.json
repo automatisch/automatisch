@@ -218,8 +218,8 @@
   ],
   "triggers": [
     {
-      "name": "My Tweet",
-      "key": "myTweet",
+      "name": "My Tweets",
+      "key": "myTweets",
       "description": "Will be triggered when you tweet something new.",
       "substeps": [
         {
