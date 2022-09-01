@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { useLazyQuery } from '@apollo/client';
 import MuiTextField from '@mui/material/TextField';
-import type { IField, IFieldDropdown, IFieldDropdownOption, IJSONObject } from '@automatisch/types';
+import type { IField, IFieldDropdownOption } from '@automatisch/types';
 
 import useDynamicData from 'hooks/useDynamicData';
-import { GET_DATA } from 'graphql/queries/get-data';
 import PowerInput from 'components/PowerInput';
 import TextField from 'components/TextField';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
@@ -23,7 +21,6 @@ type RawOption = {
   value: string;
 };
 
-const computeArguments = (args: IFieldDropdown["source"]["arguments"]): IJSONObject => args.reduce((result, { name, value }) => ({ ...result, [name as string]: value }), {});
 const optionGenerator = (options: RawOption[]): IFieldDropdownOption[] => options?.map(({ name, value }) => ({ label: name as string, value: value }));
 const getOption = (options: IFieldDropdownOption[], value: string) => options?.find(option => option.value === value);
 

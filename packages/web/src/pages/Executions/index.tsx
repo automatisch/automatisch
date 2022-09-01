@@ -15,7 +15,6 @@ import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useFormatMessage from 'hooks/useFormatMessage'
 import { GET_EXECUTIONS } from 'graphql/queries/get-executions';
-import * as URLS from 'config/urls';
 
 const EXECUTION_PER_PAGE = 10;
 

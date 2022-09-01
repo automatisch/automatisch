@@ -119,7 +119,7 @@ const PowerInput = (props: PowerInputProps) => {
       control={control}
       defaultValue={defaultValue}
       shouldUnregister={false}
-      render={({ field: { value, ref, onChange: controllerOnChange, onBlur: controllerOnBlur, ...field } }) => (
+      render={({ field: { value, onChange: controllerOnChange, onBlur: controllerOnBlur, } }) => (
         <Slate
           editor={editor}
           value={deserialize(value)}

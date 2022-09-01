@@ -27,7 +27,7 @@ const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
 
 export default function ExecutionStep(props: ExecutionStepProps): React.ReactElement | null {
-  const { executionStep, index, } = props;
+  const { executionStep, } = props;
   const [activeTabIndex, setActiveTabIndex] = React.useState(0);
   const step: IStep = executionStep.step;
   const isTrigger = step.type === 'trigger';
