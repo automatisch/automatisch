@@ -26,6 +26,6 @@ export default class Slack implements IService {
 
     // this.triggers = new Triggers(this.client);
     // this.actions = new Actions(this.client);
-    // this.data = new Data(this.client);
+    this.data = new Data(this.client);
   }
 }
