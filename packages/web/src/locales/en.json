@@ -58,6 +58,7 @@
   "executions.title": "Executions",
   "executions.noExecutions": "There is no execution data point to show.",
   "execution.executedAt": "executed {datetime}",
+  "execution.test": "Test run",
   "profileSettings.title": "My Profile",
   "profileSettings.email": "Email",
   "profileSettings.updateEmail": "Update email",

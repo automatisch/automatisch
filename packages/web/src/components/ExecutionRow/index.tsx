@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import CardActionArea from '@mui/material/CardActionArea';
+import Chip from '@mui/material/Chip';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { DateTime } from 'luxon';
 import type { IExecution } from '@automatisch/types';
@@ -49,6 +48,15 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
             </Title>
 
             <ArrowContainer>
+              {execution.testRun && (
+                <Chip
+                  size="small"
+                  color="warning"
+                  variant="outlined"
+                  label={formatMessage('execution.test')}
+                />
+              )}
+
               <ArrowForwardIosIcon sx={{ color: (theme) => theme.palette.primary.main }} />
             </ArrowContainer>
           </CardContent>

@@ -1,7 +1,6 @@
 import type { IAuthenticationStep, IJSONObject } from '@automatisch/types';
 import apolloClient from 'graphql/client';
 import MUTATIONS from 'graphql/mutations';
-import appConfig from 'config/app';
 
 enum AuthenticationSteps {
   Mutation = 'mutation',

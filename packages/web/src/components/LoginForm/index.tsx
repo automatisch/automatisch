@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { UseFormReturn } from 'react-hook-form';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -12,15 +11,11 @@ import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 
-type FormValues = {
-  email: string;
-  password: string;
-}
 
 function renderFields(props: { loading: boolean }) {
   const { loading = false } = props;
 
-  return (methods: UseFormReturn) => {
+  return () => {
     return (
       <>
         <TextField

@@ -43,7 +43,6 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
     expanded = false,
     onExpand,
     onCollapse,
-    onChange,
     onSubmit,
     step,
   } = props;
@@ -56,24 +55,6 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
   const editorContext = React.useContext(EditorContext);
   const formContext = useFormContext();
   const [validationStatus, setValidationStatus] = React.useState<boolean | null>(validateSubstep(substep, formContext.getValues() as IStep));
-
-  const handleChangeOnBlur = React.useCallback((key: string) => {
-    return (value: string) => {
-      const currentValue = step.parameters?.[key];
-
-      if (currentValue !== value) {
-        onChange({
-          step: {
-            ...step,
-            parameters: {
-              ...step.parameters,
-              [key]: value,
-            }
-          },
-        });
-      }
-    }
-  }, [step, onChange]);
 
   React.useEffect(() => {
     function validate (step: unknown) {
