@@ -38,11 +38,16 @@ class Processor {
     if (initialTriggerData.length === 0) {
       const lastInternalId = await this.flow.lastInternalId();
 
-      await Execution.query().insert({
+      const executionData: Partial<Execution> = {
         flowId: this.flow.id,
         testRun: this.testRun,
-        internalId: lastInternalId,
-      });
+      };
+
+      if (lastInternalId) {
+        executionData.internalId = lastInternalId;
+      }
+
+      await Execution.query().insert(executionData);
 
       return;
     }
