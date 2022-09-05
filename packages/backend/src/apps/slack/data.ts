@@ -1,10 +1,12 @@
 import ListChannels from './data/list-channels';
-import { IJSONObject } from '@automatisch/types';
+import SlackClient from './client';
 
 export default class Data {
+  client: SlackClient;
   listChannels: ListChannels;
 
-  constructor(connectionData: IJSONObject) {
-    this.listChannels = new ListChannels(connectionData);
+  constructor(client: SlackClient) {
+    this.client = client;
+    this.listChannels = new ListChannels(client);
   }
 }

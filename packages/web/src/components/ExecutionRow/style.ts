@@ -31,6 +31,10 @@ export const Title = styled(MuiStack)(() => ({
 }));
 
 export const ArrowContainer = styled(MuiBox)(() => ({
+  flexDirection: 'row',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 10,
   gridArea: 'arrow-container',
 }));
 export const Typography = styled(MuiTypography)(() => ({

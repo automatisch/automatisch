@@ -10,6 +10,7 @@ class ExecutionStep extends Base {
   stepId!: string;
   dataIn!: Record<string, unknown>;
   dataOut!: Record<string, unknown>;
+  errorDetails: Record<string, unknown>;
   status = 'failure';
   step: Step;
 
@@ -25,6 +26,7 @@ class ExecutionStep extends Base {
       dataIn: { type: 'object' },
       dataOut: { type: 'object' },
       status: { type: 'string', enum: ['success', 'failure'] },
+      errorDetails: { type: ['object', 'null'] },
     },
   };
 

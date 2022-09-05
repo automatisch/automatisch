@@ -1,17 +1,27 @@
-import type { IJSONObject } from '@automatisch/types';
-import { WebClient } from '@slack/web-api';
+import { IJSONObject } from '@automatisch/types';
+import SlackClient from '../client';
 
 export default class ListChannels {
-  client: WebClient;
+  client: SlackClient;
 
-  constructor(connectionData: IJSONObject) {
-    this.client = new WebClient(connectionData.accessToken as string);
+  constructor(client: SlackClient) {
+    this.client = client;
   }
 
   async run() {
-    const { channels } = await this.client.conversations.list();
+    const response = await this.client.httpClient.get('/conversations.list', {
+      headers: {
+        Authorization: `Bearer ${this.client.connection.formattedData.accessToken}`,
+      },
+    });
 
-    return channels.map((channel) => {
+    if (response.data.ok === 'false') {
+      throw new Error(
+        `Error occured while fetching slack channels: ${response.data.error}`
+      );
+    }
+
+    return response.data.channels.map((channel: IJSONObject) => {
       return {
         value: channel.id,
         name: channel.name,

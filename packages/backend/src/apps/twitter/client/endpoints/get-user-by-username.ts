@@ -39,6 +39,7 @@ export default class GetUserByUsername {
       );
     }
 
-    return response;
+    const user = response.data.data;
+    return user;
   }
 }

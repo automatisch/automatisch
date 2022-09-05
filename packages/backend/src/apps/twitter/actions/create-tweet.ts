@@ -8,10 +8,10 @@ export default class CreateTweet {
   }
 
   async run() {
-    const response = await this.client.createTweet.run(
+    const tweet = await this.client.createTweet.run(
       this.client.step.parameters.tweet as string
     );
 
-    return response.data.data;
+    return tweet;
   }
 }

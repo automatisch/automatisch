@@ -4,9 +4,11 @@ import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { EditorContext } from 'contexts/Editor';
+import useFormatMessage from 'hooks/useFormatMessage';
 import JSONViewer from 'components/JSONViewer';
 import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
@@ -32,13 +34,20 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     step,
   } = props;
 
+  const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
-  const [executeFlow, { data, error, loading }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
+  const [executeFlow, { data, error, loading, called, reset }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
   const response = data?.executeFlow?.data;
 
   const {
     name,
   } = substep;
+
+  React.useEffect(function resetTestDataOnSubstepToggle() {
+    if (!expanded) {
+      reset();
+    }
+  }, [expanded, reset])
 
   const handleSubmit = React.useCallback(() => {
     executeFlow({
@@ -63,6 +72,14 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
           {error?.graphQLErrors?.length && <Alert severity="error" sx={{ mb: 1, fontWeight: 500, width: '100%' }}>
             {error?.graphQLErrors.map((error) => (<>{error.message}<br /></>))}
           </Alert>}
+
+          {called && !response && (
+            <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
+              <AlertTitle sx={{ fontWeight: 700 }}>{formatMessage('flowEditor.noTestDataTitle')}</AlertTitle>
+
+              <Box sx={{ fontWeight: 400 }}>{formatMessage('flowEditor.noTestDataMessage')}</Box>
+            </Alert>
+          )}
 
           {response && (
             <Box sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }}>

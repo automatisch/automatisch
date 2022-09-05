@@ -3,15 +3,16 @@ import { URLSearchParams } from 'url';
 import TwitterClient from '../index';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
+import qs from 'qs';
 
-export default class GetUserTweets {
+export default class SearchTweets {
   client: TwitterClient;
 
   constructor(client: TwitterClient) {
     this.client = client;
   }
 
-  async run(userId: string, lastInternalId?: string) {
+  async run(searchTerm: string, lastInternalId?: string) {
     const token = {
       key: this.client.connection.formattedData.accessToken as string,
       secret: this.client.connection.formattedData.accessSecret as string,
@@ -22,13 +23,14 @@ export default class GetUserTweets {
 
     do {
       const params: IJSONObject = {
+        query: searchTerm,
         since_id: lastInternalId,
         pagination_token: response?.data?.meta?.next_token,
       };
 
-      const queryParams = new URLSearchParams(omitBy(params, isEmpty));
+      const queryParams = qs.stringify(omitBy(params, isEmpty));
 
-      const requestPath = `/2/users/${userId}/tweets${
+      const requestPath = `/2/tweets/search/recent${
         queryParams.toString() ? `?${queryParams.toString()}` : ''
       }`;
 

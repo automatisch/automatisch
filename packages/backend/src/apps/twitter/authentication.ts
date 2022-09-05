@@ -1,4 +1,4 @@
-import type { IAuthentication, IField, IApp } from '@automatisch/types';
+import type { IAuthentication, IField } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import TwitterClient from './client';
 

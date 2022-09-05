@@ -109,7 +109,7 @@ export default function EditorLayout(): React.ReactElement {
 
       <Snackbar
         open={!!flow?.active}
-        message={formatMessage('flowEditor.publishFlowCannotBeUpdated')}
+        message={formatMessage('flowEditor.publishedFlowCannotBeUpdated')}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         ContentProps={{ sx: { fontWeight: 300 }}}
         action={(

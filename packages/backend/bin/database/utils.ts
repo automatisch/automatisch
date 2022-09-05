@@ -12,8 +12,14 @@ export async function createUser(email = 'user@automatisch.io', password = 'samp
   };
 
   try {
-    const user = await User.query().insertAndFetch(userParams);
-    logger.info(`User has been saved: ${user.email}`);
+    const userCount = await User.query().resultSize();
+
+    if (userCount === 0) {
+      const user = await User.query().insertAndFetch(userParams);
+      logger.info(`User has been saved: ${user.email}`);
+    } else {
+      logger.info('No need to seed a user.');
+    }
   } catch (err) {
     if ((err as any).nativeError.code !== UNIQUE_VIOLATION_CODE) {
       throw err;

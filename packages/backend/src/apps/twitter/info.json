@@ -20,7 +20,7 @@
     },
     {
       "key": "consumerKey",
-      "label": "Consumer Key",
+      "label": "API Key",
       "type": "string",
       "required": true,
       "readOnly": false,
@@ -32,7 +32,7 @@
     },
     {
       "key": "consumerSecret",
-      "label": "Consumer Secret",
+      "label": "API Secret",
       "type": "string",
       "required": true,
       "readOnly": false,
@@ -218,8 +218,8 @@
   ],
   "triggers": [
     {
-      "name": "My Tweet",
-      "key": "myTweet",
+      "name": "My Tweets",
+      "key": "myTweets",
       "description": "Will be triggered when you tweet something new.",
       "substeps": [
         {
@@ -233,8 +233,8 @@
       ]
     },
     {
-      "name": "User Tweet",
-      "key": "userTweet",
+      "name": "User Tweets",
+      "key": "userTweets",
       "description": "Will be triggered when a specific user tweet something new.",
       "substeps": [
         {
@@ -260,8 +260,8 @@
       ]
     },
     {
-      "name": "Search Tweet",
-      "key": "searchTweet",
+      "name": "Search Tweets",
+      "key": "searchTweets",
       "description": "Will be triggered when any user tweet something containing a specific keyword, phrase, username or hashtag.",
       "substeps": [
         {
@@ -279,6 +279,21 @@
               "required": true
             }
           ]
+        },
+        {
+          "key": "testStep",
+          "name": "Test trigger"
+        }
+      ]
+    },
+    {
+      "name": "New follower of me",
+      "key": "myFollowers",
+      "description": "Will be triggered when you have a new follower.",
+      "substeps": [
+        {
+          "key": "chooseConnection",
+          "name": "Choose connection"
         },
         {
           "key": "testStep",

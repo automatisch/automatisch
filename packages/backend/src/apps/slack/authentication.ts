@@ -1,54 +1,33 @@
-import type { IAuthentication, IApp, IJSONObject } from '@automatisch/types';
-import HttpClient from '../../helpers/http-client';
-import qs from 'qs';
+import type { IAuthentication, IJSONObject } from '@automatisch/types';
+import SlackClient from './client';
 
 export default class Authentication implements IAuthentication {
-  appData: IApp;
-  connectionData: IJSONObject;
-  client: HttpClient;
+  client: SlackClient;
+
   static requestOptions: IJSONObject = {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   };
 
-  constructor(appData: IApp, connectionData: IJSONObject) {
-    this.client = new HttpClient({ baseURL: 'https://slack.com/api' });
-
-    this.connectionData = connectionData;
-    this.appData = appData;
+  constructor(client: SlackClient) {
+    this.client = client;
   }
 
   async verifyCredentials() {
-    const response = await this.client.post(
-      '/auth.test',
-      qs.stringify({ token: this.connectionData.accessToken }),
-      Authentication.requestOptions
-    );
-
-    if (response.data.ok === false) {
-      throw new Error(
-        `Error occured while verifying credentials: ${response.data.error}.(More info: https://api.slack.com/methods/auth.test#errors)`
-      );
-    }
-
-    const { bot_id: botId, user: screenName } = response.data;
+    const { bot_id: botId, user: screenName } =
+      await this.client.verifyAccessToken.run();
 
     return {
       botId,
       screenName,
-      token: this.connectionData.accessToken,
+      token: this.client.connection.formattedData.accessToken,
     };
   }
 
   async isStillVerified() {
     try {
-      await this.client.post(
-        '/auth.test',
-        qs.stringify({ token: this.connectionData.accessToken }),
-        Authentication.requestOptions
-      );
-
+      await this.client.verifyAccessToken.run();
       return true;
     } catch (error) {
       return false;

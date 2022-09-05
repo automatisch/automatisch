@@ -8,6 +8,8 @@ import GetCurrentUser from './endpoints/get-current-user';
 import GetUserByUsername from './endpoints/get-user-by-username';
 import GetUserTweets from './endpoints/get-user-tweets';
 import CreateTweet from './endpoints/create-tweet';
+import SearchTweets from './endpoints/search-tweets';
+import GetUserFollowers from './endpoints/get-user-followers';
 
 export default class TwitterClient {
   flow: IFlow;
@@ -22,6 +24,8 @@ export default class TwitterClient {
   getUserByUsername: GetUserByUsername;
   getUserTweets: GetUserTweets;
   createTweet: CreateTweet;
+  searchTweets: SearchTweets;
+  getUserFollowers: GetUserFollowers;
 
   static baseUrl = 'https://api.twitter.com';
 
@@ -54,5 +58,7 @@ export default class TwitterClient {
     this.getUserByUsername = new GetUserByUsername(this);
     this.getUserTweets = new GetUserTweets(this);
     this.createTweet = new CreateTweet(this);
+    this.searchTweets = new SearchTweets(this);
+    this.getUserFollowers = new GetUserFollowers(this);
   }
 }

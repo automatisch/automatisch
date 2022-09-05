@@ -29,7 +29,9 @@ export default class CreateTweet {
         { headers: { ...authHeader } }
       );
 
-      return response;
+      const tweet = response.data.data;
+
+      return tweet;
     } catch (error) {
       const errorMessage = error.response.data.detail;
       throw new Error(`Error occured while creating a tweet: ${errorMessage}`);

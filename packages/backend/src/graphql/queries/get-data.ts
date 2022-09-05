@@ -10,7 +10,10 @@ type Params = {
 const getData = async (_parent: unknown, params: Params, context: Context) => {
   const step = await context.currentUser
     .$relatedQuery('steps')
-    .withGraphFetched('connection, flow')
+    .withGraphFetched({
+      connection: true,
+      flow: true,
+    })
     .findById(params.stepId);
 
   if (!step) return null;

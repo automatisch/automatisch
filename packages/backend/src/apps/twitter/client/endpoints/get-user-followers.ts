@@ -4,7 +4,7 @@ import TwitterClient from '../index';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
 
-export default class GetUserTweets {
+export default class GetUserFollowers {
   client: TwitterClient;
 
   constructor(client: TwitterClient) {
@@ -18,17 +18,16 @@ export default class GetUserTweets {
     };
 
     let response;
-    const tweets: IJSONObject[] = [];
+    const followers: IJSONObject[] = [];
 
     do {
       const params: IJSONObject = {
-        since_id: lastInternalId,
         pagination_token: response?.data?.meta?.next_token,
       };
 
       const queryParams = new URLSearchParams(omitBy(params, isEmpty));
 
-      const requestPath = `/2/users/${userId}/tweets${
+      const requestPath = `/2/users/${userId}/followers${
         queryParams.toString() ? `?${queryParams.toString()}` : ''
       }`;
 
@@ -48,7 +47,7 @@ export default class GetUserTweets {
       if (response.data.meta.result_count > 0) {
         response.data.data.forEach((tweet: IJSONObject) => {
           if (!lastInternalId || Number(tweet.id) > Number(lastInternalId)) {
-            tweets.push(tweet);
+            followers.push(tweet);
           } else {
             return;
           }
@@ -66,6 +65,6 @@ export default class GetUserTweets {
       );
     }
 
-    return tweets;
+    return followers;
   }
 }
