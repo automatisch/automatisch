@@ -4,7 +4,7 @@ import redisConfig from '../config/redis';
 import Flow from '../models/flow';
 import logger from '../helpers/logger';
 
-const worker = new Worker(
+export const worker = new Worker(
   'processor',
   async (job) => {
     const flow = await Flow.query().findById(job.data.flowId).throwIfNotFound();
