@@ -1,2 +1,2 @@
 import './config/orm';
-import './workers/processor';
+export { worker } from './workers/processor';
