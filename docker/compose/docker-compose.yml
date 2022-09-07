@@ -2,7 +2,7 @@ version: "3.9"
 services:
   automatisch:
     build:
-      context: .
+      context: ../images/wait-for-postgres
       network: host
     ports:
       - "3000:3000"
@@ -18,6 +18,23 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_DATABASE=automatisch
       - POSTGRES_USERNAME=automatisch_user
+    volumes:
+      - automatisch_storage:/automatisch/storage
+  worker:
+    build:
+      context: ../images/plain
+      network: host
+    depends_on:
+      - automatisch
+    environment:
+      - APP_ENV=production
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DATABASE=automatisch
+      - POSTGRES_USERNAME=automatisch_user
+    command: automatisch start-worker --env-file /automatisch/storage/.env
+    volumes:
+      - automatisch_storage:/automatisch/storage
   postgres:
     image: "postgres:14.5"
     environment:
@@ -26,3 +43,5 @@ services:
       POSTGRES_USER: automatisch_user
   redis:
     image: "redis:7.0.4"
+volumes:
+  automatisch_storage:

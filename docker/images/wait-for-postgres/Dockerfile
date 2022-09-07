@@ -3,7 +3,7 @@ FROM node:16
 WORKDIR /automatisch
 
 RUN apt-get update && apt-get install -y postgresql-client
-COPY ./docker/wait-for-postgres.sh /automatisch/wait-for-postgres.sh
+COPY ./wait-for-postgres.sh /automatisch/wait-for-postgres.sh
 
 # npm registry for dev purposes
 RUN npm config set fetch-retry-maxtimeout 5000

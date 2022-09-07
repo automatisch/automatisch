@@ -4,7 +4,6 @@ import Base from './base';
 import Step from './step';
 import Execution from './execution';
 import Telemetry from '../helpers/telemetry';
-import { IExecution } from '@automatisch/types';
 
 class Flow extends Base {
   id!: string;
