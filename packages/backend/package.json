@@ -81,6 +81,8 @@
     "src",
     "server.js",
     "server.d.ts",
+    "worker.js",
+    "worker.d.ts",
     "logger.js",
     "logger.d.ts",
     "database.js",
