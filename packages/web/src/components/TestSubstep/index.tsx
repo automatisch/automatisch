@@ -73,7 +73,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             {error?.graphQLErrors.map((error) => (<>{error.message}<br /></>))}
           </Alert>}
 
-          {called && !response && (
+          {called && !loading && !error && !response && (
             <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
               <AlertTitle sx={{ fontWeight: 700 }}>{formatMessage('flowEditor.noTestDataTitle')}</AlertTitle>
 

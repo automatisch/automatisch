@@ -73,6 +73,7 @@ type ActionSubstepArgument {
   description: String
   required: Boolean
   variables: Boolean
+  options: [ActionSubstepArgumentOption]
   source: ActionSubstepArgumentSource
   dependsOn: [String]
 }
@@ -81,6 +82,11 @@ type ActionSubstepArgumentSource {
   type: String
   name: String
   arguments: [ActionSubstepArgumentSourceArgument]
+}
+
+type ActionSubstepArgumentOption {
+  label: String
+  value: JSONObject
 }
 
 type ActionSubstepArgumentSourceArgument {
