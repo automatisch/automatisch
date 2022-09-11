@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitepress';
 
+const BASE = process.env.BASE_URL || '/';
+
 export default defineConfig({
+  base: BASE,
   lang: 'en-US',
   title: 'Automatisch Docs',
   description: 'Vite & Vue powered static site generator.',
