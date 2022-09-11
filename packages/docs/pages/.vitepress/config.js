@@ -5,10 +5,11 @@ const BASE = process.env.BASE_URL || '/';
 export default defineConfig({
   base: BASE,
   lang: 'en-US',
-  title: 'Automatisch Docs',
-  description: 'Vite & Vue powered static site generator.',
+  title: 'automatisch Docs',
+  description:
+    'Build workflow automation without spending time and money. No code is required.',
   themeConfig: {
-    siteTitle: 'Automatisch',
+    siteTitle: 'automatisch',
     nav: [
       {
         text: 'Guide',
