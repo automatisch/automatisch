@@ -3,6 +3,7 @@
   "key": "slack",
   "iconUrl": "{BASE_URL}/apps/slack/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/slack",
+  "authDocUrl": "https://automatisch.io/docs/connections/slack",
   "primaryColor": "2DAAE1",
   "supportsConnections": true,
   "fields": [
@@ -15,7 +16,6 @@
       "value": null,
       "placeholder": null,
       "description": "Access token of slack that Automatisch will connect to.",
-      "docUrl": "https://automatisch.io/docs/slack#access-token",
       "clickToCopy": false
     }
   ],

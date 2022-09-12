@@ -14,6 +14,10 @@ import InputCreator from 'components/InputCreator';
 import type { IApp, IField } from '@automatisch/types';
 import { Form } from './style';
 
+const generateDocsLink = (link: string) => (str: string) => (
+  <a href={link} target="_blank">{str}</a>
+);
+
 type AddAppConnectionProps = {
   onClose: () => void;
   application: IApp;
@@ -26,7 +30,7 @@ type Response = {
 
 export default function AddAppConnection(props: AddAppConnectionProps): React.ReactElement {
   const { application, connectionId, onClose } = props;
-  const { key, fields, authenticationSteps, reconnectionSteps } = application;
+  const { name, authDocUrl, key, fields, authenticationSteps, reconnectionSteps } = application;
   const formatMessage = useFormatMessage();
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [inProgress, setInProgress] = React.useState(false);
@@ -82,8 +86,18 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
     <Dialog open={true} onClose={onClose}>
       <DialogTitle>{hasConnection ? formatMessage('app.reconnectConnection') : formatMessage('app.addConnection')}</DialogTitle>
 
+      <Alert severity="info" sx={{ fontWeight: 300 }}>
+        {formatMessage(
+          'addAppConnection.callToDocs',
+          {
+            appName: name,
+            docsLink: generateDocsLink(authDocUrl)
+          }
+        )}
+      </Alert>
+
       {errorMessage && (
-        <Alert severity="error" sx={{ mb: 1, fontWeight: 500 }}>
+        <Alert severity="error" sx={{ mt: 1, fontWeight: 500 }}>
           {errorMessage}
         </Alert>
       )}
