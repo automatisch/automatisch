@@ -3,6 +3,7 @@
   "key": "twitter",
   "iconUrl": "{BASE_URL}/apps/twitter/assets/favicon.svg",
   "docUrl": "https://automatisch.io/docs/twitter",
+  "authDocUrl": "https://automatisch.io/docs/connections/twitter",
   "primaryColor": "2DAAE1",
   "supportsConnections": true,
   "fields": [
@@ -15,7 +16,6 @@
       "value": "{WEB_APP_URL}/app/twitter/connections/add",
       "placeholder": null,
       "description": "When asked to input an OAuth callback or redirect URL in Twitter OAuth, enter the URL above.",
-      "docUrl": "https://automatisch.io/docs/twitter#oauth-redirect-url",
       "clickToCopy": true
     },
     {
@@ -27,7 +27,6 @@
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/twitter#consumer-key",
       "clickToCopy": false
     },
     {
@@ -39,7 +38,6 @@
       "value": null,
       "placeholder": null,
       "description": null,
-      "docUrl": "https://automatisch.io/docs/twitter#consumer-secret",
       "clickToCopy": false
     }
   ],

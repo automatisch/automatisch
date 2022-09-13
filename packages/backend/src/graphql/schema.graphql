@@ -101,6 +101,7 @@ type App {
   flowCount: Int
   iconUrl: String
   docUrl: String
+  authDocUrl: String
   primaryColor: String
   supportsConnections: Boolean
   fields: [Field]

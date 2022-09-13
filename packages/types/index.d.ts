@@ -150,6 +150,7 @@ export interface IApp {
   key: string;
   iconUrl: string;
   docUrl: string;
+  authDocUrl: string;
   primaryColor: string;
   supportsConnections: boolean;
   fields: IField[];

@@ -27,6 +27,7 @@
   "apps.searchApp": "Search for app",
   "apps.noConnections": "You don't have any connections yet.",
   "addAppConnection.submit": "Submit",
+  "addAppConnection.callToDocs": "Visit <docsLink>our documentation</docsLink> to see how to add connection for {appName}.",
   "connection.flowCount": "{count} flows",
   "connection.viewFlows": "View flows",
   "connection.testConnection": "Test connection",
