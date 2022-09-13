@@ -386,6 +386,7 @@ type Trigger {
   name: String
   key: String
   description: String
+  pollInterval: Int
   substeps: [TriggerSubstep]
 }
 

@@ -220,6 +220,7 @@
     {
       "name": "My Tweets",
       "key": "myTweets",
+      "pollInterval": 15,
       "description": "Will be triggered when you tweet something new.",
       "substeps": [
         {
@@ -235,6 +236,7 @@
     {
       "name": "User Tweets",
       "key": "userTweets",
+      "pollInterval": 15,
       "description": "Will be triggered when a specific user tweet something new.",
       "substeps": [
         {
@@ -262,6 +264,7 @@
     {
       "name": "Search Tweets",
       "key": "searchTweets",
+      "pollInterval": 15,
       "description": "Will be triggered when any user tweet something containing a specific keyword, phrase, username or hashtag.",
       "substeps": [
         {
@@ -289,6 +292,7 @@
     {
       "name": "New follower of me",
       "key": "myFollowers",
+      "pollInterval": 15,
       "description": "Will be triggered when you have a new follower.",
       "substeps": [
         {
