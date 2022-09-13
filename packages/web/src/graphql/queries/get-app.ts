@@ -55,6 +55,7 @@ export const GET_APP = gql`
       triggers {
         name
         key
+        pollInterval
         description
         substeps {
           name

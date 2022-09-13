@@ -102,6 +102,7 @@
     {
       "name": "New message posted to a channel",
       "key": "newMessageToChannel",
+      "pollInterval": 15,
       "description": "Triggers when a new message is posted to a channel",
       "substeps": [
         {

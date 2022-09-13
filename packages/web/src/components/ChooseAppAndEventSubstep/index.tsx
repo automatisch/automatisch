@@ -52,6 +52,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
   const appOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
   const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
   const actionOptions = React.useMemo(() => actionsOrTriggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
+  const selectedActionOrTrigger = actionsOrTriggers?.find((actionOrTrigger) => actionOrTrigger.key === step?.key) || null;
 
   const {
     name,
@@ -138,6 +139,16 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
                 onChange={onEventChange}
               />
             </Box>
+          )}
+
+          {isTrigger && selectedActionOrTrigger?.pollInterval && (
+            <TextField
+              label="Poll interval"
+              value={`Every ${selectedActionOrTrigger.pollInterval} minutes`}
+              sx={{ mt: 2 }}
+              fullWidth
+              disabled
+            />
           )}
 
           <Button
