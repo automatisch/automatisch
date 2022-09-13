@@ -15,6 +15,12 @@ docker compose up
 
 ## Let's discover!
 
-✌️ That's it; you have Automatisch running. Let's check it out by browsing `http://localhost:3000` You can use `user@automatisch.io` email address and `sample` password to login to Automatisch.
+✌️ That's it; you have Automatisch running. Let's check it out by browsing `http://localhost:3000`
+
+:::tip
+
+You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. You can also change your password later on from the settings page.
+
+:::
 
 If you see any problems while installing Automatisch, let us know via [github issues](#) or our [discord server](https://discord.gg/dJSah9CVrC).
