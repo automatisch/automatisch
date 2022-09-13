@@ -84,9 +84,8 @@ export default defineConfig({
           text: 'Other',
           collapsible: true,
           items: [
-            { text: 'License', link: '/introduction' },
-            { text: 'Community', link: '/introduction' },
-            { text: 'F.A.Q', link: '/introduction' },
+            { text: 'License', link: '/other/license' },
+            { text: 'Community', link: '/other/community' },
           ],
         },
       ],
