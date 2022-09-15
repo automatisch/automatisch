@@ -2,8 +2,6 @@
 
 Following integrations are currently supported by Automatisch.
 
-- [Github](/connections/github)
+- [Twitter](/connections/twitter)
 - [Scheduler](/connections/scheduler)
 - [Slack](/connections/slack)
-- [Twitter](/connections/twitter)
-- [Typeform](/connections/typeform)
