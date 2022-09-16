@@ -47,6 +47,8 @@ export default class SearchTweets {
         headers: { ...authHeader },
       });
 
+      console.log(response);
+
       if (response.data.meta.result_count > 0) {
         response.data.data.forEach((tweet: IJSONObject) => {
           if (!lastInternalId || Number(tweet.id) > Number(lastInternalId)) {
@@ -59,15 +61,10 @@ export default class SearchTweets {
     } while (response.data.meta.next_token && lastInternalId);
 
     if (response.data?.errors) {
-      const errorMessages = response.data.errors
-        .map((error: IJSONObject) => error.detail)
-        .join(' ');
-
-      throw new Error(
-        `Error occured while fetching user data: ${errorMessages}`
-      );
+      const errors = response.data.errors;
+      return { errors, data: tweets };
     }
 
-    return tweets;
+    return { data: tweets };
   }
 }

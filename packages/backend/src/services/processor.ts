@@ -33,9 +33,9 @@ class Processor {
 
     const triggerStep = steps.find((step) => step.type === 'trigger');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    let initialTriggerData = await this.getInitialTriggerData(triggerStep!);
+    const initialTriggerData = await this.getInitialTriggerData(triggerStep!);
 
-    if (initialTriggerData.length === 0) {
+    if (initialTriggerData.data.length === 0) {
       const lastInternalId = await this.flow.lastInternalId();
 
       const executionData: Partial<Execution> = {
@@ -53,11 +53,11 @@ class Processor {
     }
 
     if (this.testRun) {
-      initialTriggerData = [initialTriggerData[0]];
+      initialTriggerData.data = [initialTriggerData.data[0]];
     }
 
-    if (initialTriggerData.length > 1) {
-      initialTriggerData = initialTriggerData.sort(
+    if (initialTriggerData.data.length > 1) {
+      initialTriggerData.data = initialTriggerData.data.sort(
         (item: IJSONObject, nextItem: IJSONObject) => {
           return (item.id as number) - (nextItem.id as number);
         }
@@ -66,7 +66,7 @@ class Processor {
 
     const executions: Execution[] = [];
 
-    for await (const data of initialTriggerData) {
+    for await (const data of initialTriggerData.data) {
       const execution = await Execution.query().insert({
         flowId: this.flow.id,
         testRun: this.testRun,
@@ -116,6 +116,23 @@ class Processor {
           break;
         }
       }
+    }
+
+    if (initialTriggerData.errors) {
+      const execution = await Execution.query().insert({
+        flowId: this.flow.id,
+        testRun: this.testRun,
+        internalId: null,
+      });
+
+      await ExecutionStep.query().insert({
+        executionId: execution.id,
+        stepId: steps[0].id,
+        status: 'failure',
+        dataIn: steps[0].parameters,
+        dataOut: null,
+        errorDetails: initialTriggerData.errors,
+      });
     }
 
     if (!this.testRun) return;

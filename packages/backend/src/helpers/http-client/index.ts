@@ -7,6 +7,7 @@ export default class HttpClient {
   constructor(params: IHttpClientParams) {
     this.instance = axios.create({
       baseURL: params.baseURL,
+      validateStatus: () => true,
     });
   }
 
