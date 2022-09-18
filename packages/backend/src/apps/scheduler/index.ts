@@ -1,18 +1,15 @@
 import Triggers from './triggers';
 import {
   IService,
-  IApp,
-  IJSONObject,
+  IConnection,
+  IFlow,
+  IStep,
 } from '@automatisch/types';
 
 export default class Scheduler implements IService {
   triggers: Triggers;
 
-  constructor(
-    appData: IApp,
-    connectionData: IJSONObject,
-    parameters: IJSONObject
-  ) {
-    this.triggers = new Triggers(connectionData, parameters);
+  constructor(connection: IConnection, flow: IFlow, step: IStep) {
+    this.triggers = new Triggers(step.parameters);
   }
 }

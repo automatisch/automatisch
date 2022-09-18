@@ -1,4 +1,4 @@
-import { IJSONObject } from '@automatisch/types';
+import { IStep } from '@automatisch/types';
 import EveryHour from './triggers/every-hour';
 import EveryDay from './triggers/every-day';
 import EveryWeek from './triggers/every-week';
@@ -10,7 +10,7 @@ export default class Triggers {
   everyWeek: EveryWeek;
   everyMonth: EveryMonth;
 
-  constructor(connectionData: IJSONObject, parameters: IJSONObject) {
+  constructor(parameters: IStep["parameters"]) {
     this.everyHour = new EveryHour(parameters);
     this.everyDay = new EveryDay(parameters);
     this.everyWeek = new EveryWeek(parameters);
