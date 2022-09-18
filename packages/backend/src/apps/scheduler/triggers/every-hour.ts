@@ -1,11 +1,11 @@
 import { DateTime } from 'luxon';
-import type { IJSONObject, IJSONValue, ITrigger } from '@automatisch/types';
+import type { IStep, IJSONValue, ITrigger } from '@automatisch/types';
 import { cronTimes, getNextCronDateTime, getDateTimeObjectRepresentation } from '../utils';
 
 export default class EveryHour implements ITrigger {
   triggersOnWeekend?: boolean | string;
 
-  constructor(parameters: IJSONObject) {
+  constructor(parameters: IStep["parameters"]) {
     if (parameters.triggersOnWeekend) {
       this.triggersOnWeekend = parameters.triggersOnWeekend as string;
     }

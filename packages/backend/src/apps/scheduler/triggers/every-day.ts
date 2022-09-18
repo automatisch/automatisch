@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon';
-import type { IJSONObject, IJSONValue, ITrigger } from '@automatisch/types';
+import type { IStep, IJSONValue, ITrigger } from '@automatisch/types';
 import { cronTimes, getNextCronDateTime, getDateTimeObjectRepresentation } from '../utils';
 
 export default class EveryDay implements ITrigger {
   triggersOnWeekend?: boolean;
   hour?: number;
 
-  constructor(parameters: IJSONObject) {
+  constructor(parameters: IStep["parameters"]) {
     if (parameters.triggersOnWeekend) {
       this.triggersOnWeekend = parameters.triggersOnWeekend as boolean;
     }
