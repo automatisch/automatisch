@@ -34,6 +34,7 @@ const getFlows = async (_parent: unknown, params: Params, context: Context) => {
       }
     })
     .groupBy('flows.id')
+    .orderBy('active', 'desc')
     .orderBy('updated_at', 'desc');
 
   return paginate(flowsQuery, params.limit, params.offset);
