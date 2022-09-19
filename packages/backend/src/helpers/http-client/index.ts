@@ -11,7 +11,12 @@ export default class HttpClient {
   }
 
   async get(path: string, options?: IJSONObject) {
-    return await this.instance.get(path, options);
+    try {
+      return await this.instance.get(path, options);
+    } catch (error) {
+      error.response.automatischError = error.response.data;
+      return error.response;
+    }
   }
 
   async post(path: string, body: IJSONObject | string, options?: IJSONObject) {
