@@ -108,7 +108,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
             onChange={onStepChange}
           />
 
-          <IconButton onClick={() => addStep(step.id)} color="primary" disabled={creationInProgress}>
+          <IconButton onClick={() => addStep(step.id)} color="primary" disabled={creationInProgress || flow.active}>
             <AddIcon />
           </IconButton>
         </React.Fragment>
