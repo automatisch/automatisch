@@ -18,11 +18,16 @@ class Telemetry {
   organizationId: string;
   instanceId: string;
   client: Analytics;
+  serviceType: string;
 
   constructor() {
     this.client = new Analytics(WRITE_KEY, DATA_PLANE_URL);
     this.organizationId = organizationId();
     this.instanceId = instanceId();
+  }
+
+  setServiceType(type: string) {
+    this.serviceType = type;
   }
 
   track(name: string, properties: apiObject) {
@@ -131,6 +136,7 @@ class Telemetry {
     this.track('diagnosticInfo', {
       automatischVersion: appConfig.version,
       serveWebAppSeparately: appConfig.serveWebAppSeparately,
+      serviceType: this.serviceType,
       operatingSystem: {
         type: os.type(),
         version: os.version(),
