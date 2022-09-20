@@ -1,3 +1,9 @@
+<style>
+  img {
+    border-radius: 8px;
+  }
+</style>
+
 # What is Automatisch?
 
 :::warning
