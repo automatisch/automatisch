@@ -25,11 +25,7 @@ Automatisch comes with a built-in telemetry system that collects anonymous usage
 
 ## How to disable telemetry?
 
-Telemetry is enabled by default. If you want to disable it, you can do so by setting the `TELEMETRY_ENABLED` environment variable to `false`:
-
-```bash
-export TELEMETRY_ENABLED=false
-```
+Telemetry is enabled by default. If you want to disable it, you can do so by setting the `TELEMETRY_ENABLED` environment variable to `false` in `docker-compose.yml` file.
 
 ## How data collection works?
 
