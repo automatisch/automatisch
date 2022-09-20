@@ -13,6 +13,7 @@ Automatisch comes with a built-in telemetry system that collects anonymous usage
 - Organization and instance IDs. Those are random IDs we assign when you install Automatisch. They're helpful when we evaluate how many instances are running and how many organizations are using Automatisch.
 - Diagnostic information
   - Automatisch version
+  - Service type (main service or worker service)
   - Operating system type and version
   - CPU and memory information
 
