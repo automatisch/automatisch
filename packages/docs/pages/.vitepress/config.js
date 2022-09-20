@@ -70,7 +70,7 @@ export default defineConfig({
             { text: 'Configuration', link: '/introduction' },
             { text: 'Database', link: '/introduction' },
             { text: 'Credentials', link: '/introduction' },
-            { text: 'Deployment', link: '/introduction' },
+            { text: 'Telemetry', link: '/advanced/telemetry' },
           ],
         },
         {
