@@ -38,7 +38,7 @@ export const processStepWithExecutions = (steps: IStep[]): any[] => {
   return steps.map((step: IStep, index: number) => ({
     id: step.id,
     // TODO: replace with step.name once introduced
-    name: `${index + 1}. ${step.appKey}`,
+    name: `${index + 1}. ${step.appKey?.charAt(0)?.toUpperCase() + step.appKey?.slice(1)}`,
     output: process(step.executionSteps?.[0]?.dataOut || {}, `step.${step.id}`),
   }));
 };

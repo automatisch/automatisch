@@ -8,9 +8,26 @@ import type {
   VariableElement,
 } from './types';
 
-export const deserialize = (value: string): Descendant[] => {
-  const variableRegExp = /({{.*?}})/g;
+function getStepPosition(id: string, stepsWithVariables: Record<string, unknown>[]) {
+  const stepIndex = stepsWithVariables.findIndex((stepWithVariables) => {
+    return stepWithVariables.id === id;
+  });
 
+  return stepIndex + 1;
+}
+
+function humanizeVariableName(variableName: string, stepsWithVariables: Record<string, unknown>[]) {
+  const nameWithoutCurlies = variableName.replace(/{{|}}/g, '');
+  const stepId = nameWithoutCurlies.match(stepIdRegExp)?.[1] || '';
+  const stepPosition = getStepPosition(stepId, stepsWithVariables);
+  const humanizedVariableName = nameWithoutCurlies.replace(`step.${stepId}.`, `step${stepPosition}.`);
+
+  return humanizedVariableName;
+}
+
+const variableRegExp = /({{.*?}})/;
+const stepIdRegExp = /^step.([\da-zA-Z-]*)/;
+export const deserialize = (value: string, stepsWithVariables: any[]): Descendant[] => {
   if (!value) return [{
     type: 'paragraph',
     children: [{ text: '', }],
@@ -26,7 +43,8 @@ export const deserialize = (value: string): Descendant[] => {
           if (node.match(variableRegExp)) {
             return {
               type: 'variable',
-              name: node.replace(/{{|}}/g, ''),
+              name: humanizeVariableName(node, stepsWithVariables),
+              value: node,
               children: [{ text: '' }],
             };
           }
@@ -55,7 +73,7 @@ const serializeNode = (node: CustomElement | Descendant): string => {
   }
 
   if (node.type === 'variable') {
-    return `{{${node.name}}}`;
+    return node.value as string;
   }
 
   return node.children.map(n => serializeNode(n)).join('');
@@ -75,13 +93,14 @@ export const withVariables = (editor: CustomEditor) => {
   return editor;
 }
 
-export const insertVariable = (editor: CustomEditor, variableData: Pick<VariableElement, "name" | "value">) => {
+export const insertVariable = (editor: CustomEditor, variableData: Pick<VariableElement, "name" | "value">, stepsWithVariables: Record<string, unknown>[]) => {
   const variable: VariableElement = {
     type: 'variable',
-    name: variableData.name,
-    value: variableData.value,
+    name: humanizeVariableName(variableData.name as string, stepsWithVariables),
+    value: `{{${variableData.name}}}`,
     children: [{ text: '' }],
   };
+
   Transforms.insertNodes(editor, variable);
   Transforms.move(editor);
 }
