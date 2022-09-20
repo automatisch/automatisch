@@ -22,6 +22,7 @@ type AppConfig = {
   redisHost: string;
   redisPort: number;
   enableBullMQDashboard: boolean;
+  telemetryEnabled: boolean;
 };
 
 const host = process.env.HOST || 'localhost';
@@ -62,6 +63,7 @@ const appConfig: AppConfig = {
     process.env.ENABLE_BULLMQ_DASHBOARD === 'true' ? true : false,
   baseUrl,
   webAppUrl,
+  telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
 };
 
 if (!appConfig.encryptionKey) {

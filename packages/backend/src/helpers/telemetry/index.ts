@@ -26,6 +26,10 @@ class Telemetry {
   }
 
   track(name: string, properties: apiObject) {
+    if (!appConfig.telemetryEnabled) {
+      return;
+    }
+
     properties = {
       ...properties,
       appEnv: appConfig.appEnv,
