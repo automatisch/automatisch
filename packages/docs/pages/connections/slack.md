@@ -1,5 +1,9 @@
 # Slack
 
+:::info
+This page explains the steps you need to follow to set up the Slack connection in Automatisch. If any of the steps are outdated, please let us know!
+:::
+
 1. Go to the [link](https://api.slack.com/apps?new_app=1) to **create an app** on Slack API.
 2. Select **From scratch**.
 3. Enter **App name**.

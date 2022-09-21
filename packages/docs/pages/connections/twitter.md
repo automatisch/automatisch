@@ -1,5 +1,9 @@
 # Twitter
 
+:::info
+This page explains the steps you need to follow to set up the Twitter connection in Automatisch. If any of the steps are outdated, please let us know!
+:::
+
 1. Go to the [Twitter Developer Portal](https://developer.twitter.com/en/portal/projects-and-apps),complete the questionnaire and click the **Let's do this** button.
 2. Accept terms & conditions on the following page and click **Submit**.
 
