@@ -30,9 +30,9 @@ There are other existing solutions in the market, like Zapier and Integromat, so
 
 ✅ The most significant advantage of having Automatisch is **keeping your data on your own servers**. Not all companies want to use an automation service in the cloud, and the current open-source or self-hosted solutions mainly focus on developers rather than a user without a technical background.
 
-🤓 Your contributions are vital to the development of Automatisch. As **open-source software**, anyone can have an impact on how it is being developed.
+🤓 Your contributions are vital to the development of Automatisch. As an **open-source software**, anyone can have an impact on how it is being developed.
 
-💙 **No vendor lock-in**. If you ever decides that Automatisch is no longer helpful for your business, you can switch to any other provider, which will be easier than switching from the one cloud provider to another since you have all data and flexibility.
+💙 **No vendor lock-in**. If you ever decide that Automatisch is no longer helpful for your business, you can switch to any other provider, which will be easier than switching from the one cloud provider to another since you have all data and flexibility.
 
 ## Let's start!
 
