@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import type { PopoverProps } from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
+import { useSnackbar } from 'notistack';
 
 import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
 import * as URLS from 'config/urls';
@@ -17,6 +18,7 @@ type ContextMenuProps = {
 
 export default function ContextMenu(props: ContextMenuProps): React.ReactElement {
   const { flowId, onClose, anchorEl } = props;
+  const { enqueueSnackbar } = useSnackbar();
   const [deleteFlow] = useMutation(DELETE_FLOW);
   const formatMessage = useFormatMessage();
 
@@ -34,6 +36,8 @@ export default function ContextMenu(props: ContextMenuProps): React.ReactElement
         });
       }
     });
+
+    enqueueSnackbar(formatMessage('flow.successfullyDeleted'), { variant: 'success' });
   }, [flowId, deleteFlow]);
 
   return (

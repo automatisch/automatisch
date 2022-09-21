@@ -43,6 +43,7 @@
   "flow.inactive": "OFF",
   "flow.published": "Published",
   "flow.draft": "Draft",
+  "flow.successfullyDeleted": "The flow and associated executions have been deleted.",
   "flowEditor.publish": "PUBLISH",
   "flowEditor.unpublish": "UNPUBLISH",
   "flowEditor.publishedFlowCannotBeUpdated": "To edit this flow, you must first unpublish it.",
