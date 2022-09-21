@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  automatisch:
+  main:
     build:
       context: ../images/wait-for-postgres
       network: host
@@ -25,7 +25,7 @@ services:
       context: ../images/plain
       network: host
     depends_on:
-      - automatisch
+      - main
     environment:
       - APP_ENV=production
       - REDIS_HOST=redis
