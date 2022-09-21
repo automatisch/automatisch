@@ -67,7 +67,7 @@ export default defineConfig({
           text: 'Advanced',
           collapsible: true,
           items: [
-            { text: 'Configuration', link: '/introduction' },
+            { text: 'Configuration', link: '/advanced/configuration' },
             { text: 'Database', link: '/introduction' },
             { text: 'Credentials', link: '/introduction' },
             { text: 'Telemetry', link: '/advanced/telemetry' },
