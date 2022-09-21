@@ -5,11 +5,11 @@ const BASE = process.env.BASE_URL || '/';
 export default defineConfig({
   base: BASE,
   lang: 'en-US',
-  title: 'automatisch Docs',
+  title: 'Automatisch Docs',
   description:
     'Build workflow automation without spending time and money. No code is required.',
   themeConfig: {
-    siteTitle: 'automatisch',
+    siteTitle: 'Automatisch',
     nav: [
       {
         text: 'Guide',
