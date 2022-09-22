@@ -11,7 +11,7 @@ The default values for some environment variables might be different in our deve
 :::
 
 :::danger
-Please be careful with the `ENCRYPTION_KEY` variable. It is used to encrypt your credentials from third-party services. If you change it, you will not be able to access your connections and thus, your existing flows and connections will be useless.
+Please be careful with the `ENCRYPTION_KEY` environment variable. It is used to encrypt your credentials from third-party services. If you change it, you will not be able to access your connections and thus, your existing flows and connections will be useless.
 :::
 
 | Variable Name       | Type    | Default Value      | Description                         |
