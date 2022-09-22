@@ -10,6 +10,10 @@ You can modify the `docker-compose.yml` file to override environment variables. 
 The default values for some environment variables might be different in our development setup but following table shows the default values for docker-compose setup, which is the recommended way to run the application.
 :::
 
+:::danger
+Please be careful with the `ENCRYPTION_KEY` variable. It is used to encrypt your credentials from third-party services. If you change it, you will not be able to access your connections and thus, your existing flows and connections will be useless.
+:::
+
 | Variable Name       | Type    | Default Value      | Description                         |
 | ------------------- | ------- | ------------------ | ----------------------------------- |
 | `HOST`              | string  | `localhost`        | HTTP Host                           |
