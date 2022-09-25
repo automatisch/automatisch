@@ -35,10 +35,16 @@ const process = (data: any, parentKey?: any, index?: number): any[] => {
 export const processStepWithExecutions = (steps: IStep[]): any[] => {
   if (!steps) return [];
 
-  return steps.map((step: IStep, index: number) => ({
-    id: step.id,
-    // TODO: replace with step.name once introduced
-    name: `${index + 1}. ${step.appKey?.charAt(0)?.toUpperCase() + step.appKey?.slice(1)}`,
-    output: process(step.executionSteps?.[0]?.dataOut || {}, `step.${step.id}`),
-  }));
+  return steps
+    .filter((step: IStep) => {
+      const hasExecutionSteps = !!step.executionSteps?.length;
+
+      return hasExecutionSteps
+    })
+    .map((step: IStep, index: number) => ({
+      id: step.id,
+      // TODO: replace with step.name once introduced
+      name: `${index + 1}. ${step.appKey?.charAt(0)?.toUpperCase() + step.appKey?.slice(1)}`,
+      output: process(step.executionSteps?.[0]?.dataOut || {}, `step.${step.id}`),
+    }));
 };
