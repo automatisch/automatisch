@@ -41,8 +41,11 @@ function updateHandlerFactory(flowId: string, previousStepId: string) {
 export default function Editor(props: EditorProps): React.ReactElement {
   const [updateStep] = useMutation(UPDATE_STEP);
   const [createStep, { loading: creationInProgress }] = useMutation(CREATE_STEP);
-  const [currentStep, setCurrentStep] = React.useState<number | null>(0);
+
   const { flow } = props;
+  const [triggerStep] = flow.steps;
+
+  const [currentStepId, setCurrentStepId] = React.useState<string | null>(triggerStep.id);
 
   const onStepChange = React.useCallback(
     (step: any) => {
@@ -68,7 +71,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
   );
 
   const addStep = React.useCallback(
-    (previousStepId) => {
+    async (previousStepId) => {
       const mutationInput = {
         previousStep: {
           id: previousStepId,
@@ -78,10 +81,13 @@ export default function Editor(props: EditorProps): React.ReactElement {
         },
       };
 
-      createStep({
+      const createdStep = await createStep({
         variables: { input: mutationInput },
         update: updateHandlerFactory(flow.id, previousStepId),
       });
+      const createdStepId = createdStep.data.createStep.id;
+
+      setCurrentStepId(createdStepId);
     },
     [createStep, flow.id]
   );
@@ -102,9 +108,9 @@ export default function Editor(props: EditorProps): React.ReactElement {
             key={step.id}
             step={step}
             index={index + 1}
-            collapsed={currentStep !== index}
-            onOpen={() => setCurrentStep(index)}
-            onClose={() => setCurrentStep(null)}
+            collapsed={currentStepId !== step.id}
+            onOpen={() => setCurrentStepId(step.id)}
+            onClose={() => setCurrentStepId(null)}
             onChange={onStepChange}
           />
 
