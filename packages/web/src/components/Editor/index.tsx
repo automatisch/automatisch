@@ -40,7 +40,11 @@ function updateHandlerFactory(flowId: string, previousStepId: string) {
 
 export default function Editor(props: EditorProps): React.ReactElement {
   const [updateStep] = useMutation(UPDATE_STEP);
-  const [createStep, { loading: creationInProgress }] = useMutation(CREATE_STEP);
+  const [createStep, { loading: creationInProgress }] = useMutation(CREATE_STEP, {
+    refetchQueries: [
+      'GetFlow'
+    ]
+  });
 
   const { flow } = props;
   const [triggerStep] = flow.steps;

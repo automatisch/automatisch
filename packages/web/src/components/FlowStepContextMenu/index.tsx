@@ -16,7 +16,11 @@ type FlowStepContextMenuProps = {
 
 function FlowStepContextMenu(props: FlowStepContextMenuProps): React.ReactElement {
   const { stepId, onClose, anchorEl, deletable } = props;
-  const [deleteStep] = useMutation(DELETE_STEP);
+  const [deleteStep] = useMutation(DELETE_STEP, {
+    refetchQueries: [
+      'GetFlow'
+    ]
+  });
   const formatMessage = useFormatMessage();
 
   const deleteActionHandler = React.useCallback(async (event: React.SyntheticEvent) => {
