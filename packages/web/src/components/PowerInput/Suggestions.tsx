@@ -114,7 +114,7 @@ const Suggestions = (props: SuggestionsProps) => {
                 </Button>
               )}
 
-              {listLength === undefined && (
+              {listLength === Infinity && (
                 <Button
                   fullWidth
                   onClick={collapseList}
