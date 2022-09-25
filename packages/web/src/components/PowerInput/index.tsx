@@ -72,11 +72,11 @@ const PowerInput = (props: PowerInputProps) => {
     (variable: Pick<VariableElement, "name" | "value">) => {
       if (target) {
         Transforms.select(editor, target);
-        insertVariable(editor, variable);
+        insertVariable(editor, variable, stepsWithVariables);
         setTarget(null);
       }
     },
-    [index, target]
+    [index, target, stepsWithVariables]
   );
 
   const onKeyDown = React.useCallback(
@@ -97,7 +97,7 @@ const PowerInput = (props: PowerInputProps) => {
           case 'Enter': {
             event.preventDefault();
             Transforms.select(editor, target);
-            insertVariable(editor, stepsWithVariables[0].output[index]);
+            insertVariable(editor, stepsWithVariables[0].output[index], stepsWithVariables);
             setTarget(null);
             break
           }
@@ -122,7 +122,7 @@ const PowerInput = (props: PowerInputProps) => {
       render={({ field: { value, onChange: controllerOnChange, onBlur: controllerOnBlur, } }) => (
         <Slate
           editor={editor}
-          value={deserialize(value)}
+          value={deserialize(value, stepsWithVariables)}
           onChange={value => {
             controllerOnChange(serialize(value));
             const { selection } = editor
@@ -195,7 +195,7 @@ const PowerInput = (props: PowerInputProps) => {
               <Popper
                 open={target !== null && search !== null}
                 anchorEl={editorRef.current}
-                style={{ width: editorRef.current?.clientWidth }}
+                style={{ width: editorRef.current?.clientWidth, zIndex: 1, }}
               >
                 <Suggestions
                   query={search}

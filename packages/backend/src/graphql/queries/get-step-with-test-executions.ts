@@ -16,14 +16,13 @@ const getStepWithTestExecutions = async (
 
   const previousStepsWithCurrentStep = await context.currentUser
     .$relatedQuery('steps')
-    .withGraphJoined('executionSteps')
+    .withGraphFetched('executionSteps')
+    .modifyGraph('executionSteps', (builder) => {
+      builder.orderBy('created_at', 'desc').limit(1);
+    })
     .where('flow_id', '=', step.flowId)
     .andWhere('position', '<', step.position)
-    .distinctOn('executionSteps.step_id')
-    .orderBy([
-      'executionSteps.step_id',
-      { column: 'executionSteps.created_at', order: 'desc' },
-    ]);
+    .orderBy('steps.position', 'asc');
 
   return previousStepsWithCurrentStep;
 };

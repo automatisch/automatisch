@@ -38,10 +38,10 @@ const Suggestions = (props: SuggestionsProps) => {
     onSuggestionClick = () => null,
   } = props;
   const [current, setCurrent] = React.useState<number | null>(0);
-  const [listLength, setListLength] = React.useState<number | undefined>(SHORT_LIST_LENGTH);
+  const [listLength, setListLength] = React.useState<number>(SHORT_LIST_LENGTH);
 
   const expandList = () => {
-    setListLength(undefined);
+    setListLength(Infinity);
   };
 
   const collapseList = () => {
@@ -72,7 +72,7 @@ const Suggestions = (props: SuggestionsProps) => {
                 primary={option.name}
               />
 
-              {option.output?.length && (
+              {!!option.output?.length && (
                 current === index ? <ExpandLess /> : <ExpandMore />
               )}
             </ListItemButton>
@@ -105,7 +105,7 @@ const Suggestions = (props: SuggestionsProps) => {
                 }
               </List>
 
-              {listLength && (
+              {option.output?.length > listLength && (
                 <Button
                   fullWidth
                   onClick={expandList}
