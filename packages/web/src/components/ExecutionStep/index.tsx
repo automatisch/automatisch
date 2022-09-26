@@ -73,6 +73,7 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
           <Tabs value={activeTabIndex} onChange={(event, tabIndex) => setActiveTabIndex(tabIndex)}>
             <Tab label="Data in" />
             <Tab label="Data out" />
+            <Tab label="Error" />
             <Tab label="Execution step" />
           </Tabs>
         </Box>
@@ -86,6 +87,10 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
         </TabPanel>
 
         <TabPanel value={activeTabIndex} index={2}>
+          <JSONViewer data={executionStep.errorDetails} />
+        </TabPanel>
+
+        <TabPanel value={activeTabIndex} index={3}>
           <JSONViewer data={(executionStep as unknown) as IJSONObject} />
         </TabPanel>
       </Content>

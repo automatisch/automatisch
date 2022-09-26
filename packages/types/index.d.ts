@@ -26,6 +26,7 @@ export interface IExecutionStep {
   step: IStep;
   dataIn: IJSONObject;
   dataOut: IJSONObject;
+  errorDetails: IJSONObject;
   status: string;
   createdAt: string;
   updatedAt: string;

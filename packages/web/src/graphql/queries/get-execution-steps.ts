@@ -14,6 +14,7 @@ export const GET_EXECUTION_STEPS = gql`
           status
           dataIn
           dataOut
+          errorDetails
           createdAt
           updatedAt
           step {

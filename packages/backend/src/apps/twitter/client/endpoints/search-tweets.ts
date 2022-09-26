@@ -19,7 +19,13 @@ export default class SearchTweets {
     };
 
     let response;
-    const tweets: IJSONObject[] = [];
+    const tweets: {
+      data: IJSONObject[];
+      error: IJSONObject | null;
+    } = {
+      data: [],
+      error: null,
+    };
 
     do {
       const params: IJSONObject = {
@@ -47,26 +53,21 @@ export default class SearchTweets {
         headers: { ...authHeader },
       });
 
+      if (response.integrationError) {
+        tweets.error = response.integrationError;
+        return tweets;
+      }
+
       if (response.data.meta.result_count > 0) {
         response.data.data.forEach((tweet: IJSONObject) => {
           if (!lastInternalId || Number(tweet.id) > Number(lastInternalId)) {
-            tweets.push(tweet);
+            tweets.data.push(tweet);
           } else {
             return;
           }
         });
       }
     } while (response.data.meta.next_token && lastInternalId);
-
-    if (response.data?.errors) {
-      const errorMessages = response.data.errors
-        .map((error: IJSONObject) => error.detail)
-        .join(' ');
-
-      throw new Error(
-        `Error occured while fetching user data: ${errorMessages}`
-      );
-    }
 
     return tweets;
   }

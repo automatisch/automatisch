@@ -33,9 +33,9 @@ class Processor {
 
     const triggerStep = steps.find((step) => step.type === 'trigger');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    let initialTriggerData = await this.getInitialTriggerData(triggerStep!);
+    const initialTriggerData = await this.getInitialTriggerData(triggerStep!);
 
-    if (initialTriggerData.length === 0) {
+    if (!initialTriggerData.error && initialTriggerData.data.length === 0) {
       const lastInternalId = await this.flow.lastInternalId();
 
       const executionData: Partial<Execution> = {
@@ -52,12 +52,12 @@ class Processor {
       return;
     }
 
-    if (this.testRun) {
-      initialTriggerData = [initialTriggerData[0]];
+    if (this.testRun && initialTriggerData.data.length > 0) {
+      initialTriggerData.data = [initialTriggerData.data[0]];
     }
 
-    if (initialTriggerData.length > 1) {
-      initialTriggerData = initialTriggerData.sort(
+    if (initialTriggerData.data.length > 1) {
+      initialTriggerData.data = initialTriggerData.data.sort(
         (item: IJSONObject, nextItem: IJSONObject) => {
           return (item.id as number) - (nextItem.id as number);
         }
@@ -66,7 +66,7 @@ class Processor {
 
     const executions: Execution[] = [];
 
-    for await (const data of initialTriggerData) {
+    for await (const data of initialTriggerData.data) {
       const execution = await Execution.query().insert({
         flowId: this.flow.id,
         testRun: this.testRun,
@@ -118,6 +118,22 @@ class Processor {
       }
     }
 
+    if (initialTriggerData.error) {
+      const executionWithError = await Execution.query().insert({
+        flowId: this.flow.id,
+        testRun: this.testRun,
+      });
+
+      executions.push(executionWithError);
+
+      await executionWithError.$relatedQuery('executionSteps').insertAndFetch({
+        stepId: triggerStep.id,
+        status: 'failure',
+        dataIn: triggerStep.parameters,
+        errorDetails: initialTriggerData.error,
+      });
+    }
+
     if (!this.testRun) return;
 
     const lastExecutionStepFromFirstExecution = await executions[0]
@@ -125,7 +141,11 @@ class Processor {
       .orderBy('created_at', 'desc')
       .first();
 
-    return lastExecutionStepFromFirstExecution?.dataOut;
+    if (lastExecutionStepFromFirstExecution.errorDetails) {
+      return lastExecutionStepFromFirstExecution.errorDetails;
+    } else {
+      return lastExecutionStepFromFirstExecution?.dataOut;
+    }
   }
 
   async getInitialTriggerData(step: Step) {
