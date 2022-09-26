@@ -56,9 +56,9 @@ const PowerInput = (props: PowerInputProps) => {
   const editorRef = React.useRef<HTMLDivElement | null>(null);
   const [target, setTarget] = React.useState<Range | null>(null);
   const [index, setIndex] = React.useState(0);
-  const [search, setSearch] = React.useState<string | null>(null);
   const renderElement = React.useCallback(props => <Element {...props} />, []);
   const [editor] = React.useState(() => customizeEditor(createEditor()));
+  const [showVariableSuggestions, setShowVariableSuggestions] = React.useState(false);
 
   const stepsWithVariables = React.useMemo(() => {
     return processStepWithExecutions(priorStepsWithExecutions);
@@ -70,46 +70,9 @@ const PowerInput = (props: PowerInputProps) => {
 
   const handleVariableSuggestionClick = React.useCallback(
     (variable: Pick<VariableElement, "name" | "value">) => {
-      if (target) {
-        Transforms.select(editor, target);
         insertVariable(editor, variable, stepsWithVariables);
-        setTarget(null);
-      }
     },
-    [index, target, stepsWithVariables]
-  );
-
-  const onKeyDown = React.useCallback(
-    event => {
-      if (target) {
-        switch (event.key) {
-          case 'ArrowDown': {
-            event.preventDefault();
-            setIndex((currentIndex) => currentIndex + 1);
-            break
-          }
-          case 'ArrowUp': {
-            event.preventDefault();
-            setIndex((currentIndex) => currentIndex - 1 < 0 ? 0 : currentIndex - 1);
-            break
-          }
-          case 'Tab':
-          case 'Enter': {
-            event.preventDefault();
-            Transforms.select(editor, target);
-            insertVariable(editor, stepsWithVariables[0].output[index], stepsWithVariables);
-            setTarget(null);
-            break
-          }
-          case 'Escape': {
-            event.preventDefault();
-            setTarget(null);
-            break
-          }
-        }
-      }
-    },
-    [index, search, target, stepsWithVariables]
+    [index, stepsWithVariables]
   );
 
   return (
@@ -125,42 +88,12 @@ const PowerInput = (props: PowerInputProps) => {
           value={deserialize(value, stepsWithVariables)}
           onChange={value => {
             controllerOnChange(serialize(value));
-            const { selection } = editor
-
-            if (selection && Range.isCollapsed(selection)) {
-              const [start] = Range.edges(selection);
-              const lineBefore = Editor.before(editor, start, { unit: 'line' });
-              const before = lineBefore && Editor.before(editor, lineBefore);
-              const beforeRange = (before || lineBefore) && Editor.range(editor, before || lineBefore, start);
-              const beforeText = beforeRange && Editor.string(editor, beforeRange);
-              const variableMatch = beforeText && beforeText.match(/@([\w.]*?)$/);
-
-              if (variableMatch) {
-                const beginningOfVariable = Editor.before(
-                  editor,
-                  start,
-                  {
-                    unit: 'offset',
-                    distance: (variableMatch[1].length || 0) + 1
-                  }
-                );
-                if (beginningOfVariable) {
-                  const newTarget = Editor.range(editor, beginningOfVariable, start);
-                  if (newTarget) {
-                    setTarget(newTarget);
-                  }
-                }
-                setIndex(0);
-                setSearch(variableMatch[1]);
-
-                return;
-              }
-            }
-
-            setSearch(null);
           }}
         >
-          <ClickAwayListener onClickAway={() => setSearch(null)}>
+          <ClickAwayListener
+            mouseEvent="onMouseDown"
+            onClickAway={() => { setShowVariableSuggestions(false); }}
+          >
             {/* ref-able single child for ClickAwayListener */}
             <div style={{ width: '100%' }}>
               <FakeInput disabled={disabled}>
@@ -179,7 +112,9 @@ const PowerInput = (props: PowerInputProps) => {
                   readOnly={disabled}
                   style={{ width: '100%' }}
                   renderElement={renderElement}
-                  onKeyDown={onKeyDown}
+                  onFocus={() => {
+                    setShowVariableSuggestions(true);
+                  }}
                   onBlur={() => { controllerOnBlur(); handleBlur(value); }}
                 />
               </FakeInput>
@@ -192,18 +127,12 @@ const PowerInput = (props: PowerInputProps) => {
                 {description}
               </FormHelperText>
 
-              <Popper
-                open={target !== null && search !== null}
+              <SuggestionsPopper
+                open={showVariableSuggestions}
                 anchorEl={editorRef.current}
-                style={{ width: editorRef.current?.clientWidth, zIndex: 1, }}
-              >
-                <Suggestions
-                  query={search}
-                  index={index}
-                  data={stepsWithVariables}
-                  onSuggestionClick={handleVariableSuggestionClick}
-                />
-              </Popper>
+                data={stepsWithVariables}
+                onSuggestionClick={handleVariableSuggestionClick}
+              />
             </div>
           </ClickAwayListener>
         </Slate>
@@ -211,6 +140,37 @@ const PowerInput = (props: PowerInputProps) => {
     />
   )
 }
+
+const SuggestionsPopper = (props: any) => {
+  const {
+    open,
+    anchorEl,
+    data,
+    onSuggestionClick,
+  } = props;
+
+  return (
+    <Popper
+      open={open}
+      anchorEl={anchorEl}
+      style={{ width: anchorEl?.clientWidth, zIndex: 1, }}
+      modifiers={[
+        {
+          name: 'flip',
+          enabled: false,
+          options: {
+            altBoundary: false,
+          }
+        }
+      ]}
+    >
+      <Suggestions
+        data={data}
+        onSuggestionClick={onSuggestionClick}
+      />
+    </Popper>
+  );
+};
 
 const Element = (props: any) => {
   const { attributes, children, element } = props;
