@@ -1,4 +1,6 @@
 import Context from '../../types/express/context';
+import ExecutionStep from '../../models/execution-step';
+import { ref } from 'objection';
 
 type Params = {
   stepId: string;
@@ -16,12 +18,17 @@ const getStepWithTestExecutions = async (
 
   const previousStepsWithCurrentStep = await context.currentUser
     .$relatedQuery('steps')
-    .withGraphFetched('executionSteps')
-    .modifyGraph('executionSteps', (builder) => {
-      builder.orderBy('created_at', 'desc').limit(1);
-    })
+    .withGraphJoined('executionSteps')
     .where('flow_id', '=', step.flowId)
     .andWhere('position', '<', step.position)
+    .andWhere(
+      'executionSteps.created_at',
+      '=',
+      ExecutionStep.query()
+        .max('created_at')
+        .where('step_id', '=', ref('steps.id'))
+        .andWhere('status', 'success')
+    )
     .orderBy('steps.position', 'asc');
 
   return previousStepsWithCurrentStep;
