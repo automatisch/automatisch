@@ -1,5 +1,7 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { IJSONObject, IHttpClientParams } from '@automatisch/types';
+
+type ExtendedAxiosResponse = AxiosResponse & { integrationError: IJSONObject };
 
 export default class HttpClient {
   instance: AxiosInstance;
@@ -8,18 +10,25 @@ export default class HttpClient {
     this.instance = axios.create({
       baseURL: params.baseURL,
     });
+
+    this.instance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        error.response.integrationError = error.response.data;
+        return error.response;
+      }
+    );
   }
 
   async get(path: string, options?: IJSONObject) {
-    try {
-      return await this.instance.get(path, options);
-    } catch (error) {
-      error.response.automatischError = error.response.data;
-      return error.response;
-    }
+    return (await this.instance.get(path, options)) as ExtendedAxiosResponse;
   }
 
   async post(path: string, body: IJSONObject | string, options?: IJSONObject) {
-    return await this.instance.post(path, body, options);
+    return (await this.instance.post(
+      path,
+      body,
+      options
+    )) as ExtendedAxiosResponse;
   }
 }

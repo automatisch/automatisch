@@ -53,8 +53,8 @@ export default class SearchTweets {
         headers: { ...authHeader },
       });
 
-      if (response.automatischError) {
-        tweets.error = response.automatischError;
+      if (response.integrationError) {
+        tweets.error = response.integrationError;
         return tweets;
       }
 
