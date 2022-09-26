@@ -73,14 +73,6 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Contributing',
-          collapsible: true,
-          items: [
-            { text: 'Contribution guide', link: '/introduction' },
-            { text: 'Build integration', link: '/introduction' },
-          ],
-        },
-        {
           text: 'Other',
           collapsible: true,
           items: [
