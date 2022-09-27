@@ -77,7 +77,14 @@ class Processor {
 
       let previousExecutionStep: ExecutionStep;
       const priorExecutionSteps: ExecutionSteps = {};
-      let fetchedActionData = {};
+
+      let fetchedActionData: {
+        data: IJSONObject | null;
+        error: IJSONObject | null;
+      } = {
+        data: null,
+        error: null,
+      };
 
       for await (const step of steps) {
         if (!step.appKey) continue;
@@ -101,13 +108,25 @@ class Processor {
           fetchedActionData = await command.run();
         }
 
+        if (!isTrigger && fetchedActionData.error) {
+          await execution.$relatedQuery('executionSteps').insertAndFetch({
+            stepId: id,
+            status: 'failure',
+            dataIn: computedParameters,
+            dataOut: null,
+            errorDetails: fetchedActionData.error,
+          });
+
+          break;
+        }
+
         previousExecutionStep = await execution
           .$relatedQuery('executionSteps')
           .insertAndFetch({
             stepId: id,
             status: 'success',
             dataIn: isTrigger ? rawParameters : computedParameters,
-            dataOut: isTrigger ? data : fetchedActionData,
+            dataOut: isTrigger ? data : fetchedActionData.data,
           });
 
         priorExecutionSteps[id] = previousExecutionStep;
