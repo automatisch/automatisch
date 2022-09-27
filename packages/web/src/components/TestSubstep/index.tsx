@@ -39,6 +39,9 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
   const [executeFlow, { data, error, loading, called, reset }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
   const response = data?.executeFlow?.data;
 
+  const isCompleted = !error && called && !loading;
+  const hasNoOutput = !response && isCompleted;
+
   const {
     name,
   } = substep;
@@ -73,7 +76,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             {error?.graphQLErrors.map((error) => (<>{error.message}<br /></>))}
           </Alert>}
 
-          {called && !loading && !error && !response && (
+          {hasNoOutput && (
             <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
               <AlertTitle sx={{ fontWeight: 700 }}>{formatMessage('flowEditor.noTestDataTitle')}</AlertTitle>
 
@@ -96,7 +99,8 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             disabled={editorContext.readOnly}
             color="primary"
           >
-            Test & Continue
+            {isCompleted && formatMessage('flowEditor.continue')}
+            {!isCompleted && formatMessage('flowEditor.testAndContinue')}
           </LoadingButton>
         </ListItem>
       </Collapse>
