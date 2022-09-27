@@ -160,11 +160,7 @@ class Processor {
       .orderBy('created_at', 'desc')
       .first();
 
-    if (lastExecutionStepFromFirstExecution.errorDetails) {
-      return lastExecutionStepFromFirstExecution.errorDetails;
-    } else {
-      return lastExecutionStepFromFirstExecution?.dataOut;
-    }
+    return lastExecutionStepFromFirstExecution;
   }
 
   async getInitialTriggerData(step: Step) {
