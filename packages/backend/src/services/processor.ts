@@ -17,7 +17,7 @@ class Processor {
   untilStep?: Step;
   testRun?: boolean;
 
-  static variableRegExp = /({{step\..+\..+}})/g;
+  static variableRegExp = /({{step\.[\da-zA-Z-]+(?:\.[\da-zA-Z-]+)+}})/g;
 
   constructor(flow: Flow, processorOptions: ProcessorOptions) {
     this.flow = flow;
