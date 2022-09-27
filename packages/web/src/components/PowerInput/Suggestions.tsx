@@ -15,25 +15,19 @@ import type { IStep } from '@automatisch/types';
 const ListItemText = styled(MuiListItemText)``;
 
 type SuggestionsProps = {
-  query?: string | null;
-  index: number;
-  data: any;
+  data: any[];
   onSuggestionClick: (variable: any) => void;
 };
 
 const SHORT_LIST_LENGTH = 4;
 const LIST_HEIGHT = 256;
 
-const getPartialFilteredArray = (array: any[], query = '', length = array.length) => {
-  return array
-    .filter((suboption: any) => suboption.name.includes(query))
-    .slice(0, length);
+const getPartialArray = (array: any[], length = array.length) => {
+  return array.slice(0, length);
 }
 
 const Suggestions = (props: SuggestionsProps) => {
   const {
-    query = '',
-    index: focusIndex,
     data,
     onSuggestionClick = () => null,
   } = props;
@@ -79,13 +73,13 @@ const Suggestions = (props: SuggestionsProps) => {
 
             <Collapse in={current === index} timeout="auto" unmountOnExit>
               <List component="div" disablePadding sx={{ maxHeight: LIST_HEIGHT, overflowY: 'auto' }}>
-                {getPartialFilteredArray(option.output as any || [], query as string, listLength)
+                {getPartialArray(option.output as any || [], listLength)
                   .map((suboption: any, index: number) => (
                     <ListItemButton
                       sx={{ pl: 4 }}
                       divider
                       onClick={() => onSuggestionClick(suboption)}
-                      selected={focusIndex === index}>
+                    >
                       <ListItemText
                         primary={suboption.name}
                         primaryTypographyProps={{
