@@ -21,6 +21,7 @@ type TestSubstepProps = {
   onCollapse: () => void;
   onChange?: ({ step }: { step: IStep }) => void;
   onSubmit?: () => void;
+  onContinue?: () => void;
   step: IStep;
 };
 
@@ -31,6 +32,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     onExpand,
     onCollapse,
     onSubmit,
+    onContinue,
     step,
   } = props;
 
@@ -53,14 +55,20 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
   }, [expanded, reset])
 
   const handleSubmit = React.useCallback(() => {
+    if (isCompleted) {
+      onContinue?.();
+
+      return;
+    }
+
     executeFlow({
       variables: {
         input: {
           stepId: step.id,
         },
       },
-    })
-  }, [onSubmit, step.id]);
+    });
+  }, [onSubmit, onContinue, isCompleted, step.id]);
   const onToggle = expanded ? onCollapse : onExpand;
 
   return (

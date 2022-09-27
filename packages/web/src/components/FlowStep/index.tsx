@@ -42,6 +42,7 @@ type FlowStepProps = {
   onOpen?: () => void;
   onClose?: () => void;
   onChange: (step: IStep) => void;
+  onContinue?: () => void;
 };
 
 const validIcon = <CheckCircleIcon color="success" />;
@@ -99,7 +100,7 @@ function generateValidationSchema(substeps: ISubstep[]) {
 export default function FlowStep(
   props: FlowStepProps
 ): React.ReactElement | null {
-  const { collapsed, onChange } = props;
+  const { collapsed, onChange, onContinue } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const step: IStep = props.step;
@@ -273,6 +274,7 @@ export default function FlowStep(
                             onCollapse={() => toggleSubstep(index + 1)}
                             onSubmit={expandNextStep}
                             onChange={handleChange}
+                            onContinue={onContinue}
                             step={step}
                           />
                         )}

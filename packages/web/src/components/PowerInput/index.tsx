@@ -54,8 +54,6 @@ const PowerInput = (props: PowerInputProps) => {
   } = props;
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef<HTMLDivElement | null>(null);
-  const [target, setTarget] = React.useState<Range | null>(null);
-  const [index, setIndex] = React.useState(0);
   const renderElement = React.useCallback(props => <Element {...props} />, []);
   const [editor] = React.useState(() => customizeEditor(createEditor()));
   const [showVariableSuggestions, setShowVariableSuggestions] = React.useState(false);
@@ -72,7 +70,7 @@ const PowerInput = (props: PowerInputProps) => {
     (variable: Pick<VariableElement, "name" | "value">) => {
         insertVariable(editor, variable, stepsWithVariables);
     },
-    [index, stepsWithVariables]
+    [stepsWithVariables]
   );
 
   return (
