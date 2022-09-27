@@ -24,7 +24,7 @@ class ExecutionStep extends Base {
       executionId: { type: 'string', format: 'uuid' },
       stepId: { type: 'string' },
       dataIn: { type: 'object' },
-      dataOut: { type: 'object' },
+      dataOut: { type: ['object', 'null'] },
       status: { type: 'string', enum: ['success', 'failure'] },
       errorDetails: { type: ['object', 'null'] },
     },
