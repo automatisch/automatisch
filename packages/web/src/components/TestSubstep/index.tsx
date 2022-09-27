@@ -21,6 +21,7 @@ type TestSubstepProps = {
   onCollapse: () => void;
   onChange?: ({ step }: { step: IStep }) => void;
   onSubmit?: () => void;
+  onContinue?: () => void;
   step: IStep;
 };
 
@@ -31,6 +32,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     onExpand,
     onCollapse,
     onSubmit,
+    onContinue,
     step,
   } = props;
 
@@ -38,6 +40,9 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
   const editorContext = React.useContext(EditorContext);
   const [executeFlow, { data, error, loading, called, reset }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
   const response = data?.executeFlow?.data;
+
+  const isCompleted = !error && called && !loading;
+  const hasNoOutput = !response && isCompleted;
 
   const {
     name,
@@ -50,14 +55,20 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
   }, [expanded, reset])
 
   const handleSubmit = React.useCallback(() => {
+    if (isCompleted) {
+      onContinue?.();
+
+      return;
+    }
+
     executeFlow({
       variables: {
         input: {
           stepId: step.id,
         },
       },
-    })
-  }, [onSubmit, step.id]);
+    });
+  }, [onSubmit, onContinue, isCompleted, step.id]);
   const onToggle = expanded ? onCollapse : onExpand;
 
   return (
@@ -73,7 +84,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             {error?.graphQLErrors.map((error) => (<>{error.message}<br /></>))}
           </Alert>}
 
-          {called && !loading && !error && !response && (
+          {hasNoOutput && (
             <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
               <AlertTitle sx={{ fontWeight: 700 }}>{formatMessage('flowEditor.noTestDataTitle')}</AlertTitle>
 
@@ -96,7 +107,8 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             disabled={editorContext.readOnly}
             color="primary"
           >
-            Test & Continue
+            {isCompleted && formatMessage('flowEditor.continue')}
+            {!isCompleted && formatMessage('flowEditor.testAndContinue')}
           </LoadingButton>
         </ListItem>
       </Collapse>

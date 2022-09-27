@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import type { IFlow } from '@automatisch/types';
+import type { IFlow, IStep } from '@automatisch/types';
 
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import { CREATE_STEP } from 'graphql/mutations/create-step';
@@ -96,6 +96,12 @@ export default function Editor(props: EditorProps): React.ReactElement {
     [createStep, flow.id]
   );
 
+  const openNextStep = React.useCallback((nextStep: IStep) => {
+    return () => {
+      setCurrentStepId(nextStep?.id);
+    };
+  }, []);
+
   return (
     <Box
       display="flex"
@@ -106,7 +112,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
       py={3}
       gap={1}
     >
-      {flow?.steps?.map((step, index) => (
+      {flow?.steps?.map((step, index, steps) => (
         <React.Fragment key={`${step}-${index}`}>
           <FlowStep
             key={step.id}
@@ -116,6 +122,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
             onOpen={() => setCurrentStepId(step.id)}
             onClose={() => setCurrentStepId(null)}
             onChange={onStepChange}
+            onContinue={openNextStep(steps[index + 1])}
           />
 
           <IconButton onClick={() => addStep(step.id)} color="primary" disabled={creationInProgress || flow.active}>
