@@ -34,7 +34,7 @@ const executeFlow = async (
   });
 
   if (executionStep.errorDetails) {
-    throw new Error(JSON.stringify(executionStep.errorDetails, null, 2));
+    throw new Error(JSON.stringify(executionStep.errorDetails));
   }
 
   return { data: executionStep.dataOut, step: untilStep };
