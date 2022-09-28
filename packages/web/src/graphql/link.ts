@@ -49,7 +49,7 @@ const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => 
 });
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {};
+const noop = () => { };
 
 const createLink = (options: CreateLinkOptions): ApolloLink => {
   const {

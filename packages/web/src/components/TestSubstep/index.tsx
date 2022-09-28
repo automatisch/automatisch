@@ -25,6 +25,19 @@ type TestSubstepProps = {
   step: IStep;
 };
 
+function serializeErrors(graphQLErrors: any) {
+  return graphQLErrors?.map((error: Record<string, unknown>) => {
+    try {
+      return {
+        ...error,
+        message: (<pre style={{ margin: 0 }}>{JSON.stringify(JSON.parse(error.message as string), null, 2)}</pre>),
+      }
+    } catch {
+      return error;
+    }
+  })
+}
+
 function TestSubstep(props: TestSubstepProps): React.ReactElement {
   const {
     substep,
@@ -81,7 +94,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
           {error?.graphQLErrors?.length && <Alert severity="error" sx={{ mb: 1, fontWeight: 500, width: '100%' }}>
-            {error?.graphQLErrors.map((error) => (<>{error.message}<br /></>))}
+            {serializeErrors(error.graphQLErrors).map((error: any) => (<div>{error.message}</div>))}
           </Alert>}
 
           {hasNoOutput && (

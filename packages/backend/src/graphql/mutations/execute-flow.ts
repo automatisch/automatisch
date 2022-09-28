@@ -24,7 +24,7 @@ const executeFlow = async (
 
   const flow = await untilStep.$relatedQuery('flow');
 
-  const data = await new Processor(flow, {
+  const executionStep = await new Processor(flow, {
     untilStep,
     testRun: true,
   }).run();
@@ -33,7 +33,11 @@ const executeFlow = async (
     status: 'completed',
   });
 
-  return { data, step: untilStep };
+  if (executionStep.errorDetails) {
+    throw new Error(JSON.stringify(executionStep.errorDetails));
+  }
+
+  return { data: executionStep.dataOut, step: untilStep };
 };
 
 export default executeFlow;
