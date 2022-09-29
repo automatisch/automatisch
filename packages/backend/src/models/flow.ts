@@ -1,5 +1,6 @@
 import { ValidationError } from 'objection';
-import type { ModelOptions, QueryContext, QueryBuilder } from 'objection';
+import type { ModelOptions, QueryContext } from 'objection';
+import ExtendedQueryBuilder from './query-builder';
 import Base from './base';
 import Step from './step';
 import Execution from './execution';
@@ -35,7 +36,7 @@ class Flow extends Base {
         from: 'flows.id',
         to: 'steps.flow_id',
       },
-      filter(builder: QueryBuilder<Step>) {
+      filter(builder: ExtendedQueryBuilder<Step>) {
         builder.orderBy('position', 'asc');
       },
     },
