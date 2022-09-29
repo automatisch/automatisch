@@ -33,6 +33,11 @@ class ExtendedQueryBuilder<M extends Model, R = M[]> extends Model.QueryBuilder<
     return super.delete();
   }
 
+  withSoftDeleted() {
+    this.context().withSoftDeleted = true;
+    return this;
+  }
+
   restore() {
     return this.patch({
       [DELETED_COLUMN_NAME]: null,
