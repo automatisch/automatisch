@@ -1,7 +1,7 @@
 import { IFlow, IStep, IConnection } from '@automatisch/types';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
-import HttpClient from '../../../helpers/http-client';
+import createHttpClient, { IHttpClient } from '../../../helpers/http-client';
 import OAuthRequestToken from './endpoints/oauth-request-token';
 import VerifyAccessToken from './endpoints/verify-access-token';
 import GetCurrentUser from './endpoints/get-current-user';
@@ -16,7 +16,7 @@ export default class TwitterClient {
   step: IStep;
   connection: IConnection;
   oauthClient: OAuth;
-  httpClient: HttpClient;
+  httpClient: IHttpClient;
 
   oauthRequestToken: OAuthRequestToken;
   verifyAccessToken: VerifyAccessToken;
@@ -34,7 +34,7 @@ export default class TwitterClient {
     this.flow = flow;
     this.step = step;
 
-    this.httpClient = new HttpClient({ baseURL: TwitterClient.baseUrl });
+    this.httpClient = createHttpClient({ baseURL: TwitterClient.baseUrl });
 
     const consumerData = {
       key: this.connection.formattedData.consumerKey as string,

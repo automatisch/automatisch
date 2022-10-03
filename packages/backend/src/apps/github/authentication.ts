@@ -4,19 +4,19 @@ import type {
   IField,
   IJSONObject,
 } from '@automatisch/types';
-import HttpClient from '../../helpers/http-client';
+import createHttpClient, { IHttpClient } from '../../helpers/http-client';
 import { URLSearchParams } from 'url';
 
 export default class Authentication implements IAuthentication {
   appData: IApp;
   connectionData: IJSONObject;
   scopes: string[] = ['read:org', 'repo', 'user'];
-  client: HttpClient;
+  client: IHttpClient;
 
   constructor(appData: IApp, connectionData: IJSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
-    this.client = new HttpClient({ baseURL: 'https://github.com' });
+    this.client = createHttpClient({ baseURL: 'https://github.com' });
   }
 
   get oauthRedirectUrl(): string {
