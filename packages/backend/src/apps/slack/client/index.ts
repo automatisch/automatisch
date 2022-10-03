@@ -1,5 +1,5 @@
 import { IFlow, IStep, IConnection } from '@automatisch/types';
-import HttpClient from '../../../helpers/http-client';
+import createHttpClient, { IHttpClient } from '../../../helpers/http-client';
 import VerifyAccessToken from './endpoints/verify-access-token';
 import PostMessageToChannel from './endpoints/post-message-to-channel';
 import FindMessages from './endpoints/find-messages';
@@ -8,7 +8,7 @@ export default class SlackClient {
   flow: IFlow;
   step: IStep;
   connection: IConnection;
-  httpClient: HttpClient;
+  httpClient: IHttpClient;
 
   verifyAccessToken: VerifyAccessToken;
   postMessageToChannel: PostMessageToChannel;
@@ -21,7 +21,7 @@ export default class SlackClient {
     this.flow = flow;
     this.step = step;
 
-    this.httpClient = new HttpClient({ baseURL: SlackClient.baseUrl });
+    this.httpClient = createHttpClient({ baseURL: SlackClient.baseUrl });
     this.verifyAccessToken = new VerifyAccessToken(this);
     this.postMessageToChannel = new PostMessageToChannel(this);
     this.findMessages = new FindMessages(this);

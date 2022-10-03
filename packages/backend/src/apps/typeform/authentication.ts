@@ -5,12 +5,12 @@ import type {
   IJSONObject,
 } from '@automatisch/types';
 import { URLSearchParams } from 'url';
-import HttpClient from '../../helpers/http-client';
+import createHttpClient, { IHttpClient } from '../../helpers/http-client';
 
 export default class Authentication implements IAuthentication {
   appData: IApp;
   connectionData: IJSONObject;
-  client: HttpClient;
+  client: IHttpClient;
 
   scope: string[] = [
     'forms:read',
@@ -25,7 +25,7 @@ export default class Authentication implements IAuthentication {
   constructor(appData: IApp, connectionData: IJSONObject) {
     this.connectionData = connectionData;
     this.appData = appData;
-    this.client = new HttpClient({ baseURL: 'https://api.typeform.com' });
+    this.client = createHttpClient({ baseURL: 'https://api.typeform.com' });
   }
 
   get oauthRedirectUrl() {
