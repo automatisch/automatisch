@@ -8,6 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import useFormatMessage from 'hooks/useFormatMessage';
 import { EditorContext } from 'contexts/Editor';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
@@ -41,6 +42,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
     onChange,
   } = props;
 
+  const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
 
   const isTrigger = step.type === 'trigger';
@@ -117,7 +119,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
             disableClearable
             disabled={editorContext.readOnly}
             options={appOptions}
-            renderInput={(params) => <TextField {...params} label="Choose an app" />}
+            renderInput={(params) => <TextField {...params} label={formatMessage('flowEditor.chooseApp')} />}
             value={getOption(appOptions, step.appKey)}
             onChange={onAppChange}
           />
@@ -125,7 +127,8 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
           {step.appKey && (
             <Box display="flex" width="100%" pt={2} flexDirection="column">
               <Typography variant="subtitle2" pb={2} gutterBottom>
-                Action event
+                {isTrigger && formatMessage('flowEditor.triggerEvent')}
+                {!isTrigger && formatMessage('flowEditor.actionEvent')}
               </Typography>
 
               <Autocomplete
@@ -134,7 +137,7 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
                 disableClearable
                 disabled={editorContext.readOnly}
                 options={actionOptions}
-                renderInput={(params) => <TextField {...params} label="Choose an event" />}
+                renderInput={(params) => <TextField {...params} label={formatMessage('flowEditor.chooseEvent')} />}
                 value={getOption(actionOptions, step.key)}
                 onChange={onEventChange}
               />
@@ -143,8 +146,8 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
 
           {isTrigger && selectedActionOrTrigger?.pollInterval && (
             <TextField
-              label="Poll interval"
-              value={`Every ${selectedActionOrTrigger.pollInterval} minutes`}
+              label={formatMessage('flowEditor.pollIntervalLabel')}
+              value={formatMessage('flowEditor.pollIntervalValue', { minutes: selectedActionOrTrigger.pollInterval })}
               sx={{ mt: 2 }}
               fullWidth
               disabled
