@@ -6,6 +6,7 @@
   "authDocUrl": "https://automatisch.io/docs/connections/slack",
   "primaryColor": "2DAAE1",
   "supportsConnections": true,
+  "baseUrl": "https://slack.com/api",
   "fields": [
     {
       "key": "accessToken",

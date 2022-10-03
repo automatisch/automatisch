@@ -154,6 +154,7 @@ export interface IApp {
   authDocUrl: string;
   primaryColor: string;
   supportsConnections: boolean;
+  baseUrl: string;
   fields: IField[];
   authenticationSteps: IAuthenticationStep[];
   reconnectionSteps: IAuthenticationStep[];

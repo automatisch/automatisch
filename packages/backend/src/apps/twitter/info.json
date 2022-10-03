@@ -6,6 +6,7 @@
   "authDocUrl": "https://automatisch.io/docs/connections/twitter",
   "primaryColor": "2DAAE1",
   "supportsConnections": true,
+  "baseUrl": "https://api.twitter.com",
   "fields": [
     {
       "key": "oAuthRedirectUrl",
