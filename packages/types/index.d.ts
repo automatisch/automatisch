@@ -1,3 +1,6 @@
+import type { AxiosInstance } from 'axios';
+export type IHttpClient = AxiosInstance;
+
 // Type definitions for automatisch
 
 export type IJSONValue = string | number | boolean | IJSONObject | IJSONArray;
@@ -10,11 +13,11 @@ export interface IConnection {
   id: string;
   key: string;
   data: string;
-  formattedData: IJSONObject;
+  formattedData?: IJSONObject;
   userId: string;
   verified: boolean;
-  count: number;
-  flowCount: number;
+  count?: number;
+  flowCount?: number;
   appData?: IApp;
   createdAt: string;
 }
@@ -22,7 +25,7 @@ export interface IConnection {
 export interface IExecutionStep {
   id: string;
   executionId: string;
-  stepId: IStep["id"];
+  stepId: IStep['id'];
   step: IStep;
   dataIn: IJSONObject;
   dataOut: IJSONObject;
@@ -128,7 +131,7 @@ export interface IFieldText {
   dependsOn: string[];
 }
 
-type IField = IFieldDropdown | IFieldText;
+export type IField = IFieldDropdown | IFieldText;
 
 export interface IAuthenticationStepField {
   name: string;
@@ -190,4 +193,19 @@ export interface ISubstep {
 
 export type IHttpClientParams = {
   baseURL?: string;
+};
+
+export type IGlobalVariableForConnection = {
+  auth: {
+    set: (args: IJSONObject) => Promise<IConnection>;
+    data: IJSONObject;
+  };
+  app: IApp;
+  http: IHttpClient;
+};
+
+declare module 'axios' {
+  interface AxiosResponse {
+    integrationError?: IJSONObject;
+  }
 }

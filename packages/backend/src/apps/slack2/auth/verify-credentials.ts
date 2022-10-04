@@ -1,12 +1,13 @@
 import qs from 'qs';
+import { IGlobalVariableForConnection } from '../../../helpers/global-variable/connection';
 
-const verifyCredentials = async ($: any) => {
+const verifyCredentials = async ($: IGlobalVariableForConnection) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
 
   const stringifiedBody = qs.stringify({
-    token: $.auth.accessToken,
+    token: $.auth.data.accessToken,
   });
 
   const response = await $.http.post('/auth.test', stringifiedBody, {
@@ -24,7 +25,7 @@ const verifyCredentials = async ($: any) => {
   $.auth.set({
     botId,
     screenName,
-    token: $.auth.accessToken,
+    token: $.auth.data.accessToken,
   });
 
   return response.data;
