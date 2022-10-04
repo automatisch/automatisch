@@ -1,5 +1,6 @@
 import createHttpClient from '../http-client';
 import Connection from '../../models/connection';
+import Flow from '../../models/flow';
 import {
   IJSONObject,
   IApp,
@@ -8,7 +9,8 @@ import {
 
 const prepareGlobalVariableForConnection = (
   connection: Connection,
-  appData: IApp
+  appData: IApp,
+  flow?: Flow
 ): IGlobalVariableForConnection => {
   return {
     auth: {
@@ -24,6 +26,9 @@ const prepareGlobalVariableForConnection = (
     },
     app: appData,
     http: createHttpClient({ baseURL: appData.baseUrl }),
+    db: {
+      flow: flow,
+    },
   };
 };
 

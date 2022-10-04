@@ -1,6 +1,7 @@
 import type { IStep } from '@automatisch/types';
 
-const joinBy = (delimiter = '.', ...args: string[]) => args.filter(Boolean).join(delimiter);
+const joinBy = (delimiter = '.', ...args: string[]) =>
+  args.filter(Boolean).join(delimiter);
 
 const process = (data: any, parentKey?: any, index?: number): any[] => {
   if (typeof data !== 'object') {
@@ -8,14 +9,19 @@ const process = (data: any, parentKey?: any, index?: number): any[] => {
       {
         name: `${parentKey}.${index}`,
         value: data,
-      }
-    ]
+      },
+    ];
   }
 
   const entries = Object.entries(data);
 
   return entries.flatMap(([name, value]) => {
-    const fullName = joinBy('.', parentKey, (index as number)?.toString(), name);
+    const fullName = joinBy(
+      '.',
+      parentKey,
+      (index as number)?.toString(),
+      name
+    );
 
     if (Array.isArray(value)) {
       return value.flatMap((item, index) => process(item, fullName, index));
@@ -25,10 +31,12 @@ const process = (data: any, parentKey?: any, index?: number): any[] => {
       return process(value, fullName);
     }
 
-    return [{
-      name: fullName,
-      value,
-    }];
+    return [
+      {
+        name: fullName,
+        value,
+      },
+    ];
   });
 };
 
@@ -39,12 +47,17 @@ export const processStepWithExecutions = (steps: IStep[]): any[] => {
     .filter((step: IStep) => {
       const hasExecutionSteps = !!step.executionSteps?.length;
 
-      return hasExecutionSteps
+      return hasExecutionSteps;
     })
     .map((step: IStep, index: number) => ({
       id: step.id,
       // TODO: replace with step.name once introduced
-      name: `${index + 1}. ${step.appKey?.charAt(0)?.toUpperCase() + step.appKey?.slice(1)}`,
-      output: process(step.executionSteps?.[0]?.dataOut || {}, `step.${step.id}`),
+      name: `${index + 1}. ${
+        (step.appKey || '').charAt(0)?.toUpperCase() + step.appKey?.slice(1)
+      }`,
+      output: process(
+        step.executionSteps?.[0]?.dataOut || {},
+        `step.${step.id}`
+      ),
     }));
 };

@@ -112,8 +112,8 @@ class Processor {
           await execution.$relatedQuery('executionSteps').insertAndFetch({
             stepId: id,
             status: 'failure',
-            dataIn: computedParameters,
-            dataOut: null,
+            dataIn: null,
+            dataOut: computedParameters,
             errorDetails: fetchedActionData.error,
           });
 

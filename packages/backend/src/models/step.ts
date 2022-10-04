@@ -20,7 +20,7 @@ class Step extends Base {
   parameters: Record<string, unknown>;
   connection?: Connection;
   flow: Flow;
-  executionSteps?: [ExecutionStep];
+  executionSteps: ExecutionStep[];
 
   static tableName = 'steps';
 

@@ -47,21 +47,21 @@ export interface IExecution {
 
 export interface IStep {
   id: string;
-  name: string;
+  name?: string;
   flowId: string;
-  key: string;
-  appKey: string;
+  key?: string;
+  appKey?: string;
   iconUrl: string;
   type: 'action' | 'trigger';
-  connectionId: string;
+  connectionId?: string;
   status: string;
   position: number;
   parameters: Record<string, unknown>;
-  connection: Partial<IConnection>;
+  connection?: Partial<IConnection>;
   flow: IFlow;
   executionSteps: IExecutionStep[];
   // FIXME: remove this property once execution steps are properly exposed via queries
-  output: IJSONObject;
+  output?: IJSONObject;
   appData?: IApp;
 }
 
@@ -202,6 +202,9 @@ export type IGlobalVariableForConnection = {
   };
   app: IApp;
   http: IHttpClient;
+  db: {
+    flow: IFlow;
+  };
 };
 
 declare module 'axios' {

@@ -1,10 +1,11 @@
+import { IGlobalVariableForConnection } from '@automatisch/types';
 import crypto from 'crypto';
 import OAuth from 'oauth-1.0a';
 
-const oauthClient = ($: any) => {
+const oauthClient = ($: IGlobalVariableForConnection) => {
   const consumerData = {
-    key: $.auth.consumerKey as string,
-    secret: $.auth.consumerSecret as string,
+    key: $.auth.data.consumerKey as string,
+    secret: $.auth.data.consumerSecret as string,
   };
 
   return new OAuth({

@@ -7,7 +7,7 @@ export default class MyTweets {
     this.client = client;
   }
 
-  async run(lastInternalId: string) {
+  async run() {
     return this.getTweets(lastInternalId);
   }
 

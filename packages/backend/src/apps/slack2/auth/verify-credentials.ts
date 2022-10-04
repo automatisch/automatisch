@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { IGlobalVariableForConnection } from '../../../helpers/global-variable/connection';
+import { IGlobalVariableForConnection } from '@automatisch/types';
 
 const verifyCredentials = async ($: IGlobalVariableForConnection) => {
   const headers = {

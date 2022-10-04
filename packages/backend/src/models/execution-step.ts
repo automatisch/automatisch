@@ -3,14 +3,15 @@ import Base from './base';
 import Execution from './execution';
 import Step from './step';
 import Telemetry from '../helpers/telemetry';
+import { IJSONObject } from '@automatisch/types';
 
 class ExecutionStep extends Base {
   id!: string;
   executionId!: string;
   stepId!: string;
-  dataIn!: Record<string, unknown>;
-  dataOut!: Record<string, unknown>;
-  errorDetails: Record<string, unknown>;
+  dataIn!: IJSONObject;
+  dataOut!: IJSONObject;
+  errorDetails: IJSONObject;
   status = 'failure';
   step: Step;
 
@@ -23,7 +24,7 @@ class ExecutionStep extends Base {
       id: { type: 'string', format: 'uuid' },
       executionId: { type: 'string', format: 'uuid' },
       stepId: { type: 'string' },
-      dataIn: { type: 'object' },
+      dataIn: { type: ['object', 'null'] },
       dataOut: { type: ['object', 'null'] },
       status: { type: 'string', enum: ['success', 'failure'] },
       errorDetails: { type: ['object', 'null'] },

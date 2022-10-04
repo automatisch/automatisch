@@ -1,7 +1,10 @@
-const verifyCredentials = async ($: any) => {
+import { IGlobalVariableForConnection } from '@automatisch/types';
+import { URLSearchParams } from 'url';
+
+const verifyCredentials = async ($: IGlobalVariableForConnection) => {
   try {
     const response = await $.http.post(
-      `/oauth/access_token?oauth_verifier=${$.auth.oauthVerifier}&oauth_token=${$.auth.accessToken}`,
+      `/oauth/access_token?oauth_verifier=${$.auth.data.oauthVerifier}&oauth_token=${$.auth.data.accessToken}`,
       null
     );
 

@@ -1,8 +1,12 @@
-import { IJSONObject, IField } from '@automatisch/types';
-import oauthClient from '../common/oauth-client';
+import generateRequest from '../common/generate-request';
+import {
+  IJSONObject,
+  IField,
+  IGlobalVariableForConnection,
+} from '@automatisch/types';
 import { URLSearchParams } from 'url';
 
-export default async function createAuthData($: any) {
+export default async function createAuthData($: IGlobalVariableForConnection) {
   try {
     const oauthRedirectUrlField = $.app.fields.find(
       (field: IField) => field.key == 'oAuthRedirectUrl'
@@ -10,18 +14,10 @@ export default async function createAuthData($: any) {
 
     const callbackUrl = oauthRedirectUrlField.value;
 
-    const requestData = {
-      url: `${$.app.baseUrl}/oauth/request_token`,
+    const response = await generateRequest($, {
+      requestPath: '/oauth/request_token',
       method: 'POST',
       data: { oauth_callback: callbackUrl },
-    };
-
-    const authHeader = oauthClient($).toHeader(
-      oauthClient($).authorize(requestData)
-    );
-
-    const response = await $.http.post(`/oauth/request_token`, null, {
-      headers: { ...authHeader },
     });
 
     const responseData = Object.fromEntries(new URLSearchParams(response.data));
