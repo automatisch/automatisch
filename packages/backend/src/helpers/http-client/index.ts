@@ -2,7 +2,7 @@ import axios from 'axios';
 export { AxiosInstance as IHttpClient } from 'axios';
 import { IHttpClientParams } from '@automatisch/types';
 
-export default function createcreateHttpClient({ baseURL, }: IHttpClientParams) {
+export default function createHttpClient({ baseURL }: IHttpClientParams) {
   const instance = axios.create({
     baseURL,
   });
