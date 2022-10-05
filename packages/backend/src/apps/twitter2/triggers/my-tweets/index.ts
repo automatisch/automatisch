@@ -1,4 +1,4 @@
-import { IGlobalVariableForConnection } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 import getCurrentUser from '../../common/get-current-user';
 import getUserByUsername from '../../common/get-user-by-username';
 import getUserTweets from '../../common/get-user-tweets';
@@ -19,15 +19,15 @@ export default {
     },
   ],
 
-  async run($: IGlobalVariableForConnection) {
+  async run($: IGlobalVariable) {
     return this.getTweets($, await $.db.flow.lastInternalId());
   },
 
-  async testRun($: IGlobalVariableForConnection) {
+  async testRun($: IGlobalVariable) {
     return this.getTweets($);
   },
 
-  async getTweets($: IGlobalVariableForConnection, lastInternalId?: string) {
+  async getTweets($: IGlobalVariable, lastInternalId?: string) {
     const { username } = await getCurrentUser($);
     const user = await getUserByUsername($, username);
 

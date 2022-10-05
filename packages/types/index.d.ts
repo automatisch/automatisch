@@ -56,7 +56,7 @@ export interface IStep {
   connectionId?: string;
   status: string;
   position: number;
-  parameters: Record<string, unknown>;
+  parameters: IJSONObject;
   connection?: Partial<IConnection>;
   flow: IFlow;
   executionSteps: IExecutionStep[];
@@ -195,7 +195,7 @@ export type IHttpClientParams = {
   baseURL?: string;
 };
 
-export type IGlobalVariableForConnection = {
+export type IGlobalVariable = {
   auth: {
     set: (args: IJSONObject) => Promise<IConnection>;
     data: IJSONObject;

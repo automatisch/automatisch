@@ -1,6 +1,6 @@
 import Context from '../../types/express/context';
 import App from '../../models/app';
-import prepareGlobalVariableForConnection from '../../helpers/global-variable/connection';
+import globalVariable from '../../helpers/global-variable';
 
 type Params = {
   input: {
@@ -24,7 +24,7 @@ const verifyConnection = async (
   const authInstance = (await import(`../../apps/${connection.key}2/auth`))
     .default;
 
-  const $ = prepareGlobalVariableForConnection(connection, app);
+  const $ = globalVariable(connection, app);
   await authInstance.verifyCredentials($);
 
   connection = await connection.$query().patchAndFetch({

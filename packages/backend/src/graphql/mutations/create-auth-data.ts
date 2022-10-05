@@ -1,6 +1,6 @@
 import Context from '../../types/express/context';
 import axios from 'axios';
-import prepareGlobalVariableForConnection from '../../helpers/global-variable/connection';
+import globalVariable from '../../helpers/global-variable';
 import App from '../../models/app';
 
 type Params = {
@@ -29,7 +29,7 @@ const createAuthData = async (
     .default;
   const app = App.findOneByKey(connection.key);
 
-  const $ = prepareGlobalVariableForConnection(connection, app);
+  const $ = globalVariable(connection, app);
   await authInstance.createAuthData($);
 
   try {

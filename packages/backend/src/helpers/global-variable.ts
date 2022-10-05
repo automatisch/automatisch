@@ -1,17 +1,13 @@
-import createHttpClient from '../http-client';
-import Connection from '../../models/connection';
-import Flow from '../../models/flow';
-import {
-  IJSONObject,
-  IApp,
-  IGlobalVariableForConnection,
-} from '@automatisch/types';
+import createHttpClient from './http-client';
+import Connection from '../models/connection';
+import Flow from '../models/flow';
+import { IJSONObject, IApp, IGlobalVariable } from '@automatisch/types';
 
-const prepareGlobalVariableForConnection = (
+const globalVariable = (
   connection: Connection,
   appData: IApp,
   flow?: Flow
-): IGlobalVariableForConnection => {
+): IGlobalVariable => {
   return {
     auth: {
       set: async (args: IJSONObject) => {
@@ -32,4 +28,4 @@ const prepareGlobalVariableForConnection = (
   };
 };
 
-export default prepareGlobalVariableForConnection;
+export default globalVariable;

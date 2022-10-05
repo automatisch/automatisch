@@ -4,7 +4,7 @@ import App from './app';
 import Flow from './flow';
 import Connection from './connection';
 import ExecutionStep from './execution-step';
-import type { IStep } from '@automatisch/types';
+import type { IJSONObject, IStep } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
 import appConfig from '../config/app';
 
@@ -17,7 +17,7 @@ class Step extends Base {
   connectionId?: string;
   status = 'incomplete';
   position!: number;
-  parameters: Record<string, unknown>;
+  parameters: IJSONObject;
   connection?: Connection;
   flow: Flow;
   executionSteps: ExecutionStep[];
