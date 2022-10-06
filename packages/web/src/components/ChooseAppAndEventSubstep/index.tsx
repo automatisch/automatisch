@@ -12,7 +12,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { EditorContext } from 'contexts/Editor';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { IApp, IStep, ISubstep } from '@automatisch/types';
+import type { IApp, IStep, ISubstep, ITrigger, IAction } from '@automatisch/types';
 
 type ChooseAppAndEventSubstepProps = {
   substep: ISubstep;
@@ -24,7 +24,7 @@ type ChooseAppAndEventSubstepProps = {
   step: IStep;
 };
 
-const optionGenerator = (app: IApp): { label: string; value: string } => ({
+const optionGenerator = (app: { name: string, key: string, }): { label: string; value: string } => ({
   label: app.name as string,
   value: app.key as string,
 });
@@ -68,7 +68,7 @@ function ChooseAppAndEventSubstep(
   const selectedActionOrTrigger =
     actionsOrTriggers?.find(
       (actionOrTrigger) => actionOrTrigger.key === step?.key
-    ) || null;
+    );
 
   const { name } = substep;
 
@@ -179,11 +179,11 @@ function ChooseAppAndEventSubstep(
             </Box>
           )}
 
-          {isTrigger && selectedActionOrTrigger?.pollInterval && (
+          {isTrigger && (selectedActionOrTrigger as ITrigger)?.pollInterval && (
             <TextField
               label={formatMessage('flowEditor.pollIntervalLabel')}
               value={formatMessage('flowEditor.pollIntervalValue', {
-                minutes: selectedActionOrTrigger.pollInterval,
+                minutes: (selectedActionOrTrigger as ITrigger)?.pollInterval,
               })}
               sx={{ mt: 2 }}
               fullWidth

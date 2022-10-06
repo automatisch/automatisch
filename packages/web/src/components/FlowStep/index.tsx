@@ -235,7 +235,7 @@ export default function FlowStep(
               >
                 <ChooseAppAndEventSubstep
                   expanded={currentSubstep === 0}
-                  substep={{ name: 'Choose app & event', arguments: [] }}
+                  substep={{ key: 'chooAppAndEvent', name: 'Choose app & event', arguments: [] }}
                   onExpand={() => toggleSubstep(0)}
                   onCollapse={() => toggleSubstep(0)}
                   onSubmit={expandNextStep}
@@ -246,11 +246,7 @@ export default function FlowStep(
                 {substeps?.length > 0 &&
                   substeps.map(
                     (
-                      substep: {
-                        name: string;
-                        key: string;
-                        arguments: IField[];
-                      },
+                      substep: ISubstep,
                       index: number
                     ) => (
                       <React.Fragment key={`${substep?.name}-${index}`}>
@@ -279,7 +275,7 @@ export default function FlowStep(
                           />
                         )}
 
-                        {['chooseConnection', 'testStep'].includes(substep.key) ===
+                        {substep.key && ['chooseConnection', 'testStep'].includes(substep.key) ===
                           false && (
                           <FlowSubstep
                             expanded={currentSubstep === index + 1}

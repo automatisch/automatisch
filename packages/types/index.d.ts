@@ -204,6 +204,7 @@ export interface IAuthentication {
 }
 
 export interface ISubstep {
+  key: string;
   name: string;
   arguments: IField[];
 }
