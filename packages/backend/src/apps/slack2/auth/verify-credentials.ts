@@ -1,7 +1,7 @@
 import qs from 'qs';
-import { IGlobalVariableForConnection } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 
-const verifyCredentials = async ($: IGlobalVariableForConnection) => {
+const verifyCredentials = async ($: IGlobalVariable) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };

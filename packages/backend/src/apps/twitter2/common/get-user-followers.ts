@@ -1,44 +1,28 @@
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import { URLSearchParams } from 'url';
-import omitBy from 'lodash/omitBy';
-import isEmpty from 'lodash/isEmpty';
+import { omitBy, isEmpty } from 'lodash';
 import generateRequest from './generate-request';
-import getCurrentUser from './get-current-user';
-import getUserByUsername from './get-user-by-username';
 
-type IGetUserTweetsOptions = {
-  currentUser: boolean;
-  userId?: string;
+type GetUserFollowersOptions = {
+  userId: string;
   lastInternalId?: string;
 };
 
-const getUserTweets = async (
+const getUserFollowers = async (
   $: IGlobalVariable,
-  options: IGetUserTweetsOptions
+  options: GetUserFollowersOptions
 ) => {
-  let username: string;
-
-  if (options.currentUser) {
-    const currentUser = await getCurrentUser($);
-    username = currentUser.username as string;
-  } else {
-    username = $.db.step.parameters.username as string;
-  }
-
-  const user = await getUserByUsername($, username);
-
   let response;
-  const tweets: IJSONObject[] = [];
+  const followers: IJSONObject[] = [];
 
   do {
     const params: IJSONObject = {
-      since_id: options.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };
 
     const queryParams = new URLSearchParams(omitBy(params, isEmpty));
 
-    const requestPath = `/2/users/${user.id}/tweets${
+    const requestPath = `/2/users/${options.userId}/followers${
       queryParams.toString() ? `?${queryParams.toString()}` : ''
     }`;
 
@@ -53,7 +37,7 @@ const getUserTweets = async (
           !options.lastInternalId ||
           Number(tweet.id) > Number(options.lastInternalId)
         ) {
-          tweets.push(tweet);
+          followers.push(tweet);
         } else {
           return;
         }
@@ -61,7 +45,7 @@ const getUserTweets = async (
     }
   } while (response.data.meta.next_token && options.lastInternalId);
 
-  if (response.data.errors) {
+  if (response.data?.errors) {
     const errorMessages = response.data.errors
       .map((error: IJSONObject) => error.detail)
       .join(' ');
@@ -69,7 +53,7 @@ const getUserTweets = async (
     throw new Error(`Error occured while fetching user data: ${errorMessages}`);
   }
 
-  return tweets;
+  return followers;
 };
 
-export default getUserTweets;
+export default getUserFollowers;

@@ -197,13 +197,18 @@ export type IHttpClientParams = {
 
 export type IGlobalVariable = {
   auth: {
-    set: (args: IJSONObject) => Promise<IConnection>;
+    set: (args: IJSONObject) => Promise<null>;
     data: IJSONObject;
   };
   app: IApp;
   http: IHttpClient;
   db: {
-    flow: IFlow;
+    flow: {
+      lastInternalId: string;
+    };
+    step: {
+      parameters: IJSONObject;
+    }
   };
 };
 

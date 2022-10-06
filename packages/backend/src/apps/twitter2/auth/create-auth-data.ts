@@ -1,12 +1,8 @@
 import generateRequest from '../common/generate-request';
-import {
-  IJSONObject,
-  IField,
-  IGlobalVariableForConnection,
-} from '@automatisch/types';
+import { IJSONObject, IField, IGlobalVariable } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 
-export default async function createAuthData($: IGlobalVariableForConnection) {
+export default async function createAuthData($: IGlobalVariable) {
   try {
     const oauthRedirectUrlField = $.app.fields.find(
       (field: IField) => field.key == 'oAuthRedirectUrl'

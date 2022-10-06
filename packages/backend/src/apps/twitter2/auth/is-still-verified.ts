@@ -1,7 +1,7 @@
-import { IGlobalVariableForConnection } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 import getCurrentUser from '../common/get-current-user';
 
-const isStillVerified = async ($: IGlobalVariableForConnection) => {
+const isStillVerified = async ($: IGlobalVariable) => {
   try {
     await getCurrentUser($);
     return true;

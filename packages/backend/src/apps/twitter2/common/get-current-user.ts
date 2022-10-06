@@ -1,7 +1,7 @@
-import { IGlobalVariableForConnection } from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import generateRequest from './generate-request';
 
-const getCurrentUser = async ($: IGlobalVariableForConnection) => {
+const getCurrentUser = async ($: IGlobalVariable): Promise<IJSONObject> => {
   const response = await generateRequest($, {
     requestPath: '/2/users/me',
     method: 'GET',

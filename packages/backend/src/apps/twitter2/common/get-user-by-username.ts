@@ -1,10 +1,7 @@
-import { IGlobalVariableForConnection, IJSONObject } from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import generateRequest from './generate-request';
 
-const getUserByUsername = async (
-  $: IGlobalVariableForConnection,
-  username: string
-) => {
+const getUserByUsername = async ($: IGlobalVariable, username: string) => {
   const response = await generateRequest($, {
     requestPath: `/2/users/by/username/${username}`,
     method: 'GET',

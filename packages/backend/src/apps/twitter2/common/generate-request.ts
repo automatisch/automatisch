@@ -1,4 +1,4 @@
-import { IGlobalVariableForConnection, IJSONObject } from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import oauthClient from './oauth-client';
 import { Token } from 'oauth-1.0a';
 
@@ -9,7 +9,7 @@ type IGenereateRequestOptons = {
 };
 
 const generateRequest = async (
-  $: IGlobalVariableForConnection,
+  $: IGlobalVariable,
   options: IGenereateRequestOptons
 ) => {
   const { requestPath, method, data } = options;

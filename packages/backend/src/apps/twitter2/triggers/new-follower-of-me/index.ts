@@ -1,11 +1,11 @@
 import { IGlobalVariable } from '@automatisch/types';
-import getUserTweets from '../../common/get-user-tweets';
+import myFollowers from './my-followers';
 
 export default {
-  name: 'My Tweets',
-  key: 'myTweets',
+  name: 'New follower of me',
+  key: 'myFollowers',
   pollInterval: 15,
-  description: 'Will be triggered when you tweet something new.',
+  description: 'Will be triggered when you have a new follower.',
   substeps: [
     {
       key: 'chooseConnection',
@@ -18,13 +18,10 @@ export default {
   ],
 
   async run($: IGlobalVariable) {
-    return await getUserTweets($, {
-      currentUser: true,
-      lastInternalId: $.db.flow.lastInternalId,
-    });
+    return await myFollowers($, $.db.flow.lastInternalId);
   },
 
   async testRun($: IGlobalVariable) {
-    return await getUserTweets($, { currentUser: true });
+    return await myFollowers($);
   },
 };
