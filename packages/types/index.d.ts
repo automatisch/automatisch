@@ -161,12 +161,20 @@ export interface IApp {
   auth: IAuth;
   connectionCount: number;
   flowCount: number;
+  data: IData;
   triggers: ITrigger[];
   actions: IAction[];
   connections: IConnection[];
 }
 
+export interface IData {
+  [index: string]: any;
+}
+
 export interface IAuth {
+  createAuthData($: IGlobalVariable): Promise<void>,
+  verifyCredentials($: IGlobalVariable): Promise<any>,
+  isStillVerified($: IGlobalVariable): Promise<boolean>,
   fields: IField[];
   authenticationSteps: IAuthenticationStep[];
   reconnectionSteps: IAuthenticationStep[];
@@ -185,8 +193,9 @@ export interface ITrigger {
   pollInterval: number;
   description: string;
   substeps: ISubstep[];
-  run(startTime?: Date): Promise<IJSONValue>;
-  testRun(startTime?: Date): Promise<IJSONValue>;
+  getInterval(parameters: IGlobalVariable["db"]["step"]["parameters"]): string;
+  run($: IGlobalVariable): Promise<{ data: IJSONObject[], error: IJSONObject | null }>;
+  testRun($: IGlobalVariable, startTime?: Date): Promise<{ data: IJSONObject[], error: IJSONObject | null }>;
 }
 
 export interface IAction {
@@ -194,7 +203,7 @@ export interface IAction {
   key: string,
   description: string;
   substeps: ISubstep[];
-  run(startTime?: Date): Promise<IJSONValue>;
+  run($: IGlobalVariable): Promise<{ data: IJSONObject, error: IJSONObject | null }>;
 }
 
 export interface IAuthentication {
