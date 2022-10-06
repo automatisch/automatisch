@@ -1,65 +1,55 @@
 import fs from 'fs';
 import { join } from 'path';
-import { IApp } from '@automatisch/types';
+import { IApp, IAuth, IAction, ITrigger } from '@automatisch/types';
 
-const folderPath = join(__dirname, '../apps');
+const appsPath = join(__dirname, '../apps');
+
+async function getDefaultExport(path: string) {
+  return (await import(path)).default;
+}
+
+function stripFunctions<C>(data: C): C {
+  return JSON.parse(
+    JSON.stringify(data)
+  );
+}
+
+async function getStrippedFileContent<C>(path: string): Promise<C> {
+  try {
+    const rawTriggerData = await getDefaultExport(path);
+
+    return stripFunctions(rawTriggerData);
+  } catch (err) {
+    return null;
+  }
+}
+
+async function getChildrenContentInDirectory<C>(path: string): Promise<C[]> {
+  const appSubdirectory = join(appsPath, path);
+  const childrenContent = [];
+
+  if (fs.existsSync(appSubdirectory)) {
+    const filesInSubdirectory = fs.readdirSync(appSubdirectory);
+
+    for (const filename of filesInSubdirectory) {
+      const filePath = join(appSubdirectory, filename, 'index.ts');
+      const fileContent = await getStrippedFileContent<C>(filePath);
+
+      childrenContent.push(fileContent);
+    }
+
+    return childrenContent;
+  }
+
+  return [];
+}
 
 const getApp = async (appKey: string) => {
-  const appData: IApp = (await import(`../apps/${appKey}`)).default;
+  const appData: IApp = await getDefaultExport(`../apps/${appKey}`);
 
-  let rawAuthData = (await import(`../apps/${appKey}/auth/index.ts`)).default;
-
-  rawAuthData = Object.fromEntries(
-    Object.entries(rawAuthData).filter(
-      ([key]) => typeof rawAuthData[key] !== 'function'
-    )
-  );
-
-  appData.auth = rawAuthData;
-
-  appData.triggers = [];
-
-  const triggersPath = join(folderPath, appKey, 'triggers');
-
-  if (fs.existsSync(triggersPath)) {
-    const triggersFolder = fs.readdirSync(join(folderPath, appKey, 'triggers'));
-
-    for (const triggerName of triggersFolder) {
-      let rawTriggerData = (
-        await import(`../apps/${appKey}/triggers/${triggerName}/index.ts`)
-      ).default;
-
-      rawTriggerData = Object.fromEntries(
-        Object.entries(rawTriggerData).filter(
-          ([key]) => typeof rawTriggerData[key] !== 'function'
-        )
-      );
-
-      appData.triggers.push(rawTriggerData);
-    }
-  }
-
-  appData.actions = [];
-
-  const actionsPath = join(folderPath, appKey, 'actions');
-
-  if (fs.existsSync(actionsPath)) {
-    const actionsFolder = fs.readdirSync(join(folderPath, appKey, 'actions'));
-
-    for await (const actionName of actionsFolder) {
-      let rawActionData = (
-        await import(`../apps/${appKey}/actions/${actionName}/index.ts`)
-      ).default;
-
-      rawActionData = Object.fromEntries(
-        Object.entries(rawActionData).filter(
-          ([key]) => typeof rawActionData[key] !== 'function'
-        )
-      );
-
-      appData.actions.push(rawActionData);
-    }
-  }
+  appData.auth = await getStrippedFileContent<IAuth>(`../apps/${appKey}/auth/index.ts`);
+  appData.triggers = await getChildrenContentInDirectory<ITrigger>(`${appKey}/triggers`);
+  appData.actions = await getChildrenContentInDirectory<IAction>(`${appKey}/actions`);
 
   return appData;
 };
