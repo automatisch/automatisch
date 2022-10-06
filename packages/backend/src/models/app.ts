@@ -10,28 +10,38 @@ class App {
 
   // Temporaryly restrict the apps we expose until
   // their actions/triggers are implemented!
-  static temporaryList = ['slack', 'twitter'];
+  static temporaryList = [
+    'slack',
+    'twitter',
+    'scheduler'
+  ];
 
-  static async findAll(name?: string): Promise<IApp[]> {
+  static async findAll(name?: string, stripFuncs = true): Promise<IApp[]> {
     if (!name)
       return Promise.all(
-        this.temporaryList.map(async (name) => await this.findOneByName(name))
+        this.temporaryList.map(async (name) => await this.findOneByName(name, stripFuncs))
       );
 
     return Promise.all(
       this.temporaryList
         .filter((app) => app.includes(name.toLowerCase()))
-        .map((name) => this.findOneByName(name))
+        .map((name) => this.findOneByName(name, stripFuncs))
     );
   }
 
-  static async findOneByName(name: string): Promise<IApp> {
-    const rawAppData = await getApp(name.toLocaleLowerCase());
+  static async findOneByName(name: string, stripFuncs = false): Promise<IApp> {
+    const rawAppData = await getApp(name.toLocaleLowerCase(), stripFuncs);
+
+    if (!stripFuncs) return rawAppData;
+
     return appInfoConverter(rawAppData);
   }
 
-  static async findOneByKey(key: string): Promise<IApp> {
-    const rawAppData = await getApp(key);
+  static async findOneByKey(key: string, stripFuncs = false): Promise<IApp> {
+    const rawAppData = await getApp(key, stripFuncs);
+
+    if (!stripFuncs) return rawAppData;
+
     return appInfoConverter(rawAppData);
   }
 }

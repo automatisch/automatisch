@@ -1,6 +1,6 @@
+import { Token } from 'oauth-1.0a';
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import oauthClient from './oauth-client';
-import { Token } from 'oauth-1.0a';
 
 type IGenereateRequestOptons = {
   requestPath: string;

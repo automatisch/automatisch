@@ -97,12 +97,8 @@ class Step extends Base {
 
     const { appKey, key } = this;
 
-    const connection = await this.$relatedQuery('connection');
-    const flow = await this.$relatedQuery('flow');
-
-    const AppClass = (await import(`../apps/${appKey}`)).default;
-    const appInstance = new AppClass(connection, flow, this);
-    const command = appInstance.triggers[key];
+    const app = await App.findOneByKey(appKey);
+    const command = app.triggers.find((trigger) => trigger.key === key);
 
     return command;
   }

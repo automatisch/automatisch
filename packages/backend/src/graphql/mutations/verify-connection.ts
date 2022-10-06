@@ -21,11 +21,8 @@ const verifyConnection = async (
     .throwIfNotFound();
 
   const app = await App.findOneByKey(connection.key);
-  const authInstance = (await import(`../../apps/${connection.key}2/auth`))
-    .default;
-
-  const $ = globalVariable(connection, app);
-  await authInstance.verifyCredentials($);
+  const $ = await globalVariable(connection, app);
+  await app.auth.verifyCredentials($);
 
   connection = await connection.$query().patchAndFetch({
     verified: true,

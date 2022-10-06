@@ -14,17 +14,21 @@ function stripFunctions<C>(data: C): C {
   );
 }
 
-async function getStrippedFileContent<C>(path: string): Promise<C> {
+async function getFileContent<C>(path: string, stripFuncs: boolean): Promise<C> {
   try {
-    const rawTriggerData = await getDefaultExport(path);
+    const fileContent = await getDefaultExport(path);
 
-    return stripFunctions(rawTriggerData);
+    if (stripFuncs) {
+      return stripFunctions(fileContent);
+    }
+
+    return fileContent;
   } catch (err) {
     return null;
   }
 }
 
-async function getChildrenContentInDirectory<C>(path: string): Promise<C[]> {
+async function getChildrenContentInDirectory<C>(path: string, stripFuncs: boolean): Promise<C[]> {
   const appSubdirectory = join(appsPath, path);
   const childrenContent = [];
 
@@ -33,7 +37,7 @@ async function getChildrenContentInDirectory<C>(path: string): Promise<C[]> {
 
     for (const filename of filesInSubdirectory) {
       const filePath = join(appSubdirectory, filename, 'index.ts');
-      const fileContent = await getStrippedFileContent<C>(filePath);
+      const fileContent = await getFileContent<C>(filePath, stripFuncs);
 
       childrenContent.push(fileContent);
     }
@@ -44,12 +48,12 @@ async function getChildrenContentInDirectory<C>(path: string): Promise<C[]> {
   return [];
 }
 
-const getApp = async (appKey: string) => {
+const getApp = async (appKey: string, stripFuncs = true) => {
   const appData: IApp = await getDefaultExport(`../apps/${appKey}`);
 
-  appData.auth = await getStrippedFileContent<IAuth>(`../apps/${appKey}/auth/index.ts`);
-  appData.triggers = await getChildrenContentInDirectory<ITrigger>(`${appKey}/triggers`);
-  appData.actions = await getChildrenContentInDirectory<IAction>(`${appKey}/actions`);
+  appData.auth = await getFileContent<IAuth>(`../apps/${appKey}/auth/index.ts`, stripFuncs);
+  appData.triggers = await getChildrenContentInDirectory<ITrigger>(`${appKey}/triggers`, stripFuncs);
+  appData.actions = await getChildrenContentInDirectory<IAction>(`${appKey}/actions`, stripFuncs);
 
   return appData;
 };

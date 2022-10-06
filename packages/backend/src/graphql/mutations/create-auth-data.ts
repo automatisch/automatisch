@@ -29,7 +29,7 @@ const createAuthData = async (
     .default;
   const app = await App.findOneByKey(connection.key);
 
-  const $ = globalVariable(connection, app);
+  const $ = await globalVariable(connection, app);
   await authInstance.createAuthData($);
 
   try {
