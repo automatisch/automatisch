@@ -2,10 +2,10 @@ import express, { Application } from 'express';
 import App from '../models/app';
 
 const appAssetsHandler = async (app: Application) => {
-  const appNames = App.list;
+  const appList = await App.findAll();
 
-  appNames.forEach(appName => {
-    const svgPath = `${__dirname}/../apps/${appName}/assets/favicon.svg`;
+  appList.forEach((appItem) => {
+    const svgPath = `${__dirname}/../apps/${appItem.name}/assets/favicon.svg`;
     const staticFileHandlerOptions = {
       /**
        * Disabling fallthrough is important to respond with HTTP 404.
@@ -15,11 +15,8 @@ const appAssetsHandler = async (app: Application) => {
     };
     const staticFileHandler = express.static(svgPath, staticFileHandlerOptions);
 
-    app.use(
-      `/apps/${appName}/assets/favicon.svg`,
-      staticFileHandler
-    )
-  })
-}
+    app.use(`/apps/${appItem.name}/assets/favicon.svg`, staticFileHandler);
+  });
+};
 
 export default appAssetsHandler;

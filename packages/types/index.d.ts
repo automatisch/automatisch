@@ -158,14 +158,18 @@ export interface IApp {
   primaryColor: string;
   supportsConnections: boolean;
   baseUrl: string;
+  auth: IAuth;
+  connectionCount: number;
+  flowCount: number;
+  triggers: ITrigger[];
+  actions: IAction[];
+  connections: IConnection[];
+}
+
+export interface IAuth {
   fields: IField[];
   authenticationSteps: IAuthenticationStep[];
   reconnectionSteps: IAuthenticationStep[];
-  connectionCount: number;
-  flowCount: number;
-  triggers: any[];
-  actions: any[];
-  connections: IConnection[];
 }
 
 export interface IService {
@@ -176,8 +180,21 @@ export interface IService {
 }
 
 export interface ITrigger {
+  name: string;
+  key: string,
+  pollInterval: number;
+  description: string;
+  substeps: ISubstep[];
   run(startTime?: Date): Promise<IJSONValue>;
   testRun(startTime?: Date): Promise<IJSONValue>;
+}
+
+export interface IAction {
+  name: string;
+  key: string,
+  description: string;
+  substeps: ISubstep[];
+  run(startTime?: Date): Promise<IJSONValue>;
 }
 
 export interface IAuthentication {

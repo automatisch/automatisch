@@ -56,10 +56,6 @@ class Connection extends Base {
     },
   });
 
-  get appData() {
-    return App.findOneByKey(this.key);
-  }
-
   encryptData(): void {
     if (!this.eligibleForEncryption()) return;
 

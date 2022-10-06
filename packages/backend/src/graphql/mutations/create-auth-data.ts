@@ -27,7 +27,7 @@ const createAuthData = async (
 
   const authInstance = (await import(`../../apps/${connection.key}2/auth`))
     .default;
-  const app = App.findOneByKey(connection.key);
+  const app = await App.findOneByKey(connection.key);
 
   const $ = globalVariable(connection, app);
   await authInstance.createAuthData($);

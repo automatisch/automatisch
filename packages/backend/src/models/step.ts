@@ -78,10 +78,6 @@ class Step extends Base {
     return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
-  get appData() {
-    return App.findOneByKey(this.appKey);
-  }
-
   async $afterInsert(queryContext: QueryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.stepCreated(this);

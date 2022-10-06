@@ -20,7 +20,7 @@ const verifyConnection = async (
     })
     .throwIfNotFound();
 
-  const app = App.findOneByKey(connection.key);
+  const app = await App.findOneByKey(connection.key);
   const authInstance = (await import(`../../apps/${connection.key}2/auth`))
     .default;
 

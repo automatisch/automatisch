@@ -2,6 +2,7 @@ import fs from 'fs';
 import { join } from 'path';
 import { IApp } from '@automatisch/types';
 import appInfoConverter from '../helpers/app-info-converter';
+import getApp from '../helpers/get-app';
 
 class App {
   static folderPath = join(__dirname, '../apps');
@@ -9,30 +10,29 @@ class App {
 
   // Temporaryly restrict the apps we expose until
   // their actions/triggers are implemented!
-  static temporaryList = ['slack', 'twitter', 'scheduler'];
+  static temporaryList = ['slack2', 'twitter2'];
+  // static temporaryList = ['slack', 'twitter', 'scheduler'];
 
-  static findAll(name?: string): IApp[] {
+  static async findAll(name?: string): Promise<IApp[]> {
     if (!name)
-      return this.temporaryList.map((name) => this.findOneByName(name));
+      return Promise.all(
+        this.temporaryList.map(async (name) => await this.findOneByName(name))
+      );
 
-    return this.temporaryList
-      .filter((app) => app.includes(name.toLowerCase()))
-      .map((name) => this.findOneByName(name));
+    return Promise.all(
+      this.temporaryList
+        .filter((app) => app.includes(name.toLowerCase()))
+        .map((name) => this.findOneByName(name))
+    );
   }
 
-  static findOneByName(name: string): IApp {
-    const rawAppData = fs.readFileSync(
-      this.folderPath + `/${name}/info.json`,
-      'utf-8'
-    );
+  static async findOneByName(name: string): Promise<IApp> {
+    const rawAppData = await getApp(name.toLocaleLowerCase());
     return appInfoConverter(rawAppData);
   }
 
-  static findOneByKey(key: string): IApp {
-    const rawAppData = fs.readFileSync(
-      this.folderPath + `/${key}/info.json`,
-      'utf-8'
-    );
+  static async findOneByKey(key: string): Promise<IApp> {
+    const rawAppData = await getApp(key);
     return appInfoConverter(rawAppData);
   }
 }

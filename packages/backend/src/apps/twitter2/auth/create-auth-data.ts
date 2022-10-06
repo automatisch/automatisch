@@ -4,7 +4,7 @@ import { URLSearchParams } from 'url';
 
 export default async function createAuthData($: IGlobalVariable) {
   try {
-    const oauthRedirectUrlField = $.app.fields.find(
+    const oauthRedirectUrlField = $.app.auth.fields.find(
       (field: IField) => field.key == 'oAuthRedirectUrl'
     );
 
