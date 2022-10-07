@@ -13,7 +13,14 @@ const getUserFollowers = async (
   options: GetUserFollowersOptions
 ) => {
   let response;
-  const followers: IJSONObject[] = [];
+
+  const followers: {
+    data: IJSONObject[];
+    error: IJSONObject | null;
+  } = {
+    data: [],
+    error: null,
+  };
 
   do {
     const params: IJSONObject = {
@@ -31,27 +38,29 @@ const getUserFollowers = async (
       method: 'GET',
     });
 
+    if (response.integrationError) {
+      followers.error = response.integrationError;
+      return followers;
+    }
+
+    if (response.data?.errors) {
+      followers.error = response.data.errors;
+      return followers;
+    }
+
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
         if (
           !options.lastInternalId ||
           Number(tweet.id) > Number(options.lastInternalId)
         ) {
-          followers.push(tweet);
+          followers.data.push(tweet);
         } else {
           return;
         }
       });
     }
   } while (response.data.meta.next_token && options.lastInternalId);
-
-  if (response.data?.errors) {
-    const errorMessages = response.data.errors
-      .map((error: IJSONObject) => error.detail)
-      .join(' ');
-
-    throw new Error(`Error occured while fetching user data: ${errorMessages}`);
-  }
 
   return followers;
 };
