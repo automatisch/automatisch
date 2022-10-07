@@ -1,7 +1,6 @@
 {
   "name": "@automatisch/root",
   "license": "AGPL-3.0",
-  "private": true,
   "scripts": {
     "start": "lerna run --stream --parallel --scope=@*/{web,backend} dev",
     "start:web": "lerna run --stream --scope=@*/web dev",
@@ -30,8 +29,5 @@
     "eslint-plugin-prettier": "^4.0.0",
     "lerna": "^4.0.0",
     "prettier": "^2.5.1"
-  },
-  "publishConfig": {
-    "registry": "http://localhost:5000"
   }
 }
