@@ -1,12 +1,22 @@
 import type { IApp } from '@automatisch/types';
 import appConfig from '../config/app';
 
-const appInfoConverter = (rawAppData: string) => {
-  let computedRawData = rawAppData.replace('{BASE_URL}', appConfig.baseUrl);
-  computedRawData = computedRawData.replace('{WEB_APP_URL}', appConfig.webAppUrl);
+const appInfoConverter = (rawAppData: IApp) => {
+  rawAppData.iconUrl = rawAppData.iconUrl.replace(
+    '{BASE_URL}',
+    appConfig.baseUrl
+  );
 
-  const computedJSONData: IApp = JSON.parse(computedRawData)
-  return computedJSONData;
-}
+  if (rawAppData.auth?.fields) {
+    rawAppData.auth.fields = rawAppData.auth.fields.map((field) => {
+      return {
+        ...field,
+        value: field.value?.replace('{WEB_APP_URL}', appConfig.webAppUrl),
+      };
+    });
+  }
+
+  return rawAppData;
+};
 
 export default appInfoConverter;

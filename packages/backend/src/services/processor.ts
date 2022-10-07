@@ -1,9 +1,12 @@
 import get from 'lodash.get';
+import { IJSONObject } from '@automatisch/types';
+
+import App from '../models/app';
 import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
 import ExecutionStep from '../models/execution-step';
-import { IJSONObject } from '@automatisch/types';
+import globalVariable from '../helpers/global-variable';
 
 type ExecutionSteps = Record<string, ExecutionStep>;
 
@@ -70,7 +73,7 @@ class Processor {
       const execution = await Execution.query().insert({
         flowId: this.flow.id,
         testRun: this.testRun,
-        internalId: data.id,
+        internalId: data.id as string,
       });
 
       executions.push(execution);
@@ -92,7 +95,7 @@ class Processor {
         const { appKey, key, type, parameters: rawParameters = {}, id } = step;
 
         const isTrigger = type === 'trigger';
-        const AppClass = (await import(`../apps/${appKey}`)).default;
+        const app = await App.findOneByKey(appKey);
 
         const computedParameters = Processor.computeParameters(
           rawParameters,
@@ -101,19 +104,24 @@ class Processor {
 
         step.parameters = computedParameters;
 
-        const appInstance = new AppClass(step.connection, this.flow, step);
+        const $ = await globalVariable(
+          step.connection,
+          app,
+          this.flow,
+          step,
+        );
 
         if (!isTrigger && key) {
-          const command = appInstance.actions[key];
-          fetchedActionData = await command.run();
+          const command = app.actions.find((action) => action.key === key);
+          fetchedActionData = await command.run($);
         }
 
         if (!isTrigger && fetchedActionData.error) {
           await execution.$relatedQuery('executionSteps').insertAndFetch({
             stepId: id,
             status: 'failure',
-            dataIn: computedParameters,
-            dataOut: null,
+            dataIn: null,
+            dataOut: computedParameters,
             errorDetails: fetchedActionData.error,
           });
 
@@ -166,19 +174,22 @@ class Processor {
   async getInitialTriggerData(step: Step) {
     if (!step.appKey || !step.key) return null;
 
-    const AppClass = (await import(`../apps/${step.appKey}`)).default;
-    const appInstance = new AppClass(step.connection, this.flow, step);
+    const app = await App.findOneByKey(step.appKey);
+    const $ = await globalVariable(
+      step.connection,
+      app,
+      this.flow,
+      step,
+    )
 
-    const command = appInstance.triggers[step.key];
+    const command = app.triggers.find((trigger) => trigger.key === step.key);
 
     let fetchedData;
 
-    const lastInternalId = await this.flow.lastInternalId();
-
     if (this.testRun) {
-      fetchedData = await command.testRun();
+      fetchedData = await command.testRun($);
     } else {
-      fetchedData = await command.run(lastInternalId);
+      fetchedData = await command.run($);
     }
 
     return fetchedData;

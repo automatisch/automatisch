@@ -2,6 +2,7 @@ import fs from 'fs';
 import { join } from 'path';
 import { IApp } from '@automatisch/types';
 import appInfoConverter from '../helpers/app-info-converter';
+import getApp from '../helpers/get-app';
 
 class App {
   static folderPath = join(__dirname, '../apps');
@@ -11,28 +12,30 @@ class App {
   // their actions/triggers are implemented!
   static temporaryList = ['slack', 'twitter', 'scheduler'];
 
-  static findAll(name?: string): IApp[] {
+  static async findAll(name?: string, stripFuncs = true): Promise<IApp[]> {
     if (!name)
-      return this.temporaryList.map((name) => this.findOneByName(name));
+      return Promise.all(
+        this.temporaryList.map(
+          async (name) => await this.findOneByName(name, stripFuncs)
+        )
+      );
 
-    return this.temporaryList
-      .filter((app) => app.includes(name.toLowerCase()))
-      .map((name) => this.findOneByName(name));
+    return Promise.all(
+      this.temporaryList
+        .filter((app) => app.includes(name.toLowerCase()))
+        .map((name) => this.findOneByName(name, stripFuncs))
+    );
   }
 
-  static findOneByName(name: string): IApp {
-    const rawAppData = fs.readFileSync(
-      this.folderPath + `/${name}/info.json`,
-      'utf-8'
-    );
+  static async findOneByName(name: string, stripFuncs = false): Promise<IApp> {
+    const rawAppData = await getApp(name.toLocaleLowerCase(), stripFuncs);
+
     return appInfoConverter(rawAppData);
   }
 
-  static findOneByKey(key: string): IApp {
-    const rawAppData = fs.readFileSync(
-      this.folderPath + `/${key}/info.json`,
-      'utf-8'
-    );
+  static async findOneByKey(key: string, stripFuncs = false): Promise<IApp> {
+    const rawAppData = await getApp(key, stripFuncs);
+
     return appInfoConverter(rawAppData);
   }
 }

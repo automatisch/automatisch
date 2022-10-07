@@ -12,10 +12,10 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { EditorContext } from 'contexts/Editor';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { IApp, IStep, ISubstep } from '@automatisch/types';
+import type { IApp, IStep, ISubstep, ITrigger, IAction } from '@automatisch/types';
 
 type ChooseAppAndEventSubstepProps = {
-  substep: ISubstep,
+  substep: ISubstep;
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
@@ -24,14 +24,17 @@ type ChooseAppAndEventSubstepProps = {
   step: IStep;
 };
 
-const optionGenerator = (app: IApp): { label: string; value: string; } => ({
+const optionGenerator = (app: { name: string, key: string, }): { label: string; value: string } => ({
   label: app.name as string,
   value: app.key as string,
 });
 
-const getOption = (options: Record<string, unknown>[], appKey: IApp["key"]) => options.find(option => option.value === appKey as string) || null;
+const getOption = (options: Record<string, unknown>[], appKey?: IApp['key']) =>
+  options.find((option) => option.value === (appKey as string)) || null;
 
-function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.ReactElement {
+function ChooseAppAndEventSubstep(
+  props: ChooseAppAndEventSubstepProps
+): React.ReactElement {
   const {
     substep,
     expanded = false,
@@ -47,59 +50,74 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
 
   const isTrigger = step.type === 'trigger';
 
-  const { data } = useQuery(GET_APPS, { variables: { onlyWithTriggers: isTrigger }});
+  const { data } = useQuery(GET_APPS, {
+    variables: { onlyWithTriggers: isTrigger },
+  });
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
-  const appOptions = React.useMemo(() => apps?.map((app) => optionGenerator(app)), [apps]);
-  const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
-  const actionOptions = React.useMemo(() => actionsOrTriggers?.map((trigger) => optionGenerator(trigger)) ?? [], [app?.key]);
-  const selectedActionOrTrigger = actionsOrTriggers?.find((actionOrTrigger) => actionOrTrigger.key === step?.key) || null;
+  const appOptions = React.useMemo(
+    () => apps?.map((app) => optionGenerator(app)),
+    [apps]
+  );
+  const actionsOrTriggers: Array<ITrigger | IAction> = (isTrigger ? app?.triggers : app?.actions) || [];
+  const actionOptions = React.useMemo(
+    () => actionsOrTriggers.map((trigger) => optionGenerator(trigger)),
+    [app?.key]
+  );
+  const selectedActionOrTrigger =
+    actionsOrTriggers.find(
+      (actionOrTrigger: IAction | ITrigger) => actionOrTrigger.key === step?.key
+    );
 
-  const {
-    name,
-  } = substep;
+  const { name } = substep;
 
   const valid: boolean = !!step.key && !!step.appKey;
 
   // placeholders
-  const onEventChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
-    if (typeof selectedOption === 'object') {
-      // TODO: try to simplify type casting below.
-      const typedSelectedOption = selectedOption as { value: string };
-      const option: { value: string } = typedSelectedOption;
-      const eventKey = option?.value as string;
+  const onEventChange = React.useCallback(
+    (event: React.SyntheticEvent, selectedOption: unknown) => {
+      if (typeof selectedOption === 'object') {
+        // TODO: try to simplify type casting below.
+        const typedSelectedOption = selectedOption as { value: string };
+        const option: { value: string } = typedSelectedOption;
+        const eventKey = option?.value as string;
 
-      if (step.key !== eventKey) {
-        onChange({
-          step: {
-            ...step,
-            key: eventKey,
-          },
-        });
+        if (step.key !== eventKey) {
+          onChange({
+            step: {
+              ...step,
+              key: eventKey,
+            },
+          });
+        }
       }
-    }
-  }, [step, onChange]);
+    },
+    [step, onChange]
+  );
 
-  const onAppChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
-    if (typeof selectedOption === 'object') {
-      // TODO: try to simplify type casting below.
-      const typedSelectedOption = selectedOption as { value: string };
-      const option: { value: string } = typedSelectedOption;
-      const appKey = option?.value as string;
+  const onAppChange = React.useCallback(
+    (event: React.SyntheticEvent, selectedOption: unknown) => {
+      if (typeof selectedOption === 'object') {
+        // TODO: try to simplify type casting below.
+        const typedSelectedOption = selectedOption as { value: string };
+        const option: { value: string } = typedSelectedOption;
+        const appKey = option?.value as string;
 
-      if (step.appKey !== appKey) {
-        onChange({
-          step: {
-            ...step,
-            key: '',
-            appKey,
-            parameters: {},
-          },
-        });
+        if (step.appKey !== appKey) {
+          onChange({
+            step: {
+              ...step,
+              key: '',
+              appKey,
+              parameters: {},
+            },
+          });
+        }
       }
-    }
-  }, [step, onChange]);
+    },
+    [step, onChange]
+  );
 
   const onToggle = expanded ? onCollapse : onExpand;
 
@@ -112,14 +130,26 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
         valid={valid}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
+        <ListItem
+          sx={{
+            pt: 2,
+            pb: 3,
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
+        >
           <Autocomplete
             fullWidth
             disablePortal
             disableClearable
             disabled={editorContext.readOnly}
             options={appOptions}
-            renderInput={(params) => <TextField {...params} label={formatMessage('flowEditor.chooseApp')} />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={formatMessage('flowEditor.chooseApp')}
+              />
+            )}
             value={getOption(appOptions, step.appKey)}
             onChange={onAppChange}
           />
@@ -137,17 +167,24 @@ function ChooseAppAndEventSubstep(props: ChooseAppAndEventSubstepProps): React.R
                 disableClearable
                 disabled={editorContext.readOnly}
                 options={actionOptions}
-                renderInput={(params) => <TextField {...params} label={formatMessage('flowEditor.chooseEvent')} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={formatMessage('flowEditor.chooseEvent')}
+                  />
+                )}
                 value={getOption(actionOptions, step.key)}
                 onChange={onEventChange}
               />
             </Box>
           )}
 
-          {isTrigger && selectedActionOrTrigger?.pollInterval && (
+          {isTrigger && (selectedActionOrTrigger as ITrigger)?.pollInterval && (
             <TextField
               label={formatMessage('flowEditor.pollIntervalLabel')}
-              value={formatMessage('flowEditor.pollIntervalValue', { minutes: selectedActionOrTrigger.pollInterval })}
+              value={formatMessage('flowEditor.pollIntervalValue', {
+                minutes: (selectedActionOrTrigger as ITrigger)?.pollInterval,
+              })}
               sx={{ mt: 2 }}
               fullWidth
               disabled

@@ -10,42 +10,44 @@ export const GET_APP = gql`
       authDocUrl
       primaryColor
       supportsConnections
-      fields {
-        key
-        label
-        type
-        required
-        readOnly
-        value
-        description
-        docUrl
-        clickToCopy
-      }
-      authenticationSteps {
-        step
-        type
-        name
-        arguments {
-          name
-          value
+      auth {
+        fields {
+          key
+          label
           type
-          properties {
+          required
+          readOnly
+          value
+          description
+          docUrl
+          clickToCopy
+        }
+        authenticationSteps {
+          step
+          type
+          name
+          arguments {
             name
             value
+            type
+            properties {
+              name
+              value
+            }
           }
         }
-      }
-      reconnectionSteps {
-        step
-        type
-        name
-        arguments {
-          name
-          value
+        reconnectionSteps {
+          step
           type
-          properties {
+          name
+          arguments {
             name
             value
+            type
+            properties {
+              name
+              value
+            }
           }
         }
       }

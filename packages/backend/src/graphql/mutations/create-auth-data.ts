@@ -1,5 +1,7 @@
 import Context from '../../types/express/context';
 import axios from 'axios';
+import globalVariable from '../../helpers/global-variable';
+import App from '../../models/app';
 
 type Params = {
   input: {
@@ -19,29 +21,24 @@ const createAuthData = async (
     })
     .throwIfNotFound();
 
-  const appClass = (await import(`../../apps/${connection.key}`)).default;
-
   if (!connection.formattedData) {
     return null;
   }
 
-  const appInstance = new appClass(connection);
-  const authLink = await appInstance.authenticationClient.createAuthData();
+  const authInstance = (await import(`../../apps/${connection.key}/auth`))
+    .default;
+  const app = await App.findOneByKey(connection.key);
+
+  const $ = await globalVariable(connection, app);
+  await authInstance.createAuthData($);
 
   try {
-    await axios.get(authLink.url);
+    await axios.get(connection.formattedData.url as string);
   } catch (error) {
     throw new Error('Error occured while creating authorization URL!');
   }
 
-  await connection.$query().patch({
-    formattedData: {
-      ...connection.formattedData,
-      ...authLink,
-    },
-  });
-
-  return authLink;
+  return connection.formattedData;
 };
 
 export default createAuthData;

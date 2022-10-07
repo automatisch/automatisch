@@ -33,7 +33,7 @@ const updateFlowStatus = async (
 
   const triggerStep = await flow.getTriggerStep();
   const trigger = await triggerStep.getTrigger();
-  const interval = trigger.interval;
+  const interval = trigger?.getInterval(triggerStep.parameters);
   const repeatOptions = {
     cron: interval || EVERY_15_MINUTES_CRON,
   };

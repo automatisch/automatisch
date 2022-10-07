@@ -1,15 +1,10 @@
-import Triggers from './triggers';
-import {
-  IService,
-  IConnection,
-  IFlow,
-  IStep,
-} from '@automatisch/types';
-
-export default class Scheduler implements IService {
-  triggers: Triggers;
-
-  constructor(connection: IConnection, flow: IFlow, step: IStep) {
-    this.triggers = new Triggers(step.parameters);
-  }
-}
+export default {
+  name: "Scheduler",
+  key: "scheduler",
+  iconUrl: "{BASE_URL}/apps/scheduler/assets/favicon.svg",
+  docUrl: "https://automatisch.io/docs/scheduler",
+  authDocUrl: "https://automatisch.io/docs/connections/scheduler",
+  primaryColor: "0059F7",
+  supportsConnections: false,
+  requiresAuthentication: false,
+};

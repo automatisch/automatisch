@@ -1,5 +1,7 @@
-import { IJSONObject } from '@automatisch/types';
+import { IData, IJSONObject } from '@automatisch/types';
 import Context from '../../types/express/context';
+import App from '../../models/app';
+import globalVariable from '../../helpers/global-variable';
 
 type Params = {
   stepId: string;
@@ -22,13 +24,18 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
 
   if (!connection || !step.appKey) return null;
 
-  const AppClass = (await import(`../../apps/${step.appKey}`)).default;
-  const appInstance = new AppClass(connection, step.flow, step);
+  const app = await App.findOneByKey(step.appKey);
+  const $ = await globalVariable(connection, app, step.flow, step);
 
-  const command = appInstance.data[params.key];
-  const fetchedData = await command.run();
+  const command = app.data.find((data: IData) => data.key === params.key);
 
-  return fetchedData;
+  const fetchedData = await command.run($);
+
+  if (fetchedData.error) {
+    throw new Error(JSON.stringify(fetchedData.error));
+  }
+
+  return fetchedData.data;
 };
 
 export default getData;
