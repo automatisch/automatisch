@@ -45,6 +45,11 @@ const searchTweets = async (
       return tweets;
     }
 
+    if (response.data.errors) {
+      tweets.error = response.data.errors;
+      return tweets;
+    }
+
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
         if (
