@@ -60,14 +60,14 @@ function ChooseAppAndEventSubstep(
     () => apps?.map((app) => optionGenerator(app)),
     [apps]
   );
-  const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
+  const actionsOrTriggers: Array<ITrigger | IAction> = (isTrigger ? app?.triggers : app?.actions) || [];
   const actionOptions = React.useMemo(
-    () => actionsOrTriggers?.map((trigger) => optionGenerator(trigger)) ?? [],
+    () => actionsOrTriggers.map((trigger) => optionGenerator(trigger)),
     [app?.key]
   );
   const selectedActionOrTrigger =
-    actionsOrTriggers?.find(
-      (actionOrTrigger) => actionOrTrigger.key === step?.key
+    actionsOrTriggers.find(
+      (actionOrTrigger: IAction | ITrigger) => actionOrTrigger.key === step?.key
     );
 
   const { name } = substep;

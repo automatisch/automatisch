@@ -13,7 +13,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import type { BaseSchema } from 'yup';
-import type { IApp, IField, IStep, ISubstep } from '@automatisch/types';
+import type { IApp, ITrigger, IAction, IStep, ISubstep } from '@automatisch/types';
 
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
@@ -139,10 +139,10 @@ export default function FlowStep(
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
-  const actionsOrTriggers = isTrigger ? app?.triggers : app?.actions;
+  const actionsOrTriggers: Array<ITrigger | IAction> = (isTrigger ? app?.triggers : app?.actions) || [];
   const substeps = React.useMemo(
     () =>
-      actionsOrTriggers?.find(({ key }) => key === step.key)?.substeps || [],
+      actionsOrTriggers?.find(({ key }: ITrigger | IAction) => key === step.key)?.substeps || [],
     [actionsOrTriggers, step?.key]
   );
 
