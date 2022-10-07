@@ -2,7 +2,7 @@
   "name": "@automatisch/docs",
   "version": "0.0.0",
   "license": "AGPL-3.0",
-  "description": "> TODO: description",
+  "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "private": true,
   "scripts": {
     "dev": "vitepress dev pages --port 3002",

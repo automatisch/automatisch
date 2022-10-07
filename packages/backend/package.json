@@ -2,7 +2,7 @@
   "name": "@automatisch/backend",
   "version": "0.0.0",
   "license": "AGPL-3.0",
-  "description": "> TODO: description",
+  "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "worker": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/worker.ts",
