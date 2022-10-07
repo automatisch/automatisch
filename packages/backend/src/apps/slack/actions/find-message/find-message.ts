@@ -1,4 +1,4 @@
-import { IGlobalVariable } from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 
 type FindMessageOptions = {
   query: string;
@@ -8,6 +8,11 @@ type FindMessageOptions = {
 };
 
 const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
+  const message: {
+    data?: IJSONObject;
+    error?: IJSONObject;
+  } = {};
+
   const headers = {
     Authorization: `Bearer ${$.auth.data.accessToken}`,
   };
@@ -24,20 +29,20 @@ const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
     params,
   });
 
+  if (response.integrationError) {
+    message.error = response.integrationError;
+    return message;
+  }
+
   const data = response.data;
 
   if (!data.ok) {
-    if (data.error === 'missing_scope') {
-      throw new Error(
-        `Error occured while finding messages; ${data.error}: ${data.needed}`
-      );
-    }
-
-    throw new Error(`Error occured while finding messages; ${data.error}`);
+    message.error = data;
+    return message;
   }
 
   const messages = data.messages.matches;
-  const message = messages?.[0];
+  message.data = messages?.[0];
 
   return message;
 };

@@ -10,43 +10,45 @@ export const GET_APPS = gql`
       primaryColor
       connectionCount
       supportsConnections
-      fields {
-        key
-        label
-        type
-        required
-        readOnly
-        value
-        placeholder
-        description
-        docUrl
-        clickToCopy
-      }
-      authenticationSteps {
-        step
-        type
-        name
-        arguments {
-          name
-          value
+      auth {
+        fields {
+          key
+          label
           type
-          properties {
+          required
+          readOnly
+          value
+          placeholder
+          description
+          docUrl
+          clickToCopy
+        }
+        authenticationSteps {
+          step
+          type
+          name
+          arguments {
             name
             value
+            type
+            properties {
+              name
+              value
+            }
           }
         }
-      }
-      reconnectionSteps {
-        step
-        type
-        name
-        arguments {
-          name
-          value
+        reconnectionSteps {
+          step
           type
-          properties {
+          name
+          arguments {
             name
             value
+            type
+            properties {
+              name
+              value
+            }
           }
         }
       }

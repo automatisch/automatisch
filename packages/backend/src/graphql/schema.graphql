@@ -104,12 +104,16 @@ type App {
   authDocUrl: String
   primaryColor: String
   supportsConnections: Boolean
-  fields: [Field]
-  authenticationSteps: [AuthenticationStep]
-  reconnectionSteps: [ReconnectionStep]
+  auth: AppAuth
   triggers: [Trigger]
   actions: [Action]
   connections: [Connection]
+}
+
+type AppAuth {
+  fields: [Field]
+  authenticationSteps: [AuthenticationStep]
+  reconnectionSteps: [ReconnectionStep]
 }
 
 enum ArgumentEnumType {

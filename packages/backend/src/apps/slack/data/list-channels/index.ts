@@ -19,8 +19,13 @@ export default {
       },
     });
 
-    if (response.integrationError || response.data.ok === 'false') {
+    if (response.integrationError) {
       channels.error = response.integrationError;
+      return channels;
+    }
+
+    if (response.data.ok === 'false') {
+      channels.error = response.data.error;
       return channels;
     }
 
