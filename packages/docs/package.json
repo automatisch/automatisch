@@ -1,6 +1,7 @@
 {
   "name": "@automatisch/docs",
   "version": "0.1.0",
+  "license": "AGPL-3.0",
   "description": "> TODO: description",
   "private": true,
   "scripts": {
