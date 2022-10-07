@@ -40,7 +40,7 @@ async function getChildrenContentInDirectory<C>(
     const filesInSubdirectory = fs.readdirSync(appSubdirectory);
 
     for (const filename of filesInSubdirectory) {
-      const filePath = join(appSubdirectory, filename, 'index.ts');
+      const filePath = join(appSubdirectory, filename);
       const fileContent = await getFileContent<C>(filePath, stripFuncs);
 
       childrenContent.push(fileContent);
@@ -56,7 +56,7 @@ const getApp = async (appKey: string, stripFuncs = true) => {
   const appData: IApp = await getDefaultExport(`../apps/${appKey}`);
 
   appData.auth = await getFileContent<IAuth>(
-    `../apps/${appKey}/auth/index.ts`,
+    `../apps/${appKey}/auth`,
     stripFuncs
   );
   appData.triggers = await getChildrenContentInDirectory<ITrigger>(
