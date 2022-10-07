@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { join } from 'path';
-import { IApp, IAuth, IAction, ITrigger } from '@automatisch/types';
+import { IApp, IAuth, IAction, ITrigger, IData } from '@automatisch/types';
 
 const appsPath = join(__dirname, '../apps');
 
@@ -9,12 +9,13 @@ async function getDefaultExport(path: string) {
 }
 
 function stripFunctions<C>(data: C): C {
-  return JSON.parse(
-    JSON.stringify(data)
-  );
+  return JSON.parse(JSON.stringify(data));
 }
 
-async function getFileContent<C>(path: string, stripFuncs: boolean): Promise<C> {
+async function getFileContent<C>(
+  path: string,
+  stripFuncs: boolean
+): Promise<C> {
   try {
     const fileContent = await getDefaultExport(path);
 
@@ -28,7 +29,10 @@ async function getFileContent<C>(path: string, stripFuncs: boolean): Promise<C> 
   }
 }
 
-async function getChildrenContentInDirectory<C>(path: string, stripFuncs: boolean): Promise<C[]> {
+async function getChildrenContentInDirectory<C>(
+  path: string,
+  stripFuncs: boolean
+): Promise<C[]> {
   const appSubdirectory = join(appsPath, path);
   const childrenContent = [];
 
@@ -51,9 +55,22 @@ async function getChildrenContentInDirectory<C>(path: string, stripFuncs: boolea
 const getApp = async (appKey: string, stripFuncs = true) => {
   const appData: IApp = await getDefaultExport(`../apps/${appKey}`);
 
-  appData.auth = await getFileContent<IAuth>(`../apps/${appKey}/auth/index.ts`, stripFuncs);
-  appData.triggers = await getChildrenContentInDirectory<ITrigger>(`${appKey}/triggers`, stripFuncs);
-  appData.actions = await getChildrenContentInDirectory<IAction>(`${appKey}/actions`, stripFuncs);
+  appData.auth = await getFileContent<IAuth>(
+    `../apps/${appKey}/auth/index.ts`,
+    stripFuncs
+  );
+  appData.triggers = await getChildrenContentInDirectory<ITrigger>(
+    `${appKey}/triggers`,
+    stripFuncs
+  );
+  appData.actions = await getChildrenContentInDirectory<IAction>(
+    `${appKey}/actions`,
+    stripFuncs
+  );
+  appData.data = await getChildrenContentInDirectory<IData>(
+    `${appKey}/data`,
+    stripFuncs
+  );
 
   return appData;
 };

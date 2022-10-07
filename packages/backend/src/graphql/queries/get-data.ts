@@ -1,4 +1,4 @@
-import { IJSONObject } from '@automatisch/types';
+import { IData, IJSONObject } from '@automatisch/types';
 import Context from '../../types/express/context';
 import App from '../../models/app';
 import globalVariable from '../../helpers/global-variable';
@@ -25,12 +25,17 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
   if (!connection || !step.appKey) return null;
 
   const app = await App.findOneByKey(step.appKey);
-  const $ = await globalVariable(connection, app, step.flow, step)
+  const $ = await globalVariable(connection, app, step.flow, step);
 
-  const command = app.data[params.key];
+  const command = app.data.find((data: IData) => data.key === params.key);
+
   const fetchedData = await command.run($);
 
-  return fetchedData;
+  if (fetchedData.error) {
+    throw new Error(JSON.stringify(fetchedData.error));
+  }
+
+  return fetchedData.data;
 };
 
 export default getData;
