@@ -1,6 +1,7 @@
 import { Token } from 'oauth-1.0a';
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import oauthClient from './oauth-client';
+import { Method } from 'axios';
 
 type IGenereateRequestOptons = {
   requestPath: string;
@@ -29,8 +30,12 @@ const generateRequest = async (
     oauthClient($).authorize(requestData, token)
   );
 
-  const response = await $.http.post(`/oauth/request_token`, null, {
-    headers: { ...authHeader },
+  const response = await $.http.request({
+    url: requestData.url,
+    method: requestData.method as Method,
+    headers: {
+      ...authHeader,
+    },
   });
 
   return response;
