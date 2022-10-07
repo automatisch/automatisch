@@ -1,6 +1,7 @@
 {
   "name": "@automatisch/web",
   "version": "0.1.0",
+  "license": "AGPL-3.0",
   "description": "> TODO: description",
   "dependencies": {
     "@apollo/client": "^3.6.9",

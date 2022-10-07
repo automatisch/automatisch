@@ -1,6 +1,7 @@
 {
   "name": "@automatisch/backend",
   "version": "0.1.0",
+  "license": "AGPL-3.0",
   "description": "> TODO: description",
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
