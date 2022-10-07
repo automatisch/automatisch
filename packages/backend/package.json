@@ -2,7 +2,7 @@
   "name": "@automatisch/backend",
   "version": "0.1.0",
   "license": "AGPL-3.0",
-  "description": "> TODO: description",
+  "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "worker": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/worker.ts",
@@ -21,7 +21,7 @@
     "prepack": "yarn build"
   },
   "dependencies": {
-    "@automatisch/web": "0.1.0",
+    "@automatisch/web": "^0.1.0",
     "@bull-board/express": "^3.10.1",
     "@gitbeaker/node": "^35.6.0",
     "@graphql-tools/graphql-file-loader": "^7.3.4",
@@ -99,7 +99,7 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
-    "@automatisch/types": "0.1.0",
+    "@automatisch/types": "^0.1.0",
     "@types/bcrypt": "^5.0.0",
     "@types/bull": "^3.15.8",
     "@types/cors": "^2.8.12",
@@ -129,5 +129,8 @@
     "require": [
       "ts-node/register"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

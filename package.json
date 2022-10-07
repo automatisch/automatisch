@@ -32,6 +32,6 @@
     "prettier": "^2.5.1"
   },
   "publishConfig": {
-    "registry": "http://localhost:5000"
+    "access": "public"
   }
 }

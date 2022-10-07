@@ -2,14 +2,10 @@
   "packages": [
     "packages/*"
   ],
-  "private": true,
-  "version": "independent",
+  "version": "0.1.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
-    "publish": {
-      "registry": "http://localhost:5000"
-    },
     "add": {
       "exact": true
     }
