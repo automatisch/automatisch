@@ -29,5 +29,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "lerna": "^4.0.0",
     "prettier": "^2.5.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -13,5 +13,8 @@
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
