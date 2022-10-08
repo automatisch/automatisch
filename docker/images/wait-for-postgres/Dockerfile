@@ -9,7 +9,7 @@ RUN mkdir -p /automatisch/storage
 RUN touch /automatisch/storage/.env
 RUN echo "ENCRYPTION_KEY=$(openssl rand -base64 36)" >> /automatisch/storage/.env
 RUN echo "APP_SECRET_KEY=$(openssl rand -base64 36)" >> /automatisch/storage/.env
-RUN yarn global add @automatisch/cli@0.1.3
+RUN yarn global add @automatisch/cli@0.1.4
 
 EXPOSE 3000
 CMD sh /automatisch/wait-for-postgres.sh automatisch start --env-file=/automatisch/storage/.env
