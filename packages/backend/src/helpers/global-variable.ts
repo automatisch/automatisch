@@ -15,16 +15,18 @@ const globalVariable = async (
   return {
     auth: {
       set: async (args: IJSONObject) => {
-        await connection.$query().patchAndFetch({
-          formattedData: {
-            ...connection.formattedData,
-            ...args,
-          },
-        });
+        if (connection) {
+          await connection.$query().patchAndFetch({
+            formattedData: {
+              ...connection.formattedData,
+              ...args,
+            },
+          });
+        }
 
         return null;
       },
-      data: connection.formattedData,
+      data: connection?.formattedData,
     },
     app: appData,
     http: createHttpClient({ baseURL: appData.baseUrl }),
