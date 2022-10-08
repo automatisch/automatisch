@@ -271,13 +271,13 @@ export default {
     const dateTime = DateTime.fromJSDate(startDateTime);
     const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(dateTime) as IJSONValue;
 
-    return [dateTimeObjectRepresentation] as IJSONValue;
+    return { data: [dateTimeObjectRepresentation] };
   },
 
   async testRun($: IGlobalVariable) {
     const nextCronDateTime = getNextCronDateTime(this.getInterval($.db.step.parameters));
     const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(nextCronDateTime) as IJSONValue;
 
-    return [dateTimeObjectRepresentation] as IJSONValue;
+    return { data: [dateTimeObjectRepresentation] };
   },
 };
