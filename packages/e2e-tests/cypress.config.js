@@ -8,15 +8,9 @@ module.exports = defineConfig({
     env: {
       login_email: "user@automatisch.io",
       login_password: "sample",
-      twitter_api_key: TO_BE_PROVIDED,
-      twitter_api_secret: TO_BE_PROVIDED,
       slack_user_token: TO_BE_PROVIDED,
     },
     specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx}',
-    excludeSpecPattern: [
-      '**/1-getting-started/**',
-      '**/2-advanced-examples/**'
-    ],
     viewportWidth: 1280,
     viewportHeight: 768
   },
