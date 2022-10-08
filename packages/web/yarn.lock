@@ -30,10 +30,10 @@
     tslib "^2.3.0"
     zen-observable-ts "^1.2.5"
 
-"@automatisch/types@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@automatisch/types/-/types-0.1.0.tgz#aea0da9991ea79c59cf69f660425df8d6024feac"
-  integrity sha512-By3aEiZUc94tAjvjxRB1L+obRsa8gqYoXkHi3Nub2WplLV4YDYnx1w35dPcBIplS6Mizl9zDFv5Gg0V+lm4LwA==
+"@automatisch/types@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@automatisch/types/-/types-0.1.4.tgz#30c813bbd68937ed2f4a74651a07284f2d925d62"
+  integrity sha512-vc1bjz2VTWvxQPtC4yHp7t+TA5lpZXKeVLTiT385wxIGsgPgE2kDrlWp5FCea8Adk4MRn90BEWD5cDzLd+7OtA==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13":
   version "7.12.13"
@@ -3654,9 +3654,9 @@ ast-types-flow@^0.0.7:
   integrity sha1-9wtzXGvKGlycItmCw+Oef+ujva0=
 
 async@^2.6.2:
-  version "2.6.3"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
-  integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.4.tgz#706b7ff6084664cd7eae713f6f965433b5504221"
+  integrity sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==
   dependencies:
     lodash "^4.17.14"
 
