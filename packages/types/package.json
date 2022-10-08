@@ -1,6 +1,6 @@
 {
   "name": "@automatisch/types",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "license": "AGPL-3.0",
   "description": "Type definitions for automatisch",
   "homepage": "https://github.com/automatisch/automatisch",
