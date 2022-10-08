@@ -102,13 +102,14 @@ class Processor {
           priorExecutionSteps
         );
 
-        step.parameters = computedParameters;
+        const clonedStep = Object.assign({}, step);
+        clonedStep.parameters = computedParameters;
 
         const $ = await globalVariable(
           step.connection,
           app,
           this.flow,
-          step,
+          clonedStep
         );
 
         if (!isTrigger && key) {
