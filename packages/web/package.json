@@ -1,11 +1,11 @@
 {
   "name": "@automatisch/web",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "AGPL-3.0",
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@automatisch/types": "^0.1.1",
+    "@automatisch/types": "^0.1.2",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@hookform/resolvers": "^2.8.8",
