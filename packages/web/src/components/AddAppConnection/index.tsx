@@ -30,7 +30,8 @@ type Response = {
 
 export default function AddAppConnection(props: AddAppConnectionProps): React.ReactElement {
   const { application, connectionId, onClose } = props;
-  const { name, authDocUrl, key, fields, authenticationSteps, reconnectionSteps } = application;
+  const { name, authDocUrl, key, auth } = application;
+  const { fields, authenticationSteps, reconnectionSteps } = auth;
   const formatMessage = useFormatMessage();
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [inProgress, setInProgress] = React.useState(false);

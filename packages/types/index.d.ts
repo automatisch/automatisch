@@ -1,3 +1,6 @@
+import type { AxiosInstance } from 'axios';
+export type IHttpClient = AxiosInstance;
+
 // Type definitions for automatisch
 
 export type IJSONValue = string | number | boolean | IJSONObject | IJSONArray;
@@ -10,11 +13,11 @@ export interface IConnection {
   id: string;
   key: string;
   data: string;
-  formattedData: IJSONObject;
+  formattedData?: IJSONObject;
   userId: string;
   verified: boolean;
-  count: number;
-  flowCount: number;
+  count?: number;
+  flowCount?: number;
   appData?: IApp;
   createdAt: string;
 }
@@ -22,7 +25,7 @@ export interface IConnection {
 export interface IExecutionStep {
   id: string;
   executionId: string;
-  stepId: IStep["id"];
+  stepId: IStep['id'];
   step: IStep;
   dataIn: IJSONObject;
   dataOut: IJSONObject;
@@ -44,21 +47,21 @@ export interface IExecution {
 
 export interface IStep {
   id: string;
-  name: string;
+  name?: string;
   flowId: string;
-  key: string;
-  appKey: string;
+  key?: string;
+  appKey?: string;
   iconUrl: string;
   type: 'action' | 'trigger';
-  connectionId: string;
+  connectionId?: string;
   status: string;
   position: number;
-  parameters: Record<string, unknown>;
-  connection: Partial<IConnection>;
+  parameters: IJSONObject;
+  connection?: Partial<IConnection>;
   flow: IFlow;
   executionSteps: IExecutionStep[];
   // FIXME: remove this property once execution steps are properly exposed via queries
-  output: IJSONObject;
+  output?: IJSONObject;
   appData?: IApp;
 }
 
@@ -128,7 +131,7 @@ export interface IFieldText {
   dependsOn: string[];
 }
 
-type IField = IFieldDropdown | IFieldText;
+export type IField = IFieldDropdown | IFieldText;
 
 export interface IAuthenticationStepField {
   name: string;
@@ -154,14 +157,27 @@ export interface IApp {
   authDocUrl: string;
   primaryColor: string;
   supportsConnections: boolean;
+  baseUrl: string;
+  auth: IAuth;
+  connectionCount: number;
+  flowCount: number;
+  data: IData;
+  triggers: ITrigger[];
+  actions: IAction[];
+  connections: IConnection[];
+}
+
+export interface IData {
+  [index: string]: any;
+}
+
+export interface IAuth {
+  createAuthData($: IGlobalVariable): Promise<void>,
+  verifyCredentials($: IGlobalVariable): Promise<any>,
+  isStillVerified($: IGlobalVariable): Promise<boolean>,
   fields: IField[];
   authenticationSteps: IAuthenticationStep[];
   reconnectionSteps: IAuthenticationStep[];
-  connectionCount: number;
-  flowCount: number;
-  triggers: any[];
-  actions: any[];
-  connections: IConnection[];
 }
 
 export interface IService {
@@ -172,8 +188,22 @@ export interface IService {
 }
 
 export interface ITrigger {
-  run(startTime?: Date): Promise<IJSONValue>;
-  testRun(startTime?: Date): Promise<IJSONValue>;
+  name: string;
+  key: string,
+  pollInterval: number;
+  description: string;
+  substeps: ISubstep[];
+  getInterval(parameters: IGlobalVariable["db"]["step"]["parameters"]): string;
+  run($: IGlobalVariable): Promise<{ data: IJSONObject[], error: IJSONObject | null }>;
+  testRun($: IGlobalVariable, startTime?: Date): Promise<{ data: IJSONObject[], error: IJSONObject | null }>;
+}
+
+export interface IAction {
+  name: string;
+  key: string,
+  description: string;
+  substeps: ISubstep[];
+  run($: IGlobalVariable): Promise<{ data: IJSONObject, error: IJSONObject | null }>;
 }
 
 export interface IAuthentication {
@@ -183,10 +213,34 @@ export interface IAuthentication {
 }
 
 export interface ISubstep {
+  key: string;
   name: string;
   arguments: IField[];
 }
 
 export type IHttpClientParams = {
   baseURL?: string;
+};
+
+export type IGlobalVariable = {
+  auth: {
+    set: (args: IJSONObject) => Promise<null>;
+    data: IJSONObject;
+  };
+  app: IApp;
+  http: IHttpClient;
+  db: {
+    flow: {
+      lastInternalId: string;
+    };
+    step: {
+      parameters: IJSONObject;
+    }
+  };
+};
+
+declare module 'axios' {
+  interface AxiosResponse {
+    integrationError?: IJSONObject;
+  }
 }

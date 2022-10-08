@@ -10,10 +10,10 @@ class User extends Base {
   id!: string;
   email!: string;
   password!: string;
-  connections?: [Connection];
-  flows?: [Flow];
-  steps?: [Step];
-  executions?: [Execution];
+  connections?: Connection[];
+  flows?: Flow[];
+  steps?: Step[];
+  executions?: Execution[];
 
   static tableName = 'users';
 

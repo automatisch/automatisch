@@ -1,4 +1,6 @@
 import Context from '../../types/express/context';
+import App from '../../models/app';
+import globalVariable from '../../helpers/global-variable';
 
 type Params = {
   id: string;
@@ -17,11 +19,11 @@ const testConnection = async (
     })
     .throwIfNotFound();
 
-  const appClass = (await import(`../../apps/${connection.key}`)).default;
-  const appInstance = new appClass(connection);
+  const app = await App.findOneByKey(connection.key, false);
+  const $ = await globalVariable(connection, app);
 
   const isStillVerified =
-    await appInstance.authenticationClient.isStillVerified();
+    await app.auth.isStillVerified($);
 
   connection = await connection.$query().patchAndFetch({
     formattedData: connection.formattedData,

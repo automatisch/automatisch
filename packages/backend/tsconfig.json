@@ -9,23 +9,26 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "paths": {
-      "*": [
-        "../../node_modules/*",
-        "node_modules/*",
-        "src/types/*"
-      ]
+      "*": ["../../node_modules/*", "node_modules/*", "src/types/*"]
     },
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "es2021",
     "typeRoots": [
       "node_modules/@types",
+      "node_modules/@automatisch/types",
       "./src/types",
       "./src/apps"
     ]
   },
-  "include": [
-    "src/**/*",
-    "bin/**/*"
+  "include": ["src/**/*", "bin/**/*"],
+  "exclude": [
+    "src/apps/discord",
+    "src/apps/firebase",
+    "src/apps/flickr",
+    "src/apps/github",
+    "src/apps/gitlab",
+    "src/apps/twitch",
+    "src/apps/typeform"
   ]
 }

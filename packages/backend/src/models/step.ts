@@ -4,7 +4,7 @@ import App from './app';
 import Flow from './flow';
 import Connection from './connection';
 import ExecutionStep from './execution-step';
-import type { IStep } from '@automatisch/types';
+import type { IJSONObject, IStep } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
 import appConfig from '../config/app';
 
@@ -17,10 +17,10 @@ class Step extends Base {
   connectionId?: string;
   status = 'incomplete';
   position!: number;
-  parameters: Record<string, unknown>;
+  parameters: IJSONObject;
   connection?: Connection;
   flow: Flow;
-  executionSteps?: [ExecutionStep];
+  executionSteps: ExecutionStep[];
 
   static tableName = 'steps';
 
@@ -78,10 +78,6 @@ class Step extends Base {
     return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
-  get appData() {
-    return App.findOneByKey(this.appKey);
-  }
-
   async $afterInsert(queryContext: QueryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.stepCreated(this);
@@ -101,12 +97,8 @@ class Step extends Base {
 
     const { appKey, key } = this;
 
-    const connection = await this.$relatedQuery('connection');
-    const flow = await this.$relatedQuery('flow');
-
-    const AppClass = (await import(`../apps/${appKey}`)).default;
-    const appInstance = new AppClass(connection, flow, this);
-    const command = appInstance.triggers[key];
+    const app = await App.findOneByKey(appKey);
+    const command = app.triggers.find((trigger) => trigger.key === key);
 
     return command;
   }

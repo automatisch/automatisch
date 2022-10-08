@@ -1,3 +1,4 @@
+import { IJSONObject } from '@automatisch/types';
 import Step from '../../models/step';
 import Context from '../../types/express/context';
 
@@ -6,7 +7,7 @@ type Params = {
     id: string;
     key: string;
     appKey: string;
-    parameters: Record<string, unknown>;
+    parameters: IJSONObject;
     flow: {
       id: string;
     };

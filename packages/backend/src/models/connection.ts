@@ -12,7 +12,7 @@ import Telemetry from '../helpers/telemetry';
 class Connection extends Base {
   id!: string;
   key!: string;
-  data = '';
+  data: string;
   formattedData?: IJSONObject;
   userId!: string;
   verified = false;
@@ -55,10 +55,6 @@ class Connection extends Base {
       },
     },
   });
-
-  get appData() {
-    return App.findOneByKey(this.key);
-  }
 
   encryptData(): void {
     if (!this.eligibleForEncryption()) return;

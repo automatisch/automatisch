@@ -1,11 +1,4 @@
 # `backend`
 
-> TODO: description
-
-## Usage
-
-```
-const backend = require('backend');
-
-// TODO: DEMONSTRATE API
-```
+The open source Zapier alternative. Build workflow automation without spending
+time and money.

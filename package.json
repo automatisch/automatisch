@@ -1,5 +1,6 @@
 {
   "name": "@automatisch/root",
+  "license": "AGPL-3.0",
   "private": true,
   "scripts": {
     "start": "lerna run --stream --parallel --scope=@*/{web,backend} dev",
@@ -31,6 +32,6 @@
     "prettier": "^2.5.1"
   },
   "publishConfig": {
-    "registry": "http://localhost:5000"
+    "access": "public"
   }
 }

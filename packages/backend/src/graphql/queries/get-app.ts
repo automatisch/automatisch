@@ -6,7 +6,7 @@ type Params = {
 };
 
 const getApp = async (_parent: unknown, params: Params, context: Context) => {
-  const app = App.findOneByKey(params.key);
+  const app = await App.findOneByKey(params.key);
 
   if (context.currentUser) {
     const connections = await context.currentUser

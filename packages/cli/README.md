@@ -1,9 +1,4 @@
 # `@automatisch/cli`
 
-> TODO: description
-
-## Usage
-
-```
-// TODO: DEMONSTRATE API
-```
+The open source Zapier alternative. Build workflow automation without spending
+time and money.

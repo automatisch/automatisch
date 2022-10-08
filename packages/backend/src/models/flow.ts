@@ -11,7 +11,7 @@ class Flow extends Base {
   name!: string;
   userId!: string;
   active: boolean;
-  steps?: [Step];
+  steps: Step[];
   published_at: string;
 
   static tableName = 'flows';

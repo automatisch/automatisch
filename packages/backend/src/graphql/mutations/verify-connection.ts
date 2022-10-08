@@ -1,5 +1,6 @@
 import Context from '../../types/express/context';
 import App from '../../models/app';
+import globalVariable from '../../helpers/global-variable';
 
 type Params = {
   input: {
@@ -19,18 +20,11 @@ const verifyConnection = async (
     })
     .throwIfNotFound();
 
-  const appClass = (await import(`../../apps/${connection.key}`)).default;
-  const app = App.findOneByKey(connection.key);
-
-  const appInstance = new appClass(connection);
-  const verifiedCredentials =
-    await appInstance.authenticationClient.verifyCredentials();
+  const app = await App.findOneByKey(connection.key);
+  const $ = await globalVariable(connection, app);
+  await app.auth.verifyCredentials($);
 
   connection = await connection.$query().patchAndFetch({
-    formattedData: {
-      ...connection.formattedData,
-      ...verifiedCredentials,
-    },
     verified: true,
     draft: false,
   });

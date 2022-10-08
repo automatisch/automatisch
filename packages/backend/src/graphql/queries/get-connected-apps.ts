@@ -11,7 +11,7 @@ const getConnectedApps = async (
   params: Params,
   context: Context
 ) => {
-  let apps = App.findAll(params.name);
+  let apps = await App.findAll(params.name);
 
   const connections = await context.currentUser
     .$relatedQuery('connections')

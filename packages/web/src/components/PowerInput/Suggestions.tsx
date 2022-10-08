@@ -24,13 +24,10 @@ const LIST_HEIGHT = 256;
 
 const getPartialArray = (array: any[], length = array.length) => {
   return array.slice(0, length);
-}
+};
 
 const Suggestions = (props: SuggestionsProps) => {
-  const {
-    data,
-    onSuggestionClick = () => null,
-  } = props;
+  const { data, onSuggestionClick = () => null } = props;
   const [current, setCurrent] = React.useState<number | null>(0);
   const [listLength, setListLength] = React.useState<number>(SHORT_LIST_LENGTH);
 
@@ -40,41 +37,43 @@ const Suggestions = (props: SuggestionsProps) => {
 
   const collapseList = () => {
     setListLength(SHORT_LIST_LENGTH);
-  }
+  };
 
   React.useEffect(() => {
     setListLength(SHORT_LIST_LENGTH);
-  }, [current])
+  }, [current]);
 
   return (
-    <Paper
-      elevation={5}
-      sx={{ width: '100%' }}
-    >
-      <Typography variant="subtitle2" sx={{ p: 2, }}>Variables</Typography>
-      <List
-        disablePadding
-      >
+    <Paper elevation={5} sx={{ width: '100%' }}>
+      <Typography variant="subtitle2" sx={{ p: 2 }}>
+        Variables
+      </Typography>
+      <List disablePadding>
         {data.map((option: IStep, index: number) => (
           <>
             <ListItemButton
               divider
-              onClick={() => setCurrent((currentIndex) => currentIndex === index ? null : index)}
-              sx={{ py: 0.5, }}
+              onClick={() =>
+                setCurrent((currentIndex) =>
+                  currentIndex === index ? null : index
+                )
+              }
+              sx={{ py: 0.5 }}
             >
-              <ListItemText
-                primary={option.name}
-              />
+              <ListItemText primary={option.name} />
 
-              {!!option.output?.length && (
-                current === index ? <ExpandLess /> : <ExpandMore />
-              )}
+              {!!option.output?.length &&
+                (current === index ? <ExpandLess /> : <ExpandMore />)}
             </ListItemButton>
 
             <Collapse in={current === index} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ maxHeight: LIST_HEIGHT, overflowY: 'auto' }}>
-                {getPartialArray(option.output as any || [], listLength)
-                  .map((suboption: any, index: number) => (
+              <List
+                component="div"
+                disablePadding
+                sx={{ maxHeight: LIST_HEIGHT, overflowY: 'auto' }}
+              >
+                {getPartialArray((option.output as any) || [], listLength).map(
+                  (suboption: any, index: number) => (
                     <ListItemButton
                       sx={{ pl: 4 }}
                       divider
@@ -85,7 +84,7 @@ const Suggestions = (props: SuggestionsProps) => {
                         primaryTypographyProps={{
                           variant: 'subtitle1',
                           title: 'Property name',
-                          sx: { fontWeight: 700 }
+                          sx: { fontWeight: 700 },
                         }}
                         secondary={suboption.value || ''}
                         secondaryTypographyProps={{
@@ -95,24 +94,18 @@ const Suggestions = (props: SuggestionsProps) => {
                         }}
                       />
                     </ListItemButton>
-                  ))
-                }
+                  )
+                )}
               </List>
 
-              {option.output?.length > listLength && (
-                <Button
-                  fullWidth
-                  onClick={expandList}
-                >
+              {(option.output?.length || 0) > listLength && (
+                <Button fullWidth onClick={expandList}>
                   Show all
                 </Button>
               )}
 
               {listLength === Infinity && (
-                <Button
-                  fullWidth
-                  onClick={collapseList}
-                >
+                <Button fullWidth onClick={collapseList}>
                   Show less
                 </Button>
               )}
@@ -122,6 +115,6 @@ const Suggestions = (props: SuggestionsProps) => {
       </List>
     </Paper>
   );
-}
+};
 
 export default Suggestions;
