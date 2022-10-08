@@ -182,7 +182,7 @@ export default function FlowStep(
     step.status === 'completed' ? validIcon : errorIcon;
 
   return (
-    <Wrapper elevation={collapsed ? 1 : 4} onClick={onOpen}>
+    <Wrapper elevation={collapsed ? 1 : 4} onClick={onOpen} data-test="flow-step">
       <Header collapsed={collapsed}>
         <Stack direction="row" alignItems="center" gap={2}>
           <AppIconWrapper>

@@ -41,7 +41,7 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
   const validationStatusIcon = executionStep.status === 'success' ? validIcon : errorIcon;
 
   return (
-    <Wrapper elevation={1}>
+    <Wrapper elevation={1} data-test="execution-step">
       <Header>
         <Stack direction="row" alignItems="center" gap={2}>
           <AppIconWrapper>
@@ -71,9 +71,9 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
       <Content sx={{ px: 2 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTabIndex} onChange={(event, tabIndex) => setActiveTabIndex(tabIndex)}>
-            <Tab label="Data in" />
-            <Tab label="Data out" />
-            <Tab label="Error" />
+            <Tab label="Data in" data-test="data-in-tab" />
+            <Tab label="Data out" data-test="data-out-tab" />
+            <Tab label="Error" data-test="error-tab" />
             <Tab label="Execution step" />
           </Tabs>
         </Box>

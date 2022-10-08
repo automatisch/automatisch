@@ -10,10 +10,11 @@ type ListItemLinkProps = {
   primary: string;
   to: string;
   onClick?: (event: React.SyntheticEvent) => void;
+  'data-test'?: string;
 }
 
 export default function ListItemLink(props: ListItemLinkProps): React.ReactElement {
-  const { icon, primary, to, onClick } = props;
+  const { icon, primary, to, onClick, 'data-test': dataTest } = props;
   const selected = useMatch({ path: to, end: true });
 
   const CustomLink = React.useMemo(
@@ -34,6 +35,7 @@ export default function ListItemLink(props: ListItemLinkProps): React.ReactEleme
         sx={{ pl: { xs: 2, sm: 3 } }}
         selected={!!selected}
         onClick={onClick}
+        data-test={dataTest}
       >
         <ListItemIcon sx={{ minWidth: 52 }}>{icon}</ListItemIcon>
         <ListItemText primary={primary} primaryTypographyProps={{ variant: 'body1', }} />

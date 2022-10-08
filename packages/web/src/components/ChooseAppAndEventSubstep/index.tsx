@@ -152,6 +152,7 @@ function ChooseAppAndEventSubstep(
             )}
             value={getOption(appOptions, step.appKey)}
             onChange={onAppChange}
+            data-test="choose-app-autocomplete"
           />
 
           {step.appKey && (
@@ -175,6 +176,7 @@ function ChooseAppAndEventSubstep(
                 )}
                 value={getOption(actionOptions, step.key)}
                 onChange={onEventChange}
+                data-test="choose-event-autocomplete"
               />
             </Box>
           )}
@@ -197,6 +199,7 @@ function ChooseAppAndEventSubstep(
             onClick={onSubmit}
             sx={{ mt: 2 }}
             disabled={!valid || editorContext.readOnly}
+            data-test="flow-substep-continue-button"
           >
             Continue
           </Button>

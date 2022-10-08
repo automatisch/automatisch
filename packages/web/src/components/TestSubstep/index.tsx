@@ -106,7 +106,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
           )}
 
           {response && (
-            <Box sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }}>
+            <Box sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }} data-test="flow-test-substep-output">
               <JSONViewer data={response} />
             </Box>
           )}
@@ -119,6 +119,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             loading={loading}
             disabled={editorContext.readOnly}
             color="primary"
+            data-test="flow-substep-continue-button"
           >
             {isCompleted && formatMessage('flowEditor.continue')}
             {!isCompleted && formatMessage('flowEditor.testAndContinue')}

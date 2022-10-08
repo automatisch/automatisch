@@ -55,6 +55,7 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
             }}
             onBlur={(...args) => { controllerOnBlur(); onBlur?.(...args); }}
             ref={ref}
+            data-test={`${name}-autocomplete`}
           />
 
           <FormHelperText

@@ -95,6 +95,7 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
               </InputAdornment>
             }
             label={formatMessage('apps.searchApp')}
+            data-test="search-for-app-text-field"
           />
         </FormControl>
 
@@ -102,7 +103,7 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
           {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
 
           {!loading && data?.getApps?.map((app: IApp) => (
-            <ListItem disablePadding key={app.name}>
+            <ListItem disablePadding key={app.name} data-test="app-list-item">
               <ListItemButton component={Link} to={createConnectionOrFlow(app.name.toLowerCase(), app.supportsConnections)}>
                 <ListItemIcon sx={{ minWidth: 74 }}>
                   <AppIcon color="transparent" url={app.iconUrl} name={app.name} />

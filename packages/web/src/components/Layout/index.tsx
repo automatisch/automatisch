@@ -22,16 +22,19 @@ const drawerLinks = [
     Icon: SwapCallsIcon,
     primary: 'drawer.flows',
     to: URLS.FLOWS,
+    dataTest: 'flows-page-drawer-link',
   },
   {
     Icon: AppsIcon,
     primary: 'drawer.apps',
     to: URLS.APPS,
+    dataTest: 'apps-page-drawer-link',
   },
   {
     Icon: HistoryIcon,
     primary: 'drawer.executions',
     to: URLS.EXECUTIONS,
+    dataTest: 'executions-page-drawer-link',
   },
 ];
 

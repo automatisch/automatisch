@@ -71,6 +71,7 @@ const Suggestions = (props: SuggestionsProps) => {
                 component="div"
                 disablePadding
                 sx={{ maxHeight: LIST_HEIGHT, overflowY: 'auto' }}
+                data-test="power-input-suggestion-group"
               >
                 {getPartialArray((option.output as any) || [], listLength).map(
                   (suboption: any, index: number) => (
@@ -78,6 +79,8 @@ const Suggestions = (props: SuggestionsProps) => {
                       sx={{ pl: 4 }}
                       divider
                       onClick={() => onSuggestionClick(suboption)}
+                      data-test="power-input-suggestion-item"
+                      key={`suggestion-${suboption.name}`}
                     >
                       <ListItemText
                         primary={suboption.name}

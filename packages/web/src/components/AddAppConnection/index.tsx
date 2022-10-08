@@ -84,7 +84,7 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
   }, [connectionId, key, steps, onClose]);
 
   return (
-    <Dialog open={true} onClose={onClose}>
+    <Dialog open={true} onClose={onClose} data-test="add-app-connection-dialog">
       <DialogTitle>{hasConnection ? formatMessage('app.reconnectConnection') : formatMessage('app.addConnection')}</DialogTitle>
 
       <Alert severity="info" sx={{ fontWeight: 300 }}>
@@ -114,6 +114,7 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
               color="primary"
               sx={{ boxShadow: 2 }}
               loading={inProgress}
+              data-test="create-connection-button"
             >
               {formatMessage('addAppConnection.submit')}
             </LoadingButton>

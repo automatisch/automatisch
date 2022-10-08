@@ -62,6 +62,7 @@ function AccountDropdownMenu(props: AccountDropdownMenuProps): React.ReactElemen
 
       <MenuItem
         onClick={logout}
+        data-test="logout-item"
       >
         {formatMessage('accountDropdownMenu.logout')}
       </MenuItem>
