@@ -69,6 +69,7 @@ export default function Applications(): React.ReactElement {
               component={NewAppConnectionLink}
               fullWidth
               icon={<AddIcon />}
+              data-test="add-connection-button"
             >
               {formatMessage('apps.addConnection')}
             </ConditionalIconButton>
@@ -77,7 +78,7 @@ export default function Applications(): React.ReactElement {
 
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
 
-        {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
+        {loading && <CircularProgress data-test="apps-loader" sx={{ display: 'block', margin: '20px auto' }} />}
 
         {!loading && !hasApps && (<NoResultFound
           text={formatMessage('apps.noConnections')}

@@ -18,6 +18,7 @@ type DrawerLink = {
   primary: string;
   to: string;
   badgeContent?: React.ReactNode;
+  dataTest?: string;
 };
 
 type DrawerProps = {
@@ -49,13 +50,14 @@ export default function Drawer(props: DrawerProps): React.ReactElement {
         <Toolbar />
 
         <List sx={{ py: 0, mt: 3 }}>
-          {links.map(({ Icon, primary, to }, index) => (
+          {links.map(({ Icon, primary, to, dataTest }, index) => (
             <ListItemLink
               key={`${to}-${index}`}
               icon={<Icon htmlColor={theme.palette.primary.main} />}
               primary={formatMessage(primary)}
               to={to}
               onClick={closeOnClick}
+              data-test={dataTest}
             />
           ))}
         </List>

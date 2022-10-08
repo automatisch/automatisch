@@ -74,6 +74,15 @@ web_modules/
 .env.test
 .env.production
 
+# cypress environment variables file
+cypress.env.json
+
+# cypress screenshots
+packages/e2e-tests/cypress/screenshots
+
+# cypress videos
+packages/e2e-tests/cypress/videos/
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache

@@ -25,6 +25,7 @@ function renderFields(props: { loading: boolean }) {
           fullWidth
           margin="dense"
           autoComplete="username"
+          data-test="email-text-field"
         />
 
         <TextField
@@ -35,6 +36,7 @@ function renderFields(props: { loading: boolean }) {
           fullWidth
           margin="dense"
           autoComplete="current-password"
+          data-test="password-text-field"
         />
 
         <LoadingButton
@@ -44,6 +46,7 @@ function renderFields(props: { loading: boolean }) {
           sx={{ boxShadow: 2, mt: 3 }}
           loading={loading}
           fullWidth
+          data-test="login-button"
         >
           Login
         </LoadingButton>

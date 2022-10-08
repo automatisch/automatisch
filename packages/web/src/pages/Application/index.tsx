@@ -126,6 +126,7 @@ export default function Application(): React.ReactElement | null {
                       component={NewConnectionLink}
                       fullWidth
                       icon={<AddIcon />}
+                      data-test="add-connection-button"
                     >
                       {formatMessage('app.addConnection')}
                     </ConditionalIconButton>

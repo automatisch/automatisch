@@ -25,7 +25,7 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
   const relativeCreatedAt = createdAt.toRelative();
 
   return (
-    <Link to={URLS.EXECUTION(execution.id)}>
+    <Link to={URLS.EXECUTION(execution.id)} data-test="execution-row">
       <Card sx={{ mb: 1 }}>
         <CardActionArea>
           <CardContent>

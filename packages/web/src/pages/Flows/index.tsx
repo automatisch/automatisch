@@ -110,6 +110,7 @@ export default function Flows(): React.ReactElement {
               component={CreateFlowLink}
               fullWidth
               icon={<AddIcon />}
+              data-test="create-flow-button"
             >
               {formatMessage('flows.create')}
             </ConditionalIconButton>
