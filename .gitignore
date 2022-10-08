@@ -78,10 +78,10 @@ web_modules/
 cypress.env.json
 
 # cypress screenshots
-cypress/screenshots/
+packages/e2e-tests/cypress/screenshots
 
 # cypress videos
-cypress/videos/
+packages/e2e-tests/cypress/videos/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
