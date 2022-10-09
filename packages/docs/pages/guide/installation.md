@@ -23,4 +23,4 @@ You can use `user@automatisch.io` email address and `sample` password to login t
 
 :::
 
-If you see any problems while installing Automatisch, let us know via [github issues](#) or our [discord server](https://discord.gg/dJSah9CVrC).
+If you see any problems while installing Automatisch, let us know via [github issues](https://github.com/automatisch/automatisch/issues) or our [discord server](https://discord.gg/dJSah9CVrC).
