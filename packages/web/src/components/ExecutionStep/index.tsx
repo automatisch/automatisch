@@ -7,7 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import type { IApp, IJSONObject, IExecutionStep, IStep } from '@automatisch/types';
+import type { IApp, IExecutionStep, IStep } from '@automatisch/types';
 
 import TabPanel from 'components/TabPanel';
 import JSONViewer from 'components/JSONViewer';
@@ -74,7 +74,6 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
             <Tab label="Data in" data-test="data-in-tab" />
             <Tab label="Data out" data-test="data-out-tab" />
             <Tab label="Error" data-test="error-tab" />
-            <Tab label="Execution step" />
           </Tabs>
         </Box>
 
@@ -88,10 +87,6 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
 
         <TabPanel value={activeTabIndex} index={2}>
           <JSONViewer data={executionStep.errorDetails} />
-        </TabPanel>
-
-        <TabPanel value={activeTabIndex} index={3}>
-          <JSONViewer data={(executionStep as unknown) as IJSONObject} />
         </TabPanel>
       </Content>
 
