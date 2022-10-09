@@ -233,59 +233,6 @@
       ]
     },
     {
-      "name": "New organization",
-      "key": "newOrganization",
-      "description": "Triggers when a new organization is created",
-      "substeps": [
-        {
-          "key": "chooseConnection",
-          "name": "Choose connection"
-        },
-        {
-          "key": "testStep",
-          "name": "Test trigger"
-        }
-      ]
-    },
-    {
-      "name": "New branch",
-      "key": "newBranch",
-      "description": "Triggers when a new branch is created",
-      "substeps": [
-        {
-          "key": "chooseConnection",
-          "name": "Choose connection"
-        },
-        {
-          "key": "chooseTrigger",
-          "name": "Set up a trigger",
-          "arguments": [
-            {
-              "label": "Repo",
-              "key": "repo",
-              "type": "dropdown",
-              "required": true,
-              "variables": false,
-              "source": {
-                "type": "query",
-                "name": "getData",
-                "arguments": [
-                  {
-                    "name": "key",
-                    "value": "listRepos"
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "key": "testStep",
-          "name": "Test trigger"
-        }
-      ]
-    },
-    {
       "name": "New notification",
       "key": "newNotification",
       "description": "Triggers when a new notification is created",
@@ -328,44 +275,6 @@
       "name": "New pull request",
       "key": "newPullRequest",
       "description": "Triggers when a new pull request is created",
-      "substeps": [
-        {
-          "key": "chooseConnection",
-          "name": "Choose connection"
-        },
-        {
-          "key": "chooseTrigger",
-          "name": "Set up a trigger",
-          "arguments": [
-            {
-              "label": "Repo",
-              "key": "repo",
-              "type": "dropdown",
-              "required": true,
-              "variables": false,
-              "source": {
-                "type": "query",
-                "name": "getData",
-                "arguments": [
-                  {
-                    "name": "key",
-                    "value": "listRepos"
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "key": "testStep",
-          "name": "Test trigger"
-        }
-      ]
-    },
-    {
-      "name": "New watcher",
-      "key": "newWatcher",
-      "description": "Triggers when a new watcher is added to a repo",
       "substeps": [
         {
           "key": "chooseConnection",
@@ -477,82 +386,6 @@
       ]
     },
     {
-      "name": "New label",
-      "key": "newLabel",
-      "description": "Triggers when a new label is created",
-      "substeps": [
-        {
-          "key": "chooseConnection",
-          "name": "Choose connection"
-        },
-        {
-          "key": "chooseTrigger",
-          "name": "Set up a trigger",
-          "arguments": [
-            {
-              "label": "Repo",
-              "key": "repo",
-              "type": "dropdown",
-              "required": true,
-              "variables": false,
-              "source": {
-                "type": "query",
-                "name": "getData",
-                "arguments": [
-                  {
-                    "name": "key",
-                    "value": "listRepos"
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "key": "testStep",
-          "name": "Test trigger"
-        }
-      ]
-    },
-    {
-      "name": "New collaborator",
-      "key": "newCollaborator",
-      "description": "Triggers when a new collaborator is added to a repo",
-      "substeps": [
-        {
-          "key": "chooseConnection",
-          "name": "Choose connection"
-        },
-        {
-          "key": "chooseTrigger",
-          "name": "Set up a trigger",
-          "arguments": [
-            {
-              "label": "Repo",
-              "key": "repo",
-              "type": "dropdown",
-              "required": true,
-              "variables": false,
-              "source": {
-                "type": "query",
-                "name": "getData",
-                "arguments": [
-                  {
-                    "name": "key",
-                    "value": "listRepos"
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "key": "testStep",
-          "name": "Test trigger"
-        }
-      ]
-    },
-    {
       "name": "New release",
       "key": "newRelease",
       "description": "Triggers when a new release is created",
@@ -627,7 +460,9 @@
               "description": "Branch to pull commits from. If unspecified, will use the repository's default branch (usually main or develop).",
               "required": false,
               "variables": false,
-              "dependsOn": ["parameters.repo"],
+              "dependsOn": [
+                "parameters.repo"
+              ],
               "source": {
                 "type": "query",
                 "name": "getData",
@@ -719,7 +554,9 @@
               "description": "Only trigger on issues when this label is added.",
               "required": false,
               "variables": false,
-              "dependsOn": ["parameters.repo"],
+              "dependsOn": [
+                "parameters.repo"
+              ],
               "source": {
                 "type": "query",
                 "name": "getData",
