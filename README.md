@@ -47,10 +47,6 @@ If you have any questions or problems, please visit our GitHub discussions page,
 
 [https://github.com/automatisch/automatisch/discussions](https://github.com/automatisch/automatisch/discussions)
 
-## Contribution Guide
-
-You can access to the [contribution guide](https://docs.automatisch.io) page from the documentation website.
-
 ## License
 
 Automatisch is an open-source software with an [AGPL 3.0 license](https://github.com/automatisch/automatisch/blob/main/LICENSE.md).
