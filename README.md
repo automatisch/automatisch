@@ -18,7 +18,7 @@ There are other existing solutions in the market, like Zapier and Integromat, so
 
 ## Documentation
 
-The official documentation can be found here: [https://automatisch.io/docs](https://automatisch.io/docs)
+The official documentation can be found here: [https://automatisch.io/docs/](https://automatisch.io/docs/)
 
 ## Installation
 
