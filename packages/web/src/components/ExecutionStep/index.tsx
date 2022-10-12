@@ -7,7 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import type { IApp, IJSONObject, IExecutionStep, IStep } from '@automatisch/types';
+import type { IApp, IExecutionStep, IStep } from '@automatisch/types';
 
 import TabPanel from 'components/TabPanel';
 import JSONViewer from 'components/JSONViewer';
@@ -41,7 +41,7 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
   const validationStatusIcon = executionStep.status === 'success' ? validIcon : errorIcon;
 
   return (
-    <Wrapper elevation={1}>
+    <Wrapper elevation={1} data-test="execution-step">
       <Header>
         <Stack direction="row" alignItems="center" gap={2}>
           <AppIconWrapper>
@@ -71,10 +71,9 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
       <Content sx={{ px: 2 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTabIndex} onChange={(event, tabIndex) => setActiveTabIndex(tabIndex)}>
-            <Tab label="Data in" />
-            <Tab label="Data out" />
-            <Tab label="Error" />
-            <Tab label="Execution step" />
+            <Tab label="Data in" data-test="data-in-tab" />
+            <Tab label="Data out" data-test="data-out-tab" />
+            <Tab label="Error" data-test="error-tab" />
           </Tabs>
         </Box>
 
@@ -88,10 +87,6 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
 
         <TabPanel value={activeTabIndex} index={2}>
           <JSONViewer data={executionStep.errorDetails} />
-        </TabPanel>
-
-        <TabPanel value={activeTabIndex} index={3}>
-          <JSONViewer data={(executionStep as unknown) as IJSONObject} />
         </TabPanel>
       </Content>
 

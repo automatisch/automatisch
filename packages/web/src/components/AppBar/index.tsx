@@ -82,6 +82,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
             onClick={handleAccountMenuOpen}
             aria-controls={accountMenuId}
             aria-label="open profile menu"
+            data-test="profile-menu-button"
           >
             <AccountCircleIcon />
           </IconButton>

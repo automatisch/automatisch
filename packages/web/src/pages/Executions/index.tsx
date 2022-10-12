@@ -54,7 +54,7 @@ export default function Executions(): React.ReactElement {
 
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
 
-        {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
+        {loading && <CircularProgress data-test="executions-loader" sx={{ display: 'block', margin: '20px auto' }} />}
 
         {!loading && !hasExecutions && (<NoResultFound
           text={formatMessage('executions.noExecutions')}

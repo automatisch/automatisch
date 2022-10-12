@@ -93,7 +93,7 @@ const PowerInput = (props: PowerInputProps) => {
             onClickAway={() => { setShowVariableSuggestions(false); }}
           >
             {/* ref-able single child for ClickAwayListener */}
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%' }} data-test="power-input">
               <FakeInput disabled={disabled}>
                 <InputLabelWrapper>
                   <InputLabel

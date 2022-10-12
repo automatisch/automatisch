@@ -3,6 +3,7 @@ dist
 build
 coverage
 packages/docs/*
+packages/e2e-tests
 
 .eslintrc.js
 husky.config.js

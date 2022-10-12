@@ -18,7 +18,7 @@ There are other existing solutions in the market, like Zapier and Integromat, so
 
 ## Documentation
 
-The official documentation can be found here: [https://automatisch.io/docs](https://automatisch.io/docs)
+The official documentation can be found here: [https://automatisch.io/docs/](https://automatisch.io/docs/)
 
 ## Installation
 
@@ -46,10 +46,6 @@ You can use `user@automatisch.io` email address and `sample` password to login t
 If you have any questions or problems, please visit our GitHub discussions page, and we'll try to help you as soon as possible.
 
 [https://github.com/automatisch/automatisch/discussions](https://github.com/automatisch/automatisch/discussions)
-
-## Contribution Guide
-
-You can access to the [contribution guide](https://docs.automatisch.io) page from the documentation website.
 
 ## License
 

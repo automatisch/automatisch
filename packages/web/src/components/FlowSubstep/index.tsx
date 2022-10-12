@@ -100,6 +100,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
             sx={{ mt: 2 }}
             disabled={!validationStatus || editorContext.readOnly}
             type="submit"
+            data-test="flow-substep-continue-button"
           >
             Continue
           </Button>

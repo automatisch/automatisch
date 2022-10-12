@@ -79,7 +79,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
 
   return (
     <>
-      <Card sx={{ my: 2 }}>
+      <Card sx={{ my: 2 }} data-test="app-connection-row">
         <CardActionArea onClick={onContextMenuClick}>
           <CardContent>
             <Stack

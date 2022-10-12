@@ -126,6 +126,7 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             value={getOption(connectionOptions, connection?.id)}
             onChange={handleChange}
             loading={loading}
+            data-test="choose-connection-autocomplete"
           />
 
           <Button
@@ -133,7 +134,7 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             variant="contained"
             onClick={onSubmit}
             sx={{ mt: 2 }}
-            disabled={testResultLoading || !connection?.verified || editorContext.readOnly}
+            disabled={testResultLoading || !connection?.verified || editorContext.readOnly}data-test="flow-substep-continue-button"
           >
             Continue
           </Button>

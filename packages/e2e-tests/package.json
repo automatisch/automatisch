@@ -1,17 +1,11 @@
 {
-  "name": "@automatisch/docs",
+  "name": "@automatisch/e2e-tests",
   "version": "0.1.5",
   "license": "AGPL-3.0",
-  "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "private": true,
+  "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
-    "dev": "vitepress dev pages --port 3002",
-    "build": "vitepress build pages",
-    "serve": "vitepress serve pages"
-  },
-  "devDependencies": {
-    "vitepress": "^1.0.0-alpha.4",
-    "vue": "^3.2.37"
+    "open": "cypress open"
   },
   "contributors": [
     {
@@ -26,5 +20,8 @@
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
+  },
+  "devDependencies": {
+    "cypress": "^10.9.0"
   }
 }

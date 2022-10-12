@@ -74,6 +74,7 @@ export default function EditorLayout(): React.ReactElement {
                 size="small"
                 component={Link}
                 to={URLS.FLOWS}
+                data-test="editor-go-back-button"
               >
                 <ArrowBackIosNewIcon fontSize="small" />
               </IconButton>
@@ -92,7 +93,12 @@ export default function EditorLayout(): React.ReactElement {
           </Box>
 
           <Box pr={1}>
-            <Button variant="contained" size="small" onClick={() => onFlowStatusUpdate(!flow.active)}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => onFlowStatusUpdate(!flow.active)}
+              data-test={flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'}
+            >
               {flow?.active ? formatMessage('flowEditor.unpublish') : formatMessage('flowEditor.publish')}
             </Button>
           </Box>
@@ -108,13 +114,19 @@ export default function EditorLayout(): React.ReactElement {
       </Stack>
 
       <Snackbar
+        data-test="flow-cannot-edit-info-snackbar"
         open={!!flow?.active}
         message={formatMessage('flowEditor.publishedFlowCannotBeUpdated')}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         ContentProps={{ sx: { fontWeight: 300 }}}
         action={(
-          <Button variant="contained" size="small" onClick={() => onFlowStatusUpdate(!flow.active)}>
-            {flow?.active ? formatMessage('flowEditor.unpublish') : formatMessage('flowEditor.publish')}
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => onFlowStatusUpdate(!flow.active)}
+            data-test="unpublish-flow-from-snackbar"
+          >
+            {formatMessage('flowEditor.unpublish')}
           </Button>
         )}
       />
