@@ -25,7 +25,7 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
   if (!connection || !step.appKey) return null;
 
   const app = await App.findOneByKey(step.appKey);
-  const $ = await globalVariable(connection, app, step.flow, step);
+  const $ = await globalVariable({ connection, app, flow: step.flow, step });
 
   const command = app.data.find((data: IData) => data.key === params.key);
 

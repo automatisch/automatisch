@@ -1,5 +1,5 @@
 import get from 'lodash.get';
-import { IJSONObject } from '@automatisch/types';
+import { IActionOutput } from '@automatisch/types';
 
 import App from '../models/app';
 import Flow from '../models/flow';
@@ -61,8 +61,8 @@ class Processor {
 
     if (initialTriggerData.data.length > 1) {
       initialTriggerData.data = initialTriggerData.data.sort(
-        (item: IJSONObject, nextItem: IJSONObject) => {
-          return (item.id as number) - (nextItem.id as number);
+        (item, nextItem) => {
+          return (item.raw.id as number) - (nextItem.raw.id as number);
         }
       );
     }
@@ -73,7 +73,7 @@ class Processor {
       const execution = await Execution.query().insert({
         flowId: this.flow.id,
         testRun: this.testRun,
-        internalId: data.id as string,
+        internalId: data.meta.internalId as string,
       });
 
       executions.push(execution);
@@ -81,12 +81,8 @@ class Processor {
       let previousExecutionStep: ExecutionStep;
       const priorExecutionSteps: ExecutionSteps = {};
 
-      let fetchedActionData: {
-        data: IJSONObject | null;
-        error: IJSONObject | null;
-      } = {
+      let fetchedActionData: IActionOutput = {
         data: null,
-        error: null,
       };
 
       for await (const step of steps) {
@@ -105,12 +101,12 @@ class Processor {
         const clonedStep = Object.assign({}, step);
         clonedStep.parameters = computedParameters;
 
-        const $ = await globalVariable(
-          step.connection,
+        const $ = await globalVariable({
+          connection: step.connection,
           app,
-          this.flow,
-          clonedStep
-        );
+          flow: this.flow,
+          step: clonedStep,
+        });
 
         if (!isTrigger && key) {
           const command = app.actions.find((action) => action.key === key);
@@ -135,7 +131,7 @@ class Processor {
             stepId: id,
             status: 'success',
             dataIn: isTrigger ? rawParameters : computedParameters,
-            dataOut: isTrigger ? data : fetchedActionData.data,
+            dataOut: isTrigger ? data.raw : fetchedActionData.data.raw,
           });
 
         priorExecutionSteps[id] = previousExecutionStep;
@@ -176,12 +172,12 @@ class Processor {
     if (!step.appKey || !step.key) return null;
 
     const app = await App.findOneByKey(step.appKey);
-    const $ = await globalVariable(
-      step.connection,
+    const $ = await globalVariable({
+      connection: step.connection,
       app,
-      this.flow,
+      flow: this.flow,
       step,
-    )
+    });
 
     const command = app.triggers.find((trigger) => trigger.key === step.key);
 

@@ -1,4 +1,8 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import {
+  IGlobalVariable,
+  IJSONObject,
+  ITriggerOutput,
+} from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import { omitBy, isEmpty } from 'lodash';
 import generateRequest from './generate-request';
@@ -14,12 +18,8 @@ const getUserFollowers = async (
 ) => {
   let response;
 
-  const followers: {
-    data: IJSONObject[];
-    error: IJSONObject | null;
-  } = {
+  const followers: ITriggerOutput = {
     data: [],
-    error: null,
   };
 
   do {
@@ -54,7 +54,10 @@ const getUserFollowers = async (
           !options.lastInternalId ||
           Number(tweet.id) > Number(options.lastInternalId)
         ) {
-          followers.data.push(tweet);
+          followers.data.push({
+            raw: tweet,
+            meta: { internalId: tweet.id as string },
+          });
         } else {
           return;
         }

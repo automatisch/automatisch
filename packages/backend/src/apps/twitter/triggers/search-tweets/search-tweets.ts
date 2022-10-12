@@ -1,4 +1,8 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import {
+  IGlobalVariable,
+  IJSONObject,
+  ITriggerOutput,
+} from '@automatisch/types';
 import qs from 'qs';
 import generateRequest from '../../common/generate-request';
 import { omitBy, isEmpty } from 'lodash';
@@ -14,12 +18,8 @@ const searchTweets = async (
 ) => {
   let response;
 
-  const tweets: {
-    data: IJSONObject[];
-    error: IJSONObject | null;
-  } = {
+  const tweets: ITriggerOutput = {
     data: [],
-    error: null,
   };
 
   do {
@@ -56,7 +56,14 @@ const searchTweets = async (
           !options.lastInternalId ||
           Number(tweet.id) > Number(options.lastInternalId)
         ) {
-          tweets.data.push(tweet);
+          const dataItem = {
+            raw: tweet,
+            meta: {
+              internalId: tweet.id as string,
+            },
+          };
+
+          tweets.data.push(dataItem);
         } else {
           return;
         }
