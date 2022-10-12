@@ -59,14 +59,6 @@ class Processor {
       initialTriggerData.data = [initialTriggerData.data[0]];
     }
 
-    if (initialTriggerData.data.length > 1) {
-      initialTriggerData.data = initialTriggerData.data.sort(
-        (item, nextItem) => {
-          return (item.raw.id as number) - (nextItem.raw.id as number);
-        }
-      );
-    }
-
     const executions: Execution[] = [];
 
     for await (const data of initialTriggerData.data) {

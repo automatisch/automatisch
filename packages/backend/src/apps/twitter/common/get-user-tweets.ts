@@ -61,20 +61,17 @@ const getUserTweets = async (
 
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
-        if (
-          !options.lastInternalId ||
-          Number(tweet.id) > Number(options.lastInternalId)
-        ) {
-          tweets.data.push({
-            raw: tweet,
-            meta: { internalId: tweet.id as string },
-          });
-        } else {
-          return;
-        }
+        tweets.data.push({
+          raw: tweet,
+          meta: { internalId: tweet.id as string },
+        });
       });
     }
   } while (response.data.meta.next_token && options.lastInternalId);
+
+  tweets.data.sort((tweet, nextTweet) => {
+    return (tweet.raw.id as number) - (nextTweet.raw.id as number);
+  });
 
   return tweets;
 };
