@@ -4,12 +4,18 @@ import Flow from '../models/flow';
 import Step from '../models/step';
 import { IJSONObject, IApp, IGlobalVariable } from '@automatisch/types';
 
+type GlobalVariableOptions = {
+  connection?: Connection;
+  app: IApp;
+  flow?: Flow;
+  step?: Step;
+};
+
 const globalVariable = async (
-  connection: Connection,
-  appData: IApp,
-  flow?: Flow,
-  currentStep?: Step
+  options: GlobalVariableOptions
 ): Promise<IGlobalVariable> => {
+  const { connection, app, flow, step } = options;
+
   const lastInternalId = await flow?.lastInternalId();
 
   return {
@@ -28,15 +34,13 @@ const globalVariable = async (
       },
       data: connection?.formattedData,
     },
-    app: appData,
-    http: createHttpClient({ baseURL: appData.baseUrl }),
-    db: {
-      flow: {
-        lastInternalId,
-      },
-      step: {
-        parameters: currentStep?.parameters || {},
-      },
+    app: app,
+    http: createHttpClient({ baseURL: app.baseUrl }),
+    flow: {
+      lastInternalId,
+    },
+    step: {
+      parameters: step?.parameters || {},
     },
   };
 };

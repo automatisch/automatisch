@@ -18,7 +18,7 @@ export default {
   ],
 
   async run($: IGlobalVariable) {
-    return await myFollowers($, $.db.flow.lastInternalId);
+    return await myFollowers($, $.flow.lastInternalId);
   },
 
   async testRun($: IGlobalVariable) {

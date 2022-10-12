@@ -1,4 +1,4 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import { IGlobalVariable, IActionOutput } from '@automatisch/types';
 
 type FindMessageOptions = {
   query: string;
@@ -8,11 +8,6 @@ type FindMessageOptions = {
 };
 
 const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
-  const message: {
-    data?: IJSONObject;
-    error?: IJSONObject;
-  } = {};
-
   const headers = {
     Authorization: `Bearer ${$.auth.data.accessToken}`,
   };
@@ -29,20 +24,14 @@ const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
     params,
   });
 
-  if (response.integrationError) {
-    message.error = response.integrationError;
-    return message;
-  }
-
   const data = response.data;
 
-  if (!data.ok) {
-    message.error = data;
-    return message;
-  }
-
-  const messages = data.messages.matches;
-  message.data = messages?.[0];
+  const message: IActionOutput = {
+    data: {
+      raw: data?.data?.messages.matches[0],
+    },
+    error: response?.integrationError || (!data.ok && data),
+  };
 
   return message;
 };

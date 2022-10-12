@@ -24,25 +24,25 @@ export default {
           options: [
             {
               label: 'Yes',
-              value: true
+              value: true,
             },
             {
               label: 'No',
-              value: false
-            }
-          ]
-        }
-      ]
+              value: false,
+            },
+          ],
+        },
+      ],
     },
     {
       key: 'testStep',
-      name: 'Test trigger'
-    }
+      name: 'Test trigger',
+    },
   ],
 
-  getInterval(parameters: IGlobalVariable["db"]["step"]["parameters"]) {
+  getInterval(parameters: IGlobalVariable['step']['parameters']) {
     if (parameters.triggersOnWeekend) {
-      return cronTimes.everyHour
+      return cronTimes.everyHour;
     }
 
     return cronTimes.everyHourExcludingWeekends;
@@ -50,14 +50,20 @@ export default {
 
   async run($: IGlobalVariable, startDateTime: Date) {
     const dateTime = DateTime.fromJSDate(startDateTime);
-    const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(dateTime) as IJSONValue;
+    const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
+      dateTime
+    ) as IJSONValue;
 
     return { data: [dateTimeObjectRepresentation] };
   },
 
   async testRun($: IGlobalVariable) {
-    const nextCronDateTime = getNextCronDateTime(this.getInterval($.db.step.parameters));
-    const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(nextCronDateTime) as IJSONValue;
+    const nextCronDateTime = getNextCronDateTime(
+      this.getInterval($.step.parameters)
+    );
+    const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
+      nextCronDateTime
+    ) as IJSONValue;
 
     return { data: [dateTimeObjectRepresentation] };
   },

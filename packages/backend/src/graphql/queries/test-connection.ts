@@ -20,10 +20,9 @@ const testConnection = async (
     .throwIfNotFound();
 
   const app = await App.findOneByKey(connection.key, false);
-  const $ = await globalVariable(connection, app);
+  const $ = await globalVariable({ connection, app });
 
-  const isStillVerified =
-    await app.auth.isStillVerified($);
+  const isStillVerified = await app.auth.isStillVerified($);
 
   connection = await connection.$query().patchAndFetch({
     formattedData: connection.formattedData,

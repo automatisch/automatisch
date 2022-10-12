@@ -1,4 +1,8 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import {
+  IGlobalVariable,
+  IJSONObject,
+  ITriggerOutput,
+} from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
@@ -22,19 +26,15 @@ const getUserTweets = async (
     const currentUser = await getCurrentUser($);
     username = currentUser.username as string;
   } else {
-    username = $.db.step.parameters.username as string;
+    username = $.step.parameters.username as string;
   }
 
   const user = await getUserByUsername($, username);
 
   let response;
 
-  const tweets: {
-    data: IJSONObject[];
-    error: IJSONObject | null;
-  } = {
+  const tweets: ITriggerOutput = {
     data: [],
-    error: null,
   };
 
   do {
@@ -65,7 +65,10 @@ const getUserTweets = async (
           !options.lastInternalId ||
           Number(tweet.id) > Number(options.lastInternalId)
         ) {
-          tweets.data.push(tweet);
+          tweets.data.push({
+            raw: tweet,
+            meta: { internalId: tweet.id as string },
+          });
         } else {
           return;
         }

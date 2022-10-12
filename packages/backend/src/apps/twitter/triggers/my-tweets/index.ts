@@ -20,7 +20,7 @@ export default {
   async run($: IGlobalVariable) {
     return await getUserTweets($, {
       currentUser: true,
-      lastInternalId: $.db.flow.lastInternalId,
+      lastInternalId: $.flow.lastInternalId,
     });
   },
 
