@@ -68,7 +68,9 @@ const searchTweets = async (
     return (tweet.raw.id as number) - (nextTweet.raw.id as number);
   });
 
-  return tweets;
+  for (const tweet of tweets.data) {
+    await $.process(tweet);
+  }
 };
 
 export default searchTweets;

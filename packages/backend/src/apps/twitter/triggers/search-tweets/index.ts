@@ -33,7 +33,6 @@ export default {
   async run($: IGlobalVariable) {
     return await searchTweets($, {
       searchTerm: $.step.parameters.searchTerm as string,
-      lastInternalId: $.flow.lastInternalId,
     });
   },
 

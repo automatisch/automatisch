@@ -28,165 +28,9 @@ class Processor {
     this.testRun = processorOptions.testRun;
   }
 
-  async run() {
-    const steps = await this.flow
-      .$relatedQuery('steps')
-      .withGraphFetched('connection')
-      .orderBy('position', 'asc');
-
-    const triggerStep = steps.find((step) => step.type === 'trigger');
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const initialTriggerData = await this.getInitialTriggerData(triggerStep!);
-
-    if (!initialTriggerData.error && initialTriggerData.data.length === 0) {
-      const lastInternalId = await this.flow.lastInternalId();
-
-      const executionData: Partial<Execution> = {
-        flowId: this.flow.id,
-        testRun: this.testRun,
-      };
-
-      if (lastInternalId) {
-        executionData.internalId = lastInternalId;
-      }
-
-      await Execution.query().insert(executionData);
-
-      return;
-    }
-
-    if (this.testRun && initialTriggerData.data.length > 0) {
-      initialTriggerData.data = [initialTriggerData.data[0]];
-    }
-
-    const executions: Execution[] = [];
-
-    for await (const data of initialTriggerData.data) {
-      const execution = await Execution.query().insert({
-        flowId: this.flow.id,
-        testRun: this.testRun,
-        internalId: data.meta.internalId as string,
-      });
-
-      executions.push(execution);
-
-      let previousExecutionStep: ExecutionStep;
-      const priorExecutionSteps: ExecutionSteps = {};
-
-      let fetchedActionData: IActionOutput = {
-        data: null,
-      };
-
-      for await (const step of steps) {
-        if (!step.appKey) continue;
-
-        const { appKey, key, type, parameters: rawParameters = {}, id } = step;
-
-        const isTrigger = type === 'trigger';
-        const app = await App.findOneByKey(appKey);
-
-        const computedParameters = Processor.computeParameters(
-          rawParameters,
-          priorExecutionSteps
-        );
-
-        const clonedStep = Object.assign({}, step);
-        clonedStep.parameters = computedParameters;
-
-        const $ = await globalVariable({
-          connection: step.connection,
-          app,
-          flow: this.flow,
-          step: clonedStep,
-        });
-
-        if (!isTrigger && key) {
-          const command = app.actions.find((action) => action.key === key);
-          fetchedActionData = await command.run($);
-        }
-
-        if (!isTrigger && fetchedActionData.error) {
-          await execution.$relatedQuery('executionSteps').insertAndFetch({
-            stepId: id,
-            status: 'failure',
-            dataIn: null,
-            dataOut: computedParameters,
-            errorDetails: fetchedActionData.error,
-          });
-
-          break;
-        }
-
-        previousExecutionStep = await execution
-          .$relatedQuery('executionSteps')
-          .insertAndFetch({
-            stepId: id,
-            status: 'success',
-            dataIn: isTrigger ? rawParameters : computedParameters,
-            dataOut: isTrigger ? data.raw : fetchedActionData.data.raw,
-          });
-
-        priorExecutionSteps[id] = previousExecutionStep;
-
-        if (id === this.untilStep?.id) {
-          break;
-        }
-      }
-    }
-
-    if (initialTriggerData.error) {
-      const executionWithError = await Execution.query().insert({
-        flowId: this.flow.id,
-        testRun: this.testRun,
-      });
-
-      executions.push(executionWithError);
-
-      await executionWithError.$relatedQuery('executionSteps').insertAndFetch({
-        stepId: triggerStep.id,
-        status: 'failure',
-        dataIn: triggerStep.parameters,
-        errorDetails: initialTriggerData.error,
-      });
-    }
-
-    if (!this.testRun) return;
-
-    const lastExecutionStepFromFirstExecution = await executions[0]
-      .$relatedQuery('executionSteps')
-      .orderBy('created_at', 'desc')
-      .first();
-
-    return lastExecutionStepFromFirstExecution;
-  }
-
-  async getInitialTriggerData(step: Step) {
-    if (!step.appKey || !step.key) return null;
-
-    const app = await App.findOneByKey(step.appKey);
-    const $ = await globalVariable({
-      connection: step.connection,
-      app,
-      flow: this.flow,
-      step,
-    });
-
-    const command = app.triggers.find((trigger) => trigger.key === step.key);
-
-    let fetchedData;
-
-    if (this.testRun) {
-      fetchedData = await command.testRun($);
-    } else {
-      fetchedData = await command.run($);
-    }
-
-    return fetchedData;
-  }
-
   static computeParameters(
     parameters: Step['parameters'],
-    executionSteps: ExecutionSteps
+    executionSteps: ExecutionStep[]
   ): Step['parameters'] {
     const entries = Object.entries(parameters);
     return entries.reduce((result, [key, value]: [string, unknown]) => {
@@ -203,7 +47,9 @@ class Processor {
               ) as string;
               const [stepId, ...keyPaths] = stepIdAndKeyPath.split('.');
               const keyPath = keyPaths.join('.');
-              const executionStep = executionSteps[stepId.toString() as string];
+              const executionStep = executionSteps.find((executionStep) => {
+                return executionStep.stepId === stepId;
+              });
               const data = executionStep?.dataOut;
               const dataValue = get(data, keyPath);
               return dataValue;

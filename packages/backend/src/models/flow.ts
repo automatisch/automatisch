@@ -12,6 +12,7 @@ class Flow extends Base {
   active: boolean;
   steps: Step[];
   published_at: string;
+  executions?: Execution[];
 
   static tableName = 'flows';
 
@@ -55,6 +56,15 @@ class Flow extends Base {
       .first();
 
     return lastExecution ? (lastExecution as Execution).internalId : null;
+  }
+
+  async lastInternalIds(itemCount = 50) {
+    const lastExecutions = await this.$relatedQuery('executions')
+      .select('internal_id')
+      .orderBy('created_at', 'desc')
+      .limit(itemCount);
+
+    return lastExecutions.map((execution) => execution.internalId);
   }
 
   async $beforeUpdate(

@@ -1,5 +1,5 @@
 import Context from '../../types/express/context';
-import processorQueue from '../../queues/processor';
+import flowQueue from '../../queues/flow';
 
 type Params = {
   input: {
@@ -9,7 +9,7 @@ type Params = {
 };
 
 const JOB_NAME = 'processorJob';
-const EVERY_15_MINUTES_CRON = '*/15 * * * *';
+const EVERY_15_MINUTES_CRON = '*/1 * * * *';
 
 const updateFlowStatus = async (
   _parent: unknown,
@@ -32,7 +32,7 @@ const updateFlowStatus = async (
   });
 
   const triggerStep = await flow.getTriggerStep();
-  const trigger = await triggerStep.getTrigger();
+  const trigger = await triggerStep.getTriggerCommand();
   const interval = trigger.getInterval?.(triggerStep.parameters);
   const repeatOptions = {
     cron: interval || EVERY_15_MINUTES_CRON,
@@ -43,7 +43,7 @@ const updateFlowStatus = async (
       published_at: new Date().toISOString(),
     });
 
-    await processorQueue.add(
+    await flowQueue.add(
       JOB_NAME,
       { flowId: flow.id },
       {
@@ -52,10 +52,10 @@ const updateFlowStatus = async (
       }
     );
   } else {
-    const repeatableJobs = await processorQueue.getRepeatableJobs();
+    const repeatableJobs = await flowQueue.getRepeatableJobs();
     const job = repeatableJobs.find((job) => job.id === flow.id);
 
-    await processorQueue.removeRepeatableByKey(job.key);
+    await flowQueue.removeRepeatableByKey(job.key);
   }
 
   return flow;
