@@ -31,8 +31,6 @@ export default {
   ],
 
   async run($: IGlobalVariable) {
-    return await searchTweets($, {
-      searchTerm: $.step.parameters.searchTerm as string,
-    });
+    return await searchTweets($);
   },
 };
