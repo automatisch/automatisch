@@ -29,7 +29,7 @@ export const processTrigger = async (options: ProcessTriggerOptions) => {
   const execution = await Execution.query().insert({
     flowId: $.flow.id,
     testRun,
-    internalId: triggerDataItem.meta.internalId,
+    internalId: triggerDataItem?.meta.internalId,
   });
 
   const executionStep = await execution

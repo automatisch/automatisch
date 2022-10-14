@@ -1,46 +1,34 @@
 import { Worker } from 'bullmq';
 import redisConfig from '../config/redis';
-import Flow from '../models/flow';
 import logger from '../helpers/logger';
-import globalVariable from '../helpers/global-variable';
-import { ITriggerDataItem, IGlobalVariable } from '@automatisch/types';
-import Execution from '../models/execution';
+import { IJSONObject, ITriggerDataItem } from '@automatisch/types';
 import actionQueue from '../queues/action';
 import Step from '../models/step';
+import { processTrigger } from '../services/trigger';
 
 type JobData = {
-  $: IGlobalVariable;
-  triggerDataItem: ITriggerDataItem;
+  flowId: string;
+  stepId: string;
+  triggerDataItem?: ITriggerDataItem;
+  error?: IJSONObject;
 };
 
 export const worker = new Worker(
   'trigger',
   async (job) => {
-    const { $, triggerDataItem } = job.data as JobData;
+    const { flowId, executionId, stepId, executionStep } = await processTrigger(
+      job.data as JobData
+    );
 
-    // check if we already process this trigger data item or not!
+    if (executionStep.isFailed) return;
 
-    const execution = await Execution.query().insert({
-      flowId: $.flow.id,
-      // TODO: Check the testRun logic and adjust following line!
-      testRun: true,
-      internalId: triggerDataItem.meta.internalId,
-    });
-
-    await execution.$relatedQuery('executionSteps').insertAndFetch({
-      stepId: $.step.id,
-      status: 'success',
-      dataIn: $.step.parameters,
-      dataOut: triggerDataItem.raw,
-    });
-
-    const jobName = `${$.step.appKey}-${triggerDataItem.meta.internalId}`;
-
-    const nextStep = await Step.query().findById($.nextStep.id);
+    const step = await Step.query().findById(stepId).throwIfNotFound();
+    const nextStep = await step.getNextStep();
+    const jobName = `${executionId}-${nextStep.id}`;
 
     const jobPayload = {
-      flowId: $.flow.id,
-      executionId: execution.id,
+      flowId,
+      executionId,
       stepId: nextStep.id,
     };
 

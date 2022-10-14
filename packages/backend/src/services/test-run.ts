@@ -23,16 +23,6 @@ const testRun = async (options: TestRunOptions) => {
     testRun: true,
   });
 
-  const firstTriggerDataItem = data[0];
-
-  const { executionId, executionStep: triggerExecutionStep } =
-    await processTrigger({
-      flowId: flow.id,
-      stepId: triggerStep.id,
-      triggerDataItem: firstTriggerDataItem,
-      testRun: true,
-    });
-
   if (triggerError) {
     const { executionStep: triggerExecutionStepWithError } =
       await processTrigger({
@@ -45,6 +35,16 @@ const testRun = async (options: TestRunOptions) => {
     return { executionStep: triggerExecutionStepWithError };
   }
 
+  const firstTriggerDataItem = data[0];
+
+  const { executionId, executionStep: triggerExecutionStep } =
+    await processTrigger({
+      flowId: flow.id,
+      stepId: triggerStep.id,
+      triggerDataItem: firstTriggerDataItem,
+      testRun: true,
+    });
+
   if (triggerStep.id === untilStep.id) {
     return { executionStep: triggerExecutionStep };
   }
@@ -56,7 +56,7 @@ const testRun = async (options: TestRunOptions) => {
       executionId,
     });
 
-    if (actionStep.id === untilStep.id || actionExecutionStep.errorDetails) {
+    if (actionStep.id === untilStep.id || actionExecutionStep.isFailed) {
       return { executionStep: actionExecutionStep };
     }
   }

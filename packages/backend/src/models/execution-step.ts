@@ -50,6 +50,10 @@ class ExecutionStep extends Base {
     },
   });
 
+  get isFailed() {
+    return this.status === 'failure';
+  }
+
   async $afterInsert(queryContext: QueryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.executionStepCreated(this);

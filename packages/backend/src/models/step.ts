@@ -102,6 +102,14 @@ class Step extends Base {
     return await App.findOneByKey(this.appKey);
   }
 
+  async getNextStep() {
+    const flow = await this.$relatedQuery('flow');
+
+    return await flow
+      .$relatedQuery('steps')
+      .findOne({ position: this.position + 1 });
+  }
+
   async getTriggerCommand() {
     const { appKey, key, isTrigger } = this;
     if (!isTrigger || !appKey || !key) return null;

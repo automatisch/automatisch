@@ -25,7 +25,7 @@ const searchTweets = async (
   do {
     const params: IJSONObject = {
       query: options.searchTerm,
-      since_id: options.lastInternalId,
+      since_id: $.execution.testRun ? null : $.flow.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };
 

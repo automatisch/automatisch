@@ -22,10 +22,7 @@ const globalVariable = async (
   const lastInternalId = await flow?.lastInternalId();
 
   const trigger = await step?.getTriggerCommand();
-  const nextStep = await flow
-    ?.$relatedQuery('steps')
-    .where({ position: step.position + 1 })
-    .first();
+  const nextStep = await step?.getNextStep();
 
   const variable: IGlobalVariable = {
     auth: {

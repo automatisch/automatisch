@@ -23,7 +23,7 @@ const executeFlow = async (
     status: 'completed',
   });
 
-  if (executionStep.errorDetails) {
+  if (executionStep.isFailed) {
     throw new Error(JSON.stringify(executionStep.errorDetails));
   }
 
