@@ -35,10 +35,4 @@ export default {
       searchTerm: $.step.parameters.searchTerm as string,
     });
   },
-
-  async testRun($: IGlobalVariable) {
-    return await searchTweets($, {
-      searchTerm: $.step.parameters.searchTerm as string,
-    });
-  },
 };

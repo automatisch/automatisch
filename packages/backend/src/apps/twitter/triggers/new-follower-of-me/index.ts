@@ -20,8 +20,4 @@ export default {
   async run($: IGlobalVariable) {
     return await myFollowers($, $.flow.lastInternalId);
   },
-
-  async testRun($: IGlobalVariable) {
-    return await myFollowers($);
-  },
 };
