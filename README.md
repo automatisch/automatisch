@@ -37,7 +37,6 @@ You can use `user@automatisch.io` email address and `sample` password to login t
 
 ## Community Links
 
-- [Github](https://github.com/automatisch/automatisch)
 - [Discord](https://discord.gg/dJSah9CVrC)
 - [Twitter](https://twitter.com/automatischio)
 
