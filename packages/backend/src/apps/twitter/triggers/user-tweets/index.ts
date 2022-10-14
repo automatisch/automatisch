@@ -32,15 +32,15 @@ export default {
   async run($: IGlobalVariable) {
     return await getUserTweets($, {
       currentUser: false,
-      userId: $.db.step.parameters.username as string,
-      lastInternalId: $.db.flow.lastInternalId,
+      userId: $.step.parameters.username as string,
+      lastInternalId: $.flow.lastInternalId,
     });
   },
 
   async testRun($: IGlobalVariable) {
     return await getUserTweets($, {
       currentUser: false,
-      userId: $.db.step.parameters.username as string,
+      userId: $.step.parameters.username as string,
     });
   },
 };

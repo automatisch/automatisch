@@ -1,4 +1,8 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import {
+  IGlobalVariable,
+  IJSONObject,
+  ITriggerOutput,
+} from '@automatisch/types';
 import qs from 'qs';
 import generateRequest from '../../common/generate-request';
 import { omitBy, isEmpty } from 'lodash';
@@ -14,18 +18,14 @@ const searchTweets = async (
 ) => {
   let response;
 
-  const tweets: {
-    data: IJSONObject[];
-    error: IJSONObject | null;
-  } = {
+  const tweets: ITriggerOutput = {
     data: [],
-    error: null,
   };
 
   do {
     const params: IJSONObject = {
       query: options.searchTerm,
-      since_id: options.lastInternalId,
+      since_id: $.execution.testRun ? null : $.flow.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };
 
@@ -52,17 +52,21 @@ const searchTweets = async (
 
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
-        if (
-          !options.lastInternalId ||
-          Number(tweet.id) > Number(options.lastInternalId)
-        ) {
-          tweets.data.push(tweet);
-        } else {
-          return;
-        }
+        const dataItem = {
+          raw: tweet,
+          meta: {
+            internalId: tweet.id as string,
+          },
+        };
+
+        tweets.data.push(dataItem);
       });
     }
-  } while (response.data.meta.next_token && options.lastInternalId);
+  } while (response.data.meta.next_token && !$.execution.testRun);
+
+  tweets.data.sort((tweet, nextTweet) => {
+    return (tweet.raw.id as number) - (nextTweet.raw.id as number);
+  });
 
   return tweets;
 };

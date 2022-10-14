@@ -72,7 +72,7 @@ export default {
   ],
 
   async run($: IGlobalVariable) {
-    const parameters = $.db.step.parameters;
+    const parameters = $.step.parameters;
     const query = parameters.query as string;
     const sortBy = parameters.sortBy as string;
     const sortDirection = parameters.sortDirection as string;

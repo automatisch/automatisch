@@ -32,14 +32,13 @@ export default {
 
   async run($: IGlobalVariable) {
     return await searchTweets($, {
-      searchTerm: $.db.step.parameters.searchTerm as string,
-      lastInternalId: $.db.flow.lastInternalId,
+      searchTerm: $.step.parameters.searchTerm as string,
     });
   },
 
   async testRun($: IGlobalVariable) {
     return await searchTweets($, {
-      searchTerm: $.db.step.parameters.searchTerm as string,
+      searchTerm: $.step.parameters.searchTerm as string,
     });
   },
 };

@@ -2,17 +2,29 @@ import createHttpClient from './http-client';
 import Connection from '../models/connection';
 import Flow from '../models/flow';
 import Step from '../models/step';
+import Execution from '../models/execution';
 import { IJSONObject, IApp, IGlobalVariable } from '@automatisch/types';
 
+type GlobalVariableOptions = {
+  connection?: Connection;
+  app: IApp;
+  flow?: Flow;
+  step?: Step;
+  execution?: Execution;
+  testRun?: boolean;
+};
+
 const globalVariable = async (
-  connection: Connection,
-  appData: IApp,
-  flow?: Flow,
-  currentStep?: Step
+  options: GlobalVariableOptions
 ): Promise<IGlobalVariable> => {
+  const { connection, app, flow, step, execution, testRun = false } = options;
+
   const lastInternalId = await flow?.lastInternalId();
 
-  return {
+  const trigger = await step?.getTriggerCommand();
+  const nextStep = await step?.getNextStep();
+
+  const variable: IGlobalVariable = {
     auth: {
       set: async (args: IJSONObject) => {
         if (connection) {
@@ -28,17 +40,39 @@ const globalVariable = async (
       },
       data: connection?.formattedData,
     },
-    app: appData,
-    http: createHttpClient({ baseURL: appData.baseUrl }),
-    db: {
-      flow: {
-        lastInternalId,
-      },
-      step: {
-        parameters: currentStep?.parameters || {},
-      },
+    app: app,
+    http: createHttpClient({ baseURL: app.baseUrl }),
+    flow: {
+      id: flow?.id,
+      lastInternalId,
+    },
+    step: {
+      id: step?.id,
+      appKey: step?.appKey,
+      parameters: step?.parameters || {},
+    },
+    nextStep: {
+      id: nextStep?.id,
+      appKey: nextStep?.appKey,
+      parameters: nextStep?.parameters || {},
+    },
+    execution: {
+      id: execution?.id,
+      testRun,
     },
   };
+
+  if (trigger && trigger.dedupeStrategy === 'unique') {
+    const lastInternalIds = await flow?.lastInternalIds();
+
+    const isAlreadyProcessed = (internalId: string) => {
+      return lastInternalIds?.includes(internalId);
+    };
+
+    variable.flow.isAlreadyProcessed = isAlreadyProcessed;
+  }
+
+  return variable;
 };
 
 export default globalVariable;

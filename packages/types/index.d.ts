@@ -172,9 +172,9 @@ export interface IData {
 }
 
 export interface IAuth {
-  createAuthData($: IGlobalVariable): Promise<void>,
-  verifyCredentials($: IGlobalVariable): Promise<any>,
-  isStillVerified($: IGlobalVariable): Promise<boolean>,
+  createAuthData($: IGlobalVariable): Promise<void>;
+  verifyCredentials($: IGlobalVariable): Promise<any>;
+  isStillVerified($: IGlobalVariable): Promise<boolean>;
   fields: IField[];
   authenticationSteps: IAuthenticationStep[];
   reconnectionSteps: IAuthenticationStep[];
@@ -187,23 +187,47 @@ export interface IService {
   data?: any;
 }
 
+export interface ITriggerOutput {
+  data: ITriggerDataItem[];
+  error?: IJSONObject;
+}
+
+export interface ITriggerDataItem {
+  raw: IJSONObject;
+  meta: {
+    internalId: string;
+  };
+}
+
 export interface ITrigger {
   name: string;
-  key: string,
+  key: string;
   pollInterval: number;
   description: string;
+  dedupeStrategy: 'greatest' | 'unique' | 'last';
   substeps: ISubstep[];
-  getInterval(parameters: IGlobalVariable["db"]["step"]["parameters"]): string;
-  run($: IGlobalVariable): Promise<{ data: IJSONObject[], error: IJSONObject | null }>;
-  testRun($: IGlobalVariable, startTime?: Date): Promise<{ data: IJSONObject[], error: IJSONObject | null }>;
+  getInterval(parameters: IGlobalVariable['step']['parameters']): string;
+  run($: IGlobalVariable): Promise<ITriggerOutput>;
+  testRun($: IGlobalVariable): Promise<ITriggerOutput>;
+}
+
+export interface IActionOutput {
+  data: IActionDataItem;
+  error?: IJSONObject;
+}
+
+export interface IActionDataItem {
+  raw: {
+    data?: IJSONObject;
+  };
 }
 
 export interface IAction {
   name: string;
-  key: string,
+  key: string;
   description: string;
   substeps: ISubstep[];
-  run($: IGlobalVariable): Promise<{ data: IJSONObject, error: IJSONObject | null }>;
+  run($: IGlobalVariable): Promise<IActionOutput>;
 }
 
 export interface IAuthentication {
@@ -229,14 +253,26 @@ export type IGlobalVariable = {
   };
   app: IApp;
   http: IHttpClient;
-  db: {
-    flow: {
-      lastInternalId: string;
-    };
-    step: {
-      parameters: IJSONObject;
-    }
+  flow?: {
+    id: string;
+    lastInternalId: string;
+    isAlreadyProcessed?: (internalId: string) => boolean;
   };
+  step?: {
+    id: string;
+    appKey: string;
+    parameters: IJSONObject;
+  };
+  nextStep?: {
+    id: string;
+    appKey: string;
+    parameters: IJSONObject;
+  };
+  execution?: {
+    id: string;
+    testRun: boolean;
+  }
+  process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
 };
 
 declare module 'axios' {

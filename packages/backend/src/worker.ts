@@ -1,5 +1,7 @@
 import './config/orm';
-export { worker } from './workers/processor';
+import './workers/flow';
+import './workers/trigger';
+import './workers/action';
 import telemetry from './helpers/telemetry';
 
 telemetry.setServiceType('worker');

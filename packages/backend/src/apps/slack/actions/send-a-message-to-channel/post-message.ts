@@ -1,18 +1,10 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import { IGlobalVariable, IActionOutput } from '@automatisch/types';
 
 const postMessage = async (
   $: IGlobalVariable,
   channelId: string,
   text: string
 ) => {
-  const message: {
-    data: IJSONObject | null | undefined;
-    error: IJSONObject | null | undefined;
-  } = {
-    data: null,
-    error: null,
-  };
-
   const headers = {
     Authorization: `Bearer ${$.auth.data.accessToken}`,
   };
@@ -24,8 +16,12 @@ const postMessage = async (
 
   const response = await $.http.post('/chat.postMessage', params, { headers });
 
-  message.error = response?.integrationError;
-  message.data = response?.data?.message;
+  const message: IActionOutput = {
+    data: {
+      raw: response?.data?.message,
+    },
+    error: response?.integrationError,
+  };
 
   if (response.data.ok === false) {
     message.error = response.data;

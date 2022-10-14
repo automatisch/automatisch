@@ -1,4 +1,8 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import {
+  IGlobalVariable,
+  IJSONObject,
+  ITriggerOutput,
+} from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
@@ -22,19 +26,15 @@ const getUserTweets = async (
     const currentUser = await getCurrentUser($);
     username = currentUser.username as string;
   } else {
-    username = $.db.step.parameters.username as string;
+    username = $.step.parameters.username as string;
   }
 
   const user = await getUserByUsername($, username);
 
   let response;
 
-  const tweets: {
-    data: IJSONObject[];
-    error: IJSONObject | null;
-  } = {
+  const tweets: ITriggerOutput = {
     data: [],
-    error: null,
   };
 
   do {
@@ -61,17 +61,17 @@ const getUserTweets = async (
 
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
-        if (
-          !options.lastInternalId ||
-          Number(tweet.id) > Number(options.lastInternalId)
-        ) {
-          tweets.data.push(tweet);
-        } else {
-          return;
-        }
+        tweets.data.push({
+          raw: tweet,
+          meta: { internalId: tweet.id as string },
+        });
       });
     }
   } while (response.data.meta.next_token && options.lastInternalId);
+
+  tweets.data.sort((tweet, nextTweet) => {
+    return (tweet.raw.id as number) - (nextTweet.raw.id as number);
+  });
 
   return tweets;
 };

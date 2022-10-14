@@ -49,8 +49,8 @@ export default {
   ],
 
   async run($: IGlobalVariable) {
-    const channelId = $.db.step.parameters.channel as string;
-    const text = $.db.step.parameters.message as string;
+    const channelId = $.step.parameters.channel as string;
+    const text = $.step.parameters.message as string;
 
     const message = await postMessage($, channelId, text);
 
