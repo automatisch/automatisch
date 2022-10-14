@@ -1,7 +1,5 @@
 import Context from '../../types/express/context';
-import Processor from '../../services/processor';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import processorQueue from '../../queues/processor';
+import testRun from '../../services/test-run';
 
 type Params = {
   input: {
@@ -14,26 +12,18 @@ const executeFlow = async (
   params: Params,
   context: Context
 ) => {
+  const { stepId } = params.input;
+  const { executionStep } = await testRun({ stepId });
+
   const untilStep = await context.currentUser
     .$relatedQuery('steps')
-    .withGraphFetched('connection')
-    .findOne({
-      'steps.id': params.input.stepId,
-    })
-    .throwIfNotFound();
-
-  const flow = await untilStep.$relatedQuery('flow');
-
-  const executionStep = await new Processor(flow, {
-    untilStep,
-    testRun: true,
-  }).run();
+    .findById(stepId);
 
   await untilStep.$query().patch({
     status: 'completed',
   });
 
-  if (executionStep.errorDetails) {
+  if (executionStep.isFailed) {
     throw new Error(JSON.stringify(executionStep.errorDetails));
   }
 

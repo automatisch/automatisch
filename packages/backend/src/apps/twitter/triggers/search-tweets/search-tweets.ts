@@ -25,7 +25,7 @@ const searchTweets = async (
   do {
     const params: IJSONObject = {
       query: options.searchTerm,
-      since_id: options.lastInternalId,
+      since_id: $.execution.testRun ? null : $.flow.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };
 
@@ -62,7 +62,7 @@ const searchTweets = async (
         tweets.data.push(dataItem);
       });
     }
-  } while (response.data.meta.next_token && options.lastInternalId);
+  } while (response.data.meta.next_token && !$.execution.testRun);
 
   tweets.data.sort((tweet, nextTweet) => {
     return (tweet.raw.id as number) - (nextTweet.raw.id as number);

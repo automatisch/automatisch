@@ -204,6 +204,7 @@ export interface ITrigger {
   key: string;
   pollInterval: number;
   description: string;
+  dedupeStrategy: 'greatest' | 'unique' | 'last';
   substeps: ISubstep[];
   getInterval(parameters: IGlobalVariable['step']['parameters']): string;
   run($: IGlobalVariable): Promise<ITriggerOutput>;
@@ -252,12 +253,26 @@ export type IGlobalVariable = {
   };
   app: IApp;
   http: IHttpClient;
-  flow: {
+  flow?: {
+    id: string;
     lastInternalId: string;
+    isAlreadyProcessed?: (internalId: string) => boolean;
   };
-  step: {
+  step?: {
+    id: string;
+    appKey: string;
     parameters: IJSONObject;
   };
+  nextStep?: {
+    id: string;
+    appKey: string;
+    parameters: IJSONObject;
+  };
+  execution?: {
+    id: string;
+    testRun: boolean;
+  }
+  process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
 };
 
 declare module 'axios' {

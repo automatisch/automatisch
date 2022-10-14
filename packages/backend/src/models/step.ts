@@ -92,13 +92,40 @@ class Step extends Base {
     return this.type === 'trigger';
   }
 
-  async getTrigger() {
-    if (!this.isTrigger) return null;
+  get isAction(): boolean {
+    return this.type === 'action';
+  }
 
-    const { appKey, key } = this;
+  async getApp() {
+    if (!this.appKey) return null;
+
+    return await App.findOneByKey(this.appKey);
+  }
+
+  async getNextStep() {
+    const flow = await this.$relatedQuery('flow');
+
+    return await flow
+      .$relatedQuery('steps')
+      .findOne({ position: this.position + 1 });
+  }
+
+  async getTriggerCommand() {
+    const { appKey, key, isTrigger } = this;
+    if (!isTrigger || !appKey || !key) return null;
 
     const app = await App.findOneByKey(appKey);
     const command = app.triggers.find((trigger) => trigger.key === key);
+
+    return command;
+  }
+
+  async getActionCommand() {
+    const { appKey, key, isAction } = this;
+    if (!isAction || !appKey || !key) return null;
+
+    const app = await App.findOneByKey(appKey);
+    const command = app.actions.find((action) => action.key === key);
 
     return command;
   }
