@@ -36,11 +36,4 @@ export default {
       lastInternalId: $.flow.lastInternalId,
     });
   },
-
-  async testRun($: IGlobalVariable) {
-    return await getUserTweets($, {
-      currentUser: false,
-      userId: $.step.parameters.username as string,
-    });
-  },
 };

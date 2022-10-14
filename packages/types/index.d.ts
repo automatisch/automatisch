@@ -208,7 +208,6 @@ export interface ITrigger {
   substeps: ISubstep[];
   getInterval(parameters: IGlobalVariable['step']['parameters']): string;
   run($: IGlobalVariable): Promise<ITriggerOutput>;
-  testRun($: IGlobalVariable): Promise<ITriggerOutput>;
 }
 
 export interface IActionOutput {
@@ -271,7 +270,7 @@ export type IGlobalVariable = {
   execution?: {
     id: string;
     testRun: boolean;
-  }
+  };
   process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
 };
 
