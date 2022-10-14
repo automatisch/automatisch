@@ -270,6 +270,7 @@ export type IGlobalVariable = {
   };
   execution?: {
     id: string;
+    testRun: boolean;
   }
   process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
 };

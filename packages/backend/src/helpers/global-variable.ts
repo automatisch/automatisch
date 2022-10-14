@@ -3,13 +3,7 @@ import Connection from '../models/connection';
 import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
-import {
-  IJSONObject,
-  IApp,
-  IGlobalVariable,
-  ITriggerDataItem,
-} from '@automatisch/types';
-import triggerQueue from '../queues/trigger';
+import { IJSONObject, IApp, IGlobalVariable } from '@automatisch/types';
 
 type GlobalVariableOptions = {
   connection?: Connection;
@@ -17,12 +11,13 @@ type GlobalVariableOptions = {
   flow?: Flow;
   step?: Step;
   execution?: Execution;
+  testRun?: boolean;
 };
 
 const globalVariable = async (
   options: GlobalVariableOptions
 ): Promise<IGlobalVariable> => {
-  const { connection, app, flow, step, execution } = options;
+  const { connection, app, flow, step, execution, testRun = false } = options;
 
   const lastInternalId = await flow?.lastInternalId();
 
@@ -66,17 +61,8 @@ const globalVariable = async (
     },
     execution: {
       id: execution?.id,
+      testRun,
     },
-  };
-
-  variable.process = async (triggerDataItem: ITriggerDataItem) => {
-    const jobName = `${step.appKey}-${triggerDataItem.meta.internalId}`;
-    const jobPayload = {
-      $: variable,
-      triggerDataItem,
-    };
-
-    await triggerQueue.add(jobName, jobPayload);
   };
 
   if (trigger && trigger.dedupeStrategy === 'unique') {

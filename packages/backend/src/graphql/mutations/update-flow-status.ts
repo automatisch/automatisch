@@ -8,8 +8,8 @@ type Params = {
   };
 };
 
-const JOB_NAME = 'processorJob';
-const EVERY_15_MINUTES_CRON = '*/1 * * * *';
+const JOB_NAME = 'flow';
+const EVERY_15_MINUTES_CRON = '*/15 * * * *';
 
 const updateFlowStatus = async (
   _parent: unknown,
@@ -43,8 +43,10 @@ const updateFlowStatus = async (
       published_at: new Date().toISOString(),
     });
 
+    const jobName = `${JOB_NAME}-${flow.id}`;
+
     await flowQueue.add(
-      JOB_NAME,
+      jobName,
       { flowId: flow.id },
       {
         repeat: repeatOptions,

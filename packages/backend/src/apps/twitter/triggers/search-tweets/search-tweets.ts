@@ -62,15 +62,13 @@ const searchTweets = async (
         tweets.data.push(dataItem);
       });
     }
-  } while (response.data.meta.next_token && options.lastInternalId);
+  } while (response.data.meta.next_token && !$.execution.testRun);
 
   tweets.data.sort((tweet, nextTweet) => {
     return (tweet.raw.id as number) - (nextTweet.raw.id as number);
   });
 
-  for (const tweet of tweets.data) {
-    await $.process(tweet);
-  }
+  return tweets;
 };
 
 export default searchTweets;
