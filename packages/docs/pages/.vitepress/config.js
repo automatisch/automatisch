@@ -97,4 +97,32 @@ export default defineConfig({
       copyright: 'Copyright © 2022 Automatisch. All rights reserved.',
     },
   },
+
+  async transformHead(ctx) {
+    if (ctx.pageData.relativePath === '') return; // Skip 404 page.
+
+    const isHomepage = ctx.pageData.relativePath === 'index.md';
+    let canonicalUrl = 'https://automatisch.io/docs';
+
+    if (!isHomepage) {
+      canonicalUrl =
+        `${canonicalUrl}/` + ctx.pageData.relativePath.replace('.md', '');
+    }
+
+    // Added for logging purposes to check if there is something
+    // wrong with the canonical URL in the deployment pipeline.
+    console.log('');
+    console.log('File path : ', ctx.pageData.relativePath);
+    console.log('Canonical URL: ', canonicalUrl);
+
+    return [
+      [
+        'link',
+        {
+          rel: 'canonical',
+          href: canonicalUrl,
+        },
+      ],
+    ];
+  },
 });
