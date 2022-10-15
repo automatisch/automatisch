@@ -19,7 +19,7 @@ const generateDocsLink = (link: string) => (str: string) => (
 );
 
 type AddAppConnectionProps = {
-  onClose: () => void;
+  onClose: (response: Record<string, unknown>) => void;
   application: IApp;
   connectionId?: string;
 };
@@ -76,7 +76,7 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
       stepIndex++;
 
       if (stepIndex === steps.length) {
-        onClose();
+        onClose(response);
       }
     }
 

@@ -251,7 +251,7 @@ export default function FlowStep(
                       index: number
                     ) => (
                       <React.Fragment key={`${substep?.name}-${index}`}>
-                        {substep.key === 'chooseConnection' && (
+                        {substep.key === 'chooseConnection' && app && (
                           <ChooseConnectionSubstep
                             expanded={currentSubstep === index + 1}
                             substep={substep}
@@ -259,6 +259,7 @@ export default function FlowStep(
                             onCollapse={() => toggleSubstep(index + 1)}
                             onSubmit={expandNextStep}
                             onChange={handleChange}
+                            application={app}
                             step={step}
                           />
                         )}
