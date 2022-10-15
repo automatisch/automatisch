@@ -1,7 +1,7 @@
-import { IGlobalVariable } from '@automatisch/types';
+import defineAction from '../../../../helpers/define-action';
 import findMessage from './find-message';
 
-export default {
+export default defineAction({
   name: 'Find message',
   key: 'findMessage',
   description: 'Find a Slack message using the Slack Search feature.',
@@ -71,7 +71,7 @@ export default {
     },
   ],
 
-  async run($: IGlobalVariable) {
+  async run($) {
     const parameters = $.step.parameters;
     const query = parameters.query as string;
     const sortBy = parameters.sortBy as string;
@@ -87,4 +87,4 @@ export default {
 
     return messages;
   },
-};
+});

@@ -1,7 +1,7 @@
-import { IGlobalVariable } from '@automatisch/types';
+import defineTrigger from '../../../../helpers/define-trigger';
 import myFollowers from './my-followers';
 
-export default {
+export default defineTrigger({
   name: 'New follower of me',
   key: 'myFollowers',
   pollInterval: 15,
@@ -17,7 +17,7 @@ export default {
     },
   ],
 
-  async run($: IGlobalVariable) {
+  async run($) {
     return await myFollowers($, $.flow.lastInternalId);
   },
-};
+});

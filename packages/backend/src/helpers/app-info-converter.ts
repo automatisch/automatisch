@@ -9,10 +9,14 @@ const appInfoConverter = (rawAppData: IApp) => {
 
   if (rawAppData.auth?.fields) {
     rawAppData.auth.fields = rawAppData.auth.fields.map((field) => {
-      return {
-        ...field,
-        value: field.value?.replace('{WEB_APP_URL}', appConfig.webAppUrl),
-      };
+      if (typeof field.value === 'string') {
+        return {
+          ...field,
+          value: field.value.replace('{WEB_APP_URL}', appConfig.webAppUrl),
+        };
+      }
+
+      return field
     });
   }
 

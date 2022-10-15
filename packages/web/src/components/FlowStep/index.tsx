@@ -69,7 +69,7 @@ function generateValidationSchema(substeps: ISubstep[]) {
         }
 
         // if the field depends on another field, add the dependsOn required validation
-        if (dependsOn?.length > 0) {
+        if (Array.isArray(dependsOn) && dependsOn.length > 0) {
           for (const dependsOnKey of dependsOn) {
             const missingDependencyValueMessage = `We're having trouble loading '${key}' data as required field '${dependsOnKey}' is missing.`;
 

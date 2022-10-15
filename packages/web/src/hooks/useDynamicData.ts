@@ -4,13 +4,13 @@ import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
 import type { UseFormReturn } from 'react-hook-form';
 import isEqual from 'lodash/isEqual';
-import type { IField, IFieldDropdown, IJSONObject } from '@automatisch/types';
+import type { IField, IFieldDropdownSource, IJSONObject } from '@automatisch/types';
 
 import { GET_DATA } from 'graphql/queries/get-data';
 
 const variableRegExp = /({.*?})/g;
 
-function computeArguments(args: IFieldDropdown["source"]["arguments"], getValues: UseFormReturn["getValues"]): IJSONObject {
+function computeArguments(args: IFieldDropdownSource["arguments"], getValues: UseFormReturn["getValues"]): IJSONObject {
   const initialValue = {};
   return args.reduce(
     (result, { name, value }) => {

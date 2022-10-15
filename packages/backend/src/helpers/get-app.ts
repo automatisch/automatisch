@@ -16,17 +16,13 @@ async function getFileContent<C>(
   path: string,
   stripFuncs: boolean
 ): Promise<C> {
-  try {
-    const fileContent = await getDefaultExport(path);
+  const fileContent = await getDefaultExport(path);
 
-    if (stripFuncs) {
-      return stripFunctions(fileContent);
-    }
-
-    return fileContent;
-  } catch (err) {
-    return null;
+  if (stripFuncs) {
+    return stripFunctions(fileContent);
   }
+
+  return fileContent;
 }
 
 async function getChildrenContentInDirectory<C>(
@@ -55,10 +51,12 @@ async function getChildrenContentInDirectory<C>(
 const getApp = async (appKey: string, stripFuncs = true) => {
   const appData: IApp = await getDefaultExport(`../apps/${appKey}`);
 
-  appData.auth = await getFileContent<IAuth>(
-    `../apps/${appKey}/auth`,
-    stripFuncs
-  );
+  if (appData.supportsConnections) {
+    appData.auth = await getFileContent<IAuth>(
+      `../apps/${appKey}/auth`,
+      stripFuncs
+    );
+  }
   appData.triggers = await getChildrenContentInDirectory<ITrigger>(
     `${appKey}/triggers`,
     stripFuncs

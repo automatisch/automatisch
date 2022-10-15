@@ -6,5 +6,4 @@ export default {
   authDocUrl: "https://automatisch.io/docs/connections/scheduler",
   primaryColor: "0059F7",
   supportsConnections: false,
-  requiresAuthentication: false,
 };
