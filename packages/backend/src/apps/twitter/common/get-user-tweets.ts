@@ -12,8 +12,6 @@ import getUserByUsername from './get-user-by-username';
 
 type IGetUserTweetsOptions = {
   currentUser: boolean;
-  userId?: string;
-  lastInternalId?: string;
 };
 
 const getUserTweets = async (
@@ -39,7 +37,7 @@ const getUserTweets = async (
 
   do {
     const params: IJSONObject = {
-      since_id: options.lastInternalId,
+      since_id: $.execution.testRun ? null : $.flow.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };
 
@@ -63,15 +61,13 @@ const getUserTweets = async (
       response.data.data.forEach((tweet: IJSONObject) => {
         tweets.data.push({
           raw: tweet,
-          meta: { internalId: tweet.id as string },
+          meta: {
+            internalId: tweet.id as string,
+          },
         });
       });
     }
-  } while (response.data.meta.next_token && options.lastInternalId);
-
-  tweets.data.sort((tweet, nextTweet) => {
-    return (tweet.raw.id as number) - (nextTweet.raw.id as number);
-  });
+  } while (response.data.meta.next_token && !$.execution.testRun);
 
   return tweets;
 };
