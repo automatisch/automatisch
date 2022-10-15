@@ -174,23 +174,22 @@ export default {
     return interval;
   },
 
-  async run($: IGlobalVariable, startDateTime: Date) {
-    const dateTime = DateTime.fromJSDate(startDateTime);
-    const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
-      dateTime
-    ) as IJSONValue;
-
-    return { data: [dateTimeObjectRepresentation] };
-  },
-
-  async testRun($: IGlobalVariable) {
+  async run($: IGlobalVariable) {
     const nextCronDateTime = getNextCronDateTime(
       this.getInterval($.step.parameters)
     );
+    const dateTime = DateTime.now();
     const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
-      nextCronDateTime
+      $.execution.testRun ? nextCronDateTime : dateTime
     ) as IJSONValue;
 
-    return { data: [dateTimeObjectRepresentation] };
+    const dataItem = {
+      raw: dateTimeObjectRepresentation,
+      meta: {
+        internalId: dateTime.toMillis().toString(),
+      },
+    };
+
+    return { data: [dataItem] };
   },
 };
