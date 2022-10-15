@@ -94,7 +94,7 @@ export default defineConfig({
       text: 'Edit this page on GitHub',
     },
     footer: {
-      copyright: 'Copyright © 2021 Automatisch. All rights reserved.',
+      copyright: 'Copyright © 2022 Automatisch. All rights reserved.',
     },
   },
 });
