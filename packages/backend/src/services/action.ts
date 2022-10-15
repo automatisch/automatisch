@@ -48,7 +48,7 @@ export const processAction = async (options: ProcessActionOptions) => {
       status: actionOutput.error ? 'failure' : 'success',
       dataIn: computedParameters,
       dataOut: actionOutput.error ? null : actionOutput.data.raw,
-      errorDetails: actionOutput.error,
+      errorDetails: actionOutput.error ? actionOutput.error : null,
     });
 
   return { flowId, stepId, executionId, executionStep };

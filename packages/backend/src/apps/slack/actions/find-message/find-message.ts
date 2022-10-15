@@ -28,7 +28,7 @@ const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
 
   const message: IActionOutput = {
     data: {
-      raw: data?.data?.messages.matches[0],
+      raw: data?.messages.matches[0],
     },
     error: response?.integrationError || (!data.ok && data),
   };
