@@ -8,6 +8,7 @@ export default defineConfig({
   title: 'Automatisch Docs',
   description:
     'Build workflow automation without spending time and money. No code is required.',
+  cleanUrls: 'with-subfolders',
   themeConfig: {
     siteTitle: 'Automatisch',
     nav: [
