@@ -4,6 +4,7 @@ import { IApp } from '@automatisch/types';
 type Params = {
   name: string;
   onlyWithTriggers: boolean;
+  onlyWithActions: boolean;
 };
 
 const getApps = async (_parent: unknown, params: Params) => {
@@ -11,6 +12,10 @@ const getApps = async (_parent: unknown, params: Params) => {
 
   if (params.onlyWithTriggers) {
     return apps.filter((app: IApp) => app.triggers?.length);
+  }
+
+  if (params.onlyWithActions) {
+    return apps.filter((app: IApp) => app.actions?.length);
   }
 
   return apps;

@@ -49,9 +49,10 @@ function ChooseAppAndEventSubstep(
   const editorContext = React.useContext(EditorContext);
 
   const isTrigger = step.type === 'trigger';
+  const isAction = step.type === 'action';
 
   const { data } = useQuery(GET_APPS, {
-    variables: { onlyWithTriggers: isTrigger },
+    variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction },
   });
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
