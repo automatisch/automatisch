@@ -6,13 +6,16 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import type { IApp, IConnection, IStep, ISubstep } from '@automatisch/types';
+import useFormatMessage from 'hooks/useFormatMessage';
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { IApp, IConnection, IStep, ISubstep } from '@automatisch/types';
+import AddAppConnection from 'components/AddAppConnection';
 import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 
 type ChooseConnectionSubstepProps = {
+  application: IApp;
   substep: ISubstep,
   expanded?: boolean;
   onExpand: () => void;
@@ -21,6 +24,8 @@ type ChooseConnectionSubstepProps = {
   onSubmit: () => void;
   step: IStep;
 };
+
+const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 
 const optionGenerator = (connection: IConnection): { label: string; value: string; } => ({
   label: connection?.formattedData?.screenName as string ?? 'Unnamed',
@@ -38,13 +43,16 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
     step,
     onSubmit,
     onChange,
+    application,
   } = props;
   const {
     connection,
     appKey,
   } = step;
+  const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
-  const { data, loading } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey }});
+  const [showAddConnectionDialog, setShowAddConnectionDialog] = React.useState(false);
+  const { data, loading, refetch } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey }});
   // TODO: show detailed error when connection test/verification fails
   const [
     testConnection,
@@ -72,9 +80,40 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
     // intentionally no dependencies for initial test
   }, []);
 
-  const connectionOptions = React.useMemo(() => (data?.getApp as IApp)?.connections?.map((connection) => optionGenerator(connection)) || [], [data]);
+  const connectionOptions = React.useMemo(() => {
+    const appWithConnections = data?.getApp as IApp;
+    const options = appWithConnections
+      ?.connections
+      ?.map((connection) => optionGenerator(connection)) || [];
+
+    options.push({
+      label: formatMessage('chooseConnectionSubstep.addNewConnection'),
+      value: ADD_CONNECTION_VALUE
+    })
+
+    return options;
+  }, [data, formatMessage]);
 
   const { name } = substep;
+
+  const handleAddConnectionClose = React.useCallback(async (response) => {
+    setShowAddConnectionDialog(false);
+
+    const connectionId = response?.createConnection.id;
+
+    if (connectionId) {
+      await refetch();
+
+      onChange({
+        step: {
+          ...step,
+          connection: {
+            id: connectionId,
+          },
+        },
+      });
+    }
+  }, [onChange, refetch, step]);
 
   const handleChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
     if (typeof selectedOption === 'object') {
@@ -82,6 +121,11 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
       const typedSelectedOption = selectedOption as { value: string };
       const option: { value: string } = typedSelectedOption;
       const connectionId = option?.value as string;
+
+      if (connectionId === ADD_CONNECTION_VALUE) {
+        setShowAddConnectionDialog(true);
+        return;
+      }
 
       if (connectionId !== step.connection?.id) {
         onChange({
@@ -122,7 +166,12 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             disableClearable
             disabled={editorContext.readOnly}
             options={connectionOptions}
-            renderInput={(params) => <TextField {...params} label="Choose connection" />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={formatMessage('chooseConnectionSubstep.chooseConnection')}
+              />
+            )}
             value={getOption(connectionOptions, connection?.id)}
             onChange={handleChange}
             loading={loading}
@@ -136,10 +185,15 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             sx={{ mt: 2 }}
             disabled={testResultLoading || !connection?.verified || editorContext.readOnly}data-test="flow-substep-continue-button"
           >
-            Continue
+            {formatMessage('chooseConnectionSubstep.continue')}
           </Button>
         </ListItem>
       </Collapse>
+
+      {application && showAddConnectionDialog && <AddAppConnection
+        onClose={handleAddConnectionClose}
+        application={application}
+      />}
     </React.Fragment>
   );
 }
