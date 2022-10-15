@@ -26,5 +26,8 @@
   },
   "bugs": {
     "url": "https://github.com/automatisch/automatisch/issues"
+  },
+  "dependencies": {
+    "vitepress": "^1.0.0-alpha.21"
   }
 }
