@@ -7,15 +7,9 @@ import qs from 'qs';
 import generateRequest from '../../common/generate-request';
 import { omitBy, isEmpty } from 'lodash';
 
-type ISearchTweetsOptions = {
-  searchTerm: string;
-  lastInternalId?: string;
-};
+const searchTweets = async ($: IGlobalVariable) => {
+  const searchTerm = $.step.parameters.searchTerm as string;
 
-const searchTweets = async (
-  $: IGlobalVariable,
-  options: ISearchTweetsOptions
-) => {
   let response;
 
   const tweets: ITriggerOutput = {
@@ -24,7 +18,7 @@ const searchTweets = async (
 
   do {
     const params: IJSONObject = {
-      query: options.searchTerm,
+      query: searchTerm,
       since_id: $.execution.testRun ? null : $.flow.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };

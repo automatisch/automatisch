@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon';
-import { IGlobalVariable, IJSONValue } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
+import defineTrigger from '../../../../helpers/define-trigger';
 import cronTimes from '../../common/cron-times';
 import getNextCronDateTime from '../../common/get-next-cron-date-time';
 import getDateTimeObjectRepresentation from '../../common/get-date-time-object';
 
-export default {
+export default defineTrigger({
   name: 'Every month',
   key: 'everyMonth',
   description: 'Triggers every month.',
@@ -22,127 +23,127 @@ export default {
           variables: false,
           options: [
             {
-              label: 1,
+              label: '1',
               value: 1,
             },
             {
-              label: 2,
+              label: '2',
               value: 2,
             },
             {
-              label: 3,
+              label: '3',
               value: 3,
             },
             {
-              label: 4,
+              label: '4',
               value: 4,
             },
             {
-              label: 5,
+              label: '5',
               value: 5,
             },
             {
-              label: 6,
+              label: '6',
               value: 6,
             },
             {
-              label: 7,
+              label: '7',
               value: 7,
             },
             {
-              label: 8,
+              label: '8',
               value: 8,
             },
             {
-              label: 9,
+              label: '9',
               value: 9,
             },
             {
-              label: 10,
+              label: '10',
               value: 10,
             },
             {
-              label: 11,
+              label: '11',
               value: 11,
             },
             {
-              label: 12,
+              label: '12',
               value: 12,
             },
             {
-              label: 13,
+              label: '13',
               value: 13,
             },
             {
-              label: 14,
+              label: '14',
               value: 14,
             },
             {
-              label: 15,
+              label: '15',
               value: 15,
             },
             {
-              label: 16,
+              label: '16',
               value: 16,
             },
             {
-              label: 17,
+              label: '17',
               value: 17,
             },
             {
-              label: 18,
+              label: '18',
               value: 18,
             },
             {
-              label: 19,
+              label: '19',
               value: 19,
             },
             {
-              label: 20,
+              label: '20',
               value: 20,
             },
             {
-              label: 21,
+              label: '21',
               value: 21,
             },
             {
-              label: 22,
+              label: '22',
               value: 22,
             },
             {
-              label: 23,
+              label: '23',
               value: 23,
             },
             {
-              label: 24,
+              label: '24',
               value: 24,
             },
             {
-              label: 25,
+              label: '25',
               value: 25,
             },
             {
-              label: 26,
+              label: '26',
               value: 26,
             },
             {
-              label: 27,
+              label: '27',
               value: 27,
             },
             {
-              label: 28,
+              label: '28',
               value: 28,
             },
             {
-              label: 29,
+              label: '29',
               value: 29,
             },
             {
-              label: 30,
+              label: '30',
               value: 30,
             },
             {
-              label: 31,
+              label: '31',
               value: 31,
             },
           ],
@@ -270,23 +271,22 @@ export default {
     return interval;
   },
 
-  async run($: IGlobalVariable, startDateTime: Date) {
-    const dateTime = DateTime.fromJSDate(startDateTime);
-    const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
-      dateTime
-    ) as IJSONValue;
-
-    return { data: [dateTimeObjectRepresentation] };
-  },
-
-  async testRun($: IGlobalVariable) {
+  async run($) {
     const nextCronDateTime = getNextCronDateTime(
       this.getInterval($.step.parameters)
     );
+    const dateTime = DateTime.now();
     const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
-      nextCronDateTime
-    ) as IJSONValue;
+      $.execution.testRun ? nextCronDateTime : dateTime
+    );
 
-    return { data: [dateTimeObjectRepresentation] };
+    const dataItem = {
+      raw: dateTimeObjectRepresentation,
+      meta: {
+        internalId: dateTime.toMillis().toString(),
+      },
+    };
+
+    return { data: [dataItem] };
   },
-};
+});

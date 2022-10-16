@@ -1,7 +1,7 @@
-import { IGlobalVariable } from '@automatisch/types';
+import defineTrigger from '../../../../helpers/define-trigger';
 import getUserTweets from '../../common/get-user-tweets';
 
-export default {
+export default defineTrigger({
   name: 'User Tweets',
   key: 'userTweets',
   pollInterval: 15,
@@ -29,18 +29,9 @@ export default {
     },
   ],
 
-  async run($: IGlobalVariable) {
+  async run($) {
     return await getUserTweets($, {
       currentUser: false,
-      userId: $.step.parameters.username as string,
-      lastInternalId: $.flow.lastInternalId,
     });
   },
-
-  async testRun($: IGlobalVariable) {
-    return await getUserTweets($, {
-      currentUser: false,
-      userId: $.step.parameters.username as string,
-    });
-  },
-};
+});

@@ -69,7 +69,7 @@ function generateValidationSchema(substeps: ISubstep[]) {
         }
 
         // if the field depends on another field, add the dependsOn required validation
-        if (dependsOn?.length > 0) {
+        if (Array.isArray(dependsOn) && dependsOn.length > 0) {
           for (const dependsOnKey of dependsOn) {
             const missingDependencyValueMessage = `We're having trouble loading '${key}' data as required field '${dependsOnKey}' is missing.`;
 
@@ -108,10 +108,11 @@ export default function FlowStep(
     null
   );
   const isTrigger = step.type === 'trigger';
+  const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(0);
   const { data } = useQuery(GET_APPS, {
-    variables: { onlyWithTriggers: isTrigger },
+    variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction },
   });
   const [
     getStepWithTestExecutions,
@@ -250,7 +251,7 @@ export default function FlowStep(
                       index: number
                     ) => (
                       <React.Fragment key={`${substep?.name}-${index}`}>
-                        {substep.key === 'chooseConnection' && (
+                        {substep.key === 'chooseConnection' && app && (
                           <ChooseConnectionSubstep
                             expanded={currentSubstep === index + 1}
                             substep={substep}
@@ -258,6 +259,7 @@ export default function FlowStep(
                             onCollapse={() => toggleSubstep(index + 1)}
                             onSubmit={expandNextStep}
                             onChange={handleChange}
+                            application={app}
                             step={step}
                           />
                         )}

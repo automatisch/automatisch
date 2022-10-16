@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { IJSONObject } from '@automatisch/types';
 
 export default function getDateTimeObjectRepresentation(dateTime: DateTime) {
   const defaults = dateTime.toObject();
@@ -10,5 +11,5 @@ export default function getDateTimeObjectRepresentation(dateTime: DateTime) {
     pretty_time: dateTime.toLocaleString(DateTime.TIME_WITH_SECONDS),
     pretty_day_of_week: dateTime.toFormat('cccc'),
     day_of_week: dateTime.weekday,
-  };
+  } as IJSONObject;
 }

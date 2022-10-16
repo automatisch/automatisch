@@ -1,7 +1,7 @@
-import { IGlobalVariable } from '@automatisch/types';
+import defineTrigger from '../../../../helpers/define-trigger';
 import searchTweets from './search-tweets';
 
-export default {
+export default defineTrigger({
   name: 'Search Tweets',
   key: 'searchTweets',
   pollInterval: 15,
@@ -30,15 +30,7 @@ export default {
     },
   ],
 
-  async run($: IGlobalVariable) {
-    return await searchTweets($, {
-      searchTerm: $.step.parameters.searchTerm as string,
-    });
+  async run($) {
+    return await searchTweets($);
   },
-
-  async testRun($: IGlobalVariable) {
-    return await searchTweets($, {
-      searchTerm: $.step.parameters.searchTerm as string,
-    });
-  },
-};
+});

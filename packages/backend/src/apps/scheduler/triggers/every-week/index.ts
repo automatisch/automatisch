@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon';
 import { IGlobalVariable, IJSONValue } from '@automatisch/types';
+import defineTrigger from '../../../../helpers/define-trigger';
 import cronTimes from '../../common/cron-times';
 import getNextCronDateTime from '../../common/get-next-cron-date-time';
 import getDateTimeObjectRepresentation from '../../common/get-date-time-object';
 
-export default {
+export default defineTrigger({
   name: 'Every week',
   key: 'everyWeek',
   description: 'Triggers every week.',
@@ -174,23 +175,22 @@ export default {
     return interval;
   },
 
-  async run($: IGlobalVariable, startDateTime: Date) {
-    const dateTime = DateTime.fromJSDate(startDateTime);
-    const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
-      dateTime
-    ) as IJSONValue;
-
-    return { data: [dateTimeObjectRepresentation] };
-  },
-
-  async testRun($: IGlobalVariable) {
+  async run($) {
     const nextCronDateTime = getNextCronDateTime(
       this.getInterval($.step.parameters)
     );
+    const dateTime = DateTime.now();
     const dateTimeObjectRepresentation = getDateTimeObjectRepresentation(
-      nextCronDateTime
-    ) as IJSONValue;
+      $.execution.testRun ? nextCronDateTime : dateTime
+    );
 
-    return { data: [dateTimeObjectRepresentation] };
+    const dataItem = {
+      raw: dateTimeObjectRepresentation,
+      meta: {
+        internalId: dateTime.toMillis().toString(),
+      },
+    };
+
+    return { data: [dataItem] };
   },
-};
+});

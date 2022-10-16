@@ -31,8 +31,9 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
   const [activeTabIndex, setActiveTabIndex] = React.useState(0);
   const step: IStep = executionStep.step;
   const isTrigger = step.type === 'trigger';
+  const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
-  const { data } = useQuery(GET_APPS, { variables: { onlyWithTriggers: isTrigger }});
+  const { data } = useQuery(GET_APPS, { variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction }});
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 

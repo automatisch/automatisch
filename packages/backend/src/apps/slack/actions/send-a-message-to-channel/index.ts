@@ -1,7 +1,7 @@
-import { IGlobalVariable } from '@automatisch/types';
+import defineAction from '../../../../helpers/define-action';
 import postMessage from './post-message';
 
-export default {
+export default defineAction({
   name: 'Send a message to channel',
   key: 'sendMessageToChannel',
   description: 'Send a message to a specific channel you specify.',
@@ -48,7 +48,7 @@ export default {
     },
   ],
 
-  async run($: IGlobalVariable) {
+  async run($) {
     const channelId = $.step.parameters.channel as string;
     const text = $.step.parameters.message as string;
 
@@ -56,4 +56,4 @@ export default {
 
     return message;
   },
-};
+});

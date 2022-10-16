@@ -90,45 +90,45 @@ export interface IFieldDropdown {
   label: string;
   type: 'dropdown';
   required: boolean;
-  readOnly: boolean;
-  value: string;
-  placeholder: string | null;
-  description: string;
-  docUrl: string;
-  clickToCopy: boolean;
+  readOnly?: boolean;
+  value?: string | boolean;
+  placeholder?: string | null;
+  description?: string;
+  docUrl?: string;
+  clickToCopy?: boolean;
+  variables?: boolean;
+  dependsOn?: string[];
+  options?: IFieldDropdownOption[];
+  source?: IFieldDropdownSource;
+}
+
+export interface IFieldDropdownSource {
+  type: string;
   name: string;
-  variables: boolean;
-  dependsOn: string[];
-  options: IFieldDropdownOption[];
-  source: {
-    type: string;
+  arguments: {
     name: string;
-    arguments: {
-      name: string;
-      value: string;
-    }[];
-  };
+    value: string;
+  }[];
 }
 
 export interface IFieldDropdownOption {
   label: string;
-  value: boolean | string;
+  value: boolean | string | number;
 }
 
 export interface IFieldText {
   key: string;
   label: string;
   type: 'string';
-  required: boolean;
-  readOnly: boolean;
-  value: string;
-  placeholder: string | null;
-  description: string;
-  docUrl: string;
-  clickToCopy: boolean;
-  name: string;
-  variables: boolean;
-  dependsOn: string[];
+  required?: boolean;
+  readOnly?: boolean;
+  value?: string;
+  placeholder?: string | null;
+  description?: string;
+  docUrl?: string;
+  clickToCopy?: boolean;
+  variables?: boolean;
+  dependsOn?: string[];
 }
 
 export type IField = IFieldDropdown | IFieldText;
@@ -202,13 +202,12 @@ export interface ITriggerDataItem {
 export interface ITrigger {
   name: string;
   key: string;
-  pollInterval: number;
+  pollInterval?: number;
   description: string;
-  dedupeStrategy: 'greatest' | 'unique' | 'last';
+  dedupeStrategy?: 'greatest' | 'unique' | 'last';
   substeps: ISubstep[];
-  getInterval(parameters: IGlobalVariable['step']['parameters']): string;
+  getInterval?(parameters: IGlobalVariable['step']['parameters']): string;
   run($: IGlobalVariable): Promise<ITriggerOutput>;
-  testRun($: IGlobalVariable): Promise<ITriggerOutput>;
 }
 
 export interface IActionOutput {
@@ -239,7 +238,7 @@ export interface IAuthentication {
 export interface ISubstep {
   key: string;
   name: string;
-  arguments: IField[];
+  arguments?: IField[];
 }
 
 export type IHttpClientParams = {
@@ -271,7 +270,7 @@ export type IGlobalVariable = {
   execution?: {
     id: string;
     testRun: boolean;
-  }
+  };
   process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
 };
 
