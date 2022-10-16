@@ -41,7 +41,7 @@ const globalVariable = async (
       data: connection?.formattedData,
     },
     app: app,
-    http: createHttpClient({ baseURL: app.baseUrl }),
+    http: createHttpClient({ baseURL: app.apiBaseUrl }),
     flow: {
       id: flow?.id,
       lastInternalId,

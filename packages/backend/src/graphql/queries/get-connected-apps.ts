@@ -34,10 +34,10 @@ const getConnectedApps = async (
   const usedApps = [...new Set([...duplicatedUsedApps, ...connectionKeys])];
 
   apps = apps
-    .filter((app: IApp) => {
+    .filter((app) => {
       return usedApps.includes(app.key);
     })
-    .map((app: IApp) => {
+    .map((app) => {
       const connection = connections.find(
         (connection) => (connection as IConnection).key === app.key
       );
@@ -54,7 +54,8 @@ const getConnectedApps = async (
       });
 
       return app;
-    });
+    })
+    .sort((appA, appB) => appA.name.localeCompare(appB.name));
 
   return apps;
 };

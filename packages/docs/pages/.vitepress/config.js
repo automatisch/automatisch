@@ -29,11 +29,11 @@ export default defineConfig({
           text: 'Connections',
           collapsible: true,
           items: [
-            { text: 'Twitter', link: '/connections/twitter' },
-            { text: 'Slack', link: '/connections/slack' },
+            { text: 'Github', link: '/connections/github' },
             { text: 'Scheduler', link: '/connections/scheduler' },
+            { text: 'Slack', link: '/connections/slack' },
+            { text: 'Twitter', link: '/connections/twitter' },
             // Temporarily disable following pages until we release github and typeform integrations
-            // { text: 'Github', link: '/connections/github' },
             // { text: 'Typeform', link: '/connections/typeform' },
           ],
         },

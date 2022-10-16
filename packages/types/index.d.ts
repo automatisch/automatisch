@@ -157,6 +157,7 @@ export interface IApp {
   authDocUrl: string;
   primaryColor: string;
   supportsConnections: boolean;
+  apiBaseUrl: string;
   baseUrl: string;
   auth: IAuth;
   connectionCount: number;
