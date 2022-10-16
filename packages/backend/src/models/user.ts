@@ -13,6 +13,7 @@ class User extends Base {
   connections?: Connection[];
   flows?: Flow[];
   steps?: Step[];
+  executions?: Execution[];
 
   static tableName = 'users';
 

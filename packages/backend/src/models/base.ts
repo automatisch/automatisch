@@ -2,9 +2,15 @@ import { AjvValidator, Model, snakeCaseMappers } from 'objection';
 import type { QueryContext, ModelOptions, ColumnNameMappers } from 'objection';
 import addFormats from 'ajv-formats';
 
+import ExtendedQueryBuilder from './query-builder';
+
 class Base extends Model {
   createdAt!: string;
   updatedAt!: string;
+  deletedAt: string;
+
+  QueryBuilderType!: ExtendedQueryBuilder<this>;
+  static QueryBuilder = ExtendedQueryBuilder;
 
   static get columnNameMappers(): ColumnNameMappers {
     return snakeCaseMappers();
@@ -30,10 +36,10 @@ class Base extends Model {
     this.updatedAt = new Date().toISOString();
   }
 
-  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext): Promise<void> {
+  async $beforeUpdate(opts: ModelOptions, queryContext: QueryContext): Promise<void> {
     this.updatedAt = new Date().toISOString();
 
-    await super.$beforeUpdate(opt, queryContext);
+    await super.$beforeUpdate(opts, queryContext);
   }
 }
 
