@@ -13,10 +13,11 @@ const getExecutions = async (
 ) => {
   const executions = context.currentUser
     .$relatedQuery('executions')
+    .withSoftDeleted()
     .withGraphFetched({
       flow: {
-        steps: true
-      }
+        steps: true,
+      },
     })
     .orderBy('created_at', 'desc');
 

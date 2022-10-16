@@ -14,11 +14,13 @@ const getExecutionSteps = async (
 ) => {
   const execution = await context.currentUser
     .$relatedQuery('executions')
+    .withSoftDeleted()
     .findById(params.executionId)
     .throwIfNotFound();
 
   const executionSteps = execution
     .$relatedQuery('executionSteps')
+    .withSoftDeleted()
     .withGraphFetched('step')
     .orderBy('created_at', 'asc');
 
