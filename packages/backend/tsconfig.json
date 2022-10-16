@@ -26,7 +26,6 @@
     "src/apps/discord",
     "src/apps/firebase",
     "src/apps/flickr",
-    "src/apps/github",
     "src/apps/gitlab",
     "src/apps/twitch",
     "src/apps/typeform"
