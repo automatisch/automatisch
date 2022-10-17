@@ -10,6 +10,7 @@
     "serve": "vitepress serve pages"
   },
   "devDependencies": {
+    "sitemap": "^7.1.1",
     "vitepress": "^1.0.0-alpha.21",
     "vue": "^3.2.37"
   },

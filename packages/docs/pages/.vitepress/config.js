@@ -1,6 +1,12 @@
 import { defineConfig } from 'vitepress';
+import { createWriteStream } from 'fs';
+import { resolve } from 'path';
+import { SitemapStream } from 'sitemap';
 
 const BASE = process.env.BASE_URL || '/';
+
+const links = [];
+const PROD_BASE_URL = 'https://automatisch.io/docs';
 
 export default defineConfig({
   base: BASE,
@@ -102,7 +108,7 @@ export default defineConfig({
     if (ctx.pageData.relativePath === '') return; // Skip 404 page.
 
     const isHomepage = ctx.pageData.relativePath === 'index.md';
-    let canonicalUrl = 'https://automatisch.io/docs';
+    let canonicalUrl = PROD_BASE_URL;
 
     if (!isHomepage) {
       canonicalUrl =
@@ -124,5 +130,33 @@ export default defineConfig({
         },
       ],
     ];
+  },
+
+  async transformHtml(_, id, { pageData }) {
+    if (!/[\\/]404\.html$/.test(id)) {
+      let url = pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2');
+
+      const isHomepage = url === '';
+
+      if (isHomepage) {
+        url = '/docs';
+      }
+
+      links.push({
+        url,
+        lastmod: pageData.lastUpdated,
+      });
+    }
+  },
+
+  async buildEnd({ outDir }) {
+    const sitemap = new SitemapStream({
+      hostname: `${PROD_BASE_URL}/`,
+    });
+
+    const writeStream = createWriteStream(resolve(outDir, 'sitemap.xml'));
+    sitemap.pipe(writeStream);
+    links.forEach((link) => sitemap.write(link));
+    sitemap.end();
   },
 });
