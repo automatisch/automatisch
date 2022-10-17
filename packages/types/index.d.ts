@@ -1,4 +1,4 @@
-import type { AxiosInstance } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 export type IHttpClient = AxiosInstance;
 
 // Type definitions for automatisch
@@ -153,19 +153,24 @@ export interface IApp {
   name: string;
   key: string;
   iconUrl: string;
-  docUrl: string;
+  docUrl?: string;
   authDocUrl: string;
   primaryColor: string;
   supportsConnections: boolean;
   apiBaseUrl: string;
   baseUrl: string;
-  auth: IAuth;
-  connectionCount: number;
-  flowCount: number;
-  data: IData;
-  triggers: ITrigger[];
-  actions: IAction[];
-  connections: IConnection[];
+  auth?: IAuth;
+  connectionCount?: number;
+  flowCount?: number;
+  beforeRequest: TBeforeRequest[];
+  data?: IData;
+  triggers?: ITrigger[];
+  actions?: IAction[];
+  connections?: IConnection[];
+}
+
+export type TBeforeRequest = {
+  ($: IGlobalVariable, requestConfig: AxiosRequestConfig): AxiosRequestConfig;
 }
 
 export interface IData {
@@ -243,7 +248,9 @@ export interface ISubstep {
 }
 
 export type IHttpClientParams = {
+  $: IGlobalVariable;
   baseURL?: string;
+  beforeRequest?: TBeforeRequest[];
 };
 
 export type IGlobalVariable = {
@@ -252,7 +259,7 @@ export type IGlobalVariable = {
     data: IJSONObject;
   };
   app: IApp;
-  http: IHttpClient;
+  http?: IHttpClient;
   flow?: {
     id: string;
     lastInternalId: string;
