@@ -21,7 +21,7 @@ const generateRequest = async (
   };
 
   const requestData = {
-    url: `${$.app.baseUrl}${requestPath}`,
+    url: `${$.app.apiBaseUrl}${requestPath}`,
     method,
     data,
   };
