@@ -24,7 +24,7 @@ const globalVariable = async (
   const trigger = await step?.getTriggerCommand();
   const nextStep = await step?.getNextStep();
 
-  const variable: IGlobalVariable = {
+  const $: IGlobalVariable = {
     auth: {
       set: async (args: IJSONObject) => {
         if (connection) {
@@ -41,7 +41,6 @@ const globalVariable = async (
       data: connection?.formattedData,
     },
     app: app,
-    http: createHttpClient({ baseURL: app.apiBaseUrl }),
     flow: {
       id: flow?.id,
       lastInternalId,
@@ -62,6 +61,12 @@ const globalVariable = async (
     },
   };
 
+  $.http = createHttpClient({
+    $,
+    baseURL: app.apiBaseUrl,
+    beforeRequest: app.beforeRequest,
+  });
+
   if (trigger && trigger.dedupeStrategy === 'unique') {
     const lastInternalIds = await flow?.lastInternalIds();
 
@@ -69,10 +74,10 @@ const globalVariable = async (
       return lastInternalIds?.includes(internalId);
     };
 
-    variable.flow.isAlreadyProcessed = isAlreadyProcessed;
+    $.flow.isAlreadyProcessed = isAlreadyProcessed;
   }
 
-  return variable;
+  return $;
 };
 
 export default globalVariable;

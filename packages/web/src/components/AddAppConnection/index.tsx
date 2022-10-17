@@ -31,12 +31,11 @@ type Response = {
 export default function AddAppConnection(props: AddAppConnectionProps): React.ReactElement {
   const { application, connectionId, onClose } = props;
   const { name, authDocUrl, key, auth } = application;
-  const { fields, authenticationSteps, reconnectionSteps } = auth;
   const formatMessage = useFormatMessage();
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [inProgress, setInProgress] = React.useState(false);
   const hasConnection = Boolean(connectionId);
-  const steps = hasConnection ? reconnectionSteps : authenticationSteps;
+  const steps = hasConnection ? auth?.reconnectionSteps : auth?.authenticationSteps;
 
   React.useEffect(() => {
     if (window.opener) {
@@ -46,6 +45,8 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
   }, []);
 
   const submitHandler: SubmitHandler<FieldValues> = React.useCallback(async (data) => {
+    if (!steps) return;
+
     setInProgress(true);
     setErrorMessage(null);
 
@@ -106,7 +107,7 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
       <DialogContent>
         <DialogContentText tabIndex={-1} component="div">
           <Form onSubmit={submitHandler}>
-            {fields?.map((field: IField) => (<InputCreator key={field.key} schema={field} />))}
+            {auth?.fields?.map((field: IField) => (<InputCreator key={field.key} schema={field} />))}
 
             <LoadingButton
               type="submit"
