@@ -5,16 +5,12 @@ const postMessage = async (
   channelId: string,
   text: string
 ) => {
-  const headers = {
-    Authorization: `Bearer ${$.auth.data.accessToken}`,
-  };
-
   const params = {
     channel: channelId,
     text,
   };
 
-  const response = await $.http.post('/chat.postMessage', params, { headers });
+  const response = await $.http.post('/chat.postMessage', params);
 
   const message: IActionOutput = {
     data: {
