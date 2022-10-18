@@ -6,6 +6,7 @@ export default defineTrigger({
   key: 'myFollowers',
   pollInterval: 15,
   description: 'Will be triggered when you have a new follower.',
+  dedupeStrategy: 'unique',
   substeps: [
     {
       key: 'chooseConnection',
@@ -18,6 +19,6 @@ export default defineTrigger({
   ],
 
   async run($) {
-    return await myFollowers($, $.flow.lastInternalId);
+    return await myFollowers($);
   },
 });

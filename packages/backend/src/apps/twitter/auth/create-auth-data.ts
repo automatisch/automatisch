@@ -1,4 +1,3 @@
-import generateRequest from '../common/generate-request';
 import { IJSONObject, IField, IGlobalVariable } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 
@@ -9,13 +8,10 @@ export default async function createAuthData($: IGlobalVariable) {
     );
 
     const callbackUrl = oauthRedirectUrlField.value;
+    const requestPath = '/oauth/request_token';
+    const data = { oauth_callback: callbackUrl };
 
-    const response = await generateRequest($, {
-      requestPath: '/oauth/request_token',
-      method: 'POST',
-      data: { oauth_callback: callbackUrl },
-    });
-
+    const response = await $.http.post(requestPath, data);
     const responseData = Object.fromEntries(new URLSearchParams(response.data));
 
     await $.auth.set({
