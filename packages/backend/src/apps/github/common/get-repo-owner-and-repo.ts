@@ -3,7 +3,7 @@ type TRepoOwnerAndRepo = {
   repo: string;
 }
 
-export function getRepoOwnerAndRepo(repoFullName: string): TRepoOwnerAndRepo {
+export default function getRepoOwnerAndRepo(repoFullName: string): TRepoOwnerAndRepo {
   const [repoOwner, repo] = repoFullName.split('/');
 
   return {
