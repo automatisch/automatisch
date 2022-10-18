@@ -1,6 +1,12 @@
 import { Token } from 'oauth-1.0a';
-import { TBeforeRequest } from '@automatisch/types';
+import { IJSONObject, TBeforeRequest } from '@automatisch/types';
 import oauthClient from './oauth-client';
+
+type RequestDataType = {
+  url: string;
+  method: string;
+  data?: IJSONObject;
+};
 
 const addAuthHeader: TBeforeRequest = ($, requestConfig) => {
   const { url, method, data } = requestConfig;
@@ -10,11 +16,14 @@ const addAuthHeader: TBeforeRequest = ($, requestConfig) => {
     secret: $.auth.data?.accessSecret as string,
   };
 
-  const requestData = {
+  const requestData: RequestDataType = {
     url: `${requestConfig.baseURL}${url}`,
     method,
-    data,
   };
+
+  if (url === '/oauth/request_token') {
+    requestData.data = data;
+  }
 
   const authHeader = oauthClient($).toHeader(
     oauthClient($).authorize(requestData, token)
