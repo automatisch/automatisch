@@ -1,6 +1,7 @@
+import { IGlobalVariable } from '@automatisch/types';
 import verifyCredentials from './verify-credentials';
 
-const isStillVerified = async ($: any) => {
+const isStillVerified = async ($: IGlobalVariable) => {
   try {
     await verifyCredentials($);
     return true;

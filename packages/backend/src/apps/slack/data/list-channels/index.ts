@@ -13,19 +13,15 @@ export default {
       error: null,
     };
 
-    const response = await $.http.get('/conversations.list', {
-      headers: {
-        Authorization: `Bearer ${$.auth.data.accessToken}`,
-      },
-    });
+    const response = await $.http.get('/conversations.list');
 
     if (response.integrationError) {
       channels.error = response.integrationError;
       return channels;
     }
 
-    if (response.data.ok === 'false') {
-      channels.error = response.data.error;
+    if (response.data.ok === false) {
+      channels.error = response.data;
       return channels;
     }
 

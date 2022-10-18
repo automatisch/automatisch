@@ -8,10 +8,6 @@ type FindMessageOptions = {
 };
 
 const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
-  const headers = {
-    Authorization: `Bearer ${$.auth.data.accessToken}`,
-  };
-
   const params = {
     query: options.query,
     sort: options.sortBy,
@@ -20,7 +16,6 @@ const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
   };
 
   const response = await $.http.get('/search.messages', {
-    headers,
     params,
   });
 
