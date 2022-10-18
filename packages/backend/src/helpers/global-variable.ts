@@ -68,9 +68,11 @@ const globalVariable = async (
   });
 
   if (trigger && trigger.dedupeStrategy === 'unique') {
-    const lastInternalIds = await flow?.lastInternalIds();
+    const lastInternalIds = testRun ? [] : await flow?.lastInternalIds();
 
     const isAlreadyProcessed = (internalId: string) => {
+      if (testRun) return false;
+
       return lastInternalIds?.includes(internalId);
     };
 

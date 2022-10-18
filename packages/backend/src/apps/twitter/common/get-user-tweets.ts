@@ -6,7 +6,6 @@ import {
 import { URLSearchParams } from 'url';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
-import generateRequest from './generate-request';
 import getCurrentUser from './get-current-user';
 import getUserByUsername from './get-user-by-username';
 
@@ -14,19 +13,7 @@ type IGetUserTweetsOptions = {
   currentUser: boolean;
 };
 
-const getUserTweets = async (
-  $: IGlobalVariable,
-  options: IGetUserTweetsOptions
-) => {
-  let username: string;
-
-  if (options.currentUser) {
-    const currentUser = await getCurrentUser($);
-    username = currentUser.username as string;
-  } else {
-    username = $.step.parameters.username as string;
-  }
-
+const fetchTweets = async ($: IGlobalVariable, username: string) => {
   const user = await getUserByUsername($, username);
 
   let response;
@@ -47,10 +34,7 @@ const getUserTweets = async (
       queryParams.toString() ? `?${queryParams.toString()}` : ''
     }`;
 
-    response = await generateRequest($, {
-      requestPath,
-      method: 'GET',
-    });
+    response = await $.http.get(requestPath);
 
     if (response.integrationError) {
       tweets.error = response.integrationError;
@@ -68,6 +52,28 @@ const getUserTweets = async (
       });
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
+
+  return tweets;
+};
+
+const getUserTweets = async (
+  $: IGlobalVariable,
+  options: IGetUserTweetsOptions
+) => {
+  let username: string;
+
+  if (options.currentUser) {
+    const currentUser = await getCurrentUser($);
+    username = currentUser.username as string;
+  } else {
+    username = $.step.parameters.username as string;
+  }
+
+  const tweets = await fetchTweets($, username);
+
+  tweets.data.sort((tweet, nextTweet) => {
+    return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
+  });
 
   return tweets;
 };

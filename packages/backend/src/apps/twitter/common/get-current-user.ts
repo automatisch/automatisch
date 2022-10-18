@@ -1,13 +1,9 @@
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
-import generateRequest from './generate-request';
 
 const getCurrentUser = async ($: IGlobalVariable): Promise<IJSONObject> => {
-  const response = await generateRequest($, {
-    requestPath: '/2/users/me',
-    method: 'GET',
-  });
-
+  const response = await $.http.get('/2/users/me');
   const currentUser = response.data.data;
+
   return currentUser;
 };
 

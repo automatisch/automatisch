@@ -5,11 +5,9 @@ import {
 } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import { omitBy, isEmpty } from 'lodash';
-import generateRequest from './generate-request';
 
 type GetUserFollowersOptions = {
   userId: string;
-  lastInternalId?: string;
 };
 
 const getUserFollowers = async (
@@ -33,10 +31,7 @@ const getUserFollowers = async (
       queryParams.toString() ? `?${queryParams.toString()}` : ''
     }`;
 
-    response = await generateRequest($, {
-      requestPath,
-      method: 'GET',
-    });
+    response = await $.http.get(requestPath);
 
     if (response.integrationError) {
       followers.error = response.integrationError;
@@ -49,18 +44,18 @@ const getUserFollowers = async (
     }
 
     if (response.data.meta.result_count > 0) {
-      response.data.data.forEach((follower: IJSONObject) => {
+      for (const follower of response.data.data) {
+        if ($.flow.isAlreadyProcessed(follower.id as string)) {
+          return followers;
+        }
+
         followers.data.push({
           raw: follower,
           meta: { internalId: follower.id as string },
         });
-      });
+      }
     }
-  } while (response.data.meta.next_token && options.lastInternalId);
-
-  followers.data.sort((follower, nextFollower) => {
-    return (follower.raw.id as number) - (nextFollower.raw.id as number);
-  });
+  } while (response.data.meta.next_token && !$.execution.testRun);
 
   return followers;
 };

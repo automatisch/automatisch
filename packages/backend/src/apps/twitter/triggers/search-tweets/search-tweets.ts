@@ -4,10 +4,9 @@ import {
   ITriggerOutput,
 } from '@automatisch/types';
 import qs from 'qs';
-import generateRequest from '../../common/generate-request';
 import { omitBy, isEmpty } from 'lodash';
 
-const searchTweets = async ($: IGlobalVariable) => {
+const fetchTweets = async ($: IGlobalVariable) => {
   const searchTerm = $.step.parameters.searchTerm as string;
 
   let response;
@@ -29,10 +28,7 @@ const searchTweets = async ($: IGlobalVariable) => {
       queryParams.toString() ? `?${queryParams.toString()}` : ''
     }`;
 
-    response = await generateRequest($, {
-      requestPath,
-      method: 'GET',
-    });
+    response = await $.http.get(requestPath);
 
     if (response.integrationError) {
       tweets.error = response.integrationError;
@@ -58,8 +54,14 @@ const searchTweets = async ($: IGlobalVariable) => {
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
 
+  return tweets;
+};
+
+const searchTweets = async ($: IGlobalVariable) => {
+  const tweets = await fetchTweets($);
+
   tweets.data.sort((tweet, nextTweet) => {
-    return (tweet.raw.id as number) - (nextTweet.raw.id as number);
+    return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
   });
 
   return tweets;
