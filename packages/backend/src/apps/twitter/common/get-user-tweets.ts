@@ -72,7 +72,7 @@ const getUserTweets = async (
   const tweets = await fetchTweets($, username);
 
   tweets.data.sort((tweet, nextTweet) => {
-    return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
+    return Number(tweet.meta.internalId) - Number(nextTweet.meta.internalId);
   });
 
   return tweets;
