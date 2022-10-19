@@ -15,7 +15,7 @@ class Step extends Base {
   appKey?: string;
   type!: IStep['type'];
   connectionId?: string;
-  status = 'incomplete';
+  status: 'incomplete' | 'completed';
   position!: number;
   parameters: IJSONObject;
   connection?: Connection;
@@ -35,7 +35,11 @@ class Step extends Base {
       appKey: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
       connectionId: { type: ['string', 'null'], format: 'uuid' },
-      status: { type: 'string', enum: ['incomplete', 'completed'] },
+      status: {
+        type: 'string',
+        enum: ['incomplete', 'completed'],
+        default: 'incomplete',
+      },
       position: { type: 'integer' },
       parameters: { type: 'object' },
     },
