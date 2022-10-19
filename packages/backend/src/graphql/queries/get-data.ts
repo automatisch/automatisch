@@ -29,6 +29,11 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
 
   const command = app.data.find((data: IData) => data.key === params.key);
 
+  for (const parameterKey in params.parameters) {
+    const parameterValue = params.parameters[parameterKey];
+    $.step.parameters[parameterKey] = parameterValue;
+  }
+
   const fetchedData = await command.run($);
 
   if (fetchedData.error) {
