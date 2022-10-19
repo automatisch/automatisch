@@ -9,12 +9,13 @@ interface ControlledAutocompleteProps extends AutocompleteProps<IFieldDropdownOp
   name: string;
   required?: boolean;
   description?: string;
+  dependsOn?: string[];
 }
 
 const getOption = (options: readonly IFieldDropdownOption[], value: string) => options.find(option => option.value === value) || null;
 
 function ControlledAutocomplete(props: ControlledAutocompleteProps): React.ReactElement {
-  const { control } = useFormContext();
+  const { control, watch, setValue, resetField } = useFormContext();
 
   const {
     required = false,
@@ -25,8 +26,25 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
     onChange,
     description,
     options = [],
+    dependsOn = [],
     ...autocompleteProps
   } = props;
+
+  let dependsOnValues: unknown[] = [];
+  if (dependsOn?.length) {
+    dependsOnValues = watch(dependsOn);
+  }
+
+  React.useEffect(() => {
+    const hasDependencies = dependsOnValues.length;
+    const allDepsSatisfied = dependsOnValues.every(Boolean);
+
+    if (hasDependencies && !allDepsSatisfied) {
+      // Reset the field if any dependency is not satisfied
+      setValue(name, null);
+      resetField(name);
+    }
+  }, dependsOnValues);
 
   return (
     <Controller
