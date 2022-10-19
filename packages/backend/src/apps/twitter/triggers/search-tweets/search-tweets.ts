@@ -61,7 +61,7 @@ const searchTweets = async ($: IGlobalVariable) => {
   const tweets = await fetchTweets($);
 
   tweets.data.sort((tweet, nextTweet) => {
-    return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
+    return Number(tweet.meta.internalId) - Number(nextTweet.meta.internalId);
   });
 
   return tweets;
