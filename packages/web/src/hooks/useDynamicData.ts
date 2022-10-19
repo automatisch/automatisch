@@ -20,7 +20,7 @@ function computeArguments(args: IFieldDropdownSource["arguments"], getValues: Us
         const sanitizedFieldPath = value.replace(/{|}/g, '');
         const computedValue = getValues(sanitizedFieldPath);
 
-        if (!computedValue) throw new Error(`The ${sanitizedFieldPath} field is required.`);
+        if (computedValue === undefined) throw new Error(`The ${sanitizedFieldPath} field is required.`);
 
         set(result, name, computedValue);
 

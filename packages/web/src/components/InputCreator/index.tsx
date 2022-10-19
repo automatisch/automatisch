@@ -44,6 +44,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     clickToCopy,
     variables,
     type,
+    dependsOn,
   } = schema;
 
   const { data, loading } = useDynamicData(stepId, schema);
@@ -55,6 +56,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     return (
       <ControlledAutocomplete
         name={computedName}
+        dependsOn={dependsOn}
         fullWidth
         disablePortal
         disableClearable={required}

@@ -47,7 +47,7 @@ export const processAction = async (options: ProcessActionOptions) => {
       stepId: $.step.id,
       status: actionOutput.error ? 'failure' : 'success',
       dataIn: computedParameters,
-      dataOut: actionOutput.error ? null : actionOutput.data.raw,
+      dataOut: actionOutput.error ? null : actionOutput.data?.raw,
       errorDetails: actionOutput.error ? actionOutput.error : null,
     });
 

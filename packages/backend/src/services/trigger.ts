@@ -38,7 +38,7 @@ export const processTrigger = async (options: ProcessTriggerOptions) => {
       stepId: $.step.id,
       status: error ? 'failure' : 'success',
       dataIn: $.step.parameters,
-      dataOut: !error ? triggerDataItem.raw : null,
+      dataOut: !error ? triggerDataItem?.raw : null,
       errorDetails: error,
     });
 
