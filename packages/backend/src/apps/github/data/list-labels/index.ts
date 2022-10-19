@@ -11,6 +11,9 @@ export default {
       repoOwner,
       repo,
     } = getRepoOwnerAndRepo($.step.parameters.repo as string);
+
+    if (!repo) return { data: [] };
+
     const firstPageRequest = $.http.get(`/repos/${repoOwner}/${repo}/labels`);
     const response = await paginateAll($, firstPageRequest);
 
