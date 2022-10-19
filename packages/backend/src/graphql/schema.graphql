@@ -233,6 +233,7 @@ type Execution {
   testRun: Boolean
   createdAt: String
   updatedAt: String
+  status: String
   flow: Flow
 }
 
