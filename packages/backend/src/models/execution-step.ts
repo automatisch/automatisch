@@ -12,7 +12,7 @@ class ExecutionStep extends Base {
   dataIn!: IJSONObject;
   dataOut!: IJSONObject;
   errorDetails: IJSONObject;
-  status = 'failure';
+  status: 'success' | 'failure';
   step: Step;
 
   static tableName = 'execution_steps';

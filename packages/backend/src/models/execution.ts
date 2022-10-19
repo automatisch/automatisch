@@ -7,9 +7,9 @@ import Telemetry from '../helpers/telemetry';
 class Execution extends Base {
   id!: string;
   flowId!: string;
-  testRun = false;
+  testRun: boolean;
   internalId: string;
-  executionSteps: ExecutionStep[] = [];
+  executionSteps: ExecutionStep[];
 
   static tableName = 'executions';
 
@@ -19,7 +19,7 @@ class Execution extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       flowId: { type: 'string', format: 'uuid' },
-      testRun: { type: 'boolean' },
+      testRun: { type: 'boolean', default: false },
       internalId: { type: 'string' },
     },
   };

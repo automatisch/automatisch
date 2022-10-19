@@ -18,6 +18,7 @@ const createConnection = async (
   return await context.currentUser.$relatedQuery('connections').insert({
     key: params.input.key,
     formattedData: params.input.formattedData,
+    verified: false,
   });
 };
 
