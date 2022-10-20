@@ -10,7 +10,13 @@ class App {
 
   // Temporaryly restrict the apps we expose until
   // their actions/triggers are implemented!
-  static temporaryList = ['github', 'scheduler', 'slack', 'twitter'];
+  static temporaryList = [
+    'flickr',
+    'github',
+    'scheduler',
+    'slack',
+    'twitter',
+  ];
 
   static async findAll(name?: string, stripFuncs = true): Promise<IApp[]> {
     if (!name)

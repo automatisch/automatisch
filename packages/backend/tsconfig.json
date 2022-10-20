@@ -25,7 +25,6 @@
   "exclude": [
     "src/apps/discord",
     "src/apps/firebase",
-    "src/apps/flickr",
     "src/apps/gitlab",
     "src/apps/twitch",
     "src/apps/typeform"

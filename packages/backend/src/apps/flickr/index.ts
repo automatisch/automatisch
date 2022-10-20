@@ -1,25 +1,15 @@
-import {
-  IService,
-  IAuthentication,
-  IApp,
-  IJSONObject,
-} from '@automatisch/types';
-import Authentication from './authentication';
-import Triggers from './triggers';
-import Data from './data';
+import defineApp from '../../helpers/define-app';
+import addAuthHeader from './common/add-auth-header';
 
-export default class Flickr implements IService {
-  authenticationClient: IAuthentication;
-  triggers: Triggers;
-  data: Data;
-
-  constructor(
-    appData: IApp,
-    connectionData: IJSONObject,
-    parameters: IJSONObject
-  ) {
-    this.authenticationClient = new Authentication(appData, connectionData);
-    this.data = new Data(connectionData);
-    this.triggers = new Triggers(connectionData, parameters);
-  }
-}
+export default defineApp({
+  name: 'Flickr',
+  key: 'flickr',
+  iconUrl: '{BASE_URL}/apps/flickr/assets/favicon.svg',
+  authDocUrl: 'https://automatisch.io/docs/connections/flickr',
+  docUrl: 'https://automatisch.io/docs/flickr',
+  primaryColor: '000000',
+  supportsConnections: true,
+  baseUrl: 'https://www.flickr.com/',
+  apiBaseUrl: 'https://www.flickr.com/services',
+  beforeRequest: [addAuthHeader],
+});
