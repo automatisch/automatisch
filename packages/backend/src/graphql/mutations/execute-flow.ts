@@ -19,13 +19,13 @@ const executeFlow = async (
     .$relatedQuery('steps')
     .findById(stepId);
 
-  await untilStep.$query().patch({
-    status: 'completed',
-  });
-
   if (executionStep.isFailed) {
     throw new Error(JSON.stringify(executionStep.errorDetails));
   }
+
+  await untilStep.$query().patch({
+    status: 'completed',
+  });
 
   return { data: executionStep.dataOut, step: untilStep };
 };
