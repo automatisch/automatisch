@@ -42,14 +42,14 @@ const newIssues = async ($: IGlobalVariable) => {
 
     if (response.data.length) {
       for (const issue of response.data) {
-        const issueId = issue.id.toString();
+        const issueId = issue.id;
 
-        if (issueId <= $.flow.lastInternalId && !$.execution.testRun) return issues;
+        if (issueId <= Number($.flow.lastInternalId) && !$.execution.testRun) return issues;
 
         const dataItem = {
           raw: issue,
           meta: {
-            internalId: issueId,
+            internalId: issueId.toString(),
           },
         };
 
