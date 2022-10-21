@@ -31,7 +31,7 @@ export default defineTrigger({
   ],
 
   async run($) {
-    return await searchTweets($);
+    await searchTweets($);
   },
 
   sort($) {
