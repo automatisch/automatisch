@@ -24,15 +24,8 @@ export default async function paginateAll(
       url: links.next.uri,
     });
 
-    if (nextPageResponse.httpError) {
-      aggregatedResponse.error = nextPageResponse.httpError;
-
-      links = null;
-    } else {
-      aggregatedResponse.data.push(...nextPageResponse.data);
-
-      links = parseLinkHeader(nextPageResponse.headers.link);
-    }
+    aggregatedResponse.data.push(...nextPageResponse.data);
+    links = parseLinkHeader(nextPageResponse.headers.link);
   }
 
   return aggregatedResponse;
