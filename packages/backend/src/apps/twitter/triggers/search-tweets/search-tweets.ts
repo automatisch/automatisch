@@ -1,19 +1,11 @@
-import {
-  IGlobalVariable,
-  IJSONObject,
-  ITriggerOutput,
-} from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import qs from 'qs';
 import { omitBy, isEmpty } from 'lodash';
 
-const fetchTweets = async ($: IGlobalVariable) => {
+const searchTweets = async ($: IGlobalVariable) => {
   const searchTerm = $.step.parameters.searchTerm as string;
 
   let response;
-
-  const tweets: ITriggerOutput = {
-    data: [],
-  };
 
   do {
     const params: IJSONObject = {
@@ -30,14 +22,8 @@ const fetchTweets = async ($: IGlobalVariable) => {
 
     response = await $.http.get(requestPath);
 
-    if (response.integrationError) {
-      tweets.error = response.integrationError;
-      return tweets;
-    }
-
     if (response.data.errors) {
-      tweets.error = response.data.errors;
-      return tweets;
+      throw new Error(JSON.stringify(response.data.errors));
     }
 
     if (response.data.meta.result_count > 0) {
@@ -49,22 +35,10 @@ const fetchTweets = async ($: IGlobalVariable) => {
           },
         };
 
-        tweets.data.push(dataItem);
+        $.output.data.push(dataItem);
       });
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
-
-  return tweets;
-};
-
-const searchTweets = async ($: IGlobalVariable) => {
-  const tweets = await fetchTweets($);
-
-  tweets.data.sort((tweet, nextTweet) => {
-    return Number(tweet.meta.internalId) - Number(nextTweet.meta.internalId);
-  });
-
-  return tweets;
 };
 
 export default searchTweets;

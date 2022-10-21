@@ -59,6 +59,10 @@ const globalVariable = async (
       id: execution?.id,
       testRun,
     },
+    output: {
+      data: [],
+      error: null,
+    },
   };
 
   $.http = createHttpClient({

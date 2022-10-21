@@ -1,12 +1,11 @@
-import {
-  IGlobalVariable,
-  ITriggerOutput,
-} from '@automatisch/types';
+import { IGlobalVariable, ITriggerOutput } from '@automatisch/types';
 import getRepoOwnerAndRepo from '../../common/get-repo-owner-and-repo';
 import parseLinkHeader from '../../../../helpers/parse-header-link';
 
 function getPathname($: IGlobalVariable) {
-  const { repoOwner, repo } = getRepoOwnerAndRepo($.step.parameters.repo as string);
+  const { repoOwner, repo } = getRepoOwnerAndRepo(
+    $.step.parameters.repo as string
+  );
 
   if (repoOwner && repo) {
     return `/repos/${repoOwner}/${repo}/issues`;
@@ -35,8 +34,8 @@ const newIssues = async ($: IGlobalVariable) => {
     const response = await $.http.get(pathname, { params });
     links = parseLinkHeader(response.headers.link);
 
-    if (response.integrationError) {
-      issues.error = response.integrationError;
+    if (response.httpError) {
+      issues.error = response.httpError;
       return issues;
     }
 
@@ -44,7 +43,8 @@ const newIssues = async ($: IGlobalVariable) => {
       for (const issue of response.data) {
         const issueId = issue.id;
 
-        if (issueId <= Number($.flow.lastInternalId) && !$.execution.testRun) return issues;
+        if (issueId <= Number($.flow.lastInternalId) && !$.execution.testRun)
+          return issues;
 
         const dataItem = {
           raw: issue,

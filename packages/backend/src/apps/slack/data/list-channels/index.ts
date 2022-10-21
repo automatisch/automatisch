@@ -15,8 +15,8 @@ export default {
 
     const response = await $.http.get('/conversations.list');
 
-    if (response.integrationError) {
-      channels.error = response.integrationError;
+    if (response.httpError) {
+      channels.error = response.httpError;
       return channels;
     }
 

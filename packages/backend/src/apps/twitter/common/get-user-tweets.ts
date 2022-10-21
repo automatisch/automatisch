@@ -36,8 +36,8 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
 
     response = await $.http.get(requestPath);
 
-    if (response.integrationError) {
-      tweets.error = response.integrationError;
+    if (response.httpError) {
+      tweets.error = response.httpError;
       return tweets;
     }
 

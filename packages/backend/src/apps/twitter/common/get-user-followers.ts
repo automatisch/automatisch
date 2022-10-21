@@ -33,8 +33,8 @@ const getUserFollowers = async (
 
     response = await $.http.get(requestPath);
 
-    if (response.integrationError) {
-      followers.error = response.integrationError;
+    if (response.httpError) {
+      followers.error = response.httpError;
       return followers;
     }
 

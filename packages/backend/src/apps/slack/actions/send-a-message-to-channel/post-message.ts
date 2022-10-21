@@ -16,7 +16,7 @@ const postMessage = async (
     data: {
       raw: response?.data?.message,
     },
-    error: response?.integrationError,
+    error: response?.httpError,
   };
 
   if (response.data.ok === false) {

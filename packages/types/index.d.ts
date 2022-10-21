@@ -213,7 +213,8 @@ export interface ITrigger {
   dedupeStrategy?: 'greatest' | 'unique' | 'last';
   substeps: ISubstep[];
   getInterval?(parameters: IGlobalVariable['step']['parameters']): string;
-  run($: IGlobalVariable): Promise<ITriggerOutput>;
+  run($: IGlobalVariable): Promise<void | ITriggerOutput>;
+  sort?($: IGlobalVariable): void | ITriggerOutput;
 }
 
 export interface IActionOutput {
@@ -279,11 +280,15 @@ export type IGlobalVariable = {
     id: string;
     testRun: boolean;
   };
+  output: {
+    data: ITriggerDataItem[];
+    error?: IJSONObject;
+  }
   process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
 };
 
 declare module 'axios' {
   interface AxiosResponse {
-    integrationError?: IJSONObject;
+    httpError?: IJSONObject;
   }
 }

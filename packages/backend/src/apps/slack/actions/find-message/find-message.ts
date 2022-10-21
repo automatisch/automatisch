@@ -25,7 +25,7 @@ const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
     data: {
       raw: data?.messages.matches[0],
     },
-    error: response?.integrationError || (!data.ok && data),
+    error: response?.httpError || (!data.ok && data),
   };
 
   return message;

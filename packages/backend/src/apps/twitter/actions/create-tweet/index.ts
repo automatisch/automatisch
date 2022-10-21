@@ -40,7 +40,7 @@ export default defineAction({
       data: {
         raw: response.data,
       },
-      error: response?.integrationError,
+      error: response?.httpError,
     };
 
     return tweet;

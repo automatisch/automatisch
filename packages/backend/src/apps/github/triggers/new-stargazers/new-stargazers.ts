@@ -10,10 +10,12 @@ import parseLinkHeader from '../../../../helpers/parse-header-link';
 type TResponseDataItem = {
   starred_at: string;
   user: IJSONObject;
-}
+};
 
 const fetchStargazers = async ($: IGlobalVariable) => {
-  const { repoOwner, repo } = getRepoOwnerAndRepo($.step.parameters.repo as string);
+  const { repoOwner, repo } = getRepoOwnerAndRepo(
+    $.step.parameters.repo as string
+  );
   const firstPagePathname = `/repos/${repoOwner}/${repo}/stargazers`;
   const requestConfig = {
     params: {
@@ -22,10 +24,13 @@ const fetchStargazers = async ($: IGlobalVariable) => {
     headers: {
       // needed to get `starred_at` time
       Accept: 'application/vnd.github.star+json',
-    }
-  }
+    },
+  };
 
-  const firstPageResponse = await $.http.get<TResponseDataItem[]>(firstPagePathname, requestConfig);
+  const firstPageResponse = await $.http.get<TResponseDataItem[]>(
+    firstPagePathname,
+    requestConfig
+  );
   const firstPageLinks = parseLinkHeader(firstPageResponse.headers.link);
 
   // in case there is only single page to fetch
@@ -36,12 +41,15 @@ const fetchStargazers = async ($: IGlobalVariable) => {
   };
 
   do {
-    const response = await $.http.get<TResponseDataItem[]>(pathname, requestConfig);
+    const response = await $.http.get<TResponseDataItem[]>(
+      pathname,
+      requestConfig
+    );
     const links = parseLinkHeader(response.headers.link);
     pathname = links.prev?.uri;
 
-    if (response.integrationError) {
-      stargazers.error = response.integrationError;
+    if (response.httpError) {
+      stargazers.error = response.httpError;
       return stargazers;
     }
 
@@ -50,7 +58,8 @@ const fetchStargazers = async ($: IGlobalVariable) => {
         const { starred_at, user } = starEntry;
         const timestamp = DateTime.fromISO(starred_at).toMillis();
 
-        if (timestamp <= Number($.flow.lastInternalId) && !$.execution.testRun) return stargazers;
+        if (timestamp <= Number($.flow.lastInternalId) && !$.execution.testRun)
+          return stargazers;
 
         const dataItem = {
           raw: user,
@@ -65,13 +74,15 @@ const fetchStargazers = async ($: IGlobalVariable) => {
   } while (pathname && !$.execution.testRun);
 
   return stargazers;
-}
+};
 
 const newStargazers = async ($: IGlobalVariable) => {
   const stargazers = await fetchStargazers($);
 
   stargazers.data.sort((stargazerA, stargazerB) => {
-    return Number(stargazerA.meta.internalId) - Number(stargazerB.meta.internalId);
+    return (
+      Number(stargazerA.meta.internalId) - Number(stargazerB.meta.internalId)
+    );
   });
 
   return stargazers;
