@@ -1,8 +1,4 @@
-import {
-  IGlobalVariable,
-  IJSONObject,
-  ITriggerOutput,
-} from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
@@ -18,10 +14,6 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
 
   let response;
 
-  const tweets: ITriggerOutput = {
-    data: [],
-  };
-
   do {
     const params: IJSONObject = {
       since_id: $.execution.testRun ? null : $.flow.lastInternalId,
@@ -36,14 +28,9 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
 
     response = await $.http.get(requestPath);
 
-    if (response.httpError) {
-      tweets.error = response.httpError;
-      return tweets;
-    }
-
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
-        tweets.data.push({
+        $.output.data.push({
           raw: tweet,
           meta: {
             internalId: tweet.id as string,
@@ -53,7 +40,7 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
 
-  return tweets;
+  return $.output;
 };
 
 const getUserTweets = async (
@@ -69,13 +56,7 @@ const getUserTweets = async (
     username = $.step.parameters.username as string;
   }
 
-  const tweets = await fetchTweets($, username);
-
-  tweets.data.sort((tweet, nextTweet) => {
-    return Number(tweet.meta.internalId) - Number(nextTweet.meta.internalId);
-  });
-
-  return tweets;
+  await fetchTweets($, username);
 };
 
 export default getUserTweets;

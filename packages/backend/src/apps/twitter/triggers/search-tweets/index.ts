@@ -36,7 +36,7 @@ export default defineTrigger({
 
   sort($) {
     $.output.data.sort((tweet, nextTweet) => {
-      return Number(tweet.meta.internalId) - Number(nextTweet.meta.internalId);
+      return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
     });
   },
 });

@@ -34,4 +34,10 @@ export default defineTrigger({
       currentUser: false,
     });
   },
+
+  sort($) {
+    $.output.data.sort((tweet, nextTweet) => {
+      return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
+    });
+  },
 });
