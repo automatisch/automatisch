@@ -30,7 +30,7 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
 
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
-        $.output.data.push({
+        $.triggerOutput.data.push({
           raw: tweet,
           meta: {
             internalId: tweet.id as string,
@@ -40,7 +40,7 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
 
-  return $.output;
+  return $.triggerOutput;
 };
 
 const getUserTweets = async (

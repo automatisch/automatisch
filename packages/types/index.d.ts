@@ -171,7 +171,7 @@ export interface IApp {
 
 export type TBeforeRequest = {
   ($: IGlobalVariable, requestConfig: AxiosRequestConfig): AxiosRequestConfig;
-}
+};
 
 export interface IData {
   [index: string]: any;
@@ -233,7 +233,7 @@ export interface IAction {
   key: string;
   description: string;
   substeps: ISubstep[];
-  run($: IGlobalVariable): Promise<IActionOutput>;
+  run($: IGlobalVariable): Promise<void | IActionOutput>;
 }
 
 export interface IAuthentication {
@@ -280,10 +280,8 @@ export type IGlobalVariable = {
     id: string;
     testRun: boolean;
   };
-  output: {
-    data: ITriggerDataItem[];
-    error?: IJSONObject;
-  }
+  triggerOutput?: ITriggerOutput;
+  actionOutput?: IActionOutput;
   process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
 };
 

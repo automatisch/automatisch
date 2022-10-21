@@ -59,8 +59,12 @@ const globalVariable = async (
       id: execution?.id,
       testRun,
     },
-    output: {
+    triggerOutput: {
       data: [],
+      error: null,
+    },
+    actionOutput: {
+      data: null,
       error: null,
     },
   };

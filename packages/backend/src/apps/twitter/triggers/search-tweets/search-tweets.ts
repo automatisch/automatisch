@@ -35,7 +35,7 @@ const searchTweets = async ($: IGlobalVariable) => {
           },
         };
 
-        $.output.data.push(dataItem);
+        $.triggerOutput.data.push(dataItem);
       });
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
