@@ -21,14 +21,11 @@ const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
 
   const data = response.data;
 
-  const message: IActionOutput = {
-    data: {
-      raw: data?.messages.matches[0],
-    },
-    error: response?.httpError || (!data.ok && data),
-  };
+  if (!data.ok && data) {
+    throw new Error(JSON.stringify(response.data));
+  }
 
-  return message;
+  $.actionOutput.data.raw = data?.messages.matches[0];
 };
 
 export default findMessage;
