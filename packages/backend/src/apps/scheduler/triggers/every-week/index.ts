@@ -191,6 +191,6 @@ export default defineTrigger({
       },
     };
 
-    return { data: [dataItem] };
+    $.triggerOutput.data.push(dataItem);
   },
 });
