@@ -9,7 +9,7 @@ export default defineTrigger({
   substeps: [
     {
       key: 'chooseConnection',
-      name: 'Choose connection'
+      name: 'Choose connection',
     },
     {
       key: 'chooseTrigger',
@@ -27,20 +27,28 @@ export default defineTrigger({
             arguments: [
               {
                 name: 'key',
-                value: 'listRepos'
-              }
-            ]
-          }
+                value: 'listRepos',
+              },
+            ],
+          },
         },
-      ]
+      ],
     },
     {
       key: 'testStep',
-      name: 'Test trigger'
-    }
+      name: 'Test trigger',
+    },
   ],
 
   async run($) {
-    return await newStargazers($);
+    await newStargazers($);
+  },
+
+  sort($) {
+    $.triggerOutput.data.sort((stargazerA, stargazerB) => {
+      return (
+        Number(stargazerA.meta.internalId) - Number(stargazerB.meta.internalId)
+      );
+    });
   },
 });

@@ -1,9 +1,5 @@
 import { DateTime } from 'luxon';
-import {
-  IGlobalVariable,
-  IJSONObject,
-  ITriggerOutput,
-} from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import getRepoOwnerAndRepo from '../../common/get-repo-owner-and-repo';
 import parseLinkHeader from '../../../../helpers/parse-header-link';
 
@@ -12,7 +8,7 @@ type TResponseDataItem = {
   user: IJSONObject;
 };
 
-const fetchStargazers = async ($: IGlobalVariable) => {
+const newStargazers = async ($: IGlobalVariable) => {
   const { repoOwner, repo } = getRepoOwnerAndRepo(
     $.step.parameters.repo as string
   );
@@ -36,10 +32,6 @@ const fetchStargazers = async ($: IGlobalVariable) => {
   // in case there is only single page to fetch
   let pathname = firstPageLinks.last?.uri || firstPagePathname;
 
-  const stargazers: ITriggerOutput = {
-    data: [],
-  };
-
   do {
     const response = await $.http.get<TResponseDataItem[]>(
       pathname,
@@ -48,18 +40,13 @@ const fetchStargazers = async ($: IGlobalVariable) => {
     const links = parseLinkHeader(response.headers.link);
     pathname = links.prev?.uri;
 
-    if (response.httpError) {
-      stargazers.error = response.httpError;
-      return stargazers;
-    }
-
     if (response.data.length) {
       for (const starEntry of response.data) {
         const { starred_at, user } = starEntry;
         const timestamp = DateTime.fromISO(starred_at).toMillis();
 
         if (timestamp <= Number($.flow.lastInternalId) && !$.execution.testRun)
-          return stargazers;
+          return;
 
         const dataItem = {
           raw: user,
@@ -68,24 +55,10 @@ const fetchStargazers = async ($: IGlobalVariable) => {
           },
         };
 
-        stargazers.data.push(dataItem);
+        $.triggerOutput.data.push(dataItem);
       }
     }
   } while (pathname && !$.execution.testRun);
-
-  return stargazers;
-};
-
-const newStargazers = async ($: IGlobalVariable) => {
-  const stargazers = await fetchStargazers($);
-
-  stargazers.data.sort((stargazerA, stargazerB) => {
-    return (
-      Number(stargazerA.meta.internalId) - Number(stargazerB.meta.internalId)
-    );
-  });
-
-  return stargazers;
 };
 
 export default newStargazers;
