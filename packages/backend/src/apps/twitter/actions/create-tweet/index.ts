@@ -36,13 +36,6 @@ export default defineAction({
       text,
     });
 
-    const tweet: IActionOutput = {
-      data: {
-        raw: response.data,
-      },
-      error: response?.httpError,
-    };
-
-    return tweet;
+    $.actionOutput.data.raw = response.data;
   },
 });
