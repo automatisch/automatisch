@@ -19,6 +19,6 @@ export default defineTrigger({
   ],
 
   async run($) {
-    return await myFollowers($);
+    await myFollowers($);
   },
 });

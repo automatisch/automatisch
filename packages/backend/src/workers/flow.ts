@@ -15,13 +15,15 @@ export const worker = new Worker(
 
     const { data, error } = await processFlow({ flowId });
 
-    for (const triggerDataItem of data) {
-      const jobName = `${triggerStep.id}-${triggerDataItem.meta.internalId}`;
+    const reversedData = data.reverse();
+
+    for (const triggerItem of reversedData) {
+      const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
 
       const jobPayload = {
         flowId,
         stepId: triggerStep.id,
-        triggerDataItem,
+        triggerItem,
       };
 
       await triggerQueue.add(jobName, jobPayload);

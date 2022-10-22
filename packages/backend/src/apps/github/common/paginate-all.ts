@@ -1,13 +1,16 @@
-import { IGlobalVariable, IJSONObject } from "@automatisch/types";
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import type { AxiosResponse } from 'axios';
 import parseLinkHeader from '../../../helpers/parse-header-link';
 
 type TResponse = {
-  data: IJSONObject[],
-  error?: IJSONObject,
-}
+  data: IJSONObject[];
+  error?: IJSONObject;
+};
 
-export default async function paginateAll($: IGlobalVariable, request: Promise<AxiosResponse>) {
+export default async function paginateAll(
+  $: IGlobalVariable,
+  request: Promise<AxiosResponse>
+) {
   const response = await request;
   const aggregatedResponse: TResponse = {
     data: [...response.data],
@@ -21,15 +24,8 @@ export default async function paginateAll($: IGlobalVariable, request: Promise<A
       url: links.next.uri,
     });
 
-    if (nextPageResponse.integrationError) {
-      aggregatedResponse.error = nextPageResponse.integrationError;
-
-      links = null;
-    } else {
-      aggregatedResponse.data.push(...nextPageResponse.data);
-
-      links = parseLinkHeader(nextPageResponse.headers.link);
-    }
+    aggregatedResponse.data.push(...nextPageResponse.data);
+    links = parseLinkHeader(nextPageResponse.headers.link);
   }
 
   return aggregatedResponse;

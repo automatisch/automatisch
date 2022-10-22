@@ -20,5 +20,23 @@ export const processFlow = async (options: ProcessFlowOptions) => {
     testRun: options.testRun,
   });
 
-  return await triggerCommand.run($);
+  try {
+    await triggerCommand.run($);
+  } catch (error) {
+    if (error?.response?.httpError) {
+      $.triggerOutput.error = error.response.httpError;
+    } else {
+      try {
+        $.triggerOutput.error = JSON.parse(error.message);
+      } catch {
+        $.triggerOutput.error = { error: error.message };
+      }
+    }
+  }
+
+  if (triggerCommand?.sort) {
+    $.triggerOutput.data.sort(triggerCommand.sort);
+  }
+
+  return $.triggerOutput;
 };

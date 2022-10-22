@@ -1,4 +1,4 @@
-import { IGlobalVariable, IActionOutput } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 
 const postMessage = async (
   $: IGlobalVariable,
@@ -12,18 +12,15 @@ const postMessage = async (
 
   const response = await $.http.post('/chat.postMessage', params);
 
-  const message: IActionOutput = {
-    data: {
-      raw: response?.data?.message,
-    },
-    error: response?.integrationError,
-  };
-
   if (response.data.ok === false) {
-    message.error = response.data;
+    throw new Error(JSON.stringify(response.data));
   }
 
-  return message;
+  const message = {
+    raw: response?.data?.message,
+  };
+
+  $.setActionItem(message);
 };
 
 export default postMessage;

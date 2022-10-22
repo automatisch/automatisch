@@ -15,14 +15,8 @@ export default {
 
     const response = await $.http.get('/conversations.list');
 
-    if (response.integrationError) {
-      channels.error = response.integrationError;
-      return channels;
-    }
-
     if (response.data.ok === false) {
-      channels.error = response.data;
-      return channels;
+      throw new Error(response.data);
     }
 
     channels.data = response.data.channels.map((channel: IJSONObject) => {

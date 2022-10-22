@@ -3,7 +3,13 @@ import Connection from '../models/connection';
 import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
-import { IJSONObject, IApp, IGlobalVariable } from '@automatisch/types';
+import {
+  IJSONObject,
+  IApp,
+  IGlobalVariable,
+  ITriggerItem,
+  IActionItem,
+} from '@automatisch/types';
 
 type GlobalVariableOptions = {
   connection?: Connection;
@@ -58,6 +64,20 @@ const globalVariable = async (
     execution: {
       id: execution?.id,
       testRun,
+    },
+    triggerOutput: {
+      data: [],
+    },
+    actionOutput: {
+      data: {
+        raw: null,
+      },
+    },
+    pushTriggerItem: (triggerItem: ITriggerItem) => {
+      $.triggerOutput.data.push(triggerItem);
+    },
+    setActionItem: (actionItem: IActionItem) => {
+      $.actionOutput.data = actionItem;
     },
   };
 

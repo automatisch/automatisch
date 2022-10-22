@@ -27,25 +27,25 @@ export default defineAction({
             arguments: [
               {
                 name: 'key',
-                value: 'listRepos'
-              }
-            ]
-          }
+                value: 'listRepos',
+              },
+            ],
+          },
         },
         {
           label: 'Title',
           key: 'title',
           type: 'string',
           required: true,
-          variables: true
+          variables: true,
         },
         {
           label: 'Body',
           key: 'body',
           type: 'string',
           required: true,
-          variables: true
-        }
+          variables: true,
+        },
       ],
     },
     {
@@ -59,7 +59,7 @@ export default defineAction({
     const title = $.step.parameters.title as string;
     const body = $.step.parameters.body as string;
 
-    if (!repoParameter) throw new Error('A repo must be set!')
+    if (!repoParameter) throw new Error('A repo must be set!');
     if (!title) throw new Error('A title must be set!');
 
     const { repoOwner, repo } = getRepoOwnerAndRepo(repoParameter);
@@ -68,13 +68,6 @@ export default defineAction({
       body,
     });
 
-    const issue: IActionOutput = {
-      data: {
-        raw: response.data,
-      },
-      error: response?.integrationError,
-    };
-
-    return issue;
+    $.setActionItem({ raw: response.data });
   },
 });

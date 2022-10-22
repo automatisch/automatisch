@@ -35,13 +35,13 @@ const testRun = async (options: TestRunOptions) => {
     return { executionStep: triggerExecutionStepWithError };
   }
 
-  const firstTriggerDataItem = data[0];
+  const firstTriggerItem = data[0];
 
   const { executionId, executionStep: triggerExecutionStep } =
     await processTrigger({
       flowId: flow.id,
       stepId: triggerStep.id,
-      triggerDataItem: firstTriggerDataItem,
+      triggerItem: firstTriggerItem,
       testRun: true,
     });
 

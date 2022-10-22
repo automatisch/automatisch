@@ -39,8 +39,8 @@ export default function createHttpClient({
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      error.response.integrationError = error.response.data;
-      return error.response;
+      error.response.httpError = error.response.data;
+      throw error;
     }
   );
 

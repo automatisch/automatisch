@@ -30,8 +30,10 @@ export default defineTrigger({
   ],
 
   async run($) {
-    return await getUserTweets($, {
-      currentUser: false,
-    });
+    await getUserTweets($, { currentUser: false });
+  },
+
+  sort(tweet, nextTweet) {
+    return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
   },
 });

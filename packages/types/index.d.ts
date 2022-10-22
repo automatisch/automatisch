@@ -171,7 +171,7 @@ export interface IApp {
 
 export type TBeforeRequest = {
   ($: IGlobalVariable, requestConfig: AxiosRequestConfig): AxiosRequestConfig;
-}
+};
 
 export interface IData {
   [index: string]: any;
@@ -194,11 +194,11 @@ export interface IService {
 }
 
 export interface ITriggerOutput {
-  data: ITriggerDataItem[];
+  data: ITriggerItem[];
   error?: IJSONObject;
 }
 
-export interface ITriggerDataItem {
+export interface ITriggerItem {
   raw: IJSONObject;
   meta: {
     internalId: string;
@@ -212,19 +212,18 @@ export interface ITrigger {
   description: string;
   dedupeStrategy?: 'greatest' | 'unique' | 'last';
   substeps: ISubstep[];
-  getInterval?(parameters: IGlobalVariable['step']['parameters']): string;
-  run($: IGlobalVariable): Promise<ITriggerOutput>;
+  getInterval?(parameters: IStep['parameters']): string;
+  run($: IGlobalVariable): Promise<void>;
+  sort?(item: ITriggerItem, nextItem: ITriggerItem): number;
 }
 
 export interface IActionOutput {
-  data: IActionDataItem;
+  data: IActionItem;
   error?: IJSONObject;
 }
 
-export interface IActionDataItem {
-  raw: {
-    data?: IJSONObject;
-  };
+export interface IActionItem {
+  raw: IJSONObject;
 }
 
 export interface IAction {
@@ -232,7 +231,7 @@ export interface IAction {
   key: string;
   description: string;
   substeps: ISubstep[];
-  run($: IGlobalVariable): Promise<IActionOutput>;
+  run($: IGlobalVariable): Promise<void>;
 }
 
 export interface IAuthentication {
@@ -279,11 +278,14 @@ export type IGlobalVariable = {
     id: string;
     testRun: boolean;
   };
-  process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
+  triggerOutput?: ITriggerOutput;
+  actionOutput?: IActionOutput;
+  pushTriggerItem?: (triggerItem: ITriggerItem) => void;
+  setActionItem?: (actionItem: IActionItem) => void;
 };
 
 declare module 'axios' {
   interface AxiosResponse {
-    integrationError?: IJSONObject;
+    httpError?: IJSONObject;
   }
 }

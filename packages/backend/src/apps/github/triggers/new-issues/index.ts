@@ -9,7 +9,7 @@ export default defineTrigger({
   substeps: [
     {
       key: 'chooseConnection',
-      name: 'Choose connection'
+      name: 'Choose connection',
     },
     {
       key: 'chooseTrigger',
@@ -27,10 +27,10 @@ export default defineTrigger({
             arguments: [
               {
                 name: 'key',
-                value: 'listRepos'
-              }
-            ]
-          }
+                value: 'listRepos',
+              },
+            ],
+          },
         },
         {
           label: 'Which types of issues should this trigger on?',
@@ -43,25 +43,25 @@ export default defineTrigger({
           options: [
             {
               label: 'Any issue you can see',
-              value: 'all'
+              value: 'all',
             },
             {
               label: 'Only issues assigned to you',
-              value: 'assigned'
+              value: 'assigned',
             },
             {
               label: 'Only issues created by you',
-              value: 'created'
+              value: 'created',
             },
             {
               label: `Only issues you're mentioned in`,
-              value: 'mentioned'
+              value: 'mentioned',
             },
             {
               label: `Only issues you're subscribed to`,
-              value: 'subscribed'
-            }
-          ]
+              value: 'subscribed',
+            },
+          ],
         },
         {
           label: 'Label',
@@ -77,24 +77,24 @@ export default defineTrigger({
             arguments: [
               {
                 name: 'key',
-                value: 'listLabels'
+                value: 'listLabels',
               },
               {
                 name: 'parameters.repo',
-                value: '{parameters.repo}'
-              }
-            ]
-          }
-        }
-      ]
+                value: '{parameters.repo}',
+              },
+            ],
+          },
+        },
+      ],
     },
     {
       key: 'testStep',
-      name: 'Test trigger'
-    }
+      name: 'Test trigger',
+    },
   ],
 
   async run($) {
-    return await newIssues($);
+    await newIssues($);
   },
 });

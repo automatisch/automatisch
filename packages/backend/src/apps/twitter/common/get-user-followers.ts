@@ -1,8 +1,4 @@
-import {
-  IGlobalVariable,
-  IJSONObject,
-  ITriggerOutput,
-} from '@automatisch/types';
+import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import { omitBy, isEmpty } from 'lodash';
 
@@ -15,10 +11,6 @@ const getUserFollowers = async (
   options: GetUserFollowersOptions
 ) => {
   let response;
-
-  const followers: ITriggerOutput = {
-    data: [],
-  };
 
   do {
     const params: IJSONObject = {
@@ -33,31 +25,23 @@ const getUserFollowers = async (
 
     response = await $.http.get(requestPath);
 
-    if (response.integrationError) {
-      followers.error = response.integrationError;
-      return followers;
-    }
-
     if (response.data?.errors) {
-      followers.error = response.data.errors;
-      return followers;
+      throw new Error(response.data.errors);
     }
 
     if (response.data.meta.result_count > 0) {
       for (const follower of response.data.data) {
         if ($.flow.isAlreadyProcessed(follower.id as string)) {
-          return followers;
+          return;
         }
 
-        followers.data.push({
+        $.pushTriggerItem({
           raw: follower,
           meta: { internalId: follower.id as string },
         });
       }
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
-
-  return followers;
 };
 
 export default getUserFollowers;
