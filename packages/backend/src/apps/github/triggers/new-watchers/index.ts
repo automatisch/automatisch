@@ -10,7 +10,7 @@ export default defineTrigger({
   substeps: [
     {
       key: 'chooseConnection',
-      name: 'Choose connection'
+      name: 'Choose connection',
     },
     {
       key: 'chooseTrigger',
@@ -28,20 +28,24 @@ export default defineTrigger({
             arguments: [
               {
                 name: 'key',
-                value: 'listRepos'
-              }
-            ]
-          }
+                value: 'listRepos',
+              },
+            ],
+          },
         },
-      ]
+      ],
     },
     {
       key: 'testStep',
-      name: 'Test trigger'
-    }
+      name: 'Test trigger',
+    },
   ],
 
   async run($) {
-    return await newWatchers($);
+    await newWatchers($);
+  },
+
+  sort() {
+    return -1;
   },
 });

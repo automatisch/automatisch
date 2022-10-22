@@ -1,7 +1,4 @@
-import {
-  IGlobalVariable,
-  ITriggerOutput,
-} from '@automatisch/types';
+import { IGlobalVariable, ITriggerOutput } from '@automatisch/types';
 import getRepoOwnerAndRepo from '../../common/get-repo-owner-and-repo';
 import parseLinkHeader from '../../../../helpers/parse-header-link';
 
@@ -29,16 +26,15 @@ const fetchPullRequests = async ($: IGlobalVariable) => {
     const response = await $.http.get(pathname, { params });
     links = parseLinkHeader(response.headers.link);
 
-    if (response.integrationError) {
-      pullRequests.error = response.integrationError;
-      return pullRequests;
-    }
-
     if (response.data.length) {
       for (const pullRequest of response.data) {
         const pullRequestId = pullRequest.id;
 
-        if (pullRequestId <= Number($.flow.lastInternalId) && !$.execution.testRun) return pullRequests;
+        if (
+          pullRequestId <= Number($.flow.lastInternalId) &&
+          !$.execution.testRun
+        )
+          return pullRequests;
 
         const dataItem = {
           raw: pullRequest,
@@ -53,7 +49,7 @@ const fetchPullRequests = async ($: IGlobalVariable) => {
   } while (links.next && !$.execution.testRun);
 
   return pullRequests;
-}
+};
 
 const newPullRequests = async ($: IGlobalVariable) => {
   const pullRequests = await fetchPullRequests($);

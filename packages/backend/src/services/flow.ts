@@ -35,7 +35,7 @@ export const processFlow = async (options: ProcessFlowOptions) => {
   }
 
   if (triggerCommand?.sort) {
-    triggerCommand.sort($);
+    $.triggerOutput.data.sort(triggerCommand.sort);
   }
 
   return $.triggerOutput;

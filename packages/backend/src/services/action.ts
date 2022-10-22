@@ -39,16 +39,29 @@ export const processAction = async (options: ProcessActionOptions) => {
   const actionCommand = await step.getActionCommand();
 
   $.step.parameters = computedParameters;
-  const actionOutput = await actionCommand.run($);
+
+  try {
+    await actionCommand.run($);
+  } catch (error) {
+    if (error?.response?.httpError) {
+      $.actionOutput.error = error.response.httpError;
+    } else {
+      try {
+        $.actionOutput.error = JSON.parse(error.message);
+      } catch {
+        $.actionOutput.error = { error: error.message };
+      }
+    }
+  }
 
   const executionStep = await execution
     .$relatedQuery('executionSteps')
     .insertAndFetch({
       stepId: $.step.id,
-      status: actionOutput.error ? 'failure' : 'success',
+      status: $.actionOutput.error ? 'failure' : 'success',
       dataIn: computedParameters,
-      dataOut: actionOutput.error ? null : actionOutput.data?.raw,
-      errorDetails: actionOutput.error ? actionOutput.error : null,
+      dataOut: $.actionOutput.error ? null : $.actionOutput.data?.raw,
+      errorDetails: $.actionOutput.error ? $.actionOutput.error : null,
     });
 
   return { flowId, stepId, executionId, executionStep };

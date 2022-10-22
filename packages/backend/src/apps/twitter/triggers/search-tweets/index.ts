@@ -34,9 +34,7 @@ export default defineTrigger({
     await searchTweets($);
   },
 
-  sort($) {
-    $.triggerOutput.data.sort((tweet, nextTweet) => {
-      return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
-    });
+  sort(tweet, nextTweet) {
+    return Number(nextTweet.meta.internalId) - Number(tweet.meta.internalId);
   },
 });

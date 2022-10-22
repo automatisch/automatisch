@@ -194,11 +194,11 @@ export interface IService {
 }
 
 export interface ITriggerOutput {
-  data: ITriggerDataItem[];
+  data: ITriggerItem[];
   error?: IJSONObject;
 }
 
-export interface ITriggerDataItem {
+export interface ITriggerItem {
   raw: IJSONObject;
   meta: {
     internalId: string;
@@ -212,17 +212,17 @@ export interface ITrigger {
   description: string;
   dedupeStrategy?: 'greatest' | 'unique' | 'last';
   substeps: ISubstep[];
-  getInterval?(parameters: IGlobalVariable['step']['parameters']): string;
-  run($: IGlobalVariable): Promise<void | ITriggerOutput>;
-  sort?($: IGlobalVariable): void | ITriggerOutput;
+  getInterval?(parameters: IStep['parameters']): string;
+  run($: IGlobalVariable): Promise<void>;
+  sort?(item: ITriggerItem, nextItem: ITriggerItem): number;
 }
 
 export interface IActionOutput {
-  data: IActionDataItem;
+  data: IActionItem;
   error?: IJSONObject;
 }
 
-export interface IActionDataItem {
+export interface IActionItem {
   raw: {
     data?: IJSONObject;
   };
@@ -233,7 +233,7 @@ export interface IAction {
   key: string;
   description: string;
   substeps: ISubstep[];
-  run($: IGlobalVariable): Promise<void | IActionOutput>;
+  run($: IGlobalVariable): Promise<void>;
 }
 
 export interface IAuthentication {
@@ -282,7 +282,8 @@ export type IGlobalVariable = {
   };
   triggerOutput?: ITriggerOutput;
   actionOutput?: IActionOutput;
-  process?: (triggerDataItem: ITriggerDataItem) => Promise<void>;
+  pushTriggerItem?: (triggerItem: ITriggerItem) => void;
+  setActionItem?: (actionItem: IActionItem) => void;
 };
 
 declare module 'axios' {

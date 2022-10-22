@@ -1,4 +1,4 @@
-import { IJSONObject, ITriggerDataItem } from '@automatisch/types';
+import { IJSONObject, ITriggerItem } from '@automatisch/types';
 import Step from '../models/step';
 import Flow from '../models/flow';
 import Execution from '../models/execution';
@@ -7,13 +7,13 @@ import globalVariable from '../helpers/global-variable';
 type ProcessTriggerOptions = {
   flowId: string;
   stepId: string;
-  triggerDataItem?: ITriggerDataItem;
+  triggerItem?: ITriggerItem;
   error?: IJSONObject;
   testRun?: boolean;
 };
 
 export const processTrigger = async (options: ProcessTriggerOptions) => {
-  const { flowId, stepId, triggerDataItem, error, testRun } = options;
+  const { flowId, stepId, triggerItem, error, testRun } = options;
 
   const step = await Step.query().findById(stepId).throwIfNotFound();
 
@@ -29,7 +29,7 @@ export const processTrigger = async (options: ProcessTriggerOptions) => {
   const execution = await Execution.query().insert({
     flowId: $.flow.id,
     testRun,
-    internalId: triggerDataItem?.meta.internalId,
+    internalId: triggerItem?.meta.internalId,
   });
 
   const executionStep = await execution
@@ -38,7 +38,7 @@ export const processTrigger = async (options: ProcessTriggerOptions) => {
       stepId: $.step.id,
       status: error ? 'failure' : 'success',
       dataIn: $.step.parameters,
-      dataOut: !error ? triggerDataItem?.raw : null,
+      dataOut: !error ? triggerItem?.raw : null,
       errorDetails: error,
     });
 
