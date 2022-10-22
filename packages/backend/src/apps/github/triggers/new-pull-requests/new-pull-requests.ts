@@ -1,8 +1,8 @@
-import { IGlobalVariable, ITriggerOutput } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 import getRepoOwnerAndRepo from '../../common/get-repo-owner-and-repo';
 import parseLinkHeader from '../../../../helpers/parse-header-link';
 
-const fetchPullRequests = async ($: IGlobalVariable) => {
+const newPullRequests = async ($: IGlobalVariable) => {
   const repoParameter = $.step.parameters.repo as string;
 
   if (!repoParameter) throw new Error('A repo must be set!');
@@ -15,10 +15,6 @@ const fetchPullRequests = async ($: IGlobalVariable) => {
     sort: 'created',
     direction: 'desc',
     per_page: 100,
-  };
-
-  const pullRequests: ITriggerOutput = {
-    data: [],
   };
 
   let links;
@@ -34,7 +30,7 @@ const fetchPullRequests = async ($: IGlobalVariable) => {
           pullRequestId <= Number($.flow.lastInternalId) &&
           !$.execution.testRun
         )
-          return pullRequests;
+          return;
 
         const dataItem = {
           raw: pullRequest,
@@ -43,20 +39,10 @@ const fetchPullRequests = async ($: IGlobalVariable) => {
           },
         };
 
-        pullRequests.data.push(dataItem);
+        $.pushTriggerItem(dataItem);
       }
     }
   } while (links.next && !$.execution.testRun);
-
-  return pullRequests;
-};
-
-const newPullRequests = async ($: IGlobalVariable) => {
-  const pullRequests = await fetchPullRequests($);
-
-  pullRequests.data.reverse();
-
-  return pullRequests;
 };
 
 export default newPullRequests;
