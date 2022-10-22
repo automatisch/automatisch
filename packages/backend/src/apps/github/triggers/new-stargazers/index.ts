@@ -46,7 +46,7 @@ export default defineTrigger({
 
   sort(stargazerA, stargazerB) {
     return (
-      Number(stargazerA.meta.internalId) - Number(stargazerB.meta.internalId)
+      Number(stargazerB.meta.internalId) - Number(stargazerA.meta.internalId)
     );
   },
 });
