@@ -223,9 +223,7 @@ export interface IActionOutput {
 }
 
 export interface IActionItem {
-  raw: {
-    data?: IJSONObject;
-  };
+  raw: IJSONObject;
 }
 
 export interface IAction {

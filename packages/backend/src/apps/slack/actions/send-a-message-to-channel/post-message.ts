@@ -16,7 +16,11 @@ const postMessage = async (
     throw new Error(JSON.stringify(response.data));
   }
 
-  $.actionOutput.data.raw = response?.data?.message;
+  const message = {
+    raw: response?.data?.message,
+  };
+
+  $.setActionItem(message);
 };
 
 export default postMessage;

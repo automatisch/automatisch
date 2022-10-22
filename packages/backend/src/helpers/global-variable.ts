@@ -69,7 +69,9 @@ const globalVariable = async (
       data: [],
     },
     actionOutput: {
-      data: null,
+      data: {
+        raw: null,
+      },
     },
     pushTriggerItem: (triggerItem: ITriggerItem) => {
       $.triggerOutput.data.push(triggerItem);
