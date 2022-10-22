@@ -35,6 +35,7 @@ export default defineConfig({
           text: 'Connections',
           collapsible: true,
           items: [
+            { text: 'Flickr', link: '/connections/flickr' },
             { text: 'Github', link: '/connections/github' },
             { text: 'Scheduler', link: '/connections/scheduler' },
             { text: 'Slack', link: '/connections/slack' },
