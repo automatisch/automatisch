@@ -16,6 +16,7 @@ class App {
     'scheduler',
     'slack',
     'twitter',
+    'smtp',
   ];
 
   static async findAll(name?: string, stripFuncs = true): Promise<IApp[]> {
