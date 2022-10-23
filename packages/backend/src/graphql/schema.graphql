@@ -1,5 +1,9 @@
 type Query {
-  getApps(name: String, onlyWithTriggers: Boolean, onlyWithActions: Boolean): [App]
+  getApps(
+    name: String
+    onlyWithTriggers: Boolean
+    onlyWithActions: Boolean
+  ): [App]
   getApp(key: AvailableAppsEnumType!): App
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
@@ -208,6 +212,7 @@ type Field {
   description: String
   docUrl: String
   clickToCopy: Boolean
+  options: [ArgumentOption]
 }
 
 type FlowConnection {
@@ -412,7 +417,7 @@ type TriggerSubstepArgument {
   variables: Boolean
   source: TriggerSubstepArgumentSource
   dependsOn: [String]
-  options: [TriggerSubstepArgumentOption]
+  options: [ArgumentOption]
 }
 
 type TriggerSubstepArgumentSource {
@@ -421,7 +426,7 @@ type TriggerSubstepArgumentSource {
   arguments: [TriggerSubstepArgumentSourceArgument]
 }
 
-type TriggerSubstepArgumentOption {
+type ArgumentOption {
   label: String
   value: JSONObject
 }

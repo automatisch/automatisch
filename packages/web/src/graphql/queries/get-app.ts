@@ -21,6 +21,10 @@ export const GET_APP = gql`
           description
           docUrl
           clickToCopy
+          options {
+            label
+            value
+          }
         }
         authenticationSteps {
           step
