@@ -47,7 +47,7 @@ const newWatchers = async ($: IGlobalVariable) => {
         $.pushTriggerItem(dataItem);
       }
     }
-  } while (pathname && !$.execution.testRun === false);
+  } while (pathname && !$.execution.testRun);
 };
 
 export default newWatchers;
