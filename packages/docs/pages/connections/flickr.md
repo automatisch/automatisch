@@ -19,4 +19,4 @@ connection in Automatisch. If any of the steps are outdated, please let us know!
 11. Click **Save changes**.
 12. Paste **Key** and **Secret** values you have saved from the 8th step and paste them into Automatisch as **Consumer Key** and **Consumer Secret**, respectively.
 13. Click **Submit** button on Automatisch.
-14. Now, you can start using the Flickr connection with Automatisch. **Consumer Key** and **Consumer Secret**, respectively.
+14. Now, you can start using the Flickr connection with Automatisch.
