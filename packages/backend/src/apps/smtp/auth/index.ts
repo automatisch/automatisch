@@ -64,7 +64,7 @@ export default {
     {
       key: 'port',
       label: 'Port',
-      type: 'integer',
+      type: 'string',
       required: false,
       readOnly: false,
       value: 25,
@@ -91,15 +91,15 @@ export default {
       step: 1,
       type: 'mutation',
       name: 'createConnection',
-      fields: [
+      arguments: [
         {
           name: 'key',
           value: '{key}',
         },
         {
-          name: 'data',
+          name: 'formattedData',
           value: null,
-          fields: [
+          properties: [
             {
               name: 'host',
               value: '{fields.host}',
@@ -132,7 +132,7 @@ export default {
       step: 2,
       type: 'mutation',
       name: 'verifyConnection',
-      fields: [
+      arguments: [
         {
           name: 'id',
           value: '{createConnection.id}',
@@ -145,7 +145,7 @@ export default {
       step: 1,
       type: 'mutation',
       name: 'resetConnection',
-      fields: [
+      arguments: [
         {
           name: 'id',
           value: '{connection.id}',
@@ -156,15 +156,15 @@ export default {
       step: 2,
       type: 'mutation',
       name: 'updateConnection',
-      fields: [
+      arguments: [
         {
           name: 'id',
           value: '{connection.id}',
         },
         {
-          name: 'data',
+          name: 'formattedData',
           value: null,
-          fields: [
+          properties: [
             {
               name: 'host',
               value: '{fields.host}',
@@ -197,7 +197,7 @@ export default {
       step: 3,
       type: 'mutation',
       name: 'verifyConnection',
-      fields: [
+      arguments: [
         {
           name: 'id',
           value: '{connection.id}',
