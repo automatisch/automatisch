@@ -6,7 +6,7 @@ export default defineTrigger({
   pollInterval: 15,
   key: 'newPhoto',
   description: 'Triggers when you add a new photo.',
-  dedupeStrategy: 'unique',
+  dedupeStrategy: 'greatest',
   substeps: [
     {
       key: 'chooseConnection',
