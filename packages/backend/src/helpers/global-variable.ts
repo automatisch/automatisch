@@ -87,16 +87,26 @@ const globalVariable = async (
     beforeRequest: app.beforeRequest,
   });
 
-  if (trigger && trigger.dedupeStrategy === 'unique') {
-    const lastInternalIds = testRun ? [] : await flow?.lastInternalIds();
+  if (trigger) {
+    if (trigger.dedupeStrategy === 'unique') {
+      const lastInternalIds = testRun ? [] : await flow?.lastInternalIds();
 
-    const isAlreadyProcessed = (internalId: string) => {
-      if (testRun) return false;
+      const isAlreadyProcessed = (internalId: string) => {
+        if (testRun) return false;
 
-      return lastInternalIds?.includes(internalId);
-    };
+        return lastInternalIds?.includes(internalId);
+      };
 
-    $.flow.isAlreadyProcessed = isAlreadyProcessed;
+      $.flow.isAlreadyProcessed = isAlreadyProcessed;
+    } else if (trigger.dedupeStrategy === 'greatest') {
+      const isAlreadyProcessed = (internalId: string) => {
+        if (testRun) return false;
+
+        return Number(internalId) <= Number($.flow.lastInternalId);
+      };
+
+      $.flow.isAlreadyProcessed = isAlreadyProcessed;
+    }
   }
 
   return $;
