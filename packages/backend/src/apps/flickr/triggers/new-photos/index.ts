@@ -2,9 +2,9 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import newPhotos from './new-photos';
 
 export default defineTrigger({
-  name: 'New photo',
+  name: 'New photos',
   pollInterval: 15,
-  key: 'newPhoto',
+  key: 'newPhotos',
   description: 'Triggers when you add a new photo.',
   dedupeStrategy: 'greatest',
   substeps: [
