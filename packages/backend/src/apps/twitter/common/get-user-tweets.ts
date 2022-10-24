@@ -30,12 +30,14 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
 
     if (response.data.meta.result_count > 0) {
       response.data.data.forEach((tweet: IJSONObject) => {
-        $.triggerOutput.data.push({
+        const dataItem = {
           raw: tweet,
           meta: {
             internalId: tweet.id as string,
           },
-        });
+        };
+
+        $.pushTriggerItem(dataItem);
       });
     }
   } while (response.data.meta.next_token && !$.execution.testRun);
