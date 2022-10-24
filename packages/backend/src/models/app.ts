@@ -6,29 +6,20 @@ import getApp from '../helpers/get-app';
 
 class App {
   static folderPath = join(__dirname, '../apps');
-  static list = fs.readdirSync(this.folderPath);
-
-  // Temporaryly restrict the apps we expose until
-  // their actions/triggers are implemented!
-  static temporaryList = [
-    'flickr',
-    'github',
-    'scheduler',
-    'slack',
-    'twitter',
-    'smtp',
-  ];
+  static list = fs
+    .readdirSync(this.folderPath)
+    .filter((file) => fs.statSync(this.folderPath + '/' + file).isDirectory());
 
   static async findAll(name?: string, stripFuncs = true): Promise<IApp[]> {
     if (!name)
       return Promise.all(
-        this.temporaryList.map(
+        this.list.map(
           async (name) => await this.findOneByName(name, stripFuncs)
         )
       );
 
     return Promise.all(
-      this.temporaryList
+      this.list
         .filter((app) => app.includes(name.toLowerCase()))
         .map((name) => this.findOneByName(name, stripFuncs))
     );
