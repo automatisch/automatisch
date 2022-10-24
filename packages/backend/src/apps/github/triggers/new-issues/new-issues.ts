@@ -44,7 +44,7 @@ const newIssues = async ($: IGlobalVariable) => {
           },
         };
 
-        $.triggerOutput.data.push(dataItem);
+        $.pushTriggerItem(dataItem);
       }
     }
   } while (links.next && !$.execution.testRun);

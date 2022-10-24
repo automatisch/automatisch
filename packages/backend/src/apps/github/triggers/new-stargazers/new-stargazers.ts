@@ -55,7 +55,7 @@ const newStargazers = async ($: IGlobalVariable) => {
           },
         };
 
-        $.triggerOutput.data.push(dataItem);
+        $.pushTriggerItem(dataItem);
       }
     }
   } while (pathname && !$.execution.testRun);
