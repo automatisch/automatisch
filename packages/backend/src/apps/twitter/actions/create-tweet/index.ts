@@ -36,6 +36,6 @@ export default defineAction({
       text,
     });
 
-    $.actionOutput.data.raw = response.data;
+    $.setActionItem({ raw: response.data });
   },
 });

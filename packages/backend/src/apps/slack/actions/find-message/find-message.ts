@@ -25,7 +25,7 @@ const findMessage = async ($: IGlobalVariable, options: FindMessageOptions) => {
     throw new Error(JSON.stringify(response.data));
   }
 
-  $.actionOutput.data.raw = data?.messages.matches[0];
+  $.setActionItem({ raw: data?.messages.matches[0] });
 };
 
 export default findMessage;
