@@ -41,6 +41,9 @@ const newStargazers = async ($: IGlobalVariable) => {
     pathname = links.prev?.uri;
 
     if (response.data.length) {
+      // to iterate reverse-chronologically
+      response.data.reverse();
+
       for (const starEntry of response.data) {
         const { starred_at, user } = starEntry;
         const timestamp = DateTime.fromISO(starred_at).toMillis();
