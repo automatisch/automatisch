@@ -2,7 +2,7 @@ import Step from '../models/step';
 import ExecutionStep from '../models/execution-step';
 import get from 'lodash.get';
 
-const variableRegExp = /({{step\.[\da-zA-Z-]+(?:\.[\da-zA-Z-]+)+}})/g;
+const variableRegExp = /({{step\.[\da-zA-Z-]+(?:\.[\da-zA-Z-_]+)+}})/g;
 
 export default function computeParameters(
   parameters: Step['parameters'],
