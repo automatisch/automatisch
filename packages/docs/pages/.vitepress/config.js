@@ -40,6 +40,7 @@ export default defineConfig({
             { text: 'Scheduler', link: '/connections/scheduler' },
             { text: 'Slack', link: '/connections/slack' },
             { text: 'SMTP', link: '/connections/smtp' },
+            { text: 'Twilio', link: '/connections/twilio' },
             { text: 'Twitter', link: '/connections/twitter' },
             // Temporarily disable following pages until we release github and typeform integrations
             // { text: 'Typeform', link: '/connections/typeform' },
