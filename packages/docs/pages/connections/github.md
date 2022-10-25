@@ -1,5 +1,10 @@
 # Github
 
+:::info
+This page explains the steps you need to follow to set up the Github
+connection in Automatisch. If any of the steps are outdated, please let us know!
+:::
+
 1. Go to the [link](https://github.com/settings/applications/new) to register a **new OAuth application** on Github.
 2. Fill **Application name** and **Homepage URL**.
 3. Copy **OAuth Redirect URL** from Automatisch to **Authorization callback URL** field on Github page.
