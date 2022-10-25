@@ -6,6 +6,9 @@ We just have a few available integrations at the moment and we also know that wo
 
 Following integrations are currently supported by Automatisch.
 
-- [Twitter](/connections/twitter)
+- [Flickr](/connections/flickr)
+- [Github](/connections/github)
 - [Scheduler](/connections/scheduler)
 - [Slack](/connections/slack)
+- [SMTP](/connections/smtp)
+- [Twitter](/connections/twitter)
