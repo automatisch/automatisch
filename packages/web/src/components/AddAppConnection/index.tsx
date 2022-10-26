@@ -88,15 +88,17 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
     <Dialog open={true} onClose={onClose} data-test="add-app-connection-dialog">
       <DialogTitle>{hasConnection ? formatMessage('app.reconnectConnection') : formatMessage('app.addConnection')}</DialogTitle>
 
-      <Alert severity="info" sx={{ fontWeight: 300 }}>
-        {formatMessage(
-          'addAppConnection.callToDocs',
-          {
-            appName: name,
-            docsLink: generateDocsLink(authDocUrl)
-          }
-        )}
-      </Alert>
+      {authDocUrl && (
+          <Alert severity="info" sx={{ fontWeight: 300 }}>
+          {formatMessage(
+            'addAppConnection.callToDocs',
+            {
+              appName: name,
+              docsLink: generateDocsLink(authDocUrl)
+            }
+          )}
+        </Alert>
+      )}
 
       {errorMessage && (
         <Alert severity="error" sx={{ mt: 1, fontWeight: 500 }}>

@@ -155,13 +155,14 @@ enum AvailableAppsEnumType {
   github
   gitlab
   postgresql
+  rss
+  scheduler
+  slack
   smtp
   twilio
   twitch
   twitter
   typeform
-  slack
-  scheduler
 }
 
 type Connection {
