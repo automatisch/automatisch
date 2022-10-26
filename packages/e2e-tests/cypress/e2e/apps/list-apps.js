@@ -13,7 +13,7 @@ describe('Apps page', () => {
 
   it('displays applications', () => {
     cy.og('apps-loader').should('not.exist');
-    cy.og('app-row').should('have.length', 3);
+    cy.og('app-row').should('have.length.least', 1);
 
     cy.ss('Applications');
   });
@@ -24,7 +24,7 @@ describe('Apps page', () => {
     });
 
     it('lists applications', () => {
-      cy.og('app-list-item').should('have.length', 3);
+      cy.og('app-list-item').should('have.length.above', 1);
     });
 
     it('searches an application', () => {
