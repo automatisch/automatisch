@@ -42,6 +42,7 @@
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "express-graphql": "^0.12.0",
+    "fast-xml-parser": "^4.0.11",
     "flickr-sdk": "3.10.0",
     "googleapis": "89.0.0",
     "graphql-middleware": "^6.1.15",
