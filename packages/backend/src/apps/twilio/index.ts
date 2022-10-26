@@ -1,4 +1,5 @@
 import defineApp from '../../helpers/define-app';
+import addAuthHeader from './common/add-auth-header';
 
 export default defineApp({
   name: 'Twilio',
@@ -9,5 +10,5 @@ export default defineApp({
   baseUrl: 'https://twilio.com',
   apiBaseUrl: 'https://api.twilio.com',
   primaryColor: 'e1000f',
-  beforeRequest: [],
+  beforeRequest: [addAuthHeader],
 });
