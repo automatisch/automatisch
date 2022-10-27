@@ -26,12 +26,6 @@ const newPullRequests = async ($: IGlobalVariable) => {
       for (const pullRequest of response.data) {
         const pullRequestId = pullRequest.id;
 
-        if (
-          pullRequestId <= Number($.flow.lastInternalId) &&
-          !$.execution.testRun
-        )
-          return;
-
         const dataItem = {
           raw: pullRequest,
           meta: {
@@ -42,7 +36,7 @@ const newPullRequests = async ($: IGlobalVariable) => {
         $.pushTriggerItem(dataItem);
       }
     }
-  } while (links.next && !$.execution.testRun);
+  } while (links.next);
 };
 
 export default newPullRequests;
