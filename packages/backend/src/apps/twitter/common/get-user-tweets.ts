@@ -16,7 +16,7 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
 
   do {
     const params: IJSONObject = {
-      since_id: $.execution.testRun ? null : $.flow.lastInternalId,
+      since_id: $.flow.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };
 
@@ -40,7 +40,7 @@ const fetchTweets = async ($: IGlobalVariable, username: string) => {
         $.pushTriggerItem(dataItem);
       });
     }
-  } while (response.data.meta.next_token && !$.execution.testRun);
+  } while (response.data.meta.next_token);
 
   return $.triggerOutput;
 };
