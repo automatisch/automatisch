@@ -10,6 +10,7 @@ import {
   ITriggerItem,
   IActionItem,
 } from '@automatisch/types';
+import EarlyExitError from '../errors/early-exit';
 
 type GlobalVariableOptions = {
   connection?: Connection;
@@ -25,9 +26,7 @@ const globalVariable = async (
 ): Promise<IGlobalVariable> => {
   const { connection, app, flow, step, execution, testRun = false } = options;
 
-  const lastInternalId = await flow?.lastInternalId();
-
-  const trigger = await step?.getTriggerCommand();
+  const lastInternalId = testRun ? undefined : await flow?.lastInternalId();
   const nextStep = await step?.getNextStep();
 
   const $: IGlobalVariable = {
@@ -75,6 +74,13 @@ const globalVariable = async (
     },
     pushTriggerItem: (triggerItem: ITriggerItem) => {
       $.triggerOutput.data.push(triggerItem);
+
+      if (
+        $.execution.testRun ||
+        isAlreadyProcessed(triggerItem.meta.internalId)
+      ) {
+        throw new EarlyExitError();
+      }
     },
     setActionItem: (actionItem: IActionItem) => {
       $.actionOutput.data = actionItem;
@@ -87,27 +93,12 @@ const globalVariable = async (
     beforeRequest: app.beforeRequest,
   });
 
-  if (trigger) {
-    if (trigger.dedupeStrategy === 'unique') {
-      const lastInternalIds = testRun ? [] : await flow?.lastInternalIds();
+  const lastInternalIds =
+    testRun || (flow && step.isAction) ? [] : await flow?.lastInternalIds();
 
-      const isAlreadyProcessed = (internalId: string) => {
-        if (testRun) return false;
-
-        return lastInternalIds?.includes(internalId);
-      };
-
-      $.flow.isAlreadyProcessed = isAlreadyProcessed;
-    } else if (trigger.dedupeStrategy === 'greatest') {
-      const isAlreadyProcessed = (internalId: string) => {
-        if (testRun) return false;
-
-        return Number(internalId) <= Number($.flow.lastInternalId);
-      };
-
-      $.flow.isAlreadyProcessed = isAlreadyProcessed;
-    }
-  }
+  const isAlreadyProcessed = (internalId: string) => {
+    return lastInternalIds?.includes(internalId);
+  };
 
   return $;
 };
