@@ -43,10 +43,4 @@ export default defineTrigger({
   async run($) {
     await newStargazers($);
   },
-
-  sort(stargazerA, stargazerB) {
-    return (
-      Number(stargazerB.meta.internalId) - Number(stargazerA.meta.internalId)
-    );
-  },
 });
