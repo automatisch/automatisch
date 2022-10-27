@@ -1,5 +1,5 @@
 import { IGlobalVariable } from '@automatisch/types';
-import { XMLParser } from 'fast-xml-parser';[]
+import { XMLParser } from 'fast-xml-parser';
 
 const newItemsInFeed = async ($: IGlobalVariable) => {
   const { data } = await $.http.get($.step.parameters.feedUrl as string);
@@ -7,15 +7,12 @@ const newItemsInFeed = async ($: IGlobalVariable) => {
   const parsedData = parser.parse(data);
 
   for (const item of parsedData.rss.channel.item) {
-    if ($.flow.isAlreadyProcessed(item.guid))
-      return;
-
     const dataItem = {
       raw: item,
       meta: {
-        internalId: item.guid
-      }
-    }
+        internalId: item.guid,
+      },
+    };
 
     $.pushTriggerItem(dataItem);
   }
