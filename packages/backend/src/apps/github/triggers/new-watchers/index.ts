@@ -44,8 +44,4 @@ export default defineTrigger({
   async run($) {
     await newWatchers($);
   },
-
-  sort() {
-    return -1;
-  },
 });
