@@ -210,7 +210,6 @@ export interface ITrigger {
   key: string;
   pollInterval?: number;
   description: string;
-  dedupeStrategy?: 'greatest' | 'unique' | 'last';
   substeps: ISubstep[];
   getInterval?(parameters: IStep['parameters']): string;
   run($: IGlobalVariable): Promise<void>;

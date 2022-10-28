@@ -5,7 +5,6 @@ export default defineTrigger({
   name: 'New watchers',
   key: 'newWatchers',
   pollInterval: 15,
-  dedupeStrategy: 'unique',
   description: 'Triggers when a user watches a repository',
   substeps: [
     {

@@ -6,16 +6,15 @@ export default defineTrigger({
   pollInterval: 15,
   key: 'newPhotos',
   description: 'Triggers when you add a new photo.',
-  dedupeStrategy: 'greatest',
   substeps: [
     {
       key: 'chooseConnection',
-      name: 'Choose connection'
+      name: 'Choose connection',
     },
     {
       key: 'testStep',
-      name: 'Test trigger'
-    }
+      name: 'Test trigger',
+    },
   ],
 
   async run($) {

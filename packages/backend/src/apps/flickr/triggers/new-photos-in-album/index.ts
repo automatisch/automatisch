@@ -6,11 +6,10 @@ export default defineTrigger({
   pollInterval: 15,
   key: 'newPhotosInAlbum',
   description: 'Triggers when you add a new photo in an album.',
-  dedupeStrategy: 'greatest',
   substeps: [
     {
       key: 'chooseConnection',
-      name: 'Choose connection'
+      name: 'Choose connection',
     },
     {
       key: 'chooseTrigger',
@@ -28,17 +27,17 @@ export default defineTrigger({
             arguments: [
               {
                 name: 'key',
-                value: 'listAlbums'
-              }
-            ]
-          }
-        }
-      ]
+                value: 'listAlbums',
+              },
+            ],
+          },
+        },
+      ],
     },
     {
       key: 'testStep',
-      name: 'Test trigger'
-    }
+      name: 'Test trigger',
+    },
   ],
 
   async run($) {
