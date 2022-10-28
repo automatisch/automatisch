@@ -73,14 +73,16 @@ const globalVariable = async (
       },
     },
     pushTriggerItem: (triggerItem: ITriggerItem) => {
-      $.triggerOutput.data.push(triggerItem);
-
-      if (
-        $.execution.testRun ||
-        isAlreadyProcessed(triggerItem.meta.internalId)
-      ) {
+      if ($.execution.testRun) {
+        $.triggerOutput.data.push(triggerItem);
         throw new EarlyExitError();
       }
+
+      if (isAlreadyProcessed(triggerItem.meta.internalId)) {
+        throw new EarlyExitError();
+      }
+
+      $.triggerOutput.data.push(triggerItem);
     },
     setActionItem: (actionItem: IActionItem) => {
       $.actionOutput.data = actionItem;
