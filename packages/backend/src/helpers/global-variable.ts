@@ -96,7 +96,7 @@ const globalVariable = async (
   });
 
   const lastInternalIds =
-    testRun || (flow && step.isAction) ? [] : await flow?.lastInternalIds();
+    testRun || (flow && step.isAction) ? [] : await flow?.lastInternalIds(2000);
 
   const isAlreadyProcessed = (internalId: string) => {
     return lastInternalIds?.includes(internalId);
