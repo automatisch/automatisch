@@ -48,17 +48,14 @@ const newPhotos = async ($: IGlobalVariable) => {
     pages = photos.pages;
 
     for (const photo of photos.photo) {
-      if ($.flow.isAlreadyProcessed(photo.date_faved) && !$.execution.testRun)
-        return;
-
       $.pushTriggerItem({
         raw: photo,
         meta: {
-          internalId: photo.date_faved as string
-        }
-      })
+          internalId: photo.date_faved as string,
+        },
+      });
     }
-  } while (page <= pages && !$.execution.testRun);
+  } while (page <= pages);
 };
 
 export default newPhotos;

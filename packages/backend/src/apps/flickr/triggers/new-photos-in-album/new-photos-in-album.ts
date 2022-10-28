@@ -43,17 +43,14 @@ const newPhotosInAlbum = async ($: IGlobalVariable) => {
     pages = photoset.pages;
 
     for (const photo of photoset.photo) {
-      if ($.flow.isAlreadyProcessed(photo.id) && !$.execution.testRun)
-        return;
-
       $.pushTriggerItem({
         raw: photo,
         meta: {
-          internalId: photo.id as string
-        }
-      })
+          internalId: photo.id as string,
+        },
+      });
     }
-  } while (page <= pages && !$.execution.testRun);
+  } while (page <= pages);
 };
 
 export default newPhotosInAlbum;
