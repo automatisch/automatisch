@@ -1,6 +1,7 @@
 import Flow from '../models/flow';
 import globalVariable from '../helpers/global-variable';
 import EarlyExitError from '../errors/early-exit';
+import HttpError from '../errors/http-error';
 
 type ProcessFlowOptions = {
   flowId: string;
@@ -25,8 +26,8 @@ export const processFlow = async (options: ProcessFlowOptions) => {
     await triggerCommand.run($);
   } catch (error) {
     if (error instanceof EarlyExitError === false) {
-      if (error?.response?.httpError) {
-        $.triggerOutput.error = error.response.httpError;
+      if (error instanceof HttpError) {
+        $.triggerOutput.error = error.error;
       } else {
         try {
           $.triggerOutput.error = JSON.parse(error.message);
