@@ -73,16 +73,17 @@ const globalVariable = async (
       },
     },
     pushTriggerItem: (triggerItem: ITriggerItem) => {
-      if ($.execution.testRun) {
-        $.triggerOutput.data.push(triggerItem);
-        throw new EarlyExitError();
-      }
-
-      if (isAlreadyProcessed(triggerItem.meta.internalId)) {
+      if (isAlreadyProcessed(triggerItem.meta.internalId) && !$.execution.testRun) {
+        // early exit as we do not want to process duplicate items in actual executions
         throw new EarlyExitError();
       }
 
       $.triggerOutput.data.push(triggerItem);
+
+      if ($.execution.testRun) {
+        // early exit after receiving one item as it is enough for test execution
+        throw new EarlyExitError();
+      }
     },
     setActionItem: (actionItem: IActionItem) => {
       $.actionOutput.data = actionItem;
