@@ -105,6 +105,11 @@ export default defineConfig({
     footer: {
       copyright: 'Copyright © 2022 Automatisch. All rights reserved.',
     },
+    algolia: {
+      appId: 'I7I8MRYC3P',
+      apiKey: '9325eb970bdd6a70b1e35528b39ed2fe',
+      indexName: 'automatisch',
+    },
   },
 
   async transformHead(ctx) {
