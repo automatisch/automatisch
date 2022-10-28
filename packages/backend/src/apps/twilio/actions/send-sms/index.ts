@@ -16,7 +16,7 @@ export default defineAction({
         {
           label: 'From Number',
           key: 'fromNumber',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description:
             'The number to send the SMS from. Include country code. Example: 15551234567',
@@ -25,7 +25,7 @@ export default defineAction({
         {
           label: 'To Number',
           key: 'toNumber',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description:
             'The number to send the SMS to. Include country code. Example: 15551234567',
@@ -34,7 +34,7 @@ export default defineAction({
         {
           label: 'Message',
           key: 'message',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description: 'The message to send.',
           variables: true,

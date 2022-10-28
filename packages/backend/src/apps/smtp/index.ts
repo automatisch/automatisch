@@ -1,4 +1,6 @@
 import defineApp from '../../helpers/define-app';
+import auth from './auth';
+import actions from './actions';
 
 export default defineApp({
   name: 'SMTP',
@@ -10,4 +12,6 @@ export default defineApp({
   apiBaseUrl: '',
   primaryColor: '2DAAE1',
   beforeRequest: [],
+  auth,
+  actions,
 });

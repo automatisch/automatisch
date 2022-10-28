@@ -1,5 +1,9 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
+import auth from './auth';
+import triggers from './triggers';
+import actions from './actions';
+import data from './data';
 
 export default defineApp({
   name: 'Github',
@@ -11,4 +15,8 @@ export default defineApp({
   primaryColor: '000000',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
+  auth,
+  triggers,
+  actions,
+  data,
 });

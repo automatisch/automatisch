@@ -1,4 +1,3 @@
-import { IActionOutput } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
@@ -17,7 +16,7 @@ export default defineAction({
         {
           label: 'Tweet body',
           key: 'tweet',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description: 'The content of your new tweet.',
           variables: true,

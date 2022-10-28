@@ -18,7 +18,7 @@ export default defineAction({
         {
           label: 'From name',
           key: 'fromName',
-          type: 'string',
+          type: 'string' as const,
           required: false,
           description: 'Display name of the sender.',
           variables: true,
@@ -26,7 +26,7 @@ export default defineAction({
         {
           label: 'From email',
           key: 'fromEmail',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description: 'Email address of the sender.',
           variables: true,
@@ -34,7 +34,7 @@ export default defineAction({
         {
           label: 'Reply to',
           key: 'replyTo',
-          type: 'string',
+          type: 'string' as const,
           required: false,
           description:
             'Email address to reply to. Defaults to the from email address.',
@@ -43,7 +43,7 @@ export default defineAction({
         {
           label: 'To',
           key: 'to',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description:
             'Comma seperated list of email addresses to send the email to.',
@@ -52,7 +52,7 @@ export default defineAction({
         {
           label: 'Cc',
           key: 'cc',
-          type: 'string',
+          type: 'string' as const,
           required: false,
           description: 'Comma seperated list of email addresses.',
           variables: true,
@@ -60,7 +60,7 @@ export default defineAction({
         {
           label: 'Bcc',
           key: 'bcc',
-          type: 'string',
+          type: 'string' as const,
           required: false,
           description: 'Comma seperated list of email addresses.',
           variables: true,
@@ -68,7 +68,7 @@ export default defineAction({
         {
           label: 'Subject',
           key: 'subject',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description: 'Subject of the email.',
           variables: true,
@@ -76,7 +76,7 @@ export default defineAction({
         {
           label: 'Body',
           key: 'body',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description: 'Body of the email.',
           variables: true,

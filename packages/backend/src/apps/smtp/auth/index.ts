@@ -6,7 +6,7 @@ export default {
     {
       key: 'host',
       label: 'Host',
-      type: 'string',
+      type: 'string' as const,
       required: true,
       readOnly: false,
       value: null,
@@ -18,7 +18,7 @@ export default {
     {
       key: 'username',
       label: 'Email/Username',
-      type: 'string',
+      type: 'string' as const,
       required: true,
       readOnly: false,
       value: null,
@@ -30,7 +30,7 @@ export default {
     {
       key: 'password',
       label: 'Password',
-      type: 'string',
+      type: 'string' as const,
       required: true,
       readOnly: false,
       value: null,
@@ -42,7 +42,7 @@ export default {
     {
       key: 'useTls',
       label: 'Use TLS?',
-      type: 'dropdown',
+      type: 'dropdown' as const,
       required: false,
       readOnly: false,
       value: false,
@@ -64,10 +64,10 @@ export default {
     {
       key: 'port',
       label: 'Port',
-      type: 'string',
+      type: 'string' as const,
       required: false,
       readOnly: false,
-      value: 25,
+      value: '25',
       placeholder: null,
       description: null,
       docUrl: 'https://automatisch.io/docs/smtp#port',
@@ -76,7 +76,7 @@ export default {
     {
       key: 'fromEmail',
       label: 'From Email',
-      type: 'string',
+      type: 'string' as const,
       required: false,
       readOnly: false,
       value: null,
@@ -89,7 +89,7 @@ export default {
   authenticationSteps: [
     {
       step: 1,
-      type: 'mutation',
+      type: 'mutation' as const,
       name: 'createConnection',
       arguments: [
         {
@@ -130,7 +130,7 @@ export default {
     },
     {
       step: 2,
-      type: 'mutation',
+      type: 'mutation' as const,
       name: 'verifyConnection',
       arguments: [
         {
@@ -143,7 +143,7 @@ export default {
   reconnectionSteps: [
     {
       step: 1,
-      type: 'mutation',
+      type: 'mutation' as const,
       name: 'resetConnection',
       arguments: [
         {
@@ -154,7 +154,7 @@ export default {
     },
     {
       step: 2,
-      type: 'mutation',
+      type: 'mutation' as const,
       name: 'updateConnection',
       arguments: [
         {
@@ -195,7 +195,7 @@ export default {
     },
     {
       step: 3,
-      type: 'mutation',
+      type: 'mutation' as const,
       name: 'verifyConnection',
       arguments: [
         {

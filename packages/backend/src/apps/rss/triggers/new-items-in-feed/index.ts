@@ -14,7 +14,7 @@ export default defineTrigger({
         {
           label: 'Feed URL',
           key: 'feedUrl',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description: 'Paste your publicly accessible RSS URL here.',
           variables: false,
