@@ -1,5 +1,8 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
+import auth from './auth';
+import triggers from './triggers';
+import data from './data';
 
 export default defineApp({
   name: 'Flickr',
@@ -12,4 +15,7 @@ export default defineApp({
   baseUrl: 'https://www.flickr.com/',
   apiBaseUrl: 'https://www.flickr.com/services',
   beforeRequest: [addAuthHeader],
+  auth,
+  triggers,
+  data,
 });

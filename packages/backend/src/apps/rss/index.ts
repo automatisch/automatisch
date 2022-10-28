@@ -1,4 +1,5 @@
 import defineApp from '../../helpers/define-app';
+import triggers from './triggers';
 
 export default defineApp({
   name: 'RSS',
@@ -10,4 +11,5 @@ export default defineApp({
   apiBaseUrl: '',
   primaryColor: 'ff8800',
   beforeRequest: [],
+  triggers,
 });

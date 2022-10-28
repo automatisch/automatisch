@@ -19,7 +19,7 @@ export default defineTrigger({
         {
           label: 'Search Term',
           key: 'searchTerm',
-          type: 'string',
+          type: 'string' as const,
           required: true,
         },
       ],

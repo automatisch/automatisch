@@ -17,7 +17,7 @@ export default defineAction({
         {
           label: 'Search Query',
           key: 'query',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description:
             'Search query to use for finding matching messages. See the Slack Search Documentation for more information on constructing a query.',
@@ -26,7 +26,7 @@ export default defineAction({
         {
           label: 'Sort by',
           key: 'sortBy',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           description:
             'Sort messages by their match strength or by their date. Default is score.',
           required: true,
@@ -46,7 +46,7 @@ export default defineAction({
         {
           label: 'Sort direction',
           key: 'sortDirection',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           description:
             'Sort matching messages in ascending or descending order. Default is descending.',
           required: true,

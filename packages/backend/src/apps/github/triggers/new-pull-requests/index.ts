@@ -18,7 +18,7 @@ export default defineTrigger({
         {
           label: 'Repo',
           key: 'repo',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           required: true,
           variables: false,
           source: {

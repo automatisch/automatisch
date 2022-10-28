@@ -18,7 +18,7 @@ export default defineTrigger({
         {
           label: 'Username',
           key: 'username',
-          type: 'string',
+          type: 'string' as const,
           required: true,
         },
       ],

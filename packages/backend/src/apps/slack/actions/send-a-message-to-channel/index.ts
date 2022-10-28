@@ -17,7 +17,7 @@ export default defineAction({
         {
           label: 'Channel',
           key: 'channel',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           required: true,
           description: 'Pick a channel to send the message to.',
           variables: false,
@@ -35,7 +35,7 @@ export default defineAction({
         {
           label: 'Message text',
           key: 'message',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           description: 'The content of your new message.',
           variables: true,

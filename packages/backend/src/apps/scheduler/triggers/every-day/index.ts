@@ -17,7 +17,7 @@ export default defineTrigger({
         {
           label: 'Trigger on weekends?',
           key: 'triggersOnWeekend',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           description: 'Should this flow trigger on Saturday and Sunday?',
           required: true,
           value: true,
@@ -36,7 +36,7 @@ export default defineTrigger({
         {
           label: 'Time of day',
           key: 'hour',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           required: true,
           value: null,
           variables: false,

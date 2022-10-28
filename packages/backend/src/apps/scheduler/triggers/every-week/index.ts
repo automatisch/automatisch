@@ -17,7 +17,7 @@ export default defineTrigger({
         {
           label: 'Day of the week',
           key: 'weekday',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           required: true,
           value: null,
           variables: false,
@@ -55,7 +55,7 @@ export default defineTrigger({
         {
           label: 'Time of day',
           key: 'hour',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           required: true,
           value: null,
           variables: false,

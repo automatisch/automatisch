@@ -18,7 +18,7 @@ export default defineAction({
         {
           label: 'Repo',
           key: 'repo',
-          type: 'dropdown',
+          type: 'dropdown' as const,
           required: false,
           variables: false,
           source: {
@@ -35,14 +35,14 @@ export default defineAction({
         {
           label: 'Title',
           key: 'title',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           variables: true,
         },
         {
           label: 'Body',
           key: 'body',
-          type: 'string',
+          type: 'string' as const,
           required: true,
           variables: true,
         },

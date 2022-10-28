@@ -136,7 +136,7 @@ export type IField = IFieldDropdown | IFieldText;
 export interface IAuthenticationStepField {
   name: string;
   value: string | null;
-  properties: {
+  properties?: {
     name: string;
     value: string;
   }[];
@@ -178,7 +178,7 @@ export interface IData {
 }
 
 export interface IAuth {
-  createAuthData($: IGlobalVariable): Promise<void>;
+  createAuthData?($: IGlobalVariable): Promise<void>;
   verifyCredentials($: IGlobalVariable): Promise<any>;
   isStillVerified($: IGlobalVariable): Promise<boolean>;
   fields: IField[];

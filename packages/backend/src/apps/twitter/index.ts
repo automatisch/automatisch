@@ -1,5 +1,8 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
+import auth from './auth';
+import actions from './actions';
+import triggers from './triggers';
 
 export default defineApp({
   name: 'Twitter',
@@ -11,4 +14,7 @@ export default defineApp({
   apiBaseUrl: 'https://api.twitter.com',
   primaryColor: '1da1f2',
   beforeRequest: [addAuthHeader],
+  auth,
+  triggers,
+  actions,
 });
