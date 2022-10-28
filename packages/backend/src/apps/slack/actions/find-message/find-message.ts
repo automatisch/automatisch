@@ -1,4 +1,4 @@
-import { IGlobalVariable, IActionOutput } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 
 type FindMessageOptions = {
   query: string;

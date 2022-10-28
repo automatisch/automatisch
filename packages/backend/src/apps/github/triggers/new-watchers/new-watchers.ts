@@ -1,4 +1,4 @@
-import { IGlobalVariable, ITriggerOutput } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 import getRepoOwnerAndRepo from '../../common/get-repo-owner-and-repo';
 import parseLinkHeader from '../../../../helpers/parse-header-link';
 
@@ -34,9 +34,6 @@ const newWatchers = async ($: IGlobalVariable) => {
       for (const watcher of response.data) {
         const watcherId = watcher.id.toString();
 
-        if ($.flow.isAlreadyProcessed(watcherId) && !$.execution.testRun)
-          return;
-
         const dataItem = {
           raw: watcher,
           meta: {
@@ -47,7 +44,7 @@ const newWatchers = async ($: IGlobalVariable) => {
         $.pushTriggerItem(dataItem);
       }
     }
-  } while (pathname && !$.execution.testRun);
+  } while (pathname);
 };
 
 export default newWatchers;

@@ -48,9 +48,6 @@ const newStargazers = async ($: IGlobalVariable) => {
         const { starred_at, user } = starEntry;
         const timestamp = DateTime.fromISO(starred_at).toMillis();
 
-        if (timestamp <= Number($.flow.lastInternalId) && !$.execution.testRun)
-          return;
-
         const dataItem = {
           raw: user,
           meta: {
@@ -61,7 +58,7 @@ const newStargazers = async ($: IGlobalVariable) => {
         $.pushTriggerItem(dataItem);
       }
     }
-  } while (pathname && !$.execution.testRun);
+  } while (pathname);
 };
 
 export default newStargazers;

@@ -31,17 +31,13 @@ const getUserFollowers = async (
 
     if (response.data.meta.result_count > 0) {
       for (const follower of response.data.data) {
-        if ($.flow.isAlreadyProcessed(follower.id as string)) {
-          return;
-        }
-
         $.pushTriggerItem({
           raw: follower,
           meta: { internalId: follower.id as string },
         });
       }
     }
-  } while (response.data.meta.next_token && !$.execution.testRun);
+  } while (response.data.meta.next_token);
 };
 
 export default getUserFollowers;

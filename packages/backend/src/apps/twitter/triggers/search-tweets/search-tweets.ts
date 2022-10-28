@@ -10,7 +10,7 @@ const searchTweets = async ($: IGlobalVariable) => {
   do {
     const params: IJSONObject = {
       query: searchTerm,
-      since_id: $.execution.testRun ? null : $.flow.lastInternalId,
+      since_id: $.flow.lastInternalId,
       pagination_token: response?.data?.meta?.next_token,
     };
 
@@ -38,7 +38,7 @@ const searchTweets = async ($: IGlobalVariable) => {
         $.pushTriggerItem(dataItem);
       });
     }
-  } while (response.data.meta.next_token && !$.execution.testRun);
+  } while (response.data.meta.next_token);
 };
 
 export default searchTweets;

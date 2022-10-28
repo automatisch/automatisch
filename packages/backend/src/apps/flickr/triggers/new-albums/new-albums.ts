@@ -19,7 +19,7 @@ const extraFields = [
   'url_t',
   'url_s',
   'url_m',
-  'url_o'
+  'url_o',
 ].join(',');
 
 const newAlbums = async ($: IGlobalVariable) => {
@@ -42,17 +42,14 @@ const newAlbums = async ($: IGlobalVariable) => {
     pages = photosets.pages;
 
     for (const photoset of photosets.photoset) {
-      if ($.flow.isAlreadyProcessed(photoset.id) && !$.execution.testRun)
-        return;
-
       $.pushTriggerItem({
         raw: photoset,
         meta: {
-          internalId: photoset.id as string
-        }
-      })
+          internalId: photoset.id as string,
+        },
+      });
     }
-  } while (page <= pages && !$.execution.testRun);
+  } while (page <= pages);
 };
 
 export default newAlbums;

@@ -6,16 +6,15 @@ export default defineTrigger({
   pollInterval: 15,
   key: 'newFavoritePhotos',
   description: 'Triggers when you favorite a photo.',
-  dedupeStrategy: 'unique',
   substeps: [
     {
       key: 'chooseConnection',
-      name: 'Choose connection'
+      name: 'Choose connection',
     },
     {
       key: 'testStep',
-      name: 'Test trigger'
-    }
+      name: 'Test trigger',
+    },
   ],
 
   async run($) {

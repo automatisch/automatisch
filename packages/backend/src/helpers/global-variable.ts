@@ -10,6 +10,7 @@ import {
   ITriggerItem,
   IActionItem,
 } from '@automatisch/types';
+import EarlyExitError from '../errors/early-exit';
 
 type GlobalVariableOptions = {
   connection?: Connection;
@@ -25,9 +26,7 @@ const globalVariable = async (
 ): Promise<IGlobalVariable> => {
   const { connection, app, flow, step, execution, testRun = false } = options;
 
-  const lastInternalId = await flow?.lastInternalId();
-
-  const trigger = await step?.getTriggerCommand();
+  const lastInternalId = testRun ? undefined : await flow?.lastInternalId();
   const nextStep = await step?.getNextStep();
 
   const $: IGlobalVariable = {
@@ -74,7 +73,17 @@ const globalVariable = async (
       },
     },
     pushTriggerItem: (triggerItem: ITriggerItem) => {
+      if (isAlreadyProcessed(triggerItem.meta.internalId) && !$.execution.testRun) {
+        // early exit as we do not want to process duplicate items in actual executions
+        throw new EarlyExitError();
+      }
+
       $.triggerOutput.data.push(triggerItem);
+
+      if ($.execution.testRun) {
+        // early exit after receiving one item as it is enough for test execution
+        throw new EarlyExitError();
+      }
     },
     setActionItem: (actionItem: IActionItem) => {
       $.actionOutput.data = actionItem;
@@ -87,27 +96,12 @@ const globalVariable = async (
     beforeRequest: app.beforeRequest,
   });
 
-  if (trigger) {
-    if (trigger.dedupeStrategy === 'unique') {
-      const lastInternalIds = testRun ? [] : await flow?.lastInternalIds();
+  const lastInternalIds =
+    testRun || (flow && step.isAction) ? [] : await flow?.lastInternalIds(2000);
 
-      const isAlreadyProcessed = (internalId: string) => {
-        if (testRun) return false;
-
-        return lastInternalIds?.includes(internalId);
-      };
-
-      $.flow.isAlreadyProcessed = isAlreadyProcessed;
-    } else if (trigger.dedupeStrategy === 'greatest') {
-      const isAlreadyProcessed = (internalId: string) => {
-        if (testRun) return false;
-
-        return Number(internalId) <= Number($.flow.lastInternalId);
-      };
-
-      $.flow.isAlreadyProcessed = isAlreadyProcessed;
-    }
-  }
+  const isAlreadyProcessed = (internalId: string) => {
+    return lastInternalIds?.includes(internalId);
+  };
 
   return $;
 };

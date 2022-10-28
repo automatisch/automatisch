@@ -48,17 +48,14 @@ const newPhotos = async ($: IGlobalVariable) => {
     pages = photos.pages;
 
     for (const photo of photos.photo) {
-      if ($.flow.isAlreadyProcessed(photo.id) && !$.execution.testRun)
-        return;
-
       $.pushTriggerItem({
         raw: photo,
         meta: {
-          internalId: photo.id as string
-        }
-      })
+          internalId: photo.id as string,
+        },
+      });
     }
-  } while (page <= pages && !$.execution.testRun);
+  } while (page <= pages);
 };
 
 export default newPhotos;

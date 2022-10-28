@@ -34,9 +34,6 @@ const newIssues = async ($: IGlobalVariable) => {
       for (const issue of response.data) {
         const issueId = issue.id;
 
-        if (issueId <= Number($.flow.lastInternalId) && !$.execution.testRun)
-          return;
-
         const dataItem = {
           raw: issue,
           meta: {
@@ -47,7 +44,7 @@ const newIssues = async ($: IGlobalVariable) => {
         $.pushTriggerItem(dataItem);
       }
     }
-  } while (links.next && !$.execution.testRun);
+  } while (links.next);
 };
 
 export default newIssues;
