@@ -39,6 +39,8 @@ const globalVariable = async (
               ...args,
             },
           });
+
+          $.auth.data = connection.formattedData;
         }
 
         return null;
