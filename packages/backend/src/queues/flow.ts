@@ -1,5 +1,5 @@
 import process from 'process';
-import { Queue, QueueScheduler } from 'bullmq';
+import { Queue } from 'bullmq';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
 
@@ -10,10 +10,9 @@ const redisConnection = {
 };
 
 const flowQueue = new Queue('flow', redisConnection);
-const queueScheduler = new QueueScheduler('flow', redisConnection);
 
 process.on('SIGTERM', async () => {
-  await queueScheduler.close();
+  await flowQueue.close();
 });
 
 flowQueue.on('error', (err) => {
