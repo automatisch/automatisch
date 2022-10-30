@@ -4,7 +4,7 @@ type Query {
     onlyWithTriggers: Boolean
     onlyWithActions: Boolean
   ): [App]
-  getApp(key: AvailableAppsEnumType!): App
+  getApp(key: String!): App
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
@@ -148,23 +148,6 @@ type AuthLink {
   url: String
 }
 
-enum AvailableAppsEnumType {
-  discord
-  firebase
-  flickr
-  github
-  gitlab
-  postgresql
-  rss
-  scheduler
-  slack
-  smtp
-  twilio
-  twitch
-  twitter
-  typeform
-}
-
 type Connection {
   id: String
   key: String
@@ -239,7 +222,7 @@ type Execution {
 }
 
 input CreateConnectionInput {
-  key: AvailableAppsEnumType!
+  key: String!
   formattedData: JSONObject!
 }
 
