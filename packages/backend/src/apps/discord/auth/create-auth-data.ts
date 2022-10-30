@@ -13,6 +13,7 @@ export default async function createAuthData($: IGlobalVariable) {
       client_id: $.auth.data.consumerKey as string,
       redirect_uri: callbackUrl,
       response_type: 'code',
+      permissions: '2146958591',
       scope: scopes.join(' '),
     });
 
