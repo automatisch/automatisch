@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_APP = gql`
-  query GetApp($key: AvailableAppsEnumType!) {
+  query GetApp($key: String!) {
     getApp(key: $key) {
       name
       key
