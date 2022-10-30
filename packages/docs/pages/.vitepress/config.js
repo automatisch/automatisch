@@ -25,7 +25,7 @@ export default defineConfig({
       },
       {
         text: 'Connections',
-        link: '/connections/twitter',
+        link: '/connections/discord',
         activeMatch: '/connections/',
       },
     ],
@@ -35,6 +35,7 @@ export default defineConfig({
           text: 'Connections',
           collapsible: true,
           items: [
+            { text: 'Discord', link: '/connections/discord' },
             { text: 'Flickr', link: '/connections/flickr' },
             { text: 'Github', link: '/connections/github' },
             { text: 'Scheduler', link: '/connections/scheduler' },
