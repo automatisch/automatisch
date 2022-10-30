@@ -15,7 +15,7 @@ const processMutation = async (step: IAuthenticationStep, variables: IJSONObject
     context: {
       autoSnackbar: false,
     },
-   });
+  });
   const responseData = mutationResponse.data[step.name];
 
   return responseData;
@@ -38,12 +38,19 @@ function getObjectOfEntries(iterator: any) {
 }
 
 const processOpenWithPopup = (step: IAuthenticationStep, variables: IJSONObject) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const windowFeatures = 'toolbar=no, titlebar=no, menubar=no, width=500, height=700, top=100, left=100';
     const url = variables.url;
 
     const popup = window.open(url as string, '_blank', windowFeatures) as WindowProxy;
     popup?.focus();
+
+    const closeCheckIntervalId = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(closeCheckIntervalId);
+        reject({ message: 'Error occured while verifying credentials!' });
+      }
+    }, 1000)
 
     const messageHandler = async (event: MessageEvent) => {
       if (event.data.source !== 'automatisch') {
@@ -53,6 +60,7 @@ const processOpenWithPopup = (step: IAuthenticationStep, variables: IJSONObject)
       const data = parseUrlSearchParams(event);
       window.removeEventListener('message', messageHandler);
 
+      clearInterval(closeCheckIntervalId);
       resolve(data);
     };
 

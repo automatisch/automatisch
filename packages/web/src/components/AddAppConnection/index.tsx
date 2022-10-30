@@ -71,6 +71,8 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
         const error = err as Error;
         console.log(error);
         setErrorMessage(error.message);
+        setInProgress(false);
+
         break;
       }
 
