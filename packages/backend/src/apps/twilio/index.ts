@@ -1,6 +1,7 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
+import triggers from './triggers';
 import actions from './actions';
 
 export default defineApp({
@@ -14,5 +15,6 @@ export default defineApp({
   primaryColor: 'e1000f',
   beforeRequest: [addAuthHeader],
   auth,
+  triggers,
   actions,
 });
