@@ -21,12 +21,5 @@
       "./src/apps"
     ]
   },
-  "include": ["src/**/*", "bin/**/*"],
-  "exclude": [
-    "src/apps/discord",
-    "src/apps/firebase",
-    "src/apps/gitlab",
-    "src/apps/twitch",
-    "src/apps/typeform"
-  ]
+  "include": ["src/**/*", "bin/**/*"]
 }
