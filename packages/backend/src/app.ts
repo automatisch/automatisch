@@ -1,4 +1,3 @@
-import appConfig from './config/app';
 import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
@@ -15,15 +14,11 @@ import {
 } from './helpers/create-bull-board-handler';
 import injectBullBoardHandler from './helpers/inject-bull-board-handler';
 
-if (appConfig.enableBullMQDashboard) {
-  createBullBoardHandler(serverAdapter);
-}
+createBullBoardHandler(serverAdapter);
 
 const app = express();
 
-if (appConfig.enableBullMQDashboard) {
-  injectBullBoardHandler(app, serverAdapter);
-}
+injectBullBoardHandler(app, serverAdapter);
 
 appAssetsHandler(app);
 

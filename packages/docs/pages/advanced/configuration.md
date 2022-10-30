@@ -14,19 +14,22 @@ The default values for some environment variables might be different in our deve
 Please be careful with the `ENCRYPTION_KEY` environment variable. It is used to encrypt your credentials from third-party services. If you change it, you will not be able to access your connections and thus, your existing flows and connections will be useless.
 :::
 
-| Variable Name       | Type    | Default Value      | Description                         |
-| ------------------- | ------- | ------------------ | ----------------------------------- |
-| `HOST`              | string  | `localhost`        | HTTP Host                           |
-| `PROTOCOL`          | string  | `http`             | HTTP Protocol                       |
-| `PORT`              | string  | `3000`             | HTTP Port                           |
-| `APP_ENV`           | string  | `production`       | Automatisch Environment             |
-| `POSTGRES_DATABASE` | string  | `automatisch`      | Database Name                       |
-| `POSTGRES_PORT`     | number  | `5432`             | Database Port                       |
-| `POSTGRES_HOST`     | string  | `postgres`         | Database Host                       |
-| `POSTGRES_USERNAME` | string  | `automatisch_user` | Database User                       |
-| `POSTGRES_PASSWORD` | string  |                    | Password of Database User           |
-| `ENCRYPTION_KEY`    | string  |                    | Encryption Key to store credentials |
-| `APP_SECRET_KEY`    | string  |                    | Secret Key to authenticate the user |
-| `REDIS_HOST`        | string  | `redis`            | Redis Host                          |
-| `REDIS_PORT`        | number  | `6379`             | Redis Port                          |
-| `TELEMETRY_ENABLED` | boolean | `true`             | Enable/Disable Telemetry            |
+| Variable Name               | Type    | Default Value      | Description                         |
+| --------------------------- | ------- | ------------------ | ----------------------------------- |
+| `HOST`                      | string  | `localhost`        | HTTP Host                           |
+| `PROTOCOL`                  | string  | `http`             | HTTP Protocol                       |
+| `PORT`                      | string  | `3000`             | HTTP Port                           |
+| `APP_ENV`                   | string  | `production`       | Automatisch Environment             |
+| `POSTGRES_DATABASE`         | string  | `automatisch`      | Database Name                       |
+| `POSTGRES_PORT`             | number  | `5432`             | Database Port                       |
+| `POSTGRES_HOST`             | string  | `postgres`         | Database Host                       |
+| `POSTGRES_USERNAME`         | string  | `automatisch_user` | Database User                       |
+| `POSTGRES_PASSWORD`         | string  |                    | Password of Database User           |
+| `ENCRYPTION_KEY`            | string  |                    | Encryption Key to store credentials |
+| `APP_SECRET_KEY`            | string  |                    | Secret Key to authenticate the user |
+| `REDIS_HOST`                | string  | `redis`            | Redis Host                          |
+| `REDIS_PORT`                | number  | `6379`             | Redis Port                          |
+| `TELEMETRY_ENABLED`         | boolean | `true`             | Enable/Disable Telemetry            |
+| `ENABLE_BULLMQ_DASHBOARD`   | boolean | `false`            | Enable BullMQ Dashboard             |
+| `BULLMQ_DASHBOARD_USERNAME` | string  |                    | Username to login BullMQ Dashboard  |
+| `BULLMQ_DASHBOARD_PASSWORD` | string  |                    | Password to login BullMQ Dashboard  |
