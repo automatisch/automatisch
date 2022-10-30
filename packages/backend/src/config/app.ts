@@ -22,6 +22,8 @@ type AppConfig = {
   redisHost: string;
   redisPort: number;
   enableBullMQDashboard: boolean;
+  bullMQDashboardUsername: string;
+  bullMQDashboardPassword: string;
   telemetryEnabled: boolean;
 };
 
@@ -61,6 +63,8 @@ const appConfig: AppConfig = {
   redisPort: parseInt(process.env.REDIS_PORT || '6379'),
   enableBullMQDashboard:
     process.env.ENABLE_BULLMQ_DASHBOARD === 'true' ? true : false,
+  bullMQDashboardUsername: process.env.BULLMQ_DASHBOARD_USERNAME,
+  bullMQDashboardPassword: process.env.BULLMQ_DASHBOARD_PASSWORD,
   baseUrl,
   webAppUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
