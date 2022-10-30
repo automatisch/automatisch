@@ -28,6 +28,10 @@ const verifyCredentials = async ($: IGlobalVariable) => {
     expires_in: expiresIn,
     scope: scope,
     token_type: tokenType,
+    guild: {
+      id: guildId,
+      name: guildName,
+    }
   } = verifiedCredentials;
 
   await $.auth.set({
@@ -44,6 +48,8 @@ const verifyCredentials = async ($: IGlobalVariable) => {
     userId: user.id,
     screenName: user.username,
     email: user.email,
+    guildId,
+    guildName,
   });
 };
 

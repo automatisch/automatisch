@@ -39,6 +39,18 @@ export default {
       description: null,
       docUrl: 'https://automatisch.io/docs/discord#consumer-secret',
       clickToCopy: false
+    },
+    {
+      key: 'botToken',
+      label: 'Bot token',
+      type: 'string' as const,
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: null,
+      docUrl: 'https://automatisch.io/docs/discord#bot-token',
+      clickToCopy: false
     }
   ],
   authenticationSteps: [
@@ -62,6 +74,10 @@ export default {
             {
               name: 'consumerSecret',
               value: '{fields.consumerSecret}'
+            },
+            {
+              name: 'botToken',
+              value: '{fields.botToken}'
             }
           ]
         }
@@ -154,6 +170,10 @@ export default {
             {
               name: 'consumerSecret',
               value: '{fields.consumerSecret}'
+            },
+            {
+              name: 'botToken',
+              value: '{fields.botToken}'
             }
           ]
         }

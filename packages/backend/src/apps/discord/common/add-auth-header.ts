@@ -1,9 +1,9 @@
 import { TBeforeRequest } from '@automatisch/types';
 
 const addAuthHeader: TBeforeRequest = ($, requestConfig) => {
-  const { tokenType, accessToken } = $.auth.data;
-  if (tokenType && accessToken) {
-    requestConfig.headers.Authorization = `${tokenType} ${accessToken}`;
+  const { tokenType, botToken } = $.auth.data;
+  if (tokenType && botToken) {
+    requestConfig.headers.Authorization = `Bot ${botToken}`;
   }
 
   return requestConfig;
