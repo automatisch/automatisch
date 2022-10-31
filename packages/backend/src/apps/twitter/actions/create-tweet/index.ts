@@ -4,28 +4,14 @@ export default defineAction({
   name: 'Create Tweet',
   key: 'createTweet',
   description: 'Create a tweet.',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseConnection',
-      name: 'Choose connection',
-    },
-    {
-      key: 'chooseAction',
-      name: 'Set up action',
-      arguments: [
-        {
-          label: 'Tweet body',
-          key: 'tweet',
-          type: 'string' as const,
-          required: true,
-          description: 'The content of your new tweet.',
-          variables: true,
-        },
-      ],
-    },
-    {
-      key: 'testStep',
-      name: 'Test action',
+      label: 'Tweet body',
+      key: 'tweet',
+      type: 'string' as const,
+      required: true,
+      description: 'The content of your new tweet.',
+      variables: true,
     },
   ],
 

@@ -4,46 +4,32 @@ export default defineAction({
   name: 'Send SMS',
   key: 'sendSms',
   description: 'Send an SMS',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseConnection',
-      name: 'Choose connection',
+      label: 'From Number',
+      key: 'fromNumber',
+      type: 'string' as const,
+      required: true,
+      description:
+        'The number to send the SMS from. Include country code. Example: 15551234567',
+      variables: true,
     },
     {
-      key: 'chooseAction',
-      name: 'Set up action',
-      arguments: [
-        {
-          label: 'From Number',
-          key: 'fromNumber',
-          type: 'string' as const,
-          required: true,
-          description:
-            'The number to send the SMS from. Include country code. Example: 15551234567',
-          variables: true,
-        },
-        {
-          label: 'To Number',
-          key: 'toNumber',
-          type: 'string' as const,
-          required: true,
-          description:
-            'The number to send the SMS to. Include country code. Example: 15551234567',
-          variables: true,
-        },
-        {
-          label: 'Message',
-          key: 'message',
-          type: 'string' as const,
-          required: true,
-          description: 'The message to send.',
-          variables: true,
-        },
-      ],
+      label: 'To Number',
+      key: 'toNumber',
+      type: 'string' as const,
+      required: true,
+      description:
+        'The number to send the SMS to. Include country code. Example: 15551234567',
+      variables: true,
     },
     {
-      key: 'testStep',
-      name: 'Test action',
+      label: 'Message',
+      key: 'message',
+      type: 'string' as const,
+      required: true,
+      description: 'The message to send.',
+      variables: true,
     },
   ],
 

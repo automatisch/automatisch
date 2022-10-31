@@ -1,4 +1,10 @@
-import { IApp, IRawTrigger, ITrigger } from '@automatisch/types';
+import {
+  IAction,
+  IApp,
+  IRawAction,
+  IRawTrigger,
+  ITrigger,
+} from '@automatisch/types';
 import { omit, cloneDeep } from 'lodash';
 
 async function getDefaultExport(path: string) {
@@ -23,25 +29,11 @@ const getApp = async (appKey: string, stripFuncs = true) => {
   const appData: IApp = cloneDeep(await getDefaultExport(`../apps/${appKey}`));
 
   appData.triggers = appData?.triggers?.map((trigger: IRawTrigger) => {
-    const computedTrigger: ITrigger = omit(trigger, ['arguments']);
+    return addStaticSubsteps(appData, trigger);
+  });
 
-    computedTrigger.substeps = [];
-
-    if (appData.supportsConnections) {
-      computedTrigger.substeps.push(chooseConnectionStep);
-    }
-
-    if (trigger.arguments) {
-      computedTrigger.substeps.push({
-        key: 'chooseTrigger',
-        name: 'Set up a trigger',
-        arguments: trigger.arguments,
-      });
-    }
-
-    computedTrigger.substeps.push(testStep);
-
-    return computedTrigger;
+  appData.actions = appData?.actions?.map((action: IRawAction) => {
+    return addStaticSubsteps(appData, action);
   });
 
   if (stripFuncs) {
@@ -49,6 +41,28 @@ const getApp = async (appKey: string, stripFuncs = true) => {
   }
 
   return appData;
+};
+
+const addStaticSubsteps = (appData: IApp, step: IRawTrigger | IRawAction) => {
+  const computedStep: ITrigger | IAction = omit(step, ['arguments']);
+
+  computedStep.substeps = [];
+
+  if (appData.supportsConnections) {
+    computedStep.substeps.push(chooseConnectionStep);
+  }
+
+  if (step.arguments) {
+    computedStep.substeps.push({
+      key: 'chooseTrigger',
+      name: 'Set up a trigger',
+      arguments: step.arguments,
+    });
+  }
+
+  computedStep.substeps.push(testStep);
+
+  return computedStep;
 };
 
 export default getApp;
