@@ -43,8 +43,6 @@ export default defineConfig({
             { text: 'SMTP', link: '/connections/smtp' },
             { text: 'Twilio', link: '/connections/twilio' },
             { text: 'Twitter', link: '/connections/twitter' },
-            // Temporarily disable following pages until we release github and typeform integrations
-            // { text: 'Typeform', link: '/connections/typeform' },
           ],
         },
       ],
