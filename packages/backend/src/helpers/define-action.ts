@@ -1,5 +1,5 @@
-import { IAction } from '@automatisch/types';
+import { IRawAction } from '@automatisch/types';
 
-export default function defineAction(actionDefinition: IAction): IAction {
+export default function defineAction(actionDefinition: IRawAction): IRawAction {
   return actionDefinition;
 }

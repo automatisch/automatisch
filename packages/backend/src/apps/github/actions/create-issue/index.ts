@@ -1,4 +1,3 @@
-import { IActionOutput } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
 import getRepoOwnerAndRepo from '../../common/get-repo-owner-and-repo';
 
@@ -6,51 +5,37 @@ export default defineAction({
   name: 'Create issue',
   key: 'createIssue',
   description: 'Create a new issue.',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseConnection',
-      name: 'Choose connection',
-    },
-    {
-      key: 'chooseAction',
-      name: 'Set up action',
-      arguments: [
-        {
-          label: 'Repo',
-          key: 'repo',
-          type: 'dropdown' as const,
-          required: false,
-          variables: false,
-          source: {
-            type: 'query',
-            name: 'getData',
-            arguments: [
-              {
-                name: 'key',
-                value: 'listRepos',
-              },
-            ],
+      label: 'Repo',
+      key: 'repo',
+      type: 'dropdown' as const,
+      required: false,
+      variables: false,
+      source: {
+        type: 'query',
+        name: 'getData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listRepos',
           },
-        },
-        {
-          label: 'Title',
-          key: 'title',
-          type: 'string' as const,
-          required: true,
-          variables: true,
-        },
-        {
-          label: 'Body',
-          key: 'body',
-          type: 'string' as const,
-          required: true,
-          variables: true,
-        },
-      ],
+        ],
+      },
     },
     {
-      key: 'testStep',
-      name: 'Test action',
+      label: 'Title',
+      key: 'title',
+      type: 'string' as const,
+      required: true,
+      variables: true,
+    },
+    {
+      label: 'Body',
+      key: 'body',
+      type: 'string' as const,
+      required: true,
+      variables: true,
     },
   ],
 

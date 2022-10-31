@@ -1,4 +1,10 @@
-import { IApp, IRawTrigger, ITrigger } from '@automatisch/types';
+import {
+  IAction,
+  IApp,
+  IRawAction,
+  IRawTrigger,
+  ITrigger,
+} from '@automatisch/types';
 import { omit, cloneDeep } from 'lodash';
 
 async function getDefaultExport(path: string) {
@@ -9,39 +15,15 @@ function stripFunctions<C>(data: C): C {
   return JSON.parse(JSON.stringify(data));
 }
 
-const chooseConnectionStep = {
-  key: 'chooseConnection',
-  name: 'Choose connection',
-};
-
-const testStep = {
-  key: 'testStep',
-  name: 'Test trigger',
-};
-
 const getApp = async (appKey: string, stripFuncs = true) => {
   const appData: IApp = cloneDeep(await getDefaultExport(`../apps/${appKey}`));
 
   appData.triggers = appData?.triggers?.map((trigger: IRawTrigger) => {
-    const computedTrigger: ITrigger = omit(trigger, ['arguments']);
+    return addStaticSubsteps('trigger', appData, trigger);
+  });
 
-    computedTrigger.substeps = [];
-
-    if (appData.supportsConnections) {
-      computedTrigger.substeps.push(chooseConnectionStep);
-    }
-
-    if (trigger.arguments) {
-      computedTrigger.substeps.push({
-        key: 'chooseTrigger',
-        name: 'Set up a trigger',
-        arguments: trigger.arguments,
-      });
-    }
-
-    computedTrigger.substeps.push(testStep);
-
-    return computedTrigger;
+  appData.actions = appData?.actions?.map((action: IRawAction) => {
+    return addStaticSubsteps('action', appData, action);
   });
 
   if (stripFuncs) {
@@ -49,6 +31,44 @@ const getApp = async (appKey: string, stripFuncs = true) => {
   }
 
   return appData;
+};
+
+const chooseConnectionStep = {
+  key: 'chooseConnection',
+  name: 'Choose connection',
+};
+
+const testStep = (stepType: 'trigger' | 'action') => {
+  return {
+    key: 'testStep',
+    name: stepType === 'trigger' ? 'Test trigger' : 'Test action',
+  };
+};
+
+const addStaticSubsteps = (
+  stepType: 'trigger' | 'action',
+  appData: IApp,
+  step: IRawTrigger | IRawAction
+) => {
+  const computedStep: ITrigger | IAction = omit(step, ['arguments']);
+
+  computedStep.substeps = [];
+
+  if (appData.supportsConnections) {
+    computedStep.substeps.push(chooseConnectionStep);
+  }
+
+  if (step.arguments) {
+    computedStep.substeps.push({
+      key: 'chooseTrigger',
+      name: stepType === 'trigger' ? 'Set up a trigger' : 'Set up action',
+      arguments: step.arguments,
+    });
+  }
+
+  computedStep.substeps.push(testStep(stepType));
+
+  return computedStep;
 };
 
 export default getApp;

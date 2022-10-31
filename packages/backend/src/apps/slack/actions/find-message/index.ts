@@ -5,69 +5,55 @@ export default defineAction({
   name: 'Find message',
   key: 'findMessage',
   description: 'Find a Slack message using the Slack Search feature.',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseConnection',
-      name: 'Choose connection',
+      label: 'Search Query',
+      key: 'query',
+      type: 'string' as const,
+      required: true,
+      description:
+        'Search query to use for finding matching messages. See the Slack Search Documentation for more information on constructing a query.',
+      variables: true,
     },
     {
-      key: 'setupAction',
-      name: 'Set up action',
-      arguments: [
+      label: 'Sort by',
+      key: 'sortBy',
+      type: 'dropdown' as const,
+      description:
+        'Sort messages by their match strength or by their date. Default is score.',
+      required: true,
+      value: 'score',
+      variables: false,
+      options: [
         {
-          label: 'Search Query',
-          key: 'query',
-          type: 'string' as const,
-          required: true,
-          description:
-            'Search query to use for finding matching messages. See the Slack Search Documentation for more information on constructing a query.',
-          variables: true,
-        },
-        {
-          label: 'Sort by',
-          key: 'sortBy',
-          type: 'dropdown' as const,
-          description:
-            'Sort messages by their match strength or by their date. Default is score.',
-          required: true,
+          label: 'Match strength',
           value: 'score',
-          variables: false,
-          options: [
-            {
-              label: 'Match strength',
-              value: 'score',
-            },
-            {
-              label: 'Message date time',
-              value: 'timestamp',
-            },
-          ],
         },
         {
-          label: 'Sort direction',
-          key: 'sortDirection',
-          type: 'dropdown' as const,
-          description:
-            'Sort matching messages in ascending or descending order. Default is descending.',
-          required: true,
-          value: 'desc',
-          variables: false,
-          options: [
-            {
-              label: 'Descending (newest or best match first)',
-              value: 'desc',
-            },
-            {
-              label: 'Ascending (oldest or worst match first)',
-              value: 'asc',
-            },
-          ],
+          label: 'Message date time',
+          value: 'timestamp',
         },
       ],
     },
     {
-      key: 'testStep',
-      name: 'Test action',
+      label: 'Sort direction',
+      key: 'sortDirection',
+      type: 'dropdown' as const,
+      description:
+        'Sort matching messages in ascending or descending order. Default is descending.',
+      required: true,
+      value: 'desc',
+      variables: false,
+      options: [
+        {
+          label: 'Descending (newest or best match first)',
+          value: 'desc',
+        },
+        {
+          label: 'Ascending (oldest or worst match first)',
+          value: 'asc',
+        },
+      ],
     },
   ],
 

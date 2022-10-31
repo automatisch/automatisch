@@ -232,12 +232,19 @@ export interface IActionItem {
   raw: IJSONObject;
 }
 
-export interface IAction {
+export interface IBaseAction {
   name: string;
   key: string;
   description: string;
-  substeps: ISubstep[];
   run($: IGlobalVariable): Promise<void>;
+}
+
+export interface IRawAction extends IBaseAction {
+  arguments?: IField[];
+}
+
+export interface IAction extends IBaseAction {
+  substeps?: ISubstep[];
 }
 
 export interface IAuthentication {
