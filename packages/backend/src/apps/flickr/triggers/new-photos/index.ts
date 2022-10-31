@@ -6,16 +6,6 @@ export default defineTrigger({
   pollInterval: 15,
   key: 'newPhotos',
   description: 'Triggers when you add a new photo.',
-  substeps: [
-    {
-      key: 'chooseConnection',
-      name: 'Choose connection',
-    },
-    {
-      key: 'testStep',
-      name: 'Test trigger',
-    },
-  ],
 
   async run($) {
     await newPhotos($);

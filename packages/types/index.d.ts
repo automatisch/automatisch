@@ -205,15 +205,22 @@ export interface ITriggerItem {
   };
 }
 
-export interface ITrigger {
+export interface IBaseTrigger {
   name: string;
   key: string;
   pollInterval?: number;
   description: string;
-  substeps: ISubstep[];
   getInterval?(parameters: IStep['parameters']): string;
   run($: IGlobalVariable): Promise<void>;
   sort?(item: ITriggerItem, nextItem: ITriggerItem): number;
+}
+
+export interface IRawTrigger extends IBaseTrigger {
+  arguments?: IField[];
+}
+
+export interface ITrigger extends IBaseTrigger {
+  substeps?: ISubstep[];
 }
 
 export interface IActionOutput {

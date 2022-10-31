@@ -6,37 +6,23 @@ export default defineTrigger({
   key: 'newWatchers',
   pollInterval: 15,
   description: 'Triggers when a user watches a repository',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseConnection',
-      name: 'Choose connection',
-    },
-    {
-      key: 'chooseTrigger',
-      name: 'Set up a trigger',
-      arguments: [
-        {
-          label: 'Repo',
-          key: 'repo',
-          type: 'dropdown' as const,
-          required: true,
-          variables: false,
-          source: {
-            type: 'query',
-            name: 'getData',
-            arguments: [
-              {
-                name: 'key',
-                value: 'listRepos',
-              },
-            ],
+      label: 'Repo',
+      key: 'repo',
+      type: 'dropdown' as const,
+      required: true,
+      variables: false,
+      source: {
+        type: 'query',
+        name: 'getData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listRepos',
           },
-        },
-      ],
-    },
-    {
-      key: 'testStep',
-      name: 'Test trigger',
+        ],
+      },
     },
   ],
 

@@ -9,35 +9,25 @@ export default defineTrigger({
   name: 'Every hour',
   key: 'everyHour',
   description: 'Triggers every hour.',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseTrigger',
-      name: 'Set up a trigger',
-      arguments: [
+      label: 'Trigger on weekends?',
+      key: 'triggersOnWeekend',
+      type: 'dropdown' as const,
+      description: 'Should this flow trigger on Saturday and Sunday?',
+      required: true,
+      value: true,
+      variables: false,
+      options: [
         {
-          label: 'Trigger on weekends?',
-          key: 'triggersOnWeekend',
-          type: 'dropdown' as const,
-          description: 'Should this flow trigger on Saturday and Sunday?',
-          required: true,
+          label: 'Yes',
           value: true,
-          variables: false,
-          options: [
-            {
-              label: 'Yes',
-              value: true,
-            },
-            {
-              label: 'No',
-              value: false,
-            },
-          ],
+        },
+        {
+          label: 'No',
+          value: false,
         },
       ],
-    },
-    {
-      key: 'testStep',
-      name: 'Test trigger',
     },
   ],
 

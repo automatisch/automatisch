@@ -1,5 +1,7 @@
-import { ITrigger } from '@automatisch/types';
+import { IRawTrigger } from '@automatisch/types';
 
-export default function defineTrigger(triggerDefinition: ITrigger): ITrigger {
+export default function defineTrigger(
+  triggerDefinition: IRawTrigger
+): IRawTrigger {
   return triggerDefinition;
 }

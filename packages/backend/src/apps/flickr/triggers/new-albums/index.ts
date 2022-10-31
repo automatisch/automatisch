@@ -6,16 +6,6 @@ export default defineTrigger({
   pollInterval: 15,
   key: 'new-albums',
   description: 'Triggers when you create a new album.',
-  substeps: [
-    {
-      key: 'chooseConnection',
-      name: 'Choose connection',
-    },
-    {
-      key: 'testStep',
-      name: 'Test trigger',
-    },
-  ],
 
   async run($) {
     await newAlbums($);
