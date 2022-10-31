@@ -6,28 +6,14 @@ export default defineTrigger({
   key: 'receiveSms',
   pollInterval: 15,
   description: 'Will be triggered when a new SMS is received.',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseConnection',
-      name: 'Choose connection',
-    },
-    {
-      key: 'chooseTrigger',
-      name: 'Set up a trigger',
-      arguments: [
-        {
-          label: 'To Number',
-          key: 'toNumber',
-          type: 'string',
-          required: true,
-          description:
-            'The number to receive the SMS on. It should be a Twilio number.',
-        },
-      ],
-    },
-    {
-      key: 'testStep',
-      name: 'Test trigger',
+      label: 'To Number',
+      key: 'toNumber',
+      type: 'string',
+      required: true,
+      description:
+        'The number to receive the SMS on. It should be a Twilio number.',
     },
   ],
 

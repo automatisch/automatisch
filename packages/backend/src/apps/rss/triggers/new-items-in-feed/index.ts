@@ -6,24 +6,14 @@ export default defineTrigger({
   key: 'newItemsInFeed',
   description: 'Triggers on new RSS feed items.',
   pollInterval: 15,
-  substeps: [
+  arguments: [
     {
-      key: 'chooseTrigger',
-      name: 'Set up trigger',
-      arguments: [
-        {
-          label: 'Feed URL',
-          key: 'feedUrl',
-          type: 'string' as const,
-          required: true,
-          description: 'Paste your publicly accessible RSS URL here.',
-          variables: false,
-        },
-      ],
-    },
-    {
-      key: 'testStep',
-      name: 'Test trigger',
+      label: 'Feed URL',
+      key: 'feedUrl',
+      type: 'string' as const,
+      required: true,
+      description: 'Paste your publicly accessible RSS URL here.',
+      variables: false,
     },
   ],
 

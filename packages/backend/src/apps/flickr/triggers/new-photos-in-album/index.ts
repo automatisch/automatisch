@@ -6,37 +6,23 @@ export default defineTrigger({
   pollInterval: 15,
   key: 'newPhotosInAlbum',
   description: 'Triggers when you add a new photo in an album.',
-  substeps: [
+  arguments: [
     {
-      key: 'chooseConnection',
-      name: 'Choose connection',
-    },
-    {
-      key: 'chooseTrigger',
-      name: 'Set up a trigger',
-      arguments: [
-        {
-          label: 'Album',
-          key: 'album',
-          type: 'dropdown' as const,
-          required: true,
-          variables: false,
-          source: {
-            type: 'query',
-            name: 'getData',
-            arguments: [
-              {
-                name: 'key',
-                value: 'listAlbums',
-              },
-            ],
+      label: 'Album',
+      key: 'album',
+      type: 'dropdown' as const,
+      required: true,
+      variables: false,
+      source: {
+        type: 'query',
+        name: 'getData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listAlbums',
           },
-        },
-      ],
-    },
-    {
-      key: 'testStep',
-      name: 'Test trigger',
+        ],
+      },
     },
   ],
 
