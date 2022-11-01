@@ -24,25 +24,86 @@ export default defineConfig({
         activeMatch: '^/$|^/guide/',
       },
       {
-        text: 'Connections',
-        link: '/connections/discord',
-        activeMatch: '/connections/',
+        text: 'Apps',
+        link: '/apps/discord/actions',
+        activeMatch: '/apps/',
       },
     ],
     sidebar: {
-      '/connections/': [
+      '/apps/': [
         {
-          text: 'Connections',
+          text: 'Discord',
           collapsible: true,
           items: [
-            { text: 'Discord', link: '/connections/discord' },
-            { text: 'Flickr', link: '/connections/flickr' },
-            { text: 'Github', link: '/connections/github' },
-            { text: 'Scheduler', link: '/connections/scheduler' },
-            { text: 'Slack', link: '/connections/slack' },
-            { text: 'SMTP', link: '/connections/smtp' },
-            { text: 'Twilio', link: '/connections/twilio' },
-            { text: 'Twitter', link: '/connections/twitter' },
+            { text: 'Actions', link: '/apps/discord/actions' },
+            { text: 'Connection', link: '/apps/discord/connection' },
+          ],
+        },
+        {
+          text: 'Flickr',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/flickr/triggers' },
+            { text: 'Connection', link: '/apps/flickr/connection' },
+          ],
+        },
+        {
+          text: 'Github',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/github/triggers' },
+            { text: 'Actions', link: '/apps/github/actions' },
+            { text: 'Connection', link: '/apps/github/connection' },
+          ],
+        },
+        {
+          text: 'RSS',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/rss/triggers' },
+            { text: 'Connection', link: '/apps/rss/connection' },
+          ],
+        },
+        {
+          text: 'Scheduler',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/scheduler/triggers' },
+            { text: 'Connection', link: '/apps/scheduler/connection' },
+          ],
+        },
+        {
+          text: 'Slack',
+          collapsible: true,
+          items: [
+            { text: 'Actions', link: '/apps/slack/actions' },
+            { text: 'Connection', link: '/apps/slack/connection' },
+          ],
+        },
+        {
+          text: 'SMTP',
+          collapsible: true,
+          items: [
+            { text: 'Actions', link: '/apps/smtp/actions' },
+            { text: 'Connection', link: '/apps/smtp/connection' },
+          ],
+        },
+        {
+          text: 'Twilio',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/twilio/triggers' },
+            { text: 'Actions', link: '/apps/twilio/actions' },
+            { text: 'Connection', link: '/apps/twilio/connection' },
+          ],
+        },
+        {
+          text: 'Twitter',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/twitter/triggers' },
+            { text: 'Actions', link: '/apps/twitter/actions' },
+            { text: 'Connection', link: '/apps/twitter/connection' },
           ],
         },
       ],
