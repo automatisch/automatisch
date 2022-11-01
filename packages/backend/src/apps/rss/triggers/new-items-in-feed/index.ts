@@ -4,7 +4,7 @@ import newItemsInFeed from './new-items-in-feed';
 export default defineTrigger({
   name: 'New items in feed',
   key: 'newItemsInFeed',
-  description: 'Triggers on new RSS feed items.',
+  description: 'Triggers on new RSS feed item.',
   pollInterval: 15,
   arguments: [
     {

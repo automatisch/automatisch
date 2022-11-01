@@ -3,9 +3,9 @@ import defineAction from '../../../../helpers/define-action';
 import transporter from '../../common/transporter';
 
 export default defineAction({
-  name: 'Send Email',
+  name: 'Send an email',
   key: 'sendEmail',
-  description: 'Send an email',
+  description: 'Sends an email',
   arguments: [
     {
       label: 'From name',

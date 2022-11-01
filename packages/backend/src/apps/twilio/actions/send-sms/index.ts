@@ -1,9 +1,9 @@
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
-  name: 'Send SMS',
+  name: 'Send an SMS',
   key: 'sendSms',
-  description: 'Send an SMS',
+  description: 'Sends an SMS',
   arguments: [
     {
       label: 'From Number',

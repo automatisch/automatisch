@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import newIssues from './new-issues';
 
 export default defineTrigger({
-  name: 'New issue',
+  name: 'New issues',
   key: 'newIssues',
   pollInterval: 15,
   description: 'Triggers when a new issue is created',

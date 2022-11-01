@@ -4,7 +4,7 @@ import getRepoOwnerAndRepo from '../../common/get-repo-owner-and-repo';
 export default defineAction({
   name: 'Create issue',
   key: 'createIssue',
-  description: 'Create a new issue.',
+  description: 'Creates a new issue.',
   arguments: [
     {
       label: 'Repo',

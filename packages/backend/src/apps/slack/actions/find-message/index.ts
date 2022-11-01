@@ -2,9 +2,9 @@ import defineAction from '../../../../helpers/define-action';
 import findMessage from './find-message';
 
 export default defineAction({
-  name: 'Find message',
+  name: 'Find a message',
   key: 'findMessage',
-  description: 'Find a Slack message using the Slack Search feature.',
+  description: 'Finds a message using the Slack feature.',
   arguments: [
     {
       label: 'Search Query',

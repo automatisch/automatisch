@@ -2,11 +2,11 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import searchTweets from './search-tweets';
 
 export default defineTrigger({
-  name: 'Search Tweets',
+  name: 'Search tweets',
   key: 'searchTweets',
   pollInterval: 15,
   description:
-    'Will be triggered when any user tweet something containing a specific keyword, phrase, username or hashtag.',
+    'Triggers when there is a new tweet containing a specific keyword, phrase, username or hashtag.',
   arguments: [
     {
       label: 'Search Term',
