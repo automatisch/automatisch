@@ -3,13 +3,13 @@ import { createWriteStream } from 'fs';
 import { resolve } from 'path';
 import { SitemapStream } from 'sitemap';
 
-const BASE = process.env.BASE_URL || '/';
+const DOCS_BASE_PATH = process.env.DOCS_BASE_PATH || '/';
 
 const links = [];
 const PROD_BASE_URL = 'https://automatisch.io/docs';
 
 export default defineConfig({
-  base: BASE,
+  base: DOCS_BASE_PATH,
   lang: 'en-US',
   title: 'Automatisch Docs',
   description:
