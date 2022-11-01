@@ -1,7 +1,7 @@
 ---
 items:
   - name: Create issue
-    desc: Create a new issue.
+    desc: Creates a new issue.
     avatar: /favicons/github.svg
 ---
 

@@ -1,7 +1,7 @@
 ---
 items:
   - name: New items in feed
-    desc: Triggers on new RSS feed items.
+    desc: Triggers on new RSS feed item.
     avatar: /favicons/rss.svg
 ---
 

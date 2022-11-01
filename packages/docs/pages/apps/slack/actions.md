@@ -1,10 +1,10 @@
 ---
 items:
-  - name: Find message
-    desc: Find a Slack message using the Slack Search feature.
+  - name: Find a message
+    desc: Finds a message using the Slack search feature.
     avatar: /favicons/slack.svg
   - name: Send a message to channel
-    desc: Send a message to a specific channel you specify.
+    desc: Sends a message to a channel you specify.
     avatar: /favicons/slack.svg
 ---
 

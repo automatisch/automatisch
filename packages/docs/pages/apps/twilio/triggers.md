@@ -1,7 +1,7 @@
 ---
 items:
   - name: Receive SMS
-    desc: Will be triggered when a new SMS is received.
+    desc: Triggers when a new SMS is received.
     avatar: /favicons/twilio.svg
 ---
 

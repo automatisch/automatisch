@@ -1,7 +1,7 @@
 ---
 items:
-  - name: Send Email
-    desc: Send an email
+  - name: Send an email
+    desc: Sends an email
     avatar: /favicons/smtp.svg
 ---
 

@@ -3,9 +3,9 @@ import myFollowers from './my-followers';
 
 export default defineTrigger({
   name: 'New follower of me',
-  key: 'myFollowers',
+  key: 'newFollowerOfMe',
   pollInterval: 15,
-  description: 'Will be triggered when you have a new follower.',
+  description: 'Triggers when you have a new follower.',
 
   async run($) {
     await myFollowers($);

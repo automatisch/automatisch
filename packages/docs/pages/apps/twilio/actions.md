@@ -1,7 +1,7 @@
 ---
 items:
-  - name: Send SMS
-    desc: Send an SMS
+  - name: Send an SMS
+    desc: Sends an SMS
     avatar: /favicons/twilio.svg
 ---
 

@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action';
 export default defineAction({
   name: 'Send a message to channel',
   key: 'sendMessageToChannel',
-  description: 'Send a message to a specific channel you specify.',
+  description: 'Sends a message to a specific channel you specify.',
   arguments: [
     {
       label: 'Channel',

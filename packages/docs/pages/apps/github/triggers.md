@@ -1,6 +1,6 @@
 ---
 items:
-  - name: New issue
+  - name: New issues
     desc: Triggers when a new issue is created
     avatar: /favicons/github.svg
   - name: New pull requests

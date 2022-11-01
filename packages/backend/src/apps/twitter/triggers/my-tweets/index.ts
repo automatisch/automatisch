@@ -2,10 +2,10 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import getUserTweets from '../../common/get-user-tweets';
 
 export default defineTrigger({
-  name: 'My Tweets',
+  name: 'My tweets',
   key: 'myTweets',
   pollInterval: 15,
-  description: 'Will be triggered when you tweet something new.',
+  description: 'Triggers when you tweet something new.',
 
   async run($) {
     await getUserTweets($, { currentUser: true });

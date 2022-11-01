@@ -1,7 +1,7 @@
 ---
 items:
   - name: Send a message to channel
-    desc: Send a message to a specific channel you specify.
+    desc: Sends a message to a specific channel you specify.
     avatar: /favicons/discord.svg
 ---
 

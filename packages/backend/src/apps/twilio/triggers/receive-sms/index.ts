@@ -5,7 +5,7 @@ export default defineTrigger({
   name: 'Receive SMS',
   key: 'receiveSms',
   pollInterval: 15,
-  description: 'Will be triggered when a new SMS is received.',
+  description: 'Triggers when a new SMS is received.',
   arguments: [
     {
       label: 'To Number',
