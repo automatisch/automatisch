@@ -301,4 +301,8 @@ declare module 'axios' {
   interface AxiosResponse {
     httpError?: IJSONObject;
   }
+
+  interface AxiosRequestConfig {
+    additionalProperties?: Record<string, unknown>;
+  }
 }
