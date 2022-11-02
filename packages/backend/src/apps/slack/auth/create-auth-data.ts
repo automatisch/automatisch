@@ -37,7 +37,7 @@ export default async function createAuthData($: IGlobalVariable) {
     'search:read',
     'stars:read',
     'team:read',
-    // 'users.profile:read',
+    'users.profile:read',
     'users.profile:write',
     'users:read',
     'users:read.email',
