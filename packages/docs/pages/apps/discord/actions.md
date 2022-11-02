@@ -1,8 +1,8 @@
 ---
+favicon: /favicons/discord.svg
 items:
   - name: Send a message to channel
     desc: Sends a message to a specific channel you specify.
-    avatar: /favicons/discord.svg
 ---
 
 <script setup>

@@ -1,8 +1,8 @@
 ---
+favicon: /favicons/rss.svg
 items:
   - name: New items in feed
     desc: Triggers on new RSS feed item.
-    avatar: /favicons/rss.svg
 ---
 
 <script setup>

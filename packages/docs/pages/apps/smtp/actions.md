@@ -1,8 +1,8 @@
 ---
+favicon: /favicons/smtp.svg
 items:
   - name: Send an email
     desc: Sends an email
-    avatar: /favicons/smtp.svg
 ---
 
 <script setup>
