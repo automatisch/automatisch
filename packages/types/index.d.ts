@@ -143,7 +143,6 @@ export interface IAuthenticationStepField {
 }
 
 export interface IAuthenticationStep {
-  step: number;
   type: 'mutation' | 'openWithPopup';
   name: string;
   arguments: IAuthenticationStepField[];
@@ -183,7 +182,7 @@ export interface IAuth {
   isStillVerified($: IGlobalVariable): Promise<boolean>;
   fields: IField[];
   authenticationSteps: IAuthenticationStep[];
-  reconnectionSteps: IAuthenticationStep[];
+  reconnectionSteps?: IAuthenticationStep[];
 }
 
 export interface IService {

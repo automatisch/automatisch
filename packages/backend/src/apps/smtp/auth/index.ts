@@ -138,68 +138,6 @@ export default {
       ],
     },
   ],
-  reconnectionSteps: [
-    {
-      type: 'mutation' as const,
-      name: 'resetConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{connection.id}',
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'updateConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{connection.id}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'host',
-              value: '{fields.host}',
-            },
-            {
-              name: 'username',
-              value: '{fields.username}',
-            },
-            {
-              name: 'password',
-              value: '{fields.password}',
-            },
-            {
-              name: 'useTLS',
-              value: '{fields.useTls}',
-            },
-            {
-              name: 'port',
-              value: '{fields.port}',
-            },
-            {
-              name: 'fromEmail',
-              value: '{fields.fromEmail}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'verifyConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{connection.id}',
-        },
-      ],
-    },
-  ],
   verifyCredentials,
   isStillVerified,
 };
