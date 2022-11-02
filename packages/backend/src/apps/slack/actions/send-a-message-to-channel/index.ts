@@ -32,13 +32,46 @@ export default defineAction({
       description: 'The content of your new message.',
       variables: true,
     },
+    {
+      label: 'Send as a bot?',
+      key: 'sendAsBot',
+      type: 'dropdown' as const,
+      required: false,
+      value: false,
+      description: 'If you choose no, this message will appear to come from you. Direct messages are always sent by bots.',
+      variables: false,
+      options: [
+        {
+          label: 'Yes',
+          value: true,
+        },
+        {
+          label: 'No',
+          value: false,
+        }
+      ]
+    },
+    {
+      label: 'Bot name',
+      key: 'botName',
+      type: 'string' as const,
+      required: true,
+      value: 'Automatisch',
+      description: 'Specify the bot name which appears as a bold username above the message inside Slack. Defaults to Automatisch.',
+      variables: true,
+    },
+    {
+      label: 'Bot icon',
+      key: 'botIcon',
+      type: 'string' as const,
+      required: false,
+      description: 'Either an image url or an emoji available to your team (surrounded by :). For example, https://example.com/icon_256.png or :robot_face:',
+      variables: true,
+    },
   ],
 
   async run($) {
-    const channelId = $.step.parameters.channel as string;
-    const text = $.step.parameters.message as string;
-
-    const message = await postMessage($, channelId, text);
+    const message = await postMessage($);
 
     return message;
   },
