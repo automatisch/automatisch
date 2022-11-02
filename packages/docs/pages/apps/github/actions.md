@@ -1,8 +1,8 @@
 ---
+favicon: /favicons/github.svg
 items:
   - name: Create issue
     desc: Creates a new issue.
-    avatar: /favicons/github.svg
 ---
 
 <script setup>

@@ -1,8 +1,8 @@
 ---
+favicon: /favicons/twitter.svg
 items:
   - name: Create Tweet
     desc: Create a tweet.
-    avatar: /favicons/twitter.svg
 ---
 
 <script setup>
