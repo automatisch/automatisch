@@ -87,7 +87,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
               alignItems="flex-start"
               spacing={1}
             >
-              <Typography variant="h6">
+              <Typography variant="h6" sx={{ textAlign: 'left' }}>
                 {formattedData?.screenName}
               </Typography>
 

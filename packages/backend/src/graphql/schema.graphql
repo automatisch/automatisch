@@ -126,7 +126,6 @@ type Auth {
 }
 
 type AuthenticationStep {
-  step: Int
   type: String
   name: String
   arguments: [AuthenticationStepArgument]
@@ -316,7 +315,6 @@ input PreviousStepInput {
 }
 
 type ReconnectionStep {
-  step: Int
   type: String
   name: String
   arguments: [ReconnectionStepArgument]

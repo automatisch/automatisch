@@ -24,7 +24,6 @@ export const GET_APPS = gql`
           clickToCopy
         }
         authenticationSteps {
-          step
           type
           name
           arguments {
@@ -38,7 +37,6 @@ export const GET_APPS = gql`
           }
         }
         reconnectionSteps {
-          step
           type
           name
           arguments {

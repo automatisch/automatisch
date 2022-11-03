@@ -6,6 +6,7 @@ import {
   ITrigger,
 } from '@automatisch/types';
 import { omit, cloneDeep } from 'lodash';
+import addReconnectionSteps from './add-reconnection-steps';
 
 async function getDefaultExport(path: string) {
   return (await import(path)).default;
@@ -16,7 +17,11 @@ function stripFunctions<C>(data: C): C {
 }
 
 const getApp = async (appKey: string, stripFuncs = true) => {
-  const appData: IApp = cloneDeep(await getDefaultExport(`../apps/${appKey}`));
+  let appData: IApp = cloneDeep(await getDefaultExport(`../apps/${appKey}`));
+
+  if (appData.auth) {
+    appData = addReconnectionSteps(appData);
+  }
 
   appData.triggers = appData?.triggers?.map((trigger: IRawTrigger) => {
     return addStaticSubsteps('trigger', appData, trigger);

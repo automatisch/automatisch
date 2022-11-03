@@ -88,7 +88,6 @@ export default {
   ],
   authenticationSteps: [
     {
-      step: 1,
       type: 'mutation' as const,
       name: 'createConnection',
       arguments: [
@@ -129,78 +128,12 @@ export default {
       ],
     },
     {
-      step: 2,
       type: 'mutation' as const,
       name: 'verifyConnection',
       arguments: [
         {
           name: 'id',
           value: '{createConnection.id}',
-        },
-      ],
-    },
-  ],
-  reconnectionSteps: [
-    {
-      step: 1,
-      type: 'mutation' as const,
-      name: 'resetConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{connection.id}',
-        },
-      ],
-    },
-    {
-      step: 2,
-      type: 'mutation' as const,
-      name: 'updateConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{connection.id}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'host',
-              value: '{fields.host}',
-            },
-            {
-              name: 'username',
-              value: '{fields.username}',
-            },
-            {
-              name: 'password',
-              value: '{fields.password}',
-            },
-            {
-              name: 'useTLS',
-              value: '{fields.useTls}',
-            },
-            {
-              name: 'port',
-              value: '{fields.port}',
-            },
-            {
-              name: 'fromEmail',
-              value: '{fields.fromEmail}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      step: 3,
-      type: 'mutation' as const,
-      name: 'verifyConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{connection.id}',
         },
       ],
     },
