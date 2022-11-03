@@ -1,47 +1,48 @@
 import { IField, IGlobalVariable } from '@automatisch/types';
 import qs from 'qs';
 
+const scopes = [
+  'channels:manage',
+  'channels:read',
+  'channels:join',
+  'chat:write',
+  'chat:write.customize',
+  'chat:write.public',
+  'files:write',
+  'im:write',
+  'mpim:write',
+  'team:read',
+  'users.profile:read',
+  'users:read',
+  'workflow.steps:execute',
+  'users:read.email',
+  'commands',
+];
+const userScopes = [
+  'channels:history',
+  'channels:read',
+  'channels:write',
+  'chat:write',
+  'emoji:read',
+  'files:read',
+  'files:write',
+  'groups:history',
+  'groups:read',
+  'groups:write',
+  'im:write',
+  'mpim:write',
+  'reactions:read',
+  'reminders:write',
+  'search:read',
+  'stars:read',
+  'team:read',
+  'users.profile:read',
+  'users.profile:write',
+  'users:read',
+  'users:read.email',
+];
+
 export default async function createAuthData($: IGlobalVariable) {
-  const scopes = [
-    'channels:manage',
-    'channels:read',
-    'channels:join',
-    'chat:write',
-    'chat:write.customize',
-    'chat:write.public',
-    'files:write',
-    'im:write',
-    'mpim:write',
-    'team:read',
-    'users.profile:read',
-    'users:read',
-    'workflow.steps:execute',
-    'users:read.email',
-    'commands',
-  ];
-  const userScopes = [
-    'channels:history',
-    'channels:read',
-    'channels:write',
-    'chat:write',
-    'emoji:read',
-    'files:read',
-    'files:write',
-    'groups:history',
-    'groups:read',
-    'groups:write',
-    'im:write',
-    'mpim:write',
-    'reactions:read',
-    'reminders:write',
-    'search:read',
-    'stars:read',
-    'team:read',
-    'users.profile:read',
-    'users.profile:write',
-    'users:read',
-    'users:read.email',
-  ];
   const oauthRedirectUrlField = $.app.auth.fields.find(
     (field: IField) => field.key == 'oAuthRedirectUrl'
   );
