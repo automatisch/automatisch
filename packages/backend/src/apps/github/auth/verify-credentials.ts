@@ -1,26 +1,6 @@
 import { IGlobalVariable } from '@automatisch/types';
 import getCurrentUser from '../common/get-current-user';
 
-async function getTokenInfo($: IGlobalVariable) {
-  const basicAuthToken = Buffer.from(
-    $.auth.data.consumerKey + ':' + $.auth.data.consumerSecret
-  ).toString('base64');
-
-  const headers = {
-    Authorization: `Basic ${basicAuthToken}`,
-  };
-
-  const body = {
-    access_token: $.auth.data.accessToken,
-  };
-
-  return await $.http.post(
-    `${$.app.baseUrl}/applications/${$.auth.data.consumerKey}/token`,
-    body,
-    { headers }
-  );
-}
-
 const verifyCredentials = async ($: IGlobalVariable) => {
   try {
     const response = await $.http.post(
