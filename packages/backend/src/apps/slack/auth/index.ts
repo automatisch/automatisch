@@ -1,17 +1,41 @@
+import createAuthData from './create-auth-data';
 import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
 
 export default {
   fields: [
     {
-      key: 'accessToken',
-      label: 'Access Token',
+      key: 'oAuthRedirectUrl',
+      label: 'OAuth Redirect URL',
+      type: 'string' as const,
+      required: true,
+      readOnly: true,
+      value: '{WEB_APP_URL}/app/slack/connections/add',
+      placeholder: null,
+      description:
+        'When asked to input an OAuth callback or redirect URL in Slack OAuth, enter the URL above.',
+      clickToCopy: true,
+    },
+    {
+      key: 'consumerKey',
+      label: 'API Key',
       type: 'string' as const,
       required: true,
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Access token of slack that Automatisch will connect to.',
+      description: null,
+      clickToCopy: false,
+    },
+    {
+      key: 'consumerSecret',
+      label: 'API Secret',
+      type: 'string' as const,
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: null,
       clickToCopy: false,
     },
   ],
@@ -30,8 +54,12 @@ export default {
           value: null,
           properties: [
             {
-              name: 'accessToken',
-              value: '{fields.accessToken}',
+              name: 'consumerKey',
+              value: '{fields.consumerKey}',
+            },
+            {
+              name: 'consumerSecret',
+              value: '{fields.consumerSecret}',
             },
           ],
         },
@@ -39,6 +67,53 @@ export default {
     },
     {
       step: 2,
+      type: 'mutation' as const,
+      name: 'createAuthData',
+      arguments: [
+        {
+          name: 'id',
+          value: '{createConnection.id}',
+        },
+      ],
+    },
+    {
+      step: 3,
+      type: 'openWithPopup' as const,
+      name: 'openAuthPopup',
+      arguments: [
+        {
+          name: 'url',
+          value: '{createAuthData.url}',
+        },
+      ],
+    },
+    {
+      step: 4,
+      type: 'mutation' as const,
+      name: 'updateConnection',
+      arguments: [
+        {
+          name: 'id',
+          value: '{createConnection.id}',
+        },
+        {
+          name: 'formattedData',
+          value: null,
+          properties: [
+            {
+              name: 'code',
+              value: '{openAuthPopup.code}',
+            },
+            {
+              name: 'state',
+              value: '{openAuthPopup.state}',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      step: 5,
       type: 'mutation' as const,
       name: 'verifyConnection',
       arguments: [
@@ -75,8 +150,12 @@ export default {
           value: null,
           properties: [
             {
-              name: 'accessToken',
-              value: '{fields.accessToken}',
+              name: 'consumerKey',
+              value: '{fields.consumerKey}',
+            },
+            {
+              name: 'consumerSecret',
+              value: '{fields.consumerSecret}',
             },
           ],
         },
@@ -84,6 +163,53 @@ export default {
     },
     {
       step: 3,
+      type: 'mutation' as const,
+      name: 'createAuthData',
+      arguments: [
+        {
+          name: 'id',
+          value: '{connection.id}',
+        },
+      ],
+    },
+    {
+      step: 4,
+      type: 'openWithPopup' as const,
+      name: 'openAuthPopup',
+      arguments: [
+        {
+          name: 'url',
+          value: '{createAuthData.url}',
+        },
+      ],
+    },
+    {
+      step: 5,
+      type: 'mutation' as const,
+      name: 'updateConnection',
+      arguments: [
+        {
+          name: 'id',
+          value: '{connection.id}',
+        },
+        {
+          name: 'formattedData',
+          value: null,
+          properties: [
+            {
+              name: 'code',
+              value: '{openAuthPopup.code}',
+            },
+            {
+              name: 'state',
+              value: '{openAuthPopup.state}',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      step: 6,
       type: 'mutation' as const,
       name: 'verifyConnection',
       arguments: [
@@ -95,6 +221,7 @@ export default {
     },
   ],
 
+  createAuthData,
   verifyCredentials,
   isStillVerified,
 };

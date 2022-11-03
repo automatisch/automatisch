@@ -6,18 +6,20 @@ This page explains the steps you need to follow to set up the Slack connection i
 
 1. Go to the [link](https://api.slack.com/apps?new_app=1) to **create an app**
    on Slack API.
-2. Select **From scratch**.
-3. Enter **App name**.
-4. Pick the workspace you would like to use with the Slack connection.
-5. Click on **Create App** button.
-6. Click the **Permissions** card on the **Add features and functionality**
-   section.
-7. Go to **User Token Scopes** and add the necessary scopes.
-   ([more info](https://api.slack.com/scopes?filter=user))
-8. Go to **OAuth Tokens for Your Workspace** and click **Install to Workspace**.
-9. In **Where should Sample post?** section, select the channel you would like
-   to use with Automatisch, and click **Allow**.
-10. Copy **User OAuth Token** and paste it to **Access Token** on the
-    Automatisch page.
-11. Click **Submit** button on Automatisch.
-12. Now, you can start using the Slack connection with Automatisch.
+1. Select **From scratch**.
+1. Enter **App name**.
+1. Pick the workspace you would like to use with the Slack connection.
+1. Click on **Create App** button.
+1. Copy **Client ID** and **Client Secret** values and save them to use later.
+1. Go to **OAuth & Permissions** page.
+1. Copy **OAuth Redirect URL** from Automatisch and add it in Redirect URLs. Don't forget to save it after adding it by clicking **Save URLs** button!
+1. Go to **Bot Token Scopes** and add `chat:write.customize` along with `chat:write` scope to enable the bot functionality.
+
+:::warning HTTPS required!
+
+Slack does **not** allow non-secure URLs in redirect URLs. Therefore, you will need to serve Automatisch via HTTPS protocol.
+:::
+
+10. Paste **Client ID** and **Client Secret** values you have saved earlier and paste them into Automatisch as **Consumer Key** and **Consumer Secret**, respectively.
+1. Click **Submit** button on Automatisch.
+1. Now, you can start using the Slack connection with Automatisch.

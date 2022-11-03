@@ -38,6 +38,9 @@ export default function computeParameters(
       };
     }
 
-    return result;
+    return {
+      ...result,
+      [key]: value,
+    };
   }, {});
 }

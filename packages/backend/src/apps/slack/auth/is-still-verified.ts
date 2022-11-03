@@ -1,10 +1,10 @@
 import { IGlobalVariable } from '@automatisch/types';
-import verifyCredentials from './verify-credentials';
+import getCurrentUser from '../common/get-current-user';
 
 const isStillVerified = async ($: IGlobalVariable) => {
   try {
-    await verifyCredentials($);
-    return true;
+    const user = await getCurrentUser($);
+    return !!user.id;
   } catch (error) {
     return false;
   }

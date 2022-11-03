@@ -1,34 +1,51 @@
-import qs from 'qs';
 import { IGlobalVariable } from '@automatisch/types';
+import getCurrentUser from '../common/get-current-user';
 
 const verifyCredentials = async ($: IGlobalVariable) => {
-  const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
+  const oauthRedirectUrlField = $.app.auth.fields.find(
+    (field) => field.key == 'oAuthRedirectUrl'
+  );
+  const redirectUri = oauthRedirectUrlField.value as string;
+  const params = {
+    code: $.auth.data.code,
+    client_id: $.auth.data.consumerKey,
+    client_secret: $.auth.data.consumerSecret,
+    redirect_uri: redirectUri,
   };
-
-  const stringifiedBody = qs.stringify({
-    token: $.auth.data.accessToken,
-  });
-
-  const response = await $.http.post('/auth.test', stringifiedBody, {
-    headers,
-  });
+  const response = await $.http.post('/oauth.v2.access', null, { params });
 
   if (response.data.ok === false) {
     throw new Error(
-      `Error occured while verifying credentials: ${response.data.error}.(More info: https://api.slack.com/methods/auth.test#errors)`
+      `Error occured while verifying credentials: ${response.data.error}. (More info: https://api.slack.com/methods/oauth.v2.access#errors)`
     );
   }
 
-  const { bot_id: botId, user: screenName } = response.data;
+  const {
+    bot_user_id: botId,
+    authed_user: {
+      id: userId,
+      access_token: userAccessToken,
+    },
+    access_token: botAccessToken,
+    team: {
+      name: teamName,
+    }
+  } = response.data;
 
-  $.auth.set({
+  await $.auth.set({
     botId,
-    screenName,
+    userId,
+    userAccessToken,
+    botAccessToken,
+    screenName: teamName,
     token: $.auth.data.accessToken,
   });
 
-  return response.data;
+  const currentUser = await getCurrentUser($);
+
+  await $.auth.set({
+    screenName: `${currentUser.real_name} @ ${teamName}`
+  });
 };
 
 export default verifyCredentials;
