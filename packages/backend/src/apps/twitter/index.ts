@@ -8,7 +8,7 @@ export default defineApp({
   name: 'Twitter',
   key: 'twitter',
   iconUrl: '{BASE_URL}/apps/twitter/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/connections/twitter',
+  authDocUrl: 'https://automatisch.io/docs/apps/twitter/connection',
   supportsConnections: true,
   baseUrl: 'https://twitter.com',
   apiBaseUrl: 'https://api.twitter.com',
