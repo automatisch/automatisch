@@ -8,7 +8,7 @@ export default defineApp({
   name: 'Twilio',
   key: 'twilio',
   iconUrl: '{BASE_URL}/apps/twilio/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/connections/twilio',
+  authDocUrl: 'https://automatisch.io/docs/apps/twilio/connection',
   supportsConnections: true,
   baseUrl: 'https://twilio.com',
   apiBaseUrl: 'https://api.twilio.com',

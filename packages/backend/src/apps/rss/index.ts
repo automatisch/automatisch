@@ -5,7 +5,7 @@ export default defineApp({
   name: 'RSS',
   key: 'rss',
   iconUrl: '{BASE_URL}/apps/rss/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/connections/rss',
+  authDocUrl: 'https://automatisch.io/docs/apps/rss/connection',
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',
