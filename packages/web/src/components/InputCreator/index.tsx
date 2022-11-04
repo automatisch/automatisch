@@ -22,7 +22,6 @@ type RawOption = {
 };
 
 const optionGenerator = (options: RawOption[]): IFieldDropdownOption[] => options?.map(({ name, value }) => ({ label: name as string, value: value }));
-const getOption = (options: IFieldDropdownOption[], value?: string | boolean) => options?.find(option => option.value === value);
 
 export default function InputCreator(props: InputCreatorProps): React.ReactElement {
   const {
@@ -62,7 +61,7 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
         disableClearable={required}
         options={preparedOptions}
         renderInput={(params) => <MuiTextField {...params} label={label} />}
-        value={getOption(preparedOptions, value)}
+        defaultValue={value as string}
         onChange={console.log}
         description={description}
         loading={loading}
