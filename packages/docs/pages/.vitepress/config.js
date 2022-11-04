@@ -15,6 +15,7 @@ export default defineConfig({
   description:
     'Build workflow automation without spending time and money. No code is required.',
   cleanUrls: 'with-subfolders',
+  ignoreDeadLinks: true,
   themeConfig: {
     siteTitle: 'Automatisch',
     nav: [
@@ -140,6 +141,24 @@ export default defineConfig({
             { text: 'Configuration', link: '/advanced/configuration' },
             { text: 'Credentials', link: '/advanced/credentials' },
             { text: 'Telemetry', link: '/advanced/telemetry' },
+          ],
+        },
+        {
+          text: 'Contributing',
+          collapsible: true,
+          items: [
+            {
+              text: 'Contribution guide',
+              link: '/contributing/contribution-guide',
+            },
+            {
+              text: 'Development setup',
+              link: '/contributing/development-setup',
+            },
+            {
+              text: 'Repository structure',
+              link: '/contributing/repository-structure',
+            },
           ],
         },
         {
