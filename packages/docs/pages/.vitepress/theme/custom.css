@@ -114,3 +114,7 @@
 .dark .vp-doc .custom-block a {
   transition: color 0.25s;
 }
+
+:root {
+  overflow-y: scroll;
+}
