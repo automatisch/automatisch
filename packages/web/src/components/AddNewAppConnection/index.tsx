@@ -31,13 +31,15 @@ function createConnectionOrFlow(appKey: string, supportsConnections = false) {
   }
 
   return URLS.APP_ADD_CONNECTION(appKey);
-};
+}
 
 type AddNewAppConnectionProps = {
   onClose: () => void;
 };
 
-export default function AddNewAppConnection(props: AddNewAppConnectionProps): React.ReactElement {
+export default function AddNewAppConnection(
+  props: AddNewAppConnectionProps
+): React.ReactElement {
   const { onClose } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
@@ -45,31 +47,34 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
   const [appName, setAppName] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [getApps, { data }] = useLazyQuery(GET_APPS, {
-    onCompleted: () => { setLoading(false); },
+    onCompleted: () => {
+      setLoading(false);
+    },
   });
 
   const fetchData = React.useMemo(
-    () => debounce((name) => getApps({ variables: { name }}), 300),
+    () => debounce((name) => getApps({ variables: { name } }), 300),
     [getApps]
   );
 
-  React.useEffect(function fetchAppsOnAppNameChange() {
-    setLoading(true);
+  React.useEffect(
+    function fetchAppsOnAppNameChange() {
+      setLoading(true);
 
-    fetchData(appName);
-  }, [fetchData, appName]);
+      fetchData(appName);
+    },
+    [fetchData, appName]
+  );
 
   React.useEffect(function cancelDebounceOnUnmount() {
     return () => {
       fetchData.cancel();
-    }
+    };
   }, []);
 
   return (
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        {formatMessage('apps.addNewAppConnection')}
-      </DialogTitle>
+      <DialogTitle>{formatMessage('apps.addNewAppConnection')}</DialogTitle>
 
       <DialogContent>
         <FormControl
@@ -77,9 +82,7 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
           fullWidth
           size={matchSmallScreens ? 'small' : 'medium'}
         >
-          <InputLabel
-            htmlFor="search-app"
-          >
+          <InputLabel htmlFor="search-app">
             {formatMessage('apps.searchApp')}
           </InputLabel>
 
@@ -91,7 +94,9 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
             onChange={(event) => setAppName(event.target.value)}
             endAdornment={
               <InputAdornment position="end">
-                <SearchIcon sx={{ color: (theme) => theme.palette.primary.main }} />
+                <SearchIcon
+                  sx={{ color: (theme) => theme.palette.primary.main }}
+                />
               </InputAdornment>
             }
             label={formatMessage('apps.searchApp')}
@@ -100,21 +105,36 @@ export default function AddNewAppConnection(props: AddNewAppConnectionProps): Re
         </FormControl>
 
         <List sx={{ pt: 2, width: '100%' }}>
-          {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
+          {loading && (
+            <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
+          )}
 
-          {!loading && data?.getApps?.map((app: IApp) => (
-            <ListItem disablePadding key={app.name} data-test="app-list-item">
-              <ListItemButton component={Link} to={createConnectionOrFlow(app.name.toLowerCase(), app.supportsConnections)}>
-                <ListItemIcon sx={{ minWidth: 74 }}>
-                  <AppIcon color="transparent" url={app.iconUrl} name={app.name} />
-                </ListItemIcon>
+          {!loading &&
+            data?.getApps?.map((app: IApp) => (
+              <ListItem disablePadding key={app.name} data-test="app-list-item">
+                <ListItemButton
+                  component={Link}
+                  to={createConnectionOrFlow(app.key, app.supportsConnections)}
+                >
+                  <ListItemIcon sx={{ minWidth: 74 }}>
+                    <AppIcon
+                      color="transparent"
+                      url={app.iconUrl}
+                      name={app.name}
+                    />
+                  </ListItemIcon>
 
-                <ListItemText primary={app.name} primaryTypographyProps={{ sx: { color: (theme) => theme.palette.text.primary }  }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemText
+                    primary={app.name}
+                    primaryTypographyProps={{
+                      sx: { color: (theme) => theme.palette.text.primary },
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
         </List>
       </DialogContent>
     </Dialog>
   );
-};
+}
