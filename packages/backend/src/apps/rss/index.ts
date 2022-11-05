@@ -10,6 +10,5 @@ export default defineApp({
   baseUrl: '',
   apiBaseUrl: '',
   primaryColor: 'ff8800',
-  beforeRequest: [],
   triggers,
 });

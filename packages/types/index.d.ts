@@ -161,7 +161,7 @@ export interface IApp {
   auth?: IAuth;
   connectionCount?: number;
   flowCount?: number;
-  beforeRequest: TBeforeRequest[];
+  beforeRequest?: TBeforeRequest[];
   data?: IData;
   triggers?: ITrigger[];
   actions?: IAction[];
