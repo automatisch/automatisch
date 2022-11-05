@@ -162,6 +162,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Build Integrations',
+          collapsible: true,
+          items: [
+            {
+              text: 'Folder structure',
+              link: '/build-integrations/folder-structure',
+            },
+          ],
+        },
+        {
           text: 'Other',
           collapsible: true,
           items: [
