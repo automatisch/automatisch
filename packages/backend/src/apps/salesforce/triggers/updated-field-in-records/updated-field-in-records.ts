@@ -12,7 +12,7 @@ function getQuery(object: string, limit: number, offset: number) {
   `;
 }
 
-const updatedFieldInObjects = async ($: IGlobalVariable): Promise<void> => {
+const updatedFieldInRecord = async ($: IGlobalVariable): Promise<void> => {
   const limit = 200;
   const field = $.step.parameters.field as string;
   const object = $.step.parameters.object as string;
@@ -42,4 +42,4 @@ const updatedFieldInObjects = async ($: IGlobalVariable): Promise<void> => {
   } while (response.data.records?.length === limit);
 };
 
-export default updatedFieldInObjects;
+export default updatedFieldInRecord;

@@ -1,11 +1,11 @@
 import defineTrigger from '../../../../helpers/define-trigger';
-import updatedFieldInObjects from './updated-field-in-objects';
+import updatedFieldInRecords from './updated-field-in-records';
 
 export default defineTrigger({
-  name: 'Updated field in objects',
-  key: 'updatedFieldInObjects',
+  name: 'Updated field in records',
+  key: 'updatedFieldInRecords',
   pollInterval: 15,
-  description: 'Triggers when a field is updated in an object.',
+  description: 'Triggers when a field is updated in a record.',
   arguments: [
     {
       label: 'Object',
@@ -50,6 +50,6 @@ export default defineTrigger({
   ],
 
   async run($) {
-    await updatedFieldInObjects($);
+    await updatedFieldInRecords($);
   },
 });

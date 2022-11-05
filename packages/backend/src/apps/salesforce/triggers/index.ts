@@ -1,5 +1,5 @@
-import updatedFieldInObjects from "./updated-field-in-objects";
+import updatedFieldInRecords from "./updated-field-in-records";
 
 export default [
-  updatedFieldInObjects
+  updatedFieldInRecords
 ];
