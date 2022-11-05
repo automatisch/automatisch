@@ -2,12 +2,12 @@ import { IGlobalVariable } from '@automatisch/types';
 
 type TResponse = {
   fields: TField[];
-}
+};
 
 type TField = {
   name: string;
   label: string;
-}
+};
 
 export default {
   name: 'List fields',
@@ -15,7 +15,12 @@ export default {
 
   async run($: IGlobalVariable) {
     const { object } = $.step.parameters;
-    const response = await $.http.get<TResponse>(`/services/data/v56.0/sobjects/${object}/describe`);
+
+    if (!object) return { data: [] };
+
+    const response = await $.http.get<TResponse>(
+      `/services/data/v56.0/sobjects/${object}/describe`
+    );
 
     const fields = response.data.fields.map((field) => {
       return {

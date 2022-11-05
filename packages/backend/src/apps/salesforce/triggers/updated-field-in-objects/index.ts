@@ -11,7 +11,7 @@ export default defineTrigger({
       label: 'Object',
       key: 'object',
       type: 'dropdown' as const,
-      required: false,
+      required: true,
       variables: false,
       source: {
         type: 'query',
