@@ -12,9 +12,10 @@ const verifyCredentials = async ($: IGlobalVariable) => {
       },
       {
         headers: {
-          Accept: 'application/json'
-        }
-      });
+          Accept: 'application/json',
+        },
+      }
+    );
 
     const data = response.data;
 

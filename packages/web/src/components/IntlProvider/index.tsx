@@ -7,7 +7,11 @@ type IntlProviderProps = {
 
 const IntlProvider = ({ children }: IntlProviderProps): React.ReactElement => {
   return (
-    <BaseIntlProvider locale={navigator.language} defaultLocale="en" messages={englishMessages}>
+    <BaseIntlProvider
+      locale={navigator.language}
+      defaultLocale="en"
+      messages={englishMessages}
+    >
       {children}
     </BaseIntlProvider>
   );

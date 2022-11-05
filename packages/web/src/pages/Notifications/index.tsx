@@ -26,9 +26,7 @@ export default function Updates(): React.ReactElement {
           {formatMessage('notifications.title')}
         </PageTitle>
 
-        <Stack
-          gap={2}
-        >
+        <Stack gap={2}>
           {notifications.map((notification: INotification) => (
             <NotificationCard
               key={notification.name}
@@ -42,4 +40,4 @@ export default function Updates(): React.ReactElement {
       </Container>
     </Box>
   );
-};
+}

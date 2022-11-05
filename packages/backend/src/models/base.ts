@@ -36,7 +36,10 @@ class Base extends Model {
     this.updatedAt = new Date().toISOString();
   }
 
-  async $beforeUpdate(opts: ModelOptions, queryContext: QueryContext): Promise<void> {
+  async $beforeUpdate(
+    opts: ModelOptions,
+    queryContext: QueryContext
+  ): Promise<void> {
     this.updatedAt = new Date().toISOString();
 
     await super.$beforeUpdate(opts, queryContext);

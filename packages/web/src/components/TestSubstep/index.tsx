@@ -15,7 +15,7 @@ import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import type { IStep, ISubstep } from '@automatisch/types';
 
 type TestSubstepProps = {
-  substep: ISubstep,
+  substep: ISubstep;
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
@@ -30,12 +30,16 @@ function serializeErrors(graphQLErrors: any) {
     try {
       return {
         ...error,
-        message: (<pre style={{ margin: 0 }}>{JSON.stringify(JSON.parse(error.message as string), null, 2)}</pre>),
-      }
+        message: (
+          <pre style={{ margin: 0 }}>
+            {JSON.stringify(JSON.parse(error.message as string), null, 2)}
+          </pre>
+        ),
+      };
     } catch {
       return error;
     }
-  })
+  });
 }
 
 function TestSubstep(props: TestSubstepProps): React.ReactElement {
@@ -51,21 +55,25 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
 
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
-  const [executeFlow, { data, error, loading, called, reset }] = useMutation(EXECUTE_FLOW, { context: { autoSnackbar: false }});
+  const [executeFlow, { data, error, loading, called, reset }] = useMutation(
+    EXECUTE_FLOW,
+    { context: { autoSnackbar: false } }
+  );
   const response = data?.executeFlow?.data;
 
   const isCompleted = !error && called && !loading;
   const hasNoOutput = !response && isCompleted;
 
-  const {
-    name,
-  } = substep;
+  const { name } = substep;
 
-  React.useEffect(function resetTestDataOnSubstepToggle() {
-    if (!expanded) {
-      reset();
-    }
-  }, [expanded, reset])
+  React.useEffect(
+    function resetTestDataOnSubstepToggle() {
+      if (!expanded) {
+        reset();
+      }
+    },
+    [expanded, reset]
+  );
 
   const handleSubmit = React.useCallback(() => {
     if (isCompleted) {
@@ -86,27 +94,44 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
 
   return (
     <React.Fragment>
-      <FlowSubstepTitle
-        expanded={expanded}
-        onClick={onToggle}
-        title={name}
-      />
+      <FlowSubstepTitle expanded={expanded} onClick={onToggle} title={name} />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
-          {!!error?.graphQLErrors?.length && <Alert severity="error" sx={{ mb: 1, fontWeight: 500, width: '100%' }}>
-            {serializeErrors(error.graphQLErrors).map((error: any) => (<div>{error.message}</div>))}
-          </Alert>}
+        <ListItem
+          sx={{
+            pt: 2,
+            pb: 3,
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
+        >
+          {!!error?.graphQLErrors?.length && (
+            <Alert
+              severity="error"
+              sx={{ mb: 1, fontWeight: 500, width: '100%' }}
+            >
+              {serializeErrors(error.graphQLErrors).map((error: any) => (
+                <div>{error.message}</div>
+              ))}
+            </Alert>
+          )}
 
           {hasNoOutput && (
             <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
-              <AlertTitle sx={{ fontWeight: 700 }}>{formatMessage('flowEditor.noTestDataTitle')}</AlertTitle>
+              <AlertTitle sx={{ fontWeight: 700 }}>
+                {formatMessage('flowEditor.noTestDataTitle')}
+              </AlertTitle>
 
-              <Box sx={{ fontWeight: 400 }}>{formatMessage('flowEditor.noTestDataMessage')}</Box>
+              <Box sx={{ fontWeight: 400 }}>
+                {formatMessage('flowEditor.noTestDataMessage')}
+              </Box>
             </Alert>
           )}
 
           {response && (
-            <Box sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }} data-test="flow-test-substep-output">
+            <Box
+              sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }}
+              data-test="flow-test-substep-output"
+            >
               <JSONViewer data={response} />
             </Box>
           )}
@@ -128,6 +153,6 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
       </Collapse>
     </React.Fragment>
   );
-};
+}
 
 export default TestSubstep;

@@ -15,7 +15,7 @@ import Drawer from 'components/Drawer';
 
 type PublicLayoutProps = {
   children: React.ReactNode;
-}
+};
 
 const drawerLinks = [
   {
@@ -45,12 +45,16 @@ const generateDrawerBottomLinks = ({ notificationBadgeContent = 0 }) => [
     to: URLS.UPDATES,
     badgeContent: notificationBadgeContent,
   },
-]
+];
 
-export default function PublicLayout({ children }: PublicLayoutProps): React.ReactElement {
+export default function PublicLayout({
+  children,
+}: PublicLayoutProps): React.ReactElement {
   const version = useVersion();
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), { noSsr: true });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), {
+    noSsr: true,
+  });
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
 
   const openDrawer = () => setDrawerOpen(true);
@@ -62,9 +66,13 @@ export default function PublicLayout({ children }: PublicLayoutProps): React.Rea
 
   return (
     <>
-      <AppBar drawerOpen={isDrawerOpen} onDrawerOpen={openDrawer} onDrawerClose={closeDrawer} />
+      <AppBar
+        drawerOpen={isDrawerOpen}
+        onDrawerOpen={openDrawer}
+        onDrawerClose={closeDrawer}
+      />
 
-      <Box sx={{ display: 'flex', }}>
+      <Box sx={{ display: 'flex' }}>
         <Drawer
           links={drawerLinks}
           bottomLinks={drawerBottomLinks}
@@ -73,7 +81,7 @@ export default function PublicLayout({ children }: PublicLayoutProps): React.Rea
           onClose={closeDrawer}
         />
 
-        <Box sx={{ flex: 1, }}>
+        <Box sx={{ flex: 1 }}>
           <Toolbar />
 
           {children}

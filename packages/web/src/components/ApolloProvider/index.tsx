@@ -13,9 +13,12 @@ const ApolloProvider = (props: ApolloProviderProps): React.ReactElement => {
   const { enqueueSnackbar } = useSnackbar();
   const authentication = useAuthentication();
 
-  const onError = React.useCallback((message) => {
-    enqueueSnackbar(message, { variant: 'error' });
-  }, [enqueueSnackbar]);
+  const onError = React.useCallback(
+    (message) => {
+      enqueueSnackbar(message, { variant: 'error' });
+    },
+    [enqueueSnackbar]
+  );
 
   const client = React.useMemo(() => {
     return mutateAndGetClient({
@@ -24,9 +27,7 @@ const ApolloProvider = (props: ApolloProviderProps): React.ReactElement => {
     });
   }, [onError, authentication]);
 
-  return (
-    <BaseApolloProvider client={client} {...props} />
-  );
+  return <BaseApolloProvider client={client} {...props} />;
 };
 
 export default ApolloProvider;

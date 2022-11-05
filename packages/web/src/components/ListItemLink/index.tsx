@@ -11,21 +11,22 @@ type ListItemLinkProps = {
   to: string;
   onClick?: (event: React.SyntheticEvent) => void;
   'data-test'?: string;
-}
+};
 
-export default function ListItemLink(props: ListItemLinkProps): React.ReactElement {
+export default function ListItemLink(
+  props: ListItemLinkProps
+): React.ReactElement {
   const { icon, primary, to, onClick, 'data-test': dataTest } = props;
   const selected = useMatch({ path: to, end: true });
 
   const CustomLink = React.useMemo(
     () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InLineLink(
-        linkProps,
-        ref,
-      ) {
-        return <Link ref={ref} to={to} {...linkProps} />;
-      }),
-    [to],
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
+        function InLineLink(linkProps, ref) {
+          return <Link ref={ref} to={to} {...linkProps} />;
+        }
+      ),
+    [to]
   );
 
   return (
@@ -38,8 +39,11 @@ export default function ListItemLink(props: ListItemLinkProps): React.ReactEleme
         data-test={dataTest}
       >
         <ListItemIcon sx={{ minWidth: 52 }}>{icon}</ListItemIcon>
-        <ListItemText primary={primary} primaryTypographyProps={{ variant: 'body1', }} />
+        <ListItemText
+          primary={primary}
+          primaryTypographyProps={{ variant: 'body1' }}
+        />
       </ListItem>
     </li>
   );
-};
+}

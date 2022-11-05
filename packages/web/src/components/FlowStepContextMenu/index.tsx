@@ -14,19 +14,22 @@ type FlowStepContextMenuProps = {
   deletable: boolean;
 };
 
-function FlowStepContextMenu(props: FlowStepContextMenuProps): React.ReactElement {
+function FlowStepContextMenu(
+  props: FlowStepContextMenuProps
+): React.ReactElement {
   const { stepId, onClose, anchorEl, deletable } = props;
   const [deleteStep] = useMutation(DELETE_STEP, {
-    refetchQueries: [
-      'GetFlow'
-    ]
+    refetchQueries: ['GetFlow'],
   });
   const formatMessage = useFormatMessage();
 
-  const deleteActionHandler = React.useCallback(async (event: React.SyntheticEvent) => {
-    event.stopPropagation();
-    await deleteStep({ variables: { input: { id: stepId } } });
-  }, [stepId]);
+  const deleteActionHandler = React.useCallback(
+    async (event: React.SyntheticEvent) => {
+      event.stopPropagation();
+      await deleteStep({ variables: { input: { id: stepId } } });
+    },
+    [stepId]
+  );
 
   return (
     <Menu
@@ -35,11 +38,13 @@ function FlowStepContextMenu(props: FlowStepContextMenuProps): React.ReactElemen
       hideBackdrop={false}
       anchorEl={anchorEl}
     >
-      {deletable && <MenuItem onClick={deleteActionHandler}>
-        {formatMessage('connection.delete')}
-      </MenuItem>}
+      {deletable && (
+        <MenuItem onClick={deleteActionHandler}>
+          {formatMessage('connection.delete')}
+        </MenuItem>
+      )}
     </Menu>
   );
-};
+}
 
 export default FlowStepContextMenu;

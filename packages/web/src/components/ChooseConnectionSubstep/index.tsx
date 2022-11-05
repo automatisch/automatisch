@@ -16,7 +16,7 @@ import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 
 type ChooseConnectionSubstepProps = {
   application: IApp;
-  substep: ISubstep,
+  substep: ISubstep;
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
@@ -27,14 +27,19 @@ type ChooseConnectionSubstepProps = {
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 
-const optionGenerator = (connection: IConnection): { label: string; value: string; } => ({
-  label: connection?.formattedData?.screenName as string ?? 'Unnamed',
+const optionGenerator = (
+  connection: IConnection
+): { label: string; value: string } => ({
+  label: (connection?.formattedData?.screenName as string) ?? 'Unnamed',
   value: connection?.id as string,
 });
 
-const getOption = (options: Record<string, unknown>[], connectionId?: string) => options.find(connection => connection.value === connectionId) || null;
+const getOption = (options: Record<string, unknown>[], connectionId?: string) =>
+  options.find((connection) => connection.value === connectionId) || null;
 
-function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.ReactElement {
+function ChooseConnectionSubstep(
+  props: ChooseConnectionSubstepProps
+): React.ReactElement {
   const {
     substep,
     expanded = false,
@@ -45,36 +50,30 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
     onChange,
     application,
   } = props;
-  const {
-    connection,
-    appKey,
-  } = step;
+  const { connection, appKey } = step;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
-  const [showAddConnectionDialog, setShowAddConnectionDialog] = React.useState(false);
-  const { data, loading, refetch } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey }});
+  const [showAddConnectionDialog, setShowAddConnectionDialog] =
+    React.useState(false);
+  const { data, loading, refetch } = useQuery(GET_APP_CONNECTIONS, {
+    variables: { key: appKey },
+  });
   // TODO: show detailed error when connection test/verification fails
   const [
     testConnection,
-    {
-      loading: testResultLoading,
-      refetch: retestConnection
-    }
-  ] = useLazyQuery(
-    TEST_CONNECTION,
-    {
-      variables: {
-        id: connection?.id,
-      }
-    }
-  );
+    { loading: testResultLoading, refetch: retestConnection },
+  ] = useLazyQuery(TEST_CONNECTION, {
+    variables: {
+      id: connection?.id,
+    },
+  });
 
   React.useEffect(() => {
     if (connection?.id) {
       testConnection({
         variables: {
           id: connection.id,
-        }
+        },
       });
     }
     // intentionally no dependencies for initial test
@@ -82,52 +81,30 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
 
   const connectionOptions = React.useMemo(() => {
     const appWithConnections = data?.getApp as IApp;
-    const options = appWithConnections
-      ?.connections
-      ?.map((connection) => optionGenerator(connection)) || [];
+    const options =
+      appWithConnections?.connections?.map((connection) =>
+        optionGenerator(connection)
+      ) || [];
 
     options.push({
       label: formatMessage('chooseConnectionSubstep.addNewConnection'),
-      value: ADD_CONNECTION_VALUE
-    })
+      value: ADD_CONNECTION_VALUE,
+    });
 
     return options;
   }, [data, formatMessage]);
 
   const { name } = substep;
 
-  const handleAddConnectionClose = React.useCallback(async (response) => {
-    setShowAddConnectionDialog(false);
+  const handleAddConnectionClose = React.useCallback(
+    async (response) => {
+      setShowAddConnectionDialog(false);
 
-    const connectionId = response?.createConnection.id;
+      const connectionId = response?.createConnection.id;
 
-    if (connectionId) {
-      await refetch();
+      if (connectionId) {
+        await refetch();
 
-      onChange({
-        step: {
-          ...step,
-          connection: {
-            id: connectionId,
-          },
-        },
-      });
-    }
-  }, [onChange, refetch, step]);
-
-  const handleChange = React.useCallback((event: React.SyntheticEvent, selectedOption: unknown) => {
-    if (typeof selectedOption === 'object') {
-      // TODO: try to simplify type casting below.
-      const typedSelectedOption = selectedOption as { value: string };
-      const option: { value: string } = typedSelectedOption;
-      const connectionId = option?.value as string;
-
-      if (connectionId === ADD_CONNECTION_VALUE) {
-        setShowAddConnectionDialog(true);
-        return;
-      }
-
-      if (connectionId !== step.connection?.id) {
         onChange({
           step: {
             ...step,
@@ -137,8 +114,37 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
           },
         });
       }
-    }
-  }, [step, onChange]);
+    },
+    [onChange, refetch, step]
+  );
+
+  const handleChange = React.useCallback(
+    (event: React.SyntheticEvent, selectedOption: unknown) => {
+      if (typeof selectedOption === 'object') {
+        // TODO: try to simplify type casting below.
+        const typedSelectedOption = selectedOption as { value: string };
+        const option: { value: string } = typedSelectedOption;
+        const connectionId = option?.value as string;
+
+        if (connectionId === ADD_CONNECTION_VALUE) {
+          setShowAddConnectionDialog(true);
+          return;
+        }
+
+        if (connectionId !== step.connection?.id) {
+          onChange({
+            step: {
+              ...step,
+              connection: {
+                id: connectionId,
+              },
+            },
+          });
+        }
+      }
+    },
+    [step, onChange]
+  );
 
   React.useEffect(() => {
     if (step.connection?.id) {
@@ -146,7 +152,7 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
         id: step.connection.id,
       });
     }
-  }, [step.connection?.id, retestConnection])
+  }, [step.connection?.id, retestConnection]);
 
   const onToggle = expanded ? onCollapse : onExpand;
 
@@ -159,7 +165,14 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
         valid={testResultLoading ? null : connection?.verified}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
+        <ListItem
+          sx={{
+            pt: 2,
+            pb: 3,
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
+        >
           <Autocomplete
             fullWidth
             disablePortal
@@ -169,7 +182,9 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={formatMessage('chooseConnectionSubstep.chooseConnection')}
+                label={formatMessage(
+                  'chooseConnectionSubstep.chooseConnection'
+                )}
               />
             )}
             value={getOption(connectionOptions, connection?.id)}
@@ -183,17 +198,24 @@ function ChooseConnectionSubstep(props: ChooseConnectionSubstepProps): React.Rea
             variant="contained"
             onClick={onSubmit}
             sx={{ mt: 2 }}
-            disabled={testResultLoading || !connection?.verified || editorContext.readOnly}data-test="flow-substep-continue-button"
+            disabled={
+              testResultLoading ||
+              !connection?.verified ||
+              editorContext.readOnly
+            }
+            data-test="flow-substep-continue-button"
           >
             {formatMessage('chooseConnectionSubstep.continue')}
           </Button>
         </ListItem>
       </Collapse>
 
-      {application && showAddConnectionDialog && <AddAppConnection
-        onClose={handleAddConnectionClose}
-        application={application}
-      />}
+      {application && showAddConnectionDialog && (
+        <AddAppConnection
+          onClose={handleAddConnectionClose}
+          application={application}
+        />
+      )}
     </React.Fragment>
   );
 }

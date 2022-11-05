@@ -7,17 +7,21 @@ export const InputLabelWrapper = styled('div')`
   left: -6px;
 `;
 
-export const FakeInput = styled('div', { shouldForwardProp: prop => prop !== 'disabled'})<{ disabled?: boolean }>`
+export const FakeInput = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'disabled',
+})<{ disabled?: boolean }>`
   border: 1px solid #eee;
   min-height: 52px;
   width: 100%;
   display: block;
   padding: ${({ theme }) => theme.spacing(0, 1.75)};
-  border-radius: ${({ theme }) => theme.spacing(.5)};
+  border-radius: ${({ theme }) => theme.spacing(0.5)};
   border-color: rgba(0, 0, 0, 0.23);
   position: relative;
 
-  ${({ disabled, theme }) => !!disabled && `
+  ${({ disabled, theme }) =>
+    !!disabled &&
+    `
     color: ${theme.palette.action.disabled},
     border-color: ${theme.palette.action.disabled},
   `}

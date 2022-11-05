@@ -32,13 +32,13 @@ const createFlow = async (
     type: 'trigger',
     position: 1,
     appKey,
-    connectionId
+    connectionId,
   });
 
   await Step.query().insert({
     flowId: flow.id,
     type: 'action',
-    position: 2
+    position: 2,
   });
 
   return flow;

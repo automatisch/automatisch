@@ -4,7 +4,10 @@ import client from './client';
 import User from '../../src/models/user';
 import '../../src/config/orm';
 
-export async function createUser(email = 'user@automatisch.io', password = 'sample') {
+export async function createUser(
+  email = 'user@automatisch.io',
+  password = 'sample'
+) {
   const UNIQUE_VIOLATION_CODE = '23505';
   const userParams = {
     email,
@@ -29,14 +32,17 @@ export async function createUser(email = 'user@automatisch.io', password = 'samp
   }
 }
 
-export const createDatabaseAndUser = async (database = appConfig.postgresDatabase, user = appConfig.postgresUsername) => {
+export const createDatabaseAndUser = async (
+  database = appConfig.postgresDatabase,
+  user = appConfig.postgresUsername
+) => {
   await client.connect();
   await createDatabase(database);
   await createDatabaseUser(user);
   await grantPrivileges(database, user);
 
   await client.end();
-}
+};
 
 export const createDatabase = async (database = appConfig.postgresDatabase) => {
   const DUPLICATE_DB_CODE = '42P04';
@@ -51,7 +57,7 @@ export const createDatabase = async (database = appConfig.postgresDatabase) => {
 
     logger.info(`Database: ${database} already exists!`);
   }
-}
+};
 
 export const createDatabaseUser = async (user = appConfig.postgresUsername) => {
   const DUPLICATE_OBJECT_CODE = '42710';
@@ -68,25 +74,25 @@ export const createDatabaseUser = async (user = appConfig.postgresUsername) => {
 
     logger.info(`Database User: ${user} already exists!`);
   }
-}
+};
 
 export const grantPrivileges = async (
-  database = appConfig.postgresDatabase, user = appConfig.postgresUsername
+  database = appConfig.postgresDatabase,
+  user = appConfig.postgresUsername
 ) => {
   await client.query(
     `GRANT ALL PRIVILEGES ON DATABASE ${database} TO ${user};`
   );
 
-  logger.info(
-    `${user} has granted all privileges on ${database}!`
-  );
-}
+  logger.info(`${user} has granted all privileges on ${database}!`);
+};
 
 export const dropDatabase = async () => {
   if (appConfig.appEnv != 'development' && appConfig.appEnv != 'test') {
-    const errorMessage = 'Drop database command can be used only with development or test environments!'
+    const errorMessage =
+      'Drop database command can be used only with development or test environments!';
 
-    logger.error(errorMessage)
+    logger.error(errorMessage);
     return;
   }
 
@@ -94,13 +100,15 @@ export const dropDatabase = async () => {
   await dropDatabaseAndUser();
 
   await client.end();
-}
+};
 
-export const dropDatabaseAndUser = async(database = appConfig.postgresDatabase, user = appConfig.postgresUsername) => {
+export const dropDatabaseAndUser = async (
+  database = appConfig.postgresDatabase,
+  user = appConfig.postgresUsername
+) => {
   await client.query(`DROP DATABASE IF EXISTS ${database}`);
   logger.info(`Database: ${database} removed!`);
 
   await client.query(`DROP USER IF EXISTS ${user}`);
   logger.info(`Database User: ${user} removed!`);
-}
-
+};

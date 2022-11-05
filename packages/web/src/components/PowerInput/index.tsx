@@ -6,12 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Editor, Transforms, Range, createEditor } from 'slate';
-import {
-  Slate,
-  Editable,
-  useSelected,
-  useFocused,
-} from 'slate-react';
+import { Slate, Editable, useSelected, useFocused } from 'slate-react';
 
 import {
   serialize,
@@ -39,7 +34,7 @@ type PowerInputProps = {
   docUrl?: string;
   clickToCopy?: boolean;
   disabled?: boolean;
-}
+};
 
 const PowerInput = (props: PowerInputProps) => {
   const { control } = useFormContext();
@@ -54,21 +49,28 @@ const PowerInput = (props: PowerInputProps) => {
   } = props;
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef<HTMLDivElement | null>(null);
-  const renderElement = React.useCallback(props => <Element {...props} />, []);
+  const renderElement = React.useCallback(
+    (props) => <Element {...props} />,
+    []
+  );
   const [editor] = React.useState(() => customizeEditor(createEditor()));
-  const [showVariableSuggestions, setShowVariableSuggestions] = React.useState(false);
+  const [showVariableSuggestions, setShowVariableSuggestions] =
+    React.useState(false);
 
   const stepsWithVariables = React.useMemo(() => {
     return processStepWithExecutions(priorStepsWithExecutions);
-  }, [priorStepsWithExecutions])
+  }, [priorStepsWithExecutions]);
 
-  const handleBlur = React.useCallback((value) => {
-    onBlur?.(value);
-  }, [onBlur]);
+  const handleBlur = React.useCallback(
+    (value) => {
+      onBlur?.(value);
+    },
+    [onBlur]
+  );
 
   const handleVariableSuggestionClick = React.useCallback(
-    (variable: Pick<VariableElement, "name" | "value">) => {
-        insertVariable(editor, variable, stepsWithVariables);
+    (variable: Pick<VariableElement, 'name' | 'value'>) => {
+      insertVariable(editor, variable, stepsWithVariables);
     },
     [stepsWithVariables]
   );
@@ -80,17 +82,25 @@ const PowerInput = (props: PowerInputProps) => {
       control={control}
       defaultValue={defaultValue}
       shouldUnregister={false}
-      render={({ field: { value, onChange: controllerOnChange, onBlur: controllerOnBlur, } }) => (
+      render={({
+        field: {
+          value,
+          onChange: controllerOnChange,
+          onBlur: controllerOnBlur,
+        },
+      }) => (
         <Slate
           editor={editor}
           value={deserialize(value, stepsWithVariables)}
-          onChange={value => {
+          onChange={(value) => {
             controllerOnChange(serialize(value));
           }}
         >
           <ClickAwayListener
             mouseEvent="onMouseDown"
-            onClickAway={() => { setShowVariableSuggestions(false); }}
+            onClickAway={() => {
+              setShowVariableSuggestions(false);
+            }}
           >
             {/* ref-able single child for ClickAwayListener */}
             <div style={{ width: '100%' }} data-test="power-input">
@@ -100,7 +110,7 @@ const PowerInput = (props: PowerInputProps) => {
                     shrink={true}
                     disabled={disabled}
                     variant="outlined"
-                    sx={{ bgcolor: 'white', display: 'inline-block', px: .75 }}
+                    sx={{ bgcolor: 'white', display: 'inline-block', px: 0.75 }}
                   >
                     {label}
                   </InputLabel>
@@ -113,17 +123,16 @@ const PowerInput = (props: PowerInputProps) => {
                   onFocus={() => {
                     setShowVariableSuggestions(true);
                   }}
-                  onBlur={() => { controllerOnBlur(); handleBlur(value); }}
+                  onBlur={() => {
+                    controllerOnBlur();
+                    handleBlur(value);
+                  }}
                 />
               </FakeInput>
               {/* ghost placer for the variables popover */}
               <div ref={editorRef} style={{ width: '100%' }} />
 
-              <FormHelperText
-                variant="outlined"
-              >
-                {description}
-              </FormHelperText>
+              <FormHelperText variant="outlined">{description}</FormHelperText>
 
               <SuggestionsPopper
                 open={showVariableSuggestions}
@@ -136,36 +145,28 @@ const PowerInput = (props: PowerInputProps) => {
         </Slate>
       )}
     />
-  )
-}
+  );
+};
 
 const SuggestionsPopper = (props: any) => {
-  const {
-    open,
-    anchorEl,
-    data,
-    onSuggestionClick,
-  } = props;
+  const { open, anchorEl, data, onSuggestionClick } = props;
 
   return (
     <Popper
       open={open}
       anchorEl={anchorEl}
-      style={{ width: anchorEl?.clientWidth, zIndex: 1, }}
+      style={{ width: anchorEl?.clientWidth, zIndex: 1 }}
       modifiers={[
         {
           name: 'flip',
           enabled: false,
           options: {
             altBoundary: false,
-          }
-        }
+          },
+        },
       ]}
     >
-      <Suggestions
-        data={data}
-        onSuggestionClick={onSuggestionClick}
-      />
+      <Suggestions data={data} onSuggestionClick={onSuggestionClick} />
     </Popper>
   );
 };
@@ -178,9 +179,9 @@ const Element = (props: any) => {
     default:
       return <p {...attributes}>{children}</p>;
   }
-}
+};
 
-const Variable = ({ attributes, children, element }:  any) => {
+const Variable = ({ attributes, children, element }: any) => {
   const selected = useSelected();
   const focused = useFocused();
   const label = (
@@ -200,7 +201,7 @@ const Variable = ({ attributes, children, element }:  any) => {
       size="small"
       label={label}
     />
-  )
-}
+  );
+};
 
 export default PowerInput;

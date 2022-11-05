@@ -12,7 +12,13 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { EditorContext } from 'contexts/Editor';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { IApp, IStep, ISubstep, ITrigger, IAction } from '@automatisch/types';
+import type {
+  IApp,
+  IStep,
+  ISubstep,
+  ITrigger,
+  IAction,
+} from '@automatisch/types';
 
 type ChooseAppAndEventSubstepProps = {
   substep: ISubstep;
@@ -24,7 +30,10 @@ type ChooseAppAndEventSubstepProps = {
   step: IStep;
 };
 
-const optionGenerator = (app: { name: string, key: string, }): { label: string; value: string } => ({
+const optionGenerator = (app: {
+  name: string;
+  key: string;
+}): { label: string; value: string } => ({
   label: app.name as string,
   value: app.key as string,
 });
@@ -61,15 +70,15 @@ function ChooseAppAndEventSubstep(
     () => apps?.map((app) => optionGenerator(app)),
     [apps]
   );
-  const actionsOrTriggers: Array<ITrigger | IAction> = (isTrigger ? app?.triggers : app?.actions) || [];
+  const actionsOrTriggers: Array<ITrigger | IAction> =
+    (isTrigger ? app?.triggers : app?.actions) || [];
   const actionOptions = React.useMemo(
     () => actionsOrTriggers.map((trigger) => optionGenerator(trigger)),
     [app?.key]
   );
-  const selectedActionOrTrigger =
-    actionsOrTriggers.find(
-      (actionOrTrigger: IAction | ITrigger) => actionOrTrigger.key === step?.key
-    );
+  const selectedActionOrTrigger = actionsOrTriggers.find(
+    (actionOrTrigger: IAction | ITrigger) => actionOrTrigger.key === step?.key
+  );
 
   const { name } = substep;
 

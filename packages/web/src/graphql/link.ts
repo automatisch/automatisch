@@ -11,52 +11,51 @@ type CreateLinkOptions = {
   onError?: (message: string) => void;
 };
 
-const createHttpLink = (options: Pick<CreateLinkOptions, 'uri' | 'token'>): ApolloLink => {
+const createHttpLink = (
+  options: Pick<CreateLinkOptions, 'uri' | 'token'>
+): ApolloLink => {
   const { uri, token } = options;
   const headers = {
     authorization: token,
   };
   return new HttpLink({ uri, headers });
-}
+};
 
 const NOT_AUTHORISED = 'Not Authorised!';
-const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink => onError(({ graphQLErrors, networkError, operation }) => {
-  const context = operation.getContext();
-  const autoSnackbar = context.autoSnackbar ?? true;
+const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink =>
+  onError(({ graphQLErrors, networkError, operation }) => {
+    const context = operation.getContext();
+    const autoSnackbar = context.autoSnackbar ?? true;
 
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        if (autoSnackbar) {
+          callback?.(message);
+        }
+
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+
+        if (message === NOT_AUTHORISED) {
+          setItem('token', '');
+          window.location.href = URLS.LOGIN;
+        }
+      });
+
+    if (networkError) {
       if (autoSnackbar) {
-        callback?.(message);
+        callback?.(networkError.toString());
       }
-
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      );
-
-      if (message === NOT_AUTHORISED) {
-        setItem('token', '');
-        window.location.href = URLS.LOGIN;
-      }
-    });
-
-  if (networkError) {
-    if (autoSnackbar) {
-      callback?.(networkError.toString())
+      console.log(`[Network error]: ${networkError}`);
     }
-    console.log(`[Network error]: ${networkError}`);
-  }
-});
+  });
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => { };
+const noop = () => {};
 
 const createLink = (options: CreateLinkOptions): ApolloLink => {
-  const {
-    uri,
-    onError = noop,
-    token,
-  } = options;
+  const { uri, onError = noop, token } = options;
 
   const httpOptions = { uri, token };
 

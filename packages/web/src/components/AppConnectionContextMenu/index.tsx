@@ -19,17 +19,22 @@ type ContextMenuProps = {
   anchorEl: PopoverProps['anchorEl'];
 };
 
-export default function ContextMenu(props: ContextMenuProps): React.ReactElement {
+export default function ContextMenu(
+  props: ContextMenuProps
+): React.ReactElement {
   const { appKey, connectionId, onClose, onMenuItemClick, anchorEl } = props;
   const formatMessage = useFormatMessage();
 
-  const createActionHandler = React.useCallback((action: Action) => {
-    return function clickHandler(event: React.MouseEvent) {
-      onMenuItemClick(event, action);
+  const createActionHandler = React.useCallback(
+    (action: Action) => {
+      return function clickHandler(event: React.MouseEvent) {
+        onMenuItemClick(event, action);
 
-      onClose();
-    };
-  }, [onMenuItemClick, onClose]);
+        onClose();
+      };
+    },
+    [onMenuItemClick, onClose]
+  );
 
   return (
     <Menu
@@ -63,4 +68,4 @@ export default function ContextMenu(props: ContextMenuProps): React.ReactElement
       </MenuItem>
     </Menu>
   );
-};
+}

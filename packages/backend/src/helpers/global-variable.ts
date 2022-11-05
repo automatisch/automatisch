@@ -75,7 +75,10 @@ const globalVariable = async (
       },
     },
     pushTriggerItem: (triggerItem: ITriggerItem) => {
-      if (isAlreadyProcessed(triggerItem.meta.internalId) && !$.execution.testRun) {
+      if (
+        isAlreadyProcessed(triggerItem.meta.internalId) &&
+        !$.execution.testRun
+      ) {
         // early exit as we do not want to process duplicate items in actual executions
         throw new EarlyExitError();
       }

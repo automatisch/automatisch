@@ -6,7 +6,7 @@ export type VariableElement = {
   value?: unknown;
   name?: string;
   children: Text[];
-}
+};
 
 export type ParagraphElement = {
   type: 'paragraph';

@@ -12,7 +12,7 @@ import Drawer from 'components/Drawer';
 
 type SettingsLayoutProps = {
   children: React.ReactNode;
-}
+};
 
 const drawerLinks = [
   {
@@ -27,12 +27,16 @@ const drawerBottomLinks = [
     Icon: ArrowBackIosNewIcon,
     primary: 'settingsDrawer.goBack',
     to: '/',
-  }
+  },
 ];
 
-export default function SettingsLayout({ children }: SettingsLayoutProps): React.ReactElement {
+export default function SettingsLayout({
+  children,
+}: SettingsLayoutProps): React.ReactElement {
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), { noSsr: true });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), {
+    noSsr: true,
+  });
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
 
   const openDrawer = () => setDrawerOpen(true);
@@ -40,9 +44,13 @@ export default function SettingsLayout({ children }: SettingsLayoutProps): React
 
   return (
     <>
-      <AppBar drawerOpen={isDrawerOpen} onDrawerOpen={openDrawer} onDrawerClose={closeDrawer} />
+      <AppBar
+        drawerOpen={isDrawerOpen}
+        onDrawerOpen={openDrawer}
+        onDrawerClose={closeDrawer}
+      />
 
-      <Box sx={{ display: 'flex', }}>
+      <Box sx={{ display: 'flex' }}>
         <Drawer
           links={drawerLinks}
           bottomLinks={drawerBottomLinks}
@@ -51,7 +59,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps): React
           onClose={closeDrawer}
         />
 
-        <Box sx={{ flex: 1, }}>
+        <Box sx={{ flex: 1 }}>
           <Toolbar />
 
           {children}

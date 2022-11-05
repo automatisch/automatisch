@@ -7,7 +7,7 @@ type TData = {
   username?: string;
   icon_url?: string;
   icon_emoji?: string;
-}
+};
 
 const postMessage = async ($: IGlobalVariable) => {
   const { parameters } = $.step;
@@ -37,11 +37,9 @@ const postMessage = async ($: IGlobalVariable) => {
     sendAsBot,
   };
 
-  const response = await $.http.post(
-    '/chat.postMessage',
-    data,
-    { additionalProperties: customConfig },
-  );
+  const response = await $.http.post('/chat.postMessage', data, {
+    additionalProperties: customConfig,
+  });
 
   if (response.data.ok === false) {
     throw new Error(JSON.stringify(response.data));

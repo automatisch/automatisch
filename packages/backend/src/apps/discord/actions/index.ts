@@ -1,5 +1,3 @@
-import sendMessageToChannel from "./send-message-to-channel";
+import sendMessageToChannel from './send-message-to-channel';
 
-export default [
-  sendMessageToChannel
-];
+export default [sendMessageToChannel];

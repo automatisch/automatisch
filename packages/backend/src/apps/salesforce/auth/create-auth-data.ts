@@ -10,15 +10,13 @@ export default async function createAuthData($: IGlobalVariable) {
     const searchParams = qs.stringify({
       client_id: $.auth.data.consumerKey as string,
       redirect_uri: redirectUri,
-      response_type: 'code'
-    })
+      response_type: 'code',
+    });
 
     await $.auth.set({
       url: `${$.auth.data.oauth2Url}/authorize?${searchParams}`,
     });
   } catch (error) {
-    throw new Error(
-      `Error occured while verifying credentials: ${error}`
-    );
+    throw new Error(`Error occured while verifying credentials: ${error}`);
   }
 }

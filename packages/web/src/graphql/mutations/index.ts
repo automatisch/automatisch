@@ -6,8 +6,8 @@ import { DELETE_CONNECTION } from './delete-connection';
 import { CREATE_AUTH_DATA } from './create-auth-data';
 
 type Mutations = {
-  [key: string]: any,
-}
+  [key: string]: any;
+};
 
 const mutations: Mutations = {
   createConnection: CREATE_CONNECTION,

@@ -6,16 +6,19 @@ export type AuthenticationContextParams = {
   updateToken: (token: string) => void;
 };
 
-export const AuthenticationContext = React.createContext<AuthenticationContextParams>({
-  token: null,
-  updateToken: () => void 0,
-});
+export const AuthenticationContext =
+  React.createContext<AuthenticationContextParams>({
+    token: null,
+    updateToken: () => void 0,
+  });
 
 type AuthenticationProviderProps = {
   children: React.ReactNode;
 };
 
-export const AuthenticationProvider = (props: AuthenticationProviderProps): React.ReactElement => {
+export const AuthenticationProvider = (
+  props: AuthenticationProviderProps
+): React.ReactElement => {
   const { children } = props;
   const [token, setToken] = React.useState(() => getItem('token'));
 
@@ -30,9 +33,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps): Reac
   }, [token]);
 
   return (
-    <AuthenticationContext.Provider
-      value={value}
-    >
+    <AuthenticationContext.Provider value={value}>
       {children}
     </AuthenticationContext.Provider>
   );

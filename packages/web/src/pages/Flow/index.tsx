@@ -23,4 +23,4 @@ export default function Flow(): React.ReactElement {
       </Container>
     </Box>
   );
-};
+}

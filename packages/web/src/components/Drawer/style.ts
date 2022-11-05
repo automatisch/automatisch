@@ -28,27 +28,25 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-export const Drawer = styled(MuiSwipeableDrawer)(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
+export const Drawer = styled(MuiSwipeableDrawer)(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    [`& .${drawerClasses.paper}`]: {
       ...openedMixin(theme),
-      [`& .${drawerClasses.paper}`]: {
-        ...openedMixin(theme),
-        display: 'flex',
-        justifyContent: 'space-between'
-      },
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      [`& .${drawerClasses.paper}`]: {
-        ...closedMixin(theme),
-        display: 'flex',
-        justifyContent: 'space-between'
-      },
-    }),
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    [`& .${drawerClasses.paper}`]: {
+      ...closedMixin(theme),
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+  }),
+}));

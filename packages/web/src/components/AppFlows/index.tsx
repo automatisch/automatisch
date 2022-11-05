@@ -12,7 +12,7 @@ import type { IFlow } from '@automatisch/types';
 
 type AppFlowsProps = {
   appKey: string;
-}
+};
 
 const FLOW_PER_PAGE = 10;
 
@@ -27,11 +27,13 @@ export default function AppFlows(props: AppFlowsProps): React.ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
   const connectionId = searchParams.get('connectionId') || undefined;
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
-  const { data } = useQuery(GET_FLOWS, { variables: {
-    appKey,
-    connectionId,
-    ...getLimitAndOffset(page)
-  }});
+  const { data } = useQuery(GET_FLOWS, {
+    variables: {
+      appKey,
+      connectionId,
+      ...getLimitAndOffset(page),
+    },
+  });
   const getFlows = data?.getFlows || {};
   const { pageInfo, edges } = getFlows;
 
@@ -53,19 +55,21 @@ export default function AppFlows(props: AppFlowsProps): React.ReactElement {
         <AppFlowRow key={appFlow.id} flow={appFlow} />
       ))}
 
-      {pageInfo && pageInfo.totalPages > 1 && <Pagination
-        sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
-        page={pageInfo?.currentPage}
-        count={pageInfo?.totalPages}
-        onChange={(event, page) => setSearchParams({ page: page.toString() })}
-        renderItem={(item) => (
-          <PaginationItem
-            component={Link}
-            to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-            {...item}
-          />
-        )}
-      />}
+      {pageInfo && pageInfo.totalPages > 1 && (
+        <Pagination
+          sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+          page={pageInfo?.currentPage}
+          count={pageInfo?.totalPages}
+          onChange={(event, page) => setSearchParams({ page: page.toString() })}
+          renderItem={(item) => (
+            <PaginationItem
+              component={Link}
+              to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
+              {...item}
+            />
+          )}
+        />
+      )}
     </>
-  )
-};
+  );
+}

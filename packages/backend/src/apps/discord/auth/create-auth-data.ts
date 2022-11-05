@@ -17,12 +17,12 @@ export default async function createAuthData($: IGlobalVariable) {
       scope: scopes.join(' '),
     });
 
-    const url = `${$.app.apiBaseUrl}/oauth2/authorize?${searchParams.toString()}`;
+    const url = `${
+      $.app.apiBaseUrl
+    }/oauth2/authorize?${searchParams.toString()}`;
 
     await $.auth.set({ url });
   } catch (error) {
-    throw new Error(
-      `Error occured while verifying credentials: ${error}`
-    );
+    throw new Error(`Error occured while verifying credentials: ${error}`);
   }
 }

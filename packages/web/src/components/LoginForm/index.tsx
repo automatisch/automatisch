@@ -11,7 +11,6 @@ import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 
-
 function renderFields(props: { loading: boolean }) {
   const { loading = false } = props;
 
@@ -52,7 +51,7 @@ function renderFields(props: { loading: boolean }) {
         </LoadingButton>
       </>
     );
-  }
+  };
 }
 
 function LoginForm() {
@@ -69,7 +68,7 @@ function LoginForm() {
   const handleSubmit = async (values: any) => {
     const { data } = await login({
       variables: {
-        input: values
+        input: values,
       },
     });
 
@@ -85,14 +84,20 @@ function LoginForm() {
       <Typography
         variant="h3"
         align="center"
-        sx={{ borderBottom: '1px solid', borderColor: (theme) => theme.palette.text.disabled, pb: 2, mb: 2 }}
-        gutterBottom>
+        sx={{
+          borderBottom: '1px solid',
+          borderColor: (theme) => theme.palette.text.disabled,
+          pb: 2,
+          mb: 2,
+        }}
+        gutterBottom
+      >
         Login
       </Typography>
 
       <Form onSubmit={handleSubmit} render={render} />
     </Paper>
   );
-};
+}
 
 export default LoginForm;

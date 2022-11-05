@@ -6,7 +6,7 @@ import IntermediateStepCount from 'components/IntermediateStepCount';
 
 type FlowAppIconsProps = {
   steps: Partial<IStep>[];
-}
+};
 
 export default function FlowAppIcons(props: FlowAppIconsProps) {
   const { steps } = props;
@@ -24,14 +24,18 @@ export default function FlowAppIcons(props: FlowAppIconsProps) {
         sx={{ width: 30, height: 30 }}
       />
 
-      {intermeaditeStepCount > 0 && <IntermediateStepCount count={intermeaditeStepCount} />}
+      {intermeaditeStepCount > 0 && (
+        <IntermediateStepCount count={intermeaditeStepCount} />
+      )}
 
-      {lastStep && <AppIcon
-        name=" "
-        variant="rounded"
-        url={lastStep.iconUrl}
-        sx={{ width: 30, height: 30 }}
-      />}
+      {lastStep && (
+        <AppIcon
+          name=" "
+          variant="rounded"
+          url={lastStep.iconUrl}
+          sx={{ width: 30, height: 30 }}
+        />
+      )}
     </>
-  )
-};
+  );
+}

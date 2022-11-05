@@ -7,7 +7,10 @@ type ThemeProviderProps = {
   children: React.ReactNode;
 };
 
-const ThemeProvider = ({ children, ...props }: ThemeProviderProps): React.ReactElement => {
+const ThemeProvider = ({
+  children,
+  ...props
+}: ThemeProviderProps): React.ReactElement => {
   return (
     <BaseThemeProvider theme={theme} {...props}>
       <CssBaseline />

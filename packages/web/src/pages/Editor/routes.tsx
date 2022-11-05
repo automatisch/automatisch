@@ -10,5 +10,5 @@ export default function EditorRoutes(): React.ReactElement {
 
       <Route path="/:flowId" element={<EditorPage />} />
     </Routes>
-  )
+  );
 }

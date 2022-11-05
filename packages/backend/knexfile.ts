@@ -10,7 +10,7 @@ const knexConfig = {
     user: appConfig.postgresUsername,
     password: appConfig.postgresPassword,
     database: appConfig.postgresDatabase,
-    ssl: appConfig.postgresEnableSsl
+    ssl: appConfig.postgresEnableSsl,
   },
   pool: { min: 0, max: 20 },
   migrations: {
@@ -20,7 +20,7 @@ const knexConfig = {
   },
   seeds: {
     directory: __dirname + '/src/db/seeds',
-  }
-}
+  },
+};
 
 export default knexConfig;

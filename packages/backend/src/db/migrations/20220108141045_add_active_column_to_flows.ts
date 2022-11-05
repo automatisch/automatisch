@@ -1,8 +1,8 @@
-import { Knex } from "knex";
+import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.table('flows', (table) => {
-    table.boolean('active').defaultTo(false)
+    table.boolean('active').defaultTo(false);
   });
 }
 

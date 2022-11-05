@@ -13,10 +13,10 @@ const verifyCredentials = async ($: IGlobalVariable) => {
       grant_type: 'authorization_code',
       client_id: $.auth.data.consumerKey as string,
       client_secret: $.auth.data.consumerSecret as string,
-      redirect_uri: redirectUri
+      redirect_uri: redirectUri,
     });
     const { data } = await $.http.post(
-      `${$.auth.data.oauth2Url}/token?${searchParams}`,
+      `${$.auth.data.oauth2Url}/token?${searchParams}`
     );
 
     await $.auth.set({

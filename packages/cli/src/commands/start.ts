@@ -11,7 +11,7 @@ export default class Start extends Command {
       char: 'e',
     }),
     'env-file': Flags.string(),
-  }
+  };
 
   get isProduction() {
     return process.env.APP_ENV === 'production';
@@ -46,7 +46,7 @@ export default class Start extends Command {
 
     await utils.createDatabaseAndUser(
       process.env.POSTGRES_DATABASE,
-      process.env.POSTGRES_USERNAME,
+      process.env.POSTGRES_USERNAME
     );
   }
 

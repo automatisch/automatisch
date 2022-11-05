@@ -4,7 +4,7 @@ import type { IJSONObject } from '@automatisch/types';
 
 type JSONViewerProps = {
   data: IJSONObject;
-}
+};
 
 const theme = {
   scheme: 'inspector',

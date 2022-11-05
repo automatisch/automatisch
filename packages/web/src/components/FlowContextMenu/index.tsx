@@ -16,7 +16,9 @@ type ContextMenuProps = {
   anchorEl: PopoverProps['anchorEl'];
 };
 
-export default function ContextMenu(props: ContextMenuProps): React.ReactElement {
+export default function ContextMenu(
+  props: ContextMenuProps
+): React.ReactElement {
   const { flowId, onClose, anchorEl } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [deleteFlow] = useMutation(DELETE_FLOW);
@@ -34,10 +36,12 @@ export default function ContextMenu(props: ContextMenuProps): React.ReactElement
         cache.evict({
           id: flowCacheId,
         });
-      }
+      },
     });
 
-    enqueueSnackbar(formatMessage('flow.successfullyDeleted'), { variant: 'success' });
+    enqueueSnackbar(formatMessage('flow.successfullyDeleted'), {
+      variant: 'success',
+    });
   }, [flowId, deleteFlow]);
 
   return (
@@ -47,16 +51,11 @@ export default function ContextMenu(props: ContextMenuProps): React.ReactElement
       hideBackdrop={false}
       anchorEl={anchorEl}
     >
-      <MenuItem
-        component={Link}
-        to={URLS.FLOW(flowId)}
-      >
+      <MenuItem component={Link} to={URLS.FLOW(flowId)}>
         {formatMessage('flow.view')}
       </MenuItem>
 
-      <MenuItem onClick={onFlowDelete}>
-        {formatMessage('flow.delete')}
-      </MenuItem>
+      <MenuItem onClick={onFlowDelete}>{formatMessage('flow.delete')}</MenuItem>
     </Menu>
   );
-};
+}

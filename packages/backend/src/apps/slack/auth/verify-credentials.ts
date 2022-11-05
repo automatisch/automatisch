@@ -22,14 +22,9 @@ const verifyCredentials = async ($: IGlobalVariable) => {
 
   const {
     bot_user_id: botId,
-    authed_user: {
-      id: userId,
-      access_token: userAccessToken,
-    },
+    authed_user: { id: userId, access_token: userAccessToken },
     access_token: botAccessToken,
-    team: {
-      name: teamName,
-    }
+    team: { name: teamName },
   } = response.data;
 
   await $.auth.set({
@@ -44,7 +39,7 @@ const verifyCredentials = async ($: IGlobalVariable) => {
   const currentUser = await getCurrentUser($);
 
   await $.auth.set({
-    screenName: `${currentUser.real_name} @ ${teamName}`
+    screenName: `${currentUser.real_name} @ ${teamName}`,
   });
 };
 

@@ -27,10 +27,7 @@ describe('Flow editor page', () => {
         });
 
         it('choose an event', () => {
-          cy
-          .og('choose-event-autocomplete')
-          .should('be.visible')
-          .click();
+          cy.og('choose-event-autocomplete').should('be.visible').click();
 
           cy.get('li[role="option"]:contains("Every hour")').click();
         });
@@ -42,13 +39,12 @@ describe('Flow editor page', () => {
         it('collapses the substep', () => {
           cy.og('choose-app-autocomplete').should('not.be.visible');
           cy.og('choose-event-autocomplete').should('not.be.visible');
-        })
+        });
       });
 
       context('set up a trigger', () => {
         it('choose "yes" in "trigger on weekends?"', () => {
-          cy
-            .og('parameters.triggersOnWeekend-autocomplete')
+          cy.og('parameters.triggersOnWeekend-autocomplete')
             .should('be.visible')
             .click();
 
@@ -60,7 +56,9 @@ describe('Flow editor page', () => {
         });
 
         it('collapses the substep', () => {
-          cy.og('parameters.triggersOnWeekend-autocomplete').should('not.exist');
+          cy.og('parameters.triggersOnWeekend-autocomplete').should(
+            'not.exist'
+          );
         });
       });
 
@@ -88,12 +86,11 @@ describe('Flow editor page', () => {
         });
 
         it('choose an event', () => {
-          cy
-          .og('choose-event-autocomplete')
-          .should('be.visible')
-          .click();
+          cy.og('choose-event-autocomplete').should('be.visible').click();
 
-          cy.get('li[role="option"]:contains("Send a message to channel")').click();
+          cy.get(
+            'li[role="option"]:contains("Send a message to channel")'
+          ).click();
         });
 
         it('continue to next step', () => {
@@ -130,14 +127,16 @@ describe('Flow editor page', () => {
         });
 
         it('arrange message text', () => {
-          cy
-            .og('power-input', ' [contenteditable]')
+          cy.og('power-input', ' [contenteditable]')
             .click()
-            .type(`Hello from e2e tests! Here is the first suggested variable's value; `);
+            .type(
+              `Hello from e2e tests! Here is the first suggested variable's value; `
+            );
 
-          cy
-            .og('power-input-suggestion-group').first()
-            .og('power-input-suggestion-item').first()
+          cy.og('power-input-suggestion-group')
+            .first()
+            .og('power-input-suggestion-item')
+            .first()
             .click();
 
           cy.clickOutside();
@@ -150,9 +149,7 @@ describe('Flow editor page', () => {
         });
 
         it('collapses the substep', () => {
-          cy
-            .og('power-input', ' [contenteditable]')
-            .should('not.exist');
+          cy.og('power-input', ' [contenteditable]').should('not.exist');
         });
       });
 
@@ -176,10 +173,7 @@ describe('Flow editor page', () => {
     it('publish flow', () => {
       cy.og('unpublish-flow-button').should('not.exist');
 
-      cy
-        .og('publish-flow-button')
-        .should('be.visible')
-        .click();
+      cy.og('publish-flow-button').should('be.visible').click();
 
       cy.og('publish-flow-button').should('not.exist');
     });
@@ -191,27 +185,19 @@ describe('Flow editor page', () => {
     });
 
     it('unpublish from snackbar', () => {
-      cy
-        .og('unpublish-flow-from-snackbar')
-        .click();
+      cy.og('unpublish-flow-from-snackbar').click();
 
       cy.og('flow-cannot-edit-info-snackbar').should('not.exist');
-    })
+    });
 
     it('publish once again', () => {
-      cy
-        .og('publish-flow-button')
-        .should('be.visible')
-        .click();
+      cy.og('publish-flow-button').should('be.visible').click();
 
       cy.og('publish-flow-button').should('not.exist');
     });
 
     it('unpublish from layout top bar', () => {
-      cy
-        .og('unpublish-flow-button')
-        .should('be.visible')
-        .click();
+      cy.og('unpublish-flow-button').should('be.visible').click();
 
       cy.og('unpublish-flow-button').should('not.exist');
 

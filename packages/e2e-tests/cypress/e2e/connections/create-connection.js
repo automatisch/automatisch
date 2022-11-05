@@ -23,24 +23,17 @@ describe('Connections page', () => {
 
   context('can add connection', () => {
     it('has a button to open add connection dialog', () => {
-      cy
-        .og('add-connection-button')
-        .scrollIntoView()
-        .should('be.visible');
+      cy.og('add-connection-button').scrollIntoView().should('be.visible');
     });
 
     it('add connection button takes user to add connection page', () => {
-      cy
-        .og('add-connection-button')
-        .click({ force: true });
+      cy.og('add-connection-button').click({ force: true });
 
       cy.location('pathname').should('equal', '/app/slack/connections/add');
     });
 
     it('shows add connection dialog to create a new connection', () => {
-      cy
-        .get('input[name="accessToken"]')
-        .type(Cypress.env('slack_user_token'));
+      cy.get('input[name="accessToken"]').type(Cypress.env('slack_user_token'));
 
       cy.og('create-connection-button').click();
 

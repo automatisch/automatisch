@@ -11,7 +11,9 @@ import ListItemLink from 'components/ListItemLink';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { Drawer as BaseDrawer } from './style';
 
-const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+const iOS =
+  typeof navigator !== 'undefined' &&
+  /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 type DrawerLink = {
   Icon: React.ElementType;
@@ -29,14 +31,16 @@ type DrawerProps = {
 export default function Drawer(props: DrawerProps): React.ReactElement {
   const { links = [], bottomLinks = [], ...drawerProps } = props;
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
+    noSsr: true,
+  });
   const formatMessage = useFormatMessage();
 
   const closeOnClick = (event: React.SyntheticEvent) => {
     if (matchSmallScreens) {
       props.onClose(event);
     }
-  }
+  };
 
   return (
     <BaseDrawer
@@ -69,11 +73,11 @@ export default function Drawer(props: DrawerProps): React.ReactElement {
         {bottomLinks.map(({ Icon, badgeContent, primary, to }, index) => (
           <ListItemLink
             key={`${to}-${index}`}
-            icon={(
+            icon={
               <Badge badgeContent={badgeContent} color="secondary" max={99}>
                 <Icon htmlColor={theme.palette.primary.main} />
               </Badge>
-            )}
+            }
             primary={formatMessage(primary)}
             to={to}
             onClick={closeOnClick}

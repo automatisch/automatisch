@@ -18,7 +18,7 @@ import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import SearchInput from 'components/SearchInput';
-import useFormatMessage from 'hooks/useFormatMessage'
+import useFormatMessage from 'hooks/useFormatMessage';
 import { GET_FLOWS } from 'graphql/queries/get-flows';
 import * as URLS from 'config/urls';
 
@@ -36,37 +36,47 @@ export default function Flows(): React.ReactElement {
   const [flowName, setFlowName] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [getFlows, { data }] = useLazyQuery(GET_FLOWS, {
-    onCompleted: () => { setLoading(false); },
+    onCompleted: () => {
+      setLoading(false);
+    },
   });
 
   const fetchData = React.useMemo(
-    () => debounce((name) => getFlows(
-      {
-        variables: {
-          ...getLimitAndOffset(page),
-          name
-        }
-      }),
-      300
-    ),
+    () =>
+      debounce(
+        (name) =>
+          getFlows({
+            variables: {
+              ...getLimitAndOffset(page),
+              name,
+            },
+          }),
+        300
+      ),
     [page, getFlows]
   );
 
-  React.useEffect(function fetchFlowsOnSearch() {
-    setLoading(true);
+  React.useEffect(
+    function fetchFlowsOnSearch() {
+      setLoading(true);
 
-    fetchData(flowName);
-  }, [fetchData, flowName]);
+      fetchData(flowName);
+    },
+    [fetchData, flowName]
+  );
 
-  React.useEffect(function resetPageOnSearch() {
-    // reset search params which only consists of `page`
-    setSearchParams({})
-  }, [flowName]);
+  React.useEffect(
+    function resetPageOnSearch() {
+      // reset search params which only consists of `page`
+      setSearchParams({});
+    },
+    [flowName]
+  );
 
   React.useEffect(function cancelDebounceOnUnmount() {
     return () => {
       fetchData.cancel();
-    }
+    };
   }, []);
 
   const { pageInfo, edges } = data?.getFlows || {};
@@ -80,13 +90,12 @@ export default function Flows(): React.ReactElement {
 
   const CreateFlowLink = React.useMemo(
     () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InlineLink(
-        linkProps,
-        ref,
-      ) {
-        return <Link ref={ref} to={URLS.CREATE_FLOW} {...linkProps} />;
-      }),
-    [],
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
+        function InlineLink(linkProps, ref) {
+          return <Link ref={ref} to={URLS.CREATE_FLOW} {...linkProps} />;
+        }
+      ),
+    []
   );
 
   return (
@@ -101,7 +110,14 @@ export default function Flows(): React.ReactElement {
             <SearchInput onChange={onSearchChange} />
           </Grid>
 
-          <Grid container item xs="auto" sm="auto" alignItems="center" order={{ xs: 1, sm: 2 }}>
+          <Grid
+            container
+            item
+            xs="auto"
+            sm="auto"
+            alignItems="center"
+            order={{ xs: 1, sm: 2 }}
+          >
             <ConditionalIconButton
               type="submit"
               variant="contained"
@@ -119,29 +135,38 @@ export default function Flows(): React.ReactElement {
 
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
 
-        {loading && <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />}
+        {loading && (
+          <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
+        )}
 
-        {!loading && flows?.map((flow) => (<FlowRow key={flow.id} flow={flow} />))}
+        {!loading &&
+          flows?.map((flow) => <FlowRow key={flow.id} flow={flow} />)}
 
-        {!loading && !hasFlows && (<NoResultFound
-          text={formatMessage('flows.noFlows')}
-          to={URLS.CREATE_FLOW}
-        />)}
+        {!loading && !hasFlows && (
+          <NoResultFound
+            text={formatMessage('flows.noFlows')}
+            to={URLS.CREATE_FLOW}
+          />
+        )}
 
-        {!loading && pageInfo && pageInfo.totalPages > 1 && <Pagination
-          sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
-          page={pageInfo?.currentPage}
-          count={pageInfo?.totalPages}
-          onChange={(event, page) => setSearchParams({ page: page.toString() })}
-          renderItem={(item) => (
-            <PaginationItem
-              component={Link}
-              to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-              {...item}
-            />
-          )}
-        />}
+        {!loading && pageInfo && pageInfo.totalPages > 1 && (
+          <Pagination
+            sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+            page={pageInfo?.currentPage}
+            count={pageInfo?.totalPages}
+            onChange={(event, page) =>
+              setSearchParams({ page: page.toString() })
+            }
+            renderItem={(item) => (
+              <PaginationItem
+                component={Link}
+                to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
+                {...item}
+              />
+            )}
+          />
+        )}
       </Container>
     </Box>
   );
-};
+}

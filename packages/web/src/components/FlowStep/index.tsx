@@ -13,7 +13,13 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import type { BaseSchema } from 'yup';
-import type { IApp, ITrigger, IAction, IStep, ISubstep } from '@automatisch/types';
+import type {
+  IApp,
+  ITrigger,
+  IAction,
+  IStep,
+  ISubstep,
+} from '@automatisch/types';
 
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
@@ -49,53 +55,63 @@ const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
 
 function generateValidationSchema(substeps: ISubstep[]) {
-  const fieldValidations = substeps?.reduce((allValidations, { arguments: args }) => {
-    if (!args || !Array.isArray(args)) return allValidations;
+  const fieldValidations = substeps?.reduce(
+    (allValidations, { arguments: args }) => {
+      if (!args || !Array.isArray(args)) return allValidations;
 
-    const substepArgumentValidations: Record<string, BaseSchema> = {};
+      const substepArgumentValidations: Record<string, BaseSchema> = {};
 
-    for (const arg of args) {
-      const { key, required, dependsOn } = arg;
+      for (const arg of args) {
+        const { key, required, dependsOn } = arg;
 
-      // base validation for the field if not exists
-      if (!substepArgumentValidations[key]) {
-        substepArgumentValidations[key] = yup.mixed();
-      }
-
-      if (typeof substepArgumentValidations[key] === 'object') {
-        // if the field is required, add the required validation
-        if (required) {
-          substepArgumentValidations[key] = substepArgumentValidations[key].required(`${key} is required.`);
+        // base validation for the field if not exists
+        if (!substepArgumentValidations[key]) {
+          substepArgumentValidations[key] = yup.mixed();
         }
 
-        // if the field depends on another field, add the dependsOn required validation
-        if (Array.isArray(dependsOn) && dependsOn.length > 0) {
-          for (const dependsOnKey of dependsOn) {
-            const missingDependencyValueMessage = `We're having trouble loading '${key}' data as required field '${dependsOnKey}' is missing.`;
+        if (typeof substepArgumentValidations[key] === 'object') {
+          // if the field is required, add the required validation
+          if (required) {
+            substepArgumentValidations[key] = substepArgumentValidations[
+              key
+            ].required(`${key} is required.`);
+          }
 
-            // TODO: make `dependsOnKey` agnostic to the field. However, nested validation schema is not supported.
-            // So the fields under the `parameters` key are subject to their siblings only and thus, `parameters.` is removed.
-            substepArgumentValidations[key] = substepArgumentValidations[key].when(`${dependsOnKey.replace('parameters.', '')}`, {
-              is: (value: string) => Boolean(value) === false,
-              then: (schema) => schema.notOneOf([''], missingDependencyValueMessage).required(missingDependencyValueMessage),
-            });
+          // if the field depends on another field, add the dependsOn required validation
+          if (Array.isArray(dependsOn) && dependsOn.length > 0) {
+            for (const dependsOnKey of dependsOn) {
+              const missingDependencyValueMessage = `We're having trouble loading '${key}' data as required field '${dependsOnKey}' is missing.`;
+
+              // TODO: make `dependsOnKey` agnostic to the field. However, nested validation schema is not supported.
+              // So the fields under the `parameters` key are subject to their siblings only and thus, `parameters.` is removed.
+              substepArgumentValidations[key] = substepArgumentValidations[
+                key
+              ].when(`${dependsOnKey.replace('parameters.', '')}`, {
+                is: (value: string) => Boolean(value) === false,
+                then: (schema) =>
+                  schema
+                    .notOneOf([''], missingDependencyValueMessage)
+                    .required(missingDependencyValueMessage),
+              });
+            }
           }
         }
       }
-    }
 
-    return {
-      ...allValidations,
-      ...substepArgumentValidations,
-    }
-  }, {});
+      return {
+        ...allValidations,
+        ...substepArgumentValidations,
+      };
+    },
+    {}
+  );
 
   const validationSchema = yup.object({
     parameters: yup.object(fieldValidations),
   });
 
   return yupResolver(validationSchema);
-};
+}
 
 export default function FlowStep(
   props: FlowStepProps
@@ -140,10 +156,12 @@ export default function FlowStep(
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
-  const actionsOrTriggers: Array<ITrigger | IAction> = (isTrigger ? app?.triggers : app?.actions) || [];
+  const actionsOrTriggers: Array<ITrigger | IAction> =
+    (isTrigger ? app?.triggers : app?.actions) || [];
   const substeps = React.useMemo(
     () =>
-      actionsOrTriggers?.find(({ key }: ITrigger | IAction) => key === step.key)?.substeps || [],
+      actionsOrTriggers?.find(({ key }: ITrigger | IAction) => key === step.key)
+        ?.substeps || [],
     [actionsOrTriggers, step?.key]
   );
 
@@ -159,7 +177,10 @@ export default function FlowStep(
     handleChange({ step: val as IStep });
   };
 
-  const stepValidationSchema = React.useMemo(() => generateValidationSchema(substeps), [substeps]);
+  const stepValidationSchema = React.useMemo(
+    () => generateValidationSchema(substeps),
+    [substeps]
+  );
 
   if (!apps) return null;
 
@@ -183,7 +204,11 @@ export default function FlowStep(
     step.status === 'completed' ? validIcon : errorIcon;
 
   return (
-    <Wrapper elevation={collapsed ? 1 : 4} onClick={onOpen} data-test="flow-step">
+    <Wrapper
+      elevation={collapsed ? 1 : 4}
+      onClick={onOpen}
+      data-test="flow-step"
+    >
       <Header collapsed={collapsed}>
         <Stack direction="row" alignItems="center" gap={2}>
           <AppIconWrapper>
@@ -236,7 +261,11 @@ export default function FlowStep(
               >
                 <ChooseAppAndEventSubstep
                   expanded={currentSubstep === 0}
-                  substep={{ key: 'chooAppAndEvent', name: 'Choose app & event', arguments: [] }}
+                  substep={{
+                    key: 'chooAppAndEvent',
+                    name: 'Choose app & event',
+                    arguments: [],
+                  }}
                   onExpand={() => toggleSubstep(0)}
                   onCollapse={() => toggleSubstep(0)}
                   onSubmit={expandNextStep}
@@ -245,40 +274,38 @@ export default function FlowStep(
                 />
 
                 {substeps?.length > 0 &&
-                  substeps.map(
-                    (
-                      substep: ISubstep,
-                      index: number
-                    ) => (
-                      <React.Fragment key={`${substep?.name}-${index}`}>
-                        {substep.key === 'chooseConnection' && app && (
-                          <ChooseConnectionSubstep
-                            expanded={currentSubstep === index + 1}
-                            substep={substep}
-                            onExpand={() => toggleSubstep(index + 1)}
-                            onCollapse={() => toggleSubstep(index + 1)}
-                            onSubmit={expandNextStep}
-                            onChange={handleChange}
-                            application={app}
-                            step={step}
-                          />
-                        )}
+                  substeps.map((substep: ISubstep, index: number) => (
+                    <React.Fragment key={`${substep?.name}-${index}`}>
+                      {substep.key === 'chooseConnection' && app && (
+                        <ChooseConnectionSubstep
+                          expanded={currentSubstep === index + 1}
+                          substep={substep}
+                          onExpand={() => toggleSubstep(index + 1)}
+                          onCollapse={() => toggleSubstep(index + 1)}
+                          onSubmit={expandNextStep}
+                          onChange={handleChange}
+                          application={app}
+                          step={step}
+                        />
+                      )}
 
-                        {substep.key === 'testStep' && (
-                          <TestSubstep
-                            expanded={currentSubstep === index + 1}
-                            substep={substep}
-                            onExpand={() => toggleSubstep(index + 1)}
-                            onCollapse={() => toggleSubstep(index + 1)}
-                            onSubmit={expandNextStep}
-                            onChange={handleChange}
-                            onContinue={onContinue}
-                            step={step}
-                          />
-                        )}
+                      {substep.key === 'testStep' && (
+                        <TestSubstep
+                          expanded={currentSubstep === index + 1}
+                          substep={substep}
+                          onExpand={() => toggleSubstep(index + 1)}
+                          onCollapse={() => toggleSubstep(index + 1)}
+                          onSubmit={expandNextStep}
+                          onChange={handleChange}
+                          onContinue={onContinue}
+                          step={step}
+                        />
+                      )}
 
-                        {substep.key && ['chooseConnection', 'testStep'].includes(substep.key) ===
-                          false && (
+                      {substep.key &&
+                        ['chooseConnection', 'testStep'].includes(
+                          substep.key
+                        ) === false && (
                           <FlowSubstep
                             expanded={currentSubstep === index + 1}
                             substep={substep}
@@ -289,9 +316,8 @@ export default function FlowStep(
                             step={step}
                           />
                         )}
-                      </React.Fragment>
-                    )
-                  )}
+                    </React.Fragment>
+                  ))}
               </Form>
             </StepExecutionsProvider>
           </List>

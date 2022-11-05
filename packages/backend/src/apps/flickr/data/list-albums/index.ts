@@ -10,7 +10,7 @@ type TPhotoset = {
   title: {
     _content: string;
   };
-}
+};
 
 export default {
   name: 'List albums',
@@ -25,7 +25,7 @@ export default {
       format: 'json',
       nojsoncallback: 1,
     };
-    let response = await $.http.get('/rest', { params, });
+    let response = await $.http.get('/rest', { params });
 
     const aggregatedResponse: TResponse = {
       data: [...response.data.photosets.photoset],
@@ -35,19 +35,21 @@ export default {
       response = await $.http.get('/rest', {
         params: {
           ...params,
-          page: response.data.photosets.page
-        }
+          page: response.data.photosets.page,
+        },
       });
 
       aggregatedResponse.data.push(...response.data.photosets.photoset);
     }
 
-    aggregatedResponse.data = aggregatedResponse.data.map((photoset: TPhotoset) => {
-      return {
-        value: photoset.id,
-        name: photoset.title._content,
-      } as IJSONObject;
-    });
+    aggregatedResponse.data = aggregatedResponse.data.map(
+      (photoset: TPhotoset) => {
+        return {
+          value: photoset.id,
+          name: photoset.title._content,
+        } as IJSONObject;
+      }
+    );
 
     return aggregatedResponse;
   },

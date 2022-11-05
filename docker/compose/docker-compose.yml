@@ -1,11 +1,11 @@
-version: "3.9"
+version: '3.9'
 services:
   main:
     build:
       context: ../images/wait-for-postgres
       network: host
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - postgres
       - redis
@@ -36,12 +36,12 @@ services:
     volumes:
       - automatisch_storage:/automatisch/storage
   postgres:
-    image: "postgres:14.5"
+    image: 'postgres:14.5'
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_DB: automatisch
       POSTGRES_USER: automatisch_user
   redis:
-    image: "redis:7.0.4"
+    image: 'redis:7.0.4'
 volumes:
   automatisch_storage:

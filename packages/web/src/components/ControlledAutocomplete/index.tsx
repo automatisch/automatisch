@@ -4,7 +4,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete';
 import type { IFieldDropdownOption } from '@automatisch/types';
 
-interface ControlledAutocompleteProps extends AutocompleteProps<IFieldDropdownOption, boolean, boolean, boolean> {
+interface ControlledAutocompleteProps
+  extends AutocompleteProps<IFieldDropdownOption, boolean, boolean, boolean> {
   shouldUnregister?: boolean;
   name: string;
   required?: boolean;
@@ -12,9 +13,12 @@ interface ControlledAutocompleteProps extends AutocompleteProps<IFieldDropdownOp
   dependsOn?: string[];
 }
 
-const getOption = (options: readonly IFieldDropdownOption[], value: string) => options.find(option => option.value === value) || null;
+const getOption = (options: readonly IFieldDropdownOption[], value: string) =>
+  options.find((option) => option.value === value) || null;
 
-function ControlledAutocomplete(props: ControlledAutocompleteProps): React.ReactElement {
+function ControlledAutocomplete(
+  props: ControlledAutocompleteProps
+): React.ReactElement {
   const { control, watch, setValue, resetField } = useFormContext();
 
   const {
@@ -53,7 +57,15 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
       defaultValue={defaultValue || ''}
       control={control}
       shouldUnregister={shouldUnregister}
-      render={({ field: { ref, onChange: controllerOnChange, onBlur: controllerOnBlur, ...field }, fieldState }) => (
+      render={({
+        field: {
+          ref,
+          onChange: controllerOnChange,
+          onBlur: controllerOnBlur,
+          ...field
+        },
+        fieldState,
+      }) => (
         <div>
           {/* encapsulated with an element such as div to vertical spacing delegated from parent */}
           <Autocomplete
@@ -62,8 +74,15 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
             options={options}
             value={getOption(options, field.value)}
             onChange={(event, selectedOption, reason, details) => {
-              const typedSelectedOption = selectedOption as IFieldDropdownOption;
-              if (typedSelectedOption !== null && Object.prototype.hasOwnProperty.call(typedSelectedOption, 'value')) {
+              const typedSelectedOption =
+                selectedOption as IFieldDropdownOption;
+              if (
+                typedSelectedOption !== null &&
+                Object.prototype.hasOwnProperty.call(
+                  typedSelectedOption,
+                  'value'
+                )
+              ) {
                 controllerOnChange(typedSelectedOption.value);
               } else {
                 controllerOnChange(typedSelectedOption);
@@ -71,7 +90,10 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
 
               onChange?.(event, selectedOption, reason, details);
             }}
-            onBlur={(...args) => { controllerOnBlur(); onBlur?.(...args); }}
+            onBlur={(...args) => {
+              controllerOnBlur();
+              onBlur?.(...args);
+            }}
             ref={ref}
             data-test={`${name}-autocomplete`}
           />
@@ -80,7 +102,9 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps): React.React
             variant="outlined"
             error={Boolean(fieldState.isTouched && fieldState.error)}
           >
-            {fieldState.isTouched ? fieldState.error?.message || description : description}
+            {fieldState.isTouched
+              ? fieldState.error?.message || description
+              : description}
           </FormHelperText>
         </div>
       )}

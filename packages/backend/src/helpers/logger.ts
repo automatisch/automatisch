@@ -10,7 +10,7 @@ const levels = {
 };
 
 const level = () => {
-  return appConfig.appEnv === 'development' ? 'debug' : 'info'
+  return appConfig.appEnv === 'development' ? 'debug' : 'info';
 };
 
 const colors = {
@@ -27,8 +27,8 @@ const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
-    (info) => `${info.timestamp} [${info.level}]: ${info.message}`,
-  ),
+    (info) => `${info.timestamp} [${info.level}]: ${info.message}`
+  )
 );
 
 const transports = [

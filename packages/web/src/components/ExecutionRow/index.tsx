@@ -14,9 +14,11 @@ import { Apps, CardContent, ArrowContainer, Title, Typography } from './style';
 
 type ExecutionRowProps = {
   execution: IExecution;
-}
+};
 
-export default function ExecutionRow(props: ExecutionRowProps): React.ReactElement {
+export default function ExecutionRow(
+  props: ExecutionRowProps
+): React.ReactElement {
   const formatMessage = useFormatMessage();
   const { execution } = props;
   const { flow } = execution;
@@ -29,21 +31,19 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
       <Card sx={{ mb: 1 }}>
         <CardActionArea>
           <CardContent>
-            <Apps direction="row" gap={1} sx={{gridArea:"apps"}}>
+            <Apps direction="row" gap={1} sx={{ gridArea: 'apps' }}>
               <FlowAppIcons steps={flow.steps} />
             </Apps>
 
-            <Title
-              justifyContent="center"
-              alignItems="flex-start"
-              spacing={1}
-            >
+            <Title justifyContent="center" alignItems="flex-start" spacing={1}>
               <Typography variant="h6" noWrap>
                 {flow.name}
               </Typography>
 
               <Typography variant="caption" noWrap>
-                {formatMessage('execution.executedAt', { datetime: relativeCreatedAt })}
+                {formatMessage('execution.executedAt', {
+                  datetime: relativeCreatedAt,
+                })}
               </Typography>
             </Title>
 
@@ -57,7 +57,9 @@ export default function ExecutionRow(props: ExecutionRowProps): React.ReactEleme
                 />
               )}
 
-              <ArrowForwardIosIcon sx={{ color: (theme) => theme.palette.primary.main }} />
+              <ArrowForwardIosIcon
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              />
             </ArrowContainer>
           </CardContent>
         </CardActionArea>

@@ -4,37 +4,41 @@ import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
 import type { UseFormReturn } from 'react-hook-form';
 import isEqual from 'lodash/isEqual';
-import type { IField, IFieldDropdownSource, IJSONObject } from '@automatisch/types';
+import type {
+  IField,
+  IFieldDropdownSource,
+  IJSONObject,
+} from '@automatisch/types';
 
 import { GET_DATA } from 'graphql/queries/get-data';
 
 const variableRegExp = /({.*?})/g;
 
-function computeArguments(args: IFieldDropdownSource["arguments"], getValues: UseFormReturn["getValues"]): IJSONObject {
+function computeArguments(
+  args: IFieldDropdownSource['arguments'],
+  getValues: UseFormReturn['getValues']
+): IJSONObject {
   const initialValue = {};
-  return args.reduce(
-    (result, { name, value }) => {
-      const isVariable = variableRegExp.test(value);
+  return args.reduce((result, { name, value }) => {
+    const isVariable = variableRegExp.test(value);
 
-      if (isVariable) {
-        const sanitizedFieldPath = value.replace(/{|}/g, '');
-        const computedValue = getValues(sanitizedFieldPath);
+    if (isVariable) {
+      const sanitizedFieldPath = value.replace(/{|}/g, '');
+      const computedValue = getValues(sanitizedFieldPath);
 
-        if (computedValue === undefined) throw new Error(`The ${sanitizedFieldPath} field is required.`);
+      if (computedValue === undefined)
+        throw new Error(`The ${sanitizedFieldPath} field is required.`);
 
-        set(result, name, computedValue);
-
-        return result;
-      };
-
-      set(result, name, value);
+      set(result, name, computedValue);
 
       return result;
-    },
-    initialValue
-  );
-};
+    }
 
+    set(result, name, value);
+
+    return result;
+  }, initialValue);
+}
 
 /**
  * Fetch the dynamic data for the given step.
@@ -81,13 +85,18 @@ function useDynamicData(stepId: string | undefined, schema: IField) {
   }, [schema, formValues, getValues]);
 
   React.useEffect(() => {
-    if (schema.type === 'dropdown' && stepId && schema.source && computedVariables) {
+    if (
+      schema.type === 'dropdown' &&
+      stepId &&
+      schema.source &&
+      computedVariables
+    ) {
       getData({
         variables: {
           stepId,
           ...computedVariables,
-        }
-      })
+        },
+      });
     }
   }, [getData, stepId, schema, computedVariables]);
 

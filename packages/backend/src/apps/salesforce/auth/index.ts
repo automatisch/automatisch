@@ -34,8 +34,8 @@ export default {
         {
           label: 'sandbox',
           value: 'https://test.salesforce.com/services/oauth2',
-        }
-      ]
+        },
+      ],
     },
     {
       key: 'consumerKey',
@@ -76,7 +76,7 @@ export default {
           properties: [
             {
               name: 'oauth2Url',
-              value: '{fields.oauth2Url}'
+              value: '{fields.oauth2Url}',
             },
             {
               name: 'consumerKey',

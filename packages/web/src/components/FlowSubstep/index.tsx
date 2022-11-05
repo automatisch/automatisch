@@ -11,7 +11,7 @@ import InputCreator from 'components/InputCreator';
 import type { IField, IStep, ISubstep } from '@automatisch/types';
 
 type FlowSubstepProps = {
-  substep: ISubstep,
+  substep: ISubstep;
   expanded?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
@@ -25,8 +25,10 @@ const validateSubstep = (substep: ISubstep, step: IStep) => {
 
   const args: IField[] = substep.arguments || [];
 
-  return args.every(arg => {
-    if (arg.required === false) { return true; }
+  return args.every((arg) => {
+    if (arg.required === false) {
+      return true;
+    }
 
     const argValue = step.parameters?.[arg.key];
 
@@ -47,20 +49,19 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
     step,
   } = props;
 
-  const {
-    name,
-    arguments: args,
-  } = substep;
+  const { name, arguments: args } = substep;
 
   const editorContext = React.useContext(EditorContext);
   const formContext = useFormContext();
-  const [validationStatus, setValidationStatus] = React.useState<boolean | null>(validateSubstep(substep, formContext.getValues() as IStep));
+  const [validationStatus, setValidationStatus] = React.useState<
+    boolean | null
+  >(validateSubstep(substep, formContext.getValues() as IStep));
 
   React.useEffect(() => {
-    function validate (step: unknown) {
+    function validate(step: unknown) {
       const validationResult = validateSubstep(substep, step as IStep);
       setValidationStatus(validationResult);
-    };
+    }
     const subscription = formContext.watch(validate);
 
     return () => subscription.unsubscribe();
@@ -77,11 +78,15 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
         valid={validationStatus}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
-          <Stack
-            width='100%'
-            spacing={2}
-          >
+        <ListItem
+          sx={{
+            pt: 2,
+            pb: 3,
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
+        >
+          <Stack width="100%" spacing={2}>
             {args?.map((argument) => (
               <InputCreator
                 key={argument.key}
@@ -108,6 +113,6 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
       </Collapse>
     </React.Fragment>
   );
-};
+}
 
 export default FlowSubstep;

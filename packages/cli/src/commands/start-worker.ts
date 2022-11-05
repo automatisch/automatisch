@@ -11,7 +11,7 @@ export default class StartWorker extends Command {
       char: 'e',
     }),
     'env-file': Flags.string(),
-  }
+  };
 
   async prepareEnvVars(): Promise<void> {
     const { flags } = await this.parse(StartWorker);

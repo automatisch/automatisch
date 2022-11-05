@@ -7,7 +7,7 @@ interface IRef {
 const cache = new InMemoryCache({
   typePolicies: {
     App: {
-      keyFields: ['key']
+      keyFields: ['key'],
     },
     Mutation: {
       mutationType: true,
@@ -24,9 +24,11 @@ const cache = new InMemoryCache({
               id: appCacheId,
               fields: {
                 connections: (existingConnections) => {
-                  const existingConnectionIndex = existingConnections.findIndex((connection: IRef) => {
-                    return connection.__ref === verifiedConnection.__ref;
-                  });
+                  const existingConnectionIndex = existingConnections.findIndex(
+                    (connection: IRef) => {
+                      return connection.__ref === verifiedConnection.__ref;
+                    }
+                  );
                   const connectionExists = existingConnectionIndex !== -1;
 
                   // newly created and verified connection
@@ -35,16 +37,16 @@ const cache = new InMemoryCache({
                   }
 
                   return existingConnections;
-                }
-              }
+                },
+              },
             });
 
             return verifiedConnection;
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  },
 });
 
 export default cache;
