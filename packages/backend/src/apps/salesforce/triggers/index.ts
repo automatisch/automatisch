@@ -1,5 +1,3 @@
-import updatedFieldInRecords from "./updated-field-in-records";
+import updatedFieldInRecords from './updated-field-in-records';
 
-export default [
-  updatedFieldInRecords
-];
+export default [updatedFieldInRecords];

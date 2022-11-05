@@ -23,7 +23,7 @@ const updatedFieldInRecord = async ($: IGlobalVariable): Promise<void> => {
     const options = {
       params: {
         q: getQuery(object, limit, offset),
-      }
+      },
     };
 
     response = await $.http.get('/services/data/v56.0/query', options);
@@ -34,7 +34,7 @@ const updatedFieldInRecord = async ($: IGlobalVariable): Promise<void> => {
         raw: record,
         meta: {
           internalId: `${record.Id}-${record[field]}`,
-        }
+        },
       });
     }
 

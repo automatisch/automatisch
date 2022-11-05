@@ -27,15 +27,17 @@ export const Wrapper = styled(Card)`
 
 type HeaderProps = {
   collapsed?: boolean;
-}
+};
 
-export const Header = styled('div', { shouldForwardProp: prop => prop !== 'collapsed' })<HeaderProps>`
+export const Header = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'collapsed',
+})<HeaderProps>`
   padding: ${({ theme }) => theme.spacing(2)};
-  cursor: ${({ collapsed }) => collapsed ? 'pointer' : 'unset'};
+  cursor: ${({ collapsed }) => (collapsed ? 'pointer' : 'unset')};
 `;
 
 export const Content = styled('div')`
-  border: 1px solid ${({ theme }) => alpha(theme.palette.divider, .8)};
+  border: 1px solid ${({ theme }) => alpha(theme.palette.divider, 0.8)};
   border-left: none;
   border-right: none;
   padding: ${({ theme }) => theme.spacing(2, 0)};

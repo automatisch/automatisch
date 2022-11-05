@@ -14,17 +14,19 @@ const client = new ApolloClient({
   defaultOptions: {
     watchQuery: {
       fetchPolicy: 'cache-and-network',
-    }
-  }
+    },
+  },
 });
 
-export function mutateAndGetClient(options: CreateClientOptions): typeof client {
+export function mutateAndGetClient(
+  options: CreateClientOptions
+): typeof client {
   const { onError, token } = options;
   const link = createLink({ uri: appConfig.graphqlUrl, token, onError });
 
   client.setLink(link);
 
   return client;
-};
+}
 
 export default client;

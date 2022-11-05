@@ -15,14 +15,21 @@ import { UPDATE_USER } from 'graphql/mutations/update-user';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
 
-const emailValidationSchema = yup.object({
-  email: yup.string().email().required(),
-}).required();
+const emailValidationSchema = yup
+  .object({
+    email: yup.string().email().required(),
+  })
+  .required();
 
-const passwordValidationSchema = yup.object({
-  password: yup.string().required(),
-  confirmPassword: yup.string().required().oneOf([yup.ref('password')], 'Passwords must match'),
-}).required();
+const passwordValidationSchema = yup
+  .object({
+    password: yup.string().required(),
+    confirmPassword: yup
+      .string()
+      .required()
+      .oneOf([yup.ref('password')], 'Passwords must match'),
+  })
+  .required();
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -44,18 +51,20 @@ function ProfileSettings() {
       variables: {
         input: {
           email,
-        }
+        },
       },
       optimisticResponse: {
         updateUser: {
           __typename: 'User',
           email,
-        }
-      }
+        },
+      },
     });
 
-    enqueueSnackbar(formatMessage('profileSettings.updatedEmail'), { variant: 'success' });
-  }
+    enqueueSnackbar(formatMessage('profileSettings.updatedEmail'), {
+      variant: 'success',
+    });
+  };
 
   const handlePasswordUpdate = async (data: any) => {
     const password = data.password;
@@ -63,26 +72,26 @@ function ProfileSettings() {
     setPasswordDefaultValues({
       password,
       confirmPassword: data.confirmPassword,
-    })
+    });
 
     await updateUser({
       variables: {
         input: {
           password,
-        }
+        },
       },
     });
 
-    enqueueSnackbar(formatMessage('profileSettings.updatedPassword'), { variant: 'success' });
-  }
+    enqueueSnackbar(formatMessage('profileSettings.updatedPassword'), {
+      variant: 'success',
+    });
+  };
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={9} md={8} lg={6}>
-        <Grid item xs={12} sx={{ mb: [2, 5] }} >
-          <PageTitle>
-            {formatMessage('profileSettings.title')}
-          </PageTitle>
+        <Grid item xs={12} sx={{ mb: [2, 5] }}>
+          <PageTitle>{formatMessage('profileSettings.title')}</PageTitle>
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end">
@@ -92,9 +101,17 @@ function ProfileSettings() {
             resolver={yupResolver(emailValidationSchema)}
             mode="onChange"
             sx={{ mb: 2 }}
-            render={({ formState: { errors, touchedFields, isDirty, isValid, isSubmitting } }) => (
+            render={({
+              formState: {
+                errors,
+                touchedFields,
+                isDirty,
+                isValid,
+                isSubmitting,
+              },
+            }) => (
               <>
-               <TextField
+                <TextField
                   fullWidth
                   name="email"
                   label={formatMessage('profileSettings.email')}
@@ -119,7 +136,15 @@ function ProfileSettings() {
             onSubmit={handlePasswordUpdate}
             resolver={yupResolver(passwordValidationSchema)}
             mode="onChange"
-            render={({ formState: { errors, touchedFields, isDirty, isValid, isSubmitting } }) => (
+            render={({
+              formState: {
+                errors,
+                touchedFields,
+                isDirty,
+                isValid,
+                isSubmitting,
+              },
+            }) => (
               <>
                 <TextField
                   fullWidth
@@ -137,7 +162,9 @@ function ProfileSettings() {
                   label={formatMessage('profileSettings.confirmNewPassword')}
                   margin="normal"
                   type="password"
-                  error={touchedFields.confirmPassword && !!errors?.confirmPassword}
+                  error={
+                    touchedFields.confirmPassword && !!errors?.confirmPassword
+                  }
                   helperText={errors?.confirmPassword?.message || ' '}
                 />
 

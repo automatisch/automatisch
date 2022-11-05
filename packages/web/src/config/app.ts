@@ -1,5 +1,5 @@
 type Config = {
-  [key: string]: string,
+  [key: string]: string;
 };
 
 const config: Config = {

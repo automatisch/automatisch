@@ -10,43 +10,53 @@ type ExecutionHeaderProps = {
   execution: IExecution;
 };
 
-function ExecutionName(props: Pick<IExecution["flow"], "name">) {
+function ExecutionName(props: Pick<IExecution['flow'], 'name'>) {
   return (
-    <Typography variant="h3" gutterBottom>{props.name}</Typography>
+    <Typography variant="h3" gutterBottom>
+      {props.name}
+    </Typography>
   );
 }
 
-function ExecutionId(props: Pick<IExecution, "id">) {
+function ExecutionId(props: Pick<IExecution, 'id'>) {
   return (
     <Box sx={{ display: 'flex' }}>
       <Typography variant="body2">
-        Execution ID: <Typography variant="body1" component="span">{props.id}</Typography>
+        Execution ID:{' '}
+        <Typography variant="body1" component="span">
+          {props.id}
+        </Typography>
       </Typography>
     </Box>
   );
 }
 
-function ExecutionDate(props: Pick<IExecution, "createdAt">) {
-  const createdAt = DateTime.fromMillis(
-    parseInt(props.createdAt, 10)
-  );
+function ExecutionDate(props: Pick<IExecution, 'createdAt'>) {
+  const createdAt = DateTime.fromMillis(parseInt(props.createdAt, 10));
   const relativeCreatedAt = createdAt.toRelative();
 
   return (
     <Tooltip title={createdAt.toLocaleString(DateTime.DATE_MED)}>
-      <Typography variant="body1" gutterBottom>{relativeCreatedAt}</Typography>
+      <Typography variant="body1" gutterBottom>
+        {relativeCreatedAt}
+      </Typography>
     </Tooltip>
   );
 }
 
-export default function ExecutionHeader(props: ExecutionHeaderProps): React.ReactElement {
+export default function ExecutionHeader(
+  props: ExecutionHeaderProps
+): React.ReactElement {
   const { execution } = props;
 
   if (!execution) return <React.Fragment />;
 
   return (
     <Stack direction="column">
-      <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        justifyContent="space-between"
+      >
         <ExecutionDate createdAt={execution.createdAt} />
         <ExecutionId id={execution.id} />
       </Stack>

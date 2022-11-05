@@ -33,8 +33,8 @@ export default function CreateFlow(): React.ReactElement {
 
       const response = await createFlow({
         variables: {
-          input: variables
-        }
+          input: variables,
+        },
       });
       const flowId = response.data?.createFlow?.id;
 
@@ -45,12 +45,21 @@ export default function CreateFlow(): React.ReactElement {
   }, [createFlow, navigate, appKey, connectionId]);
 
   return (
-    <Box sx={{ display: 'flex', flex: 1, height: '100vh', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flex: 1,
+        height: '100vh',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 2,
+      }}
+    >
       <CircularProgress size={16} thickness={7.5} />
 
       <Typography variant="body2">
         {formatMessage('createFlow.creating')}
       </Typography>
     </Box>
-  )
+  );
 }

@@ -14,9 +14,12 @@ import InputCreator from 'components/InputCreator';
 import type { IApp, IField } from '@automatisch/types';
 import { Form } from './style';
 
-const generateDocsLink = (link: string) => (str: string) => (
-  <a href={link} target="_blank">{str}</a>
-);
+const generateDocsLink = (link: string) => (str: string) =>
+  (
+    <a href={link} target="_blank">
+      {str}
+    </a>
+  );
 
 type AddAppConnectionProps = {
   onClose: (response: Record<string, unknown>) => void;
@@ -26,79 +29,90 @@ type AddAppConnectionProps = {
 
 type Response = {
   [key: string]: any;
-}
+};
 
-export default function AddAppConnection(props: AddAppConnectionProps): React.ReactElement {
+export default function AddAppConnection(
+  props: AddAppConnectionProps
+): React.ReactElement {
   const { application, connectionId, onClose } = props;
   const { name, authDocUrl, key, auth } = application;
   const formatMessage = useFormatMessage();
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [inProgress, setInProgress] = React.useState(false);
   const hasConnection = Boolean(connectionId);
-  const steps = hasConnection ? auth?.reconnectionSteps : auth?.authenticationSteps;
+  const steps = hasConnection
+    ? auth?.reconnectionSteps
+    : auth?.authenticationSteps;
 
   React.useEffect(() => {
     if (window.opener) {
-      window.opener.postMessage({ source: 'automatisch', payload: window.location.search });
+      window.opener.postMessage({
+        source: 'automatisch',
+        payload: window.location.search,
+      });
       window.close();
     }
   }, []);
 
-  const submitHandler: SubmitHandler<FieldValues> = React.useCallback(async (data) => {
-    if (!steps) return;
+  const submitHandler: SubmitHandler<FieldValues> = React.useCallback(
+    async (data) => {
+      if (!steps) return;
 
-    setInProgress(true);
-    setErrorMessage(null);
+      setInProgress(true);
+      setErrorMessage(null);
 
-    const response: Response = {
-      key,
-      connection: {
-        id: connectionId
-      },
-      fields: data,
-    };
+      const response: Response = {
+        key,
+        connection: {
+          id: connectionId,
+        },
+        fields: data,
+      };
 
-    let stepIndex = 0;
-    while (stepIndex < steps.length) {
-      const step = steps[stepIndex];
-      const variables = computeAuthStepVariables(step.arguments, response);
+      let stepIndex = 0;
+      while (stepIndex < steps.length) {
+        const step = steps[stepIndex];
+        const variables = computeAuthStepVariables(step.arguments, response);
 
-      try {
-        const stepResponse = await processStep(step, variables);
+        try {
+          const stepResponse = await processStep(step, variables);
 
-        response[step.name] = stepResponse;
-      } catch (err) {
-        const error = err as Error;
-        console.log(error);
-        setErrorMessage(error.message);
-        setInProgress(false);
+          response[step.name] = stepResponse;
+        } catch (err) {
+          const error = err as Error;
+          console.log(error);
+          setErrorMessage(error.message);
+          setInProgress(false);
 
-        break;
+          break;
+        }
+
+        stepIndex++;
+
+        if (stepIndex === steps.length) {
+          onClose(response);
+        }
       }
 
-      stepIndex++;
-
-      if (stepIndex === steps.length) {
-        onClose(response);
-      }
-    }
-
-    setInProgress(false);
-  }, [connectionId, key, steps, onClose]);
+      setInProgress(false);
+    },
+    [connectionId, key, steps, onClose]
+  );
 
   return (
     <Dialog open={true} onClose={onClose} data-test="add-app-connection-dialog">
-      <DialogTitle>{hasConnection ? formatMessage('app.reconnectConnection') : formatMessage('app.addConnection')}</DialogTitle>
+      <DialogTitle>
+        {hasConnection
+          ? formatMessage('app.reconnectConnection')
+          : formatMessage('app.addConnection')}
+      </DialogTitle>
 
       {authDocUrl && (
-          <Alert severity="info" sx={{ fontWeight: 300 }}>
-          {formatMessage(
-            'addAppConnection.callToDocs',
-            {
-              appName: name,
-              docsLink: generateDocsLink(authDocUrl)
-            }
-          )}
+        <Alert severity="info" sx={{ fontWeight: 300 }}>
+          {formatMessage('addAppConnection.callToDocs', {
+            appName: name,
+            docsLink: generateDocsLink(authDocUrl),
+          })}
         </Alert>
       )}
 
@@ -111,7 +125,9 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
       <DialogContent>
         <DialogContentText tabIndex={-1} component="div">
           <Form onSubmit={submitHandler}>
-            {auth?.fields?.map((field: IField) => (<InputCreator key={field.key} schema={field} />))}
+            {auth?.fields?.map((field: IField) => (
+              <InputCreator key={field.key} schema={field} />
+            ))}
 
             <LoadingButton
               type="submit"
@@ -128,4 +144,4 @@ export default function AddAppConnection(props: AddAppConnectionProps): React.Re
       </DialogContent>
     </Dialog>
   );
-};
+}

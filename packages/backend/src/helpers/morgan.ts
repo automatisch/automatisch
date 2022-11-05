@@ -3,13 +3,14 @@ import { Request } from 'express';
 import logger from './logger';
 
 const stream: StreamOptions = {
-  write: (message) => logger.http(message.substring(0, message.lastIndexOf("\n")))
+  write: (message) =>
+    logger.http(message.substring(0, message.lastIndexOf('\n'))),
 };
 
 const registerGraphQLToken = () => {
-  morgan.token("graphql-query", (req: Request) => {
-    if(req.body.query) {
-      return `GraphQL ${req.body.query}`
+  morgan.token('graphql-query', (req: Request) => {
+    if (req.body.query) {
+      return `GraphQL ${req.body.query}`;
     }
   });
 };
@@ -17,7 +18,7 @@ const registerGraphQLToken = () => {
 registerGraphQLToken();
 
 const morganMiddleware = morgan(
-  ":method :url :status :res[content-length] - :response-time ms\n:graphql-query",
+  ':method :url :status :res[content-length] - :response-time ms\n:graphql-query',
   { stream }
 );
 

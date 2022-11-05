@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { SnackbarProvider as BaseSnackbarProvider, SnackbarProviderProps } from 'notistack';
+import {
+  SnackbarProvider as BaseSnackbarProvider,
+  SnackbarProviderProps,
+} from 'notistack';
 
 const SnackbarProvider = (props: SnackbarProviderProps): React.ReactElement => {
   return (
@@ -11,7 +14,7 @@ const SnackbarProvider = (props: SnackbarProviderProps): React.ReactElement => {
       }}
       dense
     />
-  )
+  );
 };
 
 export default SnackbarProvider;

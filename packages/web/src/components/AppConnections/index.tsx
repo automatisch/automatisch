@@ -10,12 +10,16 @@ import * as URLS from 'config/urls';
 
 type AppConnectionsProps = {
   appKey: string;
-}
+};
 
-export default function AppConnections(props: AppConnectionsProps): React.ReactElement {
+export default function AppConnections(
+  props: AppConnectionsProps
+): React.ReactElement {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
-  const { data } = useQuery(GET_APP_CONNECTIONS, { variables: { key: appKey } });
+  const { data } = useQuery(GET_APP_CONNECTIONS, {
+    variables: { key: appKey },
+  });
   const appConnections: IConnection[] = data?.getApp?.connections || [];
 
   const hasConnections = appConnections?.length;
@@ -35,5 +39,5 @@ export default function AppConnections(props: AppConnectionsProps): React.ReactE
         <AppConnectionRow key={appConnection.id} connection={appConnection} />
       ))}
     </>
-  )
-};
+  );
+}

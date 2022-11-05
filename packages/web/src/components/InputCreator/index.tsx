@@ -21,17 +21,13 @@ type RawOption = {
   value: string;
 };
 
-const optionGenerator = (options: RawOption[]): IFieldDropdownOption[] => options?.map(({ name, value }) => ({ label: name as string, value: value }));
+const optionGenerator = (options: RawOption[]): IFieldDropdownOption[] =>
+  options?.map(({ name, value }) => ({ label: name as string, value: value }));
 
-export default function InputCreator(props: InputCreatorProps): React.ReactElement {
-  const {
-    onChange,
-    onBlur,
-    schema,
-    namePrefix,
-    stepId,
-    disabled,
-  } = props;
+export default function InputCreator(
+  props: InputCreatorProps
+): React.ReactElement {
+  const { onChange, onBlur, schema, namePrefix, stepId, disabled } = props;
 
   const {
     key: name,
@@ -101,5 +97,5 @@ export default function InputCreator(props: InputCreatorProps): React.ReactEleme
     );
   }
 
-  return (<React.Fragment />)
-};
+  return <React.Fragment />;
+}

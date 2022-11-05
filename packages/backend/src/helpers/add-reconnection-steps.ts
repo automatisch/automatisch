@@ -1,4 +1,8 @@
-import { IApp, IAuthenticationStep, IAuthenticationStepField } from '@automatisch/types';
+import {
+  IApp,
+  IAuthenticationStep,
+  IAuthenticationStepField,
+} from '@automatisch/types';
 import cloneDeep from 'lodash/cloneDeep';
 
 const connectionIdArgument = {
@@ -9,16 +13,11 @@ const connectionIdArgument = {
 const resetConnectionStep = {
   type: 'mutation' as const,
   name: 'resetConnection',
-  arguments: [
-    connectionIdArgument,
-  ],
+  arguments: [connectionIdArgument],
 };
 
 function replaceCreateConnection(string: string) {
-  return string.replace(
-    '{createConnection.id}',
-    '{connection.id}'
-  );
+  return string.replace('{createConnection.id}', '{connection.id}');
 }
 
 function removeAppKeyArgument(args: IAuthenticationStepField[]) {
@@ -36,7 +35,7 @@ function addConnectionId(step: IAuthenticationStep) {
         return {
           name: property.name,
           value: replaceCreateConnection(property.value),
-        }
+        };
       });
     }
 
@@ -60,7 +59,7 @@ function replaceCreateConnectionsWithUpdate(steps: IAuthenticationStep[]) {
     }
 
     return step;
-  })
+  });
 }
 
 function addReconnectionSteps(app: IApp): IApp {
@@ -68,12 +67,11 @@ function addReconnectionSteps(app: IApp): IApp {
 
   if (hasReconnectionSteps) return app;
 
-  const updatedSteps = replaceCreateConnectionsWithUpdate(app.auth.authenticationSteps);
+  const updatedSteps = replaceCreateConnectionsWithUpdate(
+    app.auth.authenticationSteps
+  );
 
-  app.auth.reconnectionSteps = [
-    resetConnectionStep,
-    ...updatedSteps,
-  ]
+  app.auth.reconnectionSteps = [resetConnectionStep, ...updatedSteps];
 
   return app;
 }

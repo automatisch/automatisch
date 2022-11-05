@@ -15,16 +15,14 @@ ReactDOM.render(
       <ApolloProvider>
         <IntlProvider>
           <ThemeProvider>
-            <Router>
-              {routes}
-            </Router>
+            <Router>{routes}</Router>
           </ThemeProvider>
         </IntlProvider>
       </ApolloProvider>
     </AuthenticationProvider>
   </SnackbarProvider>,
   document.getElementById('root')
-)
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

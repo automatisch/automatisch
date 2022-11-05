@@ -13,7 +13,9 @@ export default {
       error: null,
     };
 
-    const response = await $.http.get(`/guilds/${$.auth.data.guildId}/channels`);
+    const response = await $.http.get(
+      `/guilds/${$.auth.data.guildId}/channels`
+    );
 
     channels.data = response.data
       .filter((channel: IJSONObject) => {

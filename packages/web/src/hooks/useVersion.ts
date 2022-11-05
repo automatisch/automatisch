@@ -1,14 +1,13 @@
 import { useQuery } from '@apollo/client';
 import { compare } from 'compare-versions';
 
-
 import { HEALTHCHECK } from 'graphql/queries/healthcheck';
 import useNotifications from 'hooks/useNotifications';
 
 type TVersionInfo = {
   version: string;
   newVersionCount: number;
-}
+};
 
 export default function useVersion(): TVersionInfo {
   const notifications = useNotifications();

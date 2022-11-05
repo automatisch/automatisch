@@ -5,10 +5,12 @@ import { inputClasses } from '@mui/material/Input';
 
 type BoxProps = {
   editing?: boolean;
-}
+};
 
 const boxShouldForwardProp = (prop: string) => !['editing'].includes(prop);
-export const Box = styled(MuiBox, { shouldForwardProp: boxShouldForwardProp })<BoxProps>`
+export const Box = styled(MuiBox, {
+  shouldForwardProp: boxShouldForwardProp,
+})<BoxProps>`
   display: flex;
   flex: 1;
   width: 300px;
@@ -19,7 +21,8 @@ export const Box = styled(MuiBox, { shouldForwardProp: boxShouldForwardProp })<B
 
 export const TextField = styled(MuiTextField)({
   width: '100%',
-  [`.${inputClasses.root}:before, .${inputClasses.root}:after, .${inputClasses.root}:hover`]: {
-    borderBottom: '0 !important',
-  }
+  [`.${inputClasses.root}:before, .${inputClasses.root}:after, .${inputClasses.root}:hover`]:
+    {
+      borderBottom: '0 !important',
+    },
 });

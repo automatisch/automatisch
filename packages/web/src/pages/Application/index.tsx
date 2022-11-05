@@ -1,6 +1,15 @@
 import * as React from 'react';
 import { useQuery } from '@apollo/client';
-import { Link, Route, Navigate, Routes, useParams, useSearchParams, useMatch, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  Route,
+  Navigate,
+  Routes,
+  useParams,
+  useSearchParams,
+  useMatch,
+  useNavigate,
+} from 'react-router-dom';
 import type { LinkProps } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -38,13 +47,18 @@ const ReconnectConnection = (props: any): React.ReactElement => {
       connectionId={connectionId}
     />
   );
-}
+};
 
 export default function Application(): React.ReactElement | null {
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
+    noSsr: true,
+  });
   const formatMessage = useFormatMessage();
-  const connectionsPathMatch = useMatch({ path: URLS.APP_CONNECTIONS_PATTERN, end: false });
+  const connectionsPathMatch = useMatch({
+    path: URLS.APP_CONNECTIONS_PATTERN,
+    end: false,
+  });
   const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
   const [searchParams] = useSearchParams();
   const { appKey } = useParams() as ApplicationParams;
@@ -57,24 +71,37 @@ export default function Application(): React.ReactElement | null {
 
   const NewConnectionLink = React.useMemo(
     () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InlineLink(
-        linkProps,
-        ref,
-      ) {
-        return <Link ref={ref} to={URLS.APP_ADD_CONNECTION(appKey)} {...linkProps} />;
-      }),
-    [appKey],
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
+        function InlineLink(linkProps, ref) {
+          return (
+            <Link
+              ref={ref}
+              to={URLS.APP_ADD_CONNECTION(appKey)}
+              {...linkProps}
+            />
+          );
+        }
+      ),
+    [appKey]
   );
 
   const NewFlowLink = React.useMemo(
     () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InlineLink(
-        linkProps,
-        ref,
-      ) {
-        return <Link ref={ref} to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(appKey, connectionId)} {...linkProps} />;
-      }),
-    [appKey, connectionId],
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
+        function InlineLink(linkProps, ref) {
+          return (
+            <Link
+              ref={ref}
+              to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
+                appKey,
+                connectionId
+              )}
+              {...linkProps}
+            />
+          );
+        }
+      ),
+    [appKey, connectionId]
   );
 
   if (loading) return null;
@@ -141,7 +168,10 @@ export default function Application(): React.ReactElement | null {
               <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
                 <Tabs
                   variant={matchSmallScreens ? 'fullWidth' : undefined}
-                  value={connectionsPathMatch?.pattern?.path || flowsPathMatch?.pattern?.path}
+                  value={
+                    connectionsPathMatch?.pattern?.path ||
+                    flowsPathMatch?.pattern?.path
+                  }
                 >
                   <Tab
                     label={formatMessage('app.connections')}
@@ -161,15 +191,28 @@ export default function Application(): React.ReactElement | null {
               </Box>
 
               <Routes>
-                <Route path={`${URLS.FLOWS}/*`} element={<AppFlows appKey={appKey} />} />
+                <Route
+                  path={`${URLS.FLOWS}/*`}
+                  element={<AppFlows appKey={appKey} />}
+                />
 
-                <Route path={`${URLS.CONNECTIONS}/*`} element={<AppConnections appKey={appKey} />} />
+                <Route
+                  path={`${URLS.CONNECTIONS}/*`}
+                  element={<AppConnections appKey={appKey} />}
+                />
 
                 <Route
                   path="/"
-                  element={(
-                    <Navigate to={app.supportsConnections ? URLS.APP_CONNECTIONS(appKey) : URLS.APP_FLOWS(appKey)} replace />
-                  )}
+                  element={
+                    <Navigate
+                      to={
+                        app.supportsConnections
+                          ? URLS.APP_CONNECTIONS(appKey)
+                          : URLS.APP_FLOWS(appKey)
+                      }
+                      replace
+                    />
+                  }
                 />
               </Routes>
             </Grid>
@@ -181,18 +224,20 @@ export default function Application(): React.ReactElement | null {
         <Route
           path="/connections/add"
           element={
-            <AddAppConnection
-              onClose={goToApplicationPage}
-              application={app}
-            />
+            <AddAppConnection onClose={goToApplicationPage} application={app} />
           }
         />
 
         <Route
           path="/connections/:connectionId/reconnect"
-          element={<ReconnectConnection application={app} onClose={goToApplicationPage} />}
+          element={
+            <ReconnectConnection
+              application={app}
+              onClose={goToApplicationPage}
+            />
+          }
         />
       </Routes>
     </>
   );
-};
+}

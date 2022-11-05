@@ -14,32 +14,43 @@ import JSONViewer from 'components/JSONViewer';
 import AppIcon from 'components/AppIcon';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { AppIconWrapper, AppIconStatusIconWrapper, Content, Header, Wrapper } from './style';
+import {
+  AppIconWrapper,
+  AppIconStatusIconWrapper,
+  Content,
+  Header,
+  Wrapper,
+} from './style';
 
 type ExecutionStepProps = {
   collapsed?: boolean;
   step: IStep;
   index?: number;
   executionStep: IExecutionStep;
-}
+};
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
 
-export default function ExecutionStep(props: ExecutionStepProps): React.ReactElement | null {
-  const { executionStep, } = props;
+export default function ExecutionStep(
+  props: ExecutionStepProps
+): React.ReactElement | null {
+  const { executionStep } = props;
   const [activeTabIndex, setActiveTabIndex] = React.useState(0);
   const step: IStep = executionStep.step;
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
-  const { data } = useQuery(GET_APPS, { variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction }});
+  const { data } = useQuery(GET_APPS, {
+    variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction },
+  });
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
-  if  (!apps) return null;
+  if (!apps) return null;
 
-  const validationStatusIcon = executionStep.status === 'success' ? validIcon : errorIcon;
+  const validationStatusIcon =
+    executionStep.status === 'success' ? validIcon : errorIcon;
 
   return (
     <Wrapper elevation={1} data-test="execution-step">
@@ -55,11 +66,9 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
 
           <div>
             <Typography variant="caption">
-              {
-                isTrigger ?
-                  formatMessage('flowStep.triggerType') :
-                  formatMessage('flowStep.actionType')
-              }
+              {isTrigger
+                ? formatMessage('flowStep.triggerType')
+                : formatMessage('flowStep.actionType')}
             </Typography>
 
             <Typography variant="body2">
@@ -71,7 +80,10 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
 
       <Content sx={{ px: 2 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={activeTabIndex} onChange={(event, tabIndex) => setActiveTabIndex(tabIndex)}>
+          <Tabs
+            value={activeTabIndex}
+            onChange={(event, tabIndex) => setActiveTabIndex(tabIndex)}
+          >
             <Tab label="Data in" data-test="data-in-tab" />
             <Tab label="Data out" data-test="data-out-tab" />
             <Tab label="Error" data-test="error-tab" />
@@ -90,7 +102,6 @@ export default function ExecutionStep(props: ExecutionStepProps): React.ReactEle
           <JSONViewer data={executionStep.errorDetails} />
         </TabPanel>
       </Content>
-
     </Wrapper>
-  )
-};
+  );
+}

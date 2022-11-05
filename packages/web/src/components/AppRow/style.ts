@@ -10,7 +10,6 @@ export const CardContent = styled(MuiCardContent)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-
 export const Typography = styled(MuiTypography)(() => ({
   '&.MuiTypography-h6': {
     textTransform: 'capitalize',
@@ -22,5 +21,5 @@ export const Typography = styled(MuiTypography)(() => ({
 export const DesktopOnlyBreakline = styled('br')(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     display: 'none',
-  }
+  },
 }));

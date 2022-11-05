@@ -10,22 +10,23 @@ import { CardContent } from './style';
 type NoResultFoundProps = {
   text?: string;
   to?: string;
-}
+};
 
-export default function NoResultFound(props: NoResultFoundProps): React.ReactElement {
+export default function NoResultFound(
+  props: NoResultFoundProps
+): React.ReactElement {
   const { text, to } = props;
 
   const ActionAreaLink = React.useMemo(
     () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function InlineLink(
-        linkProps,
-        ref,
-      ) {
-        if (!to) return <div>{linkProps.children}</div>;
+      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
+        function InlineLink(linkProps, ref) {
+          if (!to) return <div>{linkProps.children}</div>;
 
-        return <Link ref={ref} to={to} {...linkProps} />;
-      }),
-    [to],
+          return <Link ref={ref} to={to} {...linkProps} />;
+        }
+      ),
+    [to]
   );
 
   return (
@@ -34,11 +35,9 @@ export default function NoResultFound(props: NoResultFoundProps): React.ReactEle
         <CardContent>
           {!!to && <AddCircleIcon color="primary" />}
 
-          <Typography variant="body1">
-            {text}
-          </Typography>
+          <Typography variant="body1">{text}</Typography>
         </CardContent>
       </CardActionArea>
     </Card>
-  )
-};
+  );
+}

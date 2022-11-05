@@ -7,7 +7,10 @@ enum AuthenticationSteps {
   OpenWithPopup = 'openWithPopup',
 }
 
-const processMutation = async (step: IAuthenticationStep, variables: IJSONObject) => {
+const processMutation = async (
+  step: IAuthenticationStep,
+  variables: IJSONObject
+) => {
   const mutation = MUTATIONS[step.name];
   const mutationResponse = await apolloClient.mutate({
     mutation,
@@ -37,12 +40,20 @@ function getObjectOfEntries(iterator: any) {
   return result;
 }
 
-const processOpenWithPopup = (step: IAuthenticationStep, variables: IJSONObject) => {
+const processOpenWithPopup = (
+  step: IAuthenticationStep,
+  variables: IJSONObject
+) => {
   return new Promise((resolve, reject) => {
-    const windowFeatures = 'toolbar=no, titlebar=no, menubar=no, width=500, height=700, top=100, left=100';
+    const windowFeatures =
+      'toolbar=no, titlebar=no, menubar=no, width=500, height=700, top=100, left=100';
     const url = variables.url;
 
-    const popup = window.open(url as string, '_blank', windowFeatures) as WindowProxy;
+    const popup = window.open(
+      url as string,
+      '_blank',
+      windowFeatures
+    ) as WindowProxy;
     popup?.focus();
 
     const closeCheckIntervalId = setInterval(() => {
@@ -50,7 +61,7 @@ const processOpenWithPopup = (step: IAuthenticationStep, variables: IJSONObject)
         clearInterval(closeCheckIntervalId);
         reject({ message: 'Error occured while verifying credentials!' });
       }
-    }, 1000)
+    }, 1000);
 
     const messageHandler = async (event: MessageEvent) => {
       if (event.data.source !== 'automatisch') {
@@ -68,7 +79,10 @@ const processOpenWithPopup = (step: IAuthenticationStep, variables: IJSONObject)
   });
 };
 
-export const processStep = async (step: IAuthenticationStep, variables: IJSONObject): Promise<any> => {
+export const processStep = async (
+  step: IAuthenticationStep,
+  variables: IJSONObject
+): Promise<any> => {
   if (step.type === AuthenticationSteps.Mutation) {
     return processMutation(step, variables);
   } else if (step.type === AuthenticationSteps.OpenWithPopup) {

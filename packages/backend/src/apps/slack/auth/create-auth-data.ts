@@ -59,4 +59,4 @@ export default async function createAuthData($: IGlobalVariable) {
   await $.auth.set({
     url,
   });
-};
+}

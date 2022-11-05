@@ -13,15 +13,10 @@ const inlineImgStyle: React.CSSProperties = {
   objectFit: 'contain',
 };
 
-export default function AppIcon(props: AppIconProps & AvatarProps): React.ReactElement {
-  const {
-    name,
-    url,
-    color,
-    sx = {},
-    variant = "square",
-    ...restProps
-  } = props;
+export default function AppIcon(
+  props: AppIconProps & AvatarProps
+): React.ReactElement {
+  const { name, url, color, sx = {}, variant = 'square', ...restProps } = props;
 
   const initialLetter = name?.[0];
 
@@ -37,4 +32,4 @@ export default function AppIcon(props: AppIconProps & AvatarProps): React.ReactE
       {...restProps}
     />
   );
-};
+}

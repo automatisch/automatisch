@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 
 type PortalProps = {
@@ -8,7 +8,7 @@ type PortalProps = {
 const Portal = ({ children }: PortalProps) => {
   return typeof document === 'object'
     ? ReactDOM.createPortal(children, document.body)
-    : null
-}
+    : null;
+};
 
 export default Portal;

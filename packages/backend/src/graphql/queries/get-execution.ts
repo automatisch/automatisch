@@ -13,8 +13,8 @@ const getExecution = async (
     .$relatedQuery('executions')
     .withGraphFetched({
       flow: {
-        steps: true
-      }
+        steps: true,
+      },
     })
     .findById(params.executionId)
     .throwIfNotFound();

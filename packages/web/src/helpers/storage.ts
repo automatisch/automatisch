@@ -7,4 +7,4 @@ export const setItem = (key: string, value: string) => {
 
 export const getItem = (key: string) => {
   return localStorage.getItem(makeKey(key));
-}
+};

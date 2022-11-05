@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { FormProvider, useForm, useWatch, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
+import {
+  FormProvider,
+  useForm,
+  useWatch,
+  FieldValues,
+  SubmitHandler,
+  UseFormReturn,
+} from 'react-hook-form';
 import type { UseFormProps } from 'react-hook-form';
 
 type FormProps = {
@@ -7,8 +14,8 @@ type FormProps = {
   defaultValues?: UseFormProps['defaultValues'];
   onSubmit?: SubmitHandler<FieldValues>;
   render?: (props: UseFormReturn) => React.ReactNode;
-  resolver?: UseFormProps["resolver"];
-  mode?: UseFormProps["mode"];
+  resolver?: UseFormProps['resolver'];
+  mode?: UseFormProps['mode'];
 };
 
 const noop = () => null;
@@ -31,7 +38,7 @@ export default function Form(props: FormProps): React.ReactElement {
     mode,
   });
 
-  const form = useWatch({ control: methods.control, });
+  const form = useWatch({ control: methods.control });
 
   /**
    * For fields having `dependsOn` fields, we need to re-validate the form.
@@ -51,4 +58,4 @@ export default function Form(props: FormProps): React.ReactElement {
       </form>
     </FormProvider>
   );
-};
+}

@@ -38,7 +38,8 @@ export default defineAction({
       type: 'dropdown' as const,
       required: false,
       value: false,
-      description: 'If you choose no, this message will appear to come from you. Direct messages are always sent by bots.',
+      description:
+        'If you choose no, this message will appear to come from you. Direct messages are always sent by bots.',
       variables: false,
       options: [
         {
@@ -48,8 +49,8 @@ export default defineAction({
         {
           label: 'No',
           value: false,
-        }
-      ]
+        },
+      ],
     },
     {
       label: 'Bot name',
@@ -57,7 +58,8 @@ export default defineAction({
       type: 'string' as const,
       required: true,
       value: 'Automatisch',
-      description: 'Specify the bot name which appears as a bold username above the message inside Slack. Defaults to Automatisch.',
+      description:
+        'Specify the bot name which appears as a bold username above the message inside Slack. Defaults to Automatisch.',
       variables: true,
     },
     {
@@ -65,7 +67,8 @@ export default defineAction({
       key: 'botIcon',
       type: 'string' as const,
       required: false,
-      description: 'Either an image url or an emoji available to your team (surrounded by :). For example, https://example.com/icon_256.png or :robot_face:',
+      description:
+        'Either an image url or an emoji available to your team (surrounded by :). For example, https://example.com/icon_256.png or :robot_face:',
       variables: true,
     },
   ],

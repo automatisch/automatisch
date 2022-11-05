@@ -25,7 +25,10 @@ export default function parseLinkHeader(link: string): TParsedLinkHeader {
   const items = link.split(',');
 
   for (const item of items) {
-    const [rawUriReference, ...rawLinkParameters] = item.split(';') as [string, ...string[]];
+    const [rawUriReference, ...rawLinkParameters] = item.split(';') as [
+      string,
+      ...string[]
+    ];
     const trimmedUriReference = rawUriReference.trim();
 
     const reference = trimmedUriReference.slice(1, -1);

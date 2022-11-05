@@ -1,16 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
+  - package-ecosystem: 'npm'
     versioning-strategy: increase
-    directory: "/"
+    directory: '/'
     schedule:
-      interval: "monthly"
+      interval: 'monthly'
     labels:
-      - "dependencies"
+      - 'dependencies'
     open-pull-requests-limit: 100
     pull-request-branch-name:
-      separator: "-"
+      separator: '-'
     ignore:
-      - dependency-name: "fs-extra"
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: 'fs-extra'
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']

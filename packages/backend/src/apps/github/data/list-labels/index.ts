@@ -7,10 +7,9 @@ export default {
   key: 'listLabels',
 
   async run($: IGlobalVariable) {
-    const {
-      repoOwner,
-      repo,
-    } = getRepoOwnerAndRepo($.step.parameters.repo as string);
+    const { repoOwner, repo } = getRepoOwnerAndRepo(
+      $.step.parameters.repo as string
+    );
 
     if (!repo) return { data: [] };
 

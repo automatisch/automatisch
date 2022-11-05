@@ -12,9 +12,10 @@ export default {
       readOnly: true,
       value: '{WEB_APP_URL}/app/discord/connections/add',
       placeholder: null,
-      description: 'When asked to input an OAuth callback or redirect URL in Discord OAuth, enter the URL above.',
+      description:
+        'When asked to input an OAuth callback or redirect URL in Discord OAuth, enter the URL above.',
       docUrl: 'https://automatisch.io/docs/discord#oauth-redirect-url',
-      clickToCopy: true
+      clickToCopy: true,
     },
     {
       key: 'consumerKey',
@@ -26,7 +27,7 @@ export default {
       placeholder: null,
       description: null,
       docUrl: 'https://automatisch.io/docs/discord#consumer-key',
-      clickToCopy: false
+      clickToCopy: false,
     },
     {
       key: 'consumerSecret',
@@ -38,7 +39,7 @@ export default {
       placeholder: null,
       description: null,
       docUrl: 'https://automatisch.io/docs/discord#consumer-secret',
-      clickToCopy: false
+      clickToCopy: false,
     },
     {
       key: 'botToken',
@@ -50,8 +51,8 @@ export default {
       placeholder: null,
       description: null,
       docUrl: 'https://automatisch.io/docs/discord#bot-token',
-      clickToCopy: false
-    }
+      clickToCopy: false,
+    },
   ],
   authenticationSteps: [
     {
@@ -60,7 +61,7 @@ export default {
       arguments: [
         {
           name: 'key',
-          value: '{key}'
+          value: '{key}',
         },
         {
           name: 'formattedData',
@@ -68,19 +69,19 @@ export default {
           properties: [
             {
               name: 'consumerKey',
-              value: '{fields.consumerKey}'
+              value: '{fields.consumerKey}',
             },
             {
               name: 'consumerSecret',
-              value: '{fields.consumerSecret}'
+              value: '{fields.consumerSecret}',
             },
             {
               name: 'botToken',
-              value: '{fields.botToken}'
-            }
-          ]
-        }
-      ]
+              value: '{fields.botToken}',
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'mutation' as const,
@@ -88,9 +89,9 @@ export default {
       arguments: [
         {
           name: 'id',
-          value: '{createConnection.id}'
-        }
-      ]
+          value: '{createConnection.id}',
+        },
+      ],
     },
     {
       type: 'openWithPopup' as const,
@@ -98,9 +99,9 @@ export default {
       arguments: [
         {
           name: 'url',
-          value: '{createAuthData.url}'
-        }
-      ]
+          value: '{createAuthData.url}',
+        },
+      ],
     },
     {
       type: 'mutation' as const,
@@ -108,7 +109,7 @@ export default {
       arguments: [
         {
           name: 'id',
-          value: '{createConnection.id}'
+          value: '{createConnection.id}',
         },
         {
           name: 'formattedData',
@@ -116,11 +117,11 @@ export default {
           properties: [
             {
               name: 'oauthVerifier',
-              value: '{openAuthPopup.code}'
-            }
-          ]
-        }
-      ]
+              value: '{openAuthPopup.code}',
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'mutation' as const,
@@ -128,10 +129,10 @@ export default {
       arguments: [
         {
           name: 'id',
-          value: '{createConnection.id}'
-        }
-      ]
-    }
+          value: '{createConnection.id}',
+        },
+      ],
+    },
   ],
 
   createAuthData,

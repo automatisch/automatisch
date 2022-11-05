@@ -11,14 +11,14 @@ type SearchInputProps = {
   onChange?: (event: React.ChangeEvent) => void;
 };
 
-export default function SearchInput({ onChange }: SearchInputProps): React.ReactElement {
+export default function SearchInput({
+  onChange,
+}: SearchInputProps): React.ReactElement {
   const formatMessage = useFormatMessage();
 
   return (
     <FormControl variant="outlined" fullWidth>
-      <InputLabel
-        htmlFor="search-input"
-      >
+      <InputLabel htmlFor="search-input">
         {formatMessage('searchPlaceholder')}
       </InputLabel>
 

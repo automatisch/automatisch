@@ -1,4 +1,4 @@
-import { Knex } from "knex";
+import { Knex } from 'knex';
 
 async function addDeletedColumn(knex: Knex, tableName: string) {
   return await knex.schema.table(tableName, (table) => {

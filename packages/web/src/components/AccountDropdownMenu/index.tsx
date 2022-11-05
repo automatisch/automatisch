@@ -12,21 +12,18 @@ import useFormatMessage from 'hooks/useFormatMessage';
 type AccountDropdownMenuProps = {
   open: boolean;
   onClose: () => void;
-  anchorEl: MenuProps["anchorEl"];
+  anchorEl: MenuProps['anchorEl'];
   id: string;
-}
+};
 
-function AccountDropdownMenu(props: AccountDropdownMenuProps): React.ReactElement {
+function AccountDropdownMenu(
+  props: AccountDropdownMenuProps
+): React.ReactElement {
   const formatMessage = useFormatMessage();
   const authentication = useAuthentication();
   const navigate = useNavigate();
 
-  const {
-    open,
-    onClose,
-    anchorEl,
-    id
-  } = props
+  const { open, onClose, anchorEl, id } = props;
 
   const logout = async () => {
     authentication.updateToken('');
@@ -53,17 +50,11 @@ function AccountDropdownMenu(props: AccountDropdownMenuProps): React.ReactElemen
       open={open}
       onClose={onClose}
     >
-      <MenuItem
-        component={Link}
-        to={URLS.SETTINGS_DASHBOARD}
-      >
+      <MenuItem component={Link} to={URLS.SETTINGS_DASHBOARD}>
         {formatMessage('accountDropdownMenu.settings')}
       </MenuItem>
 
-      <MenuItem
-        onClick={logout}
-        data-test="logout-item"
-      >
+      <MenuItem onClick={logout} data-test="logout-item">
         {formatMessage('accountDropdownMenu.logout')}
       </MenuItem>
     </Menu>

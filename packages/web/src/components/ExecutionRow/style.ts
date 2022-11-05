@@ -20,7 +20,7 @@ export const CardContent = styled(MuiCardContent)(({ theme }) => ({
     `,
     gridTemplateColumns: 'minmax(0, auto) min-content',
     gridTemplateRows: 'auto auto',
-  }
+  },
 }));
 
 export const Apps = styled(MuiStack)(() => ({
@@ -46,5 +46,5 @@ export const Typography = styled(MuiTypography)(() => ({
 export const DesktopOnlyBreakline = styled('br')(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     display: 'none',
-  }
+  },
 }));

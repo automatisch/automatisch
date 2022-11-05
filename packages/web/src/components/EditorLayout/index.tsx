@@ -25,51 +25,69 @@ export default function EditorLayout(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [updateFlow] = useMutation(UPDATE_FLOW);
   const [updateFlowStatus] = useMutation(UPDATE_FLOW_STATUS);
-  const { data, loading } = useQuery(GET_FLOW, { variables: { id: flowId }});
+  const { data, loading } = useQuery(GET_FLOW, { variables: { id: flowId } });
   const flow: IFlow = data?.getFlow;
 
-  const onFlowNameUpdate = React.useCallback(async (name: string) => {
-    await updateFlow({
-      variables: {
-        input: {
-          id: flowId,
-          name,
+  const onFlowNameUpdate = React.useCallback(
+    async (name: string) => {
+      await updateFlow({
+        variables: {
+          input: {
+            id: flowId,
+            name,
+          },
         },
-      },
-      optimisticResponse: {
-        updateFlow: {
-          __typename:  'Flow',
-          id: flow?.id,
-          name,
-        }
-      }
-    });
-  }, [flow?.id]);
+        optimisticResponse: {
+          updateFlow: {
+            __typename: 'Flow',
+            id: flow?.id,
+            name,
+          },
+        },
+      });
+    },
+    [flow?.id]
+  );
 
-  const onFlowStatusUpdate = React.useCallback(async (active: boolean) => {
-    await updateFlowStatus({
-      variables: {
-        input: {
-          id: flowId,
-          active,
+  const onFlowStatusUpdate = React.useCallback(
+    async (active: boolean) => {
+      await updateFlowStatus({
+        variables: {
+          input: {
+            id: flowId,
+            active,
+          },
         },
-      },
-      optimisticResponse: {
-        updateFlowStatus: {
-          __typename:  'Flow',
-          id: flow?.id,
-          active,
-        }
-      }
-    });
-  }, [flow?.id]);
+        optimisticResponse: {
+          updateFlowStatus: {
+            __typename: 'Flow',
+            id: flow?.id,
+            active,
+          },
+        },
+      });
+    },
+    [flow?.id]
+  );
 
   return (
     <>
       <Stack direction="column" height="100%">
-        <Stack direction="row" bgcolor="white" justifyContent="space-between" alignItems="center" boxShadow={1} py={1} px={1}>
+        <Stack
+          direction="row"
+          bgcolor="white"
+          justifyContent="space-between"
+          alignItems="center"
+          boxShadow={1}
+          py={1}
+          px={1}
+        >
           <Box display="flex" flex={1} alignItems="center">
-            <Tooltip placement="right" title={formatMessage('flowEditor.goBack')} disableInteractive>
+            <Tooltip
+              placement="right"
+              title={formatMessage('flowEditor.goBack')}
+              disableInteractive
+            >
               <IconButton
                 size="small"
                 component={Link}
@@ -97,9 +115,13 @@ export default function EditorLayout(): React.ReactElement {
               variant="contained"
               size="small"
               onClick={() => onFlowStatusUpdate(!flow.active)}
-              data-test={flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'}
+              data-test={
+                flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'
+              }
             >
-              {flow?.active ? formatMessage('flowEditor.unpublish') : formatMessage('flowEditor.publish')}
+              {flow?.active
+                ? formatMessage('flowEditor.unpublish')
+                : formatMessage('flowEditor.publish')}
             </Button>
           </Box>
         </Stack>
@@ -118,8 +140,8 @@ export default function EditorLayout(): React.ReactElement {
         open={!!flow?.active}
         message={formatMessage('flowEditor.publishedFlowCannotBeUpdated')}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-        ContentProps={{ sx: { fontWeight: 300 }}}
-        action={(
+        ContentProps={{ sx: { fontWeight: 300 } }}
+        action={
           <Button
             variant="contained"
             size="small"
@@ -128,8 +150,8 @@ export default function EditorLayout(): React.ReactElement {
           >
             {formatMessage('flowEditor.unpublish')}
           </Button>
-        )}
+        }
       />
     </>
-  )
+  );
 }

@@ -14,20 +14,19 @@ import { CardContent, Typography } from './style';
 
 type AppRowProps = {
   application: IApp;
-}
+};
 
 const countTranslation = (value: React.ReactNode) => (
   <>
-    <Typography variant="body1">
-      {value}
-    </Typography>
+    <Typography variant="body1">{value}</Typography>
     <br />
   </>
 );
 
 function AppRow(props: AppRowProps): React.ReactElement {
   const formatMessage = useFormatMessage();
-  const { name, primaryColor, iconUrl, connectionCount, flowCount } = props.application;
+  const { name, primaryColor, iconUrl, connectionCount, flowCount } =
+    props.application;
 
   return (
     <Link to={URLS.APP(name.toLowerCase())} data-test="app-row">
@@ -39,25 +38,37 @@ function AppRow(props: AppRowProps): React.ReactElement {
             </Box>
 
             <Box>
-              <Typography variant="h6">
-                {name}
+              <Typography variant="h6">{name}</Typography>
+            </Box>
+
+            <Box sx={{ px: 2 }}>
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                sx={{ display: ['none', 'inline-block'] }}
+              >
+                {formatMessage('app.connectionCount', {
+                  count: countTranslation(connectionCount),
+                })}
               </Typography>
             </Box>
 
             <Box sx={{ px: 2 }}>
-              <Typography variant="caption" color="textSecondary" sx={{ display: ['none', 'inline-block'] }}>
-                {formatMessage('app.connectionCount', { count: countTranslation(connectionCount) })}
-              </Typography>
-            </Box>
-
-            <Box sx={{ px: 2 }}>
-              <Typography variant="caption" color="textSecondary" sx={{ display: ['none', 'inline-block'] }}>
-                {formatMessage('app.flowCount', { count: countTranslation(flowCount) })}
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                sx={{ display: ['none', 'inline-block'] }}
+              >
+                {formatMessage('app.flowCount', {
+                  count: countTranslation(flowCount),
+                })}
               </Typography>
             </Box>
 
             <Box>
-              <ArrowForwardIosIcon sx={{ color: (theme) => theme.palette.primary.main }} />
+              <ArrowForwardIosIcon
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              />
             </Box>
           </CardContent>
         </CardActionArea>

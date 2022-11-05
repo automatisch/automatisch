@@ -40,16 +40,19 @@ function updateHandlerFactory(flowId: string, previousStepId: string) {
 
 export default function Editor(props: EditorProps): React.ReactElement {
   const [updateStep] = useMutation(UPDATE_STEP);
-  const [createStep, { loading: creationInProgress }] = useMutation(CREATE_STEP, {
-    refetchQueries: [
-      'GetFlow'
-    ]
-  });
+  const [createStep, { loading: creationInProgress }] = useMutation(
+    CREATE_STEP,
+    {
+      refetchQueries: ['GetFlow'],
+    }
+  );
 
   const { flow } = props;
   const [triggerStep] = flow.steps;
 
-  const [currentStepId, setCurrentStepId] = React.useState<string | null>(triggerStep.id);
+  const [currentStepId, setCurrentStepId] = React.useState<string | null>(
+    triggerStep.id
+  );
 
   const onStepChange = React.useCallback(
     (step: any) => {
@@ -125,7 +128,11 @@ export default function Editor(props: EditorProps): React.ReactElement {
             onContinue={openNextStep(steps[index + 1])}
           />
 
-          <IconButton onClick={() => addStep(step.id)} color="primary" disabled={creationInProgress || flow.active}>
+          <IconButton
+            onClick={() => addStep(step.id)}
+            color="primary"
+            disabled={creationInProgress || flow.active}
+          >
             <AddIcon />
           </IconButton>
         </React.Fragment>

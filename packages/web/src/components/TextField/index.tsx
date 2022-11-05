@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
+import MuiTextField, {
+  TextFieldProps as MuiTextFieldProps,
+} from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -14,7 +16,9 @@ type TextFieldProps = {
   readOnly?: boolean;
 } & MuiTextFieldProps;
 
-const createCopyAdornment = (ref: React.RefObject<HTMLInputElement | null>): React.ReactElement => {
+const createCopyAdornment = (
+  ref: React.RefObject<HTMLInputElement | null>
+): React.ReactElement => {
   return (
     <InputAdornment position="end">
       <IconButton
@@ -25,7 +29,7 @@ const createCopyAdornment = (ref: React.RefObject<HTMLInputElement | null>): Rea
       </IconButton>
     </InputAdornment>
   );
-}
+};
 
 export default function TextField(props: TextFieldProps): React.ReactElement {
   const { control } = useFormContext();
@@ -49,19 +53,38 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
       defaultValue={defaultValue || ''}
       control={control}
       shouldUnregister={shouldUnregister}
-      render={({ field: { ref, onChange: controllerOnChange, onBlur: controllerOnBlur, ...field } }) => (
+      render={({
+        field: {
+          ref,
+          onChange: controllerOnChange,
+          onBlur: controllerOnBlur,
+          ...field
+        },
+      }) => (
         <MuiTextField
           {...textFieldProps}
           {...field}
-          onChange={(...args) => { controllerOnChange(...args); onChange?.(...args); }}
-          onBlur={(...args) => { controllerOnBlur(); onBlur?.(...args); }}
-          inputRef={(element) => { inputRef.current = element; ref(element); }}
-          InputProps={{ readOnly, endAdornment: clickToCopy ? createCopyAdornment(inputRef) : null}}
+          onChange={(...args) => {
+            controllerOnChange(...args);
+            onChange?.(...args);
+          }}
+          onBlur={(...args) => {
+            controllerOnBlur();
+            onBlur?.(...args);
+          }}
+          inputRef={(element) => {
+            inputRef.current = element;
+            ref(element);
+          }}
+          InputProps={{
+            readOnly,
+            endAdornment: clickToCopy ? createCopyAdornment(inputRef) : null,
+          }}
         />
       )}
     />
   );
-};
+}
 
 TextField.defaultProps = {
   readOnly: false,

@@ -6,8 +6,18 @@ import * as URLS from 'config/urls';
 
 export default (
   <>
-    <Route path={URLS.SETTINGS_PROFILE} element={<SettingsLayout><ProfileSettings /></SettingsLayout>} />
+    <Route
+      path={URLS.SETTINGS_PROFILE}
+      element={
+        <SettingsLayout>
+          <ProfileSettings />
+        </SettingsLayout>
+      }
+    />
 
-    <Route path={URLS.SETTINGS} element={<Navigate to={URLS.SETTINGS_PROFILE} replace />} />
+    <Route
+      path={URLS.SETTINGS}
+      element={<Navigate to={URLS.SETTINGS_PROFILE} replace />}
+    />
   </>
 );

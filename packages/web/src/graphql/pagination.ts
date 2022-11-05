@@ -1,10 +1,12 @@
 import type { FieldPolicy, Reference } from '@apollo/client';
 
-type KeyArgs = FieldPolicy<unknown>["keyArgs"];
+type KeyArgs = FieldPolicy<unknown>['keyArgs'];
 
-export type TEdge<TNode> = {
-  node: TNode;
-} | Reference;
+export type TEdge<TNode> =
+  | {
+      node: TNode;
+    }
+  | Reference;
 
 export type TPageInfo = {
   currentPage: number;
@@ -26,7 +28,6 @@ export type CustomFieldPolicy<TNode> = FieldPolicy<
   TIncoming<TNode> | null,
   TIncoming<TNode> | null
 >;
-
 
 const makeEmptyData = <TNode>(): TExisting<TNode> => {
   return {
@@ -51,8 +52,7 @@ function offsetLimitPagination<TNode = Reference>(
       if (!incoming || incoming === null) return existing;
 
       const existingEdges = existing?.edges || [];
-      const incomingEdges = incoming.edges || []
-
+      const incomingEdges = incoming.edges || [];
 
       if (args) {
         const newEdges = [...existingEdges, ...incomingEdges];

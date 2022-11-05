@@ -16,7 +16,7 @@ const appInfoConverter = (rawAppData: IApp) => {
         };
       }
 
-      return field
+      return field;
     });
   }
 

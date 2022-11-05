@@ -15,32 +15,26 @@ interface NotificationCardProps {
   description: string;
 }
 
-const getHumanlyDate = (timestamp: number) => DateTime.fromMillis(timestamp).toRelative();
+const getHumanlyDate = (timestamp: number) =>
+  DateTime.fromMillis(timestamp).toRelative();
 
 export default function NotificationCard(props: NotificationCardProps) {
-  const {
-    name,
-    createdAt,
-    documentationUrl,
-    description,
-  } = props;
+  const { name, createdAt, documentationUrl, description } = props;
 
   const formatMessage = useFormatMessage();
-  const relativeCreatedAt = getHumanlyDate((new Date(createdAt)).getTime());
-  const subheader = formatMessage('notification.releasedAt', { relativeDate: relativeCreatedAt });
+  const relativeCreatedAt = getHumanlyDate(new Date(createdAt).getTime());
+  const subheader = formatMessage('notification.releasedAt', {
+    relativeDate: relativeCreatedAt,
+  });
 
   return (
     <Card>
-      <CardActionArea
-        component={'a'}
-        href={documentationUrl}
-        target="_blank"
-      >
+      <CardActionArea component={'a'} href={documentationUrl} target="_blank">
         <CardHeader
           title={name}
           titleTypographyProps={{ variant: 'h6' }}
           subheader={subheader}
-          sx={{ borderBottom: '1px solid', borderColor: 'divider'}}
+          sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
         />
 
         <CardContent>

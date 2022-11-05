@@ -4,8 +4,8 @@ import type { AuthenticationContextParams } from 'contexts/Authentication';
 
 type UseAuthenticationReturn = {
   isAuthenticated: boolean;
-  token: AuthenticationContextParams["token"];
-  updateToken: AuthenticationContextParams["updateToken"];
+  token: AuthenticationContextParams['token'];
+  updateToken: AuthenticationContextParams['updateToken'];
 };
 
 export default function useAuthentication(): UseAuthenticationReturn {

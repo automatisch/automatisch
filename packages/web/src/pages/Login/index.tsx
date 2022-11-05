@@ -11,4 +11,4 @@ export default function Login(): React.ReactElement {
       </Container>
     </Box>
   );
-};
+}

@@ -13,12 +13,12 @@ const getFlows = async (_parent: unknown, params: Params, context: Context) => {
   const flowsQuery = context.currentUser
     .$relatedQuery('flows')
     .joinRelated({
-      steps: true
+      steps: true,
     })
     .withGraphFetched({
       steps: {
-        connection: true
-      }
+        connection: true,
+      },
     })
     .where((builder) => {
       if (params.connectionId) {

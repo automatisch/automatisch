@@ -10,7 +10,6 @@ export const CardContent = styled(MuiCardContent)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-
 export const Typography = styled(MuiTypography)(() => ({
   textAlign: 'center',
   display: 'inline-block',

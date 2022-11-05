@@ -20,23 +20,21 @@ type AppBarProps = {
   drawerOpen: boolean;
   onDrawerOpen: () => void;
   onDrawerClose: () => void;
-  maxWidth?: ContainerProps["maxWidth"];
+  maxWidth?: ContainerProps['maxWidth'];
 };
 
 const accountMenuId = 'account-menu';
 
 export default function AppBar(props: AppBarProps): React.ReactElement {
-  const {
-    drawerOpen,
-    onDrawerOpen,
-    onDrawerClose,
-    maxWidth = false,
-  } = props;
+  const { drawerOpen, onDrawerOpen, onDrawerClose, maxWidth = false } = props;
 
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
+    noSsr: true,
+  });
 
-  const [accountMenuAnchorElement, setAccountMenuAnchorElement] = React.useState<null | HTMLElement>(null);
+  const [accountMenuAnchorElement, setAccountMenuAnchorElement] =
+    React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(accountMenuAnchorElement);
 
@@ -65,11 +63,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
 
           <div style={{ flexGrow: 1 }}>
             <Link to={URLS.DASHBOARD}>
-              <Typography
-                variant="h6"
-                component="h1"
-                noWrap
-              >
+              <Typography variant="h6" component="h1" noWrap>
                 <FormattedMessage id="brandText" />
               </Typography>
             </Link>
