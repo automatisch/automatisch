@@ -93,7 +93,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem sx={{ pt: 2, pb: 3, flexDirection: 'column', alignItems: 'flex-start' }}>
-          {error?.graphQLErrors?.length && <Alert severity="error" sx={{ mb: 1, fontWeight: 500, width: '100%' }}>
+          {!!error?.graphQLErrors?.length && <Alert severity="error" sx={{ mb: 1, fontWeight: 500, width: '100%' }}>
             {serializeErrors(error.graphQLErrors).map((error: any) => (<div>{error.message}</div>))}
           </Alert>}
 
