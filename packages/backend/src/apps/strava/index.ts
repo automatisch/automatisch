@@ -1,4 +1,6 @@
 import defineApp from '../../helpers/define-app';
+import addAuthHeader from './common/add-auth-header';
+import auth from './auth';
 
 export default defineApp({
   name: 'Strava',
@@ -9,4 +11,6 @@ export default defineApp({
   baseUrl: 'https://www.strava.com',
   apiBaseUrl: 'https://www.strava.com/api',
   primaryColor: 'fc4c01',
+  beforeRequest: [addAuthHeader],
+  auth,
 });
