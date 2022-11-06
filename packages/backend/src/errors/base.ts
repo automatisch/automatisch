@@ -4,14 +4,29 @@ export default class BaseError extends Error {
   error = {};
 
   constructor(error?: string | IJSONObject) {
-    super();
-
+    let computedError: Record<string, unknown>;
     try {
-      this.error = JSON.parse(error as string);
+      computedError = JSON.parse(error as string);
     } catch {
-      this.error = typeof error === 'string' ? { error } : error;
+      computedError = typeof error === 'string' ? { error: computedError } : error;
     }
 
+    let computedMessage: string;
+    try {
+      // challenge to input to see if it is stringified JSON
+      JSON.parse(error as string);
+      computedMessage = error as string;
+    } catch {
+      if (typeof error === 'string') {
+        computedMessage = error;
+      } else {
+        computedMessage = JSON.stringify(error, null, 2);
+      }
+    }
+
+    super(computedMessage);
+
+    this.error = computedError;
     this.name = this.constructor.name;
   }
 }
