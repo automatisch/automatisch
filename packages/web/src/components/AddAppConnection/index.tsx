@@ -117,7 +117,10 @@ export default function AddAppConnection(
       )}
 
       {errorMessage && (
-        <Alert severity="error" sx={{ mt: 1, fontWeight: 500 }}>
+        <Alert
+          severity="error"
+          sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
+        >
           {errorMessage}
         </Alert>
       )}
