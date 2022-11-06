@@ -1,4 +1,4 @@
-import { IJSONObject, IField, IGlobalVariable } from '@automatisch/types';
+import { IField, IGlobalVariable } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 
 export default async function createAuthData($: IGlobalVariable) {
@@ -20,12 +20,8 @@ export default async function createAuthData($: IGlobalVariable) {
       accessSecret: responseData.oauth_token_secret,
     });
   } catch (error) {
-    const errorMessages = error.response.data.errors
-      .map((error: IJSONObject) => error.message)
-      .join(' ');
-
     throw new Error(
-      `Error occured while verifying credentials: ${errorMessages}`
+      `Error occured while verifying credentials: ${error.message}`
     );
   }
 }
