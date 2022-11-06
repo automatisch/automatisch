@@ -118,3 +118,8 @@
 :root {
   overflow-y: scroll;
 }
+
+.VPTeamMembersItem .avatar-img {
+  top: 50%;
+  transform: translateY(-50%);
+}
