@@ -169,6 +169,10 @@ export default defineConfig({
               text: 'Folder structure',
               link: '/build-integrations/folder-structure',
             },
+            {
+              text: 'App',
+              link: '/build-integrations/app',
+            },
           ],
         },
         {
