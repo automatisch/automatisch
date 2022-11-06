@@ -66,6 +66,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Salesforce',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/salesforce/triggers' },
+            { text: 'Connection', link: '/apps/salesforce/connection' },
+          ],
+        },
+        {
           text: 'Scheduler',
           collapsible: true,
           items: [
