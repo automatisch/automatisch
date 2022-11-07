@@ -202,6 +202,10 @@ export default defineConfig({
               link: '/build-integrations/triggers',
             },
             {
+              text: 'Actions',
+              link: '/build-integrations/actions',
+            },
+            {
               text: 'Examples',
               link: '/build-integrations/examples',
             },
