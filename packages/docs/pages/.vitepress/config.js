@@ -197,6 +197,10 @@ export default defineConfig({
               text: 'Auth',
               link: '/build-integrations/auth',
             },
+            {
+              text: 'Triggers',
+              link: '/build-integrations/triggers',
+            },
           ],
         },
         {
