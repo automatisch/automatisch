@@ -189,6 +189,10 @@ export default defineConfig({
               text: 'App',
               link: '/build-integrations/app',
             },
+            {
+              text: 'Global variable',
+              link: '/build-integrations/global-variable',
+            },
           ],
         },
         {
