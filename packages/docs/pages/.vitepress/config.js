@@ -26,12 +26,20 @@ export default defineConfig({
       },
       {
         text: 'Apps',
-        link: '/apps/discord/actions',
+        link: '/apps/deepl/actions',
         activeMatch: '/apps/',
       },
     ],
     sidebar: {
       '/apps/': [
+        {
+          text: 'DeepL',
+          collapsible: true,
+          items: [
+            { text: 'Actions', link: '/apps/deepl/actions' },
+            { text: 'Connection', link: '/apps/deepl/connection' },
+          ],
+        },
         {
           text: 'Discord',
           collapsible: true,
