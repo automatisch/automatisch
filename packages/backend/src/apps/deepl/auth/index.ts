@@ -17,7 +17,7 @@ export default {
     },
     {
       key: 'authenticationKey',
-      label: 'Authenticatin Key',
+      label: 'Authentication Key',
       type: 'string' as const,
       required: true,
       readOnly: false,
