@@ -1,5 +1,9 @@
 # Folder Structure
 
+:::warning
+We will use the terms **integration** and **app** interchangeably in this document.
+:::
+
 Before diving into how to build an integration for Automatisch, it's better to check the folder structure of the apps and give you some idea about how we place different parts of the app.
 
 ## Folder structure of an app
