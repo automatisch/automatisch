@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 export { AxiosInstance as IHttpClient } from 'axios';
 import { IHttpClientParams } from '@automatisch/types';
 import { URL } from 'url';
-import HttpError from '../../errors/http-error';
+import HttpError from '../../errors/http';
 
 const removeBaseUrlForAbsoluteUrls = (
   requestConfig: AxiosRequestConfig
@@ -40,7 +40,7 @@ export default function createHttpClient({
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      throw new HttpError(error.response.data);
+      throw new HttpError(error);
     }
   );
 

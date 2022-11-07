@@ -23,10 +23,7 @@ const graphQLInstance = graphqlHTTP({
   customFormatErrorFn: (error) => {
     logger.error(error.path + ' : ' + error.message + '\n' + error.stack);
 
-    return {
-      message: error.message,
-      locations: error.locations,
-    };
+    return error.originalError;
   },
 });
 
