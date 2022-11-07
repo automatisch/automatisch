@@ -193,6 +193,10 @@ export default defineConfig({
               text: 'Global variable',
               link: '/build-integrations/global-variable',
             },
+            {
+              text: 'Auth',
+              link: '/build-integrations/auth',
+            },
           ],
         },
         {
