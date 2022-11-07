@@ -1,3 +1,5 @@
+import path from 'node:path';
+import fs from 'node:fs';
 import {
   IAction,
   IApp,
@@ -8,8 +10,22 @@ import {
 import { omit, cloneDeep } from 'lodash';
 import addReconnectionSteps from './add-reconnection-steps';
 
-async function getDefaultExport(path: string) {
-  return (await import(path)).default;
+type TApps = Record<string, Promise<{ default: IApp }>>;
+const apps = fs
+  .readdirSync(
+    path.resolve(__dirname, `../apps/`),
+    { withFileTypes: true }
+  )
+  .reduce((apps, dirent) => {
+    if (!dirent.isDirectory()) return apps;
+
+    apps[dirent.name] = import(path.resolve(__dirname, '../apps', dirent.name));
+
+    return apps;
+  }, {} as TApps);
+
+async function getDefaultExport(appKey: string) {
+  return (await apps[appKey]).default;
 }
 
 function stripFunctions<C>(data: C): C {
@@ -17,7 +33,7 @@ function stripFunctions<C>(data: C): C {
 }
 
 const getApp = async (appKey: string, stripFuncs = true) => {
-  let appData: IApp = cloneDeep(await getDefaultExport(`../apps/${appKey}`));
+  let appData: IApp = cloneDeep(await getDefaultExport(appKey));
 
   if (appData.auth) {
     appData = addReconnectionSteps(appData);
