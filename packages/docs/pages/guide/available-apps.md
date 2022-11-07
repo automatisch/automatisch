@@ -10,6 +10,7 @@ Following integrations are currently supported by Automatisch.
 - [Flickr](/apps/flickr/triggers)
 - [Github](/apps/github/triggers)
 - [RSS](/apps/rss/triggers)
+- [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)
 - [Slack](/apps/slack/actions)
 - [SMTP](/apps/smtp/actions)
