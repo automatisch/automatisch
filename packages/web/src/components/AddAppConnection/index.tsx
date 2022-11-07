@@ -6,6 +6,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import Dialog from '@mui/material/Dialog';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { IJSONObject } from '@automatisch/types';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
@@ -37,7 +38,7 @@ export default function AddAppConnection(
   const { application, connectionId, onClose } = props;
   const { name, authDocUrl, key, auth } = application;
   const formatMessage = useFormatMessage();
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<IJSONObject | null>(null);
   const [inProgress, setInProgress] = React.useState(false);
   const hasConnection = Boolean(connectionId);
   const steps = hasConnection
@@ -59,7 +60,7 @@ export default function AddAppConnection(
       if (!steps) return;
 
       setInProgress(true);
-      setErrorMessage(null);
+      setError(null);
 
       const response: Response = {
         key,
@@ -79,9 +80,9 @@ export default function AddAppConnection(
 
           response[step.name] = stepResponse;
         } catch (err) {
-          const error = err as Error;
+          const error = err as IJSONObject;
           console.log(error);
-          setErrorMessage(error.message);
+          setError((error.graphQLErrors as IJSONObject[])?.[0]);
           setInProgress(false);
 
           break;
@@ -116,12 +117,13 @@ export default function AddAppConnection(
         </Alert>
       )}
 
-      {errorMessage && (
+      {error && (
         <Alert
           severity="error"
           sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
         >
-          {errorMessage}
+          {error.message}
+          <pre>{JSON.stringify(error.details, null, 2)}</pre>
         </Alert>
       )}
 

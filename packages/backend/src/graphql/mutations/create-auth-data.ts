@@ -2,6 +2,7 @@ import Context from '../../types/express/context';
 import axios from 'axios';
 import globalVariable from '../../helpers/global-variable';
 import App from '../../models/app';
+import CreateAuthDataError from '../../errors/create-auth-data';
 
 type Params = {
   input: {
@@ -30,12 +31,11 @@ const createAuthData = async (
   const app = await App.findOneByKey(connection.key);
 
   const $ = await globalVariable({ connection, app });
-  await authInstance.createAuthData($);
-
   try {
+    await authInstance.createAuthData($);
     await axios.get(connection.formattedData.url as string);
   } catch (error) {
-    throw new Error('Error occured while creating authorization URL!');
+    throw new CreateAuthDataError(error);
   }
 
   return connection.formattedData;

@@ -1,14 +1,14 @@
 import { IJSONObject } from '@automatisch/types';
 
 export default class BaseError extends Error {
-  error = {};
+  details = {};
 
   constructor(error?: string | IJSONObject) {
     let computedError: Record<string, unknown>;
     try {
       computedError = JSON.parse(error as string);
     } catch {
-      computedError = typeof error === 'string' ? { error: computedError } : error;
+      computedError = typeof error === 'string' ? { error } : error;
     }
 
     let computedMessage: string;
@@ -26,7 +26,7 @@ export default class BaseError extends Error {
 
     super(computedMessage);
 
-    this.error = computedError;
+    this.details = computedError;
     this.name = this.constructor.name;
   }
 }
