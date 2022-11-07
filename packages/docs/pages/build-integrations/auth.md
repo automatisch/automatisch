@@ -171,3 +171,7 @@ We will use the `verifyCredentials` method to check whether the credentials are 
 :::warning
 You might be wondering why we need to have two separate functions even though we use only one of them behind the scenes in this scenario. That might be true in our example or any other APIs similar to the cat API but there are some other third-party APIs which we can't use the same functionality directly to check whether the credentials are still valid or not. So we need to have two separate functions for verifying the credentials and checking whether the credentials are still valid or not.
 :::
+
+Now we have completed the authentication of the cat API. Go to `My Apps` page in Automatisch, try to add a new connection, select `The Cat API` and use your API key you got with an email. Then you can also check the test connection and reconnect functionality there.
+
+Let's move on to the next page to build a trigger.
