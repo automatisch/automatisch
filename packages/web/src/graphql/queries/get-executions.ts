@@ -13,6 +13,7 @@ export const GET_EXECUTIONS = gql`
           testRun
           createdAt
           updatedAt
+          status
           flow {
             id
             name
