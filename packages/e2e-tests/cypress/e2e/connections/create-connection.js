@@ -5,41 +5,44 @@ describe('Connections page', () => {
     cy.login();
 
     cy.og('apps-page-drawer-link').click();
+
+    cy.visit('/app/deepl/connections');
   });
 
   after(() => {
     cy.logout();
   });
 
-  it('opens via applications page', () => {
+  it('shows connections if any', () => {
     cy.og('apps-loader').should('not.exist');
 
-    cy.og('app-row').contains('Slack').click();
-
-    cy.og('app-connection-row').should('be.visible');
-
-    cy.ss('Slack connections before creating a connection');
+    cy.ss('DeepL connections before creating a connection');
   });
 
   context('can add connection', () => {
     it('has a button to open add connection dialog', () => {
-      cy.og('add-connection-button').scrollIntoView().should('be.visible');
+      cy.scrollTo('top', { ensureScrollable: false });
+
+      cy
+        .og('add-connection-button')
+        .should('be.visible');
     });
 
     it('add connection button takes user to add connection page', () => {
-      cy.og('add-connection-button').click({ force: true });
+      cy.og('add-connection-button').click();
 
-      cy.location('pathname').should('equal', '/app/slack/connections/add');
+      cy.location('pathname').should('equal', '/app/deepl/connections/add');
     });
 
     it('shows add connection dialog to create a new connection', () => {
-      cy.get('input[name="accessToken"]').type(Cypress.env('slack_user_token'));
+      cy.get('input[name="screenName"]').type('e2e-test connection!');
+      cy.get('input[name="authenticationKey"]').type(Cypress.env('deepl_auth_key'));
 
       cy.og('create-connection-button').click();
 
       cy.og('create-connection-button').should('not.exist');
 
-      cy.ss('Slack connections after creating a connection');
+      cy.ss('DeepL connections after creating a connection');
     });
   });
 });

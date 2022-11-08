@@ -8,7 +8,7 @@ module.exports = defineConfig({
     env: {
       login_email: 'user@automatisch.io',
       login_password: 'sample',
-      slack_user_token: TO_BE_PROVIDED,
+      deepl_auth_key: TO_BE_PROVIDED,
     },
     specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx}',
     viewportWidth: 1280,

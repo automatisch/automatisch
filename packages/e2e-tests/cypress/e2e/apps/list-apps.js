@@ -20,7 +20,9 @@ describe('Apps page', () => {
 
   context('can add connection', () => {
     before(() => {
-      cy.og('add-connection-button').click();
+      cy
+        .og('add-connection-button')
+        .click({ force: true });
     });
 
     it('lists applications', () => {
@@ -28,14 +30,14 @@ describe('Apps page', () => {
     });
 
     it('searches an application', () => {
-      cy.og('search-for-app-text-field').type('Slack');
+      cy.og('search-for-app-text-field').type('DeepL');
       cy.og('app-list-item').should('have.length', 1);
     });
 
     it('goes to app page to create a connection', () => {
       cy.og('app-list-item').first().click();
 
-      cy.location('pathname').should('equal', '/app/slack/connections/add');
+      cy.location('pathname').should('equal', '/app/deepl/connections/add');
 
       cy.og('add-app-connection-dialog').should('be.visible');
     });
@@ -43,7 +45,7 @@ describe('Apps page', () => {
     it('closes the dialog on backdrop click', () => {
       cy.clickOutside();
 
-      cy.location('pathname').should('equal', '/app/slack/connections');
+      cy.location('pathname').should('equal', '/app/deepl/connections');
       cy.og('add-app-connection-dialog').should('not.exist');
     });
   });
