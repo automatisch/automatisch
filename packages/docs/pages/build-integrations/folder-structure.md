@@ -18,8 +18,8 @@ The build integrations section is best understood when read from beginning to en
 If you did not set up the development environment yet, please go back to the [development setup](/contributing/development-setup) page and follow the instructions.
 :::
 
-:::warning
-We will use the terms **integration** and **app** interchangeably in this document.
+:::tip
+We will use the terms **integration** and **app** interchangeably in the documentation.
 :::
 
 Before diving into how to build an integration for Automatisch, it's better to check the folder structure of the apps and give you some idea about how we place different parts of the app.
