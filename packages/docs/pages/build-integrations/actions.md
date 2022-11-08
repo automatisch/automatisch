@@ -16,9 +16,7 @@ The build integrations section is best understood when read from beginning to en
 
 ## Add actions to the app.
 
-Open the thecatapi/index.ts file and add the highlighted lines for actions.
-
-Open the `thecatapi/index.ts` file and add the highlighted lines for triggers.
+Open the `thecatapi/index.ts` file and add the highlighted lines for actions.
 
 ```typescript{4,17}
 import defineApp from '../../helpers/define-app';
