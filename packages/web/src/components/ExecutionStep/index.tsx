@@ -51,6 +51,7 @@ export default function ExecutionStep(
 
   const validationStatusIcon =
     executionStep.status === 'success' ? validIcon : errorIcon;
+  const hasError = !!executionStep.errorDetails;
 
   return (
     <Wrapper elevation={1} data-test="execution-step">
@@ -86,7 +87,7 @@ export default function ExecutionStep(
           >
             <Tab label="Data in" data-test="data-in-tab" />
             <Tab label="Data out" data-test="data-out-tab" />
-            <Tab label="Error" data-test="error-tab" />
+            {hasError && <Tab label="Error" data-test="error-tab" />}
           </Tabs>
         </Box>
 
@@ -98,9 +99,11 @@ export default function ExecutionStep(
           <JSONViewer data={executionStep.dataOut} />
         </TabPanel>
 
-        <TabPanel value={activeTabIndex} index={2}>
-          <JSONViewer data={executionStep.errorDetails} />
-        </TabPanel>
+        {hasError && (
+          <TabPanel value={activeTabIndex} index={2}>
+            <JSONViewer data={executionStep.errorDetails} />
+          </TabPanel>
+        )}
       </Content>
     </Wrapper>
   );
