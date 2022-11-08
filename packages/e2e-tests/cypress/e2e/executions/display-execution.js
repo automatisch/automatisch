@@ -26,9 +26,7 @@ describe('Execution page', () => {
     cy.ss('Execution - data out');
   });
 
-  it('displays error', () => {
-    cy.og('error-tab').click({ multiple: true, force: true });
-
-    cy.ss('Execution - error');
+  it('does not display error', () => {
+    cy.og('error-tab').should('not.exist');
   });
 });

@@ -77,19 +77,19 @@ describe('Flow editor page', () => {
       });
     });
 
-    context('arrange Slack action', () => {
+    context('arrange DeepL action', () => {
       context('choose app and event substep', () => {
         it('choose application', () => {
           cy.og('choose-app-autocomplete').click();
 
-          cy.get('li[role="option"]:contains("Slack")').click();
+          cy.get('li[role="option"]:contains("DeepL")').click();
         });
 
         it('choose an event', () => {
           cy.og('choose-event-autocomplete').should('be.visible').click();
 
           cy.get(
-            'li[role="option"]:contains("Send a message to channel")'
+            'li[role="option"]:contains("Translate Text")'
           ).click();
         });
 
@@ -120,13 +120,7 @@ describe('Flow editor page', () => {
       });
 
       context('set up action', () => {
-        it('choose channel', () => {
-          cy.og('parameters.channel-autocomplete').click();
-
-          cy.get('li[role="option"]').last().click();
-        });
-
-        it('arrange message text', () => {
+        it('arrange text', () => {
           cy.og('power-input', ' [contenteditable]')
             .click()
             .type(
@@ -141,7 +135,15 @@ describe('Flow editor page', () => {
 
           cy.clickOutside();
 
-          cy.ss('Slack action message text');
+          cy.ss('DeepL action text');
+        });
+
+        it('set target language', () => {
+          cy.og('parameters.targetLanguage-autocomplete').click();
+
+          cy.get(
+            'li[role="option"]:contains("Turkish")'
+          ).first().click();
         });
 
         it('continue to next step', () => {
@@ -161,7 +163,7 @@ describe('Flow editor page', () => {
 
           cy.og('flow-test-substep-output').should('be.visible');
 
-          cy.ss('Slack action test output');
+          cy.ss('DeepL action test output');
 
           cy.og('flow-substep-continue-button').click();
         });

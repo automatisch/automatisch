@@ -74,6 +74,8 @@
   "executions.noExecutions": "There is no execution data point to show.",
   "execution.executedAt": "executed {datetime}",
   "execution.test": "Test run",
+  "execution.statusSuccess": "Success",
+  "execution.statusFailure": "Failure",
   "execution.noDataTitle": "No data",
   "execution.noDataMessage": "We successfully ran the execution, but there was no new data to process.",
   "profileSettings.title": "My Profile",

@@ -57,6 +57,16 @@ export default function ExecutionRow(
                 />
               )}
 
+              <Chip
+                size="small"
+                color={execution.status === 'success' ? 'success' : 'error'}
+                label={formatMessage(
+                  execution.status === 'success'
+                    ? 'execution.statusSuccess'
+                    : 'execution.statusFailure'
+                )}
+              />
+
               <ArrowForwardIosIcon
                 sx={{ color: (theme) => theme.palette.primary.main }}
               />

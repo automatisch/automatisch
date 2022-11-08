@@ -40,6 +40,7 @@ export interface IExecution {
   flowId: string;
   flow: IFlow;
   testRun: boolean;
+  status: 'success' | 'failure';
   executionSteps: IExecutionStep[];
   updatedAt: string;
   createdAt: string;
