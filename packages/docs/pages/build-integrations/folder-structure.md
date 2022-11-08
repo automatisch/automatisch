@@ -15,6 +15,10 @@ The build integrations section is best understood when read from beginning to en
 :::
 
 :::warning
+If you did not set up the development environment yet, please go back to the [development setup](/contributing/development-setup) page and follow the instructions.
+:::
+
+:::warning
 We will use the terms **integration** and **app** interchangeably in this document.
 :::
 
