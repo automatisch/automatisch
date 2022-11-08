@@ -51,3 +51,38 @@ $.app.apiBaseUrl; // https://api.thecatapi.com
 ```
 
 It's used to retrieve the API base URL of the app that we defined previously. In our example, it returns `https://api.thecatapi.com`. We use this property when we need to use the API base URL of the third-party service.
+
+## $.http
+
+It's an HTTP client to be used for making HTTP requests. It's a wrapper around the [axios](https://axios-http.com) library. We use this property when we need to make HTTP requests to the third-party service. The `apiBaseUrl` field we set up in the app will be used as the base URL for the HTTP requests. For example to search the cat images, we can use the following code:
+
+```typescript
+$.http.get('/v1/images/search?order=DESC', {
+  headers: {
+    'x-api-key': $.auth.data.apiKey,
+  },
+});
+```
+
+## $.pushTriggerItem
+
+```typescript
+$.pushTriggerItem({
+  raw: resourceData,
+  meta: {
+    id: resourceData.id,
+  },
+});
+```
+
+It's used to push trigger data to be processed by Automatisch. It must reflect the data that we get from the third-party service. Let's say for search tweets trigger it will be the JSON that represents the tweet object.
+
+## $.setActionItem
+
+```typescript
+$.setActionItem({
+  raw: resourceData,
+});
+```
+
+It's used to set the action data to be processed by Automatisch. For actions, it reflects the response data that we get from the third-party service. Let's say for create tweet action it will be the JSON that represents the response payload we get while creating a tweet.
