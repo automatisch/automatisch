@@ -1,5 +1,19 @@
 # Examples
 
+:::info
+
+The build integrations section is best understood when read from beginning to end. To get the most value out of it, start from the first page and read through page by page.
+
+1. [Folder structure](/build-integrations/folder-structure)
+2. [App](/build-integrations/app)
+3. [Global variable](/build-integrations/global-variable)
+4. [Auth](/build-integrations/auth)
+5. [Triggers](/build-integrations/triggers)
+6. [Actions](/build-integrations/actions)
+7. [<mark>Examples</mark>](/build-integrations/examples)
+
+:::
+
 ## Authentication
 
 ### 3-legged OAuth

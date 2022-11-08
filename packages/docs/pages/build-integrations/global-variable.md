@@ -1,5 +1,19 @@
 # Global Variable
 
+:::info
+
+The build integrations section is best understood when read from beginning to end. To get the most value out of it, start from the first page and read through page by page.
+
+1. [Folder structure](/build-integrations/folder-structure)
+2. [App](/build-integrations/app)
+3. [<mark>Global variable</mark>](/build-integrations/global-variable)
+4. [Auth](/build-integrations/auth)
+5. [Triggers](/build-integrations/triggers)
+6. [Actions](/build-integrations/actions)
+7. [Examples](/build-integrations/examples)
+
+:::
+
 Before handling authentication and building a trigger and an action, it's better to explain the `global variable` concept in Automatisch. Automatisch provides you the global variable that you need to use with authentication, triggers, action, and basically all the stuff you will build for the integration.
 
 The global variable is represented as `$` variable in the codebase, and it's a JSON object that contains the following properties:

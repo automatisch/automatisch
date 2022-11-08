@@ -1,5 +1,19 @@
 # Folder Structure
 
+:::info
+
+The build integrations section is best understood when read from beginning to end. To get the most value out of it, start from the first page and read through page by page.
+
+1. [<mark>Folder structure</mark>](/build-integrations/folder-structure)
+2. [App](/build-integrations/app)
+3. [Global variable](/build-integrations/global-variable)
+4. [Auth](/build-integrations/auth)
+5. [Triggers](/build-integrations/triggers)
+6. [Actions](/build-integrations/actions)
+7. [Examples](/build-integrations/examples)
+
+:::
+
 :::warning
 We will use the terms **integration** and **app** interchangeably in this document.
 :::

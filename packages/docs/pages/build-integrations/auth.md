@@ -1,5 +1,19 @@
 # Auth
 
+:::info
+
+The build integrations section is best understood when read from beginning to end. To get the most value out of it, start from the first page and read through page by page.
+
+1. [Folder structure](/build-integrations/folder-structure)
+2. [App](/build-integrations/app)
+3. [Global variable](/build-integrations/global-variable)
+4. [<mark>Auth</mark>](/build-integrations/auth)
+5. [Triggers](/build-integrations/triggers)
+6. [Actions](/build-integrations/actions)
+7. [Examples](/build-integrations/examples)
+
+:::
+
 ## Sign up for the cat API
 
 Go to the [sign up page](https://thecatapi.com/signup) of the cat API and register your account. It allows you to have 10k requests per month with a free account. You will get an API key by email after the registration. We will use this API key for authentication later on.

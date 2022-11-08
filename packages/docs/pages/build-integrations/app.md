@@ -1,5 +1,19 @@
 # App
 
+:::info
+
+The build integrations section is best understood when read from beginning to end. To get the most value out of it, start from the first page and read through page by page.
+
+1. [Folder structure](/build-integrations/folder-structure)
+2. [<mark>App</mark>](/build-integrations/app)
+3. [Global variable](/build-integrations/global-variable)
+4. [Auth](/build-integrations/auth)
+5. [Triggers](/build-integrations/triggers)
+6. [Actions](/build-integrations/actions)
+7. [Examples](/build-integrations/examples)
+
+:::
+
 Let's start building our first app by using [TheCatApi](https://thecatapi.com/) service. It's a service that provides cat images and allows you to vote or favorite a specific cat image. It's an excellent example to demonstrate how Automatisch works with an API that has authentication and data fetching with pagination.
 
 We will build an app with the `Search cat images` trigger and `Mark the cat image as favorite` action. So we will learn how to build both triggers and actions.
