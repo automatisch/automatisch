@@ -62,7 +62,7 @@ export default defineApp({
 
 ## Create the favicon
 
-Even though we have defined the `iconUrl` inside the app definition, we still need to create the icon file. Let's create the `assets` folder inside the `thecatapi` folder and save [this SVG file](/example-app/cat.svg) as `favicon.svg` inside of the `assets` folder. After saving the file, you can go to the `My Apps` page on Automatisch and click on `Add connection` button, and then you will see `The cat API` service with the icon.
+Even though we have defined the `iconUrl` inside the app definition, we still need to create the icon file. Let's create the `assets` folder inside the `thecatapi` folder and save [this SVG file](../public/example-app/cat.svg) as `favicon.svg` inside of the `assets` folder. After saving the file, you can go to the `My Apps` page on Automatisch and click on `Add connection` button, and then you will see `The cat API` service with the icon.
 
 :::tip
 If you're looking for SVG icons for third-party services, you can use the following repositories.
