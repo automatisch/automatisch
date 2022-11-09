@@ -27,6 +27,13 @@ const computeAuthStepVariables = (
     }
 
     if (variable.value) {
+      if (variable.value.endsWith('.all}')) {
+        const key = variable.value.replace('{', '').replace('.all}', '');
+        variables[variable.name] = aggregatedData[key];
+
+        continue;
+      }
+
       const computedVariable = template(variable.value, { interpolate })(
         aggregatedData
       );
