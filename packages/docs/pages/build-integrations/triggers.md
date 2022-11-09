@@ -52,7 +52,7 @@ export default [searchCatImages];
 ```
 
 :::tip
-If you add new triggers, you need to add them to the `triggers/index.ts` file and export all triggers as an array.
+If you add new triggers, you need to add them to the `triggers/index.ts` file and export all triggers as an array. The order of triggers in this array will be reflected in the Automatisch user interface.
 :::
 
 ## Add metadata
