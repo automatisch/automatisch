@@ -136,7 +136,7 @@ We do not have to return anything from the `run` function. We are using the `$.p
 
 :::tip
 
-`$.pushTriggerItem` is smart enough to understand if the data is already pushed to Automatisch or not. If the data is already pushed, it will stop the trigger, otherwise, it will continue to fetch new data.
+`$.pushTriggerItem` is smart enough to understand if the data is already pushed to Automatisch or not. If the data is already pushed and processed, it will stop the trigger, otherwise, it will continue to fetch new data. The check is done by comparing the `internalId` field with the `internalId` field of the data that is already processed. The control of whether the data is already processed or not is scoped by the flow.
 
 :::
 
