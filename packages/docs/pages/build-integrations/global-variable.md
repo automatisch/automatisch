@@ -14,7 +14,7 @@ The build integrations section is best understood when read from beginning to en
 
 :::
 
-Before handling authentication and building a trigger and an action, it's better to explain the `global variable` concept in Automatisch. Automatisch provides you the global variable that you need to use with authentication, triggers, action, and basically all the stuff you will build for the integration.
+Before handling authentication and building a trigger and an action, it's better to explain the `global variable` concept in Automatisch. Automatisch provides you the global variable that you need to use with authentication, triggers, actions, and basically all the stuff you will build for the integration.
 
 The global variable is represented as `$` variable in the codebase, and it's a JSON object that contains the following properties:
 
