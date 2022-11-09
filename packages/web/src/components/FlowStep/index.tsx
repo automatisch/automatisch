@@ -9,6 +9,7 @@ import List from '@mui/material/List';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 import ErrorIcon from '@mui/icons-material/Error';
+import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -182,7 +183,9 @@ export default function FlowStep(
     [substeps]
   );
 
-  if (!apps) return null;
+  if (!apps) {
+    return <CircularProgress sx={{ display: 'block', my: 2 }} />;
+  }
 
   const onContextMenuClose = (event: React.SyntheticEvent) => {
     event.stopPropagation();
