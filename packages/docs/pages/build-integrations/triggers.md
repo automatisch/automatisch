@@ -14,6 +14,10 @@ The build integrations section is best understood when read from beginning to en
 
 :::
 
+:::warning
+For HTTP-based triggers, Automatisch currently supports only polling. Webhook-based triggers are not supported at the moment, but we are planning to add them in the future.
+:::
+
 ## Add triggers to the app
 
 Open the `thecatapi/index.ts` file and add the highlighted lines for triggers.
