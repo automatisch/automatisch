@@ -26,7 +26,7 @@ await $.auth.set({
 });
 ```
 
-It's used to set the authentication data, and you can use this method with multiple pairs. The data will be stored in the database and can be retrieved later by using `$.auth.data` property. We use this method when we store the credentials of the third-party service. Note that Automatisch encrypts the data before storing it in the database.
+It's used to set the authentication data, and you can use this method with multiple pairs. The data will be stored in the database and can be retrieved later by using `$.auth.data` property. The data you set with this method will not override its current value but expands it. We use this method when we store the credentials of the third-party service. Note that Automatisch encrypts the data before storing it in the database.
 
 ## $.auth.data
 
