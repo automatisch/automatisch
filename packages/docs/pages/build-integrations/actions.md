@@ -41,7 +41,7 @@ export default defineApp({
 
 ## Define actions
 
-Let's create the `actions/index.ts` file inside of the `thecatapi` folder.
+Create the `actions/index.ts` file inside of the `thecatapi` folder.
 
 ```typescript
 import mark-cat-image-as-favorite from './mark-cat-image-as-favorite';
@@ -55,7 +55,7 @@ If you add new actions, you need to add them to the actions/index.ts file and ex
 
 ## Add metadata
 
-Let's create the `actions/mark-cat-image-as-favorite.ts` file inside the `thecatapi` folder.
+Create the `actions/mark-cat-image-as-favorite.ts` file inside the `thecatapi` folder.
 
 ```typescript
 import defineAction from '../../../../helpers/define-action';
@@ -91,9 +91,9 @@ Let's briefly explain what we defined here.
 
 ## Implement the action
 
-Let's implement the action. Open the `actions/mark-cat-image-as-favorite.ts` file and add the highlighted lines.
+Open the `actions/mark-cat-image-as-favorite.ts` file and add the highlighted lines.
 
-```typescript{7-15}
+```typescript{7-20}
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
@@ -103,9 +103,14 @@ export default defineAction({
     const requestPath = `/v1/favorites`;
     const imageId = $.step.parameters.imageId;
 
+    const headers = {
+      'x-api-key': $.auth.data.apiKey,
+    };
+
     const response = await $.http.post(
       requestPath,
-      { image_id: imageId }
+      { image_id: imageId },
+      { headers }
     );
 
     $.setActionItem({ raw: response.data });
@@ -119,4 +124,4 @@ In this action, we send a request to the cat API to mark the cat image as favori
 
 ## Test the action
 
-Let's go to the flows page of Automatisch and create a new flow. Add the `Search cat images` as a trigger in the flow. Add the `Mark the cat image as favorite` action to the flow as a second step. Add one of the image IDs you got from the cat API as `Image ID` argument to the action. Click `Test & Continue` button. If you a see JSON response in the user interface, it means that both the trigger and the action we built are working properly.
+Go to the flows page of Automatisch and create a new flow. Add the `Search cat images` as a trigger in the flow. Add the `Mark the cat image as favorite` action to the flow as a second step. Add one of the image IDs you got from the cat API as `Image ID` argument to the action. Click `Test & Continue` button. If you a see JSON response in the user interface, it means that both the trigger and the action we built are working properly.

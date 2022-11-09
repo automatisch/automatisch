@@ -43,7 +43,7 @@ export default defineApp({
 
 ## Define triggers
 
-Let's create the `triggers/index.ts` file inside of the `thecatapi` folder.
+Create the `triggers/index.ts` file inside of the `thecatapi` folder.
 
 ```typescript
 import searchCatImages from './search-cat-images';
@@ -57,7 +57,7 @@ If you add new triggers, you need to add them to the `triggers/index.ts` file an
 
 ## Add metadata
 
-Let's create the `triggers/search-cat-images.ts` file inside of the `thecatapi` folder.
+Create the `triggers/search-cat-images.ts` file inside of the `thecatapi` folder.
 
 ```typescript
 import defineTrigger from '../../../../helpers/define-trigger';
@@ -91,9 +91,9 @@ Let's briefly explain what we defined here.
 
 :::
 
-Let's implement the `run` function.
+Implement the `run` function by adding highlighted lines.
 
-```typescript{10-34}
+```typescript{6-29}
 import defineTrigger from '../../../../helpers/define-trigger';
 
 export default defineTrigger({
@@ -127,7 +127,7 @@ export default defineTrigger({
 });
 ```
 
-Let's briefly explain what we did here. We are using the `$.http` object to make HTTP requests. Our API is paginated, so we are making requests until we get less than 10 items, which means the last page.
+We are using the `$.http` object to make HTTP requests. Our API is paginated, so we are making requests until we get less than 10 items, which means the last page.
 
 We do not have to return anything from the `run` function. We are using the `$.pushTriggerItem` function to push the data to Automatisch. $.pushTriggerItem accepts an object with the following fields:
 
@@ -146,4 +146,4 @@ We do not have to return anything from the `run` function. We are using the `$.p
 
 ### Test the trigger
 
-Let's go to the flows page of Automatisch and create a new flow. Choose `The cat API` app and the `Search cat images` trigger and click `Test & Continue` button. If you a see JSON response in the user interface, it means that the trigger is working properly.
+Go to the flows page of Automatisch and create a new flow. Choose `The cat API` app and the `Search cat images` trigger and click `Test & Continue` button. If you a see JSON response in the user interface, it means that the trigger is working properly.
