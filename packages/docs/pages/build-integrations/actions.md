@@ -55,7 +55,7 @@ If you add new actions, you need to add them to the actions/index.ts file and ex
 
 ## Add metadata
 
-Let's create the `actions/mark-cat-image-as-favorite.ts` file inside of the `thecatapi` folder.
+Let's create the `actions/mark-cat-image-as-favorite.ts` file inside the `thecatapi` folder.
 
 ```typescript
 import defineAction from '../../../../helpers/define-action';

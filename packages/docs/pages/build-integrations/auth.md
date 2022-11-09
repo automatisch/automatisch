@@ -122,9 +122,9 @@ const verifyCredentials = async ($: IGlobalVariable) => {
 export default verifyCredentials;
 ```
 
-We have generally use `users/me` endpoint or any other endpoint that we can validate the API key or any other credentials that user provides us. For our example, we don't have a specific API endpoint to check whether the credentials are correct or not. So we will randomly pick one of the API endpoints, which will be the `GET /v1/images/search` endpoint. We will send a request to this endpoint with the API key. If the API key is correct, we will get a response from the API. If the API key is incorrect, we will get an error response from the API.
+We generally use the `users/me` endpoint or any other endpoint that we can validate the API key or any other credentials that the user provides. For our example, we don't have a specific API endpoint to check whether the credentials are correct or not. So we will randomly pick one of the API endpoints, which will be the `GET /v1/images/search` endpoint. We will send a request to this endpoint with the API key. If the API key is correct, we will get a response from the API. If the API key is incorrect, we will get an error response from the API.
 
-Let's implement the authentication logic that we mentioned in the `verify-credentials.ts` file.
+Let's implement the authentication logic that we mentioned above in the `verify-credentials.ts` file.
 
 ```typescript
 import { IGlobalVariable } from '@automatisch/types';
@@ -140,7 +140,7 @@ const verifyCredentials = async ($: IGlobalVariable) => {
 export default verifyCredentials;
 ```
 
-Here we send a request to `/v1/images/search` endpoint with the API key. If we get a response from the API, we will set the screen name to the auth data. If we get an error response from the API, it will throw an error.
+Here we send a request to the `/v1/images/search` endpoint with the API key. If we get a response from the API, we will set the screen name to the auth data. If we get an error response from the API, it will throw an error.
 
 ## Is still verified?
 
@@ -177,15 +177,15 @@ export default isStillVerified;
 ```
 
 :::info
-`isStillVerified` method needs to return `truthy` value if the credentials are still valid.
+`isStillVerified` method needs to return the `truthy` value if the credentials are still valid.
 :::
 
-We will use the `verifyCredentials` method to check whether the credentials are still valid or not. If the credentials are still valid, we will return `true`. Otherwise it will thrown an error which will automatically handled by Automatisch.
+We will use the `verifyCredentials` method to check whether the credentials are still valid or not. If the credentials are still valid, we will return `true`. Otherwise, it will throw an error which will automatically be handled by Automatisch.
 
 :::warning
-You might be wondering why we need to have two separate functions even though we use only one of them behind the scenes in this scenario. That might be true in our example or any other APIs similar to the cat API but there are some other third-party APIs which we can't use the same functionality directly to check whether the credentials are still valid or not. So we need to have two separate functions for verifying the credentials and checking whether the credentials are still valid or not.
+You might be wondering why we need to have two separate functions even though we use only one of them behind the scenes in this scenario. That might be true in our example or any other APIs similar to the cat API but there are some other third-party APIs that we can't use the same functionality directly to check whether the credentials are still valid or not. So we need to have two separate functions for verifying the credentials and checking whether the credentials are still valid or not.
 :::
 
-Now we have completed the authentication of the cat API. Go to `My Apps` page in Automatisch, try to add a new connection, select `The Cat API` and use your API key you got with an email. Then you can also check the test connection and reconnect functionality there.
+Now we have completed the authentication of the cat API. Go to the `My Apps` page in Automatisch, try to add a new connection, select `The Cat API` and use the `API Key` you got with an email. Then you can also check the test connection and reconnect functionality there.
 
 Let's move on to the next page to build a trigger.

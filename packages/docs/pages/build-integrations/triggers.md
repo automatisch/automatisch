@@ -146,4 +146,4 @@ We do not have to return anything from the `run` function. We are using the `$.p
 
 ### Test the trigger
 
-Let's go to the flows page of Automatisch and create a new flow. Choose the `The cat API` app and the `Search cat images` trigger and click `Test & Continue` button. If you a see JSON response in the user interface, it means that the trigger is working properly.
+Let's go to the flows page of Automatisch and create a new flow. Choose `The cat API` app and the `Search cat images` trigger and click `Test & Continue` button. If you a see JSON response in the user interface, it means that the trigger is working properly.

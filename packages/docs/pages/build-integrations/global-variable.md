@@ -21,7 +21,7 @@ The global variable is represented as `$` variable in the codebase, and it's a J
 ## $.auth.set
 
 ```typescript
-$.auth.set({
+await $.auth.set({
   key: 'value',
 });
 ```
@@ -54,10 +54,10 @@ It's used to retrieve the API base URL of the app that we defined previously. In
 
 ## $.http
 
-It's an HTTP client to be used for making HTTP requests. It's a wrapper around the [axios](https://axios-http.com) library. We use this property when we need to make HTTP requests to the third-party service. The `apiBaseUrl` field we set up in the app will be used as the base URL for the HTTP requests. For example to search the cat images, we can use the following code:
+It's an HTTP client to be used for making HTTP requests. It's a wrapper around the [axios](https://axios-http.com) library. We use this property when we need to make HTTP requests to the third-party service. The `apiBaseUrl` field we set up in the app will be used as the base URL for the HTTP requests. For example, to search the cat images, we can use the following code:
 
 ```typescript
-$.http.get('/v1/images/search?order=DESC', {
+await $.http.get('/v1/images/search?order=DESC', {
   headers: {
     'x-api-key': $.auth.data.apiKey,
   },
@@ -75,7 +75,7 @@ $.pushTriggerItem({
 });
 ```
 
-It's used to push trigger data to be processed by Automatisch. It must reflect the data that we get from the third-party service. Let's say for search tweets trigger it will be the JSON that represents the tweet object.
+It's used to push trigger data to be processed by Automatisch. It must reflect the data that we get from the third-party service. Let's say for search tweets trigger the `resourceData` will be the JSON that represents the single tweet object.
 
 ## $.setActionItem
 

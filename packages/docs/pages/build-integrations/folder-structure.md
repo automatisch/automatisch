@@ -15,7 +15,7 @@ The build integrations section is best understood when read from beginning to en
 :::
 
 :::warning
-If you did not set up the development environment yet, please go back to the [development setup](/contributing/development-setup) page and follow the instructions.
+If you still need to set up the development environment, please go back to the [development setup](/contributing/development-setup) page and follow the instructions.
 :::
 
 :::tip
@@ -57,7 +57,7 @@ As mentioned above, actions are the steps we place after a trigger. Actions are 
 
 ## Common
 
-Common folder is a place where you can put utilities or shared functionality used by other folders like triggers, actions, auth, etc.
+The common folder is where you can put utilities or shared functionality used by other folders like triggers, actions, auth, etc.
 
 ## Data
 
