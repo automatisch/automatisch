@@ -189,6 +189,26 @@ export default defineConfig({
               text: 'App',
               link: '/build-integrations/app',
             },
+            {
+              text: 'Global variable',
+              link: '/build-integrations/global-variable',
+            },
+            {
+              text: 'Auth',
+              link: '/build-integrations/auth',
+            },
+            {
+              text: 'Triggers',
+              link: '/build-integrations/triggers',
+            },
+            {
+              text: 'Actions',
+              link: '/build-integrations/actions',
+            },
+            {
+              text: 'Examples',
+              link: '/build-integrations/examples',
+            },
           ],
         },
         {

@@ -1,5 +1,27 @@
 # Folder Structure
 
+:::info
+
+The build integrations section is best understood when read from beginning to end. To get the most value out of it, start from the first page and read through page by page.
+
+1. [<mark>Folder structure</mark>](/build-integrations/folder-structure)
+2. [App](/build-integrations/app)
+3. [Global variable](/build-integrations/global-variable)
+4. [Auth](/build-integrations/auth)
+5. [Triggers](/build-integrations/triggers)
+6. [Actions](/build-integrations/actions)
+7. [Examples](/build-integrations/examples)
+
+:::
+
+:::warning
+If you still need to set up the development environment, please go back to the [development setup](/contributing/development-setup) page and follow the instructions.
+:::
+
+:::tip
+We will use the terms **integration** and **app** interchangeably in the documentation.
+:::
+
 Before diving into how to build an integration for Automatisch, it's better to check the folder structure of the apps and give you some idea about how we place different parts of the app.
 
 ## Folder structure of an app
@@ -35,7 +57,7 @@ As mentioned above, actions are the steps we place after a trigger. Actions are 
 
 ## Common
 
-Common folder is a place where you can put utilities or shared functionality used by other folders like triggers, actions, auth, etc.
+The common folder is where you can put utilities or shared functionality used by other folders like triggers, actions, auth, etc.
 
 ## Data
 
