@@ -64,6 +64,14 @@ await $.http.get('/v1/images/search?order=DESC', {
 });
 ```
 
+## $.step.parameters
+
+```typescript
+$.step.parameters; // { key: 'value' }
+```
+
+It refers to the parameters that are set by users in the UI. We use this property when we need to get the parameters for corresponding triggers and actions. For example [Send a message to channel](https://github.com/automatisch/automatisch/blob/main/packages/backend/src/apps/slack/actions/send-a-message-to-channel/post-message.ts) action from Slack integration, we have a step parameter called `message` that we need to use in the action. We can use `$.step.parameters.message` to get the value of the message to send a message to the Slack channel.
+
 ## $.pushTriggerItem
 
 ```typescript
