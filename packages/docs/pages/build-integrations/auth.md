@@ -142,6 +142,10 @@ export default verifyCredentials;
 
 Here we send a request to the `/v1/images/search` endpoint with the API key. If we get a response from the API, we will set the screen name to the auth data. If we get an error response from the API, it will throw an error.
 
+:::warning
+You must always provide a `screenName` field to auth data in the `verifyCredentials` method. Otherwise, the connection will not have a name and it will not function properly in the user interface.
+:::
+
 ## Is still verified?
 
 We have implemented the `verifyCredentials` method. Now we need to check whether the credentials are still valid or not for the test connection functionality in Automatisch. We will do that by defining the `isStillVerified` method.
