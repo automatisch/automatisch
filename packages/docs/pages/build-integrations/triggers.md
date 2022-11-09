@@ -136,11 +136,19 @@ We do not have to return anything from the `run` function. We are using the `$.p
 
 :::tip
 
-- `$.pushTriggerItem` is smart enough to understand if the data is already pushed to Automatisch or not. If the data is already pushed, it will stop the trigger, otherwise, it will continue to fetch new data.
+`$.pushTriggerItem` is smart enough to understand if the data is already pushed to Automatisch or not. If the data is already pushed, it will stop the trigger, otherwise, it will continue to fetch new data.
 
-- `$.pushTriggerItem` also understands whether the trigger is executed with `Test & Continue` button in the user interface or it's a trigger from a published flow. If the trigger is executed with `Test & Continue` button, it will push only one item regardless of whether we already processed the data or not and early exits the process, otherwise, it will fetch the remaining data.
+:::
 
-- Let's say the trigger started to execute. It fetched the first five pages of data from the third-party API with five different HTTP requests and you still need to get the next page but you started to get an API rate limit error. In this case, Automatisch will not lose the data that is already fetched from the first five requests. It stops the trigger when it got the error the first time but processes all previously fetched data.
+:::tip
+
+`$.pushTriggerItem` also understands whether the trigger is executed with `Test & Continue` button in the user interface or it's a trigger from a published flow. If the trigger is executed with `Test & Continue` button, it will push only one item regardless of whether we already processed the data or not and early exits the process, otherwise, it will fetch the remaining data.
+
+:::
+
+:::tip
+
+Let's say the trigger started to execute. It fetched the first five pages of data from the third-party API with five different HTTP requests and you still need to get the next page but you started to get an API rate limit error. In this case, Automatisch will not lose the data that is already fetched from the first five requests. It stops the trigger when it got the error the first time but processes all previously fetched data.
 
 :::
 
