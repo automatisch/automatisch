@@ -94,13 +94,7 @@ export default {
         },
         {
           name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'oauthVerifier',
-              value: '{openAuthPopup.oauth_verifier}',
-            },
-          ],
+          value: '{openAuthPopup.all}',
         },
       ],
     },
