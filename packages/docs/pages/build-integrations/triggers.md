@@ -57,7 +57,7 @@ If you add new triggers, you need to add them to the `triggers/index.ts` file an
 
 ## Add metadata
 
-Create the `triggers/search-cat-images.ts` file inside of the `thecatapi` folder.
+Create the `triggers/search-cat-images/index.ts` file inside of the `thecatapi` folder.
 
 ```typescript
 import defineTrigger from '../../../../helpers/define-trigger';
@@ -82,7 +82,7 @@ Let's briefly explain what we defined here.
 - `description`: The description of the trigger.
 - `run`: The function that is executed when the trigger is triggered.
 
-## Implement trigger
+## Implement the trigger
 
 :::danger
 
@@ -93,7 +93,8 @@ Let's briefly explain what we defined here.
 
 Implement the `run` function by adding highlighted lines.
 
-```typescript{6-29}
+```typescript{1,7-30}
+import { IJSONObject } from '@automatisch/types';
 import defineTrigger from '../../../../helpers/define-trigger';
 
 export default defineTrigger({
@@ -103,7 +104,7 @@ export default defineTrigger({
     let response;
 
     const headers = {
-      'x-api-key': $.auth.data.apiKey,
+      'x-api-key': $.auth.data.apiKey as string,
     };
 
     do {
@@ -114,7 +115,7 @@ export default defineTrigger({
         const dataItem = {
           raw: image,
           meta: {
-            internalId: image.id,
+            internalId: image.id as string
           },
         };
 
@@ -152,6 +153,6 @@ Let's say the trigger started to execute. It fetched the first five pages of dat
 
 :::
 
-### Test the trigger
+## Test the trigger
 
 Go to the flows page of Automatisch and create a new flow. Choose `The cat API` app and the `Search cat images` trigger and click `Test & Continue` button. If you a see JSON response in the user interface, it means that the trigger is working properly.

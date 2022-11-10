@@ -48,6 +48,7 @@ export default defineApp({
 Let's create the `auth/index.ts` file inside of the `thecatapi` folder.
 
 ```bash
+mkdir auth
 touch auth/index.ts
 ```
 
@@ -193,6 +194,8 @@ You might be wondering why we need to have two separate functions even though we
 :::tip
 If your integration requires you to connect through the authorization URL of the third-party service, you need to use the `generateAuthUrl` method together with the `verifyCredentials` and the `isStillVerified` methods. Check [3-legged OAuth](/build-integrations/examples#_3-legged-oauth) examples to see how to implement them.
 :::
+
+## Test the authentication
 
 Now we have completed the authentication of the cat API. Go to the `My Apps` page in Automatisch, try to add a new connection, select `The Cat API` and use the `API Key` you got with an email. Then you can also check the test connection and reconnect functionality there.
 

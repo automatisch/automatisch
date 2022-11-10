@@ -44,7 +44,7 @@ export default defineApp({
 Create the `actions/index.ts` file inside of the `thecatapi` folder.
 
 ```typescript
-import mark-cat-image-as-favorite from './mark-cat-image-as-favorite';
+import markCatImageAsFavorite from './mark-cat-image-as-favorite';
 
 export default [markCatImageAsFavorite];
 ```
@@ -55,7 +55,7 @@ If you add new actions, you need to add them to the actions/index.ts file and ex
 
 ## Add metadata
 
-Create the `actions/mark-cat-image-as-favorite.ts` file inside the `thecatapi` folder.
+Create the `actions/mark-cat-image-as-favorite/index.ts` file inside the `thecatapi` folder.
 
 ```typescript
 import defineAction from '../../../../helpers/define-action';
@@ -100,11 +100,11 @@ export default defineAction({
   // ...
 
   async run($) {
-    const requestPath = `/v1/favorites`;
+    const requestPath = '/v1/favourites';
     const imageId = $.step.parameters.imageId;
 
     const headers = {
-      'x-api-key': $.auth.data.apiKey,
+      'x-api-key': $.auth.data.apiKey as string,
     };
 
     const response = await $.http.post(
