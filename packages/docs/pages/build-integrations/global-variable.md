@@ -52,6 +52,14 @@ $.app.apiBaseUrl; // https://api.thecatapi.com
 
 It's used to retrieve the API base URL of the app that we defined previously. In our example, it returns `https://api.thecatapi.com`. We use this property when we need to use the API base URL of the third-party service.
 
+## $.app.auth.fields
+
+```typescript
+$.app.auth.fields;
+```
+
+It's used to retrieve the fields that we defined in the `auth` section of the app. We use this property when we need to get the fields of the authentication section of the app.
+
 ## $.http
 
 It's an HTTP client to be used for making HTTP requests. It's a wrapper around the [axios](https://axios-http.com) library. We use this property when we need to make HTTP requests to the third-party service. The `apiBaseUrl` field we set up in the app will be used as the base URL for the HTTP requests. For example, to search the cat images, we can use the following code:
