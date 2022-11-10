@@ -23,7 +23,11 @@ type Query {
     limit: Int!
     offset: Int!
   ): ExecutionStepConnection
-  getData(stepId: String!, key: String!, parameters: JSONObject): JSONObject
+  getDynamicData(
+    stepId: String!
+    key: String!
+    parameters: JSONObject
+  ): JSONObject
   getCurrentUser: User
   healthcheck: AppHealth
 }

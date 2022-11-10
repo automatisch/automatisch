@@ -10,7 +10,7 @@ import type {
   IJSONObject,
 } from '@automatisch/types';
 
-import { GET_DATA } from 'graphql/queries/get-data';
+import { GET_DYNAMIC_DATA } from 'graphql/queries/get-dynamic-data';
 
 const variableRegExp = /({.*?})/g;
 
@@ -49,7 +49,8 @@ function computeArguments(
  */
 function useDynamicData(stepId: string | undefined, schema: IField) {
   const lastComputedVariables = React.useRef({});
-  const [getData, { called, data, loading }] = useLazyQuery(GET_DATA);
+  const [getDynamicData, { called, data, loading }] =
+    useLazyQuery(GET_DYNAMIC_DATA);
   const { getValues } = useFormContext();
   const formValues = getValues();
 
@@ -91,18 +92,18 @@ function useDynamicData(stepId: string | undefined, schema: IField) {
       schema.source &&
       computedVariables
     ) {
-      getData({
+      getDynamicData({
         variables: {
           stepId,
           ...computedVariables,
         },
       });
     }
-  }, [getData, stepId, schema, computedVariables]);
+  }, [getDynamicData, stepId, schema, computedVariables]);
 
   return {
     called,
-    data: data?.getData,
+    data: data?.getDynamicData,
     loading,
   };
 }

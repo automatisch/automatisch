@@ -1,4 +1,4 @@
-import { IData, IJSONObject } from '@automatisch/types';
+import { IDynamicData, IJSONObject } from '@automatisch/types';
 import Context from '../../types/express/context';
 import App from '../../models/app';
 import globalVariable from '../../helpers/global-variable';
@@ -9,7 +9,11 @@ type Params = {
   parameters: IJSONObject;
 };
 
-const getData = async (_parent: unknown, params: Params, context: Context) => {
+const getDynamicData = async (
+  _parent: unknown,
+  params: Params,
+  context: Context
+) => {
   const step = await context.currentUser
     .$relatedQuery('steps')
     .withGraphFetched({
@@ -27,7 +31,9 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
   const app = await App.findOneByKey(step.appKey);
   const $ = await globalVariable({ connection, app, flow: step.flow, step });
 
-  const command = app.data.find((data: IData) => data.key === params.key);
+  const command = app.dynamicData.find(
+    (data: IDynamicData) => data.key === params.key
+  );
 
   for (const parameterKey in params.parameters) {
     const parameterValue = params.parameters[parameterKey];
@@ -43,4 +49,4 @@ const getData = async (_parent: unknown, params: Params, context: Context) => {
   return fetchedData.data;
 };
 
-export default getData;
+export default getDynamicData;

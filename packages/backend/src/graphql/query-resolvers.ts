@@ -8,7 +8,7 @@ import getStepWithTestExecutions from './queries/get-step-with-test-executions';
 import getExecution from './queries/get-execution';
 import getExecutions from './queries/get-executions';
 import getExecutionSteps from './queries/get-execution-steps';
-import getData from './queries/get-data';
+import getDynamicData from './queries/get-dynamic-data';
 import getCurrentUser from './queries/get-current-user';
 import healthcheck from './queries/healthcheck';
 
@@ -23,7 +23,7 @@ const queryResolvers = {
   getExecution,
   getExecutions,
   getExecutionSteps,
-  getData,
+  getDynamicData,
   getCurrentUser,
   healthcheck,
 };

@@ -14,7 +14,7 @@ export default defineAction({
       variables: false,
       source: {
         type: 'query',
-        name: 'getData',
+        name: 'getDynamicData',
         arguments: [
           {
             name: 'key',
