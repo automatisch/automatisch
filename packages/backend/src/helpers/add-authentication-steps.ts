@@ -54,7 +54,7 @@ const authenticationStepsWithAuthUrl = [
   },
   {
     type: 'mutation' as const,
-    name: 'createAuthData',
+    name: 'generateAuthUrl',
     arguments: [
       {
         name: 'id',
@@ -68,7 +68,7 @@ const authenticationStepsWithAuthUrl = [
     arguments: [
       {
         name: 'url',
-        value: '{createAuthData.url}',
+        value: '{generateAuthUrl.url}',
       },
     ],
   },

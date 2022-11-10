@@ -178,10 +178,9 @@ export interface IData {
 }
 
 export interface IAuth {
-  createAuthData?($: IGlobalVariable): Promise<void>;
+  generateAuthUrl?($: IGlobalVariable): Promise<void>;
   verifyCredentials($: IGlobalVariable): Promise<any>;
   isStillVerified($: IGlobalVariable): Promise<boolean>;
-  generateAuthUrl?: boolean;
   fields: IField[];
   authenticationSteps?: IAuthenticationStep[];
   reconnectionSteps?: IAuthenticationStep[];

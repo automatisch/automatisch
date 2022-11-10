@@ -1,9 +1,8 @@
-import createAuthData from './create-auth-data';
+import generateAuthUrl from './generate-auth-url';
 import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
 
 export default {
-  generateAuthUrl: true,
   fields: [
     {
       key: 'oAuthRedirectUrl',
@@ -41,7 +40,7 @@ export default {
     },
   ],
 
-  createAuthData,
+  generateAuthUrl,
   verifyCredentials,
   isStillVerified,
 };

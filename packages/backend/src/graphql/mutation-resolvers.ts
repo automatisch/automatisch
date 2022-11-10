@@ -1,5 +1,5 @@
 import createConnection from './mutations/create-connection';
-import createAuthData from './mutations/create-auth-data';
+import generateAuthUrl from './mutations/generate-auth-url';
 import updateConnection from './mutations/update-connection';
 import resetConnection from './mutations/reset-connection';
 import verifyConnection from './mutations/verify-connection';
@@ -17,7 +17,7 @@ import login from './mutations/login';
 
 const mutationResolvers = {
   createConnection,
-  createAuthData,
+  generateAuthUrl,
   updateConnection,
   resetConnection,
   verifyConnection,
