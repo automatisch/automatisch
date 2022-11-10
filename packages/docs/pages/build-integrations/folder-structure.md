@@ -34,7 +34,7 @@ Here, you can see the folder structure of an example app. We will briefly walk t
 ├── assets
 ├── auth
 ├── common
-├── data
+├── dynamic-data
 ├── index.ts
 └── triggers
 ```
@@ -59,9 +59,9 @@ As mentioned above, actions are the steps we place after a trigger. Actions are 
 
 The common folder is where you can put utilities or shared functionality used by other folders like triggers, actions, auth, etc.
 
-## Data
+## Dynamic data
 
-Sometimes you need to get some dynamic data with the user interface to set up the triggers or actions. For example, to use the new issues trigger from the GitHub app, we need to select the repository we want to track for the new issues. This selection should load the repository list from GitHub. This is where the data folder comes into play. You can put your data fetching logic here when it doesn't belong to triggers or actions but is used to set up triggers or actions.
+Sometimes you need to get some dynamic data with the user interface to set up the triggers or actions. For example, to use the new issues trigger from the GitHub app, we need to select the repository we want to track for the new issues. This selection should load the repository list from GitHub. This is where the data folder comes into play. You can put your data fetching logic here when it doesn't belong to triggers or actions but is used to set up triggers or actions in the Automatisch user interface.
 
 ## Assets
 
