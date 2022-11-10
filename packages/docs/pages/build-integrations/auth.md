@@ -190,6 +190,10 @@ We will use the `verifyCredentials` method to check whether the credentials are 
 You might be wondering why we need to have two separate functions even though we use only one of them behind the scenes in this scenario. That might be true in our example or any other APIs similar to the cat API but there are some other third-party APIs that we can't use the same functionality directly to check whether the credentials are still valid or not. So we need to have two separate functions for verifying the credentials and checking whether the credentials are still valid or not.
 :::
 
+:::tip
+If your integration requires you to connect through the authorization URL of the third-party service, you need to use the `generateAuthUrl` method together with the `verifyCredentials` and the `isStillVerified` methods. Check [3-legged OAuth](/build-integrations/examples#_3-legged-oauth) examples to see how to implement them.
+:::
+
 Now we have completed the authentication of the cat API. Go to the `My Apps` page in Automatisch, try to add a new connection, select `The Cat API` and use the `API Key` you got with an email. Then you can also check the test connection and reconnect functionality there.
 
 Let's move on to the next page to build a trigger.
