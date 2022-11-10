@@ -163,7 +163,7 @@ export interface IApp {
   connectionCount?: number;
   flowCount?: number;
   beforeRequest?: TBeforeRequest[];
-  data?: IData;
+  dynamicData?: IDynamicData;
   triggers?: ITrigger[];
   actions?: IAction[];
   connections?: IConnection[];
@@ -173,7 +173,7 @@ export type TBeforeRequest = {
   ($: IGlobalVariable, requestConfig: AxiosRequestConfig): AxiosRequestConfig;
 };
 
-export interface IData {
+export interface IDynamicData {
   [index: string]: any;
 }
 

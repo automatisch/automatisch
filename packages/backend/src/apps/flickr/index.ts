@@ -2,7 +2,7 @@ import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
 import triggers from './triggers';
-import data from './data';
+import dynamicData from './dynamic-data';
 
 export default defineApp({
   name: 'Flickr',
@@ -17,5 +17,5 @@ export default defineApp({
   beforeRequest: [addAuthHeader],
   auth,
   triggers,
-  data,
+  dynamicData,
 });
