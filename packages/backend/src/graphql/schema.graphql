@@ -30,7 +30,7 @@ type Query {
 
 type Mutation {
   createConnection(input: CreateConnectionInput): Connection
-  createAuthData(input: CreateAuthDataInput): AuthLink
+  generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   updateConnection(input: UpdateConnectionInput): Connection
   resetConnection(input: ResetConnectionInput): Connection
   verifyConnection(input: VerifyConnectionInput): Connection
@@ -225,7 +225,7 @@ input CreateConnectionInput {
   formattedData: JSONObject!
 }
 
-input CreateAuthDataInput {
+input GenerateAuthUrlInput {
   id: String!
 }
 

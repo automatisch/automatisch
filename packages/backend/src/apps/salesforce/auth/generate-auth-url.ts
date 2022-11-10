@@ -1,7 +1,7 @@
 import { IField, IGlobalVariable } from '@automatisch/types';
 import qs from 'qs';
 
-export default async function createAuthData($: IGlobalVariable) {
+export default async function generateAuthUrl($: IGlobalVariable) {
   const oauthRedirectUrlField = $.app.auth.fields.find(
     (field: IField) => field.key == 'oAuthRedirectUrl'
   );

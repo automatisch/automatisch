@@ -1,7 +1,7 @@
 import { IField, IGlobalVariable } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 
-export default async function createAuthData($: IGlobalVariable) {
+export default async function generateAuthUrl($: IGlobalVariable) {
   const oauthRedirectUrlField = $.app.auth.fields.find(
     (field: IField) => field.key == 'oAuthRedirectUrl'
   );
@@ -14,7 +14,7 @@ export default async function createAuthData($: IGlobalVariable) {
   const responseData = Object.fromEntries(new URLSearchParams(response.data));
 
   await $.auth.set({
-    url: `${$.app.apiBaseUrl}/oauth/authorize?oauth_token=${responseData.oauth_token}&perms=delete`,
+    url: `${$.app.baseUrl}/oauth/authorize?oauth_token=${responseData.oauth_token}`,
     accessToken: responseData.oauth_token,
     accessSecret: responseData.oauth_token_secret,
   });

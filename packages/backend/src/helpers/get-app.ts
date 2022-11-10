@@ -8,14 +8,12 @@ import {
   ITrigger,
 } from '@automatisch/types';
 import { omit, cloneDeep } from 'lodash';
+import addAuthenticationSteps from './add-authentication-steps';
 import addReconnectionSteps from './add-reconnection-steps';
 
 type TApps = Record<string, Promise<{ default: IApp }>>;
 const apps = fs
-  .readdirSync(
-    path.resolve(__dirname, `../apps/`),
-    { withFileTypes: true }
-  )
+  .readdirSync(path.resolve(__dirname, `../apps/`), { withFileTypes: true })
   .reduce((apps, dirent) => {
     if (!dirent.isDirectory()) return apps;
 
@@ -36,6 +34,7 @@ const getApp = async (appKey: string, stripFuncs = true) => {
   let appData: IApp = cloneDeep(await getDefaultExport(appKey));
 
   if (appData.auth) {
+    appData = addAuthenticationSteps(appData);
     appData = addReconnectionSteps(appData);
   }
 

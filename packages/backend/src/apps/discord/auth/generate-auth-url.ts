@@ -2,7 +2,7 @@ import { IField, IGlobalVariable } from '@automatisch/types';
 import { URLSearchParams } from 'url';
 import scopes from '../common/scopes';
 
-export default async function createAuthData($: IGlobalVariable) {
+export default async function generateAuthUrl($: IGlobalVariable) {
   const oauthRedirectUrlField = $.app.auth.fields.find(
     (field: IField) => field.key == 'oAuthRedirectUrl'
   );

@@ -3,7 +3,7 @@ import { URLSearchParams } from 'url';
 
 const verifyCredentials = async ($: IGlobalVariable) => {
   const response = await $.http.post(
-    `/oauth/access_token?oauth_verifier=${$.auth.data.oauthVerifier}&oauth_token=${$.auth.data.accessToken}`,
+    `/oauth/access_token?oauth_verifier=${$.auth.data.oauth_verifier}&oauth_token=${$.auth.data.accessToken}`,
     null
   );
 

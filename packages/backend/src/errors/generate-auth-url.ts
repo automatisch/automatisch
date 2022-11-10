@@ -1,7 +1,7 @@
 import { IJSONObject } from '@automatisch/types';
 import BaseError from './base';
 
-export default class CreateAuthDataError extends BaseError {
+export default class GenerateAuthUrlError extends BaseError {
   constructor(error: IJSONObject) {
     const computedError =
       ((error.response as IJSONObject)?.data as IJSONObject) ||

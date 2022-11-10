@@ -1,4 +1,4 @@
-import createAuthData from './create-auth-data';
+import generateAuthUrl from './generate-auth-url';
 import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
 
@@ -39,84 +39,8 @@ export default {
       clickToCopy: false,
     },
   ],
-  authenticationSteps: [
-    {
-      type: 'mutation' as const,
-      name: 'createConnection',
-      arguments: [
-        {
-          name: 'key',
-          value: '{key}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'consumerKey',
-              value: '{fields.consumerKey}',
-            },
-            {
-              name: 'consumerSecret',
-              value: '{fields.consumerSecret}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'createAuthData',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
-    },
-    {
-      type: 'openWithPopup' as const,
-      name: 'openAuthPopup',
-      arguments: [
-        {
-          name: 'url',
-          value: '{createAuthData.url}',
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'updateConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'oauthVerifier',
-              value: '{openAuthPopup.oauth_verifier}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'verifyConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
-    },
-  ],
 
-  createAuthData,
+  generateAuthUrl,
   verifyCredentials,
   isStillVerified,
 };

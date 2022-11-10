@@ -2,7 +2,7 @@ import Context from '../../types/express/context';
 import axios from 'axios';
 import globalVariable from '../../helpers/global-variable';
 import App from '../../models/app';
-import CreateAuthDataError from '../../errors/create-auth-data';
+import GenerateAuthUrlError from '../../errors/generate-auth-url';
 
 type Params = {
   input: {
@@ -10,7 +10,7 @@ type Params = {
   };
 };
 
-const createAuthData = async (
+const generateAuthUrl = async (
   _parent: unknown,
   params: Params,
   context: Context
@@ -32,13 +32,13 @@ const createAuthData = async (
 
   const $ = await globalVariable({ connection, app });
   try {
-    await authInstance.createAuthData($);
+    await authInstance.generateAuthUrl($);
     await axios.get(connection.formattedData.url as string);
   } catch (error) {
-    throw new CreateAuthDataError(error);
+    throw new GenerateAuthUrlError(error);
   }
 
   return connection.formattedData;
 };
 
-export default createAuthData;
+export default generateAuthUrl;
