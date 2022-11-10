@@ -3,6 +3,7 @@ import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
 
 export default {
+  generateAuthUrl: true,
   fields: [
     {
       key: 'oAuthRedirectUrl',
@@ -37,86 +38,6 @@ export default {
       placeholder: null,
       description: null,
       clickToCopy: false,
-    },
-  ],
-  authenticationSteps: [
-    {
-      type: 'mutation' as const,
-      name: 'createConnection',
-      arguments: [
-        {
-          name: 'key',
-          value: '{key}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'consumerKey',
-              value: '{fields.consumerKey}',
-            },
-            {
-              name: 'consumerSecret',
-              value: '{fields.consumerSecret}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'createAuthData',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
-    },
-    {
-      type: 'openWithPopup' as const,
-      name: 'openAuthPopup',
-      arguments: [
-        {
-          name: 'url',
-          value: '{createAuthData.url}',
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'updateConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'code',
-              value: '{openAuthPopup.code}',
-            },
-            {
-              name: 'state',
-              value: '{openAuthPopup.state}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'verifyConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
     },
   ],
 

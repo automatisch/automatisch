@@ -7,7 +7,7 @@ const verifyCredentials = async ($: IGlobalVariable) => {
     {
       client_id: $.auth.data.consumerKey,
       client_secret: $.auth.data.consumerSecret,
-      code: $.auth.data.oauthVerifier,
+      code: $.auth.data.code,
     },
     {
       headers: {

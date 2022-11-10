@@ -86,58 +86,6 @@ export default {
       clickToCopy: false,
     },
   ],
-  authenticationSteps: [
-    {
-      type: 'mutation' as const,
-      name: 'createConnection',
-      arguments: [
-        {
-          name: 'key',
-          value: '{key}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'host',
-              value: '{fields.host}',
-            },
-            {
-              name: 'username',
-              value: '{fields.username}',
-            },
-            {
-              name: 'password',
-              value: '{fields.password}',
-            },
-            {
-              name: 'useTLS',
-              value: '{fields.useTls}',
-            },
-            {
-              name: 'port',
-              value: '{fields.port}',
-            },
-            {
-              name: 'fromEmail',
-              value: '{fields.fromEmail}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'verifyConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
-    },
-  ],
   verifyCredentials,
   isStillVerified,
 };

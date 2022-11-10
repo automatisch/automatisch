@@ -27,42 +27,6 @@ export default {
       clickToCopy: false,
     },
   ],
-  authenticationSteps: [
-    {
-      type: 'mutation' as const,
-      name: 'createConnection',
-      arguments: [
-        {
-          name: 'key',
-          value: '{key}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'accountSid',
-              value: '{fields.accountSid}',
-            },
-            {
-              name: 'authToken',
-              value: '{fields.authToken}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'mutation' as const,
-      name: 'verifyConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
-    },
-  ],
 
   verifyCredentials,
   isStillVerified,

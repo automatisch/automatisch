@@ -1,0 +1,101 @@
+import { IApp } from '@automatisch/types';
+
+function addAuthenticationSteps(app: IApp): IApp {
+  if (app.auth.generateAuthUrl) {
+    app.auth.authenticationSteps = authenticationStepsWithAuthUrl;
+  } else {
+    app.auth.authenticationSteps = authenticationStepsWithoutAuthUrl;
+  }
+
+  return app;
+}
+
+const authenticationStepsWithoutAuthUrl = [
+  {
+    type: 'mutation' as const,
+    name: 'createConnection',
+    arguments: [
+      {
+        name: 'key',
+        value: '{key}',
+      },
+      {
+        name: 'formattedData',
+        value: '{fields.all}',
+      },
+    ],
+  },
+  {
+    type: 'mutation' as const,
+    name: 'verifyConnection',
+    arguments: [
+      {
+        name: 'id',
+        value: '{createConnection.id}',
+      },
+    ],
+  },
+];
+
+const authenticationStepsWithAuthUrl = [
+  {
+    type: 'mutation' as const,
+    name: 'createConnection',
+    arguments: [
+      {
+        name: 'key',
+        value: '{key}',
+      },
+      {
+        name: 'formattedData',
+        value: '{fields.all}',
+      },
+    ],
+  },
+  {
+    type: 'mutation' as const,
+    name: 'createAuthData',
+    arguments: [
+      {
+        name: 'id',
+        value: '{createConnection.id}',
+      },
+    ],
+  },
+  {
+    type: 'openWithPopup' as const,
+    name: 'openAuthPopup',
+    arguments: [
+      {
+        name: 'url',
+        value: '{createAuthData.url}',
+      },
+    ],
+  },
+  {
+    type: 'mutation' as const,
+    name: 'updateConnection',
+    arguments: [
+      {
+        name: 'id',
+        value: '{createConnection.id}',
+      },
+      {
+        name: 'formattedData',
+        value: '{openAuthPopup.all}',
+      },
+    ],
+  },
+  {
+    type: 'mutation' as const,
+    name: 'verifyConnection',
+    arguments: [
+      {
+        name: 'id',
+        value: '{createConnection.id}',
+      },
+    ],
+  },
+];
+
+export default addAuthenticationSteps;

@@ -14,7 +14,7 @@ const verifyCredentials = async ($: IGlobalVariable) => {
     response_type: 'code',
     scope: scopes.join(' '),
     client_secret: $.auth.data.consumerSecret as string,
-    code: $.auth.data.oauthVerifier as string,
+    code: $.auth.data.code as string,
     grant_type: 'authorization_code',
   });
   const { data: verifiedCredentials } = await $.http.post(
