@@ -4,6 +4,7 @@ import Execution from '../models/execution';
 import ExecutionStep from '../models/execution-step';
 import computeParameters from '../helpers/compute-parameters';
 import globalVariable from '../helpers/global-variable';
+import HttpError from '../errors/http';
 
 type ProcessActionOptions = {
   flowId: string;
@@ -43,8 +44,8 @@ export const processAction = async (options: ProcessActionOptions) => {
   try {
     await actionCommand.run($);
   } catch (error) {
-    if (error?.response?.httpError) {
-      $.actionOutput.error = error.response.httpError;
+    if (error instanceof HttpError) {
+      $.actionOutput.error = error.details;
     } else {
       try {
         $.actionOutput.error = JSON.parse(error.message);
