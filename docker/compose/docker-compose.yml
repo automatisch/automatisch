@@ -2,7 +2,7 @@ version: '3.9'
 services:
   main:
     build:
-      context: ../images/wait-for-postgres
+      context: ../images/main
       network: host
     ports:
       - '3000:3000'
@@ -22,7 +22,7 @@ services:
       - automatisch_storage:/automatisch/storage
   worker:
     build:
-      context: ../images/plain
+      context: ../images/worker
       network: host
     depends_on:
       - main
@@ -32,7 +32,6 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_DATABASE=automatisch
       - POSTGRES_USERNAME=automatisch_user
-    command: automatisch start-worker --env-file /automatisch/storage/.env
     volumes:
       - automatisch_storage:/automatisch/storage
   postgres:
