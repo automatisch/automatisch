@@ -1,6 +1,6 @@
 {
   "name": "@automatisch/e2e-tests",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "license": "AGPL-3.0",
   "private": true,
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
