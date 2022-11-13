@@ -1,4 +1,5 @@
 version: '3.9'
+name: automatisch
 services:
   main:
     build:
