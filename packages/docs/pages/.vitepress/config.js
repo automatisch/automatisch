@@ -255,7 +255,7 @@ export default defineConfig({
     // Added for logging purposes to check if there is something
     // wrong with the canonical URL in the deployment pipeline.
     console.log('');
-    console.log('File path : ', ctx.pageData.relativePath);
+    console.log('File path: ', ctx.pageData.relativePath);
     console.log('Canonical URL: ', canonicalUrl);
 
     return [
@@ -266,6 +266,15 @@ export default defineConfig({
           href: canonicalUrl,
         },
       ],
+      [
+        'script',
+        {
+          defer: true,
+          'data-domain': 'automatisch.io',
+          'data-api': 'https://automatisch.io/data/api/event',
+          src: 'https://automatisch.io/data/js/script.js',
+        }
+      ]
     ];
   },
 
