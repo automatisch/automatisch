@@ -30,7 +30,7 @@ git clone git@github.com:automatisch/automatisch.git
 cd automatisch/docker/compose
 
 # Start
-docker compose up
+docker compose -p automatisch up
 ```
 
 You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. You can also change your email and password later on from the settings page.
