@@ -10,7 +10,7 @@ git clone git@github.com:automatisch/automatisch.git
 cd automatisch/docker/compose
 
 # Start
-docker compose up
+docker compose -p automatisch up
 ```
 
 ## Let's discover!
