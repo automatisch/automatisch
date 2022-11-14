@@ -15,6 +15,7 @@ export const GET_APPS = gql`
       key
       iconUrl
       docUrl
+      authDocUrl
       primaryColor
       connectionCount
       supportsConnections
