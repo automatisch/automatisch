@@ -39,7 +39,25 @@ export default function createHttpClient({
 
   instance.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
+      const { config } = error;
+      const { status } = error.response;
+
+      if (status === 401 && $.app.auth.refreshAccessToken && config.additionalProperties.shouldRetry !== false) {
+        await $.app.auth.refreshAccessToken($);
+
+        // retry the request
+        const newResponse = await instance.request({
+          ...config,
+          additionalProperties: {
+            ...(config.additionalProperties || {}),
+            shouldRetry: false,
+          }
+        });
+
+        return newResponse;
+      }
+
       throw new HttpError(error);
     }
   );

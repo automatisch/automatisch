@@ -179,8 +179,9 @@ export interface IDynamicData {
 
 export interface IAuth {
   generateAuthUrl?($: IGlobalVariable): Promise<void>;
-  verifyCredentials($: IGlobalVariable): Promise<any>;
+  verifyCredentials($: IGlobalVariable): Promise<void>;
   isStillVerified($: IGlobalVariable): Promise<boolean>;
+  refreshAccessToken?($: IGlobalVariable): Promise<void>;
   fields: IField[];
   authenticationSteps?: IAuthenticationStep[];
   reconnectionSteps?: IAuthenticationStep[];
