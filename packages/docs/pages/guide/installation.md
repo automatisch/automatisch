@@ -4,7 +4,7 @@ You can install Automatisch by using docker compose.
 
 ```bash
 # Clone the repository
-git clone git@github.com:automatisch/automatisch.git
+git clone https://github.com/automatisch/automatisch.git
 
 # Go to the repository folder
 cd automatisch/docker/compose
