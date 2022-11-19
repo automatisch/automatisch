@@ -20,7 +20,9 @@ const verifyCredentials = async ($: IGlobalVariable) => {
 
   await $.auth.set({
     accessToken: data.access_token,
+    refreshToken: data.refresh_token,
     tokenType: data.token_type,
+    idToken: data.id_token,
     instanceUrl: data.instance_url,
     signature: data.signature,
     userId: data.id,
