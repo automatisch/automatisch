@@ -2,7 +2,9 @@ version: '3.9'
 services:
   main:
     build:
-      context: .
+      context: ./docker
+      tags:
+        - automatisch/automatisch
       network: host
     ports:
       - '3000:3000'
@@ -25,8 +27,10 @@ services:
       - automatisch_storage:/automatisch/storage
   worker:
     build:
-      context: .
+      context: ./docker
       network: host
+      tags:
+        - automatisch/automatisch
     depends_on:
       - main
     environment:
