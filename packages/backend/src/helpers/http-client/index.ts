@@ -43,7 +43,7 @@ export default function createHttpClient({
       const { config } = error;
       const { status } = error.response;
 
-      if (status === 401 && $.app.auth.refreshAccessToken && config.additionalProperties.shouldRetry !== false) {
+      if (status === 401 && $.app.auth.refreshAccessToken && config.additionalProperties?.shouldRetry !== false) {
         await $.app.auth.refreshAccessToken($);
 
         // retry the request
