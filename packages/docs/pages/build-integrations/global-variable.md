@@ -72,6 +72,8 @@ await $.http.get('/v1/images/search?order=DESC', {
 });
 ```
 
+Keep in mind that the HTTP client handles the error with the status code that falls out of the range of 2xx. So, you don't need to handle the error manually. It will be processed with the error message or error payload that you can check on the execution details page in Automatisch.
+
 ## $.step.parameters
 
 ```typescript
