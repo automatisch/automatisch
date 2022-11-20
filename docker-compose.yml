@@ -59,3 +59,6 @@ services:
       - redis_data:/data
 volumes:
   automatisch_storage:
+  postgres_data:
+  redis_data:
+
