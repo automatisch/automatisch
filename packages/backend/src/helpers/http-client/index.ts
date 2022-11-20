@@ -43,17 +43,17 @@ export default function createHttpClient({
       const { config } = error;
       const { status } = error.response;
 
-      if (status === 401 && $.app.auth.refreshAccessToken && config.additionalProperties?.shouldRetry !== false) {
-        await $.app.auth.refreshAccessToken($);
+      if (
+        status === 401 &&
+        $.app.auth.refreshToken &&
+        !$.app.auth.isRefreshTokenRequested
+      ) {
+        $.app.auth.isRefreshTokenRequested = true;
+        await $.app.auth.refreshToken($);
 
-        // retry the request
-        const newResponse = await instance.request({
-          ...config,
-          additionalProperties: {
-            ...(config.additionalProperties || {}),
-            shouldRetry: false,
-          }
-        });
+        // retry the previous request before the expired token error
+        const newResponse = await instance.request(config);
+        $.app.auth.isRefreshTokenRequested = false;
 
         return newResponse;
       }
