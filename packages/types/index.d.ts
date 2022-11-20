@@ -182,7 +182,7 @@ export interface IAuth {
   verifyCredentials($: IGlobalVariable): Promise<void>;
   isStillVerified($: IGlobalVariable): Promise<boolean>;
   refreshToken?($: IGlobalVariable): Promise<void>;
-  isRefreshTokenRequested: boolean;
+  isRefreshTokenRequested?: boolean;
   fields: IField[];
   authenticationSteps?: IAuthenticationStep[];
   reconnectionSteps?: IAuthenticationStep[];
