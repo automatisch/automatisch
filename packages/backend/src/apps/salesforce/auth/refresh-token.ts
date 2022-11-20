@@ -1,20 +1,16 @@
 import { IGlobalVariable } from '@automatisch/types';
 import qs from 'querystring';
 
-const refreshAccessToken = async ($: IGlobalVariable) => {
+const refreshToken = async ($: IGlobalVariable) => {
   const searchParams = qs.stringify({
     grant_type: 'refresh_token',
     client_id: $.auth.data.consumerKey as string,
     client_secret: $.auth.data.consumerSecret as string,
     refresh_token: $.auth.data.refreshToken as string,
   });
+
   const { data } = await $.http.post(
-    `${$.auth.data.oauth2Url}/token?${searchParams}`,
-    {
-      additionalProperties: {
-        shouldRetry: false,
-      },
-    },
+    `${$.auth.data.oauth2Url}/token?${searchParams}`
   );
 
   await $.auth.set({
@@ -26,4 +22,4 @@ const refreshAccessToken = async ($: IGlobalVariable) => {
   });
 };
 
-export default refreshAccessToken;
+export default refreshToken;
