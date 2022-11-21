@@ -3,8 +3,7 @@ services:
   main:
     build:
       context: ./docker
-      tags:
-        - automatisch/automatisch
+    image: automatisch/automatisch
     ports:
       - '3000:3000'
     depends_on:
@@ -27,8 +26,7 @@ services:
   worker:
     build:
       context: ./docker
-      tags:
-        - automatisch/automatisch
+    image: automatisch/automatisch
     depends_on:
       - main
     environment:
