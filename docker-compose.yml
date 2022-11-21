@@ -11,6 +11,7 @@ services:
       postgres:
         condition: service_healthy
       redis:
+        condition: service_started
     environment:
       - HOST=localhost
       - PROTOCOL=http
