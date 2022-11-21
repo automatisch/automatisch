@@ -2,8 +2,9 @@ version: '3.9'
 services:
   main:
     build:
-      context: ../images/main
-      network: host
+      context: ./docker
+      tags:
+        - automatisch/automatisch
     ports:
       - '3000:3000'
     depends_on:
@@ -18,12 +19,16 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_DATABASE=automatisch
       - POSTGRES_USERNAME=automatisch_user
+      - POSTGRES_PASSWORD=automatisch_password
+      - ENCRYPTION_KEY
+      - APP_SECRET_KEY
     volumes:
       - automatisch_storage:/automatisch/storage
   worker:
     build:
-      context: ../images/worker
-      network: host
+      context: ./docker
+      tags:
+        - automatisch/automatisch
     depends_on:
       - main
     environment:
@@ -32,15 +37,25 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_DATABASE=automatisch
       - POSTGRES_USERNAME=automatisch_user
+      - POSTGRES_PASSWORD=automatisch_password
+      - ENCRYPTION_KEY
+      - APP_SECRET_KEY
+      - WORKER=true
     volumes:
       - automatisch_storage:/automatisch/storage
   postgres:
     image: 'postgres:14.5'
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_DB: automatisch
-      POSTGRES_USER: automatisch_user
+      - POSTGRES_DB=automatisch
+      - POSTGRES_USER=automatisch_user
+      - POSTGRES_PASSWORD=automatisch_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   redis:
     image: 'redis:7.0.4'
+    volumes:
+      - redis_data:/data
 volumes:
   automatisch_storage:
+  postgres_data:
+  redis_data:

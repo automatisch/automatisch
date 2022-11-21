@@ -27,7 +27,7 @@ The official documentation can be found here: [https://automatisch.io/docs](http
 git clone git@github.com:automatisch/automatisch.git
 
 # Go to the repository folder
-cd automatisch/docker/compose
+cd automatisch
 
 # Start
 docker compose -p automatisch up
