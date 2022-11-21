@@ -21,8 +21,8 @@ services:
       - POSTGRES_DATABASE=automatisch
       - POSTGRES_USERNAME=automatisch_user
       - POSTGRES_PASSWORD=automatisch_password
-      - ENCRYPTION_KEY=automatisch_encryption_key
-      - APP_SECRET_KEY=automatisch_app_secret_key
+      - ENCRYPTION_KEY
+      - APP_SECRET_KEY
     volumes:
       - automatisch_storage:/automatisch/storage
   worker:
@@ -40,8 +40,8 @@ services:
       - POSTGRES_DATABASE=automatisch
       - POSTGRES_USERNAME=automatisch_user
       - POSTGRES_PASSWORD=automatisch_password
-      - ENCRYPTION_KEY=automatisch_encryption_key
-      - APP_SECRET_KEY=automatisch_app_secret_key
+      - ENCRYPTION_KEY
+      - APP_SECRET_KEY
       - WORKER=true
     volumes:
       - automatisch_storage:/automatisch/storage
@@ -61,4 +61,3 @@ volumes:
   automatisch_storage:
   postgres_data:
   redis_data:
-
