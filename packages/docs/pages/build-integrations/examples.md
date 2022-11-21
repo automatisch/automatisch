@@ -25,6 +25,10 @@ The build integrations section is best understood when read from beginning to en
 - [Slack](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/slack/auth/index.ts)
 - [Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/auth/index.ts)
 
+### OAuth with the refresh token
+
+- [Salesforce](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/salesforce/auth/index.ts)
+
 ### API key
 
 - [DeepL](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/deepl/auth/index.ts)
