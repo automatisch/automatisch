@@ -5,7 +5,6 @@ services:
       context: ./docker
       tags:
         - automatisch/automatisch
-      network: host
     ports:
       - '3000:3000'
     depends_on:
@@ -28,7 +27,6 @@ services:
   worker:
     build:
       context: ./docker
-      network: host
       tags:
         - automatisch/automatisch
     depends_on:
