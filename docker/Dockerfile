@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:16
+FROM node:16-alpine
 WORKDIR /automatisch
 
 RUN apt-get update && apt-get install -y postgresql-client
