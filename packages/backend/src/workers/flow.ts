@@ -4,6 +4,7 @@ import logger from '../helpers/logger';
 import triggerQueue from '../queues/trigger';
 import { processFlow } from '../services/flow';
 import Flow from '../models/flow';
+import { REMOVE_AFTER_30_DAYS_OR_150_JOBS, REMOVE_AFTER_7_DAYS_OR_50_JOBS } from '../helpers/remove-job-configuration';
 
 export const worker = new Worker(
   'flow',
@@ -17,6 +18,11 @@ export const worker = new Worker(
 
     const reversedData = data.reverse();
 
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+    }
+
     for (const triggerItem of reversedData) {
       const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
 
@@ -26,7 +32,7 @@ export const worker = new Worker(
         triggerItem,
       };
 
-      await triggerQueue.add(jobName, jobPayload);
+      await triggerQueue.add(jobName, jobPayload, jobOptions);
     }
 
     if (error) {
@@ -38,7 +44,7 @@ export const worker = new Worker(
         error,
       };
 
-      await triggerQueue.add(jobName, jobPayload);
+      await triggerQueue.add(jobName, jobPayload, jobOptions);
     }
   },
   { connection: redisConfig }
