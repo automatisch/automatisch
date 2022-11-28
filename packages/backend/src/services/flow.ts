@@ -23,7 +23,13 @@ export const processFlow = async (options: ProcessFlowOptions) => {
   });
 
   try {
-    await triggerCommand.run($);
+    if (triggerCommand.type === 'webhook' && !flow.active) {
+      await triggerCommand.testRun($);
+    } else if (triggerCommand.type === 'webhook' && flow.active) {
+      await triggerCommand.registerHook($);
+    } else {
+      await triggerCommand.run($);
+    }
   } catch (error) {
     if (error instanceof EarlyExitError === false) {
       if (error instanceof HttpError) {

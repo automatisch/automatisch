@@ -2,6 +2,7 @@ import generateAuthUrl from './generate-auth-url';
 import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
 import refreshToken from './refresh-token';
+import verifyWebhook from './verify-webhook';
 
 export default {
   fields: [
@@ -45,4 +46,5 @@ export default {
   verifyCredentials,
   isStillVerified,
   refreshToken,
+  verifyWebhook,
 };

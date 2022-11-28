@@ -6,6 +6,7 @@ type AppConfig = {
   protocol: string;
   port: string;
   webAppUrl: string;
+  webhookUrl: string;
   appEnv: string;
   isDev: boolean;
   postgresDatabase: string;
@@ -37,6 +38,8 @@ const serveWebAppSeparately =
   process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
 
 let webAppUrl = `${protocol}://${host}:${port}`;
+const webhookUrl = process.env.WEBHOOK_URL || webAppUrl;
+
 if (serveWebAppSeparately) {
   webAppUrl = process.env.WEB_APP_URL || 'http://localhost:3001';
 }
@@ -73,6 +76,7 @@ const appConfig: AppConfig = {
   bullMQDashboardPassword: process.env.BULLMQ_DASHBOARD_PASSWORD,
   baseUrl,
   webAppUrl,
+  webhookUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
 };
 

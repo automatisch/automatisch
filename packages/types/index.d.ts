@@ -1,5 +1,6 @@
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 export type IHttpClient = AxiosInstance;
+import type { Request } from 'express';
 
 // Type definitions for automatisch
 
@@ -182,6 +183,7 @@ export interface IAuth {
   verifyCredentials($: IGlobalVariable): Promise<void>;
   isStillVerified($: IGlobalVariable): Promise<boolean>;
   refreshToken?($: IGlobalVariable): Promise<void>;
+  verifyWebhook?($: IGlobalVariable): Promise<boolean>;
   isRefreshTokenRequested?: boolean;
   fields: IField[];
   authenticationSteps?: IAuthenticationStep[];
@@ -210,10 +212,14 @@ export interface ITriggerItem {
 export interface IBaseTrigger {
   name: string;
   key: string;
+  type?: 'webhook' | 'polling';
   pollInterval?: number;
   description: string;
   getInterval?(parameters: IStep['parameters']): string;
-  run($: IGlobalVariable): Promise<void>;
+  run?($: IGlobalVariable): Promise<void>;
+  testRun?($: IGlobalVariable): Promise<void>;
+  registerHook?($: IGlobalVariable): Promise<void>;
+  unregisterHook?($: IGlobalVariable): Promise<void>;
   sort?(item: ITriggerItem, nextItem: ITriggerItem): number;
 }
 
@@ -238,7 +244,7 @@ export interface IBaseAction {
   name: string;
   key: string;
   description: string;
-  run($: IGlobalVariable): Promise<void>;
+  run?($: IGlobalVariable): Promise<void>;
 }
 
 export interface IRawAction extends IBaseAction {
@@ -274,6 +280,7 @@ export type IGlobalVariable = {
   };
   app: IApp;
   http?: IHttpClient;
+  request?: IRequest;
   flow?: {
     id: string;
     lastInternalId: string;
@@ -293,6 +300,7 @@ export type IGlobalVariable = {
     id: string;
     testRun: boolean;
   };
+  webhookUrl?: string;
   triggerOutput?: ITriggerOutput;
   actionOutput?: IActionOutput;
   pushTriggerItem?: (triggerItem: ITriggerItem) => void;
@@ -308,3 +316,8 @@ declare module 'axios' {
     additionalProperties?: Record<string, unknown>;
   }
 }
+
+export interface IRequest extends Request {
+  rawBody?: Buffer;
+}
+
