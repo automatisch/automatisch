@@ -15,5 +15,6 @@ Following integrations are currently supported by Automatisch.
 - [Scheduler](/apps/scheduler/triggers)
 - [Slack](/apps/slack/actions)
 - [SMTP](/apps/smtp/actions)
+- [Stripe](/apps/stripe/triggers)
 - [Twilio](/apps/twilio/triggers)
 - [Twitter](/apps/twitter/triggers)

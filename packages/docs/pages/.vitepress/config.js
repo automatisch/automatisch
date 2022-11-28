@@ -106,6 +106,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Stripe',
+          collapsible: true,
+          items: [
+            { text: 'Triggers', link: '/apps/stripe/triggers' },
+            { text: 'Connection', link: '/apps/stripe/connection' },
+          ],
+        },
+        {
           text: 'Twilio',
           collapsible: true,
           items: [
