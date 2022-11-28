@@ -21,6 +21,9 @@ type AppConfig = {
   serveWebAppSeparately: boolean;
   redisHost: string;
   redisPort: number;
+  redisUsername: string;
+  redisPassword: string;
+  redisTls: boolean;
   enableBullMQDashboard: boolean;
   bullMQDashboardUsername: string;
   bullMQDashboardPassword: string;
@@ -55,14 +58,17 @@ const appConfig: AppConfig = {
   postgresUsername:
     process.env.POSTGRES_USERNAME || 'automatisch_development_user',
   postgresPassword: process.env.POSTGRES_PASSWORD,
-  postgresEnableSsl: process.env.POSTGRES_ENABLE_SSL === 'true' ? true : false,
+  postgresEnableSsl: process.env.POSTGRES_ENABLE_SSL === 'true',
   encryptionKey: process.env.ENCRYPTION_KEY || '',
   appSecretKey: process.env.APP_SECRET_KEY || '',
   serveWebAppSeparately,
   redisHost: process.env.REDIS_HOST || '127.0.0.1',
   redisPort: parseInt(process.env.REDIS_PORT || '6379'),
+  redisUsername: process.env.REDIS_USERNAME,
+  redisPassword: process.env.REDIS_PASSWORD,
+  redisTls: process.env.REDIS_TLS === 'true',
   enableBullMQDashboard:
-    process.env.ENABLE_BULLMQ_DASHBOARD === 'true' ? true : false,
+    process.env.ENABLE_BULLMQ_DASHBOARD === 'true',
   bullMQDashboardUsername: process.env.BULLMQ_DASHBOARD_USERNAME,
   bullMQDashboardPassword: process.env.BULLMQ_DASHBOARD_PASSWORD,
   baseUrl,
