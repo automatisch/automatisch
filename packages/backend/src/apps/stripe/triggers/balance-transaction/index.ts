@@ -3,7 +3,7 @@ import getBalanceTransactions from "./get-balance-transactions";
 
 export default defineTrigger({
   name: 'New Balance Transactions',
-  key: 'balanceTransaction',
+  key: 'newBalanceTransactions',
   description: 'Triggers when a new transaction is processed (refund, payout, adjustment, ...)',
   pollInterval: 15,
   async run($) {
