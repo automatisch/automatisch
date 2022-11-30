@@ -38,6 +38,10 @@ export default defineTrigger({
 
     const lastResponse = responses.items[0];
 
+    if (!lastResponse) {
+      return;
+    }
+
     const computedWebhookEvent = {
       event_type: 'form_response',
       form_response: {
