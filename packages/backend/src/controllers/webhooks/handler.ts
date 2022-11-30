@@ -16,6 +16,12 @@ export default async (request: IRequest, response: Response) => {
   }
 
   const triggerStep = await flow.getTriggerStep();
+  const triggerCommand = await triggerStep.getTriggerCommand();
+
+  if (triggerCommand.type !== 'webhook') {
+    return response.send(404);
+  }
+
   const app = await triggerStep.getApp();
 
   if (app.auth.verifyWebhook) {
