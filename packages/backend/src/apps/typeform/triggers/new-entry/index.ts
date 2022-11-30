@@ -1,4 +1,3 @@
-import { IJSONObject } from '@automatisch/types';
 import appConfig from '../../../../config/app';
 import defineTrigger from '../../../../helpers/define-trigger';
 
@@ -29,58 +28,36 @@ export default defineTrigger({
   ],
 
   async testRun($) {
-    const createApiResponse = await $.http.get(
+    const { data: form } = await $.http.get(
       `/forms/${$.step.parameters.formId}`
     );
 
-    const responsesApiResponse = await $.http.get(
+    const { data: responses } = await $.http.get(
       `/forms/${$.step.parameters.formId}/responses`
     );
 
-    const lastResponse = responsesApiResponse.data.items[0];
+    const lastResponse = responses.items[0];
 
-    const computedResponseItem = {
+    const computedWebhookEvent = {
       event_type: 'form_response',
       form_response: {
-        form_id: $.step.parameters.formId,
+        form_id: form.id,
         token: lastResponse.token,
         landed_at: lastResponse.landed_at,
         submitted_at: lastResponse.submitted_at,
-        definion: {
+        definition: {
           id: $.step.parameters.formId,
-          title: createApiResponse.data.title,
-          fields: createApiResponse.data?.fields?.map((field: IJSONObject) => ({
-            id: field.id,
-            ref: field.ref,
-            type: field.type,
-            title: field.title,
-            properties: {},
-            choices: (
-              (field?.properties as IJSONObject)?.choices as IJSONObject[]
-            )?.map((choice) => ({
-              id: choice.id,
-              label: choice.label,
-            })),
-          })),
+          title: form.title,
+          fields: form?.fields,
         },
-        answers: lastResponse.answers?.map((answer: IJSONObject) => ({
-          type: answer.type,
-          choice: {
-            label: (answer?.choice as IJSONObject)?.label,
-          },
-          field: {
-            id: (answer.field as IJSONObject).id,
-            ref: (answer.field as IJSONObject).ref,
-            type: (answer.field as IJSONObject).type,
-          },
-        })),
+        answers: lastResponse.answers,
       },
     };
 
     const dataItem = {
-      raw: computedResponseItem,
+      raw: computedWebhookEvent,
       meta: {
-        internalId: computedResponseItem.form_response.token,
+        internalId: computedWebhookEvent.form_response.token,
       },
     };
 
