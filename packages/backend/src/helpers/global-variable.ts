@@ -3,12 +3,14 @@ import Connection from '../models/connection';
 import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
+import appConfig from '../config/app';
 import {
   IJSONObject,
   IApp,
   IGlobalVariable,
   ITriggerItem,
   IActionItem,
+  IRequest,
 } from '@automatisch/types';
 import EarlyExitError from '../errors/early-exit';
 
@@ -19,12 +21,21 @@ type GlobalVariableOptions = {
   step?: Step;
   execution?: Execution;
   testRun?: boolean;
+  request?: IRequest;
 };
 
 const globalVariable = async (
   options: GlobalVariableOptions
 ): Promise<IGlobalVariable> => {
-  const { connection, app, flow, step, execution, testRun = false } = options;
+  const {
+    connection,
+    app,
+    flow,
+    step,
+    execution,
+    request,
+    testRun = false,
+  } = options;
 
   const lastInternalId = testRun ? undefined : await flow?.lastInternalId();
   const nextStep = await step?.getNextStep();
@@ -95,11 +106,21 @@ const globalVariable = async (
     },
   };
 
+  if (request) {
+    $.request = request;
+  }
+
   $.http = createHttpClient({
     $,
     baseURL: app.apiBaseUrl,
     beforeRequest: app.beforeRequest,
   });
+
+  if (flow) {
+    const webhookUrl = appConfig.webhookUrl + '/webhooks/' + flow.id;
+
+    $.webhookUrl = webhookUrl;
+  }
 
   const lastInternalIds =
     testRun || (flow && step.isAction) ? [] : await flow?.lastInternalIds(2000);

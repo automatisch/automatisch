@@ -1,6 +1,7 @@
 import Context from '../../types/express/context';
 import flowQueue from '../../queues/flow';
 import { REMOVE_AFTER_30_DAYS_OR_150_JOBS, REMOVE_AFTER_7_DAYS_OR_50_JOBS } from '../../helpers/remove-job-configuration';
+import globalVariable from '../../helpers/global-variable';
 
 type Params = {
   input: {
@@ -39,28 +40,44 @@ const updateFlowStatus = async (
     pattern: interval || EVERY_15_MINUTES_CRON,
   };
 
-  if (flow.active) {
-    flow = await flow.$query().patchAndFetch({
-      published_at: new Date().toISOString(),
+  if (trigger.type === 'webhook') {
+    const $ = await globalVariable({
+      flow,
+      connection: await triggerStep.$relatedQuery('connection'),
+      app: await triggerStep.getApp(),
+      step: triggerStep,
+      testRun: false,
     });
 
-    const jobName = `${JOB_NAME}-${flow.id}`;
-
-    await flowQueue.add(
-      jobName,
-      { flowId: flow.id },
-      {
-        repeat: repeatOptions,
-        jobId: flow.id,
-        removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-        removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS
-      }
-    );
+    if (flow.active) {
+      await trigger.registerHook($);
+    } else {
+      await trigger.unregisterHook($);
+    }
   } else {
-    const repeatableJobs = await flowQueue.getRepeatableJobs();
-    const job = repeatableJobs.find((job) => job.id === flow.id);
+    if (flow.active) {
+      flow = await flow.$query().patchAndFetch({
+        published_at: new Date().toISOString(),
+      });
 
-    await flowQueue.removeRepeatableByKey(job.key);
+      const jobName = `${JOB_NAME}-${flow.id}`;
+
+      await flowQueue.add(
+        jobName,
+        { flowId: flow.id },
+        {
+          repeat: repeatOptions,
+          jobId: flow.id,
+          removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+          removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS
+        }
+      );
+    } else {
+      const repeatableJobs = await flowQueue.getRepeatableJobs();
+      const job = repeatableJobs.find((job) => job.id === flow.id);
+
+      await flowQueue.removeRepeatableByKey(job.key);
+    }
   }
 
   return flow;
