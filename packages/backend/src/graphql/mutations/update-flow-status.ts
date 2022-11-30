@@ -41,6 +41,7 @@ const updateFlowStatus = async (
   };
 
   if (flow.active) {
+    // add the flow job in the queue.
     flow = await flow.$query().patchAndFetch({
       published_at: new Date().toISOString(),
     });
@@ -51,6 +52,7 @@ const updateFlowStatus = async (
       jobName,
       { flowId: flow.id },
       {
+        // do not repeat webhook job for immediate webhook registration
         repeat: trigger.type === 'webhook' ? null : repeatOptions,
         jobId: flow.id,
         removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
@@ -58,6 +60,7 @@ const updateFlowStatus = async (
       }
     );
   } else if (!flow.active && trigger.type === 'webhook') {
+    // unregister webhook from the application
     const $ = await globalVariable({
       flow,
       connection: await triggerStep.$relatedQuery('connection'),
@@ -68,6 +71,7 @@ const updateFlowStatus = async (
 
     await trigger.unregisterHook($);
   } else {
+    // remove the job out of the queue
     const repeatableJobs = await flowQueue.getRepeatableJobs();
     const job = repeatableJobs.find((job) => job.id === flow.id);
 
