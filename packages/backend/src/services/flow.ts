@@ -25,8 +25,6 @@ export const processFlow = async (options: ProcessFlowOptions) => {
   try {
     if (triggerCommand.type === 'webhook' && !flow.active) {
       await triggerCommand.testRun($);
-    } else if (triggerCommand.type === 'webhook' && flow.active) {
-      await triggerCommand.registerHook($);
     } else {
       await triggerCommand.run($);
     }
