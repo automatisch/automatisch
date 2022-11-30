@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import corsOptions from './config/cors-options';
 import morgan from './helpers/morgan';
@@ -38,7 +38,7 @@ app.use('/', router);
 webUIHandler(app);
 
 // catch 404 and forward to error handler
-app.use(function (req: Request, res: Response, next: NextFunction) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
