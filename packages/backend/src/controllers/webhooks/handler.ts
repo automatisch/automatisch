@@ -1,11 +1,12 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import bcrypt from 'bcrypt';
+import { IRequest, ITriggerItem } from '@automatisch/types';
 
-import { ITriggerItem } from '@automatisch/types';
 import Flow from '../../models/flow';
 import triggerQueue from '../../queues/trigger';
 import globalVariable from '../../helpers/global-variable';
 
-export default async (request: Request, response: Response) => {
+export default async (request: IRequest, response: Response) => {
   const flow = await Flow.query()
     .findById(request.params.flowId)
     .throwIfNotFound();
@@ -23,7 +24,6 @@ export default async (request: Request, response: Response) => {
       connection: await triggerStep.$relatedQuery('connection'),
       app,
       step: triggerStep,
-      testRun: false,
       request,
     });
 
@@ -37,7 +37,7 @@ export default async (request: Request, response: Response) => {
   const triggerItem: ITriggerItem = {
     raw: request.body,
     meta: {
-      internalId: request.body.form_response.token,
+      internalId: await bcrypt.hash(request.rawBody, 1),
     },
   };
 
