@@ -15,7 +15,7 @@ The build integrations section is best understood when read from beginning to en
 :::
 
 :::warning
-For HTTP-based triggers, Automatisch currently supports only polling. Webhook-based triggers are not supported at the moment, but we are planning to add them in the future.
+We used a polling-based HTTP trigger in our example but if you need to use a webhook-based trigger, you can check the [examples](/build-integrations/examples#webhook-based-triggers) page.
 :::
 
 ## Add triggers to the app

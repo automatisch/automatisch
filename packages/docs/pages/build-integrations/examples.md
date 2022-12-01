@@ -42,6 +42,15 @@ The build integrations section is best understood when read from beginning to en
 
 ## Triggers
 
+### Polling-based triggers
+
+- [Search tweets - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/triggers/search-tweets/index.ts)
+- [New issues - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-issues/index.ts)
+
+### Webhook-based triggers
+
+- [New entry - Typeform](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/typeform/triggers/new-entry/index.ts)
+
 ### Pagination with descending order
 
 - [Search tweets - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/triggers/search-tweets/index.ts)
