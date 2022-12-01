@@ -5,7 +5,7 @@ export default defineTrigger({
   name: 'New entry',
   key: 'newEntry',
   type: 'webhook',
-  description: 'Triggers when a new form submitted.',
+  description: 'Triggers when a new form is submitted.',
   arguments: [
     {
       label: 'Form',
