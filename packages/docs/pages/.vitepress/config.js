@@ -35,6 +35,7 @@ export default defineConfig({
         {
           text: 'DeepL',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/deepl/actions' },
             { text: 'Connection', link: '/apps/deepl/connection' },
@@ -43,6 +44,7 @@ export default defineConfig({
         {
           text: 'Discord',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/discord/actions' },
             { text: 'Connection', link: '/apps/discord/connection' },
@@ -51,6 +53,7 @@ export default defineConfig({
         {
           text: 'Flickr',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/flickr/triggers' },
             { text: 'Connection', link: '/apps/flickr/connection' },
@@ -59,6 +62,7 @@ export default defineConfig({
         {
           text: 'Github',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/github/triggers' },
             { text: 'Actions', link: '/apps/github/actions' },
@@ -68,6 +72,7 @@ export default defineConfig({
         {
           text: 'RSS',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/rss/triggers' },
             { text: 'Connection', link: '/apps/rss/connection' },
@@ -76,6 +81,7 @@ export default defineConfig({
         {
           text: 'Salesforce',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/salesforce/triggers' },
             { text: 'Connection', link: '/apps/salesforce/connection' },
@@ -84,6 +90,7 @@ export default defineConfig({
         {
           text: 'Scheduler',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/scheduler/triggers' },
             { text: 'Connection', link: '/apps/scheduler/connection' },
@@ -92,6 +99,7 @@ export default defineConfig({
         {
           text: 'Slack',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/slack/actions' },
             { text: 'Connection', link: '/apps/slack/connection' },
@@ -100,6 +108,7 @@ export default defineConfig({
         {
           text: 'SMTP',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/smtp/actions' },
             { text: 'Connection', link: '/apps/smtp/connection' },
@@ -108,6 +117,7 @@ export default defineConfig({
         {
           text: 'Stripe',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/stripe/triggers' },
             { text: 'Connection', link: '/apps/stripe/connection' },
@@ -116,6 +126,7 @@ export default defineConfig({
         {
           text: 'Twilio',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/twilio/triggers' },
             { text: 'Actions', link: '/apps/twilio/actions' },
@@ -125,10 +136,20 @@ export default defineConfig({
         {
           text: 'Twitter',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/twitter/triggers' },
             { text: 'Actions', link: '/apps/twitter/actions' },
             { text: 'Connection', link: '/apps/twitter/connection' },
+          ],
+        },
+        {
+          text: 'Typeform',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/typeform/triggers' },
+            { text: 'Connection', link: '/apps/typeform/connection' },
           ],
         },
       ],
@@ -281,8 +302,8 @@ export default defineConfig({
           'data-domain': 'automatisch.io',
           'data-api': 'https://automatisch.io/data/api/event',
           src: 'https://automatisch.io/data/js/script.js',
-        }
-      ]
+        },
+      ],
     ];
   },
 
