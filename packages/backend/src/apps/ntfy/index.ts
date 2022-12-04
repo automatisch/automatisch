@@ -1,6 +1,7 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
+import actions from './actions';
 
 export default defineApp({
   name: 'Ntfy',
@@ -13,4 +14,5 @@ export default defineApp({
   primaryColor: '56bda8',
   beforeRequest: [addAuthHeader],
   auth,
+  actions,
 });
