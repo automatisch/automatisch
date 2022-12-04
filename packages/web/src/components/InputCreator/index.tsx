@@ -14,6 +14,7 @@ type InputCreatorProps = {
   namePrefix?: string;
   stepId?: string;
   disabled?: boolean;
+  showOptionValue?: boolean;
 };
 
 type RawOption = {
@@ -27,7 +28,15 @@ const optionGenerator = (options: RawOption[]): IFieldDropdownOption[] =>
 export default function InputCreator(
   props: InputCreatorProps
 ): React.ReactElement {
-  const { onChange, onBlur, schema, namePrefix, stepId, disabled } = props;
+  const {
+    onChange,
+    onBlur,
+    schema,
+    namePrefix,
+    stepId,
+    disabled,
+    showOptionValue,
+  } = props;
 
   const {
     key: name,
@@ -62,6 +71,7 @@ export default function InputCreator(
         description={description}
         loading={loading}
         disabled={disabled}
+        showOptionValue={showOptionValue}
       />
     );
   }
