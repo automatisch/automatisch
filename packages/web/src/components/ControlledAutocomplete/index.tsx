@@ -1,7 +1,8 @@
 import * as React from 'react';
-import FormHelperText from '@mui/material/FormHelperText';
 import { Controller, useFormContext } from 'react-hook-form';
+import FormHelperText from '@mui/material/FormHelperText';
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete';
+import Typography from '@mui/material/Typography';
 import type { IFieldDropdownOption } from '@automatisch/types';
 
 interface ControlledAutocompleteProps
@@ -9,6 +10,7 @@ interface ControlledAutocompleteProps
   shouldUnregister?: boolean;
   name: string;
   required?: boolean;
+  showOptionValue?: boolean;
   description?: string;
   dependsOn?: string[];
 }
@@ -31,6 +33,7 @@ function ControlledAutocomplete(
     description,
     options = [],
     dependsOn = [],
+    showOptionValue,
     ...autocompleteProps
   } = props;
 
@@ -96,6 +99,19 @@ function ControlledAutocomplete(
             }}
             ref={ref}
             data-test={`${name}-autocomplete`}
+            renderOption={(optionProps, option) => (
+              <li
+                {...optionProps}
+                key={option.value.toString()}
+                style={{ flexDirection: 'column', alignItems: 'start' }}
+              >
+                <Typography>{option.label}</Typography>
+
+                {showOptionValue && (
+                  <Typography variant="caption">{option.value}</Typography>
+                )}
+              </li>
+            )}
           />
 
           <FormHelperText
