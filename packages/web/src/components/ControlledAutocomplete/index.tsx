@@ -96,6 +96,11 @@ function ControlledAutocomplete(
             }}
             ref={ref}
             data-test={`${name}-autocomplete`}
+            renderOption={(optionProps, option) => (
+              <li {...optionProps} key={option.value.toString()}>
+                {option.label}
+              </li>
+            )}
           />
 
           <FormHelperText

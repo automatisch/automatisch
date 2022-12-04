@@ -116,7 +116,7 @@ export default function Editor(props: EditorProps): React.ReactElement {
       gap={1}
     >
       {flow?.steps?.map((step, index, steps) => (
-        <React.Fragment key={`${step}-${index}`}>
+        <React.Fragment key={`${step.id}-${index}`}>
           <FlowStep
             key={step.id}
             step={step}
