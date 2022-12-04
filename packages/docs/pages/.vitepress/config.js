@@ -124,6 +124,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Telegram',
+          collapsible: true,
+          items: [
+            { text: 'Actions', link: '/apps/telegram-bot/actions' },
+            { text: 'Connection', link: '/apps/telegram-bot/connection' },
+          ],
+        },
+        {
           text: 'Twilio',
           collapsible: true,
           collapsed: true,
