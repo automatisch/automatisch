@@ -14,4 +14,5 @@ export default defineApp({
   primaryColor: '2AABEE',
   beforeRequest: [addAuthHeader],
   auth,
+  actions,
 });
