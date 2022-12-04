@@ -12,4 +12,6 @@ export default defineApp({
   baseUrl: 'https://telegram.org',
   apiBaseUrl: 'https://api.telegram.org',
   primaryColor: '2AABEE',
+  beforeRequest: [addAuthHeader],
+  auth,
 });
