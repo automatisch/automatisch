@@ -6,6 +6,7 @@ type TRedisConfig = {
   username?: string,
   password?: string,
   tls?: Record<string, unknown>,
+  enableReadyCheck?: boolean,
   enableOfflineQueue: boolean,
 }
 
@@ -15,6 +16,7 @@ const redisConfig: TRedisConfig = {
   username: appConfig.redisUsername,
   password: appConfig.redisPassword,
   enableOfflineQueue: false,
+  enableReadyCheck: true,
 };
 
 if (appConfig.redisTls) {
