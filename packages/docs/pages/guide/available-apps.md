@@ -16,7 +16,7 @@ Following integrations are currently supported by Automatisch.
 - [Slack](/apps/slack/actions)
 - [SMTP](/apps/smtp/actions)
 - [Stripe](/apps/stripe/triggers)
-- [Telegram](/apps/telegram-bot/triggers)
+- [Telegram](/apps/telegram-bot/actions)
 - [Twilio](/apps/twilio/triggers)
 - [Twitter](/apps/twitter/triggers)
 - [Typeform](/apps/typeform/triggers)
