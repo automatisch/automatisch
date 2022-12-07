@@ -9,8 +9,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { EditorContext } from 'contexts/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
-import JSONViewer from 'components/JSONViewer';
 import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
+import JSONViewer from 'components/JSONViewer';
+import WebhookUrlInfo from 'components/WebhookUrlInfo';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import type { IStep, ISubstep } from '@automatisch/types';
 
@@ -114,6 +115,8 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
               ))}
             </Alert>
           )}
+
+          {step.webhookUrl && <WebhookUrlInfo webhookUrl={step.webhookUrl} />}
 
           {hasNoOutput && (
             <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
