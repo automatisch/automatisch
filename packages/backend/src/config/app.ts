@@ -18,6 +18,7 @@ type AppConfig = {
   postgresEnableSsl: boolean;
   baseUrl: string;
   encryptionKey: string;
+  webhookSecretKey: string;
   appSecretKey: string;
   serveWebAppSeparately: boolean;
   redisHost: string;
@@ -63,6 +64,7 @@ const appConfig: AppConfig = {
   postgresPassword: process.env.POSTGRES_PASSWORD,
   postgresEnableSsl: process.env.POSTGRES_ENABLE_SSL === 'true',
   encryptionKey: process.env.ENCRYPTION_KEY || '',
+  webhookSecretKey: process.env.WEBHOOK_SECRET_KEY || '',
   appSecretKey: process.env.APP_SECRET_KEY || '',
   serveWebAppSeparately,
   redisHost: process.env.REDIS_HOST || '127.0.0.1',
@@ -70,8 +72,7 @@ const appConfig: AppConfig = {
   redisUsername: process.env.REDIS_USERNAME,
   redisPassword: process.env.REDIS_PASSWORD,
   redisTls: process.env.REDIS_TLS === 'true',
-  enableBullMQDashboard:
-    process.env.ENABLE_BULLMQ_DASHBOARD === 'true',
+  enableBullMQDashboard: process.env.ENABLE_BULLMQ_DASHBOARD === 'true',
   bullMQDashboardUsername: process.env.BULLMQ_DASHBOARD_USERNAME,
   bullMQDashboardPassword: process.env.BULLMQ_DASHBOARD_PASSWORD,
   baseUrl,
@@ -82,6 +83,10 @@ const appConfig: AppConfig = {
 
 if (!appConfig.encryptionKey) {
   throw new Error('ENCRYPTION_KEY environment variable needs to be set!');
+}
+
+if (!appConfig.webhookSecretKey) {
+  throw new Error('WEBHOOK_SECRET_KEY environment variable needs to be set!');
 }
 
 export default appConfig;

@@ -7,7 +7,7 @@ You can use `user@automatisch.io` email address and `sample` password to login t
 :::
 
 :::danger
-Please be careful with the `ENCRYPTION_KEY` and `APP_SECRET_KEY` environment variables. They are used to encrypt your credentials from third-party services. If you change them, you will not be able to access your connections and thus, your existing flows and connections will be useless.
+Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment variables. They are used to encrypt your credentials from third-party services and verify webhook requests. If you change them, your existing connections and flows will not continue to work.
 :::
 
 ## Docker Compose
@@ -47,6 +47,7 @@ HOST=
 PROTOCOL=
 PORT=
 ENCRYPTION_KEY=
+WEBHOOK_SECRET_KEY=
 APP_SECRET_KEY=
 POSTGRES_HOST=
 POSTGRES_PORT=
@@ -78,6 +79,7 @@ HOST=
 PROTOCOL=
 PORT=
 ENCRYPTION_KEY=
+WEBHOOK_SECRET_KEY=
 APP_SECRET_KEY=
 POSTGRES_HOST=
 POSTGRES_PORT=

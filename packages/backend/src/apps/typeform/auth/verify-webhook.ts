@@ -11,7 +11,7 @@ const verifyWebhook = async ($: IGlobalVariable) => {
 
 const verifySignature = function (receivedSignature: string, payload: string) {
   const hash = crypto
-    .createHmac('sha256', appConfig.appSecretKey)
+    .createHmac('sha256', appConfig.webhookSecretKey)
     .update(payload)
     .digest('base64');
   return receivedSignature === `sha256=${hash}`;
