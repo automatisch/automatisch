@@ -33,47 +33,21 @@ Automatisch comes with two services which are `main` and `worker`. They both use
 We give the sample environment variable files for the setup but you should adjust them to include your own values.
 :::
 
-To install the main:
+To run the main:
 
 ```bash
-docker run --env-file=./main.env automatischio/automatisch
+docker run --env-file=./.env automatischio/automatisch
 ```
 
-::: details main.env
+To run the worker:
 
 ```bash
-APP_ENV=production
-HOST=
-PROTOCOL=
-PORT=
-ENCRYPTION_KEY=
-WEBHOOK_SECRET_KEY=
-APP_SECRET_KEY=
-POSTGRES_HOST=
-POSTGRES_PORT=
-POSTGRES_DATABASE=
-POSTGRES_USERNAME=
-POSTGRES_PASSWORD=
-POSTGRES_ENABLE_SSL=
-REDIS_HOST=
-REDIS_PORT=
-REDIS_USERNAME=
-REDIS_PASSWORD=
-REDIS_TLS=
+docker run --env-file=./.env -e WORKER=true automatischio/automatisch
 ```
 
-:::
-
-To install the worker:
+::: details .env
 
 ```bash
-docker run --env-file=./worker.env automatischio/automatisch
-```
-
-::: details worker.env
-
-```bash
-WORKER=true
 APP_ENV=production
 HOST=
 PROTOCOL=
