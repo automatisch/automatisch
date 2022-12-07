@@ -20,7 +20,7 @@ git clone git@github.com:automatisch/automatisch.git
 cd automatisch
 
 # Start
-docker compose -p automatisch up
+docker compose up
 ```
 
 ✌️ That's it; you have Automatisch running. Let's check it out by browsing [http://localhost:3000](https://localhost:3000)
