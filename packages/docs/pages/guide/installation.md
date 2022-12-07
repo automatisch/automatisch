@@ -2,7 +2,7 @@
 
 :::tip
 
-You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. You can also change your email and password later on from the settings page.
+You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. Please do not forget to change your email and password from the settings page.
 
 :::
 
