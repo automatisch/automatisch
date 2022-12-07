@@ -77,6 +77,7 @@ const globalVariable = async (
       id: execution?.id,
       testRun,
     },
+    lastExecutionStep: (await step?.getLastExecutionStep())?.toJSON(),
     triggerOutput: {
       data: [],
     },

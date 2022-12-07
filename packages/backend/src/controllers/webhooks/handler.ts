@@ -13,18 +13,19 @@ export default async (request: IRequest, response: Response) => {
     .findById(request.params.flowId)
     .throwIfNotFound();
 
-  if (!flow.active) {
-    return response.send(404);
-  }
-
   const triggerStep = await flow.getTriggerStep();
   const triggerCommand = await triggerStep.getTriggerCommand();
+  const app = await triggerStep.getApp();
+  const isWebhookApp = app.key === 'webhook';
 
-  if (triggerCommand.type !== 'webhook') {
-    return response.send(404);
+  if (!flow.active && !isWebhookApp) {
+    return response.sendStatus(404);
   }
 
-  const app = await triggerStep.getApp();
+  if (triggerCommand.type !== 'webhook') {
+    return response.sendStatus(404);
+  }
+
 
   if (app.auth.verifyWebhook) {
     const $ = await globalVariable({
@@ -42,8 +43,20 @@ export default async (request: IRequest, response: Response) => {
     }
   }
 
+  // in case trigger type is 'webhook'
+  let payload = request.body;
+
+  // in case it's our built-in generic webhook trigger
+  if (isWebhookApp) {
+    payload = {
+      headers: request.headers,
+      body: request.body,
+      query: request.query,
+    }
+  }
+
   const triggerItem: ITriggerItem = {
-    raw: request.body,
+    raw: payload,
     meta: {
       internalId: await bcrypt.hash(request.rawBody, 1),
     },
