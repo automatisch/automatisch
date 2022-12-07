@@ -1,5 +1,9 @@
 # Installation
 
+:::info
+We have installation guides for docker compose and docker setup at the moment, but if you need another installation type, let us know by [creating a GitHub issue](https://github.com/automatisch/automatisch/issues/new).
+:::
+
 :::tip
 
 You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. Please do not forget to change your email and password from the settings page.
