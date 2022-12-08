@@ -15,6 +15,12 @@ fi
 # initiate env. vars. from /automatisch/storage/.env file
 export $(grep -v '^#' /automatisch/storage/.env | xargs)
 
+# migration for webhook secret key, will be removed in the future.
+if [[ -z "${WEBHOOK_SECRET_KEY}" ]]; then
+  WEBHOOK_SECRET_KEY="$(openssl rand -base64 36)"
+  echo "WEBHOOK_SECRET_KEY=$WEBHOOK_SECRET_KEY" >> /automatisch/storage/.env
+fi
+
 echo "Environment variables have been set!"
 
 sh /entrypoint.sh
