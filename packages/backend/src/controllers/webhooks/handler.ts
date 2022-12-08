@@ -66,6 +66,7 @@ export default async (request: IRequest, response: Response) => {
     flowId: flow.id,
     stepId: triggerStep.id,
     triggerItem,
+    testRun: !flow.active
   });
 
   const nextStep = await triggerStep.getNextStep();
