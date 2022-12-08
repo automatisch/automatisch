@@ -45,6 +45,7 @@ export default async (request: IRequest, response: Response) => {
 
   // in case trigger type is 'webhook'
   let payload = request.body;
+  let rawInternalId: string | Buffer = request.rawBody;
 
   // in case it's our built-in generic webhook trigger
   if (isWebhookApp) {
@@ -53,12 +54,14 @@ export default async (request: IRequest, response: Response) => {
       body: request.body,
       query: request.query,
     }
+
+    rawInternalId = JSON.stringify(payload);
   }
 
   const triggerItem: ITriggerItem = {
     raw: payload,
     meta: {
-      internalId: await bcrypt.hash(request.rawBody, 1),
+      internalId: await bcrypt.hash(rawInternalId, 1),
     },
   };
 
