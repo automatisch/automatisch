@@ -13,12 +13,13 @@ export default async (request: IRequest, response: Response) => {
     .findById(request.params.flowId)
     .throwIfNotFound();
 
+  const testRun = !flow.active;
   const triggerStep = await flow.getTriggerStep();
   const triggerCommand = await triggerStep.getTriggerCommand();
   const app = await triggerStep.getApp();
   const isWebhookApp = app.key === 'webhook';
 
-  if (!flow.active && !isWebhookApp) {
+  if (testRun && !isWebhookApp) {
     return response.sendStatus(404);
   }
 
@@ -66,8 +67,12 @@ export default async (request: IRequest, response: Response) => {
     flowId: flow.id,
     stepId: triggerStep.id,
     triggerItem,
-    testRun: !flow.active
+    testRun
   });
+
+  if (testRun) {
+    return response.sendStatus(200);
+  }
 
   const nextStep = await triggerStep.getNextStep();
   const jobName = `${executionId}-${nextStep.id}`;
