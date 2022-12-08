@@ -22,6 +22,7 @@ export default {
       readOnly: false,
       placeholder: null,
       clickToCopy: false,
+      description: 'You may need to provide your username if your installation requires authentication.',
     },
     {
       key: 'password',
@@ -31,6 +32,7 @@ export default {
       readOnly: false,
       placeholder: null,
       clickToCopy: false,
+      description: 'You may need to provide your password if your installation requires authentication.',
     },
   ],
 
