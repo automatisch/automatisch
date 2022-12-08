@@ -87,5 +87,9 @@
   "profileSettings.updatedPassword": "Your password has been updated.",
   "profileSettings.updatePassword": "Update password",
   "notifications.title": "Notifications",
-  "notification.releasedAt": "Released {relativeDate}"
+  "notification.releasedAt": "Released {relativeDate}",
+  "webhookUrlInfo.title": "Your webhook URL",
+  "webhookUrlInfo.description": "You'll need to configure your application with this webhook URL.",
+  "webhookUrlInfo.helperText": "We've generated a custom webhook URL for you to send requests to. <link>Learn more about webhooks</link>.",
+  "webhookUrlInfo.copy": "Copy"
 }

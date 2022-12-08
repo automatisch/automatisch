@@ -342,6 +342,7 @@ type Step {
   key: String
   appKey: String
   iconUrl: String
+  webhookUrl: String
   type: StepEnumType
   parameters: JSONObject
   connection: Connection

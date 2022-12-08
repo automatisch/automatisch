@@ -13,20 +13,21 @@ export default async (request: IRequest, response: Response) => {
     .findById(request.params.flowId)
     .throwIfNotFound();
 
-  if (!flow.active) {
-    return response.send(404);
-  }
-
+  const testRun = !flow.active;
   const triggerStep = await flow.getTriggerStep();
   const triggerCommand = await triggerStep.getTriggerCommand();
+  const app = await triggerStep.getApp();
+  const isWebhookApp = app.key === 'webhook';
 
-  if (triggerCommand.type !== 'webhook') {
-    return response.send(404);
+  if (testRun && !isWebhookApp) {
+    return response.sendStatus(404);
   }
 
-  const app = await triggerStep.getApp();
+  if (triggerCommand.type !== 'webhook') {
+    return response.sendStatus(404);
+  }
 
-  if (app.auth.verifyWebhook) {
+  if (app.auth?.verifyWebhook) {
     const $ = await globalVariable({
       flow,
       connection: await triggerStep.$relatedQuery('connection'),
@@ -42,8 +43,20 @@ export default async (request: IRequest, response: Response) => {
     }
   }
 
+  // in case trigger type is 'webhook'
+  let payload = request.body;
+
+  // in case it's our built-in generic webhook trigger
+  if (isWebhookApp) {
+    payload = {
+      headers: request.headers,
+      body: request.body,
+      query: request.query,
+    }
+  }
+
   const triggerItem: ITriggerItem = {
-    raw: request.body,
+    raw: payload,
     meta: {
       internalId: await bcrypt.hash(request.rawBody, 1),
     },
@@ -53,7 +66,12 @@ export default async (request: IRequest, response: Response) => {
     flowId: flow.id,
     stepId: triggerStep.id,
     triggerItem,
+    testRun
   });
+
+  if (testRun) {
+    return response.sendStatus(200);
+  }
 
   const nextStep = await triggerStep.getNextStep();
   const jobName = `${executionId}-${nextStep.id}`;

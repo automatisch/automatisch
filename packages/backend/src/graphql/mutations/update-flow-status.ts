@@ -49,9 +49,9 @@ const updateFlowStatus = async (
       testRun: false,
     });
 
-    if (flow.active) {
+    if (flow.active && trigger.registerHook) {
       await trigger.registerHook($);
-    } else {
+    } else if (!flow.active && trigger.unregisterHook) {
       await trigger.unregisterHook($);
     }
   } else {
