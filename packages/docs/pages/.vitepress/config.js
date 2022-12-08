@@ -70,6 +70,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Ntfy',
+          collapsible: true,
+          items: [
+            { text: 'Actions', link: '/apps/ntfy/actions' },
+            { text: 'Connection', link: '/apps/ntfy/connection' },
+          ],
+        },
+        {
           text: 'RSS',
           collapsible: true,
           collapsed: true,
