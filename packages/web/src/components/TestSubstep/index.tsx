@@ -108,7 +108,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
           {!!error?.graphQLErrors?.length && (
             <Alert
               severity="error"
-              sx={{ mb: 1, fontWeight: 500, width: '100%' }}
+              sx={{ mb: 2, fontWeight: 500, width: '100%' }}
             >
               {serializeErrors(error.graphQLErrors).map((error: any) => (
                 <div>{error.message}</div>
@@ -116,7 +116,9 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             </Alert>
           )}
 
-          {step.webhookUrl && <WebhookUrlInfo webhookUrl={step.webhookUrl} />}
+          {step.webhookUrl && (
+            <WebhookUrlInfo webhookUrl={step.webhookUrl} sx={{ mb: 2 }} />
+          )}
 
           {hasNoOutput && (
             <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
