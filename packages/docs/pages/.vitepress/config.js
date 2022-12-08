@@ -72,6 +72,7 @@ export default defineConfig({
         {
           text: 'Ntfy',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/ntfy/actions' },
             { text: 'Connection', link: '/apps/ntfy/connection' },
@@ -134,6 +135,7 @@ export default defineConfig({
         {
           text: 'Telegram',
           collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/telegram-bot/actions' },
             { text: 'Connection', link: '/apps/telegram-bot/connection' },
@@ -166,6 +168,15 @@ export default defineConfig({
           items: [
             { text: 'Triggers', link: '/apps/typeform/triggers' },
             { text: 'Connection', link: '/apps/typeform/connection' },
+          ],
+        },
+        {
+          text: 'Webhooks',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/webhooks/triggers' },
+            { text: 'Connection', link: '/apps/webhooks/connection' },
           ],
         },
       ],
