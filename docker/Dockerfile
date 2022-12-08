@@ -4,7 +4,7 @@ WORKDIR /automatisch
 
 COPY ./entrypoint.sh /entrypoint.sh
 
-RUN yarn global add @automatisch/cli@0.2.0
+RUN yarn global add @automatisch/cli@0.3.0
 
 EXPOSE 3000
 ENTRYPOINT ["sh", "/entrypoint.sh"]
