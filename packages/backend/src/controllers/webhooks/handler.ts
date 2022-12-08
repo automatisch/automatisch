@@ -27,8 +27,7 @@ export default async (request: IRequest, response: Response) => {
     return response.sendStatus(404);
   }
 
-
-  if (app.auth.verifyWebhook) {
+  if (app.auth?.verifyWebhook) {
     const $ = await globalVariable({
       flow,
       connection: await triggerStep.$relatedQuery('connection'),

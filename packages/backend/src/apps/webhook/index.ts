@@ -1,5 +1,4 @@
 import defineApp from '../../helpers/define-app';
-import auth from './auth';
 import triggers from './triggers';
 
 export default defineApp({
@@ -11,6 +10,5 @@ export default defineApp({
   baseUrl: '',
   apiBaseUrl: '',
   primaryColor: '0059F7',
-  auth,
   triggers,
 });
