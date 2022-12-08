@@ -174,7 +174,10 @@ export default defineConfig({
           text: 'Webhooks',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Triggers', link: '/apps/webhooks/triggers' }],
+          items: [
+            { text: 'Triggers', link: '/apps/webhooks/triggers' },
+            { text: 'Connection', link: '/apps/webhooks/connection' },
+          ],
         },
       ],
       '/': [
