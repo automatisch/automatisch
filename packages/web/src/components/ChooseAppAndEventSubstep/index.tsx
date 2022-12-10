@@ -7,6 +7,7 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import { EditorContext } from 'contexts/Editor';
@@ -38,8 +39,20 @@ const optionGenerator = (app: {
   value: app.key as string,
 });
 
-const getOption = (options: Record<string, unknown>[], appKey?: IApp['key']) =>
-  options.find((option) => option.value === (appKey as string)) || null;
+const eventOptionGenerator = (app: {
+  name: string;
+  key: string;
+  type?: string;
+}): { label: string; value: string; type: string } => ({
+  label: app.name as string,
+  value: app.key as string,
+  type: app?.type as string,
+});
+
+const getOption = <T extends { value: string }>(
+  options: T[],
+  selectedOptionValue?: string
+) => options.find((option) => option.value === selectedOptionValue);
 
 function ChooseAppAndEventSubstep(
   props: ChooseAppAndEventSubstepProps
@@ -72,13 +85,16 @@ function ChooseAppAndEventSubstep(
   );
   const actionsOrTriggers: Array<ITrigger | IAction> =
     (isTrigger ? app?.triggers : app?.actions) || [];
-  const actionOptions = React.useMemo(
-    () => actionsOrTriggers.map((trigger) => optionGenerator(trigger)),
+  const actionOrTriggerOptions = React.useMemo(
+    () => actionsOrTriggers.map((trigger) => eventOptionGenerator(trigger)),
     [app?.key]
   );
   const selectedActionOrTrigger = actionsOrTriggers.find(
     (actionOrTrigger: IAction | ITrigger) => actionOrTrigger.key === step?.key
   );
+
+  const isWebhook =
+    isTrigger && (selectedActionOrTrigger as ITrigger).type === 'webhook';
 
   const { name } = substep;
 
@@ -177,14 +193,49 @@ function ChooseAppAndEventSubstep(
                 disablePortal
                 disableClearable
                 disabled={editorContext.readOnly}
-                options={actionOptions}
+                options={actionOrTriggerOptions}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label={formatMessage('flowEditor.chooseEvent')}
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <React.Fragment>
+                          {isWebhook && (
+                            <Chip
+                              label={formatMessage(
+                                'flowEditor.instantTriggerType'
+                              )}
+                            />
+                          )}
+
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
                   />
                 )}
-                value={getOption(actionOptions, step.key)}
+                renderOption={(optionProps, option) => (
+                  <li
+                    {...optionProps}
+                    key={option.value.toString()}
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Typography>{option.label}</Typography>
+
+                    {option.type === 'webhook' && (
+                      <Chip
+                        label={formatMessage('flowEditor.instantTriggerType')}
+                        sx={{ mr: 3 }}
+                      />
+                    )}
+                  </li>
+                )}
+                value={getOption(actionOrTriggerOptions, step.key)}
                 onChange={onEventChange}
                 data-test="choose-event-autocomplete"
               />
