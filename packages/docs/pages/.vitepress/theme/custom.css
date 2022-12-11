@@ -117,6 +117,8 @@
 
 :root {
   overflow-y: scroll;
+
+  --announcement-bar-height: 50px;
 }
 
 .VPTeamMembersItem .avatar-img {
@@ -128,10 +130,20 @@ header.VPNav {
   margin-top: 50px;
 }
 
+.VPNavScreen.VPNavScreen {
+  top: calc(var(--announcement-bar-height) + var(--vp-nav-height-mobile));
+}
+
+.VPLocalNav.VPLocalNav {
+  top: 50px;
+}
+
 aside.VPSidebar {
   margin-top: 50px;
 }
 
-#VPContent {
-  margin-top: 50px;
+@media (min-width: 960px) {
+  #VPContent {
+    margin-top: 50px;
+  }
 }
