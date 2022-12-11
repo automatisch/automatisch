@@ -123,3 +123,15 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+header.VPNav {
+  margin-top: 50px;
+}
+
+aside.VPSidebar {
+  margin-top: 50px;
+}
+
+#VPContent {
+  margin-top: 50px;
+}
