@@ -21,3 +21,4 @@ Following integrations are currently supported by Automatisch.
 - [Twilio](/apps/twilio/triggers)
 - [Twitter](/apps/twitter/triggers)
 - [Typeform](/apps/typeform/triggers)
+- [Webhooks](/apps/webhooks/triggers)
