@@ -94,7 +94,7 @@ function ChooseAppAndEventSubstep(
   );
 
   const isWebhook =
-    isTrigger && (selectedActionOrTrigger as ITrigger).type === 'webhook';
+    isTrigger && (selectedActionOrTrigger as ITrigger)?.type === 'webhook';
 
   const { name } = substep;
 
