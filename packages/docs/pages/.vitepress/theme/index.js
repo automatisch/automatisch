@@ -1,3 +1,8 @@
 import DefaultTheme from 'vitepress/theme';
 import './custom.css';
-export default DefaultTheme;
+import CustomLayout from './CustomLayout.vue';
+
+export default {
+  ...DefaultTheme,
+  Layout: CustomLayout,
+};
