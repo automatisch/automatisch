@@ -74,6 +74,18 @@ REDIS_TLS=
 
 :::
 
+## Render
+
+<a href="https://render.com/deploy?repo=https://github.com/automatisch/automatisch">
+  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+</a>
+
+:::info
+
+We use default values of render plans with the `render.yaml` file, if you want to use the free plan or change the plan, you can change the `render.yaml` file in your fork and use your repository URL while creating a blueprint in Render.
+
+:::
+
 ## Production setup
 
 If you need to change any other environment variables for your production setup, let's check out the [environment variables](/advanced/configuration#environment-variables) section of the configuration page.
