@@ -20,7 +20,7 @@ You can learn more about the product on our [website](https://automatisch.io) or
 **We encourage you to:**
 
 - Get in touch with the team by starting a discussion on [GitHub](https://github.com/automatisch/automatisch/discussions) or on our [Discord Server](https://discord.gg/dJSah9CVrC).
-- Check out our [Code of Conduct](https://github.com/myorg/.github/blob/main/CODE_OF_CONDUCT.md)
+- Check out our [Code of Conduct](https://github.com/automatisch/automatisch/blob/main/CODE_OF_CONDUCT.md)
 
 ## 🎭 Target audience
 
