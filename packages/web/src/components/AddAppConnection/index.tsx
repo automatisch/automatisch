@@ -116,7 +116,7 @@ export default function AddAppConnection(
           sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
         >
           {error.message}
-          <pre>{JSON.stringify(error.details, null, 2)}</pre>
+          {error.details && <pre>{JSON.stringify(error.details, null, 2)}</pre>}
         </Alert>
       )}
 
