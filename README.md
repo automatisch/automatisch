@@ -10,7 +10,7 @@
 
 There are other existing solutions in the market, like Zapier and Integromat, so you might be wondering why you should use Automatisch.
 
-✅ The most significant advantage of having Automatisch is keeping your data on your own servers. Not all companies want to use an automation service in the cloud, and the current open-source or self-hosted solutions mainly focus on developers rather than a user without a technical background.
+✅ The most significant advantage of having Automatisch is keeping your data on your own servers, which is a critical requirement for companies with private user data that can't be shared with any other external cloud service. This is especially important for companies in some sectors like healthcare or financial and also European companies that must comply with GDPR.
 
 🤓 Your contributions are vital to the development of Automatisch. As an open-source software, anyone can have an impact on how it is being developed.
 
