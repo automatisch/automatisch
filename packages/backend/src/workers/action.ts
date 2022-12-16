@@ -8,9 +8,7 @@ import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
 } from '../helpers/remove-job-configuration';
-import delayAsMilliseconds, {
-  TDelayForUnit,
-} from '../helpers/delay-as-milliseconds';
+import delayAsMilliseconds from '../helpers/delay-as-milliseconds';
 
 type JobData = {
   flowId: string;
@@ -47,12 +45,7 @@ export const worker = new Worker(
     };
 
     if (step.appKey === 'delay') {
-      const { delayForUnit, delayForValue } = step.parameters;
-
-      jobOptions.delay = delayAsMilliseconds(
-        delayForUnit as TDelayForUnit,
-        Number(delayForValue)
-      );
+      jobOptions.delay = delayAsMilliseconds(step);
     }
 
     await actionQueue.add(jobName, jobPayload, jobOptions);
