@@ -42,6 +42,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Delay',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/delay/actions' },
+            { text: 'Connection', link: '/apps/delay/connection' },
+          ],
+        },
+        {
           text: 'Discord',
           collapsible: true,
           collapsed: true,
