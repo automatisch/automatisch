@@ -76,6 +76,7 @@ export interface IFlow {
   steps: IStep[];
   createdAt: string;
   updatedAt: string;
+  remoteWebhookId: string;
   lastInternalId: () => Promise<string>;
 }
 
@@ -279,6 +280,8 @@ export type IGlobalVariable = {
     id: string;
     lastInternalId: string;
     isAlreadyProcessed?: (internalId: string) => boolean;
+    remoteWebhookId?: string;
+    setRemoteWebhookId?: (remoteWebhookId: string) => Promise<void>;
   };
   step?: {
     id: string;

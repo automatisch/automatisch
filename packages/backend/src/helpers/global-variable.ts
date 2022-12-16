@@ -37,6 +37,7 @@ const globalVariable = async (
     testRun = false,
   } = options;
 
+  const isTrigger = step?.isTrigger;
   const lastInternalId = testRun ? undefined : await flow?.lastInternalId();
   const nextStep = await step?.getNextStep();
 
@@ -121,6 +122,18 @@ const globalVariable = async (
     const webhookUrl = appConfig.webhookUrl + '/webhooks/' + flow.id;
 
     $.webhookUrl = webhookUrl;
+  }
+
+  if (isTrigger && (await step.getTriggerCommand()).type === 'webhook') {
+    $.flow.setRemoteWebhookId = async (remoteWebhookId) => {
+      await flow.$query().patchAndFetch({
+        remoteWebhookId,
+      });
+
+      $.flow.remoteWebhookId = remoteWebhookId;
+    };
+
+    $.flow.remoteWebhookId = flow.remoteWebhookId;
   }
 
   const lastInternalIds =
