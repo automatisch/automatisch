@@ -35,6 +35,8 @@ docker compose up
 
 You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. Please do not forget to change your email and password from the settings page.
 
+For other installation types, you can check the [installation](https://automatisch.io/docs/guide/installation) guide.
+
 ## Community Links
 
 - [Discord](https://discord.gg/dJSah9CVrC)
