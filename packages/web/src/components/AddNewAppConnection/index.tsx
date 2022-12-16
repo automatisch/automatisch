@@ -18,6 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
+import Box from '@mui/material/Box';
 import type { IApp } from '@automatisch/types';
 
 import * as URLS from 'config/urls';
@@ -76,7 +77,7 @@ export default function AddNewAppConnection(
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>{formatMessage('apps.addNewAppConnection')}</DialogTitle>
 
-      <DialogContent>
+      <Box px={3}>
         <FormControl
           variant="outlined"
           fullWidth
@@ -103,7 +104,9 @@ export default function AddNewAppConnection(
             data-test="search-for-app-text-field"
           />
         </FormControl>
+      </Box>
 
+      <DialogContent>
         <List sx={{ pt: 2, width: '100%' }}>
           {loading && (
             <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
