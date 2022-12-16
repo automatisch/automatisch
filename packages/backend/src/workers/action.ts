@@ -46,9 +46,7 @@ export const worker = new Worker(
       delay: DEFAULT_DELAY_DURATION,
     };
 
-    const stepApp = await step.getApp();
-
-    if (stepApp.key === 'delay') {
+    if (step.appKey === 'delay') {
       const { delayForUnit, delayForValue } = step.parameters;
 
       jobOptions.delay = delayAsMilliseconds(
