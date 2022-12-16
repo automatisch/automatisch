@@ -7,6 +7,7 @@ We just have a few available integrations at the moment and we also know that wo
 Following integrations are currently supported by Automatisch.
 
 - [DeepL](/apps/deepl/actions)
+- [Delay](/apps/delay/actions)
 - [Discord](/apps/discord/actions)
 - [Flickr](/apps/flickr/triggers)
 - [Github](/apps/github/triggers)
