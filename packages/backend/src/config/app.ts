@@ -1,3 +1,4 @@
+import { URL } from 'node:url';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -38,14 +39,23 @@ const port = process.env.PORT || '3000';
 const serveWebAppSeparately =
   process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
 
-let webAppUrl = `${protocol}://${host}:${port}`;
-const webhookUrl = process.env.WEBHOOK_URL || webAppUrl;
+let apiUrl = (new URL(`${protocol}://${host}:${port}`)).toString();
+apiUrl = apiUrl.substring(0, apiUrl.length - 1);
 
-if (serveWebAppSeparately) {
-  webAppUrl = process.env.WEB_APP_URL || 'http://localhost:3001';
+// use apiUrl by default, which has less priority over the following cases
+let webAppUrl = apiUrl;
+
+if (process.env.WEB_APP_URL) {
+  // use env. var. if provided
+  webAppUrl = (new URL(process.env.WEB_APP_URL)).toString();
+  webAppUrl = webAppUrl.substring(0, webAppUrl.length - 1);
+} else if (serveWebAppSeparately) {
+  // no env. var. and serving separately, sign of development
+  webAppUrl = 'http://localhost:3001'
 }
 
-const baseUrl = `${protocol}://${host}:${port}`;
+let webhookUrl = (new URL(process.env.WEBHOOK_URL || apiUrl)).toString();
+webhookUrl = webhookUrl.substring(0, webhookUrl.length - 1);
 
 const appEnv = process.env.APP_ENV || 'development';
 
@@ -75,7 +85,7 @@ const appConfig: AppConfig = {
   enableBullMQDashboard: process.env.ENABLE_BULLMQ_DASHBOARD === 'true',
   bullMQDashboardUsername: process.env.BULLMQ_DASHBOARD_USERNAME,
   bullMQDashboardPassword: process.env.BULLMQ_DASHBOARD_PASSWORD,
-  baseUrl,
+  baseUrl: apiUrl,
   webAppUrl,
   webhookUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
