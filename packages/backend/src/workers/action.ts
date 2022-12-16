@@ -4,13 +4,21 @@ import logger from '../helpers/logger';
 import Step from '../models/step';
 import actionQueue from '../queues/action';
 import { processAction } from '../services/action';
-import { REMOVE_AFTER_30_DAYS_OR_150_JOBS, REMOVE_AFTER_7_DAYS_OR_50_JOBS } from '../helpers/remove-job-configuration';
+import {
+  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+} from '../helpers/remove-job-configuration';
+import delayAsMilliseconds, {
+  TDelayForUnit,
+} from '../helpers/delay-as-milliseconds';
 
 type JobData = {
   flowId: string;
   executionId: string;
   stepId: string;
 };
+
+const DEFAULT_DELAY_DURATION = 0;
 
 export const worker = new Worker(
   'action',
@@ -35,6 +43,16 @@ export const worker = new Worker(
     const jobOptions = {
       removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
       removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+      delay: DEFAULT_DELAY_DURATION,
+    };
+
+    if (step.appKey === 'delay') {
+      const { delayForUnit, delayForValue } = step.parameters;
+
+      jobOptions.delay = delayAsMilliseconds(
+        delayForUnit as TDelayForUnit,
+        Number(delayForValue)
+      );
     }
 
     await actionQueue.add(jobName, jobPayload, jobOptions);
