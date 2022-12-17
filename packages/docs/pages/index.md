@@ -28,7 +28,7 @@ You need to prepare the workflow once, and it will run continuously until you st
 
 There are other existing solutions in the market, like Zapier and Integromat, so you might be wondering why you should use Automatisch.
 
-✅ The most significant advantage of having Automatisch is **keeping your data on your own servers**, which is a critical requirement for companies with private user data that can't be shared with any other external cloud service. This is especially important for companies in some sectors like healthcare or financial and also European companies that must comply with GDPR.
+✅ One of the main benefits of using Automatisch is that it allows you to **store your data on your own servers**, which is essential for businesses that handle sensitive user information and cannot risk sharing it with external cloud services. This is especially relevant for industries such as healthcare and finance, as well as for European companies that must adhere to the General Data Protection Regulation (GDPR).
 
 🤓 Your contributions are vital to the development of Automatisch. As an **open-source software**, anyone can have an impact on how it is being developed.
 
