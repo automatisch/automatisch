@@ -49,6 +49,10 @@ The build integrations section is best understood when read from beginning to en
 
 ### Webhook-based triggers
 
+:::warning
+If you are developing a webhook-based trigger, you need to ensure that the webhook is publicly accessible. You can use [ngrok](https://ngrok.com) for this purpose and override the webhook URL by setting the **WEBHOOK_URL** environment variable.
+:::
+
 - [New entry - Typeform](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/typeform/triggers/new-entry/index.ts)
 
 ### Pagination with descending order
