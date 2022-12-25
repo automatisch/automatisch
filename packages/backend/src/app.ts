@@ -26,12 +26,17 @@ appAssetsHandler(app);
 app.use(morgan);
 app.use(
   express.json({
-    verify: (req, res, buf) => {
+    verify(req, res, buf) {
       (req as IRequest).rawBody = buf;
     },
   })
 );
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false,
+  verify(req, res, buf) {
+    (req as IRequest).rawBody = buf;
+  },
+}));
 app.use(cors(corsOptions));
 app.use('/', router);
 
