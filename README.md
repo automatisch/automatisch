@@ -12,7 +12,7 @@
 
 There are other existing solutions in the market, like Zapier and Integromat, so you might be wondering why you should use Automatisch.
 
-✅ The most significant advantage of having Automatisch is keeping your data on your own servers. Not all companies want to use an automation service in the cloud, and the current open-source or self-hosted solutions mainly focus on developers rather than a user without a technical background.
+✅ One of the main benefits of using Automatisch is that it allows you to store your data on your own servers, which is essential for businesses that handle sensitive user information and cannot risk sharing it with external cloud services. This is especially relevant for industries such as healthcare and finance, as well as for European companies that must adhere to the General Data Protection Regulation (GDPR).
 
 🤓 Your contributions are vital to the development of Automatisch. As an open-source software, anyone can have an impact on how it is being developed.
 
@@ -32,10 +32,12 @@ git clone git@github.com:automatisch/automatisch.git
 cd automatisch
 
 # Start
-docker compose -p automatisch up
+docker compose up
 ```
 
-You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. You can also change your email and password later on from the settings page.
+You can use `user@automatisch.io` email address and `sample` password to login to Automatisch. Please do not forget to change your email and password from the settings page.
+
+For other installation types, you can check the [installation](https://automatisch.io/docs/guide/installation) guide.
 
 ## Community Links
 

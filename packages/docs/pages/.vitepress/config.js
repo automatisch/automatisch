@@ -42,6 +42,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Delay',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/delay/actions' },
+            { text: 'Connection', link: '/apps/delay/connection' },
+          ],
+        },
+        {
           text: 'Discord',
           collapsible: true,
           collapsed: true,
@@ -67,6 +76,15 @@ export default defineConfig({
             { text: 'Triggers', link: '/apps/github/triggers' },
             { text: 'Actions', link: '/apps/github/actions' },
             { text: 'Connection', link: '/apps/github/connection' },
+          ],
+        },
+        {
+          text: 'Ntfy',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/ntfy/actions' },
+            { text: 'Connection', link: '/apps/ntfy/connection' },
           ],
         },
         {
@@ -124,6 +142,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Telegram',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/telegram-bot/actions' },
+            { text: 'Connection', link: '/apps/telegram-bot/connection' },
+          ],
+        },
+        {
           text: 'Twilio',
           collapsible: true,
           collapsed: true,
@@ -150,6 +177,15 @@ export default defineConfig({
           items: [
             { text: 'Triggers', link: '/apps/typeform/triggers' },
             { text: 'Connection', link: '/apps/typeform/connection' },
+          ],
+        },
+        {
+          text: 'Webhooks',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/webhooks/triggers' },
+            { text: 'Connection', link: '/apps/webhooks/connection' },
           ],
         },
       ],

@@ -54,6 +54,7 @@ export interface IStep {
   key?: string;
   appKey?: string;
   iconUrl: string;
+  webhookUrl: string;
   type: 'action' | 'trigger';
   connectionId?: string;
   status: string;
@@ -75,6 +76,7 @@ export interface IFlow {
   steps: IStep[];
   createdAt: string;
   updatedAt: string;
+  remoteWebhookId: string;
   lastInternalId: () => Promise<string>;
 }
 
@@ -180,21 +182,14 @@ export interface IDynamicData {
 
 export interface IAuth {
   generateAuthUrl?($: IGlobalVariable): Promise<void>;
-  verifyCredentials($: IGlobalVariable): Promise<void>;
-  isStillVerified($: IGlobalVariable): Promise<boolean>;
+  verifyCredentials?($: IGlobalVariable): Promise<void>;
+  isStillVerified?($: IGlobalVariable): Promise<boolean>;
   refreshToken?($: IGlobalVariable): Promise<void>;
   verifyWebhook?($: IGlobalVariable): Promise<boolean>;
   isRefreshTokenRequested?: boolean;
-  fields: IField[];
+  fields?: IField[];
   authenticationSteps?: IAuthenticationStep[];
   reconnectionSteps?: IAuthenticationStep[];
-}
-
-export interface IService {
-  authenticationClient?: IAuthentication;
-  triggers?: any;
-  actions?: any;
-  data?: any;
 }
 
 export interface ITriggerOutput {
@@ -285,6 +280,8 @@ export type IGlobalVariable = {
     id: string;
     lastInternalId: string;
     isAlreadyProcessed?: (internalId: string) => boolean;
+    remoteWebhookId?: string;
+    setRemoteWebhookId?: (remoteWebhookId: string) => Promise<void>;
   };
   step?: {
     id: string;
@@ -300,6 +297,7 @@ export type IGlobalVariable = {
     id: string;
     testRun: boolean;
   };
+  lastExecutionStep?: IExecutionStep;
   webhookUrl?: string;
   triggerOutput?: ITriggerOutput;
   actionOutput?: IActionOutput;

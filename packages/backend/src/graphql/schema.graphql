@@ -342,6 +342,7 @@ type Step {
   key: String
   appKey: String
   iconUrl: String
+  webhookUrl: String
   type: StepEnumType
   parameters: JSONObject
   connection: Connection
@@ -380,6 +381,7 @@ type Trigger {
   key: String
   description: String
   pollInterval: Int
+  type: String
   substeps: [TriggerSubstep]
 }
 

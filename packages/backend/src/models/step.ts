@@ -1,10 +1,11 @@
+import { URL } from 'node:url';
 import { QueryContext, ModelOptions } from 'objection';
+import type { IJSONObject, IStep } from '@automatisch/types';
 import Base from './base';
 import App from './app';
 import Flow from './flow';
 import Connection from './connection';
 import ExecutionStep from './execution-step';
-import type { IJSONObject, IStep } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
 import appConfig from '../config/app';
 
@@ -46,7 +47,7 @@ class Step extends Base {
   };
 
   static get virtualAttributes() {
-    return ['iconUrl'];
+    return ['iconUrl', 'webhookUrl'];
   }
 
   static relationMappings = () => ({
@@ -82,6 +83,13 @@ class Step extends Base {
     return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
+  get webhookUrl() {
+    if (this.appKey !== 'webhook') return null;
+
+    const url = new URL(`/webhooks/${this.flowId}`, appConfig.webhookUrl);
+    return url.toString();
+  }
+
   async $afterInsert(queryContext: QueryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.stepCreated(this);
@@ -104,6 +112,14 @@ class Step extends Base {
     if (!this.appKey) return null;
 
     return await App.findOneByKey(this.appKey);
+  }
+
+  async getLastExecutionStep() {
+    const lastExecutionStep = await this.$relatedQuery('executionSteps')
+      .orderBy('created_at', 'desc')
+      .first();
+
+    return lastExecutionStep;
   }
 
   async getNextStep() {

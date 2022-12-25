@@ -23,6 +23,7 @@ services:
       - POSTGRES_USERNAME=automatisch_user
       - POSTGRES_PASSWORD=automatisch_password
       - ENCRYPTION_KEY
+      - WEBHOOK_SECRET_KEY
       - APP_SECRET_KEY
     volumes:
       - automatisch_storage:/automatisch/storage
@@ -41,6 +42,7 @@ services:
       - POSTGRES_USERNAME=automatisch_user
       - POSTGRES_PASSWORD=automatisch_password
       - ENCRYPTION_KEY
+      - WEBHOOK_SECRET_KEY
       - APP_SECRET_KEY
       - WORKER=true
     volumes:

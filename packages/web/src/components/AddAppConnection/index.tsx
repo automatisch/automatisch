@@ -6,21 +6,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import Dialog from '@mui/material/Dialog';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
-import { IJSONObject } from '@automatisch/types';
+import type { IApp, IJSONObject, IField } from '@automatisch/types';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import { processStep } from 'helpers/authenticationSteps';
 import InputCreator from 'components/InputCreator';
-import type { IApp, IField } from '@automatisch/types';
+import { generateExternalLink } from '../../helpers/translation-values';
 import { Form } from './style';
-
-const generateDocsLink = (link: string) => (str: string) =>
-  (
-    <a href={link} target="_blank">
-      {str}
-    </a>
-  );
 
 type AddAppConnectionProps = {
   onClose: (response: Record<string, unknown>) => void;
@@ -112,7 +105,7 @@ export default function AddAppConnection(
         <Alert severity="info" sx={{ fontWeight: 300 }}>
           {formatMessage('addAppConnection.callToDocs', {
             appName: name,
-            docsLink: generateDocsLink(authDocUrl),
+            docsLink: generateExternalLink(authDocUrl),
           })}
         </Alert>
       )}
@@ -123,7 +116,7 @@ export default function AddAppConnection(
           sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
         >
           {error.message}
-          <pre>{JSON.stringify(error.details, null, 2)}</pre>
+          {error.details && <pre>{JSON.stringify(error.details, null, 2)}</pre>}
         </Alert>
       )}
 

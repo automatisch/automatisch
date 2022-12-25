@@ -72,7 +72,7 @@ export default defineTrigger({
     const subscriptionPayload = {
       enabled: true,
       url: $.webhookUrl,
-      secret: appConfig.appSecretKey,
+      secret: appConfig.webhookSecretKey,
     };
 
     await $.http.put(

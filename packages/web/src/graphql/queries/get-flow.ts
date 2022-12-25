@@ -11,6 +11,8 @@ export const GET_FLOW = gql`
         type
         key
         appKey
+        iconUrl
+        webhookUrl
         status
         position
         connection {

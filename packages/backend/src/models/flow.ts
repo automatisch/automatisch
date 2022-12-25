@@ -13,6 +13,7 @@ class Flow extends Base {
   active: boolean;
   steps: Step[];
   published_at: string;
+  remoteWebhookId: string;
   executions?: Execution[];
 
   static tableName = 'flows';
@@ -25,6 +26,7 @@ class Flow extends Base {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
       userId: { type: 'string', format: 'uuid' },
+      remoteWebhookId: { type: 'string' },
       active: { type: 'boolean' },
     },
   };
