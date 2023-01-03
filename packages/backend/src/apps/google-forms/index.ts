@@ -1,4 +1,6 @@
 import defineApp from '../../helpers/define-app';
+import addAuthHeader from './common/add-auth-header';
+import auth from './auth';
 
 export default defineApp({
   name: 'Google Forms',
@@ -9,4 +11,6 @@ export default defineApp({
   authDocUrl: 'https://automatisch.io/docs/apps/google-forms/connection',
   primaryColor: '673AB7',
   supportsConnections: true,
+  beforeRequest: [addAuthHeader],
+  auth,
 });
