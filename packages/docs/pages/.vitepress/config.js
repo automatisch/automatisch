@@ -151,6 +151,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Todoist',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/todoist/triggers' },
+            { text: 'Actions', link: '/apps/todoist/actions' },
+            { text: 'Connection', link: '/apps/todoist/connection' },
+          ],
+        },
+        {
           text: 'Twilio',
           collapsible: true,
           collapsed: true,

@@ -1,8 +1,8 @@
 ---
 favicon: /favicons/todoist.svg
 items:
-  - name: Create Task
-    desc: Creates a task in Todoist.
+  - name: Get Tasks
+    desc: Finds tasks in Todoist, optionally matching specified parameters.
 ---
 
 <script setup>
