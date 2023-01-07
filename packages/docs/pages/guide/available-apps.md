@@ -19,6 +19,7 @@ Following integrations are currently supported by Automatisch.
 - [SMTP](/apps/smtp/actions)
 - [Stripe](/apps/stripe/triggers)
 - [Telegram](/apps/telegram-bot/actions)
+- [Todoist](/apps/todoist/triggers)
 - [Twilio](/apps/twilio/triggers)
 - [Twitter](/apps/twitter/triggers)
 - [Typeform](/apps/typeform/triggers)
