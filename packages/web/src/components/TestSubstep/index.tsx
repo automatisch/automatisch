@@ -32,7 +32,7 @@ function serializeErrors(graphQLErrors: any) {
       return {
         ...error,
         message: (
-          <pre style={{ margin: 0 }}>
+          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
             {JSON.stringify(JSON.parse(error.message as string), null, 2)}
           </pre>
         ),
