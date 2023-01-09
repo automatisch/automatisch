@@ -14,7 +14,7 @@ export default {
       value: '{WEB_APP_URL}/app/google-forms/connections/add',
       placeholder: null,
       description:
-        'When asked to input an OAuth callback or redirect URL in Github OAuth, enter the URL above.',
+        'When asked to input a redirect URL in Google Cloud, enter the URL above.',
       clickToCopy: true,
     },
     {
