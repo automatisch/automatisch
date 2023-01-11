@@ -1,3 +1,4 @@
+import generateAuthUrl from './generate-auth-url';
 import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
 
@@ -16,19 +17,30 @@ export default {
       clickToCopy: false,
     },
     {
-      key: 'apiToken',
-      label: 'API Token',
+      key: 'clientId',
+      label: 'Client ID',
       type: 'string' as const,
       required: true,
       readOnly: false,
       value: null,
       placeholder: null,
-      description:
-        'Your Todoist API token. See https://todoist.com/app/settings/integrations/developer',
+      description: null,
+      clickToCopy: false,
+    },
+    {
+      key: 'clientSecret',
+      label: 'Client Secret',
+      type: 'string' as const,
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: null,
       clickToCopy: false,
     },
   ],
 
+  generateAuthUrl,
   verifyCredentials,
   isStillVerified,
 };

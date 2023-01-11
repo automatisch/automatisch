@@ -13,9 +13,8 @@ export default async function generateAuthUrl($: IGlobalVariable) {
     scope: scopes.join(','),
   });
 
-  const url = `${
-    $.app.baseUrl
-  }/login/oauth/authorize?${searchParams.toString()}`;
+  const url = `${$.app.baseUrl
+    }/login/oauth/authorize?${searchParams.toString()}`;
 
   await $.auth.set({
     url,
