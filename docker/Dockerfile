@@ -6,7 +6,7 @@ RUN apk --no-cache add --virtual build-dependencies python3 build-base
 
 COPY ./entrypoint.sh /entrypoint.sh
 
-RUN yarn global add @automatisch/cli@0.3.0
+RUN yarn global add @automatisch/cli@0.4.0 --network-timeout 1000000
 
 RUN apk del build-dependencies python3 build-base
 
