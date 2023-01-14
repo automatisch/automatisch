@@ -9,6 +9,7 @@ export const UPDATE_STEP = gql`
       appKey
       parameters
       status
+      webhookUrl
       connection {
         id
       }
