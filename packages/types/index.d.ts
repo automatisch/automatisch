@@ -296,6 +296,7 @@ export type IGlobalVariable = {
   execution?: {
     id: string;
     testRun: boolean;
+    exit: () => void;
   };
   lastExecutionStep?: IExecutionStep;
   webhookUrl?: string;

@@ -67,7 +67,6 @@ export default function InputCreator(
         options={preparedOptions}
         renderInput={(params) => <MuiTextField {...params} label={label} />}
         defaultValue={value as string}
-        onChange={console.log}
         description={description}
         loading={loading}
         disabled={disabled}
@@ -98,7 +97,6 @@ export default function InputCreator(
         onChange={onChange}
         onBlur={onBlur}
         name={computedName}
-        size="small"
         label={label}
         fullWidth
         helperText={description}
