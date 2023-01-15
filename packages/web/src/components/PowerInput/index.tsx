@@ -130,7 +130,7 @@ const PowerInput = (props: PowerInputProps) => {
                 />
               </FakeInput>
               {/* ghost placer for the variables popover */}
-              <div ref={editorRef} style={{ width: '100%' }} />
+              <div ref={editorRef} style={{ position: 'absolute', right: 16, left: 16 }} />
 
               <FormHelperText variant="outlined">{description}</FormHelperText>
 

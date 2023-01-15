@@ -58,6 +58,8 @@
   "flowEditor.triggerEvent": "Trigger event",
   "flowEditor.actionEvent": "Action event",
   "flowEditor.instantTriggerType": "Instant",
+  "filterConditions.onlyContinueIf": "Only continue if…",
+  "filterConditions.orContinueIf": "OR continue if…",
   "chooseConnectionSubstep.continue": "Continue",
   "chooseConnectionSubstep.addNewConnection": "Add new connection",
   "chooseConnectionSubstep.chooseConnection": "Choose connection",

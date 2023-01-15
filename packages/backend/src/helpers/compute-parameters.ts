@@ -38,6 +38,13 @@ export default function computeParameters(
       };
     }
 
+    if (Array.isArray(value)) {
+      return {
+        ...result,
+        [key]: value.map(item => computeParameters(item, executionSteps)),
+      };
+    }
+
     return {
       ...result,
       [key]: value,
