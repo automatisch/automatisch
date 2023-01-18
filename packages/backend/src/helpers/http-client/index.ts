@@ -44,7 +44,8 @@ export default function createHttpClient({
       const { status } = error.response;
 
       if (
-        status === 401 &&
+        // TODO: provide a `shouldRefreshToken` function in the app
+        (status === 401 || status === 403) &&
         $.app.auth.refreshToken &&
         !$.app.auth.isRefreshTokenRequested
       ) {
