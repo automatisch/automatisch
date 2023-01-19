@@ -1,3 +1,4 @@
 import createTweet from './create-tweet';
+import searchUser from './search-user';
 
-export default [createTweet];
+export default [createTweet, searchUser];
