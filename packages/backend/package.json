@@ -47,7 +47,7 @@
     "graphql-type-json": "^0.3.2",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.0",
-    "knex": "^0.95.11",
+    "knex": "^2.4.0",
     "lodash.get": "^4.4.2",
     "luxon": "2.5.2",
     "morgan": "^1.10.0",
