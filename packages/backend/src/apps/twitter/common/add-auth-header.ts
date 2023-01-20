@@ -1,4 +1,5 @@
 import { Token } from 'oauth-1.0a';
+import { URLSearchParams } from 'node:url';
 import { IJSONObject, TBeforeRequest } from '@automatisch/types';
 import oauthClient from './oauth-client';
 
@@ -9,15 +10,24 @@ type RequestDataType = {
 };
 
 const addAuthHeader: TBeforeRequest = ($, requestConfig) => {
-  const { url, method, data } = requestConfig;
+  const { baseURL, url, method, data, params } = requestConfig;
 
   const token: Token = {
     key: $.auth.data?.accessToken as string,
     secret: $.auth.data?.accessSecret as string,
   };
 
+  const searchParams = new URLSearchParams(params);
+  const stringifiedParams = searchParams.toString();
+  let fullUrl = `${baseURL}${url}`;
+
+  // append the search params
+  if (stringifiedParams) {
+    fullUrl = `${fullUrl}?${stringifiedParams}`;
+  }
+
   const requestData: RequestDataType = {
-    url: `${requestConfig.baseURL}${url}`,
+    url: fullUrl,
     method,
   };
 
