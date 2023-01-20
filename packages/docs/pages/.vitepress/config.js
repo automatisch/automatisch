@@ -88,6 +88,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'OpenAI',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/openai/actions' },
+            { text: 'Connection', link: '/apps/openai/connection' },
+          ],
+        },
+        {
           text: 'RSS',
           collapsible: true,
           collapsed: true,
