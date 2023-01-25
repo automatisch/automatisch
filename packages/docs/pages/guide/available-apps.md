@@ -12,7 +12,7 @@ Following integrations are currently supported by Automatisch.
 - [Flickr](/apps/flickr/triggers)
 - [Github](/apps/github/triggers)
 - [RSS](/apps/rss/triggers)
-- [Ntfy](/apps/ntfy/triggers)
+- [Ntfy](/apps/ntfy/actions)
 - [OpenAI](/apps/openai/actions)
 - [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)
