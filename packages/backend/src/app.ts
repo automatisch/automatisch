@@ -1,5 +1,6 @@
 import createError from 'http-errors';
 import express from 'express';
+import appConfig from './config/app';
 import cors from 'cors';
 import corsOptions from './config/cors-options';
 import morgan from './helpers/morgan';
@@ -26,6 +27,7 @@ appAssetsHandler(app);
 app.use(morgan);
 app.use(
   express.json({
+    limit: appConfig.requestBodySizeLimit,
     verify(req, res, buf) {
       (req as IRequest).rawBody = buf;
     },
@@ -33,6 +35,7 @@ app.use(
 );
 app.use(express.urlencoded({
   extended: false,
+  limit: appConfig.requestBodySizeLimit,
   verify(req, res, buf) {
     (req as IRequest).rawBody = buf;
   },

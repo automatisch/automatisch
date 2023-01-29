@@ -31,6 +31,7 @@ type AppConfig = {
   bullMQDashboardUsername: string;
   bullMQDashboardPassword: string;
   telemetryEnabled: boolean;
+  requestBodySizeLimit: string;
 };
 
 const host = process.env.HOST || 'localhost';
@@ -89,6 +90,7 @@ const appConfig: AppConfig = {
   webAppUrl,
   webhookUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
+  requestBodySizeLimit: '1mb',
 };
 
 if (!appConfig.encryptionKey) {
