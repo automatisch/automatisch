@@ -111,6 +111,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/salesforce/triggers' },
+            { text: 'Actions', link: '/apps/salesforce/actions' },
             { text: 'Connection', link: '/apps/salesforce/connection' },
           ],
         },
