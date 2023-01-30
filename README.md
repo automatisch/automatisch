@@ -24,7 +24,7 @@ The official documentation can be found here: [https://automatisch.io/docs](http
 
 ```bash
 # Clone the repository
-git clone git@github.com:automatisch/automatisch.git
+git clone https://github.com/automatisch/automatisch.git
 
 # Go to the repository folder
 cd automatisch
