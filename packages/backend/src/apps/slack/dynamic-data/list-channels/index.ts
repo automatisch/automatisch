@@ -13,7 +13,13 @@ export default {
       error: null,
     };
 
-    const response = await $.http.get('/conversations.list');
+    const response = await $.http.get('/conversations.list', {
+      params: {
+        types: 'public_channel,private_channel',
+        limit: 1000,
+        exclude_archived: true,
+      }
+    });
 
     if (response.data.ok === false) {
       throw new Error(response.data);
