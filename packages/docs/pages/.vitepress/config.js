@@ -79,6 +79,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'HTTP Request',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/http-request/actions' },
+            { text: 'Connection', link: '/apps/http-request/connection' },
+          ],
+        },
+        {
           text: 'Ntfy',
           collapsible: true,
           collapsed: true,
