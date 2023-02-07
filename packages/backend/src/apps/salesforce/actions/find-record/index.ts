@@ -1,10 +1,9 @@
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
-  name: 'Find Record',
+  name: 'Find record',
   key: 'findRecord',
-  description:
-    'Finds a record of a specified object by a field and value.',
+  description: 'Finds a record of a specified object by a field and value.',
   arguments: [
     {
       label: 'Object',
