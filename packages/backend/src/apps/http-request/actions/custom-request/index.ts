@@ -12,8 +12,7 @@ export default defineAction({
       key: 'method',
       type: 'dropdown' as const,
       required: true,
-      description:
-        `The HTTP method we'll use to perform the request.`,
+      description: `The HTTP method we'll use to perform the request.`,
       value: 'GET',
       options: [
         { label: 'DELETE', value: 'DELETE' },
@@ -21,7 +20,7 @@ export default defineAction({
         { label: 'PATCH', value: 'PATCH' },
         { label: 'POST', value: 'POST' },
         { label: 'PUT', value: 'PUT' },
-      ]
+      ],
     },
     {
       label: 'URL',
@@ -35,7 +34,7 @@ export default defineAction({
       label: 'Data',
       key: 'data',
       type: 'string' as const,
-      required: true,
+      required: false,
       description: 'Place raw JSON data here.',
       variables: true,
     },
@@ -45,18 +44,31 @@ export default defineAction({
     const method = $.step.parameters.method as TMethod;
     const data = $.step.parameters.data as string;
     const url = $.step.parameters.url as string;
+    const maxFileSize = 25 * 1024 * 1024; // 25MB
 
-    const response = await $.http.request(
-      {
-        url,
-        method,
-        data,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    const metadataResponse = await $.http.head(url);
 
-    $.setActionItem({ raw: response.data });
+    if (Number(metadataResponse.headers['content-length']) > maxFileSize) {
+      throw new Error(
+        `Response is too large. Maximum size is 25MB. Actual size is ${metadataResponse.headers['content-length']}`
+      );
+    }
+
+    const response = await $.http.request({
+      url,
+      method,
+      data,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    let responseData = response.data;
+
+    if (typeof response.data === 'string') {
+      responseData = response.data.replaceAll('\u0000', '');
+    }
+
+    $.setActionItem({ raw: { data: responseData } });
   },
 });
