@@ -65,5 +65,5 @@ export const processAction = async (options: ProcessActionOptions) => {
       errorDetails: $.actionOutput.error ? $.actionOutput.error : null,
     });
 
-  return { flowId, stepId, executionId, executionStep };
+  return { flowId, stepId, executionId, executionStep, computedParameters };
 };
