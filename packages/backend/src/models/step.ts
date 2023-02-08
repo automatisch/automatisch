@@ -149,6 +149,22 @@ class Step extends Base {
 
     return command;
   }
+
+  async getSetupFields() {
+    let setupSupsteps;
+
+    if (this.isTrigger) {
+      setupSupsteps = (await this.getTriggerCommand()).substeps;
+    } else {
+      setupSupsteps = (await this.getActionCommand()).substeps;
+    }
+
+    const existingArguments = setupSupsteps.find(
+      (substep) => substep.key === 'chooseTrigger'
+    ).arguments;
+
+    return existingArguments;
+  }
 }
 
 export default Step;

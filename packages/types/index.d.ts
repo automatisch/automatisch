@@ -167,6 +167,7 @@ export interface IApp {
   flowCount?: number;
   beforeRequest?: TBeforeRequest[];
   dynamicData?: IDynamicData;
+  dynamicFields?: IDynamicFields;
   triggers?: ITrigger[];
   actions?: IAction[];
   connections?: IConnection[];
@@ -177,6 +178,10 @@ export type TBeforeRequest = {
 };
 
 export interface IDynamicData {
+  [index: string]: any;
+}
+
+export interface IDynamicFields {
   [index: string]: any;
 }
 
