@@ -1,6 +1,6 @@
 {
   "name": "@automatisch/root",
-  "license": "AGPL-3.0",
+  "license": "See LICENSE file",
   "private": true,
   "scripts": {
     "start": "lerna run --stream --parallel --scope=@*/{web,backend} dev",
