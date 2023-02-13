@@ -50,4 +50,12 @@ If you have any questions or problems, please visit our GitHub discussions page,
 
 ## License
 
-Automatisch is an open-source software with the [AGPL 3.0 license](https://github.com/automatisch/automatisch/blob/main/LICENSE.md).
+Automatisch Community Edition (Automatisch CE) is an open-source software with the [AGPL-3.0 license](LICENSE.agpl).
+
+Automatisch Enterprise Edition (Automatisch EE) is a commercial offering with the [Enterprise license](LICENSE.enterprise).
+
+The Automatisch repository contains both AGPL-licensed and Enterprise-licensed files. We maintain a single repository to make development easier.
+
+All files that contain ".ee." in their name fall under the [Enterprise license](LICENSE.enterprise). All other files fall under the [AGPL-3.0 license](LICENSE.agpl).
+
+See the [LICENSE](LICENSE) file for more information.
