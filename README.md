@@ -44,9 +44,9 @@ For other installation types, you can check the [installation](https://automatis
 
 ## Support
 
-If you have any questions or problems, please visit our GitHub discussions page, and we'll try to help you as soon as possible.
+If you have any questions or problems, please visit our GitHub issues page, and we'll try to help you as soon as possible.
 
-[https://github.com/automatisch/automatisch/discussions](https://github.com/automatisch/automatisch/discussions)
+[https://github.com/automatisch/automatisch/issues](https://github.com/automatisch/automatisch/issues)
 
 ## License
 

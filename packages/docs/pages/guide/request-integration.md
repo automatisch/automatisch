@@ -1,6 +1,6 @@
 # Request Integration
 
-You can request a new integration by using [Github discussions](https://github.com/automatisch/automatisch/discussions/categories/integration-request).
+You can request a new integration by using [Github issues](https://github.com/automatisch/automatisch/issues).
 
 :::info
 
@@ -10,6 +10,6 @@ While we are working hard to add as many integrations as possible, it might take
 
 :::tip
 
-If there is already an integration request for the service you'd like, it's still crucial to upvote that discussion for us to analyze the potential audience around the integration.
+If there is already an integration request for the service you'd like, it's still crucial to upvote or comment on that issue for us to analyze the potential audience around the integration.
 
 :::
