@@ -29,6 +29,7 @@ type Query {
     parameters: JSONObject
   ): JSONObject
   getCurrentUser: User
+  getLicense: GetLicense
   healthcheck: AppHealth
 }
 
@@ -451,6 +452,10 @@ type ExecutionStepConnection {
 
 type AppHealth {
   version: String
+}
+
+type GetLicense {
+  type: String
 }
 
 schema {
