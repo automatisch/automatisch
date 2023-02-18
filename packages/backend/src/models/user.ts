@@ -10,6 +10,7 @@ class User extends Base {
   id!: string;
   email!: string;
   password!: string;
+  role: string;
   connections?: Connection[];
   flows?: Flow[];
   steps?: Step[];
@@ -25,6 +26,7 @@ class User extends Base {
       id: { type: 'string', format: 'uuid' },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
+      role: { type: 'string', enum: ['admin', 'user'] },
     },
   };
 
