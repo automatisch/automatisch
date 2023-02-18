@@ -12,6 +12,7 @@ import deleteFlow from './mutations/delete-flow';
 import createStep from './mutations/create-step';
 import updateStep from './mutations/update-step';
 import deleteStep from './mutations/delete-step';
+import createUser from './mutations/create-user.ee';
 import updateUser from './mutations/update-user';
 import login from './mutations/login';
 
@@ -30,6 +31,7 @@ const mutationResolvers = {
   createStep,
   updateStep,
   deleteStep,
+  createUser,
   updateUser,
   login,
 };
