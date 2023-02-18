@@ -5,12 +5,15 @@ import Flow from './flow';
 import Step from './step';
 import Execution from './execution';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 class User extends Base {
   id!: string;
   email!: string;
   password!: string;
   role: string;
+  resetPasswordToken: string;
+  resetPasswordTokenSentAt: string;
   connections?: Connection[];
   flows?: Flow[];
   steps?: Step[];
@@ -75,6 +78,13 @@ class User extends Base {
 
   login(password: string) {
     return bcrypt.compare(password, this.password);
+  }
+
+  async generateResetPasswordToken() {
+    const resetPasswordToken = crypto.randomBytes(64).toString('hex');
+    const resetPasswordTokenSentAt = new Date().toISOString();
+
+    await this.$query().patch({ resetPasswordToken, resetPasswordTokenSentAt });
   }
 
   async generateHash() {
