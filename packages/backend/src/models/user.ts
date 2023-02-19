@@ -87,6 +87,26 @@ class User extends Base {
     await this.$query().patch({ resetPasswordToken, resetPasswordTokenSentAt });
   }
 
+  async resetPassword(password: string) {
+    return await this.$query().patch({
+      resetPasswordToken: null,
+      resetPasswordTokenSentAt: null,
+      password,
+    });
+  }
+
+  async isResetPasswordTokenValid() {
+    if (!this.resetPasswordTokenSentAt) {
+      return false;
+    }
+
+    const sentAt = new Date(this.resetPasswordTokenSentAt);
+    const now = new Date();
+    const fourHoursInMilliseconds = 1000 * 60 * 60 * 4;
+
+    return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
+  }
+
   async generateHash() {
     this.password = await bcrypt.hash(this.password, 10);
   }

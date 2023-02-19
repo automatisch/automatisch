@@ -51,6 +51,7 @@ type Mutation {
   createUser(input: CreateUserInput): User
   updateUser(input: UpdateUserInput): User
   forgotPassword(input: ForgotPasswordInput): Boolean
+  resetPassword(input: ResetPasswordInput): Boolean
   login(input: LoginInput): Auth
 }
 
@@ -313,7 +314,12 @@ input UpdateUserInput {
 }
 
 input ForgotPasswordInput {
-  email: String
+  email: String!
+}
+
+input ResetPasswordInput {
+  token: String!
+  password: String!
 }
 
 input LoginInput {
