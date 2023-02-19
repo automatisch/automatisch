@@ -15,6 +15,7 @@ import deleteStep from './mutations/delete-step';
 import createUser from './mutations/create-user.ee';
 import updateUser from './mutations/update-user';
 import forgotPassword from './mutations/forgot-password.ee';
+import resetPassword from './mutations/reset-password.ee';
 import login from './mutations/login';
 
 const mutationResolvers = {
@@ -35,6 +36,7 @@ const mutationResolvers = {
   createUser,
   updateUser,
   forgotPassword,
+  resetPassword,
   login,
 };
 
