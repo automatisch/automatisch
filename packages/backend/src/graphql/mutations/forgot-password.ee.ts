@@ -1,4 +1,9 @@
 import User from '../../models/user';
+import emailQueue from '../../queues/email';
+import {
+  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+} from '../../helpers/remove-job-configuration';
 
 type Params = {
   input: {
@@ -16,7 +21,24 @@ const forgotPassword = async (_parent: unknown, params: Params) => {
   }
 
   await user.generateResetPasswordToken();
-  // TODO: Send email with reset password link
+
+  const jobName = `Reset Password Email - ${user.id}`;
+
+  const jobPayload = {
+    email: user.email,
+    subject: 'Reset Password',
+    template: 'reset-password-instructions',
+    params: {
+      token: user.resetPasswordToken,
+    },
+  };
+
+  const jobOptions = {
+    removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+    removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  };
+
+  await emailQueue.add(jobName, jobPayload, jobOptions);
 
   return;
 };

@@ -32,6 +32,12 @@ type AppConfig = {
   bullMQDashboardPassword: string;
   telemetryEnabled: boolean;
   requestBodySizeLimit: string;
+  smtpHost: string;
+  smtpPort: number;
+  smtpSecure: boolean;
+  smtpUser: string;
+  smtpPassword: string;
+  fromEmail: string;
   licenseKey: string;
 };
 
@@ -92,6 +98,12 @@ const appConfig: AppConfig = {
   webhookUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
   requestBodySizeLimit: '1mb',
+  smtpHost: process.env.SMTP_HOST,
+  smtpPort: parseInt(process.env.SMTP_PORT || '587'),
+  smtpSecure: process.env.SMTP_SECURE === 'true',
+  smtpUser: process.env.SMTP_USER,
+  smtpPassword: process.env.SMTP_PASSWORD,
+  fromEmail: process.env.FROM_EMAIL,
   licenseKey: process.env.LICENSE_KEY,
 };
 

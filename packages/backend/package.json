@@ -45,6 +45,7 @@
     "graphql-shield": "^7.5.0",
     "graphql-tools": "^8.2.0",
     "graphql-type-json": "^0.3.2",
+    "handlebars": "^4.7.7",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.0",
