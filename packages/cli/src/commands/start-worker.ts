@@ -32,9 +32,6 @@ export default class StartWorker extends Command {
         process.env[key] = value;
       }
     }
-
-    // must serve until more customization is introduced
-    delete process.env.SERVE_WEB_APP_SEPARATELY;
   }
 
   async runWorker(): Promise<void> {

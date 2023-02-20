@@ -80,7 +80,7 @@ class Step extends Base {
   get iconUrl() {
     if (!this.appKey) return null;
 
-    return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
+    return `${appConfig.webAppUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
   get webhookUrl() {

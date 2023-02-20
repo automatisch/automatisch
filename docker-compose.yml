@@ -13,8 +13,6 @@ services:
       redis:
         condition: service_started
     environment:
-      - HOST=localhost
-      - PROTOCOL=http
       - PORT=3000
       - APP_ENV=production
       - REDIS_HOST=redis

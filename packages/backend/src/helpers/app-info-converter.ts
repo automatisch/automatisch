@@ -4,7 +4,7 @@ import appConfig from '../config/app';
 const appInfoConverter = (rawAppData: IApp) => {
   rawAppData.iconUrl = rawAppData.iconUrl.replace(
     '{BASE_URL}',
-    appConfig.baseUrl
+    appConfig.webAppUrl
   );
 
   if (rawAppData.auth?.fields) {

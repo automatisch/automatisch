@@ -3,8 +3,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 type AppConfig = {
-  host: string;
-  protocol: string;
   port: string;
   webAppUrl: string;
   webhookUrl: string;
@@ -17,11 +15,9 @@ type AppConfig = {
   postgresPassword?: string;
   version: string;
   postgresEnableSsl: boolean;
-  baseUrl: string;
   encryptionKey: string;
   webhookSecretKey: string;
   appSecretKey: string;
-  serveWebAppSeparately: boolean;
   redisHost: string;
   redisPort: number;
   redisUsername: string;
@@ -35,36 +31,28 @@ type AppConfig = {
   licenseKey: string;
 };
 
-const host = process.env.HOST || 'localhost';
-const protocol = process.env.PROTOCOL || 'http';
 const port = process.env.PORT || '3000';
-const serveWebAppSeparately =
-  process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
 
-let apiUrl = new URL(`${protocol}://${host}:${port}`).toString();
-apiUrl = apiUrl.substring(0, apiUrl.length - 1);
+// Application URL defaults to localhost over HTTP, on the listening port.
+let webAppUrl = new URL(`http://localhost:${port}`).toString();
+webAppUrl = webAppUrl.substring(0, webAppUrl.length - 1);
 
-// use apiUrl by default, which has less priority over the following cases
-let webAppUrl = apiUrl;
-
+// Allow overriding the application URL from the environment.
 if (process.env.WEB_APP_URL) {
-  // use env. var. if provided
   webAppUrl = new URL(process.env.WEB_APP_URL).toString();
   webAppUrl = webAppUrl.substring(0, webAppUrl.length - 1);
-} else if (serveWebAppSeparately) {
-  // no env. var. and serving separately, sign of development
-  webAppUrl = 'http://localhost:3001';
 }
 
-let webhookUrl = new URL(process.env.WEBHOOK_URL || apiUrl).toString();
+// Allow overriding the webhook base URL from the environment.
+let webhookUrl = new URL(process.env.WEBHOOK_URL || webAppUrl).toString();
 webhookUrl = webhookUrl.substring(0, webhookUrl.length - 1);
 
 const appEnv = process.env.APP_ENV || 'development';
 
 const appConfig: AppConfig = {
-  host,
-  protocol,
   port,
+  webAppUrl,
+  webhookUrl,
   appEnv: appEnv,
   isDev: appEnv === 'development',
   version: process.env.npm_package_version,
@@ -78,7 +66,6 @@ const appConfig: AppConfig = {
   encryptionKey: process.env.ENCRYPTION_KEY || '',
   webhookSecretKey: process.env.WEBHOOK_SECRET_KEY || '',
   appSecretKey: process.env.APP_SECRET_KEY || '',
-  serveWebAppSeparately,
   redisHost: process.env.REDIS_HOST || '127.0.0.1',
   redisPort: parseInt(process.env.REDIS_PORT || '6379'),
   redisUsername: process.env.REDIS_USERNAME,
@@ -87,9 +74,6 @@ const appConfig: AppConfig = {
   enableBullMQDashboard: process.env.ENABLE_BULLMQ_DASHBOARD === 'true',
   bullMQDashboardUsername: process.env.BULLMQ_DASHBOARD_USERNAME,
   bullMQDashboardPassword: process.env.BULLMQ_DASHBOARD_PASSWORD,
-  baseUrl: apiUrl,
-  webAppUrl,
-  webhookUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
   requestBodySizeLimit: '1mb',
   licenseKey: process.env.LICENSE_KEY,

@@ -16,8 +16,6 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 
 | Variable Name               | Type    | Default Value      | Description                                          |
 | --------------------------- | ------- | ------------------ | ---------------------------------------------------- |
-| `HOST`                      | string  | `localhost`        | HTTP Host                                            |
-| `PROTOCOL`                  | string  | `http`             | HTTP Protocol                                        |
 | `PORT`                      | string  | `3000`             | HTTP Port                                            |
 | `APP_ENV`                   | string  | `production`       | Automatisch Environment                              |
 | `WEB_APP_URL`               | string  |                    | Can be used to override connection URLs and CORS URL |

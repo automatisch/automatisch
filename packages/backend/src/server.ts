@@ -8,7 +8,7 @@ import telemetry from './helpers/telemetry';
 telemetry.setServiceType('main');
 
 const server: Server = app.listen(appConfig.port, () => {
-  logger.info(`Server is listening on ${appConfig.baseUrl}`);
+  logger.info(`Server is listening on ::1:${appConfig.port}`);
 });
 
 function shutdown(server: Server) {
