@@ -10,6 +10,7 @@ import getExecutions from './queries/get-executions';
 import getExecutionSteps from './queries/get-execution-steps';
 import getDynamicData from './queries/get-dynamic-data';
 import getCurrentUser from './queries/get-current-user';
+import getLicense from './queries/get-license.ee';
 import healthcheck from './queries/healthcheck';
 
 const queryResolvers = {
@@ -25,6 +26,7 @@ const queryResolvers = {
   getExecutionSteps,
   getDynamicData,
   getCurrentUser,
+  getLicense,
   healthcheck,
 };
 
