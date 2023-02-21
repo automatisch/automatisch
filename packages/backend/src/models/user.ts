@@ -5,11 +5,15 @@ import Flow from './flow';
 import Step from './step';
 import Execution from './execution';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 class User extends Base {
   id!: string;
   email!: string;
   password!: string;
+  role: string;
+  resetPasswordToken: string;
+  resetPasswordTokenSentAt: string;
   connections?: Connection[];
   flows?: Flow[];
   steps?: Step[];
@@ -25,6 +29,7 @@ class User extends Base {
       id: { type: 'string', format: 'uuid' },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
+      role: { type: 'string', enum: ['admin', 'user'] },
     },
   };
 
@@ -73,6 +78,33 @@ class User extends Base {
 
   login(password: string) {
     return bcrypt.compare(password, this.password);
+  }
+
+  async generateResetPasswordToken() {
+    const resetPasswordToken = crypto.randomBytes(64).toString('hex');
+    const resetPasswordTokenSentAt = new Date().toISOString();
+
+    await this.$query().patch({ resetPasswordToken, resetPasswordTokenSentAt });
+  }
+
+  async resetPassword(password: string) {
+    return await this.$query().patch({
+      resetPasswordToken: null,
+      resetPasswordTokenSentAt: null,
+      password,
+    });
+  }
+
+  async isResetPasswordTokenValid() {
+    if (!this.resetPasswordTokenSentAt) {
+      return false;
+    }
+
+    const sentAt = new Date(this.resetPasswordTokenSentAt);
+    const now = new Date();
+    const fourHoursInMilliseconds = 1000 * 60 * 60 * 4;
+
+    return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
   }
 
   async generateHash() {

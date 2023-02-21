@@ -1,4 +1,4 @@
-import checkLicense from '../../helpers/checkLicense.ee';
+import checkLicense from '../../helpers/check-license.ee';
 
 const getLicense = async () => {
   const license = await checkLicense();
