@@ -134,6 +134,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Signalwire',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/signalwire/triggers' },
+            { text: 'Actions', link: '/apps/signalwire/actions' },
+            { text: 'Connection', link: '/apps/signalwire/connection' },
+          ],
+        },
+        {
           text: 'Slack',
           collapsible: true,
           collapsed: true,

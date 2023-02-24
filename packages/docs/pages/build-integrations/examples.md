@@ -33,6 +33,7 @@ The build integrations section is best understood when read from beginning to en
 
 - [DeepL](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/deepl/auth/index.ts)
 - [Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/auth/index.ts)
+- [Signalwire](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/signalwire/auth/index.ts)
 - [SMTP](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/smtp/auth/index.ts)
 
 ### Without authentication
@@ -60,6 +61,7 @@ If you are developing a webhook-based trigger, you need to ensure that the webho
 - [Search tweets - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/triggers/search-tweets/index.ts)
 - [New issues - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-issues/index.ts)
 - [Receive SMS - Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/triggers/receive-sms/index.ts)
+- [Receive SMS - Signalwire](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/signalwire/triggers/receive-sms/index.ts)
 - [New photos - Flickr](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/flickr/triggers/new-photos/index.ts)
 
 ### Pagination with ascending order
