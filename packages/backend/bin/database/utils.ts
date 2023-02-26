@@ -12,6 +12,7 @@ export async function createUser(
   const userParams = {
     email,
     password,
+    role: 'admin',
   };
 
   try {
