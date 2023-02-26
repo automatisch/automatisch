@@ -29,6 +29,8 @@ const authentication = shield(
     Mutation: {
       '*': isAuthenticated,
       login: allow,
+      createUser: allow,
+      forgotPassword: allow,
     },
   },
   {

@@ -29,6 +29,7 @@ const userScopes = [
   'groups:history',
   'groups:read',
   'groups:write',
+  'im:read',
   'im:write',
   'mpim:write',
   'reactions:read',

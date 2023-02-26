@@ -68,7 +68,13 @@ cp .env-example .env
 ```
 
 Start the frontend server in another terminal tab.
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result. Then, use the `user@automatisch.io` email address and `sample` password to login.
+
+```bash
+cd packages/web
+yarn dev
+```
+
+It will automatically open [http://localhost:3001](http://localhost:3001) in your browser. Then, use the `user@automatisch.io` email address and `sample` password to login.
 
 ## Docs server
 

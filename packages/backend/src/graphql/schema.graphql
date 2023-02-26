@@ -29,6 +29,7 @@ type Query {
     parameters: JSONObject
   ): JSONObject
   getCurrentUser: User
+  getLicense: GetLicense
   healthcheck: AppHealth
 }
 
@@ -47,7 +48,10 @@ type Mutation {
   createStep(input: CreateStepInput): Step
   updateStep(input: UpdateStepInput): Step
   deleteStep(input: DeleteStepInput): Step
+  createUser(input: CreateUserInput): User
   updateUser(input: UpdateUserInput): User
+  forgotPassword(input: ForgotPasswordInput): Boolean
+  resetPassword(input: ResetPasswordInput): Boolean
   login(input: LoginInput): Auth
 }
 
@@ -299,9 +303,23 @@ input DeleteStepInput {
   id: String!
 }
 
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
 input UpdateUserInput {
   email: String
   password: String
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+input ResetPasswordInput {
+  token: String!
+  password: String!
 }
 
 input LoginInput {
@@ -451,6 +469,10 @@ type ExecutionStepConnection {
 
 type AppHealth {
   version: String
+}
+
+type GetLicense {
+  type: String
 }
 
 schema {

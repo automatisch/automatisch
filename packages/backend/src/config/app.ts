@@ -32,6 +32,13 @@ type AppConfig = {
   bullMQDashboardPassword: string;
   telemetryEnabled: boolean;
   requestBodySizeLimit: string;
+  smtpHost: string;
+  smtpPort: number;
+  smtpSecure: boolean;
+  smtpUser: string;
+  smtpPassword: string;
+  fromEmail: string;
+  licenseKey: string;
 };
 
 const host = process.env.HOST || 'localhost';
@@ -40,7 +47,7 @@ const port = process.env.PORT || '3000';
 const serveWebAppSeparately =
   process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
 
-let apiUrl = (new URL(`${protocol}://${host}:${port}`)).toString();
+let apiUrl = new URL(`${protocol}://${host}:${port}`).toString();
 apiUrl = apiUrl.substring(0, apiUrl.length - 1);
 
 // use apiUrl by default, which has less priority over the following cases
@@ -48,14 +55,14 @@ let webAppUrl = apiUrl;
 
 if (process.env.WEB_APP_URL) {
   // use env. var. if provided
-  webAppUrl = (new URL(process.env.WEB_APP_URL)).toString();
+  webAppUrl = new URL(process.env.WEB_APP_URL).toString();
   webAppUrl = webAppUrl.substring(0, webAppUrl.length - 1);
 } else if (serveWebAppSeparately) {
   // no env. var. and serving separately, sign of development
-  webAppUrl = 'http://localhost:3001'
+  webAppUrl = 'http://localhost:3001';
 }
 
-let webhookUrl = (new URL(process.env.WEBHOOK_URL || apiUrl)).toString();
+let webhookUrl = new URL(process.env.WEBHOOK_URL || apiUrl).toString();
 webhookUrl = webhookUrl.substring(0, webhookUrl.length - 1);
 
 const appEnv = process.env.APP_ENV || 'development';
@@ -91,6 +98,13 @@ const appConfig: AppConfig = {
   webhookUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
   requestBodySizeLimit: '1mb',
+  smtpHost: process.env.SMTP_HOST,
+  smtpPort: parseInt(process.env.SMTP_PORT || '587'),
+  smtpSecure: process.env.SMTP_SECURE === 'true',
+  smtpUser: process.env.SMTP_USER,
+  smtpPassword: process.env.SMTP_PASSWORD,
+  fromEmail: process.env.FROM_EMAIL,
+  licenseKey: process.env.LICENSE_KEY,
 };
 
 if (!appConfig.encryptionKey) {

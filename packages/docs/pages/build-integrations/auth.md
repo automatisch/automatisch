@@ -93,6 +93,10 @@ We have defined two fields for the auth.
 You have to add a screen name field in case there is no API endpoint where you can get the username or any other information about the user that you can use as a screen name. Some of the APIs have an endpoint for this purpose like `/me` or `/users/me`, but in our example, the cat API doesn't have such an endpoint.
 :::
 
+:::danger
+If the third-party service you use provides both an API key and OAuth for the authentication, we expect you to use OAuth instead of an API key. Please consider that when you create a pull request for a new integration. Otherwise, we might ask you to have changes to use OAuth. To see apps with OAuth implementation, you can check [examples](/build-integrations/examples#_3-legged-oauth).
+:::
+
 ## Verify credentials
 
 So until now, we integrated auth folder with the app definition and defined the auth fields. Now we need to verify the credentials that the user entered. We will do that by defining the `verifyCredentials` method.

@@ -1,7 +1,7 @@
 {
   "name": "@automatisch/types",
   "version": "0.5.0",
-  "license": "AGPL-3.0",
+  "license": "See LICENSE file",
   "description": "Type definitions for automatisch",
   "homepage": "https://github.com/automatisch/automatisch",
   "types": "./index.d.ts",
