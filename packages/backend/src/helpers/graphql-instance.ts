@@ -28,7 +28,7 @@ const graphQLInstance = graphqlHTTP({
       delete (error.originalError as HttpError).response;
     }
 
-    return error.originalError || error;
+    return error;
   },
 });
 
