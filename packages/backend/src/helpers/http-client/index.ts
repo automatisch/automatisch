@@ -40,8 +40,9 @@ export default function createHttpClient({
   instance.interceptors.response.use(
     (response) => response,
     async (error) => {
-      const { config } = error;
-      const { status } = error.response;
+      const { config, response } = error;
+      // Do not destructure `status` from `error.response` because it might not exist
+      const status = response?.status;
 
       if (
         // TODO: provide a `shouldRefreshToken` function in the app
