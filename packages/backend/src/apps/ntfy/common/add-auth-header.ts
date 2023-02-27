@@ -1,8 +1,8 @@
 import { TBeforeRequest } from '@automatisch/types';
 
 const addAuthHeader: TBeforeRequest = ($, requestConfig) => {
-  if ($.auth.data.apiBaseUrl) {
-    requestConfig.baseURL = $.auth.data.apiBaseUrl as string;
+  if ($.auth.data.serverUrl) {
+    requestConfig.baseURL = $.auth.data.serverUrl as string;
   }
 
   if ($.auth.data?.username && $.auth.data?.password) {
