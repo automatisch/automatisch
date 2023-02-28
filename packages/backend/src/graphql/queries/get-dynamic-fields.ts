@@ -40,14 +40,13 @@ const getDynamicFields = async (
     $.step.parameters[parameterKey] = parameterValue;
   }
 
-  const existingArguments = await step.getSetupFields();
   const remainingArguments = await command.run($);
 
   if (remainingArguments.error) {
     throw new Error(JSON.stringify(remainingArguments.error));
   }
 
-  return [...existingArguments, ...remainingArguments.data];
+  return remainingArguments.data;
 };
 
 export default getDynamicFields;

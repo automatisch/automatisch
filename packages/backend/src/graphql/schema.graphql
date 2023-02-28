@@ -32,7 +32,7 @@ type Query {
     stepId: String!
     key: String!
     parameters: JSONObject
-  ): [Field]
+  ): [SubstepArgument]
   getCurrentUser: User
   getLicense: GetLicense
   healthcheck: AppHealth
@@ -70,38 +70,64 @@ directive @specifiedBy(
   url: String!
 ) on SCALAR
 
+type Trigger {
+  name: String
+  key: String
+  description: String
+  pollInterval: Int
+  type: String
+  substeps: [Substep]
+}
+
 type Action {
   name: String
   key: String
   description: String
-  substeps: [ActionSubstep]
+  substeps: [Substep]
 }
 
-type ActionSubstep {
+type Substep {
   key: String
   name: String
-  arguments: [ActionSubstepArgument]
+  arguments: [SubstepArgument]
 }
 
-type ActionSubstepArgument {
+type SubstepArgument {
   label: String
   key: String
   type: String
   description: String
   required: Boolean
   variables: Boolean
-  options: [ArgumentOption]
-  source: ActionSubstepArgumentSource
+  options: [SubstepArgumentOption]
+  source: SubstepArgumentSource
+  additionalFields: SubstepArgumentAdditionalFields
   dependsOn: [String]
 }
 
-type ActionSubstepArgumentSource {
-  type: String
-  name: String
-  arguments: [ActionSubstepArgumentSourceArgument]
+type SubstepArgumentOption {
+  label: String
+  value: JSONObject
 }
 
-type ActionSubstepArgumentSourceArgument {
+type SubstepArgumentSource {
+  type: String
+  name: String
+  arguments: [SubstepArgumentSourceArgument]
+}
+
+type SubstepArgumentSourceArgument {
+  name: String
+  value: String
+}
+
+type SubstepArgumentAdditionalFields {
+  type: String
+  name: String
+  arguments: [SubstepArgumentAdditionalFieldsArgument]
+}
+
+type SubstepArgumentAdditionalFieldsArgument {
   name: String
   value: String
 }
@@ -203,7 +229,7 @@ type Field {
   description: String
   docUrl: String
   clickToCopy: Boolean
-  options: [ArgumentOption]
+  options: [SubstepArgumentOption]
 }
 
 type FlowConnection {
@@ -397,49 +423,6 @@ input StepInput {
   flow: StepFlowInput
   parameters: JSONObject
   previousStep: PreviousStepInput
-}
-
-type Trigger {
-  name: String
-  key: String
-  description: String
-  pollInterval: Int
-  type: String
-  substeps: [TriggerSubstep]
-}
-
-type TriggerSubstep {
-  key: String
-  name: String
-  arguments: [TriggerSubstepArgument]
-}
-
-type TriggerSubstepArgument {
-  label: String
-  key: String
-  type: String
-  description: String
-  required: Boolean
-  variables: Boolean
-  source: TriggerSubstepArgumentSource
-  dependsOn: [String]
-  options: [ArgumentOption]
-}
-
-type TriggerSubstepArgumentSource {
-  type: String
-  name: String
-  arguments: [TriggerSubstepArgumentSourceArgument]
-}
-
-type ArgumentOption {
-  label: String
-  value: JSONObject
-}
-
-type TriggerSubstepArgumentSourceArgument {
-  name: String
-  value: String
 }
 
 type User {

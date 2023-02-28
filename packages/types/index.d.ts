@@ -104,9 +104,18 @@ export interface IFieldDropdown {
   dependsOn?: string[];
   options?: IFieldDropdownOption[];
   source?: IFieldDropdownSource;
+  additionalFields?: IFieldDropdownAdditionalFields;
 }
 
 export interface IFieldDropdownSource {
+  type: string;
+  name: string;
+  arguments: {
+    name: string;
+    value: string;
+  }[];
+}
+export interface IFieldDropdownAdditionalFields {
   type: string;
   name: string;
   arguments: {

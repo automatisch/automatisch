@@ -51,7 +51,7 @@ export default defineAction({
           value: false,
         },
       ],
-      source: {
+      additionalFields: {
         type: 'query',
         name: 'getDynamicFields',
         arguments: [
