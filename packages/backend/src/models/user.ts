@@ -9,6 +9,7 @@ import crypto from 'crypto';
 
 class User extends Base {
   id!: string;
+  fullName!: string;
   email!: string;
   password!: string;
   role: string;
@@ -23,10 +24,11 @@ class User extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['email', 'password'],
+    required: ['fullName', 'email', 'password'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
+      fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
       role: { type: 'string', enum: ['admin', 'user'] },
