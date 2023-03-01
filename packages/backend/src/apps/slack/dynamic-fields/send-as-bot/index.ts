@@ -1,22 +1,12 @@
-import { IGlobalVariable, IField, IJSONObject } from '@automatisch/types';
+import { IGlobalVariable } from '@automatisch/types';
 
 export default {
   name: 'List fields after send as bot',
   key: 'listFieldsAfterSendAsBot',
 
   async run($: IGlobalVariable) {
-    const sendAsBot = $.step.parameters.sendAsBot as boolean;
-
-    const remainingArguments: {
-      data: IJSONObject[];
-      error: IJSONObject | null;
-    } = {
-      data: [],
-      error: null,
-    };
-
-    if (sendAsBot) {
-      remainingArguments.data = [
+    if ($.step.parameters.sendAsBot) {
+      return [
         {
           label: 'Bot name',
           key: 'botName',
@@ -38,7 +28,5 @@ export default {
         },
       ];
     }
-
-    return remainingArguments;
   },
 };

@@ -40,13 +40,9 @@ const getDynamicFields = async (
     $.step.parameters[parameterKey] = parameterValue;
   }
 
-  const remainingArguments = await command.run($);
+  const additionalFields = await command.run($) || [];
 
-  if (remainingArguments.error) {
-    throw new Error(JSON.stringify(remainingArguments.error));
-  }
-
-  return remainingArguments.data;
+  return additionalFields;
 };
 
 export default getDynamicFields;
