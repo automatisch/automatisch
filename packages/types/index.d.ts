@@ -104,9 +104,18 @@ export interface IFieldDropdown {
   dependsOn?: string[];
   options?: IFieldDropdownOption[];
   source?: IFieldDropdownSource;
+  additionalFields?: IFieldDropdownAdditionalFields;
 }
 
 export interface IFieldDropdownSource {
+  type: string;
+  name: string;
+  arguments: {
+    name: string;
+    value: string;
+  }[];
+}
+export interface IFieldDropdownAdditionalFields {
   type: string;
   name: string;
   arguments: {
@@ -167,6 +176,7 @@ export interface IApp {
   flowCount?: number;
   beforeRequest?: TBeforeRequest[];
   dynamicData?: IDynamicData;
+  dynamicFields?: IDynamicFields;
   triggers?: ITrigger[];
   actions?: IAction[];
   connections?: IConnection[];
@@ -177,6 +187,10 @@ export type TBeforeRequest = {
 };
 
 export interface IDynamicData {
+  [index: string]: any;
+}
+
+export interface IDynamicFields {
   [index: string]: any;
 }
 

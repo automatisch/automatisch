@@ -38,9 +38,10 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
     required,
     name,
     defaultValue,
-    shouldUnregister,
-    clickToCopy,
-    readOnly,
+    shouldUnregister = true,
+    clickToCopy = false,
+    readOnly = false,
+    disabled = false,
     onBlur,
     onChange,
     ...textFieldProps
@@ -64,6 +65,7 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
         <MuiTextField
           {...textFieldProps}
           {...field}
+          disabled={disabled}
           onChange={(...args) => {
             controllerOnChange(...args);
             onChange?.(...args);
@@ -85,10 +87,3 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
     />
   );
 }
-
-TextField.defaultProps = {
-  readOnly: false,
-  disabled: false,
-  clickToCopy: false,
-  shouldUnregister: false,
-};
