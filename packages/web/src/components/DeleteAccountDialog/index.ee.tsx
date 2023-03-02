@@ -27,13 +27,7 @@ export default function DeleteAccountDialog(props: TDeleteAccountDialogProps) {
   const navigate = useNavigate();
 
   const handleConfirm = React.useCallback(async () => {
-    await deleteUser({
-      variables: {
-        input: {
-          id: currentUser.id,
-        }
-      }
-    });
+    await deleteUser();
 
     authentication.updateToken('');
     await apolloClient.clearStore();
