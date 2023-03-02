@@ -8,6 +8,7 @@ import Execution from 'pages/Execution';
 import Flows from 'pages/Flows';
 import Flow from 'pages/Flow';
 import Login from 'pages/Login';
+import SignUp from 'pages/SignUp/index.ee';
 import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
 import settingsRoutes from './settingsRoutes';
@@ -76,6 +77,15 @@ export default (
       element={
         <PublicLayout>
           <Login />
+        </PublicLayout>
+      }
+    />
+
+    <Route
+      path={URLS.SIGNUP}
+      element={
+        <PublicLayout>
+          <SignUp />
         </PublicLayout>
       }
     />

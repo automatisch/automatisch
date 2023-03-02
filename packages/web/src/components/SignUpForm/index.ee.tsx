@@ -10,7 +10,6 @@ import * as URLS from 'config/urls';
 import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
-import { Link } from './style.ee';
 
 function renderFields(props: { loading: boolean }) {
   const { loading = false } = props;
@@ -50,18 +49,12 @@ function renderFields(props: { loading: boolean }) {
         >
           Login
         </LoadingButton>
-
-        
-        <Typography variant="body1" align='center' mt={3}>
-          Don't have an Automatisch account yet? 
-          <Link to={URLS.SIGNUP}>Sign Up</Link>
-        </Typography>
       </>
     );
   };
 }
 
-function LoginForm() {
+function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
   const [login, { loading }] = useMutation(LOGIN);
@@ -107,4 +100,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default SignUpForm;
