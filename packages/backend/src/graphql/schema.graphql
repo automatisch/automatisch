@@ -335,6 +335,7 @@ input DeleteStepInput {
 }
 
 input CreateUserInput {
+  fullName: String!
   email: String!
   password: String!
 }
@@ -428,6 +429,7 @@ input StepInput {
 type User {
   id: String
   fullName: String
+  password: String
   email: String
   role: String
   createdAt: String

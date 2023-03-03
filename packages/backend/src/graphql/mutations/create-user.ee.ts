@@ -4,11 +4,12 @@ type Params = {
   input: {
     email: string;
     password: string;
+    fullName: string;
   };
 };
 
 const createUser = async (_parent: unknown, params: Params) => {
-  const { email, password } = params.input;
+  const { email, password, fullName } = params.input;
 
   const existingUser = await User.query().findOne({ email });
 
@@ -19,6 +20,7 @@ const createUser = async (_parent: unknown, params: Params) => {
   const user = await User.query().insert({
     email,
     password,
+    fullName,
     role: 'user',
   });
 
