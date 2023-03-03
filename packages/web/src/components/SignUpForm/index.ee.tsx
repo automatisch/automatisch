@@ -4,55 +4,31 @@ import { useMutation } from '@apollo/client';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
+import * as yup from 'yup';
 
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
 import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-function renderFields(props: { loading: boolean }) {
-  const { loading = false } = props;
+const validationSchema = yup.object().shape({
+  fullName: yup.string().required(),
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+  confirmPassword: yup
+    .string()
+    .required()
+    .oneOf([yup.ref('password')], 'Passwords must match'),
+});
 
-  return () => {
-    return (
-      <>
-        <TextField
-          label="Email"
-          name="email"
-          required
-          fullWidth
-          margin="dense"
-          autoComplete="username"
-          data-test="email-text-field"
-        />
-
-        <TextField
-          label="Password"
-          name="password"
-          type="password"
-          required
-          fullWidth
-          margin="dense"
-          autoComplete="current-password"
-          data-test="password-text-field"
-        />
-
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ boxShadow: 2, mt: 3 }}
-          loading={loading}
-          fullWidth
-          data-test="login-button"
-        >
-          Login
-        </LoadingButton>
-      </>
-    );
-  };
-}
+const initialValue = {
+  fullName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
 function SignUpForm() {
   const navigate = useNavigate();
@@ -77,7 +53,7 @@ function SignUpForm() {
     authentication.updateToken(token);
   };
 
-  const render = React.useMemo(() => renderFields({ loading }), [loading]);
+  //const render = React.useMemo(() => renderFields({ loading }), [loading]);
 
   return (
     <Paper sx={{ px: 2, py: 4 }}>
@@ -92,10 +68,72 @@ function SignUpForm() {
         }}
         gutterBottom
       >
-        Login
+        Sign Up
       </Typography>
 
-      <Form onSubmit={handleSubmit} render={render} />
+      <Form
+        defaultValues={initialValue}
+        onSubmit={handleSubmit}
+        resolver={yupResolver(validationSchema)}
+        mode="onChange"
+        render={({ formState: { errors, touchedFields } }) => (
+          <>
+            <TextField
+              label="Full Name"
+              name="fullName"
+              fullWidth
+              margin="dense"
+              autoComplete="fullName"
+              data-test="fullName-text-field"
+              error={touchedFields.fullName && !!errors?.fullName}
+              helperText={errors?.fullName?.message || ' '}
+            />
+
+            <TextField
+              label="Email"
+              name="email"
+              fullWidth
+              margin="dense"
+              autoComplete="email"
+              data-test="email-text-field"
+              error={touchedFields.email && !!errors?.email}
+              helperText={errors?.email?.message || ' '}
+            />
+
+            <TextField
+              fullWidth
+              name="password"
+              label="Password"
+              margin="dense"
+              type="password"
+              error={touchedFields.password && !!errors?.password}
+              helperText={errors?.password?.message || ' '}
+            />
+
+            <TextField
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              margin="dense"
+              type="password"
+              error={touchedFields.confirmPassword && !!errors?.confirmPassword}
+              helperText={errors?.confirmPassword?.message || ' '}
+            />
+
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ boxShadow: 2, mt: 3 }}
+              loading={loading}
+              fullWidth
+              data-test="signUp-button"
+            >
+              Sign Up
+            </LoadingButton>
+          </>
+        )}
+      />
     </Paper>
   );
 }
