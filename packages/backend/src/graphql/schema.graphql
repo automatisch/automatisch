@@ -54,7 +54,7 @@ type Mutation {
   updateStep(input: UpdateStepInput): Step
   deleteStep(input: DeleteStepInput): Step
   createUser(input: CreateUserInput): User
-  deleteUser(input: DeleteUserInput): Boolean
+  deleteUser: Boolean
   updateUser(input: UpdateUserInput): User
   forgotPassword(input: ForgotPasswordInput): Boolean
   resetPassword(input: ResetPasswordInput): Boolean
@@ -338,10 +338,6 @@ input DeleteStepInput {
 input CreateUserInput {
   email: String!
   password: String!
-}
-
-input DeleteUserInput {
-  id: String
 }
 
 input UpdateUserInput {
