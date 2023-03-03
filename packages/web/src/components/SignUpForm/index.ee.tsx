@@ -15,8 +15,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN } from 'graphql/mutations/login';
 
 const validationSchema = yup.object().shape({
-  fullName: yup.string().required(),
-  email: yup.string().email().required(),
+  fullName: yup.string().trim().required(),
+  email: yup.string().trim().email().required(),
   password: yup.string().required(),
   confirmPassword: yup
     .string()
@@ -24,7 +24,7 @@ const validationSchema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords must match'),
 });
 
-const initialValue = {
+const initialValues = {
   fullName: '',
   email: '',
   password: '',
@@ -79,7 +79,7 @@ function SignUpForm() {
       </Typography>
 
       <Form
-        defaultValues={initialValue}
+        defaultValues={initialValues}
         onSubmit={handleSubmit}
         resolver={yupResolver(validationSchema)}
         mode="onChange"
@@ -93,7 +93,9 @@ function SignUpForm() {
               autoComplete="fullName"
               data-test="fullName-text-field"
               error={touchedFields.fullName && !!errors?.fullName}
-              helperText={errors?.fullName?.message || ' '}
+              helperText={
+                (touchedFields.fullName && errors?.fullName?.message) || ''
+              }
             />
 
             <TextField
@@ -104,7 +106,7 @@ function SignUpForm() {
               autoComplete="email"
               data-test="email-text-field"
               error={touchedFields.email && !!errors?.email}
-              helperText={errors?.email?.message || ' '}
+              helperText={(touchedFields.email && errors?.email?.message) || ''}
             />
 
             <TextField
@@ -114,7 +116,9 @@ function SignUpForm() {
               margin="dense"
               type="password"
               error={touchedFields.password && !!errors?.password}
-              helperText={errors?.password?.message || ' '}
+              helperText={
+                (touchedFields.password && errors?.password?.message) || ''
+              }
             />
 
             <TextField
@@ -124,7 +128,11 @@ function SignUpForm() {
               margin="dense"
               type="password"
               error={touchedFields.confirmPassword && !!errors?.confirmPassword}
-              helperText={errors?.confirmPassword?.message || ' '}
+              helperText={
+                (touchedFields.confirmPassword &&
+                  errors?.confirmPassword?.message) ||
+                ''
+              }
             />
 
             <LoadingButton
