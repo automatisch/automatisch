@@ -119,6 +119,8 @@
   "loginForm.passwordFieldLabel": "Password",
   "loginForm.forgotPasswordText": "Forgot password?",
   "loginForm.submit": "Login",
+  "loginForm.noAccount": "Don't have an Automatisch account yet?",
+  "loginForm.signUp": "Sign up",
   "forgotPassword.title": "Forgot password",
   "forgotPassword.submit": "Send reset instructions",
   "forgotPassword.instructionsSent": "The instructions have been sent!",

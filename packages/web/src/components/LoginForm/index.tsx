@@ -97,9 +97,10 @@ function LoginForm() {
         </LoadingButton>
 
         <Typography variant="body1" align="center" mt={3}>
-          Don't have an Automatisch account yet?&nbsp;
+          {formatMessage('loginForm.noAccount')}
+          &nbsp;
           <Link component={RouterLink} to={URLS.SIGNUP} underline="none">
-            Sign up
+          {formatMessage('loginForm.signUp')}
           </Link>
         </Typography>
       </Form>
