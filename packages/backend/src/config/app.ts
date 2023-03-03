@@ -38,6 +38,7 @@ type AppConfig = {
   smtpUser: string;
   smtpPassword: string;
   fromEmail: string;
+  isCloud: boolean;
   licenseKey: string;
 };
 
@@ -104,6 +105,7 @@ const appConfig: AppConfig = {
   smtpUser: process.env.SMTP_USER,
   smtpPassword: process.env.SMTP_PASSWORD,
   fromEmail: process.env.FROM_EMAIL,
+  isCloud: process.env.AUTOMATISCH_CLOUD === 'true',
   licenseKey: process.env.LICENSE_KEY,
 };
 
