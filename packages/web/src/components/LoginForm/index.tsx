@@ -13,65 +13,6 @@ import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 
-function renderFields(props: { loading: boolean }) {
-  const { loading = false } = props;
-
-  return () => {
-    return (
-      <>
-        <TextField
-          label="Email"
-          name="email"
-          required
-          fullWidth
-          margin="dense"
-          autoComplete="username"
-          data-test="email-text-field"
-        />
-
-        <TextField
-          label="Password"
-          name="password"
-          type="password"
-          required
-          fullWidth
-          margin="dense"
-          autoComplete="current-password"
-          data-test="password-text-field"
-          sx={{ mb: 1 }}
-        />
-
-        <Link
-          component={RouterLink}
-          to={URLS.FORGOT_PASSWORD}
-          underline="none"
-        >
-          Forgot password?
-        </Link>
-
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ boxShadow: 2, mt: 3 }}
-          loading={loading}
-          fullWidth
-          data-test="login-button"
-        >
-          Login
-        </LoadingButton>
-
-        <Typography variant="body1" align="center" mt={3}>
-          Don't have an Automatisch account yet?&nbsp;
-          <Link component={RouterLink} to={URLS.SIGNUP} underline="none">
-            Sign up
-          </Link>
-        </Typography>
-      </>
-    );
-  };
-}
-
 function LoginForm() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
@@ -96,8 +37,6 @@ function LoginForm() {
     authentication.updateToken(token);
   };
 
-  const render = React.useMemo(() => renderFields({ loading }), [loading]);
-
   return (
     <Paper sx={{ px: 2, py: 4 }}>
       <Typography
@@ -114,7 +53,56 @@ function LoginForm() {
         {formatMessage('loginForm.title')}
       </Typography>
 
-      <Form onSubmit={handleSubmit} render={render} />
+      <Form onSubmit={handleSubmit}>
+        <TextField
+          label={formatMessage('loginForm.emailFieldLabel')}
+          name="email"
+          required
+          fullWidth
+          margin="dense"
+          autoComplete="username"
+          data-test="email-text-field"
+        />
+
+        <TextField
+          label={formatMessage('loginForm.passwordFieldLabel')}
+          name="password"
+          type="password"
+          required
+          fullWidth
+          margin="dense"
+          autoComplete="current-password"
+          data-test="password-text-field"
+          sx={{ mb: 1 }}
+        />
+
+        <Link
+          component={RouterLink}
+          to={URLS.FORGOT_PASSWORD}
+          underline="none"
+        >
+          {formatMessage('loginForm.forgotPasswordText')}
+        </Link>
+
+        <LoadingButton
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ boxShadow: 2, mt: 3 }}
+          loading={loading}
+          fullWidth
+          data-test="login-button"
+        >
+          {formatMessage('loginForm.submit')}
+        </LoadingButton>
+
+        <Typography variant="body1" align="center" mt={3}>
+          Don't have an Automatisch account yet?&nbsp;
+          <Link component={RouterLink} to={URLS.SIGNUP} underline="none">
+            Sign up
+          </Link>
+        </Typography>
+      </Form>
     </Paper>
   );
 }
