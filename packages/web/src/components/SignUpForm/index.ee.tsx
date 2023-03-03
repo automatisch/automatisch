@@ -13,15 +13,16 @@ import Form from 'components/Form';
 import TextField from 'components/TextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN } from 'graphql/mutations/login';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 const validationSchema = yup.object().shape({
-  fullName: yup.string().trim().required(),
-  email: yup.string().trim().email().required(),
-  password: yup.string().required(),
+  fullName: yup.string().trim().required('signupForm.mandatoryInput'),
+  email: yup.string().trim().email().required('signupForm.mandatoryInput'),
+  password: yup.string().required('signupForm.mandatoryInput'),
   confirmPassword: yup
     .string()
-    .required()
-    .oneOf([yup.ref('password')], 'Passwords must match'),
+    .required('signupForm.mandatoryInput')
+    .oneOf([yup.ref('password')], 'signupForm.passwordMustMatch'),
 });
 
 const initialValues = {
@@ -34,6 +35,7 @@ const initialValues = {
 function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
+  const formatMessage = useFormatMessage();
   const [createUser] = useMutation(CREATE_USER);
   const [login, { loading }] = useMutation(LOGIN);
 
@@ -75,7 +77,7 @@ function SignUpForm() {
         }}
         gutterBottom
       >
-        Sign Up
+        {formatMessage('signupForm.title')}
       </Typography>
 
       <Form
@@ -86,7 +88,7 @@ function SignUpForm() {
         render={({ formState: { errors, touchedFields } }) => (
           <>
             <TextField
-              label="Full Name"
+              label={formatMessage('signupForm.fullNameFieldLabel')}
               name="fullName"
               fullWidth
               margin="dense"
@@ -94,44 +96,63 @@ function SignUpForm() {
               data-test="fullName-text-field"
               error={touchedFields.fullName && !!errors?.fullName}
               helperText={
-                (touchedFields.fullName && errors?.fullName?.message) || ''
+                touchedFields.fullName && errors?.fullName?.message
+                  ? formatMessage(errors?.fullName?.message, {
+                      inputName: formatMessage('signupForm.fullNameFieldLabel'),
+                    })
+                  : ''
               }
             />
 
             <TextField
-              label="Email"
+              label={formatMessage('signupForm.emailFieldLabel')}
               name="email"
               fullWidth
               margin="dense"
               autoComplete="email"
               data-test="email-text-field"
               error={touchedFields.email && !!errors?.email}
-              helperText={(touchedFields.email && errors?.email?.message) || ''}
-            />
-
-            <TextField
-              fullWidth
-              name="password"
-              label="Password"
-              margin="dense"
-              type="password"
-              error={touchedFields.password && !!errors?.password}
               helperText={
-                (touchedFields.password && errors?.password?.message) || ''
+                touchedFields.email && errors?.email?.message
+                  ? formatMessage(errors?.email?.message, {
+                      inputName: formatMessage('signupForm.emailFieldLabel'),
+                    })
+                  : ''
               }
             />
 
             <TextField
+              label={formatMessage('signupForm.passwordFieldLabel')}
+              name="password"
               fullWidth
+              margin="dense"
+              type="password"
+              error={touchedFields.password && !!errors?.password}
+              helperText={
+                touchedFields.password && errors?.password?.message
+                  ? formatMessage(errors?.password?.message, {
+                      inputName: formatMessage('signupForm.passwordFieldLabel'),
+                    })
+                  : ''
+              }
+            />
+
+            <TextField
+              label={formatMessage('signupForm.confirmPasswordFieldLabel')}
               name="confirmPassword"
-              label="Confirm Password"
+              fullWidth
               margin="dense"
               type="password"
               error={touchedFields.confirmPassword && !!errors?.confirmPassword}
               helperText={
-                (touchedFields.confirmPassword &&
-                  errors?.confirmPassword?.message) ||
-                ''
+                touchedFields.confirmPassword &&
+                errors?.confirmPassword?.message
+                  ? formatMessage(errors?.confirmPassword?.message, {
+                      inputName: formatMessage(
+                        'signupForm.confirmPasswordFieldLabel'
+                      ),
+                    })
+                  : ''
               }
             />
 
@@ -144,7 +165,7 @@ function SignUpForm() {
               fullWidth
               data-test="signUp-button"
             >
-              Sign Up
+              {formatMessage('signupForm.submit')}
             </LoadingButton>
           </>
         )}

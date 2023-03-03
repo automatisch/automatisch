@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -10,7 +11,6 @@ import * as URLS from 'config/urls';
 import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
-import { Link } from './style.ee';
 
 function renderFields(props: { loading: boolean }) {
   const { loading = false } = props;
@@ -52,8 +52,10 @@ function renderFields(props: { loading: boolean }) {
         </LoadingButton>
 
         <Typography variant="body1" align="center" mt={3}>
-          Don't have an Automatisch account yet?
-          <Link to={URLS.SIGNUP}>Sign Up</Link>
+          Don't have an Automatisch account yet?&nbsp;
+          <Link component={RouterLink} to={URLS.SIGNUP} underline="none">
+            Sign up
+          </Link>
         </Typography>
       </>
     );
