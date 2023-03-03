@@ -153,7 +153,9 @@ function ProfileSettings() {
                   margin="normal"
                   type="password"
                   error={touchedFields.password && !!errors?.password}
-                  helperText={errors?.password?.message || ' '}
+                  helperText={
+                    (touchedFields.password && errors?.password?.message) || ''
+                  }
                 />
 
                 <TextField
@@ -165,7 +167,11 @@ function ProfileSettings() {
                   error={
                     touchedFields.confirmPassword && !!errors?.confirmPassword
                   }
-                  helperText={errors?.confirmPassword?.message || ' '}
+                  helperText={
+                    (touchedFields.confirmPassword &&
+                      errors?.confirmPassword?.message) ||
+                    ' '
+                  }
                 />
 
                 <Button
