@@ -42,7 +42,7 @@ const forgotPassword = async (_parent: unknown, params: Params) => {
 
   await emailQueue.add(jobName, jobPayload, jobOptions);
 
-  return;
+  return true;
 };
 
 export default forgotPassword;

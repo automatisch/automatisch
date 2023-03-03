@@ -11,6 +11,7 @@ import * as URLS from 'config/urls';
 import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 function renderFields(props: { loading: boolean }) {
   const { loading = false } = props;
@@ -37,7 +38,16 @@ function renderFields(props: { loading: boolean }) {
           margin="dense"
           autoComplete="current-password"
           data-test="password-text-field"
+          sx={{ mb: 1 }}
         />
+
+        <Link
+          component={RouterLink}
+          to={URLS.FORGOT_PASSWORD}
+          underline="none"
+        >
+          Forgot password?
+        </Link>
 
         <LoadingButton
           type="submit"
@@ -64,6 +74,7 @@ function renderFields(props: { loading: boolean }) {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const formatMessage = useFormatMessage();
   const authentication = useAuthentication();
   const [login, { loading }] = useMutation(LOGIN);
 
@@ -100,7 +111,7 @@ function LoginForm() {
         }}
         gutterBottom
       >
-        Login
+        {formatMessage('loginForm.title')}
       </Typography>
 
       <Form onSubmit={handleSubmit} render={render} />

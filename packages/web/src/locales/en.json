@@ -113,5 +113,10 @@
   "signupForm.confirmPasswordFieldLabel": "Confirm password",
   "signupForm.submit": "Sign up",
   "signupForm.passwordMustMatch": "Passwords must match.",
-  "signupForm.mandatoryInput": "{inputName} is required."
+  "signupForm.mandatoryInput": "{inputName} is required.",
+  "loginForm.title": "Login",
+  "forgotPassword.title": "Forgot password",
+  "forgotPassword.submit": "Send reset instructions",
+  "forgotPassword.instructionsSent": "The instructions have been sent!",
+  "forgotPassword.emailFieldLabel": "Email"
 }

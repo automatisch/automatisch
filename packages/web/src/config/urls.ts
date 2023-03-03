@@ -6,6 +6,7 @@ export const EXECUTION = (executionId: string): string =>
 
 export const LOGIN = '/login';
 export const SIGNUP = '/sign-up';
+export const FORGOT_PASSWORD = '/forgot-password';
 
 export const APPS = '/apps';
 export const NEW_APP_CONNECTION = '/apps/new';
