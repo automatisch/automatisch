@@ -105,5 +105,13 @@
   "webhookUrlInfo.title": "Your webhook URL",
   "webhookUrlInfo.description": "You'll need to configure your application with this webhook URL.",
   "webhookUrlInfo.helperText": "We've generated a custom webhook URL for you to send requests to. <link>Learn more about webhooks</link>.",
-  "webhookUrlInfo.copy": "Copy"
+  "webhookUrlInfo.copy": "Copy",
+  "signupForm.title": "Sign up",
+  "signupForm.fullNameFieldLabel": "Full name",
+  "signupForm.emailFieldLabel": "Email",
+  "signupForm.passwordFieldLabel": "Password",
+  "signupForm.confirmPasswordFieldLabel": "Confirm password",
+  "signupForm.submit": "Sign up",
+  "signupForm.passwordMustMatch": "Passwords must match.",
+  "signupForm.mandatoryInput": "{inputName} is required."
 }

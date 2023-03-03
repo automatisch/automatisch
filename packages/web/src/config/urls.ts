@@ -5,6 +5,7 @@ export const EXECUTION = (executionId: string): string =>
   `/executions/${executionId}`;
 
 export const LOGIN = '/login';
+export const SIGNUP = '/sign-up';
 
 export const APPS = '/apps';
 export const NEW_APP_CONNECTION = '/apps/new';

@@ -336,6 +336,7 @@ input DeleteStepInput {
 }
 
 input CreateUserInput {
+  fullName: String!
   email: String!
   password: String!
 }
