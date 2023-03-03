@@ -8,10 +8,11 @@ import * as yup from 'yup';
 
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
-import { LOGIN } from 'graphql/mutations/login';
+import { CREATE_USER } from 'graphql/mutations/create-user.ee';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { LOGIN } from 'graphql/mutations/login';
 
 const validationSchema = yup.object().shape({
   fullName: yup.string().required(),
@@ -33,6 +34,7 @@ const initialValue = {
 function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
+  const [createUser] = useMutation(CREATE_USER);
   const [login, { loading }] = useMutation(LOGIN);
 
   React.useEffect(() => {
@@ -42,9 +44,16 @@ function SignUpForm() {
   }, [authentication.isAuthenticated]);
 
   const handleSubmit = async (values: any) => {
+    const { fullName, email, password } = values;
+    await createUser({
+      variables: {
+        input: { fullName, email, password },
+      },
+    });
+
     const { data } = await login({
       variables: {
-        input: values,
+        input: { email, password },
       },
     });
 
@@ -52,8 +61,6 @@ function SignUpForm() {
 
     authentication.updateToken(token);
   };
-
-  //const render = React.useMemo(() => renderFields({ loading }), [loading]);
 
   return (
     <Paper sx={{ px: 2, py: 4 }}>

@@ -51,9 +51,8 @@ function renderFields(props: { loading: boolean }) {
           Login
         </LoadingButton>
 
-        
-        <Typography variant="body1" align='center' mt={3}>
-          Don't have an Automatisch account yet? 
+        <Typography variant="body1" align="center" mt={3}>
+          Don't have an Automatisch account yet?
           <Link to={URLS.SIGNUP}>Sign Up</Link>
         </Typography>
       </>
