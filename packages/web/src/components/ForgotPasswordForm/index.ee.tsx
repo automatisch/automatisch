@@ -34,12 +34,12 @@ export default function ForgotPasswordForm() {
         }}
         gutterBottom
       >
-        {formatMessage('forgotPassword.title')}
+        {formatMessage('forgotPasswordForm.title')}
       </Typography>
 
       <Form onSubmit={handleSubmit}>
         <TextField
-          label={formatMessage('forgotPassword.emailFieldLabel')}
+          label={formatMessage('forgotPasswordForm.emailFieldLabel')}
           name="email"
           required
           fullWidth
@@ -56,11 +56,11 @@ export default function ForgotPasswordForm() {
           disabled={data}
           fullWidth
         >
-          {formatMessage('forgotPassword.submit')}
+          {formatMessage('forgotPasswordForm.submit')}
         </LoadingButton>
 
         {data && <Typography variant="body1" sx={{ color: (theme) => theme.palette.success.main }}>
-          {formatMessage('forgotPassword.instructionsSent')}
+          {formatMessage('forgotPasswordForm.instructionsSent')}
         </Typography>}
       </Form>
     </Paper>
