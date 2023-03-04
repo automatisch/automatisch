@@ -10,6 +10,7 @@ import Flow from 'pages/Flow';
 import Login from 'pages/Login';
 import SignUp from 'pages/SignUp/index.ee';
 import ForgotPassword from 'pages/ForgotPassword/index.ee';
+import ResetPassword from 'pages/ResetPassword/index.ee';
 import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
 import settingsRoutes from './settingsRoutes';
@@ -96,6 +97,15 @@ export default (
       element={
         <PublicLayout>
           <ForgotPassword />
+        </PublicLayout>
+      }
+    />
+
+    <Route
+      path={URLS.RESET_PASSWORD}
+      element={
+        <PublicLayout>
+          <ResetPassword />
         </PublicLayout>
       }
     />

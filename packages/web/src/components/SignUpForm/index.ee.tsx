@@ -5,13 +5,13 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
 import { CREATE_USER } from 'graphql/mutations/create-user.ee';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN } from 'graphql/mutations/login';
 import useFormatMessage from 'hooks/useFormatMessage';
 
@@ -22,7 +22,7 @@ const validationSchema = yup.object().shape({
   confirmPassword: yup
     .string()
     .required('signupForm.mandatoryInput')
-    .oneOf([yup.ref('password')], 'signupForm.passwordMustMatch'),
+    .oneOf([yup.ref('password')], 'signupForm.passwordsMustMatch'),
 });
 
 const initialValues = {

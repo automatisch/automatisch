@@ -112,7 +112,7 @@
   "signupForm.passwordFieldLabel": "Password",
   "signupForm.confirmPasswordFieldLabel": "Confirm password",
   "signupForm.submit": "Sign up",
-  "signupForm.passwordMustMatch": "Passwords must match.",
+  "signupForm.passwordsMustMatch": "Passwords must match.",
   "signupForm.mandatoryInput": "{inputName} is required.",
   "loginForm.title": "Login",
   "loginForm.emailFieldLabel": "Email",
@@ -121,8 +121,15 @@
   "loginForm.submit": "Login",
   "loginForm.noAccount": "Don't have an Automatisch account yet?",
   "loginForm.signUp": "Sign up",
-  "forgotPassword.title": "Forgot password",
-  "forgotPassword.submit": "Send reset instructions",
-  "forgotPassword.instructionsSent": "The instructions have been sent!",
-  "forgotPassword.emailFieldLabel": "Email"
+  "forgotPasswordForm.title": "Forgot password",
+  "forgotPasswordForm.submit": "Send reset instructions",
+  "forgotPasswordForm.instructionsSent": "The instructions have been sent!",
+  "forgotPasswordForm.emailFieldLabel": "Email",
+  "resetPasswordForm.passwordsMustMatch": "Passwords must match.",
+  "resetPasswordForm.mandatoryInput": "{inputName} is required.",
+  "resetPasswordForm.title": "Reset password",
+  "resetPasswordForm.submit": "Reset password",
+  "resetPasswordForm.passwordFieldLabel": "Password",
+  "resetPasswordForm.confirmPasswordFieldLabel": "Confirm password",
+  "resetPasswordForm.passwordUpdated": "The password has been updated. Now, you can login."
 }
