@@ -31,6 +31,7 @@ const authentication = shield(
       login: allow,
       createUser: allow,
       forgotPassword: allow,
+      resetPassword: allow,
     },
   },
   {

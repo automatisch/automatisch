@@ -15,11 +15,11 @@ import useAuthentication from 'hooks/useAuthentication';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
 
-type TDeleteAccountDialogProps = {
+type DeleteAccountDialogProps = {
   onClose: () => void;
 }
 
-export default function DeleteAccountDialog(props: TDeleteAccountDialogProps) {
+export default function DeleteAccountDialog(props: DeleteAccountDialogProps) {
   const [deleteUser] = useMutation(DELETE_USER);
   const formatMessage = useFormatMessage();
   const currentUser = useCurrentUser();
