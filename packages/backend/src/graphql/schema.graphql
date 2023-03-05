@@ -34,7 +34,7 @@ type Query {
     parameters: JSONObject
   ): [SubstepArgument]
   getCurrentUser: User
-  getLicense: GetLicense
+  getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
 
@@ -463,8 +463,8 @@ type AppHealth {
   version: String
 }
 
-type GetLicense {
-  type: String
+type GetAutomatischInfo {
+  isCloud: String
 }
 
 schema {
