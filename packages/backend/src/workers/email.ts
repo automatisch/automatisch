@@ -10,16 +10,11 @@ export const worker = new Worker(
   async (job) => {
     const { email, subject, template, params } = job.data;
 
-    const emailTemplateParams = {
-      ...params,
-      email,
-    }
-
     await mailer.sendMail({
       to: email,
       from: appConfig.fromEmail,
       subject: subject,
-      html: compileEmail(template, emailTemplateParams),
+      html: compileEmail(template, params),
     });
   },
   { connection: redisConfig }

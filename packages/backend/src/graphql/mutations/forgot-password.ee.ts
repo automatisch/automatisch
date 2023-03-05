@@ -32,6 +32,7 @@ const forgotPassword = async (_parent: unknown, params: Params) => {
     params: {
       token: user.resetPasswordToken,
       webAppUrl: appConfig.webAppUrl,
+      fullName: user.fullName,
     },
   };
 
