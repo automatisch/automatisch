@@ -39,6 +39,9 @@ type AppConfig = {
   smtpPassword: string;
   fromEmail: string;
   isCloud: boolean;
+  stripeSecretKey: string;
+  stripeStarterPriceKey: string;
+  stripeGrowthPriceKey: string;
   licenseKey: string;
 };
 
@@ -106,6 +109,9 @@ const appConfig: AppConfig = {
   smtpPassword: process.env.SMTP_PASSWORD,
   fromEmail: process.env.FROM_EMAIL,
   isCloud: process.env.AUTOMATISCH_CLOUD === 'true',
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+  stripeStarterPriceKey: process.env.STRIPE_STARTER_PRICE_KEY,
+  stripeGrowthPriceKey: process.env.STRIPE_GROWTH_PRICE_KEY,
   licenseKey: process.env.LICENSE_KEY,
 };
 

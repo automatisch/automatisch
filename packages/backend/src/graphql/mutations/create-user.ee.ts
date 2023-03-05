@@ -1,15 +1,17 @@
 import User from '../../models/user';
+import Billing from '../../helpers/billing/index.ee';
+import appConfig from '../../config/app';
 
 type Params = {
   input: {
+    fullName: string;
     email: string;
     password: string;
-    fullName: string;
   };
 };
 
 const createUser = async (_parent: unknown, params: Params) => {
-  const { email, password, fullName } = params.input;
+  const { fullName, email, password } = params.input;
 
   const existingUser = await User.query().findOne({ email });
 
@@ -18,11 +20,15 @@ const createUser = async (_parent: unknown, params: Params) => {
   }
 
   const user = await User.query().insert({
+    fullName,
     email,
     password,
-    fullName,
     role: 'user',
   });
+
+  if (appConfig.isCloud) {
+    Billing.createSubscription(user);
+  }
 
   return user;
 };
