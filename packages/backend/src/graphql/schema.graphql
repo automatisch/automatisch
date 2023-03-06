@@ -35,6 +35,7 @@ type Query {
   ): [SubstepArgument]
   getCurrentUser: User
   getUsageData: GetUsageData
+  getPaymentPortalUrl: GetPaymentPortalUrl
   getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
@@ -473,6 +474,10 @@ type GetUsageData {
   consumedTaskCount: Int
   remainingTaskCount: Int
   nextResetAt: String
+}
+
+type GetPaymentPortalUrl {
+  url: String
 }
 
 schema {
