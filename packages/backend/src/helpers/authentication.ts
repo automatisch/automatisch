@@ -24,6 +24,7 @@ const authentication = shield(
   {
     Query: {
       '*': isAuthenticated,
+      getAutomatischInfo: allow,
       healthcheck: allow,
     },
     Mutation: {
