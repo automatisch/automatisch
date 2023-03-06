@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 
 import * as URLS from 'config/urls'
 import PaymentInformation from 'components/PaymentInformation/index.ee';
+import UsageDataInformation from 'components/UsageDataInformation/index.ee';
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -29,7 +30,11 @@ function BillingAndUsageSettings() {
           <PageTitle>{formatMessage('billingAndUsageSettings.title')}</PageTitle>
         </Grid>
 
-        <Grid item xs={12} justifyContent="flex-end" sx={{ mt: 2 }}>
+        <Grid item xs={12} sx={{ mb: 6 }}>
+          <UsageDataInformation />
+        </Grid>
+
+        <Grid item xs={12}>
           <PaymentInformation />
         </Grid>
       </Grid>
