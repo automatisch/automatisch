@@ -101,7 +101,7 @@ function ProfileSettings() {
 
         <Grid item xs={12} justifyContent="flex-end">
           <StyledForm
-            defaultValues={currentUser}
+            defaultValues={{ ...currentUser}}
             onSubmit={handleEmailUpdate}
             resolver={yupResolver(emailValidationSchema)}
             mode="onChange"

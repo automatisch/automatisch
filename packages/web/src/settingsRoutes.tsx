@@ -1,6 +1,7 @@
 import { Route, Navigate } from 'react-router-dom';
 import SettingsLayout from 'components/SettingsLayout';
 import ProfileSettings from 'pages/ProfileSettings';
+import BillingAndUsageSettings from 'pages/BillingAndUsageSettings/index.ee';
 
 import * as URLS from 'config/urls';
 
@@ -11,6 +12,15 @@ export default (
       element={
         <SettingsLayout>
           <ProfileSettings />
+        </SettingsLayout>
+      }
+    />
+
+    <Route
+      path={URLS.SETTINGS_BILLING_AND_USAGE}
+      element={
+        <SettingsLayout>
+          <BillingAndUsageSettings />
         </SettingsLayout>
       }
     />
