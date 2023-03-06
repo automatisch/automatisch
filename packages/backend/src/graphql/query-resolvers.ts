@@ -11,6 +11,7 @@ import getExecutionSteps from './queries/get-execution-steps';
 import getDynamicData from './queries/get-dynamic-data';
 import getDynamicFields from './queries/get-dynamic-fields';
 import getCurrentUser from './queries/get-current-user';
+import getUsageData from './queries/get-usage-data.ee';
 import getAutomatischInfo from './queries/get-automatisch-info';
 import healthcheck from './queries/healthcheck';
 
@@ -28,6 +29,7 @@ const queryResolvers = {
   getDynamicData,
   getDynamicFields,
   getCurrentUser,
+  getUsageData,
   getAutomatischInfo,
   healthcheck,
 };

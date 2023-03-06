@@ -26,7 +26,7 @@ class UsageData extends Base {
       relation: Base.BelongsToOneRelation,
       modelClass: User,
       join: {
-        from: 'payment_plans.user_id',
+        from: 'usage_data.user_id',
         to: 'users.id',
       },
     },

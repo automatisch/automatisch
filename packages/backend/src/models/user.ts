@@ -7,6 +7,7 @@ import Execution from './execution';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import PaymentPlan from './payment-plan.ee';
+import UsageData from './usage-data.ee';
 
 class User extends Base {
   id!: string;
@@ -21,6 +22,7 @@ class User extends Base {
   steps?: Step[];
   executions?: Execution[];
   paymentPlan?: PaymentPlan;
+  usageData?: UsageData;
 
   static tableName = 'users';
 
@@ -83,6 +85,14 @@ class User extends Base {
       modelClass: PaymentPlan,
       join: {
         from: 'payment_plans.user_id',
+        to: 'users.id',
+      },
+    },
+    usageData: {
+      relation: Base.HasOneRelation,
+      modelClass: UsageData,
+      join: {
+        from: 'usage_data.user_id',
         to: 'users.id',
       },
     },
