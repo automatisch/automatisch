@@ -64,8 +64,10 @@ export const FLOW_PATTERN = '/flows/:flowId';
 export const SETTINGS = '/settings';
 export const SETTINGS_DASHBOARD = SETTINGS;
 export const PROFILE = 'profile';
+export const BILLING_AND_USAGE = 'billing';
 export const UPDATES = '/updates';
 export const SETTINGS_PROFILE = `${SETTINGS}/${PROFILE}`;
+export const SETTINGS_BILLING_AND_USAGE = `${SETTINGS}/${BILLING_AND_USAGE}`;
 
 export const DASHBOARD = FLOWS;
 

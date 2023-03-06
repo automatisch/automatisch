@@ -466,7 +466,7 @@ type AppHealth {
 }
 
 type GetAutomatischInfo {
-  isCloud: String
+  isCloud: Boolean
 }
 
 type GetUsageData {
