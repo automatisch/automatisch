@@ -20,15 +20,16 @@ export const AutomatischInfoProvider = (
   props: AutomatischInfoProviderProps
 ): React.ReactElement => {
   const { children } = props;
-  const { data } = useQuery(GET_AUTOMATISCH_INFO);
+  const { data, loading } = useQuery(GET_AUTOMATISCH_INFO);
 
-  const isCloud = data?.getAutomatischInfo?.isCloud || false;
+  const isCloud = data?.getAutomatischInfo?.isCloud;
 
   const value = React.useMemo(() => {
     return {
       isCloud,
+      loading
     };
-  }, [isCloud]);
+  }, [isCloud, loading]);
 
   return (
     <AutomatischInfoContext.Provider value={value}>

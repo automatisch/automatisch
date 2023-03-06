@@ -98,6 +98,8 @@
   "profileSettings.deleteAccountResult3": "All your connections",
   "profileSettings.deleteAccountResult4": "All execution history",
   "billingAndUsageSettings.title": "Billing and usage",
+  "billingAndUsageSettings.paymentInformation": "Payment information",
+  "billingAndUsageSettings.paymentPortalInformation": "To manage your subscription, click <link>here</link> to go to the payment portal.",
   "deleteAccountDialog.title": "Delete account?",
   "deleteAccountDialog.description": "This will permanently delete your account and all the associated data with it.",
   "deleteAccountDialog.cancel": "Cancel?",

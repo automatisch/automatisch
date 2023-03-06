@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 
 import * as URLS from 'config/urls'
+import PaymentInformation from 'components/PaymentInformation/index.ee';
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -12,9 +13,14 @@ function BillingAndUsageSettings() {
   const isCloud = useCloud();
   const formatMessage = useFormatMessage();
 
-  if (!isCloud) {
+  // redirect to the initial settings page
+  if (isCloud === false) {
     return (<Navigate to={URLS.SETTINGS} replace={true} />)
   }
+
+  // render nothing until we know if it's cloud or not
+  // here, `isCloud` is not `false`, but `undefined`
+  if (!isCloud) return <React.Fragment />
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
@@ -23,7 +29,8 @@ function BillingAndUsageSettings() {
           <PageTitle>{formatMessage('billingAndUsageSettings.title')}</PageTitle>
         </Grid>
 
-        <Grid item xs={12} justifyContent="flex-end" sx={{pt: 5 }}>
+        <Grid item xs={12} justifyContent="flex-end" sx={{ mt: 2 }}>
+          <PaymentInformation />
         </Grid>
       </Grid>
     </Container>
