@@ -12,6 +12,7 @@ import getDynamicData from './queries/get-dynamic-data';
 import getDynamicFields from './queries/get-dynamic-fields';
 import getCurrentUser from './queries/get-current-user';
 import getUsageData from './queries/get-usage-data.ee';
+import getPaymentPortalUrl from './queries/get-payment-portal-url.ee';
 import getAutomatischInfo from './queries/get-automatisch-info';
 import healthcheck from './queries/healthcheck';
 
@@ -30,6 +31,7 @@ const queryResolvers = {
   getDynamicFields,
   getCurrentUser,
   getUsageData,
+  getPaymentPortalUrl,
   getAutomatischInfo,
   healthcheck,
 };
