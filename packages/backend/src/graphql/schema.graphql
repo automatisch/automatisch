@@ -34,6 +34,7 @@ type Query {
     parameters: JSONObject
   ): [SubstepArgument]
   getCurrentUser: User
+  getUsageData: GetUsageData
   getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
@@ -465,6 +466,13 @@ type AppHealth {
 
 type GetAutomatischInfo {
   isCloud: String
+}
+
+type GetUsageData {
+  allowedTaskCount: Int
+  consumedTaskCount: Int
+  remainingTaskCount: Int
+  nextResetAt: String
 }
 
 schema {
