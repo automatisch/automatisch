@@ -85,7 +85,6 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
 
               <IconButton
                 size="large"
-                edge="start"
                 color="inherit"
                 aria-label="open context menu"
                 ref={contextButtonRef}
