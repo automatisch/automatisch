@@ -20,6 +20,14 @@ export default function UsageDataInformation() {
           <TableBody>
             <TableRow>
               <TableCell component="td" scope="row">
+                Current plan
+              </TableCell>
+
+              <TableCell align="right" sx={{ fontWeight: 500 }}>{usageData.name}</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell component="td" scope="row">
                 Total allowed task count
               </TableCell>
 

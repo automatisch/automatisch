@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { GET_USAGE_DATA } from 'graphql/queries/get-usage-data.ee';
 
 type UseUsageDataReturn = {
+  name: string;
   allowedTaskCount: number;
   consumedTaskCount: number;
   remainingTaskCount: number;
@@ -19,6 +20,7 @@ export default function useUsageData(): UseUsageDataReturn {
   const nextResetAtDateTimeObject = nextResetAt && DateTime.fromMillis(Number(nextResetAt));
 
   return {
+    name: usageData?.name,
     allowedTaskCount: usageData?.allowedTaskCount,
     consumedTaskCount: usageData?.consumedTaskCount,
     remainingTaskCount: usageData?.remainingTaskCount,

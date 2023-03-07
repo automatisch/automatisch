@@ -17,6 +17,7 @@ const getUsageData = async (
     .throwIfNotFound();
 
   const computedUsageData = {
+    name: paymentPlan.name,
     allowedTaskCount: paymentPlan.taskCount,
     consumedTaskCount: usageData.consumedTaskCount,
     remainingTaskCount: paymentPlan.taskCount - usageData.consumedTaskCount,

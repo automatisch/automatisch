@@ -470,6 +470,7 @@ type GetAutomatischInfo {
 }
 
 type GetUsageData {
+  name: String
   allowedTaskCount: Int
   consumedTaskCount: Int
   remainingTaskCount: Int
