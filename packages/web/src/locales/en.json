@@ -116,6 +116,7 @@
   "signupForm.passwordFieldLabel": "Password",
   "signupForm.confirmPasswordFieldLabel": "Confirm password",
   "signupForm.submit": "Sign up",
+  "signupForm.validateEmail": "Email must be valid.",
   "signupForm.passwordsMustMatch": "Passwords must match.",
   "signupForm.mandatoryInput": "{inputName} is required.",
   "loginForm.title": "Login",

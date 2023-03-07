@@ -17,7 +17,11 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 const validationSchema = yup.object().shape({
   fullName: yup.string().trim().required('signupForm.mandatoryInput'),
-  email: yup.string().trim().email().required('signupForm.mandatoryInput'),
+  email: yup
+    .string()
+    .trim()
+    .email('signupForm.validateEmail')
+    .required('signupForm.mandatoryInput'),
   password: yup.string().required('signupForm.mandatoryInput'),
   confirmPassword: yup
     .string()
