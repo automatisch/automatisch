@@ -3,6 +3,7 @@ import User from '../../models/user';
 import PaymentPlan from '../../models/payment-plan.ee';
 import UsageData from '../../models/usage-data.ee';
 import appConfig from '../../config/app';
+import handleWebhooks from './webhooks.ee';
 
 const plans = [
   {
@@ -91,6 +92,9 @@ const createPaymentPortalUrl = async (user: User) => {
 const billing = {
   createSubscription,
   createPaymentPortalUrl,
+  handleWebhooks,
+  stripe,
+  plans,
 };
 
 export default billing;
