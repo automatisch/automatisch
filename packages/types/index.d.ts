@@ -82,6 +82,7 @@ export interface IFlow {
 
 export interface IUser {
   id: string;
+  fullName: string;
   email: string;
   password: string;
   connections: IConnection[];
