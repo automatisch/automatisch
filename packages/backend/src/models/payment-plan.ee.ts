@@ -10,6 +10,7 @@ class PaymentPlan extends Base {
   stripeSubscriptionId!: string;
   currentPeriodStartedAt!: string;
   currentPeriodEndsAt!: string;
+  user?: User;
 
   static tableName = 'payment_plans';
 
