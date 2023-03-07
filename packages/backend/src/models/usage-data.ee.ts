@@ -31,6 +31,10 @@ class UsageData extends Base {
       },
     },
   });
+
+  async increaseConsumedTaskCountByOne() {
+    return await this.$query().patch({ consumedTaskCount: this.consumedTaskCount + 1 });
+  }
 }
 
 export default UsageData;

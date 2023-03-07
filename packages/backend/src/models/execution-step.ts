@@ -1,9 +1,10 @@
 import type { QueryContext } from 'objection';
+import { IJSONObject } from '@automatisch/types';
+import appConfig from '../config/app';
 import Base from './base';
 import Execution from './execution';
 import Step from './step';
 import Telemetry from '../helpers/telemetry';
-import { IJSONObject } from '@automatisch/types';
 
 class ExecutionStep extends Base {
   id!: string;
@@ -14,6 +15,7 @@ class ExecutionStep extends Base {
   errorDetails: IJSONObject;
   status: 'success' | 'failure';
   step: Step;
+  execution?: Execution;
 
   static tableName = 'execution_steps';
 
@@ -57,6 +59,18 @@ class ExecutionStep extends Base {
   async $afterInsert(queryContext: QueryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.executionStepCreated(this);
+
+    if (appConfig.isCloud) {
+      const execution = await this.$relatedQuery('execution');
+
+      if (!execution.testRun && !this.isFailed) {
+        const flow = await execution.$relatedQuery('flow');
+        const user = await flow.$relatedQuery('user');
+        const usageData = await user.$relatedQuery('usageData');
+
+        await usageData.increaseConsumedTaskCountByOne();
+      }
+    }
   }
 }
 

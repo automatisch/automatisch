@@ -3,6 +3,7 @@ import type { ModelOptions, QueryContext } from 'objection';
 import ExtendedQueryBuilder from './query-builder';
 import Base from './base';
 import Step from './step';
+import User from './user';
 import Execution from './execution';
 import Telemetry from '../helpers/telemetry';
 
@@ -15,6 +16,7 @@ class Flow extends Base {
   published_at: string;
   remoteWebhookId: string;
   executions?: Execution[];
+  user?: User;
 
   static tableName = 'flows';
 
@@ -49,6 +51,14 @@ class Flow extends Base {
       join: {
         from: 'flows.id',
         to: 'executions.flow_id',
+      },
+    },
+    user: {
+      relation: Base.HasOneRelation,
+      modelClass: User,
+      join: {
+        from: 'flows.user_id',
+        to: 'users.id',
       },
     },
   });
