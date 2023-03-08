@@ -1,3 +1,4 @@
+import { raw } from 'objection';
 import Base from './base';
 import User from './user';
 
@@ -33,7 +34,7 @@ class UsageData extends Base {
   });
 
   async increaseConsumedTaskCountByOne() {
-    return await this.$query().patch({ consumedTaskCount: this.consumedTaskCount + 1 });
+    return await this.$query().patch({ consumedTaskCount: raw('consumed_task_count + 1') });
   }
 }
 
