@@ -1,5 +1,6 @@
 import { ValidationError } from 'objection';
 import type { ModelOptions, QueryContext } from 'objection';
+import appConfig from '../config/app';
 import ExtendedQueryBuilder from './query-builder';
 import Base from './base';
 import Step from './step';
@@ -128,6 +129,21 @@ class Flow extends Base {
     return await this.$relatedQuery('steps').findOne({
       type: 'trigger',
     });
+  }
+
+  async throwIfQuotaExceeded() {
+    if (!appConfig.isCloud) return;
+
+    const user = await this.$relatedQuery('user');
+    const usageData = await user.$relatedQuery('usageData');
+
+    const hasExceeded = await usageData.checkIfLimitExceeded();
+
+    if (hasExceeded) {
+      throw new Error('The allowed task quota has been exhausted!');
+    }
+
+    return this;
   }
 }
 
