@@ -10,6 +10,7 @@ class Execution extends Base {
   testRun: boolean;
   internalId: string;
   executionSteps: ExecutionStep[];
+  flow?: Flow;
 
   static tableName = 'executions';
 
