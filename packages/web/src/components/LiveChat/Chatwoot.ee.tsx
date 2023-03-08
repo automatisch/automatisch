@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import appConfig from 'config/app';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -8,7 +10,9 @@ type ChatwootProps = {
 }
 
 const Chatwoot = ({ ready }: ChatwootProps) => {
+  const theme = useTheme();
   const currentUser = useCurrentUser();
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
 
   React.useEffect(function initiateChatwoot() {
     window.chatwootSDK.run({
@@ -30,8 +34,18 @@ const Chatwoot = ({ ready }: ChatwootProps) => {
       name: currentUser.fullName,
     });
 
-    window.$chatwoot.toggleBubbleVisibility("show");
-  }, [currentUser, ready]);
+    if (!matchSmallScreens) {
+      window.$chatwoot.toggleBubbleVisibility("show");
+    }
+  }, [currentUser, ready, matchSmallScreens]);
+
+  React.useLayoutEffect(function hideChatwoot() {
+    if (matchSmallScreens) {
+      window.$chatwoot?.toggleBubbleVisibility('hide');
+    } else {
+      window.$chatwoot?.toggleBubbleVisibility('show');
+    }
+  }, [matchSmallScreens])
 
   return (
     <React.Fragment />
