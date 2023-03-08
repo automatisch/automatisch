@@ -49,9 +49,7 @@ export default function SettingsLayout({
 }: SettingsLayoutProps): React.ReactElement {
   const { isCloud } = useAutomatischInfo();
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'), {
-    noSsr: true,
-  });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
 
   const openDrawer = () => setDrawerOpen(true);

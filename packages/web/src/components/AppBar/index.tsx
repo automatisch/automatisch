@@ -29,9 +29,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
   const { drawerOpen, onDrawerOpen, onDrawerClose, maxWidth = false } = props;
 
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
-    noSsr: true,
-  });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
 
   const [accountMenuAnchorElement, setAccountMenuAnchorElement] =
     React.useState<null | HTMLElement>(null);

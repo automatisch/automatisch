@@ -51,9 +51,7 @@ const ReconnectConnection = (props: any): React.ReactElement => {
 
 export default function Application(): React.ReactElement | null {
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
-    noSsr: true,
-  });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
   const formatMessage = useFormatMessage();
   const connectionsPathMatch = useMatch({
     path: URLS.APP_CONNECTIONS_PATTERN,

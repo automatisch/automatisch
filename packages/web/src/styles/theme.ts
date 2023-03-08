@@ -251,6 +251,11 @@ const extendedTheme = createTheme({
         }),
       },
     },
+    MuiUseMediaQuery: {
+      defaultProps: {
+        noSsr: true,
+      },
+    },
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({
