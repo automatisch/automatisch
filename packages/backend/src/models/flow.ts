@@ -131,13 +131,25 @@ class Flow extends Base {
     });
   }
 
-  async throwIfQuotaExceeded() {
+  async checkIfQuotaExceeded() {
     if (!appConfig.isCloud) return;
 
     const user = await this.$relatedQuery('user');
     const usageData = await user.$relatedQuery('usageData');
 
     const hasExceeded = await usageData.checkIfLimitExceeded();
+
+    if (hasExceeded) {
+      return true;
+    }
+
+    return false;
+  }
+
+  async throwIfQuotaExceeded() {
+    if (!appConfig.isCloud) return;
+
+    const hasExceeded = await this.checkIfQuotaExceeded();
 
     if (hasExceeded) {
       throw new Error('The allowed task quota has been exhausted!');
