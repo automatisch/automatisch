@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import useAuthentication from 'hooks/useAuthentication';
+import useCloud from 'hooks/useCloud';
 import * as URLS from 'config/urls';
 import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
@@ -14,6 +15,7 @@ import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 function LoginForm() {
+  const isCloud = useCloud();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const authentication = useAuthentication();
@@ -76,13 +78,13 @@ function LoginForm() {
           sx={{ mb: 1 }}
         />
 
-        <Link
+        {isCloud &&<Link
           component={RouterLink}
           to={URLS.FORGOT_PASSWORD}
           underline="none"
         >
           {formatMessage('loginForm.forgotPasswordText')}
-        </Link>
+        </Link>}
 
         <LoadingButton
           type="submit"
@@ -96,13 +98,13 @@ function LoginForm() {
           {formatMessage('loginForm.submit')}
         </LoadingButton>
 
-        <Typography variant="body1" align="center" mt={3}>
+        {isCloud && <Typography variant="body1" align="center" mt={3}>
           {formatMessage('loginForm.noAccount')}
           &nbsp;
           <Link component={RouterLink} to={URLS.SIGNUP} underline="none">
           {formatMessage('loginForm.signUp')}
           </Link>
-        </Typography>
+        </Typography>}
       </Form>
     </Paper>
   );
