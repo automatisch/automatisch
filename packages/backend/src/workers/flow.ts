@@ -12,6 +12,13 @@ export const worker = new Worker(
     const { flowId } = job.data;
 
     const flow = await Flow.query().findById(flowId).throwIfNotFound();
+
+    const quotaExceeded = await flow.checkIfQuotaExceeded();
+
+    if (quotaExceeded) {
+      return;
+    }
+
     const triggerStep = await flow.getTriggerStep();
 
     const { data, error } = await processFlow({ flowId });

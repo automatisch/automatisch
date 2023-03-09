@@ -1,4 +1,3 @@
-import appConfig from '../config/app';
 import Step from '../models/step';
 import Flow from '../models/flow';
 import Execution from '../models/execution';
@@ -22,10 +21,6 @@ export const processAction = async (options: ProcessActionOptions) => {
   const execution = await Execution.query()
     .findById(executionId)
     .throwIfNotFound();
-
-  if (!execution.testRun) {
-    await flow.throwIfQuotaExceeded();
-  }
 
   const step = await Step.query().findById(stepId).throwIfNotFound();
 
