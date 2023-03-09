@@ -5,6 +5,9 @@ export const EXECUTION = (executionId: string): string =>
   `/executions/${executionId}`;
 
 export const LOGIN = '/login';
+export const SIGNUP = '/sign-up';
+export const FORGOT_PASSWORD = '/forgot-password';
+export const RESET_PASSWORD = '/reset-password';
 
 export const APPS = '/apps';
 export const NEW_APP_CONNECTION = '/apps/new';
@@ -61,8 +64,10 @@ export const FLOW_PATTERN = '/flows/:flowId';
 export const SETTINGS = '/settings';
 export const SETTINGS_DASHBOARD = SETTINGS;
 export const PROFILE = 'profile';
+export const BILLING_AND_USAGE = 'billing';
 export const UPDATES = '/updates';
 export const SETTINGS_PROFILE = `${SETTINGS}/${PROFILE}`;
+export const SETTINGS_BILLING_AND_USAGE = `${SETTINGS}/${BILLING_AND_USAGE}`;
 
 export const DASHBOARD = FLOWS;
 

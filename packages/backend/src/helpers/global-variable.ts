@@ -13,6 +13,7 @@ import {
   IRequest,
 } from '@automatisch/types';
 import EarlyExitError from '../errors/early-exit';
+import AlreadyProcessedError from '../errors/already-processed';
 
 type GlobalVariableOptions = {
   connection?: Connection;
@@ -77,6 +78,9 @@ const globalVariable = async (
     execution: {
       id: execution?.id,
       testRun,
+      exit: () => {
+        throw new EarlyExitError();
+      }
     },
     lastExecutionStep: (await step?.getLastExecutionStep())?.toJSON(),
     triggerOutput: {
@@ -93,7 +97,7 @@ const globalVariable = async (
         !$.execution.testRun
       ) {
         // early exit as we do not want to process duplicate items in actual executions
-        throw new EarlyExitError();
+        throw new AlreadyProcessedError();
       }
 
       $.triggerOutput.data.push(triggerItem);

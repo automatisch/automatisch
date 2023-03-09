@@ -1,3 +1,4 @@
+import appConfig from '../../config/app';
 import User from '../../models/user';
 import emailQueue from '../../queues/email';
 import {
@@ -30,6 +31,8 @@ const forgotPassword = async (_parent: unknown, params: Params) => {
     template: 'reset-password-instructions',
     params: {
       token: user.resetPasswordToken,
+      webAppUrl: appConfig.webAppUrl,
+      fullName: user.fullName,
     },
   };
 
@@ -40,7 +43,7 @@ const forgotPassword = async (_parent: unknown, params: Params) => {
 
   await emailQueue.add(jobName, jobPayload, jobOptions);
 
-  return;
+  return true;
 };
 
 export default forgotPassword;

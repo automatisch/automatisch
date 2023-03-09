@@ -58,6 +58,7 @@
     "oauth-1.0a": "^2.2.6",
     "objection": "^3.0.0",
     "pg": "^8.7.1",
+    "stripe": "^11.13.0",
     "winston": "^3.7.1"
   },
   "contributors": [

@@ -24,6 +24,7 @@ const authentication = shield(
   {
     Query: {
       '*': isAuthenticated,
+      getAutomatischInfo: allow,
       healthcheck: allow,
     },
     Mutation: {
@@ -31,6 +32,7 @@ const authentication = shield(
       login: allow,
       createUser: allow,
       forgotPassword: allow,
+      resetPassword: allow,
     },
   },
   {

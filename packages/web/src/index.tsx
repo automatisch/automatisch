@@ -5,7 +5,9 @@ import IntlProvider from 'components/IntlProvider';
 import ApolloProvider from 'components/ApolloProvider';
 import SnackbarProvider from 'components/SnackbarProvider';
 import { AuthenticationProvider } from 'contexts/Authentication';
+import { AutomatischInfoProvider } from 'contexts/AutomatischInfo';
 import Router from 'components/Router';
+import LiveChat from 'components/LiveChat/index.ee';
 import routes from 'routes';
 import reportWebVitals from './reportWebVitals';
 
@@ -13,11 +15,15 @@ ReactDOM.render(
   <SnackbarProvider>
     <AuthenticationProvider>
       <ApolloProvider>
-        <IntlProvider>
-          <ThemeProvider>
-            <Router>{routes}</Router>
-          </ThemeProvider>
-        </IntlProvider>
+        <AutomatischInfoProvider>
+          <IntlProvider>
+            <ThemeProvider>
+              <Router>{routes}</Router>
+
+              <LiveChat />
+            </ThemeProvider>
+          </IntlProvider>
+        </AutomatischInfoProvider>
       </ApolloProvider>
     </AuthenticationProvider>
   </SnackbarProvider>,

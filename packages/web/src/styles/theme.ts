@@ -251,14 +251,6 @@ const extendedTheme = createTheme({
         }),
       },
     },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        inputSizeSmall: ({ theme }) => ({
-          // 1.5625 = 12.5px based on 1 = 8px
-          padding: theme.spacing(1.5625, 1.75),
-        }),
-      },
-    },
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({

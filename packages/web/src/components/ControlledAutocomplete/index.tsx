@@ -27,7 +27,7 @@ function ControlledAutocomplete(
     required = false,
     name,
     defaultValue,
-    shouldUnregister,
+    shouldUnregister = true,
     onBlur,
     onChange,
     description,
@@ -69,7 +69,7 @@ function ControlledAutocomplete(
         },
         fieldState,
       }) => (
-        <div>
+        <div style={{ width:'100%' }}>
           {/* encapsulated with an element such as div to vertical spacing delegated from parent */}
           <Autocomplete
             {...autocompleteProps}

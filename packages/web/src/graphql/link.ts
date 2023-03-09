@@ -33,13 +33,16 @@ const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink =>
           callback?.(message);
         }
 
-        console.log(
+        console.error(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         );
 
         if (message === NOT_AUTHORISED) {
           setItem('token', '');
-          window.location.href = URLS.LOGIN;
+
+          if (window.location.pathname !== URLS.LOGIN) {
+            window.location.href = URLS.LOGIN;
+          }
         }
       });
 
@@ -47,12 +50,13 @@ const createErrorLink = (callback: CreateLinkOptions['onError']): ApolloLink =>
       if (autoSnackbar) {
         callback?.(networkError.toString());
       }
-      console.log(`[Network error]: ${networkError}`);
+
+      console.error(`[Network error]: ${networkError}`);
     }
   });
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {};
+const noop = () => { };
 
 const createLink = (options: CreateLinkOptions): ApolloLink => {
   const { uri, onError = noop, token } = options;

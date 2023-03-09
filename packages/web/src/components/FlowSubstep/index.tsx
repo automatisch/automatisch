@@ -4,11 +4,12 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import type { IField, IStep, ISubstep } from '@automatisch/types';
 
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
-import type { IField, IStep, ISubstep } from '@automatisch/types';
+import FilterConditions from './FilterConditions';
 
 type FlowSubstepProps = {
   substep: ISubstep;
@@ -84,20 +85,25 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
             pb: 3,
             flexDirection: 'column',
             alignItems: 'flex-start',
+            position: 'relative'
           }}
         >
-          <Stack width="100%" spacing={2}>
-            {args?.map((argument) => (
-              <InputCreator
-                key={argument.key}
-                schema={argument}
-                namePrefix="parameters"
-                stepId={step.id}
-                disabled={editorContext.readOnly}
-                showOptionValue={true}
-              />
-            ))}
-          </Stack>
+          {!!args?.length && (
+            <Stack width="100%" spacing={2}>
+              {args.map((argument) => (
+                <InputCreator
+                  key={argument.key}
+                  schema={argument}
+                  namePrefix="parameters"
+                  stepId={step.id}
+                  disabled={editorContext.readOnly}
+                  showOptionValue={true}
+                />
+              ))}
+            </Stack>
+          )}
+
+          {step.appKey === 'filter' && <FilterConditions stepId={step.id} />}
 
           <Button
             fullWidth

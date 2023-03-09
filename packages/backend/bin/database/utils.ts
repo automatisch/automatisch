@@ -12,6 +12,8 @@ export async function createUser(
   const userParams = {
     email,
     password,
+    fullName: 'Initial admin',
+    role: 'admin',
   };
 
   try {

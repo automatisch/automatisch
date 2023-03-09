@@ -6,9 +6,12 @@ import Step from './step';
 import Execution from './execution';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
+import PaymentPlan from './payment-plan.ee';
+import UsageData from './usage-data.ee';
 
 class User extends Base {
   id!: string;
+  fullName!: string;
   email!: string;
   password!: string;
   role: string;
@@ -18,15 +21,18 @@ class User extends Base {
   flows?: Flow[];
   steps?: Step[];
   executions?: Execution[];
+  paymentPlan?: PaymentPlan;
+  usageData?: UsageData;
 
   static tableName = 'users';
 
   static jsonSchema = {
     type: 'object',
-    required: ['email', 'password'],
+    required: ['fullName', 'email', 'password'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
+      fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
       role: { type: 'string', enum: ['admin', 'user'] },
@@ -72,6 +78,22 @@ class User extends Base {
           to: 'flows.id',
         },
         to: 'executions.flow_id',
+      },
+    },
+    paymentPlan: {
+      relation: Base.HasOneRelation,
+      modelClass: PaymentPlan,
+      join: {
+        from: 'payment_plans.user_id',
+        to: 'users.id',
+      },
+    },
+    usageData: {
+      relation: Base.HasOneRelation,
+      modelClass: UsageData,
+      join: {
+        from: 'usage_data.user_id',
+        to: 'users.id',
       },
     },
   });

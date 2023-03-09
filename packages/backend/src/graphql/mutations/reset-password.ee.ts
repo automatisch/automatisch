@@ -24,7 +24,7 @@ const resetPassword = async (_parent: unknown, params: Params) => {
 
   await user.resetPassword(password);
 
-  return;
+  return true;
 };
 
 export default resetPassword;

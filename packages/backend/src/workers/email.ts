@@ -8,13 +8,13 @@ import appConfig from '../config/app';
 export const worker = new Worker(
   'email',
   async (job) => {
-    const { email, subject, templateName, params } = job.data;
+    const { email, subject, template, params } = job.data;
 
     await mailer.sendMail({
       to: email,
       from: appConfig.fromEmail,
       subject: subject,
-      html: compileEmail(templateName, params),
+      html: compileEmail(template, params),
     });
   },
   { connection: redisConfig }

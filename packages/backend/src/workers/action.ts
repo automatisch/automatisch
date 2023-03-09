@@ -21,7 +21,7 @@ const DEFAULT_DELAY_DURATION = 0;
 export const worker = new Worker(
   'action',
   async (job) => {
-    const { stepId, flowId, executionId, computedParameters } = await processAction(
+    const { stepId, flowId, executionId, computedParameters, executionStep } = await processAction(
       job.data as JobData
     );
 
@@ -46,6 +46,10 @@ export const worker = new Worker(
 
     if (step.appKey === 'delay') {
       jobOptions.delay = delayAsMilliseconds(step.key, computedParameters);
+    }
+
+    if (step.appKey === 'filter' && !executionStep.dataOut) {
+      return;
     }
 
     await actionQueue.add(jobName, jobPayload, jobOptions);

@@ -3,6 +3,7 @@ import addAuthHeader from './common/add-auth-header';
 import actions from './actions';
 import auth from './auth';
 import dynamicData from './dynamic-data';
+import dynamicFields from './dynamic-fields';
 
 export default defineApp({
   name: 'Slack',
@@ -17,4 +18,5 @@ export default defineApp({
   auth,
   actions,
   dynamicData,
+  dynamicFields,
 });

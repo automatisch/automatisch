@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { useMutation } from '@apollo/client';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -11,6 +14,7 @@ import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
+import DeleteAccountDialog from 'components/DeleteAccountDialog/index.ee';
 import { UPDATE_USER } from 'graphql/mutations/update-user';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -38,6 +42,7 @@ const StyledForm = styled(Form)`
 `;
 
 function ProfileSettings() {
+  const [showDeleteAccountConfirmation, setShowDeleteAccountConfirmation] = React.useState(false);
   const [passwordDefaultValues, setPasswordDefaultValues] = React.useState({});
   const { enqueueSnackbar } = useSnackbar();
   const currentUser = useCurrentUser();
@@ -96,7 +101,7 @@ function ProfileSettings() {
 
         <Grid item xs={12} justifyContent="flex-end">
           <StyledForm
-            defaultValues={currentUser}
+            defaultValues={{ ...currentUser}}
             onSubmit={handleEmailUpdate}
             resolver={yupResolver(emailValidationSchema)}
             mode="onChange"
@@ -153,7 +158,9 @@ function ProfileSettings() {
                   margin="normal"
                   type="password"
                   error={touchedFields.password && !!errors?.password}
-                  helperText={errors?.password?.message || ' '}
+                  helperText={
+                    (touchedFields.password && errors?.password?.message) || ''
+                  }
                 />
 
                 <TextField
@@ -165,7 +172,11 @@ function ProfileSettings() {
                   error={
                     touchedFields.confirmPassword && !!errors?.confirmPassword
                   }
-                  helperText={errors?.confirmPassword?.message || ' '}
+                  helperText={
+                    (touchedFields.confirmPassword &&
+                      errors?.confirmPassword?.message) ||
+                    ' '
+                  }
                 />
 
                 <Button
@@ -178,6 +189,40 @@ function ProfileSettings() {
               </>
             )}
           />
+        </Grid>
+
+        <Grid item xs={12} justifyContent="flex-end" sx={{pt: 5 }}>
+          <Alert variant="outlined" severity="error" sx={{ fontWeight: 500 }}>
+            <AlertTitle sx={{ fontWeight: 700 }}>{formatMessage('profileSettings.deleteMyAccount')}</AlertTitle>
+
+            <Typography variant="body1" gutterBottom>
+              {formatMessage('profileSettings.deleteAccountSubtitle')}
+            </Typography>
+
+            <ol>
+              <li>{formatMessage('profileSettings.deleteAccountResult1')}</li>
+              <li>{formatMessage('profileSettings.deleteAccountResult2')}</li>
+              <li>{formatMessage('profileSettings.deleteAccountResult3')}</li>
+              <li>{formatMessage('profileSettings.deleteAccountResult4')}</li>
+            </ol>
+
+            <Button
+              variant="contained"
+              type="submit"
+              color="error"
+              size="small"
+              sx={{ justifyContent: 'end' }}
+              onClick={() => setShowDeleteAccountConfirmation(true)}
+            >
+              {formatMessage('profileSettings.deleteAccount')}
+            </Button>
+
+            {showDeleteAccountConfirmation && (
+              <DeleteAccountDialog
+                onClose={() => setShowDeleteAccountConfirmation(false)}
+              />
+            )}
+          </Alert>
         </Grid>
       </Grid>
     </Container>
