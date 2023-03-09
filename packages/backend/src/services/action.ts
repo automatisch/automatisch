@@ -1,3 +1,4 @@
+import appConfig from '../config/app';
 import Step from '../models/step';
 import Flow from '../models/flow';
 import Execution from '../models/execution';
@@ -17,17 +18,23 @@ type ProcessActionOptions = {
 export const processAction = async (options: ProcessActionOptions) => {
   const { flowId, stepId, executionId } = options;
 
-  const step = await Step.query().findById(stepId).throwIfNotFound();
+  const flow = await Flow.query().findById(flowId).throwIfNotFound();
   const execution = await Execution.query()
     .findById(executionId)
     .throwIfNotFound();
 
+  if (!execution.testRun) {
+    await flow.throwIfQuotaExceeded();
+  }
+
+  const step = await Step.query().findById(stepId).throwIfNotFound();
+
   const $ = await globalVariable({
-    flow: await Flow.query().findById(flowId).throwIfNotFound(),
+    flow,
     app: await step.getApp(),
     step: step,
     connection: await step.$relatedQuery('connection'),
-    execution: execution,
+    execution,
   });
 
   const priorExecutionSteps = await ExecutionStep.query().where({

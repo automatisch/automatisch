@@ -14,6 +14,11 @@ export default async (request: IRequest, response: Response) => {
     .throwIfNotFound();
 
   const testRun = !flow.active;
+
+  if (!testRun) {
+    await flow.throwIfQuotaExceeded();
+  }
+
   const triggerStep = await flow.getTriggerStep();
   const triggerCommand = await triggerStep.getTriggerCommand();
   const app = await triggerStep.getApp();

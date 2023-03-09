@@ -1,3 +1,4 @@
+import appConfig from '../config/app';
 import Flow from '../models/flow';
 import globalVariable from '../helpers/global-variable';
 import EarlyExitError from '../errors/early-exit';
@@ -10,7 +11,12 @@ type ProcessFlowOptions = {
 };
 
 export const processFlow = async (options: ProcessFlowOptions) => {
-  const flow = await Flow.query().findById(options.flowId).throwIfNotFound();
+  const { testRun, flowId } = options;
+  const flow = await Flow.query().findById(flowId).throwIfNotFound();
+
+  if (!testRun) {
+    await flow.throwIfQuotaExceeded();
+  }
 
   const triggerStep = await flow.getTriggerStep();
   const triggerCommand = await triggerStep.getTriggerCommand();
@@ -20,7 +26,7 @@ export const processFlow = async (options: ProcessFlowOptions) => {
     connection: await triggerStep.$relatedQuery('connection'),
     app: await triggerStep.getApp(),
     step: triggerStep,
-    testRun: options.testRun,
+    testRun,
   });
 
   try {
