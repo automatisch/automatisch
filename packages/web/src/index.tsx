@@ -12,21 +12,23 @@ import routes from 'routes';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <SnackbarProvider>
-    <AuthenticationProvider>
-      <ApolloProvider>
-        <AutomatischInfoProvider>
-          <IntlProvider>
-            <ThemeProvider>
-              <Router>{routes}</Router>
+  <Router>
+    <SnackbarProvider>
+      <AuthenticationProvider>
+        <ApolloProvider>
+          <AutomatischInfoProvider>
+            <IntlProvider>
+              <ThemeProvider>
+                {routes}
 
-              <LiveChat />
-            </ThemeProvider>
-          </IntlProvider>
-        </AutomatischInfoProvider>
-      </ApolloProvider>
-    </AuthenticationProvider>
-  </SnackbarProvider>,
+                <LiveChat />
+              </ThemeProvider>
+            </IntlProvider>
+          </AutomatischInfoProvider>
+        </ApolloProvider>
+      </AuthenticationProvider>
+    </SnackbarProvider>
+  </Router>,
   document.getElementById('root')
 );
 
