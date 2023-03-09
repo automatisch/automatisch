@@ -9,10 +9,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useUsageAlert from 'hooks/useUsageAlert.ee';
 
-const LinkBehavior = React.forwardRef<any>(
-  (props, ref) => <a ref={ref} target="_blank" {...props} role={undefined} />,
-);
-
 export default function UsageAlert() {
   const formatMessage = useFormatMessage();
   const usageAlert = useUsageAlert();
@@ -38,7 +34,6 @@ export default function UsageAlert() {
           </Typography>
 
           <Button
-            component={LinkBehavior}
             size="small"
             href={usageAlert.url}
             sx={{ minWidth: 100 }}
