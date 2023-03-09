@@ -10,9 +10,7 @@ import { IconButton } from './style';
 export default function ConditionalIconButton(props: any): React.ReactElement {
   const { icon, ...buttonProps } = props;
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
-    noSsr: true,
-  });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
 
   if (matchSmallScreens) {
     return (

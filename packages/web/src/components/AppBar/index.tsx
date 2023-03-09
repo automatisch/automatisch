@@ -12,6 +12,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import * as URLS from 'config/urls';
 import AccountDropdownMenu from 'components/AccountDropdownMenu';
+import UsageAlert from 'components/UsageAlert/index.ee';
 import Container from 'components/Container';
 import { FormattedMessage } from 'react-intl';
 import { Link } from './style';
@@ -29,9 +30,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
   const { drawerOpen, onDrawerOpen, onDrawerClose, maxWidth = false } = props;
 
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
-    noSsr: true,
-  });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
 
   const [accountMenuAnchorElement, setAccountMenuAnchorElement] =
     React.useState<null | HTMLElement>(null);
@@ -82,6 +81,8 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
           </IconButton>
         </Toolbar>
       </Container>
+
+      <UsageAlert />
 
       <AccountDropdownMenu
         anchorEl={accountMenuAnchorElement}
