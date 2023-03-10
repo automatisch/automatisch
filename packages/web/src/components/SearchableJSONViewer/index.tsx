@@ -2,11 +2,13 @@ import * as React from 'react';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import throttle from 'lodash/throttle';
-import { Box } from '@mui/material';
+import isEmpty from 'lodash/isEmpty';
+import { Box, Typography } from '@mui/material';
 
 import { IJSONObject, IJSONValue } from '@automatisch/types';
 import JSONViewer from 'components/JSONViewer';
 import SearchInput from 'components/SearchInput';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 type JSONViewerProps = {
   data: IJSONObject;
@@ -15,7 +17,10 @@ type JSONViewerProps = {
 type Entry = [string, IJSONValue];
 
 const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
-  const [filteredData, setFilteredData] = React.useState(data);
+  const [filteredData, setFilteredData] = React.useState<IJSONObject | null>(
+    data
+  );
+  const formatMessage = useFormatMessage();
 
   const allEntries = React.useMemo(() => {
     const entries: Entry[] = [];
@@ -23,7 +28,6 @@ const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
       for (const key in obj) {
         if (typeof obj[key] === 'object' && obj[key] !== null) {
           entries.push([[prefix, key].filter(Boolean).join('.'), obj[key]]);
-
           collectEntries(
             obj[key] as IJSONObject,
             [prefix, key].filter(Boolean).join('.')
@@ -60,17 +64,24 @@ const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
           }
         });
 
-        setFilteredData(newFilteredData);
+        if (isEmpty(newFilteredData)) {
+          setFilteredData(null);
+        } else {
+          setFilteredData(newFilteredData);
+        }
       }, 400),
     [allEntries]
   );
 
   return (
     <>
-      <Box mb={1} mt={2}>
+      <Box my={2}>
         <SearchInput onChange={onSearchChange} />
       </Box>
-      <JSONViewer data={filteredData} />
+      {filteredData && <JSONViewer data={filteredData} />}
+      {!filteredData && (
+        <Typography>{formatMessage('jsonViewer.noDataFound')}</Typography>
+      )}
     </>
   );
 };
