@@ -1,4 +1,6 @@
 import { Worker } from 'bullmq';
+
+import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
 import mailer from '../helpers/mailer.ee';
@@ -30,6 +32,12 @@ worker.on('failed', (job, err) => {
   logger.info(
     `JOB ID: ${job.id} - ${job.data.subject} email to ${job.data.email} has failed to send with ${err.message}`
   );
+
+  Sentry.captureException(err, {
+    extra: {
+      jobId: job.id,
+    }
+  });
 });
 
 process.on('SIGTERM', async () => {

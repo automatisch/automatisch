@@ -2,6 +2,7 @@ import { IJSONObject } from '@automatisch/types';
 
 export default class BaseError extends Error {
   details = {};
+  statusCode?: number;
 
   constructor(error?: string | IJSONObject) {
     let computedError: Record<string, unknown>;
