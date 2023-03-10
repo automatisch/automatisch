@@ -333,5 +333,6 @@ declare module 'axios' {
 
 export interface IRequest extends Request {
   rawBody?: Buffer;
+  currentUser?: IUser;
 }
 

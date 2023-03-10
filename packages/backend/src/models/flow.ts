@@ -7,6 +7,7 @@ import Step from './step';
 import User from './user';
 import Execution from './execution';
 import Telemetry from '../helpers/telemetry';
+import QuotaExceededError from '../errors/quote-exceeded';
 
 class Flow extends Base {
   id!: string;
@@ -152,7 +153,7 @@ class Flow extends Base {
     const hasExceeded = await this.checkIfQuotaExceeded();
 
     if (hasExceeded) {
-      throw new Error('The allowed task quota has been exhausted!');
+      throw new QuotaExceededError();
     }
 
     return this;

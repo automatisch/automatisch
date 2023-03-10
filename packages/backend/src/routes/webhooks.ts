@@ -21,7 +21,7 @@ const exposeError = (handler: RequestHandler) => async (req: IRequest, res: Resp
   try {
     await handler(req, res, next);
   } catch (err) {
-    res.status(422).send(err);
+    next(err);
   }
 }
 

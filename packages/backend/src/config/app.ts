@@ -44,6 +44,7 @@ type AppConfig = {
   stripeStarterPriceKey: string;
   stripeGrowthPriceKey: string;
   licenseKey: string;
+  sentryDsn: string;
 };
 
 const host = process.env.HOST || 'localhost';
@@ -115,6 +116,7 @@ const appConfig: AppConfig = {
   stripeStarterPriceKey: process.env.STRIPE_STARTER_PRICE_KEY,
   stripeGrowthPriceKey: process.env.STRIPE_GROWTH_PRICE_KEY,
   licenseKey: process.env.LICENSE_KEY,
+  sentryDsn: process.env.SENTRY_DSN,
 };
 
 if (!appConfig.encryptionKey) {

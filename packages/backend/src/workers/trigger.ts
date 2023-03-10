@@ -1,7 +1,9 @@
 import { Worker } from 'bullmq';
+
+import { IJSONObject, ITriggerItem } from '@automatisch/types';
+import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
-import { IJSONObject, ITriggerItem } from '@automatisch/types';
 import actionQueue from '../queues/action';
 import Step from '../models/step';
 import { processTrigger } from '../services/trigger';
@@ -51,6 +53,12 @@ worker.on('failed', (job, err) => {
   logger.info(
     `JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}`
   );
+
+  Sentry.captureException(err, {
+    extra: {
+      jobId: job.id,
+    }
+  });
 });
 
 process.on('SIGTERM', async () => {
