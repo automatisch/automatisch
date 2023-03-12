@@ -43,6 +43,10 @@ const updateStep = async (
     }
   }
 
+  if (step.isTrigger) {
+    await App.checkAppAndTrigger(input.appKey, input.key);
+  }
+
   if (step.isAction) {
     await App.checkAppAndAction(input.appKey, input.key);
   }
