@@ -36,6 +36,16 @@ class App {
 
     return appInfoConverter(rawAppData);
   }
+
+  static async checkAppAndAction(appKey: string, actionKey: string): Promise<void> {
+    const app = await this.findOneByKey(appKey);
+
+    const hasAction = app.actions?.find(action => action.key === actionKey);
+
+    if (!hasAction) {
+      throw new Error(`${app.name} does not have an action with the "${actionKey}" key!`);
+    }
+  }
 }
 
 export default App;

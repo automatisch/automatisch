@@ -1,4 +1,5 @@
 import { IJSONObject } from '@automatisch/types';
+import App from '../../models/app';
 import Step from '../../models/step';
 import Context from '../../types/express/context';
 
@@ -40,6 +41,10 @@ const updateStep = async (
     if (!hasConnection) {
       throw new Error('The connection does not exist!');
     }
+  }
+
+  if (step.isAction) {
+    await App.checkAppAndAction(input.appKey, input.key);
   }
 
   step = await Step.query()
