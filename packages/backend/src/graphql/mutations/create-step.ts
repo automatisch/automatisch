@@ -1,3 +1,4 @@
+import App from '../../models/app';
 import Context from '../../types/express/context';
 
 type Params = {
@@ -22,6 +23,14 @@ const createStep = async (
   context: Context
 ) => {
   const { input } = params;
+
+  if (input.appKey && input.key) {
+    await App.checkAppAndAction(input.appKey, input.key);
+  }
+
+  if (input.appKey && !input.key) {
+    await App.findOneByKey(input.appKey);
+  }
 
   const flow = await context.currentUser
     .$relatedQuery('flows')

@@ -1,4 +1,5 @@
 import { IJSONObject } from '@automatisch/types';
+import App from '../../models/app';
 import Step from '../../models/step';
 import Context from '../../types/express/context';
 
@@ -31,6 +32,24 @@ const updateStep = async (
       flow_id: input.flow.id,
     })
     .throwIfNotFound();
+
+  if (input.connection.id) {
+    const hasConnection = await context.currentUser
+      .$relatedQuery('connections')
+      .findById(input.connection?.id);
+
+    if (!hasConnection) {
+      throw new Error('The connection does not exist!');
+    }
+  }
+
+  if (step.isTrigger) {
+    await App.checkAppAndTrigger(input.appKey, input.key);
+  }
+
+  if (step.isAction) {
+    await App.checkAppAndAction(input.appKey, input.key);
+  }
 
   step = await Step.query()
     .patchAndFetchById(input.id, {
