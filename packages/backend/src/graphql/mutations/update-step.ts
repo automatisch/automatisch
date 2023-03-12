@@ -32,6 +32,16 @@ const updateStep = async (
     })
     .throwIfNotFound();
 
+  if (input.connection.id) {
+    const hasConnection = await context.currentUser
+      .$relatedQuery('connections')
+      .findById(input.connection?.id);
+
+    if (!hasConnection) {
+      throw new Error('The connection does not exist!');
+    }
+  }
+
   step = await Step.query()
     .patchAndFetchById(input.id, {
       key: input.key,
