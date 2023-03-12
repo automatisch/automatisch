@@ -83,7 +83,7 @@ const createPaymentPortalUrl = async (user: User) => {
 
   const userSession = await stripe.billingPortal.sessions.create({
     customer: paymentPlan.stripeCustomerId,
-    return_url: 'https://cloud.automatisch.io',
+    return_url: 'https://cloud.automatisch.io/settings/billing',
   });
 
   return userSession.url;
