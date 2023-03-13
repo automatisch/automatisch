@@ -7,7 +7,7 @@ import actions from './actions';
 export default defineApp({
   name: 'SignalWire',
   key: 'signalwire',
-  iconUrl: 'https://signalwire.com/favicon.svg',
+  iconUrl: '{BASE_URL}/apps/signalwire/assets/favicon.svg',
   authDocUrl: 'https://automatisch.io/docs/apps/signalwire/connection',
   supportsConnections: true,
   baseUrl: 'https://signalwire.com',
