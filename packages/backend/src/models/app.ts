@@ -40,6 +40,8 @@ class App {
   static async checkAppAndAction(appKey: string, actionKey: string): Promise<void> {
     const app = await this.findOneByKey(appKey);
 
+    if (!actionKey) return;
+
     const hasAction = app.actions?.find(action => action.key === actionKey);
 
     if (!hasAction) {
@@ -49,6 +51,8 @@ class App {
 
   static async checkAppAndTrigger(appKey: string, triggerKey: string): Promise<void> {
     const app = await this.findOneByKey(appKey);
+
+    if (!triggerKey) return;
 
     const hasTrigger = app.triggers?.find(trigger => trigger.key === triggerKey);
 
