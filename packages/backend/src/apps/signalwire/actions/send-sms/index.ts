@@ -47,7 +47,7 @@ export default defineAction({
     const requestPath = `/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages`;
 
     const Body = $.step.parameters.message;
-    const From = '+' + ($.step.parameters.fromNumber as string).trim();
+    const From = $.step.parameters.fromNumber;
     const To = '+' + ($.step.parameters.toNumber as string).trim();
 
     const response = await $.http.post(requestPath, null, {

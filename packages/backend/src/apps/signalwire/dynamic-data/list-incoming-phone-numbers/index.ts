@@ -40,11 +40,10 @@ export default {
         .map((incomingPhoneNumber) => {
           const friendlyName = incomingPhoneNumber.friendly_name;
           const phoneNumber = incomingPhoneNumber.phone_number;
-          const sid = incomingPhoneNumber.sid;
           const name = [friendlyName, phoneNumber].filter(Boolean).join(' - ');
 
           return {
-            value: sid,
+            value: phoneNumber,
             name,
           };
         })
