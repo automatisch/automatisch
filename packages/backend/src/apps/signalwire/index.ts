@@ -3,6 +3,7 @@ import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
 import triggers from './triggers';
 import actions from './actions';
+import dynamicData from './dynamic-data';
 
 export default defineApp({
   name: 'SignalWire',
@@ -17,4 +18,5 @@ export default defineApp({
   auth,
   triggers,
   actions,
+  dynamicData,
 });

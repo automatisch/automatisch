@@ -8,11 +8,21 @@ export default defineAction({
     {
       label: 'From Number',
       key: 'fromNumber',
-      type: 'string' as const,
+      type: 'dropdown' as const,
       required: true,
       description:
         'The number to send the SMS from. Include only country code. Example: 491234567890',
       variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listIncomingPhoneNumbers',
+          },
+        ],
+      },
     },
     {
       label: 'To Number',

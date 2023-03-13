@@ -10,10 +10,20 @@ export default defineTrigger({
     {
       label: 'To Number',
       key: 'toNumber',
-      type: 'string',
+      type: 'dropdown',
       required: true,
       description:
         'The number to receive the SMS on. It should be a SignalWire number in your project.',
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listIncomingPhoneNumbers',
+          },
+        ],
+      },
     },
   ],
 
