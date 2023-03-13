@@ -1,10 +1,10 @@
 import { IGlobalVariable } from '@automatisch/types';
 
 const verifyCredentials = async ($: IGlobalVariable) => {
-  await $.http.get('https://' + $.auth.data.spaceName + '.' + $.auth.data.spaceRegion + 'signalwire.com' + '/api/laml/2010-04-01/Accounts');
+  const { data } = await $.http.get(`/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}`);
 
   await $.auth.set({
-    screenName: $.auth.data.accountSid,
+    screenName: `${data.friendly_name} (${$.auth.data.accountSid})`,
   });
 };
 
