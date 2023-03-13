@@ -35,15 +35,18 @@ export default defineAction({
 
   async run($) {
     const requestPath = `/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages`;
-    const messageBody = $.step.parameters.message;
 
-    const fromNumber = '%2B' + ($.step.parameters.fromNumber as string).trim();
-    const toNumber = '%2B' + ($.step.parameters.toNumber as string).trim();
+    const Body = $.step.parameters.message;
+    const From = '+' + ($.step.parameters.fromNumber as string).trim();
+    const To = '+' + ($.step.parameters.toNumber as string).trim();
 
-    const response = await $.http.post(
-      'https://' + $.auth.data.spaceName + '.' + $.auth.data.spaceRegion + 'signalwire.com' + requestPath,
-      `Body=${messageBody}&From=${fromNumber}&To=${toNumber}`
-    );
+    const response = await $.http.post(requestPath, null, {
+      params: {
+        Body,
+        From,
+        To,
+      }
+    });
 
     $.setActionItem({ raw: response.data });
   },
