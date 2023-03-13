@@ -10,8 +10,8 @@ type ProcessFlowOptions = {
 };
 
 export const processFlow = async (options: ProcessFlowOptions) => {
-  const flow = await Flow.query().findById(options.flowId).throwIfNotFound();
-
+  const { testRun, flowId } = options;
+  const flow = await Flow.query().findById(flowId).throwIfNotFound();
   const triggerStep = await flow.getTriggerStep();
   const triggerCommand = await triggerStep.getTriggerCommand();
 
@@ -20,7 +20,7 @@ export const processFlow = async (options: ProcessFlowOptions) => {
     connection: await triggerStep.$relatedQuery('connection'),
     app: await triggerStep.getApp(),
     step: triggerStep,
-    testRun: options.testRun,
+    testRun,
   });
 
   try {

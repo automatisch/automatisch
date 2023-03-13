@@ -136,5 +136,7 @@
   "resetPasswordForm.submit": "Reset password",
   "resetPasswordForm.passwordFieldLabel": "Password",
   "resetPasswordForm.confirmPasswordFieldLabel": "Confirm password",
-  "resetPasswordForm.passwordUpdated": "The password has been updated. Now, you can login."
+  "resetPasswordForm.passwordUpdated": "The password has been updated. Now, you can login.",
+  "usageAlert.informationText": "Tasks: {consumedTaskCount}/{allowedTaskCount} (Resets {relativeResetDate})",
+  "usageAlert.viewPlans": "View plans"
 }

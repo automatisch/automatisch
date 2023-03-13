@@ -1,3 +1,7 @@
+import * as Sentry from './helpers/sentry.ee';
+
+Sentry.init();
+
 import './config/orm';
 import './helpers/check-worker-readiness';
 import './workers/flow';

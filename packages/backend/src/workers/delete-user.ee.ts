@@ -1,4 +1,6 @@
 import { Worker } from 'bullmq';
+
+import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
 import User from '../models/user';
@@ -37,6 +39,12 @@ worker.on('failed', (job, err) => {
   logger.info(
     `JOB ID: ${job.id} - The user with the ID of '${job.data.id}' has failed to be deleted! ${err.message}`
   );
+
+  Sentry.captureException(err, {
+    extra: {
+      jobId: job.id,
+    }
+  });
 });
 
 process.on('SIGTERM', async () => {

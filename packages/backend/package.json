@@ -27,6 +27,8 @@
     "@graphql-tools/graphql-file-loader": "^7.3.4",
     "@graphql-tools/load": "^7.5.2",
     "@rudderstack/rudder-sdk-node": "^1.1.2",
+    "@sentry/node": "^7.42.0",
+    "@sentry/tracing": "^7.42.0",
     "@types/luxon": "^2.3.1",
     "ajv-formats": "^2.1.1",
     "axios": "0.24.0",

@@ -36,6 +36,26 @@ class App {
 
     return appInfoConverter(rawAppData);
   }
+
+  static async checkAppAndAction(appKey: string, actionKey: string): Promise<void> {
+    const app = await this.findOneByKey(appKey);
+
+    const hasAction = app.actions?.find(action => action.key === actionKey);
+
+    if (!hasAction) {
+      throw new Error(`${app.name} does not have an action with the "${actionKey}" key!`);
+    }
+  }
+
+  static async checkAppAndTrigger(appKey: string, triggerKey: string): Promise<void> {
+    const app = await this.findOneByKey(appKey);
+
+    const hasTrigger = app.triggers?.find(trigger => trigger.key === triggerKey);
+
+    if (!hasTrigger) {
+      throw new Error(`${app.name} does not have a trigger with the "${triggerKey}" key!`);
+    }
+  }
 }
 
 export default App;

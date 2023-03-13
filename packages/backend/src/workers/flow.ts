@@ -1,4 +1,6 @@
 import { Worker } from 'bullmq';
+
+import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
 import triggerQueue from '../queues/trigger';
@@ -12,6 +14,13 @@ export const worker = new Worker(
     const { flowId } = job.data;
 
     const flow = await Flow.query().findById(flowId).throwIfNotFound();
+
+    const quotaExceeded = await flow.checkIfQuotaExceeded();
+
+    if (quotaExceeded) {
+      return;
+    }
+
     const triggerStep = await flow.getTriggerStep();
 
     const { data, error } = await processFlow({ flowId });
@@ -58,6 +67,12 @@ worker.on('failed', (job, err) => {
   logger.info(
     `JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}`
   );
+
+  Sentry.captureException(err, {
+    extra: {
+      jobId: job.id,
+    }
+  });
 });
 
 process.on('SIGTERM', async () => {

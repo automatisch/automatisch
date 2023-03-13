@@ -22,7 +22,11 @@ const apps = fs
     return apps;
   }, {} as TApps);
 
-async function getDefaultExport(appKey: string) {
+async function getAppDefaultExport(appKey: string) {
+  if (!Object.prototype.hasOwnProperty.call(apps, appKey)) {
+    throw new Error(`An application with the "${appKey}" key couldn't be found.`);
+  }
+
   return (await apps[appKey]).default;
 }
 
@@ -31,7 +35,7 @@ function stripFunctions<C>(data: C): C {
 }
 
 const getApp = async (appKey: string, stripFuncs = true) => {
-  let appData: IApp = cloneDeep(await getDefaultExport(appKey));
+  let appData: IApp = cloneDeep(await getAppDefaultExport(appKey));
 
   if (appData.auth) {
     appData = addAuthenticationSteps(appData);

@@ -31,9 +31,7 @@ type DrawerProps = {
 export default function Drawer(props: DrawerProps): React.ReactElement {
   const { links = [], bottomLinks = [], ...drawerProps } = props;
   const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'), {
-    noSsr: true,
-  });
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
   const formatMessage = useFormatMessage();
 
   const closeOnClick = (event: React.SyntheticEvent) => {

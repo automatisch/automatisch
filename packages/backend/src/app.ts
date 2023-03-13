@@ -1,9 +1,12 @@
 import createError from 'http-errors';
 import express from 'express';
-import appConfig from './config/app';
 import cors from 'cors';
+
+import { IRequest } from '@automatisch/types';
+import appConfig from './config/app';
 import corsOptions from './config/cors-options';
 import morgan from './helpers/morgan';
+import * as Sentry from './helpers/sentry.ee';
 import appAssetsHandler from './helpers/app-assets-handler';
 import webUIHandler from './helpers/web-ui-handler';
 import errorHandler from './helpers/error-handler';
@@ -14,11 +17,15 @@ import {
 } from './helpers/create-bull-board-handler';
 import injectBullBoardHandler from './helpers/inject-bull-board-handler';
 import router from './routes';
-import { IRequest } from '@automatisch/types';
 
 createBullBoardHandler(serverAdapter);
 
 const app = express();
+
+Sentry.init(app);
+
+Sentry.attachRequestHandler(app);
+Sentry.attachTracingHandler(app);
 
 injectBullBoardHandler(app, serverAdapter);
 
@@ -49,6 +56,8 @@ webUIHandler(app);
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
+Sentry.attachErrorHandler(app);
 
 app.use(errorHandler);
 

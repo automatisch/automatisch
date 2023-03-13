@@ -40,8 +40,8 @@ function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
   const formatMessage = useFormatMessage();
-  const [createUser] = useMutation(CREATE_USER);
-  const [login, { loading }] = useMutation(LOGIN);
+  const [createUser, { loading: createUserLoading }] = useMutation(CREATE_USER);
+  const [login, { loading: loginLoading }] = useMutation(LOGIN);
 
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
@@ -165,7 +165,7 @@ function SignUpForm() {
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, mt: 3 }}
-              loading={loading}
+              loading={createUserLoading || loginLoading}
               fullWidth
               data-test="signUp-button"
             >

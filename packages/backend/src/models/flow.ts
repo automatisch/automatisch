@@ -1,11 +1,13 @@
 import { ValidationError } from 'objection';
 import type { ModelOptions, QueryContext } from 'objection';
+import appConfig from '../config/app';
 import ExtendedQueryBuilder from './query-builder';
 import Base from './base';
 import Step from './step';
 import User from './user';
 import Execution from './execution';
 import Telemetry from '../helpers/telemetry';
+import QuotaExceededError from '../errors/quote-exceeded';
 
 class Flow extends Base {
   id!: string;
@@ -128,6 +130,33 @@ class Flow extends Base {
     return await this.$relatedQuery('steps').findOne({
       type: 'trigger',
     });
+  }
+
+  async checkIfQuotaExceeded() {
+    if (!appConfig.isCloud) return;
+
+    const user = await this.$relatedQuery('user');
+    const usageData = await user.$relatedQuery('usageData');
+
+    const hasExceeded = await usageData.checkIfLimitExceeded();
+
+    if (hasExceeded) {
+      return true;
+    }
+
+    return false;
+  }
+
+  async throwIfQuotaExceeded() {
+    if (!appConfig.isCloud) return;
+
+    const hasExceeded = await this.checkIfQuotaExceeded();
+
+    if (hasExceeded) {
+      throw new QuotaExceededError();
+    }
+
+    return this;
   }
 }
 
