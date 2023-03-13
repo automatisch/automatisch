@@ -134,7 +134,7 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Signalwire',
+          text: 'SignalWire',
           collapsible: true,
           collapsed: true,
           items: [

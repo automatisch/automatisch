@@ -5,7 +5,7 @@ import triggers from './triggers';
 import actions from './actions';
 
 export default defineApp({
-  name: 'Signalwire',
+  name: 'SignalWire',
   key: 'signalwire',
   iconUrl: 'https://signalwire.com/favicon.svg',
   authDocUrl: 'https://automatisch.io/docs/apps/signalwire/connection',

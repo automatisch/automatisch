@@ -12,7 +12,7 @@ export default {
       value: null,
       placeholder: null,
       description:
-        'Log into your Signalwire account and find the Project ID',
+        'Log into your SignalWire account and find the Project ID',
       clickToCopy: false,
     },
     {
@@ -28,7 +28,7 @@ export default {
     },
     {
       key: 'spaceRegion',
-      label: 'Signalwire Region',
+      label: 'SignalWire Region',
       type: 'dropdown' as const,
       required: true,
       readOnly: false,
@@ -55,8 +55,8 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Name of your Signalwire space that contains the project',
-      clickToCopy: true,
+      description: 'Name of your SignalWire space that contains the project',
+      clickToCopy: false,
     },
   ],
 

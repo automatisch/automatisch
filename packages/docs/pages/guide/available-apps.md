@@ -17,7 +17,7 @@ Following integrations are currently supported by Automatisch.
 - [RSS](/apps/rss/triggers)
 - [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)
-- [Signalwire](/apps/signalwire/triggers)
+- [SignalWire](/apps/signalwire/triggers)
 - [Slack](/apps/slack/actions)
 - [SMTP](/apps/smtp/actions)
 - [Stripe](/apps/stripe/triggers)

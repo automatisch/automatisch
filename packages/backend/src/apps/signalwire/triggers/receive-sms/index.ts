@@ -13,7 +13,7 @@ export default defineTrigger({
       type: 'string',
       required: true,
       description:
-        'The number to receive the SMS on. It should be a Signalwire number in your project.',
+        'The number to receive the SMS on. It should be a SignalWire number in your project.',
     },
   ],
 
