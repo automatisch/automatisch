@@ -17,7 +17,9 @@ const createFlow = async (
   const connectionId = params?.input?.connectionId;
   const appKey = params?.input?.triggerAppKey;
 
-  await App.findOneByKey(appKey);
+  if (appKey) {
+    await App.findOneByKey(appKey);
+  }
 
   const flow = await context.currentUser.$relatedQuery('flows').insert({
     name: 'Name your flow',
