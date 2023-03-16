@@ -107,6 +107,8 @@ type SubstepArgument {
   source: SubstepArgumentSource
   additionalFields: SubstepArgumentAdditionalFields
   dependsOn: [String]
+  fields: [SubstepArgument]
+  value: JSONObject
 }
 
 type SubstepArgumentOption {

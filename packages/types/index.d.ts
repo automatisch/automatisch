@@ -145,7 +145,18 @@ export interface IFieldText {
   dependsOn?: string[];
 }
 
-export type IField = IFieldDropdown | IFieldText;
+export interface IFieldDynamic {
+  key: string;
+  label: string;
+  type: 'dynamic';
+  required?: boolean;
+  readOnly?: boolean;
+  description?: string;
+  value?: Record<string, unknown>[];
+  fields: (IFieldDropdown | IFieldText)[];
+}
+
+export type IField = IFieldDropdown | IFieldText | IFieldDynamic;
 
 export interface IAuthenticationStepField {
   name: string;

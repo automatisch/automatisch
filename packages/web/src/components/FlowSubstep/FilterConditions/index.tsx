@@ -144,7 +144,7 @@ function FilterConditions(props: FilterConditionsProps): React.ReactElement {
 
             {group?.and?.map((groupItem: TGroupItem, groupItemIndex: number) => (
               <Stack direction="row" spacing={2} key={`item-${groupItem.id}`}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 2}} sx={{ display: 'flex', flex: 1 }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 2 }} sx={{ display: 'flex', flex: 1 }}>
                   <Box sx={{ display: 'flex', flex: '1 0 0px', maxWidth: ['100%', '33%'] }}>
                     <InputCreator
                       schema={createStringArgument({ key: `or.${groupIndex}.and.${groupItemIndex}.key`, label: 'Choose field' })}

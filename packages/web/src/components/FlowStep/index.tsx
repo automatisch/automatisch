@@ -63,14 +63,14 @@ function generateValidationSchema(substeps: ISubstep[]) {
       const substepArgumentValidations: Record<string, BaseSchema> = {};
 
       for (const arg of args) {
-        const { key, required, dependsOn } = arg;
+        const { key, required } = arg;
 
         // base validation for the field if not exists
         if (!substepArgumentValidations[key]) {
           substepArgumentValidations[key] = yup.mixed();
         }
 
-        if (typeof substepArgumentValidations[key] === 'object') {
+        if (typeof substepArgumentValidations[key] === 'object' && (arg.type === 'string' || arg.type === 'dropdown')) {
           // if the field is required, add the required validation
           if (required) {
             substepArgumentValidations[key] = substepArgumentValidations[
@@ -79,8 +79,8 @@ function generateValidationSchema(substeps: ISubstep[]) {
           }
 
           // if the field depends on another field, add the dependsOn required validation
-          if (Array.isArray(dependsOn) && dependsOn.length > 0) {
-            for (const dependsOnKey of dependsOn) {
+          if (Array.isArray(arg.dependsOn) && arg.dependsOn.length > 0) {
+            for (const dependsOnKey of arg.dependsOn) {
               const missingDependencyValueMessage = `We're having trouble loading '${key}' data as required field '${dependsOnKey}' is missing.`;
 
               // TODO: make `dependsOnKey` agnostic to the field. However, nested validation schema is not supported.

@@ -8,6 +8,7 @@ import useDynamicData from 'hooks/useDynamicData';
 import PowerInput from 'components/PowerInput';
 import TextField from 'components/TextField';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
+import DynamicField from 'components/DynamicField';
 
 type InputCreatorProps = {
   onChange?: React.ChangeEventHandler;
@@ -17,6 +18,7 @@ type InputCreatorProps = {
   stepId?: string;
   disabled?: boolean;
   showOptionValue?: boolean;
+  shouldUnregister?: boolean;
 };
 
 type RawOption = {
@@ -38,6 +40,7 @@ export default function InputCreator(
     stepId,
     disabled,
     showOptionValue,
+    shouldUnregister,
   } = props;
 
   const {
@@ -47,10 +50,7 @@ export default function InputCreator(
     readOnly = false,
     value,
     description,
-    clickToCopy,
-    variables,
     type,
-    dependsOn,
   } = schema;
 
   const { data, loading } = useDynamicData(stepId, schema);
@@ -60,14 +60,31 @@ export default function InputCreator(
   } = useDynamicFields(stepId, schema);
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
 
+  if (type === 'dynamic') {
+    return (
+      <DynamicField
+        label={label}
+        description={description}
+        defaultValue={value}
+        name={computedName}
+        key={computedName}
+        required={required}
+        disabled={disabled}
+        fields={schema.fields}
+        shouldUnregister={shouldUnregister}
+      />
+    );
+  }
+
   if (type === 'dropdown') {
     const preparedOptions = schema.options || optionGenerator(data);
 
     return (
       <React.Fragment>
         <ControlledAutocomplete
+          key={computedName}
           name={computedName}
-          dependsOn={dependsOn}
+          dependsOn={schema.dependsOn}
           fullWidth
           disablePortal
           disableClearable={required}
@@ -78,6 +95,7 @@ export default function InputCreator(
           loading={loading}
           disabled={disabled}
           showOptionValue={showOptionValue}
+          shouldUnregister={shouldUnregister}
         />
 
         {(additionalFieldsLoading && !additionalFields?.length) && <div>
@@ -92,6 +110,7 @@ export default function InputCreator(
             stepId={stepId}
             disabled={disabled}
             showOptionValue={true}
+            shouldUnregister={shouldUnregister}
           />
         ))}
       </React.Fragment>
@@ -99,15 +118,17 @@ export default function InputCreator(
   }
 
   if (type === 'string') {
-    if (variables) {
+    if (schema.variables) {
       return (
         <React.Fragment>
           <PowerInput
+            key={computedName}
             label={label}
             description={description}
             name={computedName}
             required={required}
             disabled={disabled}
+            shouldUnregister={shouldUnregister}
           />
 
           {(additionalFieldsLoading && !additionalFields?.length) && <div>
@@ -122,6 +143,7 @@ export default function InputCreator(
               stepId={stepId}
               disabled={disabled}
               showOptionValue={true}
+              shouldUnregister={shouldUnregister}
             />
           ))}
         </React.Fragment>
@@ -131,6 +153,7 @@ export default function InputCreator(
     return (
       <React.Fragment>
         <TextField
+          key={computedName}
           defaultValue={value}
           required={required}
           placeholder=""
@@ -141,7 +164,8 @@ export default function InputCreator(
           label={label}
           fullWidth
           helperText={description}
-          clickToCopy={clickToCopy}
+          clickToCopy={schema.clickToCopy}
+          shouldUnregister={shouldUnregister}
         />
 
         {(additionalFieldsLoading && !additionalFields?.length) && <div>
@@ -156,6 +180,7 @@ export default function InputCreator(
             stepId={stepId}
             disabled={disabled}
             showOptionValue={true}
+            shouldUnregister={shouldUnregister}
           />
         ))}
       </React.Fragment>

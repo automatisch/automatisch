@@ -1,5 +1,12 @@
 import { styled } from '@mui/material/styles';
 
+export const ChildrenWrapper = styled('div')`
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+`;
+
 export const InputLabelWrapper = styled('div')`
   position: absolute;
   left: ${({ theme }) => theme.spacing(1.75)};
@@ -9,7 +16,7 @@ export const InputLabelWrapper = styled('div')`
 
 export const FakeInput = styled('div', {
   shouldForwardProp: (prop) => prop !== 'disabled',
-})<{ disabled?: boolean }>`
+}) <{ disabled?: boolean }>`
   border: 1px solid #eee;
   min-height: 52px;
   width: 100%;
