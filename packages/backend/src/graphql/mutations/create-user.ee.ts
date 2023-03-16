@@ -27,7 +27,7 @@ const createUser = async (_parent: unknown, params: Params) => {
   });
 
   if (appConfig.isCloud) {
-    Billing.createSubscription(user);
+    await Billing.createSubscription(user);
   }
 
   return user;
