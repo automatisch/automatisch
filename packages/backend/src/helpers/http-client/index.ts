@@ -47,6 +47,7 @@ export default function createHttpClient({
       if (
         // TODO: provide a `shouldRefreshToken` function in the app
         (status === 401 || status === 403) &&
+        $.app.auth &&
         $.app.auth.refreshToken &&
         !$.app.auth.isRefreshTokenRequested
       ) {
