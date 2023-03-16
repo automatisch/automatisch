@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 import throttle from 'lodash/throttle';
 import isEmpty from 'lodash/isEmpty';
+import toPath from 'lodash/toPath';
 import { Box, Typography } from '@mui/material';
 
 import { IJSONObject, IJSONValue } from '@automatisch/types';
@@ -61,6 +62,16 @@ const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
           ) {
             const value = get(filteredData, key);
             set(newFilteredData, key, value);
+            const keyPath = toPath(key);
+            const parentKeyPath = keyPath.slice(0, keyPath.length - 1);
+            const parentKey = parentKeyPath.join('.');
+            const parentValue = get(newFilteredData, parentKey);
+            if (Array.isArray(parentValue)) {
+              const filteredParentValue = parentValue.filter(
+                (item) => item !== undefined
+              );
+              set(newFilteredData, parentKey, filteredParentValue);
+            }
           }
         });
 
