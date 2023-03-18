@@ -6,15 +6,8 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 import useUsageData from 'hooks/useUsageData.ee';
@@ -24,7 +17,7 @@ export default function UsageDataInformation() {
 
   return (
     <React.Fragment>
-      <Card sx={{ minWidth: 275, mb: 3, p: 2 }}>
+      <Card sx={{ mb: 3, p: 2 }}>
         <CardContent>
           <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h6" fontWeight="bold">
@@ -33,12 +26,19 @@ export default function UsageDataInformation() {
             {/* <Chip label="Active" color="success" /> */}
           </Box>
           <Divider sx={{ mb: 3 }} />
-          <Grid container item xs={12} spacing={2}>
-            <Grid item xs={4} sx={{ mb: [2, 5] }}>
+          <Grid
+            container
+            item
+            xs={12}
+            spacing={1}
+            sx={{ mb: [2, 2, 8] }}
+            alignItems="stretch"
+          >
+            <Grid item xs={12} md={4}>
               <Card
                 sx={{
-                  mb: 3,
-                  backgroundColor: '#fafafa',
+                  height: '100%',
+                  backgroundColor: (theme) => theme.palette.background.default,
                 }}
               >
                 <CardContent>
@@ -54,31 +54,35 @@ export default function UsageDataInformation() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item xs={4} sx={{ mb: [2, 5] }}>
+
+            <Grid item xs={12} md={4}>
               <Card
                 sx={{
-                  mb: 3,
-                  backgroundColor: '#fafafa',
+                  height: '100%',
+                  backgroundColor: (theme) => theme.palette.background.default,
                 }}
               >
                 <CardContent>
                   <Typography variant="subtitle2" sx={{ pb: 0.5 }}>
                     Next bill amount
                   </Typography>
+
                   <Typography variant="h6" fontWeight="bold">
                     ---
                   </Typography>
                 </CardContent>
+
                 <CardActions>
                   {/* <Button size="small">Update billing info</Button> */}
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item xs={4} sx={{ mb: [2, 5] }}>
+
+            <Grid item xs={12} md={4}>
               <Card
                 sx={{
-                  mb: 3,
-                  backgroundColor: '#fafafa',
+                  height: '100%',
+                  backgroundColor: (theme) => theme.palette.background.default,
                 }}
               >
                 <CardContent>
@@ -89,6 +93,7 @@ export default function UsageDataInformation() {
                     ---
                   </Typography>
                 </CardContent>
+
                 <CardActions>
                   {/* <Button disabled size="small">
                     monthly billing
@@ -101,6 +106,7 @@ export default function UsageDataInformation() {
             <Typography variant="h6" fontWeight="bold">
               Your usage
             </Typography>
+
             <Box>
               <Typography
                 variant="subtitle2"
@@ -109,7 +115,9 @@ export default function UsageDataInformation() {
                 Last 30 days total usage
               </Typography>
             </Box>
+
             <Divider sx={{ mt: 2 }} />
+
             <Box
               sx={{
                 display: 'flex',
@@ -123,6 +131,7 @@ export default function UsageDataInformation() {
               >
                 Tasks
               </Typography>
+
               <Typography
                 variant="subtitle2"
                 sx={{ color: 'text.secondary', mt: 2, fontWeight: 500 }}
@@ -130,8 +139,10 @@ export default function UsageDataInformation() {
                 12300
               </Typography>
             </Box>
+
             <Divider sx={{ mt: 2 }} />
           </Box>
+
           <Button size="small" variant="contained" sx={{ mt: 2 }}>
             Upgrade
           </Button>
