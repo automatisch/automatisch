@@ -1,5 +1,5 @@
 import { QueryContext, ModelOptions } from 'objection';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import appConfig from '../config/app';
 import Base from './base';
 import Connection from './connection';
@@ -137,7 +137,7 @@ class User extends Base {
   }
 
   async startTrialPeriod() {
-    this.trialExpiryDate = moment().add(30, 'days').calendar();
+    this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toFormat('D');
   }
 
   async $beforeInsert(queryContext: QueryContext) {
