@@ -3,10 +3,11 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 import throttle from 'lodash/throttle';
 import isEmpty from 'lodash/isEmpty';
-import toPath from 'lodash/toPath';
+import forIn from 'lodash/forIn';
+import isPlainObject from 'lodash/isPlainObject';
 import { Box, Typography } from '@mui/material';
 
-import { IJSONObject, IJSONValue } from '@automatisch/types';
+import { IJSONObject } from '@automatisch/types';
 import JSONViewer from 'components/JSONViewer';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -15,7 +16,54 @@ type JSONViewerProps = {
   data: IJSONObject;
 };
 
-type Entry = [string, IJSONValue];
+function aggregate(
+  data: any,
+  searchTerm: string,
+  result = {},
+  prefix: string[] = [],
+  withinArray = false
+) {
+  if (withinArray) {
+    const containerValue = get(result, prefix, []);
+
+    result = aggregate(
+      data,
+      searchTerm,
+      result,
+      prefix.concat(containerValue.length.toString())
+    );
+
+    return result;
+  }
+
+  if (isPlainObject(data)) {
+    forIn(data, (value, key) => {
+      const fullKey = [...prefix, key];
+
+      if (key.toLowerCase().includes(searchTerm)) {
+        set(result, fullKey, value);
+        return;
+      }
+
+      result = aggregate(value, searchTerm, result, fullKey);
+    });
+  }
+
+  if (Array.isArray(data)) {
+    forIn(data, (value) => {
+      result = aggregate(value, searchTerm, result, prefix, true);
+    });
+  }
+
+  if (
+    ['string', 'number'].includes(typeof data) &&
+    String(data).toLowerCase().includes(searchTerm)
+  ) {
+    set(result, prefix, data);
+  }
+
+  return result;
+}
 
 const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
   const [filteredData, setFilteredData] = React.useState<IJSONObject | null>(
@@ -23,57 +71,17 @@ const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
   );
   const formatMessage = useFormatMessage();
 
-  const allEntries = React.useMemo(() => {
-    const entries: Entry[] = [];
-    const collectEntries = (obj: IJSONObject, prefix?: string) => {
-      for (const key in obj) {
-        if (typeof obj[key] === 'object' && obj[key] !== null) {
-          entries.push([[prefix, key].filter(Boolean).join('.'), obj[key]]);
-          collectEntries(
-            obj[key] as IJSONObject,
-            [prefix, key].filter(Boolean).join('.')
-          );
-        } else {
-          entries.push([[prefix, key].filter(Boolean).join('.'), obj[key]]);
-        }
-      }
-    };
-
-    collectEntries(data);
-    return entries;
-  }, [data]);
-
   const onSearchChange = React.useMemo(
     () =>
       throttle((event: React.ChangeEvent) => {
         const search = (event.target as HTMLInputElement).value.toLowerCase();
-        const newFilteredData: IJSONObject = {};
 
         if (!search) {
           setFilteredData(data);
           return;
         }
 
-        allEntries.forEach(([key, value]) => {
-          if (
-            key.toLowerCase().includes(search) ||
-            (typeof value !== 'object' &&
-              value.toString().toLowerCase().includes(search))
-          ) {
-            const value = get(filteredData, key);
-            set(newFilteredData, key, value);
-            const keyPath = toPath(key);
-            const parentKeyPath = keyPath.slice(0, keyPath.length - 1);
-            const parentKey = parentKeyPath.join('.');
-            const parentValue = get(newFilteredData, parentKey);
-            if (Array.isArray(parentValue)) {
-              const filteredParentValue = parentValue.filter(
-                (item) => item !== undefined
-              );
-              set(newFilteredData, parentKey, filteredParentValue);
-            }
-          }
-        });
+        const newFilteredData = aggregate(data, search);
 
         if (isEmpty(newFilteredData)) {
           setFilteredData(null);
@@ -81,7 +89,7 @@ const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
           setFilteredData(newFilteredData);
         }
       }, 400),
-    [allEntries]
+    [data]
   );
 
   return (
