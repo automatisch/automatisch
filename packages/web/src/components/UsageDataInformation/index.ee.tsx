@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { DateTime } from 'luxon';
-
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -10,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import * as URLS from 'config/urls';
 import useUsageData from 'hooks/useUsageData.ee';
 
 export default function UsageDataInformation() {
@@ -143,7 +143,13 @@ export default function UsageDataInformation() {
             <Divider sx={{ mt: 2 }} />
           </Box>
 
-          <Button size="small" variant="contained" sx={{ mt: 2 }}>
+          <Button
+            component={Link}
+            to={URLS.SETTINGS_PLAN_UPGRADE}
+            size="small"
+            variant="contained"
+            sx={{ mt: 2 }}
+          >
             Upgrade
           </Button>
         </CardContent>

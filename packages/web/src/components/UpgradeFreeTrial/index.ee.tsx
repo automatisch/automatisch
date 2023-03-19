@@ -16,12 +16,17 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import LockIcon from '@mui/icons-material/Lock';
 
-const rows = [
-  { tasks: '10,000', price: '€20 / month', selected: true },
-  { tasks: '30,000', price: '€50 / month', selected: false },
+const plans = [
+  { tasks: '10,000', price: '€20' },
+  { tasks: '30,000', price: '€50' },
 ];
 
 export default function UpgradeFreeTrial() {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const selectedPlan = plans[selectedIndex];
+
+  const updateSelection = (index: number) => setSelectedIndex(index);
+
   return (
     <React.Fragment>
       <Card sx={{ mb: 3, p: 2 }}>
@@ -42,7 +47,7 @@ export default function UpgradeFreeTrial() {
             alignItems="stretch"
           >
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table aria-label="simple table">
                 <TableHead
                   sx={{
                     backgroundColor: (theme) =>
@@ -69,19 +74,21 @@ export default function UpgradeFreeTrial() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {plans.map((row, index) => (
                     <TableRow
                       key={row.tasks}
+                      onClick={() => updateSelection(index)}
                       sx={{
-                        backgroundColor: row.selected ? '#f1f3fa' : 'white',
-                        border: row.selected ? '2px solid #0059f7' : 'none',
+                        '&:hover': { cursor: 'pointer' },
+                        backgroundColor: selectedIndex === index ? '#f1f3fa' : 'white',
+                        border: selectedIndex === index ? '2px solid #0059f7' : 'none',
                       }}
                     >
                       <TableCell component="th" scope="row" sx={{ py: 2 }}>
                         <Typography
                           variant="subtitle2"
                           sx={{
-                            fontWeight: row.selected ? 'bold' : 'normal',
+                            fontWeight: selectedIndex === index ? 'bold' : 'normal',
                           }}
                         >
                           {row.tasks}
@@ -91,10 +98,10 @@ export default function UpgradeFreeTrial() {
                         <Typography
                           variant="subtitle2"
                           sx={{
-                            fontWeight: row.selected ? 'bold' : 'normal',
+                            fontWeight: selectedIndex === index ? 'bold' : 'normal',
                           }}
                         >
-                          {row.price}
+                          {row.price} / month
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -127,7 +134,7 @@ export default function UpgradeFreeTrial() {
                   fontWeight: 'bold',
                 }}
               >
-                €20
+                {selectedPlan.price}
               </Typography>
             </Box>
 

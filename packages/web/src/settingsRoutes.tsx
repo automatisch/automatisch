@@ -2,6 +2,7 @@ import { Route, Navigate } from 'react-router-dom';
 import SettingsLayout from 'components/SettingsLayout';
 import ProfileSettings from 'pages/ProfileSettings';
 import BillingAndUsageSettings from 'pages/BillingAndUsageSettings/index.ee';
+import PlanUpgrade from 'pages/PlanUpgrade/index.ee';
 
 import * as URLS from 'config/urls';
 
@@ -21,6 +22,15 @@ export default (
       element={
         <SettingsLayout>
           <BillingAndUsageSettings />
+        </SettingsLayout>
+      }
+    />
+
+    <Route
+      path={URLS.SETTINGS_PLAN_UPGRADE}
+      element={
+        <SettingsLayout>
+          <PlanUpgrade />
         </SettingsLayout>
       }
     />

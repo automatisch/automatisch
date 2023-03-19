@@ -65,9 +65,11 @@ export const SETTINGS = '/settings';
 export const SETTINGS_DASHBOARD = SETTINGS;
 export const PROFILE = 'profile';
 export const BILLING_AND_USAGE = 'billing';
+export const PLAN_UPGRADE = 'upgrade';
 export const UPDATES = '/updates';
 export const SETTINGS_PROFILE = `${SETTINGS}/${PROFILE}`;
 export const SETTINGS_BILLING_AND_USAGE = `${SETTINGS}/${BILLING_AND_USAGE}`;
+export const SETTINGS_PLAN_UPGRADE = `${SETTINGS_BILLING_AND_USAGE}/${PLAN_UPGRADE}`;
 
 export const DASHBOARD = FLOWS;
 
