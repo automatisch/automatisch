@@ -20,6 +20,7 @@ Following integrations are currently supported by Automatisch.
 - [SignalWire](/apps/signalwire/triggers)
 - [Slack](/apps/slack/actions)
 - [SMTP](/apps/smtp/actions)
+- [Spotify](/apps/spotify/actions)
 - [Stripe](/apps/stripe/triggers)
 - [Telegram](/apps/telegram-bot/actions)
 - [Todoist](/apps/todoist/triggers)
