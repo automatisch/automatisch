@@ -13,6 +13,7 @@ import getDynamicFields from './queries/get-dynamic-fields';
 import getCurrentUser from './queries/get-current-user';
 import getUsageData from './queries/get-usage-data.ee';
 import getPaymentPlans from './queries/get-payment-plans.ee';
+import getPaddleInfo from './queries/get-paddle-info.ee';
 import getPaymentPortalUrl from './queries/get-payment-portal-url.ee';
 import getAutomatischInfo from './queries/get-automatisch-info';
 import healthcheck from './queries/healthcheck';
@@ -33,6 +34,7 @@ const queryResolvers = {
   getCurrentUser,
   getUsageData,
   getPaymentPlans,
+  getPaddleInfo,
   getPaymentPortalUrl,
   getAutomatischInfo,
   healthcheck,
