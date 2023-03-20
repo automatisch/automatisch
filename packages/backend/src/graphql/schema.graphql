@@ -36,6 +36,7 @@ type Query {
   getCurrentUser: User
   getUsageData: GetUsageData
   getPaymentPortalUrl: GetPaymentPortalUrl
+  getPaymentPlans: [PaymentPlan]
   getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
@@ -479,6 +480,13 @@ type GetUsageData {
 
 type GetPaymentPortalUrl {
   url: String
+}
+
+type PaymentPlan {
+  name: String
+  limit: String
+  price: String
+  productId: String
 }
 
 schema {
