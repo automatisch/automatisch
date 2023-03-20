@@ -3,14 +3,13 @@ import { Navigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 
 import * as URLS from 'config/urls';
-import UsageDataInformation from 'components/UsageDataInformation/index.ee';
 import UpgradeFreeTrial from 'components/UpgradeFreeTrial/index.ee';
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCloud from 'hooks/useCloud';
 
-function BillingAndUsageSettings() {
+function PlanUpgrade() {
   const isCloud = useCloud();
   const formatMessage = useFormatMessage();
 
@@ -28,16 +27,16 @@ function BillingAndUsageSettings() {
       <Grid container item xs={12} sm={9} md={8}>
         <Grid item xs={12} sx={{ mb: [2, 5] }}>
           <PageTitle>
-            {formatMessage('billingAndUsageSettings.title')}
+            {formatMessage('planUpgrade.title')}
           </PageTitle>
         </Grid>
 
         <Grid item xs={12} sx={{ mb: 6 }}>
-          <UsageDataInformation />
+          <UpgradeFreeTrial />
         </Grid>
       </Grid>
     </Container>
   );
 }
 
-export default BillingAndUsageSettings;
+export default PlanUpgrade;

@@ -4,6 +4,7 @@ import PaymentPlan from '../../models/payment-plan.ee';
 import UsageData from '../../models/usage-data.ee';
 import appConfig from '../../config/app';
 import handleWebhooks from './webhooks.ee';
+import paddlePlans from './plans.ee';
 
 const plans = [
   {
@@ -95,6 +96,7 @@ const billing = {
   handleWebhooks,
   stripe,
   plans,
+  paddlePlans,
 };
 
 export default billing;

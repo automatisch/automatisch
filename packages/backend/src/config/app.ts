@@ -39,6 +39,8 @@ type AppConfig = {
   smtpPassword: string;
   fromEmail: string;
   isCloud: boolean;
+  paddleVendorId: string;
+  paddleVendorAuthCode: string;
   stripeSecretKey: string;
   stripeSigningSecret: string;
   stripeStarterPriceKey: string;
@@ -111,6 +113,8 @@ const appConfig: AppConfig = {
   smtpPassword: process.env.SMTP_PASSWORD,
   fromEmail: process.env.FROM_EMAIL,
   isCloud: process.env.AUTOMATISCH_CLOUD === 'true',
+  paddleVendorId: process.env.PADDLE_VENDOR_ID,
+  paddleVendorAuthCode: process.env.PADDLE_VENDOR_AUTH_CODE,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   stripeSigningSecret: process.env.STRIPE_SIGNING_SECRET,
   stripeStarterPriceKey: process.env.STRIPE_STARTER_PRICE_KEY,

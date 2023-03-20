@@ -1,4 +1,6 @@
 import { QueryContext, ModelOptions } from 'objection';
+import { DateTime } from 'luxon';
+import appConfig from '../config/app';
 import Base from './base';
 import Connection from './connection';
 import Flow from './flow';
@@ -17,6 +19,7 @@ class User extends Base {
   role: string;
   resetPasswordToken: string;
   resetPasswordTokenSentAt: string;
+  trialExpiryDate: string;
   connections?: Connection[];
   flows?: Flow[];
   steps?: Step[];
@@ -133,9 +136,17 @@ class User extends Base {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
+  async startTrialPeriod() {
+    this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toFormat('D');
+  }
+
   async $beforeInsert(queryContext: QueryContext) {
     await super.$beforeInsert(queryContext);
     await this.generateHash();
+
+    if (appConfig.isCloud) {
+      await this.startTrialPeriod();
+    }
   }
 
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {

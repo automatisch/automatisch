@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { DateTime } from 'luxon';
+import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-
+import * as URLS from 'config/urls';
 import useUsageData from 'hooks/useUsageData.ee';
 
 export default function UsageDataInformation() {
@@ -15,43 +17,143 @@ export default function UsageDataInformation() {
 
   return (
     <React.Fragment>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell component="td" scope="row">
-                Current plan
-              </TableCell>
+      <Card sx={{ mb: 3, p: 2 }}>
+        <CardContent>
+          <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h6" fontWeight="bold">
+              Subscription plan
+            </Typography>
+            {/* <Chip label="Active" color="success" /> */}
+          </Box>
+          <Divider sx={{ mb: 3 }} />
+          <Grid
+            container
+            item
+            xs={12}
+            spacing={1}
+            sx={{ mb: [2, 2, 8] }}
+            alignItems="stretch"
+          >
+            <Grid item xs={12} md={4}>
+              <Card
+                sx={{
+                  height: '100%',
+                  backgroundColor: (theme) => theme.palette.background.default,
+                }}
+              >
+                <CardContent>
+                  <Typography variant="subtitle2" sx={{ pb: 0.5 }}>
+                    Monthly quota
+                  </Typography>
+                  <Typography variant="h6" fontWeight="bold">
+                    Free trial
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small">Upgrade plan</Button>
+                </CardActions>
+              </Card>
+            </Grid>
 
-              <TableCell align="right" sx={{ fontWeight: 500 }}>{usageData.name}</TableCell>
-            </TableRow>
+            <Grid item xs={12} md={4}>
+              <Card
+                sx={{
+                  height: '100%',
+                  backgroundColor: (theme) => theme.palette.background.default,
+                }}
+              >
+                <CardContent>
+                  <Typography variant="subtitle2" sx={{ pb: 0.5 }}>
+                    Next bill amount
+                  </Typography>
 
-            <TableRow>
-              <TableCell component="td" scope="row">
-                Total allowed task count
-              </TableCell>
+                  <Typography variant="h6" fontWeight="bold">
+                    ---
+                  </Typography>
+                </CardContent>
 
-              <TableCell align="right" sx={{ fontWeight: 500 }}>{usageData.allowedTaskCount}</TableCell>
-            </TableRow>
+                <CardActions>
+                  {/* <Button size="small">Update billing info</Button> */}
+                </CardActions>
+              </Card>
+            </Grid>
 
-            <TableRow>
-              <TableCell component="td" scope="row">
-                Consumed task count
-              </TableCell>
+            <Grid item xs={12} md={4}>
+              <Card
+                sx={{
+                  height: '100%',
+                  backgroundColor: (theme) => theme.palette.background.default,
+                }}
+              >
+                <CardContent>
+                  <Typography variant="subtitle2" sx={{ pb: 0.5 }}>
+                    Next bill date
+                  </Typography>
+                  <Typography variant="h6" fontWeight="bold">
+                    ---
+                  </Typography>
+                </CardContent>
 
-              <TableCell align="right" sx={{ fontWeight: 500 }}>{usageData.consumedTaskCount}</TableCell>
-            </TableRow>
+                <CardActions>
+                  {/* <Button disabled size="small">
+                    monthly billing
+                  </Button> */}
+                </CardActions>
+              </Card>
+            </Grid>
+          </Grid>
+          <Box>
+            <Typography variant="h6" fontWeight="bold">
+              Your usage
+            </Typography>
 
-            <TableRow sx={{ 'td': { border: 0 } }}>
-              <TableCell component="td" scope="row">
-                Next billing date
-              </TableCell>
+            <Box>
+              <Typography
+                variant="subtitle2"
+                sx={{ color: 'text.secondary', mt: 1 }}
+              >
+                Last 30 days total usage
+              </Typography>
+            </Box>
 
-              <TableCell align="right" sx={{ fontWeight: 500 }}>{usageData.nextResetAt?.toLocaleString(DateTime.DATE_FULL)}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+            <Divider sx={{ mt: 2 }} />
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography
+                variant="subtitle2"
+                sx={{ color: 'text.secondary', mt: 2, fontWeight: 500 }}
+              >
+                Tasks
+              </Typography>
+
+              <Typography
+                variant="subtitle2"
+                sx={{ color: 'text.secondary', mt: 2, fontWeight: 500 }}
+              >
+                12300
+              </Typography>
+            </Box>
+
+            <Divider sx={{ mt: 2 }} />
+          </Box>
+
+          <Button
+            component={Link}
+            to={URLS.SETTINGS_PLAN_UPGRADE}
+            size="small"
+            variant="contained"
+            sx={{ mt: 2 }}
+          >
+            Upgrade
+          </Button>
+        </CardContent>
+      </Card>
     </React.Fragment>
   );
 }
