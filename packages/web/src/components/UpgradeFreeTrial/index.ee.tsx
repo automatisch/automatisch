@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -16,16 +15,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import LockIcon from '@mui/icons-material/Lock';
 
-const plans = [
-  { tasks: '10,000', price: '€20' },
-  { tasks: '30,000', price: '€50' },
-];
+import usePaymentPlans from 'hooks/usePaymentPlans.ee';
 
 export default function UpgradeFreeTrial() {
+  const { plans, loading } = usePaymentPlans();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const selectedPlan = plans[selectedIndex];
+  const selectedPlan = plans?.[selectedIndex];
 
   const updateSelection = (index: number) => setSelectedIndex(index);
+
+  if (loading || !plans.length) return null;
 
   return (
     <React.Fragment>
@@ -74,9 +73,9 @@ export default function UpgradeFreeTrial() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {plans.map((row, index) => (
+                  {plans.map((plan, index) => (
                     <TableRow
-                      key={row.tasks}
+                      key={plan.productId}
                       onClick={() => updateSelection(index)}
                       sx={{
                         '&:hover': { cursor: 'pointer' },
@@ -91,7 +90,7 @@ export default function UpgradeFreeTrial() {
                             fontWeight: selectedIndex === index ? 'bold' : 'normal',
                           }}
                         >
-                          {row.tasks}
+                          {plan.limit}
                         </Typography>
                       </TableCell>
                       <TableCell align="right" sx={{ py: 2 }}>
@@ -101,7 +100,7 @@ export default function UpgradeFreeTrial() {
                             fontWeight: selectedIndex === index ? 'bold' : 'normal',
                           }}
                         >
-                          {row.price} / month
+                          {plan.price} / month
                         </Typography>
                       </TableCell>
                     </TableRow>

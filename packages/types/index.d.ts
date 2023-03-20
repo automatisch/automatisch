@@ -321,6 +321,13 @@ export type IGlobalVariable = {
   setActionItem?: (actionItem: IActionItem) => void;
 };
 
+export type TPaymentPlan = {
+  price: string;
+  name: string;
+  limit: string;
+  productId: string;
+}
+
 declare module 'axios' {
   interface AxiosResponse {
     httpError?: IJSONObject;
@@ -335,4 +342,3 @@ export interface IRequest extends Request {
   rawBody?: Buffer;
   currentUser?: IUser;
 }
-
