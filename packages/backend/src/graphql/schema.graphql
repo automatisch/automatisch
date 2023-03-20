@@ -485,7 +485,7 @@ type GetPaymentPortalUrl {
 
 type GetPaddleInfo {
   sandbox: Boolean
-  vendorId: String
+  vendorId: Int
 }
 
 type PaymentPlan {
