@@ -90,6 +90,11 @@ const createPaymentPortalUrl = async (user: User) => {
   return userSession.url;
 };
 
+const paddleInfo = {
+  sandbox: appConfig.isDev ? true : false,
+  vendorId: appConfig.paddleVendorId,
+};
+
 const billing = {
   createSubscription,
   createPaymentPortalUrl,
@@ -97,6 +102,7 @@ const billing = {
   stripe,
   plans,
   paddlePlans,
+  paddleInfo,
 };
 
 export default billing;

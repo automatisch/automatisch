@@ -37,6 +37,7 @@ type Query {
   getUsageData: GetUsageData
   getPaymentPortalUrl: GetPaymentPortalUrl
   getPaymentPlans: [PaymentPlan]
+  getPaddleInfo: GetPaddleInfo
   getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
@@ -480,6 +481,11 @@ type GetUsageData {
 
 type GetPaymentPortalUrl {
   url: String
+}
+
+type GetPaddleInfo {
+  sandbox: Boolean
+  vendorId: String
 }
 
 type PaymentPlan {
