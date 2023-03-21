@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Typography from '@mui/material/Typography';
@@ -34,8 +35,9 @@ export default function UsageAlert() {
           </Typography>
 
           <Button
+            component={Link}
             size="small"
-            href={usageAlert.url}
+            to={usageAlert.url}
             sx={{ minWidth: 100 }}
           >
             {formatMessage('usageAlert.viewPlans')}

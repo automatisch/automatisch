@@ -1,33 +1,34 @@
+import * as URLS from 'config/urls';
 import useFormatMessage from './useFormatMessage';
 import useUsageData from './useUsageData.ee';
-import usePaymentPortalUrl from './usePaymentPortalUrl.ee';
 
 type UseUsageAlertReturn = {
-  showAlert: boolean;
-  hasExceededLimit?: boolean;
-  alertMessage?: string;
-  url?: string;
-  consumptionPercentage?: number;
+  showAlert: true;
+  hasExceededLimit: boolean;
+  alertMessage: string;
+  url: string;
+  consumptionPercentage: number;
 };
 
-export default function useUsageAlert(): UseUsageAlertReturn {
-  const { url, loading: paymentPortalUrlLoading } = usePaymentPortalUrl();
+type UseUsageNoAlertReturn = {
+  showAlert: false;
+};
+
+export default function useUsageAlert(): UseUsageAlertReturn | UseUsageNoAlertReturn {
   const {
     allowedTaskCount,
     consumedTaskCount,
     nextResetAt,
-    loading: usageDataLoading
+    loading
   } = useUsageData();
   const formatMessage = useFormatMessage();
 
-  if (paymentPortalUrlLoading || usageDataLoading) {
+  if (loading) {
     return { showAlert: false };
   }
 
-  const hasLoaded = !paymentPortalUrlLoading || usageDataLoading;
   const withinUsageThreshold = consumedTaskCount > allowedTaskCount * 0.7;
   const consumptionPercentage = consumedTaskCount / allowedTaskCount * 100;
-  const showAlert = hasLoaded && withinUsageThreshold;
   const hasExceededLimit = consumedTaskCount >= allowedTaskCount;
 
   const alertMessage = formatMessage('usageAlert.informationText', {
@@ -37,10 +38,10 @@ export default function useUsageAlert(): UseUsageAlertReturn {
   });
 
   return {
-    showAlert,
+    showAlert: withinUsageThreshold,
     hasExceededLimit,
     alertMessage,
     consumptionPercentage,
-    url,
+    url: URLS.SETTINGS_PLAN_UPGRADE,
   };
 }
