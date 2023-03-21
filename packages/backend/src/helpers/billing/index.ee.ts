@@ -1,4 +1,5 @@
 import appConfig from '../../config/app';
+import paddleClient from './paddle.ee';
 import paddlePlans from './plans.ee';
 
 const paddleInfo = {
@@ -7,6 +8,7 @@ const paddleInfo = {
 };
 
 const billing = {
+  paddleClient,
   paddlePlans,
   paddleInfo,
 };
