@@ -35,7 +35,6 @@ type Query {
   ): [SubstepArgument]
   getCurrentUser: User
   getUsageData: GetUsageData
-  getPaymentPortalUrl: GetPaymentPortalUrl
   getPaymentPlans: [PaymentPlan]
   getPaddleInfo: GetPaddleInfo
   getAutomatischInfo: GetAutomatischInfo
@@ -477,10 +476,6 @@ type GetUsageData {
   consumedTaskCount: Int
   remainingTaskCount: Int
   nextResetAt: String
-}
-
-type GetPaymentPortalUrl {
-  url: String
 }
 
 type GetPaddleInfo {

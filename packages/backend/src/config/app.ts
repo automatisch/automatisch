@@ -41,10 +41,6 @@ type AppConfig = {
   isCloud: boolean;
   paddleVendorId: number;
   paddleVendorAuthCode: string;
-  stripeSecretKey: string;
-  stripeSigningSecret: string;
-  stripeStarterPriceKey: string;
-  stripeGrowthPriceKey: string;
   licenseKey: string;
   sentryDsn: string;
 };
@@ -115,10 +111,6 @@ const appConfig: AppConfig = {
   isCloud: process.env.AUTOMATISCH_CLOUD === 'true',
   paddleVendorId: Number(process.env.PADDLE_VENDOR_ID),
   paddleVendorAuthCode: process.env.PADDLE_VENDOR_AUTH_CODE,
-  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
-  stripeSigningSecret: process.env.STRIPE_SIGNING_SECRET,
-  stripeStarterPriceKey: process.env.STRIPE_STARTER_PRICE_KEY,
-  stripeGrowthPriceKey: process.env.STRIPE_GROWTH_PRICE_KEY,
   licenseKey: process.env.LICENSE_KEY,
   sentryDsn: process.env.SENTRY_DSN,
 };

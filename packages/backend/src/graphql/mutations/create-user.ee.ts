@@ -1,6 +1,4 @@
 import User from '../../models/user';
-import Billing from '../../helpers/billing/index.ee';
-import appConfig from '../../config/app';
 
 type Params = {
   input: {
@@ -25,10 +23,6 @@ const createUser = async (_parent: unknown, params: Params) => {
     password,
     role: 'user',
   });
-
-  if (appConfig.isCloud) {
-    await Billing.createSubscription(user);
-  }
 
   return user;
 };
