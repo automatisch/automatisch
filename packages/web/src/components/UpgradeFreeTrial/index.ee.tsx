@@ -16,13 +16,25 @@ import Paper from '@mui/material/Paper';
 import LockIcon from '@mui/icons-material/Lock';
 
 import usePaymentPlans from 'hooks/usePaymentPlans.ee';
+import useCurrentUser from 'hooks/useCurrentUser';
+import usePaddle from 'hooks/usePaddle.ee';
 
 export default function UpgradeFreeTrial() {
   const { plans, loading } = usePaymentPlans();
+  const currentUser = useCurrentUser();
+  const { loaded: paddleLoaded } = usePaddle();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const selectedPlan = plans?.[selectedIndex];
 
   const updateSelection = (index: number) => setSelectedIndex(index);
+
+  const handleCheckout = React.useCallback(() => {
+    window.Paddle.Checkout?.open({
+      product: selectedPlan.productId,
+      email: currentUser.email,
+      passthrough: JSON.stringify({ id: currentUser.id, email: currentUser.email })
+    })
+  }, [selectedPlan, currentUser]);
 
   if (loading || !plans.length) return null;
 
@@ -140,7 +152,13 @@ export default function UpgradeFreeTrial() {
             <Typography variant="subtitle2" sx={{ fontSize: '12px', mt: 0 }}>
               + VAT if applicable
             </Typography>
-            <Button size="small" variant="contained" sx={{ mt: 2 }}>
+            <Button
+              size="small"
+              variant="contained"
+              sx={{ mt: 2 }}
+              onClick={handleCheckout}
+              disabled={!paddleLoaded}
+            >
               <LockIcon fontSize="small" sx={{ mr: 1 }} />
               Pay securely via Paddle
             </Button>
