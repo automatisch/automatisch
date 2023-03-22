@@ -2,7 +2,7 @@ import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
   name: 'Create playlist',
-  key: 'cratePlaylist',
+  key: 'createPlaylist',
   description: `Create playlist on user's account.`,
   arguments: [
     {
