@@ -110,6 +110,7 @@ export const GET_APPS = gql`
             description
             variables
             dependsOn
+            value
             options {
               label
               value
@@ -128,6 +129,36 @@ export const GET_APPS = gql`
               arguments {
                 name
                 value
+              }
+            }
+            fields {
+              label
+              key
+              type
+              required
+              description
+              variables
+              value
+              dependsOn
+              options {
+                label
+                value
+              }
+              source {
+                type
+                name
+                arguments {
+                  name
+                  value
+                }
+              }
+              additionalFields {
+                type
+                name
+                arguments {
+                  name
+                  value
+                }
               }
             }
           }

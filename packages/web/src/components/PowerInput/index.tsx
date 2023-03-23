@@ -5,7 +5,7 @@ import Popper from '@mui/material/Popper';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Editor, Transforms, Range, createEditor } from 'slate';
+import { createEditor } from 'slate';
 import { Slate, Editable, useSelected, useFocused } from 'slate-react';
 
 import {
@@ -17,7 +17,7 @@ import {
 import Suggestions from './Suggestions';
 import { StepExecutionsContext } from 'contexts/StepExecutions';
 
-import { FakeInput, InputLabelWrapper } from './style';
+import { FakeInput, InputLabelWrapper, ChildrenWrapper } from './style';
 import { VariableElement } from './types';
 import { processStepWithExecutions } from './data';
 
@@ -34,6 +34,7 @@ type PowerInputProps = {
   docUrl?: string;
   clickToCopy?: boolean;
   disabled?: boolean;
+  shouldUnregister?: boolean;
 };
 
 const PowerInput = (props: PowerInputProps) => {
@@ -46,6 +47,7 @@ const PowerInput = (props: PowerInputProps) => {
     required,
     description,
     disabled,
+    shouldUnregister,
   } = props;
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef<HTMLDivElement | null>(null);
@@ -81,7 +83,7 @@ const PowerInput = (props: PowerInputProps) => {
       name={name}
       control={control}
       defaultValue={defaultValue}
-      shouldUnregister={true}
+      shouldUnregister={shouldUnregister ?? true}
       render={({
         field: {
           value,
@@ -103,7 +105,7 @@ const PowerInput = (props: PowerInputProps) => {
             }}
           >
             {/* ref-able single child for ClickAwayListener */}
-            <div style={{ width: '100%' }} data-test="power-input">
+            <ChildrenWrapper style={{ width: '100%' }} data-test="power-input">
               <FakeInput disabled={disabled}>
                 <InputLabelWrapper>
                   <InputLabel
@@ -140,7 +142,7 @@ const PowerInput = (props: PowerInputProps) => {
                 data={stepsWithVariables}
                 onSuggestionClick={handleVariableSuggestionClick}
               />
-            </div>
+            </ChildrenWrapper>
           </ClickAwayListener>
         </Slate>
       )}
