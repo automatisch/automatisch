@@ -162,6 +162,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Spotify',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/spotify/actions' },
+            { text: 'Connection', link: '/apps/spotify/connection' },
+          ],
+        },
+        {
           text: 'Stripe',
           collapsible: true,
           collapsed: true,
