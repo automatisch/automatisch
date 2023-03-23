@@ -40,13 +40,15 @@ app.use(
     },
   })
 );
-app.use(express.urlencoded({
-  extended: false,
-  limit: appConfig.requestBodySizeLimit,
-  verify(req, res, buf) {
-    (req as IRequest).rawBody = buf;
-  },
-}));
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: appConfig.requestBodySizeLimit,
+    verify(req, res, buf) {
+      (req as IRequest).rawBody = buf;
+    },
+  })
+);
 app.use(cors(corsOptions));
 app.use('/', router);
 

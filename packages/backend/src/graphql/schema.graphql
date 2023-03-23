@@ -35,7 +35,8 @@ type Query {
   ): [SubstepArgument]
   getCurrentUser: User
   getUsageData: GetUsageData
-  getPaymentPortalUrl: GetPaymentPortalUrl
+  getPaymentPlans: [PaymentPlan]
+  getPaddleInfo: GetPaddleInfo
   getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
@@ -477,8 +478,16 @@ type GetUsageData {
   nextResetAt: String
 }
 
-type GetPaymentPortalUrl {
-  url: String
+type GetPaddleInfo {
+  sandbox: Boolean
+  vendorId: Int
+}
+
+type PaymentPlan {
+  name: String
+  limit: String
+  price: String
+  productId: String
 }
 
 schema {

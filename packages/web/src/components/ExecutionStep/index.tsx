@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import type { IApp, IExecutionStep, IStep } from '@automatisch/types';
 
 import TabPanel from 'components/TabPanel';
-import JSONViewer from 'components/JSONViewer';
+import SearchableJSONViewer from 'components/SearchableJSONViewer';
 import AppIcon from 'components/AppIcon';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -92,16 +92,16 @@ export default function ExecutionStep(
         </Box>
 
         <TabPanel value={activeTabIndex} index={0}>
-          <JSONViewer data={executionStep.dataIn} />
+          <SearchableJSONViewer data={executionStep.dataIn} />
         </TabPanel>
 
         <TabPanel value={activeTabIndex} index={1}>
-          <JSONViewer data={executionStep.dataOut} />
+          <SearchableJSONViewer data={executionStep.dataOut} />
         </TabPanel>
 
         {hasError && (
           <TabPanel value={activeTabIndex} index={2}>
-            <JSONViewer data={executionStep.errorDetails} />
+            <SearchableJSONViewer data={executionStep.errorDetails} />
           </TabPanel>
         )}
       </Content>
