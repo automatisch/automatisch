@@ -14,7 +14,7 @@ const formatSubscription = (request: IRequest) => {
     updateUrl: request.body.update_url,
     status: request.body.status,
     nextBillDate: request.body.next_bill_date,
-    nextBillAmount: request.body.next_bill_amount,
+    nextBillAmount: request.body.unit_price,
   };
 };
 
