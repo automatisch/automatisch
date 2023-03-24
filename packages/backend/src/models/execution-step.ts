@@ -16,6 +16,7 @@ class ExecutionStep extends Base {
   status: 'success' | 'failure';
   step: Step;
   execution?: Execution;
+  count?: number;
 
   static tableName = 'execution_steps';
 
