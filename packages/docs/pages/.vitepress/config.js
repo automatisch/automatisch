@@ -69,6 +69,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Google Drive',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/google-drive/triggers' },
+            { text: 'Connection', link: '/apps/google-drive/connection' },
+          ],
+        },
+        {
           text: 'Github',
           collapsible: true,
           collapsed: true,
