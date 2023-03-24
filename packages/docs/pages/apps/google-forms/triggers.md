@@ -1,0 +1,12 @@
+---
+favicon: /favicons/google-forms.svg
+items:
+  - name: New Form Responses
+    desc: Triggers when a new form response is submitted
+---
+
+<script setup>
+  import CustomListing from '../../components/CustomListing.vue'
+</script>
+
+<CustomListing />
