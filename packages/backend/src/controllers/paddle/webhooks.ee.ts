@@ -9,6 +9,9 @@ export default async (request: IRequest, response: Response) => {
     return response.sendStatus(401);
   }
 
-  // TODO: Handle Paddle webhooks
+  if (request.body.alert_name === 'subscription_created') {
+    await Billing.webhooks.handleSubscriptionCreated(request);
+  }
+
   return response.sendStatus(200);
 };
