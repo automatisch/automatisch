@@ -14,6 +14,7 @@ import getCurrentUser from './queries/get-current-user';
 import getUsageData from './queries/get-usage-data.ee';
 import getPaymentPlans from './queries/get-payment-plans.ee';
 import getPaddleInfo from './queries/get-paddle-info.ee';
+import getBillingAndUsage from './queries/get-billing-and-usage.ee';
 import getAutomatischInfo from './queries/get-automatisch-info';
 import healthcheck from './queries/healthcheck';
 
@@ -34,6 +35,7 @@ const queryResolvers = {
   getUsageData,
   getPaymentPlans,
   getPaddleInfo,
+  getBillingAndUsage,
   getAutomatischInfo,
   healthcheck,
 };

@@ -47,7 +47,7 @@ class Subscription extends Base {
       relation: Base.BelongsToOneRelation,
       modelClass: User,
       join: {
-        from: 'usage_data.user_id',
+        from: 'subscription.user_id',
         to: 'users.id',
       },
     },
