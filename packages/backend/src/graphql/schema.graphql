@@ -37,6 +37,7 @@ type Query {
   getUsageData: GetUsageData
   getPaymentPlans: [PaymentPlan]
   getPaddleInfo: GetPaddleInfo
+  getBillingAndUsage: GetBillingAndUsage
   getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
@@ -470,6 +471,19 @@ type AppHealth {
 
 type GetAutomatischInfo {
   isCloud: Boolean
+}
+
+type GetBillingAndUsage {
+  subscription: Subscription
+}
+
+type Subscription {
+  monthlyQuota: String
+  updateUrl: String
+  cancelUrl: String
+  status: String
+  nextBillAmount: String
+  nextBillDate: String
 }
 
 type GetUsageData {
