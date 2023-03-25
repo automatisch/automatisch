@@ -13,7 +13,7 @@ const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
     })
     .throwIfNotFound();
 
-  const remoteSubscription = await Billing.paddleClient.getSubscriptionPlan(
+  const remoteSubscription = await Billing.paddleClient.getSubscription(
     Number(subscription.paddleSubscriptionId)
   );
 
