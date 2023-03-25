@@ -11,6 +11,8 @@ export default async (request: IRequest, response: Response) => {
 
   if (request.body.alert_name === 'subscription_created') {
     await Billing.webhooks.handleSubscriptionCreated(request);
+  } else if (request.body.alert_name === 'subscription_payment_succeeded') {
+    await Billing.webhooks.handleSubscriptionPaymentSucceeded(request);
   }
 
   return response.sendStatus(200);
