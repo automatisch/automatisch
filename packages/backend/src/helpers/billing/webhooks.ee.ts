@@ -9,7 +9,7 @@ const handleSubscriptionCreated = async (request: IRequest) => {
 const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
   const subscription = await Subscription.query()
     .findOne({
-      paddleSubscriptionId: request.body.subscription_id,
+      paddle_subscription_id: request.body.subscription_id,
     })
     .throwIfNotFound();
 
