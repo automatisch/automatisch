@@ -475,6 +475,7 @@ type GetAutomatischInfo {
 
 type GetBillingAndUsage {
   subscription: Subscription
+  usage: Usage
 }
 
 type Subscription {
@@ -484,6 +485,10 @@ type Subscription {
   status: String
   nextBillAmount: String
   nextBillDate: String
+}
+
+type Usage {
+  task: Int
 }
 
 type GetUsageData {
