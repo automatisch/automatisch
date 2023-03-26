@@ -479,13 +479,32 @@ type GetBillingAndUsage {
   usage: Usage
 }
 
+type MonthlyQuota {
+  title: String
+  action: BillingCardAction
+}
+
+type NextBillAmount {
+  title: String
+  action: BillingCardAction
+}
+
+type NextBillDate {
+  title: String
+  action: BillingCardAction
+}
+
+type BillingCardAction {
+  type: String
+  text: String
+  src: String
+}
+
 type Subscription {
-  monthlyQuota: String
-  updateUrl: String
-  cancelUrl: String
   status: String
-  nextBillAmount: String
-  nextBillDate: String
+  monthlyQuota: MonthlyQuota
+  nextBillAmount: NextBillAmount
+  nextBillDate: NextBillDate
 }
 
 type Usage {
