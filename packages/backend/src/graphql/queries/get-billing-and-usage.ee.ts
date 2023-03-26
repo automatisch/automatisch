@@ -59,7 +59,7 @@ const getBillingAndUsage = async (
     .andWhere(
       'created_at',
       '>=',
-      DateTime.now().minus({ days: 30 }).toFormat('D')
+      DateTime.now().minus({ days: 30 }).toISODate()
     )
     .count()
     .first();

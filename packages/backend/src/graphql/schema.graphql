@@ -38,6 +38,7 @@ type Query {
   getPaymentPlans: [PaymentPlan]
   getPaddleInfo: GetPaddleInfo
   getBillingAndUsage: GetBillingAndUsage
+  getInvoices: [Invoice]
   getAutomatischInfo: GetAutomatischInfo
   healthcheck: AppHealth
 }
@@ -502,6 +503,14 @@ type GetUsageData {
 type GetPaddleInfo {
   sandbox: Boolean
   vendorId: Int
+}
+
+type Invoice {
+  id: Int
+  amount: Float
+  currency: String
+  payout_date: String
+  receipt_url: String
 }
 
 type PaymentPlan {

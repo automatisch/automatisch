@@ -148,7 +148,7 @@ class User extends Base {
   }
 
   async startTrialPeriod() {
-    this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toFormat('D');
+    this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
   }
 
   async $beforeInsert(queryContext: QueryContext) {
