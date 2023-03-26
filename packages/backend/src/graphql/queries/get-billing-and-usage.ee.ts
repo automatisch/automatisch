@@ -2,9 +2,10 @@ import Context from '../../types/express/context';
 import Billing from '../../helpers/billing/index.ee';
 import Execution from '../../models/execution';
 import ExecutionStep from '../../models/execution-step';
+import Subscription from '../../models/subscription.ee';
 import { DateTime } from 'luxon';
 
-type Subscription = {
+type ComputedSubscription = {
   monthlyQuota: string;
   status: string;
   nextBillDate: string;
@@ -22,40 +23,55 @@ const getBillingAndUsage = async (
     'subscription'
   );
 
-  let subscription: Subscription;
+  const subscription: ComputedSubscription = persistedSubscription
+    ? paidSubscription(persistedSubscription)
+    : freeTrialSubscription();
 
-  if (persistedSubscription) {
-    const currentPlan = Billing.paddlePlans.find(
-      (plan) => plan.productId === persistedSubscription.paddlePlanId
-    );
+  return {
+    subscription,
+    usage: {
+      task: executionStepCount(context),
+    },
+  };
+};
 
-    subscription = {
-      monthlyQuota: currentPlan.limit,
-      status: persistedSubscription.status,
-      nextBillDate: persistedSubscription.nextBillDate,
-      nextBillAmount: '€' + persistedSubscription.nextBillAmount,
-      updateUrl: persistedSubscription.updateUrl,
-      cancelUrl: persistedSubscription.cancelUrl,
-    };
-  } else {
-    subscription = {
-      monthlyQuota: 'Free trial',
-      status: null,
-      nextBillDate: '---',
-      nextBillAmount: '---',
-      updateUrl: null,
-      cancelUrl: null,
-    };
-  }
+const paidSubscription = (subscription: Subscription): ComputedSubscription => {
+  const currentPlan = Billing.paddlePlans.find(
+    (plan) => plan.productId === subscription.paddlePlanId
+  );
 
-  const executionIds = (
+  return {
+    monthlyQuota: currentPlan.limit,
+    status: subscription.status,
+    nextBillDate: subscription.nextBillDate,
+    nextBillAmount: '€' + subscription.nextBillAmount,
+    updateUrl: subscription.updateUrl,
+    cancelUrl: subscription.cancelUrl,
+  };
+};
+
+const freeTrialSubscription = (): ComputedSubscription => {
+  return {
+    monthlyQuota: 'Free trial',
+    status: null,
+    nextBillDate: '---',
+    nextBillAmount: '---',
+    updateUrl: null,
+    cancelUrl: null,
+  };
+};
+
+const executionIds = async (context: Context) => {
+  return (
     await context.currentUser
       .$relatedQuery('executions')
       .select('executions.id')
   ).map((execution: Execution) => execution.id);
+};
 
+const executionStepCount = async (context: Context) => {
   const executionStepCount = await ExecutionStep.query()
-    .whereIn('execution_id', executionIds)
+    .whereIn('execution_id', await executionIds(context))
     .andWhere(
       'created_at',
       '>=',
@@ -64,12 +80,7 @@ const getBillingAndUsage = async (
     .count()
     .first();
 
-  return {
-    subscription,
-    usage: {
-      task: executionStepCount.count,
-    },
-  };
+  return executionStepCount.count;
 };
 
 export default getBillingAndUsage;
