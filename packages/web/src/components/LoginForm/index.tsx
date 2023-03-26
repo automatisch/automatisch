@@ -78,7 +78,7 @@ function LoginForm() {
           sx={{ mb: 1 }}
         />
 
-        {isCloud &&<Link
+        {isCloud && <Link
           component={RouterLink}
           to={URLS.FORGOT_PASSWORD}
           underline="none"

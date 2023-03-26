@@ -140,5 +140,13 @@
   "usageAlert.informationText": "Tasks: {consumedTaskCount}/{allowedTaskCount} (Resets {relativeResetDate})",
   "usageAlert.viewPlans": "View plans",
   "jsonViewer.noDataFound": "We couldn't find anything matching your search",
-  "planUpgrade.title": "Upgrade your plan"
+  "planUpgrade.title": "Upgrade your plan",
+  "usageDataInformation.subscriptionPlan": "Subscription plan",
+  "usageDataInformation.monthlyQuota": "Monthly quota",
+  "usageDataInformation.nextBillAmount": "Next bill amount",
+  "usageDataInformation.nextBillDate": "Next bill date",
+  "usageDataInformation.yourUsage": "Your usage",
+  "usageDataInformation.yourUsageDescription": "Last 30 days total usage",
+  "usageDataInformation.yourUsageTasks": "Tasks",
+  "usageDataInformation.upgrade": "Upgrade"
 }

@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid';
 
 import * as URLS from 'config/urls';
 import UsageDataInformation from 'components/UsageDataInformation/index.ee';
-import UpgradeFreeTrial from 'components/UpgradeFreeTrial/index.ee';
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import useFormatMessage from 'hooks/useFormatMessage';
