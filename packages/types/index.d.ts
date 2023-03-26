@@ -339,6 +339,35 @@ export type TPaymentPlan = {
   productId: string;
 }
 
+export type TSubscription = {
+  status: string;
+  monthlyQuota: {
+    title: string;
+    action: BillingCardAction;
+  };
+  nextBillDate: {
+    title: string;
+    action: BillingCardAction;
+  };
+  nextBillAmount: {
+    title: string;
+    action: BillingCardAction;
+  };
+}
+
+type TBillingCardAction = TBillingTextCardAction | TBillingLinkCardAction;
+
+type TBillingTextCardAction = {
+  type: 'text';
+  text: string;
+}
+
+type TBillingLinkCardAction = {
+  type: 'link';
+  text: string;
+  src: string;
+}
+
 declare module 'axios' {
   interface AxiosResponse {
     httpError?: IJSONObject;

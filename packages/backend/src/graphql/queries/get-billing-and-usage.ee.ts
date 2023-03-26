@@ -1,31 +1,11 @@
+import { DateTime } from 'luxon';
+import { TSubscription } from '@automatisch/types';
+
 import Context from '../../types/express/context';
 import Billing from '../../helpers/billing/index.ee';
 import Execution from '../../models/execution';
 import ExecutionStep from '../../models/execution-step';
 import Subscription from '../../models/subscription.ee';
-import { DateTime } from 'luxon';
-
-type BillingCardAction = {
-  type: string;
-  text: string;
-  src?: string | null;
-};
-
-type ComputedSubscription = {
-  status: string;
-  monthlyQuota: {
-    title: string;
-    action: BillingCardAction;
-  };
-  nextBillDate: {
-    title: string;
-    action: BillingCardAction;
-  };
-  nextBillAmount: {
-    title: string;
-    action: BillingCardAction;
-  };
-};
 
 const getBillingAndUsage = async (
   _parent: unknown,
@@ -36,7 +16,7 @@ const getBillingAndUsage = async (
     'subscription'
   );
 
-  const subscription: ComputedSubscription = persistedSubscription
+  const subscription = persistedSubscription
     ? paidSubscription(persistedSubscription)
     : freeTrialSubscription();
 
@@ -48,7 +28,7 @@ const getBillingAndUsage = async (
   };
 };
 
-const paidSubscription = (subscription: Subscription): ComputedSubscription => {
+const paidSubscription = (subscription: Subscription): TSubscription => {
   const currentPlan = Billing.paddlePlans.find(
     (plan) => plan.productId === subscription.paddlePlanId
   );
@@ -81,7 +61,7 @@ const paidSubscription = (subscription: Subscription): ComputedSubscription => {
   };
 };
 
-const freeTrialSubscription = (): ComputedSubscription => {
+const freeTrialSubscription = (): TSubscription => {
   return {
     status: null,
     monthlyQuota: {
