@@ -5,13 +5,26 @@ import ExecutionStep from '../../models/execution-step';
 import Subscription from '../../models/subscription.ee';
 import { DateTime } from 'luxon';
 
+type BillingCardAction = {
+  type: string;
+  text: string;
+  src?: string | null;
+};
+
 type ComputedSubscription = {
-  monthlyQuota: string;
   status: string;
-  nextBillDate: string;
-  nextBillAmount: string;
-  updateUrl: string;
-  cancelUrl: string;
+  monthlyQuota: {
+    title: string;
+    action: BillingCardAction;
+  };
+  nextBillDate: {
+    title: string;
+    action: BillingCardAction;
+  };
+  nextBillAmount: {
+    title: string;
+    action: BillingCardAction;
+  };
 };
 
 const getBillingAndUsage = async (
@@ -41,23 +54,52 @@ const paidSubscription = (subscription: Subscription): ComputedSubscription => {
   );
 
   return {
-    monthlyQuota: currentPlan.limit,
     status: subscription.status,
-    nextBillDate: subscription.nextBillDate,
-    nextBillAmount: '€' + subscription.nextBillAmount,
-    updateUrl: subscription.updateUrl,
-    cancelUrl: subscription.cancelUrl,
+    monthlyQuota: {
+      title: currentPlan.limit,
+      action: {
+        type: 'link',
+        text: 'Change plan',
+        src: '/settings/billing/change-plan',
+      },
+    },
+    nextBillAmount: {
+      title: '€' + subscription.nextBillAmount,
+      action: {
+        type: 'link',
+        text: 'Update payment method',
+        src: subscription.updateUrl,
+      },
+    },
+    nextBillDate: {
+      title: subscription.nextBillDate,
+      action: {
+        type: 'text',
+        text: '(monthly payment)',
+      },
+    },
   };
 };
 
 const freeTrialSubscription = (): ComputedSubscription => {
   return {
-    monthlyQuota: 'Free trial',
     status: null,
-    nextBillDate: '---',
-    nextBillAmount: '---',
-    updateUrl: null,
-    cancelUrl: null,
+    monthlyQuota: {
+      title: 'Free Trial',
+      action: {
+        type: 'link',
+        text: 'Upgrade plan',
+        src: '/settings/billing/upgrade',
+      },
+    },
+    nextBillAmount: {
+      title: '---',
+      action: null,
+    },
+    nextBillDate: {
+      title: '---',
+      action: null,
+    },
   };
 };
 
