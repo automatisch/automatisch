@@ -148,5 +148,10 @@
   "usageDataInformation.yourUsage": "Your usage",
   "usageDataInformation.yourUsageDescription": "Last 30 days total usage",
   "usageDataInformation.yourUsageTasks": "Tasks",
-  "usageDataInformation.upgrade": "Upgrade"
+  "usageDataInformation.upgrade": "Upgrade",
+  "invoices.invoices": "Invoices",
+  "invoices.date": "Date",
+  "invoices.amount": "Amount",
+  "invoices.invoice": "Invoice",
+  "invoices.link": "Link"
 }

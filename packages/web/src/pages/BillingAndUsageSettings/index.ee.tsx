@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 
 import * as URLS from 'config/urls';
 import UsageDataInformation from 'components/UsageDataInformation/index.ee';
+import Invoices from 'components/Invoices/index.ee';
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -33,6 +34,10 @@ function BillingAndUsageSettings() {
 
         <Grid item xs={12} sx={{ mb: 6 }}>
           <UsageDataInformation />
+        </Grid>
+
+        <Grid item xs={12} sx={{ mb: 6 }}>
+          <Invoices />
         </Grid>
       </Grid>
     </Container>
