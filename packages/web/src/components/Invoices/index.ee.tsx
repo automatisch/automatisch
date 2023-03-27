@@ -13,7 +13,9 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 export default function Invoices() {
   const formatMessage = useFormatMessage();
-  const { invoices } = useInvoices();
+  const { invoices, loading } = useInvoices();
+
+  if (loading || invoices.length === 0) return <React.Fragment />;
 
   return (
     <React.Fragment>

@@ -7,6 +7,11 @@ const getInvoices = async (
   context: Context
 ) => {
   const subscription = await context.currentUser.$relatedQuery('subscription');
+
+  if (!subscription) {
+    return;
+  }
+
   const invoices = await Billing.paddleClient.getInvoices(
     Number(subscription.paddleSubscriptionId)
   );
