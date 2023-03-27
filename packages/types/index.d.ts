@@ -368,6 +368,14 @@ type TBillingLinkCardAction = {
   src: string;
 }
 
+type TInvoice = {
+  id: number
+  amount: number
+  currency: string
+  payout_date: string
+  receipt_url: string
+}
+
 declare module 'axios' {
   interface AxiosResponse {
     httpError?: IJSONObject;
