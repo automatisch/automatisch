@@ -1,12 +1,18 @@
 import { IGlobalVariable } from '@automatisch/types';
 
 const newFilesInFolder = async ($: IGlobalVariable) => {
+  let q = "mimeType!='application/vnd.google-apps.folder'";
+  if ($.step.parameters.folderId) {
+    q += ` and '${$.step.parameters.folderId}' in parents`;
+  } else {
+    q += ` and parents in 'root'`;
+  }
   const params = {
     pageToken: undefined as unknown as string,
     orderBy: 'createdTime desc',
-    q: `mimeType!='application/vnd.google-apps.folder' and '${$.step.parameters.folderId}' in parents`,
     fields: '*',
     pageSize: 1000,
+    q,
   };
 
   do {
