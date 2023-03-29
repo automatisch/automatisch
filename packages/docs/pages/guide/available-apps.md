@@ -11,6 +11,7 @@ Following integrations are currently supported by Automatisch.
 - [Discord](/apps/discord/actions)
 - [Flickr](/apps/flickr/triggers)
 - [Github](/apps/github/triggers)
+- [Google Forms](/apps/google-forms/triggers)
 - [HTTP Request](/apps/http-request/actions)
 - [Ntfy](/apps/ntfy/actions)
 - [OpenAI](/apps/openai/actions)

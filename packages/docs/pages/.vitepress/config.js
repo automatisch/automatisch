@@ -79,6 +79,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Google Forms',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/google-forms/triggers' },
+            { text: 'Connection', link: '/apps/google-forms/connection' },
+          ],
+        },
+        {
           text: 'HTTP Request',
           collapsible: true,
           collapsed: true,
