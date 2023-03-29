@@ -12,7 +12,9 @@ export default defineTrigger({
       label: 'Folder',
       key: 'folderId',
       type: 'dropdown' as const,
-      required: true,
+      required: false,
+      description:
+        'Check a specific folder for new files. Please note: new files added to subfolders inside the folder you choose here will NOT trigger this flow. Defaults to the top-level folder if none is picked.',
       variables: false,
       source: {
         type: 'query',
