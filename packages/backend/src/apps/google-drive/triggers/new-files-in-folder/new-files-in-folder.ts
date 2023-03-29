@@ -4,7 +4,7 @@ const newFilesInFolder = async ($: IGlobalVariable) => {
   const params = {
     pageToken: undefined as unknown as string,
     orderBy: 'createdTime desc',
-    q: `'${$.step.parameters.folderId}' in parents`,
+    q: `mimeType!='application/vnd.google-apps.folder' and '${$.step.parameters.folderId}' in parents`,
     fields: '*',
     pageSize: 1000,
   };
