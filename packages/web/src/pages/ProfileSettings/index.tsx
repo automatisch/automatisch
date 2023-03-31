@@ -19,6 +19,12 @@ import { UPDATE_USER } from 'graphql/mutations/update-user';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
 
+const fullNameValidationSchema = yup
+  .object({
+    fullName: yup.string().required(),
+  })
+  .required();
+
 const emailValidationSchema = yup
   .object({
     email: yup.string().email().required(),
@@ -48,6 +54,22 @@ function ProfileSettings() {
   const currentUser = useCurrentUser();
   const formatMessage = useFormatMessage();
   const [updateUser] = useMutation(UPDATE_USER);
+
+  const handleFullNameUpdate = async (data: any) => {
+    const fullName = data.fullName;
+
+    await updateUser({
+      variables: {
+        input: {
+          fullName,
+        },
+      },
+    });
+
+    enqueueSnackbar(formatMessage('profileSettings.updatedFullName'), {
+      variant: 'success',
+    });
+  };
 
   const handleEmailUpdate = async (data: any) => {
     const email = data.email;
@@ -100,6 +122,42 @@ function ProfileSettings() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end">
+        <StyledForm
+            defaultValues={{ ...currentUser }}
+            onSubmit={handleFullNameUpdate}
+            resolver={yupResolver(fullNameValidationSchema)}
+            mode="onChange"
+            sx={{ mb: 2 }}
+            render={({
+              formState: {
+                errors,
+                touchedFields,
+                isDirty,
+                isValid,
+                isSubmitting,
+              },
+            }) => (
+              <>
+                <TextField
+                  fullWidth
+                  name="fullName"
+                  label={formatMessage('profileSettings.fullName')}
+                  margin="normal"
+                  error={touchedFields.fullName && !!errors?.fullName}
+                  helperText={errors?.fullName?.message || ' '}
+                />
+
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={!isDirty || !isValid || isSubmitting}
+                >
+                  {formatMessage('profileSettings.updateFullName')}
+                </Button>
+              </>
+            )}
+          />
+          
           <StyledForm
             defaultValues={{ ...currentUser}}
             onSubmit={handleEmailUpdate}
