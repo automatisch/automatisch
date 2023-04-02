@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer';
 import { IGlobalVariable } from '@automatisch/types';
 
 const refreshToken = async ($: IGlobalVariable) => {
