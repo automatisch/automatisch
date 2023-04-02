@@ -60,6 +60,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Dropbox',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/dropbox/actions' },
+            { text: 'Connection', link: '/apps/dropbox/connection' },
+          ],
+        },
+        {
           text: 'Flickr',
           collapsible: true,
           collapsed: true,
