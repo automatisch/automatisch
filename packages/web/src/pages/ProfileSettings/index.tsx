@@ -19,24 +19,13 @@ import { UPDATE_USER } from 'graphql/mutations/update-user';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
 
-const fullNameValidationSchema = yup
+const validationSchema = yup
   .object({
     fullName: yup.string().required(),
-  })
-  .required();
-
-const emailValidationSchema = yup
-  .object({
     email: yup.string().email().required(),
-  })
-  .required();
-
-const passwordValidationSchema = yup
-  .object({
-    password: yup.string().required(),
+    password: yup.string(),
     confirmPassword: yup
       .string()
-      .required()
       .oneOf([yup.ref('password')], 'Passwords must match'),
   })
   .required();
@@ -49,70 +38,28 @@ const StyledForm = styled(Form)`
 
 function ProfileSettings() {
   const [showDeleteAccountConfirmation, setShowDeleteAccountConfirmation] = React.useState(false);
-  const [passwordDefaultValues, setPasswordDefaultValues] = React.useState({});
   const { enqueueSnackbar } = useSnackbar();
   const currentUser = useCurrentUser();
   const formatMessage = useFormatMessage();
   const [updateUser] = useMutation(UPDATE_USER);
 
-  const handleFullNameUpdate = async (data: any) => {
-    const fullName = data.fullName;
-
+  const handleProfileSettingsUpdate = async (data: any) => { 
+    const { fullName , password, email } = data;
     await updateUser({
       variables: {
         input: {
           fullName,
-        },
-      },
-    });
-
-    enqueueSnackbar(formatMessage('profileSettings.updatedFullName'), {
-      variant: 'success',
-    });
-  };
-
-  const handleEmailUpdate = async (data: any) => {
-    const email = data.email;
-
-    await updateUser({
-      variables: {
-        input: {
-          email,
-        },
-      },
-      optimisticResponse: {
-        updateUser: {
-          __typename: 'User',
-          email,
-        },
-      },
-    });
-
-    enqueueSnackbar(formatMessage('profileSettings.updatedEmail'), {
-      variant: 'success',
-    });
-  };
-
-  const handlePasswordUpdate = async (data: any) => {
-    const password = data.password;
-
-    setPasswordDefaultValues({
-      password,
-      confirmPassword: data.confirmPassword,
-    });
-
-    await updateUser({
-      variables: {
-        input: {
           password,
+          email,
         },
       },
     });
 
-    enqueueSnackbar(formatMessage('profileSettings.updatedPassword'), {
+    enqueueSnackbar(formatMessage('profileSettings.updatedProfile'), {
       variant: 'success',
     });
   };
+
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
@@ -123,9 +70,9 @@ function ProfileSettings() {
 
         <Grid item xs={12} justifyContent="flex-end">
         <StyledForm
-            defaultValues={{ ...currentUser }}
-            onSubmit={handleFullNameUpdate}
-            resolver={yupResolver(fullNameValidationSchema)}
+            defaultValues={{ ...currentUser, password: '', confirmPassword: '' }}
+            onSubmit={handleProfileSettingsUpdate}
+            resolver={yupResolver(validationSchema)}
             mode="onChange"
             sx={{ mb: 2 }}
             render={({
@@ -142,82 +89,29 @@ function ProfileSettings() {
                   fullWidth
                   name="fullName"
                   label={formatMessage('profileSettings.fullName')}
-                  margin="normal"
+                  margin='dense'
                   error={touchedFields.fullName && !!errors?.fullName}
                   helperText={errors?.fullName?.message || ' '}
                 />
 
-                <Button
-                  variant="contained"
-                  type="submit"
-                  disabled={!isDirty || !isValid || isSubmitting}
-                >
-                  {formatMessage('profileSettings.updateFullName')}
-                </Button>
-              </>
-            )}
-          />
-          
-          <StyledForm
-            defaultValues={{ ...currentUser}}
-            onSubmit={handleEmailUpdate}
-            resolver={yupResolver(emailValidationSchema)}
-            mode="onChange"
-            sx={{ mb: 2 }}
-            render={({
-              formState: {
-                errors,
-                touchedFields,
-                isDirty,
-                isValid,
-                isSubmitting,
-              },
-            }) => (
-              <>
                 <TextField
                   fullWidth
                   name="email"
                   label={formatMessage('profileSettings.email')}
-                  margin="normal"
+                  margin='dense'
                   error={touchedFields.email && !!errors?.email}
                   helperText={errors?.email?.message || ' '}
                 />
 
-                <Button
-                  variant="contained"
-                  type="submit"
-                  disabled={!isDirty || !isValid || isSubmitting}
-                >
-                  {formatMessage('profileSettings.updateEmail')}
-                </Button>
-              </>
-            )}
-          />
-
-          <StyledForm
-            defaultValues={passwordDefaultValues}
-            onSubmit={handlePasswordUpdate}
-            resolver={yupResolver(passwordValidationSchema)}
-            mode="onChange"
-            render={({
-              formState: {
-                errors,
-                touchedFields,
-                isDirty,
-                isValid,
-                isSubmitting,
-              },
-            }) => (
-              <>
                 <TextField
                   fullWidth
                   name="password"
                   label={formatMessage('profileSettings.newPassword')}
-                  margin="normal"
+                  margin='dense'
                   type="password"
                   error={touchedFields.password && !!errors?.password}
                   helperText={
-                    (touchedFields.password && errors?.password?.message) || ''
+                    (touchedFields.password && errors?.password?.message) || ' '
                   }
                 />
 
@@ -225,7 +119,7 @@ function ProfileSettings() {
                   fullWidth
                   name="confirmPassword"
                   label={formatMessage('profileSettings.confirmNewPassword')}
-                  margin="normal"
+                  margin='dense'
                   type="password"
                   error={
                     touchedFields.confirmPassword && !!errors?.confirmPassword
@@ -242,7 +136,7 @@ function ProfileSettings() {
                   type="submit"
                   disabled={!isDirty || !isValid || isSubmitting}
                 >
-                  {formatMessage('profileSettings.updatePassword')}
+                  {formatMessage('profileSettings.updateProfile')}
                 </Button>
               </>
             )}
