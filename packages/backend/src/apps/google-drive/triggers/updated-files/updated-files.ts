@@ -18,6 +18,7 @@ const updatedFiles = async ($: IGlobalVariable) => {
     fields: '*',
     pageSize: 1000,
     q,
+    driveId: $.step.parameters.driveId,
   };
 
   do {
