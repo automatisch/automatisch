@@ -4,6 +4,7 @@ type Params = {
   input: {
     email: string;
     password: string;
+    fullName: string;
   };
 };
 
@@ -15,6 +16,7 @@ const updateUser = async (
   const user = await context.currentUser.$query().patchAndFetch({
     email: params.input.email,
     password: params.input.password,
+    fullName: params.input.fullName,
   });
 
   return user;

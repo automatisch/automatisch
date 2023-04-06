@@ -351,6 +351,7 @@ input CreateUserInput {
 input UpdateUserInput {
   email: String
   password: String
+  fullName: String
 }
 
 input ForgotPasswordInput {
