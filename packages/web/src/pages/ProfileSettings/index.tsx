@@ -19,6 +19,12 @@ import { UPDATE_USER } from 'graphql/mutations/update-user';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
 
+type TMutationInput = {
+  fullName: string;
+  email: string;
+  password?: string;
+}
+
 const validationSchema = yup
   .object({
     fullName: yup.string().required(),
@@ -43,13 +49,27 @@ function ProfileSettings() {
   const formatMessage = useFormatMessage();
   const [updateUser] = useMutation(UPDATE_USER);
 
-  const handleProfileSettingsUpdate = async (data: any) => { 
-    const { fullName , password, email } = data;
+  const handleProfileSettingsUpdate = async (data: any) => {
+    const { fullName, password, email } = data;
+
+    const mutationInput: TMutationInput = {
+      fullName,
+      email,
+    }
+
+    if (password) {
+      mutationInput.password = password;
+    }
+
     await updateUser({
       variables: {
-        input: {
+        input: mutationInput,
+      },
+      optimisticResponse: {
+        updateUser: {
+          __typename: 'User',
+          id: currentUser.id,
           fullName,
-          password,
           email,
         },
       },
