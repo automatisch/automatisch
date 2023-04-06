@@ -7,6 +7,7 @@ const newFiles = async ($: IGlobalVariable) => {
     q: `mimeType!='application/vnd.google-apps.folder'`,
     fields: '*',
     pageSize: 1000,
+    driveId: $.step.parameters.driveId,
   };
 
   do {
