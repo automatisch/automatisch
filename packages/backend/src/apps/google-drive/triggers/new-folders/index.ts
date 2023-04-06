@@ -9,6 +9,25 @@ export default defineTrigger({
     'Triggers when a new folder is added directly to a specific folder (but not its subfolder).',
   arguments: [
     {
+      label: 'Drive',
+      key: 'driveId',
+      type: 'dropdown' as const,
+      required: false,
+      description:
+        'The Google Drive where your file resides. If nothing is selected, then your personal Google Drive will be used.',
+      variables: false,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listDrives',
+          },
+        ],
+      },
+    },
+    {
       label: 'Folder',
       key: 'folderId',
       type: 'dropdown' as const,
