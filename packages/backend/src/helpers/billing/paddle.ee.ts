@@ -24,6 +24,7 @@ const getSubscription = async (subscriptionId: number) => {
 };
 
 const getInvoices = async (subscriptionId: number) => {
+  // TODO: iterate over previous subscriptions and include their invoices
   const data = {
     vendor_id: appConfig.paddleVendorId,
     vendor_auth_code: appConfig.paddleVendorAuthCode,

@@ -1,5 +1,7 @@
 import Base from './base';
 import User from './user';
+import UsageData from './usage-data.ee';
+import { getPlanById } from '../helpers/billing/plans.ee';
 
 class Subscription extends Base {
   id!: string;
@@ -12,6 +14,8 @@ class Subscription extends Base {
   nextBillAmount!: string;
   nextBillDate!: string;
   lastBillDate?: string;
+  usageData?: UsageData[];
+  currentUsageData?: UsageData;
 
   static tableName = 'subscriptions';
 
@@ -51,7 +55,27 @@ class Subscription extends Base {
         to: 'users.id',
       },
     },
+    usageData: {
+      relation: Base.HasManyRelation,
+      modelClass: UsageData,
+      join: {
+        from: 'subscriptions.id',
+        to: 'usage_data.subscription_id',
+      },
+    },
+    currentUsageData: {
+      relation: Base.HasOneRelation,
+      modelClass: UsageData,
+      join: {
+        from: 'subscriptions.id',
+        to: 'usage_data.subscription_id',
+      },
+    },
   });
+
+  get plan() {
+    return getPlanById(this.paddlePlanId);
+  }
 }
 
 export default Subscription;

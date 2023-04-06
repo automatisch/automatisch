@@ -6,7 +6,7 @@ const getInvoices = async (
   _params: unknown,
   context: Context
 ) => {
-  const subscription = await context.currentUser.$relatedQuery('subscription');
+  const subscription = await context.currentUser.$relatedQuery('currentSubscription');
 
   if (!subscription) {
     return;

@@ -1,15 +1,14 @@
 import { QueryContext, ModelOptions } from 'objection';
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import { DateTime } from 'luxon';
 import appConfig from '../config/app';
 import Base from './base';
+import ExtendedQueryBuilder from './query-builder';
 import Connection from './connection';
 import Flow from './flow';
 import Step from './step';
 import Execution from './execution';
-import ExecutionStep from './execution-step';
-import bcrypt from 'bcrypt';
-import crypto from 'crypto';
-import PaymentPlan from './payment-plan.ee';
 import UsageData from './usage-data.ee';
 import Subscription from './subscription.ee';
 
@@ -26,9 +25,10 @@ class User extends Base {
   flows?: Flow[];
   steps?: Step[];
   executions?: Execution[];
-  paymentPlan?: PaymentPlan;
-  usageData?: UsageData;
-  subscription?: Subscription;
+  usageData?: UsageData[];
+  currentUsageData?: UsageData;
+  subscriptions?: Subscription[];
+  currentSubscription?: Subscription;
 
   static tableName = 'users';
 
@@ -86,28 +86,42 @@ class User extends Base {
         to: 'executions.flow_id',
       },
     },
-    paymentPlan: {
-      relation: Base.HasOneRelation,
-      modelClass: PaymentPlan,
-      join: {
-        from: 'payment_plans.user_id',
-        to: 'users.id',
-      },
-    },
     usageData: {
-      relation: Base.HasOneRelation,
+      relation: Base.HasManyRelation,
       modelClass: UsageData,
       join: {
         from: 'usage_data.user_id',
         to: 'users.id',
       },
     },
-    subscription: {
+    currentUsageData: {
+      relation: Base.HasOneRelation,
+      modelClass: UsageData,
+      join: {
+        from: 'usage_data.user_id',
+        to: 'users.id',
+      },
+      filter(builder: ExtendedQueryBuilder<UsageData>) {
+        builder.orderBy('created_at', 'desc').first();
+      },
+    },
+    subscriptions: {
+      relation: Base.HasManyRelation,
+      modelClass: Subscription,
+      join: {
+        from: 'subscriptions.user_id',
+        to: 'users.id',
+      },
+    },
+    currentSubscription: {
       relation: Base.HasOneRelation,
       modelClass: Subscription,
       join: {
         from: 'subscriptions.user_id',
         to: 'users.id',
+      },
+      filter(builder: ExtendedQueryBuilder<Subscription>) {
+        builder.orderBy('created_at', 'desc').first();
       },
     },
   });
@@ -165,6 +179,18 @@ class User extends Base {
 
     if (this.password) {
       await this.generateHash();
+    }
+  }
+
+  async $afterInsert(queryContext: QueryContext) {
+    await super.$afterInsert(queryContext);
+
+    if (appConfig.isCloud) {
+      await this.$relatedQuery('usageData').insert({
+        userId: this.id,
+        consumedTaskCount: 0,
+        nextResetAt: DateTime.now().plus({ days: 30 }).toISODate(),
+      });
     }
   }
 }
