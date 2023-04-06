@@ -4,9 +4,9 @@ const newFiles = async ($: IGlobalVariable) => {
   const params = {
     pageToken: undefined as unknown as string,
     orderBy: 'createdTime desc',
-    q: `mimeType!='application/vnd.google-apps.folder'`,
     fields: '*',
     pageSize: 1000,
+    q: `mimeType!='application/vnd.google-apps.folder'`,
     driveId: $.step.parameters.driveId,
   };
 

@@ -13,7 +13,7 @@ export default defineTrigger({
       type: 'dropdown' as const,
       required: false,
       description:
-        'The drive to use. If nothing is selected, then your personal Google Drive will be used.',
+        'The Google Drive where your file resides. If nothing is selected, then your personal Google Drive will be used.',
       variables: false,
       source: {
         type: 'query',
