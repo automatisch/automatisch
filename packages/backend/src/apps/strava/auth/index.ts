@@ -1,6 +1,7 @@
-import createAuthData from './create-auth-data';
+import generateAuthUrl from './generate-auth-url';
 import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
+import refreshToken from './refresh-token';
 
 export default {
   fields: [
@@ -17,8 +18,8 @@ export default {
       clickToCopy: true,
     },
     {
-      key: 'consumerKey',
-      label: 'Consumer Key',
+      key: 'clientId',
+      label: 'Client ID',
       type: 'string' as const,
       required: true,
       readOnly: false,
@@ -28,8 +29,8 @@ export default {
       clickToCopy: false,
     },
     {
-      key: 'consumerSecret',
-      label: 'Consumer Secret',
+      key: 'clientSecret',
+      label: 'Client Secret',
       type: 'string' as const,
       required: true,
       readOnly: false,
@@ -37,91 +38,11 @@ export default {
       placeholder: null,
       description: null,
       clickToCopy: false,
-    },
-  ],
-  authenticationSteps: [
-    {
-      step: 1,
-      type: 'mutation' as const,
-      name: 'createConnection',
-      arguments: [
-        {
-          name: 'key',
-          value: '{key}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'consumerKey',
-              value: '{fields.consumerKey}',
-            },
-            {
-              name: 'consumerSecret',
-              value: '{fields.consumerSecret}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      step: 2,
-      type: 'mutation' as const,
-      name: 'createAuthData',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
-    },
-    {
-      step: 3,
-      type: 'openWithPopup' as const,
-      name: 'openAuthPopup',
-      arguments: [
-        {
-          name: 'url',
-          value: '{createAuthData.url}',
-        },
-      ],
-    },
-    {
-      step: 4,
-      type: 'mutation' as const,
-      name: 'updateConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-        {
-          name: 'formattedData',
-          value: null,
-          properties: [
-            {
-              name: 'code',
-              value: '{openAuthPopup.code}',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      step: 5,
-      type: 'mutation' as const,
-      name: 'verifyConnection',
-      arguments: [
-        {
-          name: 'id',
-          value: '{createConnection.id}',
-        },
-      ],
     },
   ],
 
-  createAuthData,
+  generateAuthUrl,
   verifyCredentials,
   isStillVerified,
+  refreshToken,
 };
