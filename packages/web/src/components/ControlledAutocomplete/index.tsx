@@ -69,7 +69,7 @@ function ControlledAutocomplete(
         },
         fieldState,
       }) => (
-        <div style={{ width:'100%' }}>
+        <div style={{ width: '100%' }}>
           {/* encapsulated with an element such as div to vertical spacing delegated from parent */}
           <Autocomplete
             {...autocompleteProps}
@@ -102,7 +102,7 @@ function ControlledAutocomplete(
             renderOption={(optionProps, option) => (
               <li
                 {...optionProps}
-                key={option.value.toString()}
+                key={option.value?.toString()}
                 style={{ flexDirection: 'column', alignItems: 'start' }}
               >
                 <Typography>{option.label}</Typography>

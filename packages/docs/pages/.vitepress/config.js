@@ -69,15 +69,6 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Google Drive',
-          collapsible: true,
-          collapsed: true,
-          items: [
-            { text: 'Triggers', link: '/apps/google-drive/triggers' },
-            { text: 'Connection', link: '/apps/google-drive/connection' },
-          ],
-        },
-        {
           text: 'Github',
           collapsible: true,
           collapsed: true,
@@ -88,12 +79,30 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Google Drive',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/google-drive/triggers' },
+            { text: 'Connection', link: '/apps/google-drive/connection' },
+          ],
+        },
+        {
           text: 'Google Forms',
           collapsible: true,
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/google-forms/triggers' },
             { text: 'Connection', link: '/apps/google-forms/connection' },
+          ],
+        },
+        {
+          text: 'Google Sheets',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/google-sheets/triggers' },
+            { text: 'Connection', link: '/apps/google-sheets/connection' },
           ],
         },
         {
