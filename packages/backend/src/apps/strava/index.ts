@@ -1,5 +1,6 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
+import actions from './actions';
 import auth from './auth';
 
 export default defineApp({
@@ -13,4 +14,5 @@ export default defineApp({
   primaryColor: 'fc4c01',
   beforeRequest: [addAuthHeader],
   auth,
+  actions,
 });
