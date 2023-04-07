@@ -6,7 +6,6 @@ import ApolloProvider from 'components/ApolloProvider';
 import SnackbarProvider from 'components/SnackbarProvider';
 import { AuthenticationProvider } from 'contexts/Authentication';
 import { AutomatischInfoProvider } from 'contexts/AutomatischInfo';
-import { PaddleProvider } from 'contexts/Paddle.ee';
 import Router from 'components/Router';
 import LiveChat from 'components/LiveChat/index.ee';
 import routes from 'routes';
@@ -19,13 +18,11 @@ ReactDOM.render(
         <ApolloProvider>
           <AutomatischInfoProvider>
             <IntlProvider>
-              <PaddleProvider>
-                <ThemeProvider>
-                  {routes}
+              <ThemeProvider>
+                {routes}
 
-                  <LiveChat />
-                </ThemeProvider>
-              </PaddleProvider>
+                <LiveChat />
+              </ThemeProvider>
             </IntlProvider>
           </AutomatischInfoProvider>
         </ApolloProvider>
