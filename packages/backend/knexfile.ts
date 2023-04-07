@@ -7,11 +7,12 @@ const knexConfig = {
   connection: {
     host: appConfig.postgresHost,
     port: appConfig.postgresPort,
-    user: appConfig.postgresUsername,
-    password: appConfig.postgresPassword,
+    user: 'postgres' || appConfig.postgresUsername,
+    password: '@Sql2023' || appConfig.postgresPassword,
     database: appConfig.postgresDatabase,
     ssl: appConfig.postgresEnableSsl,
   },
+  searchPath: [appConfig.databaseSchema],
   pool: { min: 0, max: 20 },
   migrations: {
     directory: __dirname + '/src/db/migrations',

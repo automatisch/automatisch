@@ -11,6 +11,7 @@ type AppConfig = {
   appEnv: string;
   isDev: boolean;
   postgresDatabase: string;
+  databaseSchema: string;
   postgresPort: number;
   postgresHost: string;
   postgresUsername: string;
@@ -80,6 +81,7 @@ const appConfig: AppConfig = {
   isDev: appEnv === 'development',
   version: process.env.npm_package_version,
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
+  databaseSchema: process.env.DATABASE_SCHEMA || 'public',
   postgresPort: parseInt(process.env.POSTGRES_PORT || '5432'),
   postgresHost: process.env.POSTGRES_HOST || 'localhost',
   postgresUsername:
