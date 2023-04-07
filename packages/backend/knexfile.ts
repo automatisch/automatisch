@@ -7,8 +7,8 @@ const knexConfig = {
   connection: {
     host: appConfig.postgresHost,
     port: appConfig.postgresPort,
-    user: 'postgres' || appConfig.postgresUsername,
-    password: '@Sql2023' || appConfig.postgresPassword,
+    user: appConfig.postgresUsername,
+    password: appConfig.postgresPassword,
     database: appConfig.postgresDatabase,
     ssl: appConfig.postgresEnableSsl,
   },
