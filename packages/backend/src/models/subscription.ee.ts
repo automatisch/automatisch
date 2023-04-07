@@ -76,6 +76,10 @@ class Subscription extends Base {
   get plan() {
     return getPlanById(this.paddlePlanId);
   }
+
+  get isActive() {
+    return this.status === 'active' || this.status === 'past_due';
+  }
 }
 
 export default Subscription;

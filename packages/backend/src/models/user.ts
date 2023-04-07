@@ -126,19 +126,6 @@ class User extends Base {
     },
   });
 
-  get inTrial() {
-    if (!this.trialExpiryDate) {
-      return false;
-    }
-
-    const expiryDate = DateTime.fromJSDate(
-      this.trialExpiryDate as unknown as Date
-    );
-    const now = DateTime.now();
-
-    return now < expiryDate;
-  }
-
   login(password: string) {
     return bcrypt.compare(password, this.password);
   }
@@ -176,6 +163,29 @@ class User extends Base {
 
   async startTrialPeriod() {
     this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
+  }
+
+  async inTrial() {
+    if (!appConfig.isCloud) {
+      return false;
+    }
+
+    if (!this.trialExpiryDate) {
+      return false;
+    }
+
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    if (subscription?.isActive) {
+      return false;
+    }
+
+    const expiryDate = DateTime.fromJSDate(
+      this.trialExpiryDate as unknown as Date
+    );
+    const now = DateTime.now();
+
+    return now < expiryDate;
   }
 
   async $beforeInsert(queryContext: QueryContext) {

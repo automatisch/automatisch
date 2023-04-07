@@ -40,6 +40,7 @@ type Query {
   getBillingAndUsage: GetBillingAndUsage
   getInvoices: [Invoice]
   getAutomatischInfo: GetAutomatischInfo
+  getTrialStatus: GetTrialStatus
   healthcheck: AppHealth
 }
 
@@ -472,6 +473,10 @@ type AppHealth {
 
 type GetAutomatischInfo {
   isCloud: Boolean
+}
+
+type GetTrialStatus {
+  expireAt: String
 }
 
 type GetBillingAndUsage {
