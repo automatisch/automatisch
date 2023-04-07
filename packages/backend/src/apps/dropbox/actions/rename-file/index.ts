@@ -7,7 +7,7 @@ export default defineAction({
   description: 'Rename a file with the given file path and new name',
   arguments: [
     {
-      label: 'File',
+      label: 'File Path',
       key: 'filePath',
       type: 'string' as const,
       required: true,
