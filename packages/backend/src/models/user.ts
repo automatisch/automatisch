@@ -126,6 +126,19 @@ class User extends Base {
     },
   });
 
+  get inTrial() {
+    if (!this.trialExpiryDate) {
+      return false;
+    }
+
+    const expiryDate = DateTime.fromJSDate(
+      this.trialExpiryDate as unknown as Date
+    );
+    const now = DateTime.now();
+
+    return now < expiryDate;
+  }
+
   login(password: string) {
     return bcrypt.compare(password, this.password);
   }

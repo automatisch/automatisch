@@ -11,6 +11,7 @@ class UsageData extends Base {
   consumedTaskCount!: number;
   nextResetAt!: string;
   subscription?: Subscription;
+  user?: User;
 
   static tableName = 'usage_data';
 
@@ -47,6 +48,12 @@ class UsageData extends Base {
   });
 
   async checkIfLimitExceeded() {
+    const user = await this.$relatedQuery('user');
+
+    if (user.inTrial) {
+      return false;
+    }
+
     const subscription = await this.$relatedQuery('subscription');
 
     const plan = subscription.plan;
@@ -55,7 +62,9 @@ class UsageData extends Base {
   }
 
   async increaseConsumedTaskCountByOne() {
-    return await this.$query().patch({ consumedTaskCount: raw('consumed_task_count + 1') });
+    return await this.$query().patch({
+      consumedTaskCount: raw('consumed_task_count + 1'),
+    });
   }
 }
 
