@@ -18,6 +18,9 @@ const refreshToken = async ($: IGlobalVariable) => {
       params,
       headers: {
         Authorization: `Basic ${basicAuthToken}`
+      },
+      additionalProperties: {
+        skipAddingAuthHeader: true
       }
     }
   );
