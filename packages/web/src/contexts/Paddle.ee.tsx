@@ -39,11 +39,19 @@ export const PaddleProvider = (
   React.useEffect(function loadPaddleScript() {
     if (!isCloud) return;
 
+    const isInjected = document.getElementById('paddle-js');
+
+    if (isInjected) {
+      setLoaded(true);
+      return;
+    }
+
     const g = document.createElement('script')
     const s = document.getElementsByTagName('script')[0];
     g.src = 'https://cdn.paddle.com/paddle/paddle.js';
     g.defer = true;
     g.async = true;
+    g.id = 'paddle-js';
 
     if (s.parentNode) {
       s.parentNode.insertBefore(g, s);
