@@ -23,9 +23,8 @@ const DEFAULT_DELAY_DURATION = 0;
 export const worker = new Worker(
   'action',
   async (job) => {
-    const { stepId, flowId, executionId, computedParameters, executionStep } = await processAction(
-      job.data as JobData
-    );
+    const { stepId, flowId, executionId, computedParameters, executionStep } =
+      await processAction(job.data as JobData);
 
     const step = await Step.query().findById(stepId).throwIfNotFound();
     const nextStep = await step.getNextStep();
@@ -64,14 +63,17 @@ worker.on('completed', (job) => {
 });
 
 worker.on('failed', (job, err) => {
-  logger.info(
-    `JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}`
-  );
+  const errorMessage = `
+    JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}
+    \n ${err.stack}
+  `;
+
+  logger.error(errorMessage);
 
   Sentry.captureException(err, {
     extra: {
       jobId: job.id,
-    }
+    },
   });
 });
 
