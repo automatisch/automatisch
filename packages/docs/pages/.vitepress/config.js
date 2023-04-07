@@ -207,6 +207,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Strava',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/strava/actions' },
+            { text: 'Connection', link: '/apps/strava/connection' },
+          ],
+        },
+        {
           text: 'Stripe',
           collapsible: true,
           collapsed: true,
