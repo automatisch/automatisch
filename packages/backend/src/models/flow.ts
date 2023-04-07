@@ -136,7 +136,7 @@ class Flow extends Base {
     if (!appConfig.isCloud) return;
 
     const user = await this.$relatedQuery('user');
-    const usageData = await user.$relatedQuery('usageData');
+    const usageData = await user.$relatedQuery('currentUsageData');
 
     const hasExceeded = await usageData.checkIfLimitExceeded();
 

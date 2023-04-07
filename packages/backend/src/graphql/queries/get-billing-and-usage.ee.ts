@@ -13,7 +13,7 @@ const getBillingAndUsage = async (
   context: Context
 ) => {
   const persistedSubscription = await context.currentUser.$relatedQuery(
-    'subscription'
+    'currentSubscription'
   );
 
   const subscription = persistedSubscription
@@ -39,8 +39,8 @@ const paidSubscription = (subscription: Subscription): TSubscription => {
       title: currentPlan.limit,
       action: {
         type: 'link',
-        text: 'Change plan',
-        src: '/settings/billing/change-plan',
+        text: 'Cancel plan',
+        src: subscription.cancelUrl,
       },
     },
     nextBillAmount: {

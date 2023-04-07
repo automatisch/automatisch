@@ -17,6 +17,7 @@ import getPaddleInfo from './queries/get-paddle-info.ee';
 import getBillingAndUsage from './queries/get-billing-and-usage.ee';
 import getInvoices from './queries/get-invoices.ee';
 import getAutomatischInfo from './queries/get-automatisch-info';
+import getTrialStatus from './queries/get-trial-status.ee';
 import healthcheck from './queries/healthcheck';
 
 const queryResolvers = {
@@ -39,6 +40,7 @@ const queryResolvers = {
   getBillingAndUsage,
   getInvoices,
   getAutomatischInfo,
+  getTrialStatus,
   healthcheck,
 };
 

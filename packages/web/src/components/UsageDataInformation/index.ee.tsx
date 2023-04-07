@@ -191,7 +191,8 @@ export default function UsageDataInformation() {
             <Divider sx={{ mt: 2 }} />
           </Box>
 
-          <Button
+          {/* free plan has `null` status so that we can show the upgrade button */}
+          {billingAndUsageData?.subscription?.status === null && <Button
             component={Link}
             to={URLS.SETTINGS_PLAN_UPGRADE}
             size="small"
@@ -199,7 +200,7 @@ export default function UsageDataInformation() {
             sx={{ mt: 2, alignSelf: 'flex-end' }}
           >
             {formatMessage('usageDataInformation.upgrade')}
-          </Button>
+          </Button>}
         </CardContent>
       </Card>
     </React.Fragment>

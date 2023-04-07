@@ -3,7 +3,30 @@ import Subscription from '../../models/subscription.ee';
 import Billing from './index.ee';
 
 const handleSubscriptionCreated = async (request: IRequest) => {
-  await Subscription.query().insertAndFetch(formatSubscription(request));
+  const subscription = await Subscription.query().insertAndFetch(formatSubscription(request));
+  await subscription.$relatedQuery('usageData').insert(formatUsageData(request));
+};
+
+const handleSubscriptionUpdated = async (request: IRequest) => {
+  await Subscription
+    .query()
+    .findOne({
+      paddle_subscription_id: request.body.subscription_id,
+    })
+    .patch(formatSubscription(request));
+};
+
+const handleSubscriptionCancelled = async (request: IRequest) => {
+  const subscription = await Subscription
+    .query()
+    .findOne({
+      paddle_subscription_id: request.body.subscription_id,
+    })
+    .patchAndFetch(formatSubscription(request));
+
+  if (request.body.status === 'deleted') {
+    await subscription.$query().delete();
+  }
 };
 
 const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
@@ -22,6 +45,8 @@ const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
     nextBillDate: remoteSubscription.next_payment.date,
     lastBillDate: remoteSubscription.last_payment.date,
   });
+
+  await subscription.$relatedQuery('usageData').insert(formatUsageData(request));
 };
 
 const formatSubscription = (request: IRequest) => {
@@ -37,8 +62,18 @@ const formatSubscription = (request: IRequest) => {
   };
 };
 
+const formatUsageData = (request: IRequest) => {
+  return {
+    userId: JSON.parse(request.body.passthrough).id,
+    consumedTaskCount: 0,
+    nextResetAt: request.body.next_bill_date,
+  };
+};
+
 const webhooks = {
   handleSubscriptionCreated,
+  handleSubscriptionUpdated,
+  handleSubscriptionCancelled,
   handleSubscriptionPaymentSucceeded,
 };
 

@@ -12,6 +12,10 @@ export default async (request: IRequest, response: Response) => {
 
   if (request.body.alert_name === 'subscription_created') {
     await Billing.webhooks.handleSubscriptionCreated(request);
+  } else if (request.body.alert_name === 'subscription_updated') {
+    await Billing.webhooks.handleSubscriptionUpdated(request);
+  } else if (request.body.alert_name === 'subscription_cancelled') {
+    await Billing.webhooks.handleSubscriptionCancelled(request);
   } else if (request.body.alert_name === 'subscription_payment_succeeded') {
     await Billing.webhooks.handleSubscriptionPaymentSucceeded(request);
   }

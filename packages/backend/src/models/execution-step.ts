@@ -67,7 +67,7 @@ class ExecutionStep extends Base {
       if (!execution.testRun && !this.isFailed) {
         const flow = await execution.$relatedQuery('flow');
         const user = await flow.$relatedQuery('user');
-        const usageData = await user.$relatedQuery('usageData');
+        const usageData = await user.$relatedQuery('currentUsageData');
 
         await usageData.increaseConsumedTaskCountByOne();
       }

@@ -1,14 +1,17 @@
 import { raw } from 'objection';
 import Base from './base';
 import User from './user';
-import PaymentPlan from './payment-plan.ee';
+import Subscription from './subscription.ee';
+import { getPlanById } from '../helpers/billing/plans.ee';
 
 class UsageData extends Base {
   id!: string;
   userId!: string;
+  subscriptionId?: string;
   consumedTaskCount!: number;
   nextResetAt!: string;
-  paymentPlan?: PaymentPlan;
+  subscription?: Subscription;
+  user?: User;
 
   static tableName = 'usage_data';
 
@@ -19,6 +22,7 @@ class UsageData extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       userId: { type: 'string', format: 'uuid' },
+      subscriptionId: { type: 'string', format: 'uuid' },
       consumedTaskCount: { type: 'integer' },
       nextResetAt: { type: 'string' },
     },
@@ -33,24 +37,38 @@ class UsageData extends Base {
         to: 'users.id',
       },
     },
-    paymentPlan: {
+    subscription: {
       relation: Base.BelongsToOneRelation,
-      modelClass: PaymentPlan,
+      modelClass: Subscription,
       join: {
-        from: 'usage_data.user_id',
-        to: 'payment_plans.user_id',
+        from: 'usage_data.subscription_id',
+        to: 'subscriptions.id',
       },
     },
   });
 
   async checkIfLimitExceeded() {
-    const paymentPlan = await this.$relatedQuery('paymentPlan');
+    const user = await this.$relatedQuery('user');
 
-    return this.consumedTaskCount >= paymentPlan.taskCount;
+    if (await user.inTrial()) {
+      return false;
+    }
+
+    const subscription = await this.$relatedQuery('subscription');
+
+    if (!subscription.isActive) {
+      return true;
+    }
+
+    const plan = subscription.plan;
+
+    return this.consumedTaskCount >= plan.quota;
   }
 
   async increaseConsumedTaskCountByOne() {
-    return await this.$query().patch({ consumedTaskCount: raw('consumed_task_count + 1') });
+    return await this.$query().patch({
+      consumedTaskCount: raw('consumed_task_count + 1'),
+    });
   }
 }
 

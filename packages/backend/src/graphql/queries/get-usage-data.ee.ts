@@ -1,6 +1,7 @@
 import appConfig from '../../config/app';
 import Context from '../../types/express/context';
 
+// TODO: remove as getBillingAndUsageData query has been introduced
 const getUsageData = async (
   _parent: unknown,
   _params: unknown,
@@ -9,18 +10,20 @@ const getUsageData = async (
   if (!appConfig.isCloud) return;
 
   const usageData = await context.currentUser
-    .$relatedQuery('usageData')
+    .$relatedQuery('currentUsageData')
     .throwIfNotFound();
 
-  const paymentPlan = await context.currentUser
-    .$relatedQuery('paymentPlan')
+  const subscription = await usageData
+    .$relatedQuery('subscription')
     .throwIfNotFound();
+
+  const plan = subscription.plan;
 
   const computedUsageData = {
-    name: paymentPlan.name,
-    allowedTaskCount: paymentPlan.taskCount,
+    name: plan.name,
+    allowedTaskCount: plan.quota,
     consumedTaskCount: usageData.consumedTaskCount,
-    remainingTaskCount: paymentPlan.taskCount - usageData.consumedTaskCount,
+    remainingTaskCount: plan.quota - usageData.consumedTaskCount,
     nextResetAt: usageData.nextResetAt,
   };
 
