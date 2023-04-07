@@ -18,7 +18,9 @@ export const worker = new Worker(
       await user.$relatedQuery('executions').select('executions.id')
     ).map((execution: Execution) => execution.id);
 
-    await ExecutionStep.query().hardDelete().whereIn('execution_id', executionIds);
+    await ExecutionStep.query()
+      .hardDelete()
+      .whereIn('execution_id', executionIds);
     await user.$relatedQuery('executions').hardDelete();
     await user.$relatedQuery('steps').hardDelete();
     await user.$relatedQuery('flows').hardDelete();
@@ -36,14 +38,17 @@ worker.on('completed', (job) => {
 });
 
 worker.on('failed', (job, err) => {
-  logger.info(
-    `JOB ID: ${job.id} - The user with the ID of '${job.data.id}' has failed to be deleted! ${err.message}`
-  );
+  const errorMessage = `
+    JOB ID: ${job.id} - The user with the ID of '${job.data.id}' has failed to be deleted! ${err.message}
+    \n ${err.stack}
+  `;
+
+  logger.error(errorMessage);
 
   Sentry.captureException(err, {
     extra: {
       jobId: job.id,
-    }
+    },
   });
 });
 

@@ -7,7 +7,10 @@ import logger from '../helpers/logger';
 import actionQueue from '../queues/action';
 import Step from '../models/step';
 import { processTrigger } from '../services/trigger';
-import { REMOVE_AFTER_30_DAYS_OR_150_JOBS, REMOVE_AFTER_7_DAYS_OR_50_JOBS } from '../helpers/remove-job-configuration';
+import {
+  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+} from '../helpers/remove-job-configuration';
 
 type JobData = {
   flowId: string;
@@ -38,7 +41,7 @@ export const worker = new Worker(
     const jobOptions = {
       removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
       removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-    }
+    };
 
     await actionQueue.add(jobName, jobPayload, jobOptions);
   },
@@ -50,14 +53,17 @@ worker.on('completed', (job) => {
 });
 
 worker.on('failed', (job, err) => {
-  logger.info(
-    `JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}`
-  );
+  const errorMessage = `
+    JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}
+    \n ${err.stack}
+  `;
+
+  logger.error(errorMessage);
 
   Sentry.captureException(err, {
     extra: {
       jobId: job.id,
-    }
+    },
   });
 });
 
