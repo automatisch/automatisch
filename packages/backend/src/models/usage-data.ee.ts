@@ -50,11 +50,15 @@ class UsageData extends Base {
   async checkIfLimitExceeded() {
     const user = await this.$relatedQuery('user');
 
-    if (user.inTrial) {
+    if (await user.inTrial()) {
       return false;
     }
 
     const subscription = await this.$relatedQuery('subscription');
+
+    if (!subscription.isActive) {
+      return true;
+    }
 
     const plan = subscription.plan;
 
