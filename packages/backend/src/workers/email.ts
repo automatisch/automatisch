@@ -29,14 +29,17 @@ worker.on('completed', (job) => {
 });
 
 worker.on('failed', (job, err) => {
-  logger.info(
-    `JOB ID: ${job.id} - ${job.data.subject} email to ${job.data.email} has failed to send with ${err.message}`
-  );
+  const errorMessage = `
+    JOB ID: ${job.id} - ${job.data.subject} email to ${job.data.email} has failed to send with ${err.message}
+    \n ${err.stack}
+  `;
+
+  logger.error(errorMessage);
 
   Sentry.captureException(err, {
     extra: {
       jobId: job.id,
-    }
+    },
   });
 });
 
