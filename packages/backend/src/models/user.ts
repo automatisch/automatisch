@@ -165,6 +165,16 @@ class User extends Base {
     this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
   }
 
+  async hasActiveSubscription() {
+    if (!appConfig.isCloud) {
+      return false;
+    }
+
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    return subscription?.isActive;
+  }
+
   async inTrial() {
     if (!appConfig.isCloud) {
       return false;
@@ -174,9 +184,7 @@ class User extends Base {
       return false;
     }
 
-    const subscription = await this.$relatedQuery('currentSubscription');
-
-    if (subscription?.isActive) {
+    if (await this.hasActiveSubscription()) {
       return false;
     }
 

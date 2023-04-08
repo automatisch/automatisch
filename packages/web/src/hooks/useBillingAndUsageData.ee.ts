@@ -23,7 +23,7 @@ function transform(billingAndUsageData: NonNullable<UseBillingAndUsageDataReturn
 }
 
 type UseBillingAndUsageDataReturn = {
-  subscription: TSubscription,
+  subscription: TSubscription;
   usage: {
     task: number;
   }

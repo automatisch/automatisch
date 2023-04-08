@@ -9,7 +9,9 @@ const getTrialStatus = async (
   if (!appConfig.isCloud) return;
 
   const inTrial = await context.currentUser.inTrial();
-  if (!inTrial) return;
+  const hasActiveSubscription = await context.currentUser.hasActiveSubscription();
+
+  if (!inTrial && hasActiveSubscription) return;
 
   return {
     expireAt: context.currentUser.trialExpiryDate,

@@ -152,5 +152,8 @@
   "invoices.date": "Date",
   "invoices.amount": "Amount",
   "invoices.invoice": "Invoice",
-  "invoices.link": "Link"
+  "invoices.link": "Link",
+  "trialBadge.xDaysLeft": "{remainingDays} trial {remainingDays, plural, one {day} other {days}} left",
+  "trialBadge.endsToday": "Trial ends today",
+  "trialBadge.over": "Trial is over"
 }
