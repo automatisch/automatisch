@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
@@ -15,7 +17,8 @@ import * as URLS from 'config/urls';
 import useBillingAndUsageData from 'hooks/useBillingAndUsageData.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 
-const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1, str.length);
+const capitalize = (str: string) =>
+  str[0].toUpperCase() + str.slice(1, str.length);
 
 type BillingCardProps = {
   name: string;
@@ -62,21 +65,13 @@ function Action(props: { action?: TBillingCardAction }) {
   if (type === 'link') {
     if (action.src.startsWith('http')) {
       return (
-        <Button
-          size="small"
-          href={action.src}
-          target="_blank"
-        >
+        <Button size="small" href={action.src} target="_blank">
           {text}
         </Button>
-      )
+      );
     } else {
       return (
-        <Button
-          size="small"
-          component={Link}
-          to={action.src}
-        >
+        <Button size="small" component={Link} to={action.src}>
           {text}
         </Button>
       );
@@ -100,6 +95,21 @@ export default function UsageDataInformation() {
 
   return (
     <React.Fragment>
+      <Stack sx={{ width: '100%', mb: 2 }} spacing={2}>
+        <Alert
+          severity="error"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="subtitle2">
+            Your free trial is over. Please{' '}
+            <Link to={URLS.SETTINGS_PLAN_UPGRADE}>upgrade </Link>
+            your plan to continue using Automatisch.
+          </Typography>
+        </Alert>
+      </Stack>
       <Card sx={{ mb: 3, p: 2 }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
@@ -137,7 +147,9 @@ export default function UsageDataInformation() {
               <BillingCard
                 name={formatMessage('usageDataInformation.nextBillAmount')}
                 title={billingAndUsageData?.subscription?.nextBillAmount.title}
-                action={billingAndUsageData?.subscription?.nextBillAmount.action}
+                action={
+                  billingAndUsageData?.subscription?.nextBillAmount.action
+                }
               />
             </Grid>
 
@@ -192,15 +204,17 @@ export default function UsageDataInformation() {
           </Box>
 
           {/* free plan has `null` status so that we can show the upgrade button */}
-          {billingAndUsageData?.subscription?.status === null && <Button
-            component={Link}
-            to={URLS.SETTINGS_PLAN_UPGRADE}
-            size="small"
-            variant="contained"
-            sx={{ mt: 2, alignSelf: 'flex-end' }}
-          >
-            {formatMessage('usageDataInformation.upgrade')}
-          </Button>}
+          {billingAndUsageData?.subscription?.status === null && (
+            <Button
+              component={Link}
+              to={URLS.SETTINGS_PLAN_UPGRADE}
+              size="small"
+              variant="contained"
+              sx={{ mt: 2, alignSelf: 'flex-end' }}
+            >
+              {formatMessage('usageDataInformation.upgrade')}
+            </Button>
+          )}
         </CardContent>
       </Card>
     </React.Fragment>
