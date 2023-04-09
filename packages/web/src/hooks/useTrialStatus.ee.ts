@@ -7,6 +7,7 @@ import useFormatMessage from './useFormatMessage';
 type UseTrialStatusReturn = {
   expireAt: DateTime;
   message: string;
+  over: boolean;
   status: 'error' | 'warning';
 } | null;
 
@@ -25,11 +26,13 @@ function getFeedbackPayload(date: DateTime) {
     return {
       translationEntryId: 'trialBadge.over',
       status: 'error' as const,
+      over: true,
     };
   } else if (diffInDays <= 0) {
     return {
       translationEntryId: 'trialBadge.endsToday',
       status: 'warning' as const,
+      over: false,
     }
   } else {
     return {
@@ -38,6 +41,7 @@ function getFeedbackPayload(date: DateTime) {
         remainingDays: diffInDays
       },
       status: 'warning' as const,
+      over: false,
     }
   }
 }
@@ -54,11 +58,13 @@ export default function useTrialStatus(): UseTrialStatusReturn {
     translationEntryId,
     translationEntryValues,
     status,
+    over,
   } = getFeedbackPayload(expireAt);
 
   return {
     message: formatMessage(translationEntryId, translationEntryValues),
     expireAt,
+    over,
     status
   };
 }
