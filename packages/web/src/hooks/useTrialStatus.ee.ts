@@ -1,4 +1,6 @@
+import * as React from 'react';
 import { useQuery } from '@apollo/client';
+import { useLocation } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 import { GET_TRIAL_STATUS } from 'graphql/queries/get-trial-status.ee';
@@ -48,7 +50,23 @@ function getFeedbackPayload(date: DateTime) {
 
 export default function useTrialStatus(): UseTrialStatusReturn {
   const formatMessage = useFormatMessage();
-  const { data, loading } = useQuery(GET_TRIAL_STATUS);
+  const location = useLocation();
+  const state = location.state as { checkoutCompleted: boolean };
+  const checkoutCompleted = state?.checkoutCompleted;
+  const { data, loading, startPolling, stopPolling } = useQuery(GET_TRIAL_STATUS);
+  const hasTrial = !!data?.getTrialStatus?.expireAt;
+
+  React.useEffect(function pollDataUntilTrialEnds() {
+    if (checkoutCompleted && hasTrial) {
+      startPolling(1000);
+    }
+  }, [checkoutCompleted, hasTrial, startPolling]);
+
+  React.useEffect(function stopPollingWhenTrialEnds() {
+    if (checkoutCompleted && !hasTrial) {
+      stopPolling();
+    }
+  }, [checkoutCompleted, hasTrial, stopPolling]);
 
   if (loading || !data.getTrialStatus) return null;
 

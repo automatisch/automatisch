@@ -156,5 +156,6 @@
   "trialBadge.xDaysLeft": "{remainingDays} trial {remainingDays, plural, one {day} other {days}} left",
   "trialBadge.endsToday": "Trial ends today",
   "trialBadge.over": "Trial is over",
-  "trialOverAlert.text": "Your free trial is over. Please <link>upgrade</link> your plan to continue using Automatisch."
+  "trialOverAlert.text": "Your free trial is over. Please <link>upgrade</link> your plan to continue using Automatisch.",
+  "checkoutCompletedAlert.text": "Thank you for upgrading your subscription and supporting our self-funded business!"
 }

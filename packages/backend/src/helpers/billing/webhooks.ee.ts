@@ -21,12 +21,11 @@ const handleSubscriptionCancelled = async (request: IRequest) => {
     .query()
     .findOne({
       paddle_subscription_id: request.body.subscription_id,
-    })
-    .patchAndFetch(formatSubscription(request));
+    });
 
-  if (request.body.status === 'deleted') {
-    await subscription.$query().delete();
-  }
+  await subscription.$query().patchAndFetch(formatSubscription(request));
+
+  await subscription.$query().delete();
 };
 
 const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
