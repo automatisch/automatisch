@@ -56,6 +56,10 @@ class UsageData extends Base {
 
     const subscription = await this.$relatedQuery('subscription');
 
+    if (!subscription) {
+      return true;
+    }
+
     if (!subscription.isActive) {
       return true;
     }

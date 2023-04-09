@@ -43,6 +43,7 @@
   "flow.active": "ON",
   "flow.inactive": "OFF",
   "flow.published": "Published",
+  "flow.paused": "Paused",
   "flow.draft": "Draft",
   "flow.successfullyDeleted": "The flow and associated executions have been deleted.",
   "flowEditor.publish": "PUBLISH",

@@ -18,6 +18,26 @@ type FlowRowProps = {
   flow: IFlow;
 };
 
+function getFlowStatusTranslationKey(status: IFlow["status"]): string {
+  if (status === 'published') {
+    return 'flow.published';
+  } else if (status === 'paused') {
+    return 'flow.paused';
+  }
+
+  return 'flow.draft';
+}
+
+function getFlowStatusColor(status: IFlow["status"]): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' {
+  if (status === 'published') {
+    return 'success';
+  } else if (status === 'paused') {
+    return 'error';
+  }
+
+  return 'info';
+}
+
 export default function FlowRow(props: FlowRowProps): React.ReactElement {
   const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef<HTMLButtonElement | null>(null);
@@ -76,10 +96,10 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
             <ContextMenu>
               <Chip
                 size="small"
-                color={flow?.active ? 'success' : 'info'}
+                color={getFlowStatusColor(flow?.status)}
                 variant={flow?.active ? 'filled' : 'outlined'}
                 label={formatMessage(
-                  flow?.active ? 'flow.published' : 'flow.draft'
+                  getFlowStatusTranslationKey(flow?.status)
                 )}
               />
 

@@ -1,5 +1,5 @@
 import { ValidationError } from 'objection';
-import type { ModelOptions, QueryContext } from 'objection';
+import type { ModelOptions, QueryContext, StaticHookArguments } from 'objection';
 import appConfig from '../config/app';
 import ExtendedQueryBuilder from './query-builder';
 import Base from './base';
@@ -14,6 +14,7 @@ class Flow extends Base {
   name!: string;
   userId!: string;
   active: boolean;
+  status: 'paused' | 'published' | 'draft';
   steps: Step[];
   published_at: string;
   remoteWebhookId: string;
@@ -64,6 +65,26 @@ class Flow extends Base {
       },
     },
   });
+
+  static async afterFind(args: StaticHookArguments<any>): Promise<any> {
+    const { result } = args;
+
+    const referenceFlow = result[0];
+
+    if (referenceFlow) {
+      const shouldBePaused = await referenceFlow.isPaused();
+
+      for (const flow of result) {
+        if (!flow.active) {
+          flow.status = 'draft';
+        } else if (flow.active && shouldBePaused) {
+          flow.status = 'paused';
+        } else {
+          flow.status = 'published';
+        }
+      }
+    }
+  }
 
   async lastInternalId() {
     const lastExecution = await this.$relatedQuery('executions')
@@ -130,6 +151,13 @@ class Flow extends Base {
     return await this.$relatedQuery('steps').findOne({
       type: 'trigger',
     });
+  }
+
+  async isPaused() {
+    const user = await this.$relatedQuery('user');
+    const currentUsageData = await user.$relatedQuery('currentUsageData');
+
+    return await currentUsageData.checkIfLimitExceeded();
   }
 
   async checkIfQuotaExceeded() {

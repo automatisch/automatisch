@@ -73,6 +73,7 @@ export interface IFlow {
   name: string;
   userId: string;
   active: boolean;
+  status: 'paused' | 'published' | 'draft';
   steps: IStep[];
   createdAt: string;
   updatedAt: string;
