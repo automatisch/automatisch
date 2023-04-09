@@ -12,6 +12,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import * as URLS from 'config/urls';
 import AccountDropdownMenu from 'components/AccountDropdownMenu';
+import TrialStatusBadge from 'components/TrialStatusBadge/index.ee';
 import Container from 'components/Container';
 import { FormattedMessage } from 'react-intl';
 import { Link } from './style';
@@ -67,9 +68,10 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
             </Link>
           </div>
 
+          <TrialStatusBadge />
+
           <IconButton
             size="large"
-            edge="start"
             color="inherit"
             onClick={handleAccountMenuOpen}
             aria-controls={accountMenuId}
