@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { TBillingCardAction } from '@automatisch/types';
+import TrialOverAlert from 'components/TrialOverAlert/index.ee';
 import * as URLS from 'config/urls';
 import useBillingAndUsageData from 'hooks/useBillingAndUsageData.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -96,19 +97,7 @@ export default function UsageDataInformation() {
   return (
     <React.Fragment>
       <Stack sx={{ width: '100%', mb: 2 }} spacing={2}>
-        <Alert
-          severity="error"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="subtitle2">
-            Your free trial is over. Please{' '}
-            <Link to={URLS.SETTINGS_PLAN_UPGRADE}>upgrade </Link>
-            your plan to continue using Automatisch.
-          </Typography>
-        </Alert>
+        <TrialOverAlert />
       </Stack>
       <Card sx={{ mb: 3, p: 2 }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
