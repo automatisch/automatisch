@@ -2,7 +2,6 @@ import { raw } from 'objection';
 import Base from './base';
 import User from './user';
 import Subscription from './subscription.ee';
-import { getPlanById } from '../helpers/billing/plans.ee';
 
 class UsageData extends Base {
   id!: string;
@@ -46,28 +45,6 @@ class UsageData extends Base {
       },
     },
   });
-
-  async checkIfLimitExceeded() {
-    const user = await this.$relatedQuery('user');
-
-    if (await user.inTrial()) {
-      return false;
-    }
-
-    const subscription = await this.$relatedQuery('subscription');
-
-    if (!subscription) {
-      return true;
-    }
-
-    if (!subscription.isActive) {
-      return true;
-    }
-
-    const plan = subscription.plan;
-
-    return this.consumedTaskCount >= plan.quota;
-  }
 
   async increaseConsumedTaskCountByOne() {
     return await this.$query().patch({

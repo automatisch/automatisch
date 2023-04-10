@@ -165,18 +165,24 @@ class User extends Base {
     this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
   }
 
-  async hasActiveSubscription() {
-    if (!appConfig.isCloud) {
-      return false;
+  async isAllowedToRunFlows() {
+    if (appConfig.isSelfHosted) {
+      return true;
     }
 
-    const subscription = await this.$relatedQuery('currentSubscription');
+    if (await this.inTrial()) {
+      return true;
+    }
 
-    return subscription?.isActive;
+    if ((await this.hasActiveSubscription()) && (await this.withinLimits())) {
+      return true;
+    }
+
+    return false;
   }
 
   async inTrial() {
-    if (!appConfig.isCloud) {
+    if (appConfig.isSelfHosted) {
       return false;
     }
 
@@ -194,6 +200,24 @@ class User extends Base {
     const now = DateTime.now();
 
     return now < expiryDate;
+  }
+
+  async hasActiveSubscription() {
+    if (!appConfig.isCloud) {
+      return false;
+    }
+
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    return subscription?.isActive;
+  }
+
+  async withinLimits() {
+    const currentSubscription = await this.$relatedQuery('currentSubscription');
+    const plan = currentSubscription.plan;
+    const currentUsageData = await this.$relatedQuery('currentUsageData');
+
+    return currentUsageData.consumedTaskCount >= plan.quota;
   }
 
   async $beforeInsert(queryContext: QueryContext) {
