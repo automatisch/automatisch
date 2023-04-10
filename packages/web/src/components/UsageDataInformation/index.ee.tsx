@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,6 +13,7 @@ import Typography from '@mui/material/Typography';
 
 import { TBillingCardAction } from '@automatisch/types';
 import TrialOverAlert from 'components/TrialOverAlert/index.ee';
+import CheckoutCompletedAlert from 'components/CheckoutCompletedAlert/index.ee';
 import * as URLS from 'config/urls';
 import useBillingAndUsageData from 'hooks/useBillingAndUsageData.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -98,6 +98,8 @@ export default function UsageDataInformation() {
     <React.Fragment>
       <Stack sx={{ width: '100%', mb: 2 }} spacing={2}>
         <TrialOverAlert />
+
+        <CheckoutCompletedAlert />
       </Stack>
       <Card sx={{ mb: 3, p: 2 }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
