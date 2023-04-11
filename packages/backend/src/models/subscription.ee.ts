@@ -14,6 +14,7 @@ class Subscription extends Base {
   nextBillAmount!: string;
   nextBillDate!: string;
   lastBillDate?: string;
+  cancellationEffectiveDate?: string;
   usageData?: UsageData[];
   currentUsageData?: UsageData;
 
@@ -43,6 +44,7 @@ class Subscription extends Base {
       nextBillAmount: { type: 'string' },
       nextBillDate: { type: 'string' },
       lastBillDate: { type: 'string' },
+      cancellationEffectiveDate: { type: 'string' },
     },
   };
 

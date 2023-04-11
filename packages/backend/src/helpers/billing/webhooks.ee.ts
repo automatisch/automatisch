@@ -3,13 +3,16 @@ import Subscription from '../../models/subscription.ee';
 import Billing from './index.ee';
 
 const handleSubscriptionCreated = async (request: IRequest) => {
-  const subscription = await Subscription.query().insertAndFetch(formatSubscription(request));
-  await subscription.$relatedQuery('usageData').insert(formatUsageData(request));
+  const subscription = await Subscription.query().insertAndFetch(
+    formatSubscription(request)
+  );
+  await subscription
+    .$relatedQuery('usageData')
+    .insert(formatUsageData(request));
 };
 
 const handleSubscriptionUpdated = async (request: IRequest) => {
-  await Subscription
-    .query()
+  await Subscription.query()
     .findOne({
       paddle_subscription_id: request.body.subscription_id,
     })
@@ -17,15 +20,15 @@ const handleSubscriptionUpdated = async (request: IRequest) => {
 };
 
 const handleSubscriptionCancelled = async (request: IRequest) => {
-  const subscription = await Subscription
-    .query()
-    .findOne({
-      paddle_subscription_id: request.body.subscription_id,
-    });
+  const subscription = await Subscription.query().findOne({
+    paddle_subscription_id: request.body.subscription_id,
+  });
 
   await subscription.$query().patchAndFetch(formatSubscription(request));
 
-  await subscription.$query().delete();
+  // Have a background job that deletes the subscription in cancellation effective date
+  // Architect in a way that it will behave as cron.
+  // await subscription.$query().delete();
 };
 
 const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
@@ -45,7 +48,9 @@ const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
     lastBillDate: remoteSubscription.last_payment.date,
   });
 
-  await subscription.$relatedQuery('usageData').insert(formatUsageData(request));
+  await subscription
+    .$relatedQuery('usageData')
+    .insert(formatUsageData(request));
 };
 
 const formatSubscription = (request: IRequest) => {
@@ -58,6 +63,7 @@ const formatSubscription = (request: IRequest) => {
     status: request.body.status,
     nextBillDate: request.body.next_bill_date,
     nextBillAmount: request.body.unit_price,
+    cancellationEffectiveDate: request.body.cancellation_effective_date,
   };
 };
 
