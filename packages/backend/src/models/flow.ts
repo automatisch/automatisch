@@ -1,19 +1,22 @@
 import { ValidationError } from 'objection';
-import type { ModelOptions, QueryContext } from 'objection';
-import appConfig from '../config/app';
+import type {
+  ModelOptions,
+  QueryContext,
+  StaticHookArguments,
+} from 'objection';
 import ExtendedQueryBuilder from './query-builder';
 import Base from './base';
 import Step from './step';
 import User from './user';
 import Execution from './execution';
 import Telemetry from '../helpers/telemetry';
-import QuotaExceededError from '../errors/quote-exceeded';
 
 class Flow extends Base {
   id!: string;
   name!: string;
   userId!: string;
   active: boolean;
+  status: 'paused' | 'published' | 'draft';
   steps: Step[];
   published_at: string;
   remoteWebhookId: string;
@@ -64,6 +67,26 @@ class Flow extends Base {
       },
     },
   });
+
+  static async afterFind(args: StaticHookArguments<any>): Promise<any> {
+    const { result } = args;
+
+    const referenceFlow = result[0];
+
+    if (referenceFlow) {
+      const shouldBePaused = await referenceFlow.isPaused();
+
+      for (const flow of result) {
+        if (!flow.active) {
+          flow.status = 'draft';
+        } else if (flow.active && shouldBePaused) {
+          flow.status = 'paused';
+        } else {
+          flow.status = 'published';
+        }
+      }
+    }
+  }
 
   async lastInternalId() {
     const lastExecution = await this.$relatedQuery('executions')
@@ -132,31 +155,9 @@ class Flow extends Base {
     });
   }
 
-  async checkIfQuotaExceeded() {
-    if (!appConfig.isCloud) return;
-
+  async isPaused() {
     const user = await this.$relatedQuery('user');
-    const usageData = await user.$relatedQuery('currentUsageData');
-
-    const hasExceeded = await usageData.checkIfLimitExceeded();
-
-    if (hasExceeded) {
-      return true;
-    }
-
-    return false;
-  }
-
-  async throwIfQuotaExceeded() {
-    if (!appConfig.isCloud) return;
-
-    const hasExceeded = await this.checkIfQuotaExceeded();
-
-    if (hasExceeded) {
-      throw new QuotaExceededError();
-    }
-
-    return this;
+    return await user.isAllowedToRunFlows();
   }
 }
 

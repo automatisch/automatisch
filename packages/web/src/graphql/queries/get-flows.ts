@@ -26,6 +26,7 @@ export const GET_FLOWS = gql`
           createdAt
           updatedAt
           active
+          status
           steps {
             iconUrl
           }

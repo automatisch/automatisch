@@ -250,6 +250,12 @@ type FlowEdge {
   node: Flow
 }
 
+enum FlowStatus {
+  paused
+  published
+  draft
+}
+
 type Flow {
   id: String
   name: String
@@ -257,6 +263,7 @@ type Flow {
   steps: [Step]
   createdAt: String
   updatedAt: String
+  status: FlowStatus
 }
 
 type Execution {

@@ -17,10 +17,10 @@ export const worker = new Worker(
     const { flowId } = job.data;
 
     const flow = await Flow.query().findById(flowId).throwIfNotFound();
+    const user = await flow.$relatedQuery('user');
+    const allowedToRunFlows = await user.isAllowedToRunFlows();
 
-    const quotaExceeded = await flow.checkIfQuotaExceeded();
-
-    if (quotaExceeded) {
+    if (!allowedToRunFlows) {
       return;
     }
 
