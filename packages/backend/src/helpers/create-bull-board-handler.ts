@@ -6,6 +6,7 @@ import triggerQueue from '../queues/trigger';
 import actionQueue from '../queues/action';
 import emailQueue from '../queues/email';
 import deleteUserQueue from '../queues/delete-user.ee';
+import removeCancelledSubscriptionsQueue from '../queues/remove-cancelled-subscriptions.ee';
 import appConfig from '../config/app';
 
 const serverAdapter = new ExpressAdapter();
@@ -25,6 +26,7 @@ const createBullBoardHandler = async (serverAdapter: ExpressAdapter) => {
       new BullMQAdapter(actionQueue),
       new BullMQAdapter(emailQueue),
       new BullMQAdapter(deleteUserQueue),
+      new BullMQAdapter(removeCancelledSubscriptionsQueue),
     ],
     serverAdapter: serverAdapter,
   });

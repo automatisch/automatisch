@@ -25,10 +25,6 @@ const handleSubscriptionCancelled = async (request: IRequest) => {
   });
 
   await subscription.$query().patchAndFetch(formatSubscription(request));
-
-  // Have a background job that deletes the subscription in cancellation effective date
-  // Architect in a way that it will behave as cron.
-  // await subscription.$query().delete();
 };
 
 const handleSubscriptionPaymentSucceeded = async (request: IRequest) => {
