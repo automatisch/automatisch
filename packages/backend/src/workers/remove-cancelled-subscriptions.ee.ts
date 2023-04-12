@@ -11,7 +11,7 @@ export const worker = new Worker(
     await Subscription.query()
       .delete()
       .where({
-        status: 'cancelled',
+        status: 'deleted',
       })
       .andWhere(
         'cancellation_effective_date',
