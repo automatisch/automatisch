@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 
 import { TBillingCardAction } from '@automatisch/types';
 import TrialOverAlert from 'components/TrialOverAlert/index.ee';
+import SubscriptionCancelledAlert from 'components/SubscriptionCancelledAlert/index.ee';
 import CheckoutCompletedAlert from 'components/CheckoutCompletedAlert/index.ee';
 import * as URLS from 'config/urls';
 import useBillingAndUsageData from 'hooks/useBillingAndUsageData.ee';
@@ -97,6 +98,8 @@ export default function UsageDataInformation() {
   return (
     <React.Fragment>
       <Stack sx={{ width: '100%', mb: 2 }} spacing={2}>
+        <SubscriptionCancelledAlert />
+
         <TrialOverAlert />
 
         <CheckoutCompletedAlert />
