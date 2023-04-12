@@ -44,7 +44,9 @@ const paidSubscription = (subscription: Subscription): TSubscription => {
       },
     },
     nextBillAmount: {
-      title: '€' + subscription.nextBillAmount,
+      title: subscription.nextBillAmount
+        ? '€' + subscription.nextBillAmount
+        : '---',
       action: {
         type: 'link',
         text: 'Update payment method',
@@ -52,7 +54,7 @@ const paidSubscription = (subscription: Subscription): TSubscription => {
       },
     },
     nextBillDate: {
-      title: subscription.nextBillDate,
+      title: subscription.nextBillDate ? subscription.nextBillDate : '---',
       action: {
         type: 'text',
         text: '(monthly payment)',

@@ -41,6 +41,7 @@ type Query {
   getInvoices: [Invoice]
   getAutomatischInfo: GetAutomatischInfo
   getTrialStatus: GetTrialStatus
+  getSubscriptionStatus: GetSubscriptionStatus
   healthcheck: AppHealth
 }
 
@@ -485,6 +486,10 @@ type GetAutomatischInfo {
 
 type GetTrialStatus {
   expireAt: String
+}
+
+type GetSubscriptionStatus {
+  cancellationEffectiveDate: String
 }
 
 type GetBillingAndUsage {
