@@ -217,7 +217,7 @@ class User extends Base {
     const plan = currentSubscription.plan;
     const currentUsageData = await this.$relatedQuery('currentUsageData');
 
-    return currentUsageData.consumedTaskCount >= plan.quota;
+    return currentUsageData.consumedTaskCount < plan.quota;
   }
 
   async $beforeInsert(queryContext: QueryContext) {
