@@ -1,6 +1,7 @@
 import Base from './base';
 import User from './user';
 import UsageData from './usage-data.ee';
+import { DateTime } from 'luxon';
 import { getPlanById } from '../helpers/billing/plans.ee';
 
 class Subscription extends Base {
@@ -79,8 +80,20 @@ class Subscription extends Base {
     return getPlanById(this.paddlePlanId);
   }
 
-  get isActive() {
-    return this.status === 'active' || this.status === 'past_due';
+  get isCancelledAndValid() {
+    return (
+      this.status === 'deleted' &&
+      Number(this.cancellationEffectiveDate) >
+        DateTime.now().startOf('day').toMillis()
+    );
+  }
+
+  get isValid() {
+    if (this.status === 'active') return true;
+    if (this.status === 'past_due') return true;
+    if (this.isCancelledAndValid) return true;
+
+    return false;
   }
 }
 

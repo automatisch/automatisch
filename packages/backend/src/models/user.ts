@@ -209,7 +209,7 @@ class User extends Base {
 
     const subscription = await this.$relatedQuery('currentSubscription');
 
-    return subscription?.isActive;
+    return subscription?.isValid;
   }
 
   async withinLimits() {
