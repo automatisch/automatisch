@@ -34,7 +34,6 @@ type Query {
     parameters: JSONObject
   ): [SubstepArgument]
   getCurrentUser: User
-  getUsageData: GetUsageData
   getPaymentPlans: [PaymentPlan]
   getPaddleInfo: GetPaddleInfo
   getBillingAndUsage: GetBillingAndUsage
@@ -527,14 +526,6 @@ type Subscription {
 
 type Usage {
   task: Int
-}
-
-type GetUsageData {
-  name: String
-  allowedTaskCount: Int
-  consumedTaskCount: Int
-  remainingTaskCount: Int
-  nextResetAt: String
 }
 
 type GetPaddleInfo {
