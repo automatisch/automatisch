@@ -23,6 +23,7 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 | `WEB_APP_URL`               | string  |                    | Can be used to override connection URLs and CORS URL |
 | `WEBHOOK_URL`               | string  |                    | Can be used to override webhook URL                  |
 | `POSTGRES_DATABASE`         | string  | `automatisch`      | Database Name                                        |
+| `POSTGRES_SCHEMA`           | string  | `public`           | Database Schema                                      |
 | `POSTGRES_PORT`             | number  | `5432`             | Database Port                                        |
 | `POSTGRES_HOST`             | string  | `postgres`         | Database Host                                        |
 | `POSTGRES_USERNAME`         | string  | `automatisch_user` | Database User                                        |

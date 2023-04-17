@@ -12,6 +12,7 @@ const knexConfig = {
     database: appConfig.postgresDatabase,
     ssl: appConfig.postgresEnableSsl,
   },
+  searchPath: [appConfig.postgresSchema],
   pool: { min: 0, max: 20 },
   migrations: {
     directory: __dirname + '/src/db/migrations',
