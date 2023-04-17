@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>Automatisch</Name>
+  <Repository>automatischio/automatisch</Repository>
+  <Registry>https://hub.docker.com/r/automatischio/automatisch</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/automatisch/automatisch/issues/new</Support>
+  <Project>https://github.com/automatisch/automatisch</Project>
+  <Overview>Automatisch is a business automation tool that lets you connect different services like Twitter, Slack, and more to automate your business processes. Automating your workflows doesn't have to be a difficult or expensive process. You also don't need any programming knowledge to use Automatisch.</Overview>
+  <Category>HomeAutomation: Productivity:</Category>
+  <WebUI>http://[IP]:[PORT:3000]</WebUI>
+  <TemplateURL/>
+  <Icon/>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1681758984</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>&amp;lt;br /&amp;gt;PostgreSQL, Redis, AutomatischWorker&amp;lt;br /&amp;gt;&#xD;
+This container requires an external application to be run separately.</Requires>
+  <Config Name="AppData" Target="/automatisch/storage" Default="/mnt/user/appdata/automatisch" Mode="rw" Description="" Type="Path" Display="always" Required="true" Mask="false"></Config>
+  <Config Name="APP_ENV" Target="APP_ENV" Default="production" Mode="" Description="Automatisch Environment" Type="Variable" Display="always" Required="true" Mask="false">production</Config>
+  <Config Name="WEB_APP_URL" Target="WEB_APP_URL" Default="" Mode="" Description="Can be used to override connection URLs and CORS URL" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="WEBHOOK_URL" Target="WEBHOOK_URL" Default="" Mode="" Description="Can be used to override webhook URL" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="POSTGRES_DATABASE" Target="POSTGRES_DATABASE" Default="automatisch" Mode="" Description="Database Name" Type="Variable" Display="always" Required="true" Mask="false">automatisch</Config>
+  <Config Name="POSTGRES_PORT" Target="POSTGRES_PORT" Default="5432" Mode="" Description="Database Port" Type="Variable" Display="always" Required="true" Mask="false">5432</Config>
+  <Config Name="POSTGRES_HOST" Target="POSTGRES_HOST" Default="postgres" Mode="" Description="Database Host" Type="Variable" Display="always" Required="true" Mask="false">postgres</Config>
+  <Config Name="POSTGRES_USERNAME" Target="POSTGRES_USERNAME" Default="automatisch_user" Mode="" Description="Database User" Type="Variable" Display="always" Required="true" Mask="false">automatisch_user</Config>
+  <Config Name="POSTGRES_PASSWORD" Target="POSTGRES_PASSWORD" Default="" Mode="" Description="Password of Database User" Type="Variable" Display="always" Required="false" Mask="true"></Config>
+  <Config Name="ENCRYPTION_KEY" Target="ENCRYPTION_KEY" Default="" Mode="" Description="Encryption Key to store credentials" Type="Variable" Display="always" Required="true" Mask="true"></Config>
+  <Config Name="WEBHOOK_SECRET_KEY" Target="WEBHOOK_SECRET_KEY" Default="" Mode="" Description="Webhook Secret Key to verify webhook requests" Type="Variable" Display="always" Required="true" Mask="true"></Config>
+  <Config Name="APP_SECRET_KEY" Target="APP_SECRET_KEY" Default="" Mode="" Description="Secret Key to authenticate the user" Type="Variable" Display="always" Required="false" Mask="true"></Config>
+  <Config Name="REDIS_HOST" Target="REDIS_HOST" Default="redis" Mode="" Description="Redis Host" Type="Variable" Display="always" Required="true" Mask="false">redis</Config>
+  <Config Name="REDIS_PORT" Target="REDIS_PORT" Default="6379" Mode="" Description="Redis Port" Type="Variable" Display="always" Required="true" Mask="false">6379</Config>
+  <Config Name="REDIS_USERNAME" Target="REDIS_USERNAME" Default="" Mode="" Description="Redis Username" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="REDIS_PASSWORD" Target="REDIS_PASSWORD" Default="" Mode="" Description="Redis Password" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="REDIS_TLS" Target="REDIS_TLS" Default="false" Mode="" Description="Redis TLS" Type="Variable" Display="always" Required="true" Mask="false">false</Config>
+  <Config Name="TELEMETRY_ENABLED" Target="TELEMETRY_ENABLED" Default="true" Mode="" Description="Enable/Disable Telemetry" Type="Variable" Display="always" Required="true" Mask="false">true</Config>
+  <Config Name="ENABLE_BULLMQ_DASHBOARD" Target="ENABLE_BULLMQ_DASHBOARD" Default="false" Mode="" Description="Enable BullMQ Dashboard" Type="Variable" Display="always" Required="true" Mask="false">false</Config>
+  <Config Name="BULLMQ_DASHBOARD_USERNAME" Target="BULLMQ_DASHBOARD_USERNAME" Default="" Mode="" Description="Username to login BullMQ Dashboard" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="BULLMQ_DASHBOARD_PASSWORD" Target="BULLMQ_DASHBOARD_PASSWORD" Default="" Mode="" Description="Password to login BullMQ Dashboard" Type="Variable" Display="always" Required="false" Mask="true"/>
+</Container>
