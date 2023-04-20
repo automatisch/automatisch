@@ -74,6 +74,10 @@ REDIS_TLS=
 
 :::
 
+::: info
+You can use the `openssl rand -base64 36` command in your terminal to generate a random string for the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment variables.
+:::
+
 ## Render
 
 <a href="https://render.com/deploy?repo=https://github.com/automatisch/automatisch">
