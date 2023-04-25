@@ -17,7 +17,7 @@
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
     "db:migrate": "knex migrate:latest",
-    "copy-statics": "copyfiles src/**/*.{graphql,json,svg} dist",
+    "copy-statics": "copyfiles src/**/*.{graphql,json,svg,hbs} dist",
     "prepack": "yarn build",
     "prebuild": "rm -rf ./dist"
   },
