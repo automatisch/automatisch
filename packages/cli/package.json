@@ -1,6 +1,6 @@
 {
   "name": "@automatisch/cli",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "license": "See LICENSE file",
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "contributors": [
@@ -33,7 +33,7 @@
     "version": "oclif readme && git add README.md"
   },
   "dependencies": {
-    "@automatisch/backend": "^0.6.0",
+    "@automatisch/backend": "^0.6.1",
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.0.1",

@@ -4,7 +4,7 @@ WORKDIR /automatisch
 
 RUN \
   apk --no-cache add --virtual build-dependencies python3 build-base && \
-  yarn global add @automatisch/cli@0.6.0 --network-timeout 1000000 && \
+  yarn global add @automatisch/cli@0.6.1 --network-timeout 1000000 && \
   rm -rf /usr/local/share/.cache/ && \
   apk del build-dependencies
 
