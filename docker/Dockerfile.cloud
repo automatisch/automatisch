@@ -1,0 +1,19 @@
+# syntax=docker/dockerfile:1
+FROM node:16-alpine
+WORKDIR /automatisch
+
+ENV PORT 3000
+
+RUN ls -lna
+
+# copy the app, note .dockerignore
+COPY . ./
+
+RUN yarn
+RUN yarn lerna bootstrap
+RUN yarn lerna run --scope=@*/{web,backend,cli} build
+
+COPY ./docker/entrypoint-cloud.sh /entrypoint-cloud.sh
+
+EXPOSE 3000
+ENTRYPOINT ["sh", "/entrypoint-cloud.sh"]
