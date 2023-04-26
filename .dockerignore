@@ -1,0 +1,8 @@
+**/node_modules/
+**/dist/
+**/logs/
+**/.devcontainer
+**/.github
+**/.vscode
+packages/docs
+packages/e2e-test
