@@ -10,6 +10,7 @@ type AppConfig = {
   webhookUrl: string;
   appEnv: string;
   isDev: boolean;
+  isProd: boolean;
   postgresDatabase: string;
   postgresSchema: string;
   postgresPort: number;
@@ -80,6 +81,7 @@ const appConfig: AppConfig = {
   port,
   appEnv: appEnv,
   isDev: appEnv === 'development',
+  isProd: appEnv === 'production',
   version: process.env.npm_package_version,
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
   postgresSchema: process.env.POSTGRES_SCHEMA || 'public',
