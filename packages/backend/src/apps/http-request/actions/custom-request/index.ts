@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios';
 import defineAction from '../../../../helpers/define-action';
 
 type TMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
@@ -8,6 +9,11 @@ type THeaderEntry = {
 }
 
 type THeaderEntries = THeaderEntry[];
+
+function isPossiblyNotTextBased(contentType: string) {
+  return contentType.startsWith('application/json')
+    || contentType.startsWith('text/');
+}
 
 export default defineAction({
   name: 'Custom Request',
@@ -93,17 +99,24 @@ export default defineAction({
       );
     }
 
-    const response = await $.http.request({
+    const contentType = metadataResponse.headers['content-type'];
+    const requestData: AxiosRequestConfig = {
       url,
       method,
       data,
       headers: headersObject,
-    });
+    };
+
+    if (!isPossiblyNotTextBased(contentType)) {
+      requestData.responseType = 'arraybuffer';
+    }
+
+    const response = await $.http.request(requestData);
 
     let responseData = response.data;
 
-    if (typeof response.data === 'string') {
-      responseData = response.data.replaceAll('\u0000', '');
+    if (!isPossiblyNotTextBased(contentType)) {
+      responseData = Buffer.from(responseData as string).toString('base64');
     }
 
     $.setActionItem({ raw: { data: responseData } });
