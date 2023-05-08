@@ -77,7 +77,7 @@
   "flowEditor.goBack": "Go back to flows",
   "executions.title": "Executions",
   "executions.noExecutions": "There is no execution data point to show.",
-  "execution.executedAt": "executed {datetime}",
+  "execution.updatedAt": "updated {datetime}",
   "execution.test": "Test run",
   "execution.statusSuccess": "Success",
   "execution.statusFailure": "Failure",

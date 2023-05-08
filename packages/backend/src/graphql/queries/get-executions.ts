@@ -32,7 +32,7 @@ const getExecutions = async (
       },
     })
     .groupBy('executions.id')
-    .orderBy('created_at', 'desc');
+    .orderBy('updated_at', 'desc');
 
   return paginate(executions, params.limit, params.offset);
 };
