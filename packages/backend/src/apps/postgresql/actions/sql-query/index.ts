@@ -1,6 +1,6 @@
 import { IJSONObject } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
-import setConfig from '../../common/postgres-configuration';
+import setConfig from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
 
 export default defineAction({
@@ -45,16 +45,16 @@ export default defineAction({
   async run($) {
     const pgClient = await setConfig($)
 
-    const params : any = $.step.parameters.params
-    if (params[0].configParam != '') 
-        await setParams($, pgClient)
-    
+    const params: any = $.step.parameters.params
+    if (params[0].configParam != '')
+      await setParams($, pgClient)
+
 
     const queryStatemnt = $.step.parameters.queryStatement
     const response = await pgClient.raw(queryStatemnt);
-    
-    const res = { msg: `SQL query: " ${$.step.parameters.queryStatement} " has been executed successfully`}
-  
-    $.setActionItem({ raw: res as IJSONObject });    
+
+    const res = { msg: `SQL query: " ${$.step.parameters.queryStatement} " has been executed successfully` }
+
+    $.setActionItem({ raw: res as IJSONObject });
   },
 });
