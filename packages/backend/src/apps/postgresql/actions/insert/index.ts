@@ -1,11 +1,11 @@
-import { IJSONObject, IJSONArray } from '@automatisch/types';
+import { IJSONObject } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
-import setConfig from '../../common/postgres-configuration';
+import setConfig from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
 
 export default defineAction({
-  name: 'Delete',
-  key: 'delete',
+  name: 'Insert',
+  key: 'insert',
   description: 'Cteate new item in a table in specific schema in postgreSQL.',
   arguments: [
     {
@@ -26,12 +26,27 @@ export default defineAction({
       variables: false,
     },
     {
-      label: 'Where statement',
-      key: 'whereStatement',
-      type: 'string' as const,
+      label: 'Fields',
+      key: 'fields',
+      type: 'dynamic' as const,
       required: true,
-      description: 'The condition column and relational operator and condition value  - For example: id,=,1',
-      variables: true,
+      description: 'Table columns with values',
+      fields: [
+        {
+          label: 'Column name',
+          key: 'columnName',
+          type: 'string' as const,
+          required: true,
+          variables: false,
+        },
+        {
+          label: 'Value',
+          key: 'value',
+          type: 'string' as const,
+          required: true,
+          variables: true,
+        }
+      ],
     },
     {
       label: 'Run-time parameters',
@@ -61,25 +76,18 @@ export default defineAction({
   async run($) {
     const pgClient = await setConfig($)
 
-    const params : any = $.step.parameters.params
-    if (params[0].configParam != '') 
-        await setParams($, pgClient)
+    const params: any = $.step.parameters.params
+    if (params[0].configParam != '')
+      await setParams($, pgClient)
 
-    const whereStatemennt = $.step.parameters.whereStatement as string
-    const whereParts = whereStatemennt.split(",")
-
-    const conditionColumn = whereParts[0]
-    const RelationalOperator = whereParts[1]
-    const conditionValue = whereParts[2]
+    const fields: any = $.step.parameters.fields
+    let data: IJSONObject = {}
+    fields.forEach((ele: any) => { data[ele.columnName] = ele.value })
 
     const response = await pgClient(`${$.step.parameters.schema}.${$.step.parameters.table}`)
-                    .returning('*')
-                    .where(conditionColumn, RelationalOperator, conditionValue)
-                    .del() as IJSONArray
+      .returning('*')
+      .insert(data) as IJSONObject
 
-    let deletedData : IJSONObject = {}
-    response.forEach( (ele: IJSONObject, i : number) => { deletedData[`record${i}`] = ele } )
-
-    $.setActionItem({ raw: deletedData as IJSONObject });    
+    $.setActionItem({ raw: response[0] as IJSONObject });
   },
 });

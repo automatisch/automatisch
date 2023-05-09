@@ -1,6 +1,6 @@
 import { IJSONObject, IJSONArray } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
-import setConfig from '../../common/postgres-configuration';
+import setConfig from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
 
 export default defineAction({
@@ -84,9 +84,9 @@ export default defineAction({
   async run($) {
     const pgClient = await setConfig($)
 
-    const params : any = $.step.parameters.params
-    if (params[0].configParam != '') 
-        await setParams($, pgClient)
+    const params: any = $.step.parameters.params
+    if (params[0].configParam != '')
+      await setParams($, pgClient)
 
     const whereStatemennt = $.step.parameters.whereStatement as string
     const whereParts = whereStatemennt.split(",")
@@ -95,18 +95,18 @@ export default defineAction({
     const RelationalOperator = whereParts[1]
     const conditionValue = whereParts[2]
 
-    const fields : any = $.step.parameters.fields
-    let data : IJSONObject = {}
-    fields.forEach( (ele: any) => { data[ele.columnName] = ele.value } )
+    const fields: any = $.step.parameters.fields
+    let data: IJSONObject = {}
+    fields.forEach((ele: any) => { data[ele.columnName] = ele.value })
 
     const response = await pgClient(`${$.step.parameters.schema}.${$.step.parameters.table}`)
-                    .returning('*')
-                    .where(conditionColumn, RelationalOperator, conditionValue)
-                    .update(data) as IJSONArray
+      .returning('*')
+      .where(conditionColumn, RelationalOperator, conditionValue)
+      .update(data) as IJSONArray
 
-    let updatedData : IJSONObject = {}
-    response.forEach( (ele: IJSONObject, i : number) => { updatedData[`record${i}`] = ele } )
+    let updatedData: IJSONObject = {}
+    response.forEach((ele: IJSONObject, i: number) => { updatedData[`record${i}`] = ele })
 
-    $.setActionItem({ raw: updatedData as IJSONObject });    
+    $.setActionItem({ raw: updatedData as IJSONObject });
   },
 });

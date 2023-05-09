@@ -1,0 +1,23 @@
+import { IGlobalVariable } from '@automatisch/types';
+import logger from '../../../helpers/logger';
+import getClient from '../common/postgres-client';
+
+const verifyCredentials = async ($: IGlobalVariable) => {
+  const pgClient = getClient($);
+  const checkConnection = await pgClient.raw('SELECT 1');
+
+  logger.debug(checkConnection);
+
+  await $.auth.set({
+    screenName: `${$.auth.data.user}@${$.auth.data.host}:${$.auth.data.port}/${$.auth.data.database}`,
+    client: 'pg',
+    version: $.auth.data.version,
+    host: $.auth.data.host,
+    port: Number($.auth.data.port),
+    user: $.auth.data.user,
+    password: $.auth.data.password,
+    database: $.auth.data.database
+  });
+};
+
+export default verifyCredentials;
