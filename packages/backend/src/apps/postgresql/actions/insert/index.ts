@@ -1,6 +1,6 @@
 import { IJSONObject } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
-import setConfig from '../../common/postgres-client';
+import getClient from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
 
 export default defineAction({
@@ -53,11 +53,11 @@ export default defineAction({
       key: 'params',
       type: 'dynamic' as const,
       required: false,
-      description: 'Change a run-time configuration parameter with command SET',
+      description: 'Change run-time configuration parameters with SET command',
       fields: [
         {
-          label: 'Parameter ',
-          key: 'configParam',
+          label: 'Parameter name',
+          key: 'parameter',
           type: 'string' as const,
           required: true,
           variables: false,
@@ -74,11 +74,9 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = await setConfig($)
+    const pgClient = getClient($)
 
-    const params: any = $.step.parameters.params
-    if (params[0].configParam != '')
-      await setParams($, pgClient)
+    await setParams(pgClient, $.step.parameters.params)
 
     const fields: any = $.step.parameters.fields
     let data: IJSONObject = {}

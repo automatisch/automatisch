@@ -1,6 +1,6 @@
 import { IJSONObject, IJSONArray } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
-import setConfig from '../../common/postgres-client';
+import getClient from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
 
 export default defineAction({
@@ -14,7 +14,6 @@ export default defineAction({
       type: 'string' as const,
       value: 'public',
       required: true,
-      description: 'The name of the schema.',
       variables: false,
     },
     {
@@ -22,7 +21,6 @@ export default defineAction({
       key: 'table',
       type: 'string' as const,
       required: true,
-      description: 'The name of the table.',
       variables: false,
     },
     {
@@ -38,17 +36,17 @@ export default defineAction({
       key: 'params',
       type: 'dynamic' as const,
       required: false,
-      description: 'Change a run-time configuration parameter with command SET',
+      description: 'Change run-time configuration parameters with SET command',
       fields: [
         {
-          label: 'Parameter ',
-          key: 'configParam',
+          label: 'Parameter name',
+          key: 'parameter',
           type: 'string' as const,
           required: true,
           variables: false,
         },
         {
-          label: 'Value',
+          label: 'Parameter value',
           key: 'value',
           type: 'string' as const,
           required: true,
@@ -59,11 +57,9 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = await setConfig($)
+    const pgClient = await getClient($);
 
-    const params: any = $.step.parameters.params
-    if (params[0].configParam != '')
-      await setParams($, pgClient)
+    await setParams(pgClient, $.step.parameters.params);
 
     const whereStatemennt = $.step.parameters.whereStatement as string
     const whereParts = whereStatemennt.split(",")

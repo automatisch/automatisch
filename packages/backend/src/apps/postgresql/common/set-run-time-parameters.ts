@@ -1,16 +1,19 @@
 import { Knex } from 'knex';
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import { type IJSONValue } from '@automatisch/types';
 
-const setParams = async ($: IGlobalVariable, client: Knex<any, unknown[]>): Promise<Knex.Raw<any>> => {
+type TParams = { parameter: string; value: string; }[];
 
-  const params: any = $.step.parameters.params
-  let paramsObj: IJSONObject = {}
-  params.forEach((ele: any) => { paramsObj[ele.configParam] = ele.value })
+const setParams = async (client: Knex<any, unknown[]>, params: IJSONValue = []): Promise<void> => {
+  for (const { parameter, value } of (params as TParams)) {
+    if (parameter) {
+      const bindings = {
+        parameter,
+        value,
+      };
 
-  for (const key in paramsObj) {
-    const res = await client.raw(`SET ${key} = '${paramsObj[key]}'`);
+      await client.raw('SET :parameter: = :value:', bindings);
+    }
   }
-
 };
 
 export default setParams;
