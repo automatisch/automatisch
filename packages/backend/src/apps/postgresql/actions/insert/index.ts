@@ -3,10 +3,12 @@ import defineAction from '../../../../helpers/define-action';
 import getClient from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
 
+type TColumnValueEntries = { columnName: string, value: string }[];
+
 export default defineAction({
   name: 'Insert',
   key: 'insert',
-  description: 'Cteate new item in a table in specific schema in postgreSQL.',
+  description: 'Create a new row in a table in specified schema.',
   arguments: [
     {
       label: 'Schema name',
@@ -14,7 +16,6 @@ export default defineAction({
       type: 'string' as const,
       value: 'public',
       required: true,
-      description: 'The name of the schema.',
       variables: false,
     },
     {
@@ -22,12 +23,11 @@ export default defineAction({
       key: 'table',
       type: 'string' as const,
       required: true,
-      description: 'The name of the table.',
       variables: false,
     },
     {
-      label: 'Fields',
-      key: 'fields',
+      label: 'Column - value entries',
+      key: 'columnValueEntries',
       type: 'dynamic' as const,
       required: true,
       description: 'Table columns with values',
@@ -74,17 +74,19 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = getClient($)
+    const client = getClient($);
+    await setParams(client, $.step.parameters.params);
 
-    await setParams(pgClient, $.step.parameters.params)
+    const fields = $.step.parameters.columnValueEntries as TColumnValueEntries;
+    const data = fields.reduce((result, { columnName, value }) => ({
+      ...result,
+      [columnName]: value,
+    }), {});
 
-    const fields: any = $.step.parameters.fields
-    let data: IJSONObject = {}
-    fields.forEach((ele: any) => { data[ele.columnName] = ele.value })
-
-    const response = await pgClient(`${$.step.parameters.schema}.${$.step.parameters.table}`)
+    const response = await client($.step.parameters.table as string)
+      .withSchema($.step.parameters.schema as string)
       .returning('*')
-      .insert(data) as IJSONObject
+      .insert(data) as IJSONObject;
 
     $.setActionItem({ raw: response[0] as IJSONObject });
   },

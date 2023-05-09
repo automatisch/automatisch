@@ -3,7 +3,7 @@ import auth from './auth';
 import actions from './actions';
 
 export default defineApp({
-  name: 'PostgreSQL database',
+  name: 'PostgreSQL',
   key: 'postgresql',
   iconUrl: '{BASE_URL}/apps/postgresql/assets/favicon.svg',
   authDocUrl: 'https://automatisch.io/docs/apps/postgresql/connection',
