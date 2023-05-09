@@ -1,12 +1,16 @@
-import { IJSONObject, IJSONArray } from '@automatisch/types';
+import { IJSONArray } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
 import getClient from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
+import whereClauseOperators from '../../common/where-clause-operators';
+
+type TWhereClauseEntry = { columnName: string, value: string, operator: string };
+type TWhereClauseEntries = TWhereClauseEntry[];
 
 export default defineAction({
   name: 'Delete',
   key: 'delete',
-  description: 'Cteate new item in a table in specific schema in postgreSQL.',
+  description: 'Delete rows found based on the given where clause entries.',
   arguments: [
     {
       label: 'Schema name',
@@ -24,12 +28,34 @@ export default defineAction({
       variables: false,
     },
     {
-      label: 'Where statement',
-      key: 'whereStatement',
-      type: 'string' as const,
+      label: 'Where clause entries',
+      key: 'whereClauseEntries',
+      type: 'dynamic' as const,
       required: true,
-      description: 'The condition column and relational operator and condition value  - For example: id,=,1',
-      variables: true,
+      fields: [
+        {
+          label: 'Column name',
+          key: 'columnName',
+          type: 'string' as const,
+          required: true,
+          variables: false,
+        },
+        {
+          label: 'Operator',
+          key: 'operator',
+          type: 'dropdown' as const,
+          required: true,
+          variables: false,
+          options: whereClauseOperators
+        },
+        {
+          label: 'Value',
+          key: 'value',
+          type: 'string' as const,
+          required: true,
+          variables: true,
+        }
+      ]
     },
     {
       label: 'Run-time parameters',
@@ -46,7 +72,7 @@ export default defineAction({
           variables: false,
         },
         {
-          label: 'Parameter value',
+          label: 'Value',
           key: 'value',
           type: 'string' as const,
           required: true,
@@ -57,25 +83,29 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = await getClient($);
+    const client = getClient($);
+    await setParams(client, $.step.parameters.params);
 
-    await setParams(pgClient, $.step.parameters.params);
+    const whereClauseEntries = $.step.parameters.whereClauseEntries as TWhereClauseEntries;
 
-    const whereStatemennt = $.step.parameters.whereStatement as string
-    const whereParts = whereStatemennt.split(",")
-
-    const conditionColumn = whereParts[0]
-    const RelationalOperator = whereParts[1]
-    const conditionValue = whereParts[2]
-
-    const response = await pgClient(`${$.step.parameters.schema}.${$.step.parameters.table}`)
+    const response = await client($.step.parameters.table as string)
+      .withSchema($.step.parameters.schema as string)
       .returning('*')
-      .where(conditionColumn, RelationalOperator, conditionValue)
-      .del() as IJSONArray
+      .where((builder) => {
+        for (const whereClauseEntry of whereClauseEntries) {
+          const { columnName, operator, value } = whereClauseEntry;
 
-    let deletedData: IJSONObject = {}
-    response.forEach((ele: IJSONObject, i: number) => { deletedData[`record${i}`] = ele })
+          if (columnName) {
+            builder.where(columnName, operator, value);
+          }
+        }
+      })
+      .del() as IJSONArray;
 
-    $.setActionItem({ raw: deletedData as IJSONObject });
+    $.setActionItem({
+      raw: {
+        rows: response
+      }
+    });
   },
 });

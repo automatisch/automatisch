@@ -1,4 +1,4 @@
-import { IJSONObject } from '@automatisch/types';
+import { IJSONArray } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
 import getClient from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
@@ -11,7 +11,7 @@ type TWhereClauseEntries = TWhereClauseEntry[];
 export default defineAction({
   name: 'Update',
   key: 'update',
-  description: 'Cteate new item in a table in specific schema in postgreSQL.',
+  description: 'Update rows found based on the given where clause entries.',
   arguments: [
     {
       label: 'Schema name',
@@ -19,7 +19,6 @@ export default defineAction({
       type: 'string' as const,
       value: 'public',
       required: true,
-      description: 'The name of the schema.',
       variables: false,
     },
     {
@@ -27,15 +26,13 @@ export default defineAction({
       key: 'table',
       type: 'string' as const,
       required: true,
-      description: 'The name of the table.',
       variables: false,
     },
     {
-      label: 'Where clause',
+      label: 'Where clause entries',
       key: 'whereClauseEntries',
       type: 'dynamic' as const,
       required: true,
-      description: 'The condition column and relational operator and condition value - For example: id,=,1',
       fields: [
         {
           label: 'Column name',
@@ -110,8 +107,8 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = getClient($);
-    await setParams(pgClient, $.step.parameters.params);
+    const client = getClient($);
+    await setParams(client, $.step.parameters.params);
 
     const whereClauseEntries = $.step.parameters.whereClauseEntries as TWhereClauseEntries;
 
@@ -121,7 +118,7 @@ export default defineAction({
       [columnName]: value,
     }), {});
 
-    const response = await pgClient($.step.parameters.table as string)
+    const response = await client($.step.parameters.table as string)
       .withSchema($.step.parameters.schema as string)
       .returning('*')
       .where((builder) => {
@@ -133,7 +130,7 @@ export default defineAction({
           }
         }
       })
-      .update(data) as IJSONObject;
+      .update(data) as IJSONArray;
 
     $.setActionItem({
       raw: {
