@@ -1,7 +1,12 @@
-import { IJSONObject, IJSONArray } from '@automatisch/types';
+import { IJSONObject } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
 import getClient from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
+import whereClauseOperators from '../../common/where-clause-operators';
+
+type TColumnValueEntries = { columnName: string, value: string }[];
+type TWhereClauseEntry = { columnName: string, value: string, operator: string };
+type TWhereClauseEntries = TWhereClauseEntry[];
 
 export default defineAction({
   name: 'Update',
@@ -26,16 +31,39 @@ export default defineAction({
       variables: false,
     },
     {
-      label: 'Where statement',
-      key: 'whereStatement',
-      type: 'string' as const,
+      label: 'Where clause',
+      key: 'whereClauseEntries',
+      type: 'dynamic' as const,
       required: true,
       description: 'The condition column and relational operator and condition value - For example: id,=,1',
-      variables: true,
+      fields: [
+        {
+          label: 'Column name',
+          key: 'columnName',
+          type: 'string' as const,
+          required: true,
+          variables: false,
+        },
+        {
+          label: 'Operator',
+          key: 'operator',
+          type: 'dropdown' as const,
+          required: true,
+          variables: false,
+          options: whereClauseOperators
+        },
+        {
+          label: 'Value',
+          key: 'value',
+          type: 'string' as const,
+          required: true,
+          variables: true,
+        }
+      ]
     },
     {
-      label: 'Fields',
-      key: 'fields',
+      label: 'Column - value entries',
+      key: 'columnValueEntries',
       type: 'dynamic' as const,
       required: true,
       description: 'Table columns with values',
@@ -82,29 +110,35 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = getClient($)
+    const pgClient = getClient($);
+    await setParams(pgClient, $.step.parameters.params);
 
-    await setParams(pgClient, $.step.parameters.params)
+    const whereClauseEntries = $.step.parameters.whereClauseEntries as TWhereClauseEntries;
 
-    const whereStatemennt = $.step.parameters.whereStatement as string
-    const whereParts = whereStatemennt.split(",")
+    const fields = $.step.parameters.columnValueEntries as TColumnValueEntries;
+    const data: Record<string, unknown> = fields.reduce((result, { columnName, value }) => ({
+      ...result,
+      [columnName]: value,
+    }), {});
 
-    const conditionColumn = whereParts[0]
-    const RelationalOperator = whereParts[1]
-    const conditionValue = whereParts[2]
-
-    const fields: any = $.step.parameters.fields
-    let data: IJSONObject = {}
-    fields.forEach((ele: any) => { data[ele.columnName] = ele.value })
-
-    const response = await pgClient(`${$.step.parameters.schema}.${$.step.parameters.table}`)
+    const response = await pgClient($.step.parameters.table as string)
+      .withSchema($.step.parameters.schema as string)
       .returning('*')
-      .where(conditionColumn, RelationalOperator, conditionValue)
-      .update(data) as IJSONArray
+      .where((builder) => {
+        for (const whereClauseEntry of whereClauseEntries) {
+          const { columnName, operator, value } = whereClauseEntry;
 
-    let updatedData: IJSONObject = {}
-    response.forEach((ele: IJSONObject, i: number) => { updatedData[`record${i}`] = ele })
+          if (columnName) {
+            builder.where(columnName, operator, value);
+          }
+        }
+      })
+      .update(data) as IJSONObject;
 
-    $.setActionItem({ raw: updatedData as IJSONObject });
+    $.setActionItem({
+      raw: {
+        rows: response
+      }
+    });
   },
 });
