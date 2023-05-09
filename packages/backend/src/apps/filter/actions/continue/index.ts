@@ -10,13 +10,43 @@ type TGroupItem = {
 type TGroup = Record<'and', TGroupItem[]>;
 
 const isEqual = (a: string, b: string) => a === b;
-const isNotEqual = (a: string, b: string) => !isEqual(a, b)
+const isNotEqual = (a: string, b: string) => !isEqual(a, b);
 const isGreaterThan = (a: string, b: string) => Number(a) > Number(b);
 const isLessThan = (a: string, b: string) => Number(a) < Number(b);
 const isGreaterThanOrEqual = (a: string, b: string) => Number(a) >= Number(b);
 const isLessThanOrEqual = (a: string, b: string) => Number(a) <= Number(b);
 const contains = (a: string, b: string) => a.includes(b);
 const doesNotContain = (a: string, b: string) => !contains(a, b);
+
+const shouldContinue = (orGroups: TGroup[]) => {
+  let atLeastOneGroupMatches = false;
+
+  for (const group of orGroups) {
+    let groupMatches = true;
+
+    for (const condition of group.and) {
+      const conditionMatches = operate(
+        condition.operator,
+        condition.key,
+        condition.value
+      );
+
+      if (!conditionMatches) {
+        groupMatches = false;
+
+        break;
+      }
+    }
+
+    if (groupMatches) {
+      atLeastOneGroupMatches = true;
+
+      break;
+    }
+  }
+
+  return atLeastOneGroupMatches;
+}
 
 type TOperatorFunc = (a: string, b: string) => boolean;
 
@@ -66,7 +96,7 @@ export default defineAction({
       return groups;
     }, []);
 
-    if (matchingGroups.length === 0) {
+    if (!shouldContinue(orGroups)) {
       $.execution.exit();
     }
 
