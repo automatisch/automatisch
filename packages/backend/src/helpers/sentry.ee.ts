@@ -5,8 +5,10 @@ import * as Tracing from '@sentry/tracing';
 
 import appConfig from '../config/app';
 
+const isSentryEnabled = !!appConfig.sentryDsn;
+
 export function init(app?: Express) {
-  if (!appConfig.isCloud) return;
+  if (!isSentryEnabled) return;
 
   return Sentry.init({
     enabled: !!appConfig.sentryDsn,
@@ -22,19 +24,19 @@ export function init(app?: Express) {
 
 
 export function attachRequestHandler(app: Express) {
-  if (!appConfig.isCloud) return;
+  if (!isSentryEnabled) return;
 
   app.use(Sentry.Handlers.requestHandler());
 }
 
 export function attachTracingHandler(app: Express) {
-  if (!appConfig.isCloud) return;
+  if (!isSentryEnabled) return;
 
   app.use(Sentry.Handlers.tracingHandler());
 }
 
 export function attachErrorHandler(app: Express) {
-  if (!appConfig.isCloud) return;
+  if (!isSentryEnabled) return;
 
   app.use(Sentry.Handlers.errorHandler({
     shouldHandleError() {
@@ -45,7 +47,7 @@ export function attachErrorHandler(app: Express) {
 }
 
 export function captureException(exception: any, captureContext?: CaptureContext) {
-  if (!appConfig.isCloud) return;
+  if (!isSentryEnabled) return;
 
   return Sentry.captureException(exception, captureContext);
 }
