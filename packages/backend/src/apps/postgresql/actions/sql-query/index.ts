@@ -1,4 +1,3 @@
-import { IJSONObject } from '@automatisch/types';
 import defineAction from '../../../../helpers/define-action';
 import getClient from '../../common/postgres-client';
 import setParams from '../../common/set-run-time-parameters';
@@ -6,7 +5,7 @@ import setParams from '../../common/set-run-time-parameters';
 export default defineAction({
   name: 'SQL query',
   key: 'SQLQuery',
-  description: 'Cteate new item in a table in specific schema in postgreSQL.',
+  description: 'Executes the given SQL statement.',
   arguments: [
     {
       label: 'SQL statement',
@@ -14,7 +13,6 @@ export default defineAction({
       type: 'string' as const,
       value: 'public',
       required: true,
-      description: 'Execute SQL query sttement directly.',
       variables: true,
     },
     {
@@ -43,11 +41,10 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = getClient($)
+    const pgClient = getClient($);
+    await setParams(pgClient, $.step.parameters.params);
 
-    await setParams(pgClient, $.step.parameters.params)
-
-    const queryStatemnt = $.step.parameters.queryStatement
+    const queryStatemnt = $.step.parameters.queryStatement;
     const { rows } = await pgClient.raw(queryStatemnt);
 
     $.setActionItem({
