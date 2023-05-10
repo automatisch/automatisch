@@ -41,11 +41,11 @@ export default defineAction({
   ],
 
   async run($) {
-    const pgClient = getClient($);
-    await setParams(pgClient, $.step.parameters.params);
+    const client = getClient($);
+    await setParams(client, $.step.parameters.params);
 
     const queryStatemnt = $.step.parameters.queryStatement;
-    const { rows } = await pgClient.raw(queryStatemnt);
+    const { rows } = await client.raw(queryStatemnt);
 
     $.setActionItem({
       raw: {
