@@ -2,7 +2,7 @@ import knex, { Knex } from 'knex';
 import { IGlobalVariable } from '@automatisch/types';
 
 const getClient = ($: IGlobalVariable): Knex<any, unknown[]> => {
-  const pgClient = knex({
+  const client = knex({
     client: 'pg',
     version: $.auth.data.version as string,
     connection: {
@@ -14,7 +14,7 @@ const getClient = ($: IGlobalVariable): Knex<any, unknown[]> => {
     }
   })
 
-  return pgClient;
+  return client;
 };
 
 export default getClient;

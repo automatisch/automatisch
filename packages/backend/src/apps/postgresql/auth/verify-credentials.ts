@@ -3,8 +3,8 @@ import logger from '../../../helpers/logger';
 import getClient from '../common/postgres-client';
 
 const verifyCredentials = async ($: IGlobalVariable) => {
-  const pgClient = getClient($);
-  const checkConnection = await pgClient.raw('SELECT 1');
+  const client = getClient($);
+  const checkConnection = await client.raw('SELECT 1');
 
   logger.debug(checkConnection);
 
