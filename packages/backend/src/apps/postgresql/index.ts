@@ -11,7 +11,6 @@ export default defineApp({
   baseUrl: '',
   apiBaseUrl: '',
   primaryColor: '336791',
-
   auth,
-  actions
+  actions,
 });
