@@ -25,6 +25,7 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 | `POSTGRES_DATABASE`         | string  | `automatisch`      | Database Name                                        |
 | `POSTGRES_SCHEMA`           | string  | `public`           | Database Schema                                      |
 | `POSTGRES_PORT`             | number  | `5432`             | Database Port                                        |
+| `POSTGRES_ENABLE_SSL`       | boolean | `false`            | Enable/Disable SSL for the database                  |
 | `POSTGRES_HOST`             | string  | `postgres`         | Database Host                                        |
 | `POSTGRES_USERNAME`         | string  | `automatisch_user` | Database User                                        |
 | `POSTGRES_PASSWORD`         | string  |                    | Password of Database User                            |
