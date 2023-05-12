@@ -1,4 +1,5 @@
 import * as Sentry from './helpers/sentry.ee';
+import appConfig from './config/app';
 
 Sentry.init();
 
@@ -9,8 +10,12 @@ import './workers/trigger';
 import './workers/action';
 import './workers/email';
 import './workers/delete-user.ee';
-import './workers/remove-cancelled-subscriptions.ee';
-import './queues/remove-cancelled-subscriptions.ee';
+
+if (appConfig.isCloud) {
+  import('./workers/remove-cancelled-subscriptions.ee');
+  import('./queues/remove-cancelled-subscriptions.ee');
+}
+
 import telemetry from './helpers/telemetry';
 
 telemetry.setServiceType('worker');
