@@ -9,6 +9,7 @@ import updateFlow from './mutations/update-flow';
 import updateFlowStatus from './mutations/update-flow-status';
 import executeFlow from './mutations/execute-flow';
 import deleteFlow from './mutations/delete-flow';
+import duplicateFlow from './mutations/duplicate-flow';
 import createStep from './mutations/create-step';
 import updateStep from './mutations/update-step';
 import deleteStep from './mutations/delete-step';
@@ -31,6 +32,7 @@ const mutationResolvers = {
   updateFlowStatus,
   executeFlow,
   deleteFlow,
+  duplicateFlow,
   createStep,
   updateStep,
   deleteStep,

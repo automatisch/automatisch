@@ -56,6 +56,7 @@ type Mutation {
   updateFlowStatus(input: UpdateFlowStatusInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
   deleteFlow(input: DeleteFlowInput): Boolean
+  duplicateFlow(input: DuplicateFlowInput): Flow
   createStep(input: CreateStepInput): Step
   updateStep(input: UpdateStepInput): Step
   deleteStep(input: DeleteStepInput): Step
@@ -321,6 +322,10 @@ input ExecuteFlowInput {
 }
 
 input DeleteFlowInput {
+  id: String!
+}
+
+input DuplicateFlowInput {
   id: String!
 }
 
