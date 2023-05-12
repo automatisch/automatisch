@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import FormHelperText from '@mui/material/FormHelperText';
-import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete';
+import Autocomplete, { AutocompleteProps, createFilterOptions } from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import type { IFieldDropdownOption } from '@automatisch/types';
 
@@ -17,6 +17,14 @@ interface ControlledAutocompleteProps
 
 const getOption = (options: readonly IFieldDropdownOption[], value: string) =>
   options.find((option) => option.value === value) || null;
+
+// Enables filtering by value in autocomplete dropdown
+const filterOptions = createFilterOptions<IFieldDropdownOption>({
+  stringify: ({ label, value }) => `
+    ${label}
+    ${value}
+  `
+})
 
 function ControlledAutocomplete(
   props: ControlledAutocompleteProps
@@ -75,6 +83,7 @@ function ControlledAutocomplete(
             {...autocompleteProps}
             {...field}
             options={options}
+            filterOptions={filterOptions}
             value={getOption(options, field.value)}
             onChange={(event, selectedOption, reason, details) => {
               const typedSelectedOption =
