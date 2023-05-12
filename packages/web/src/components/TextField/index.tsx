@@ -38,7 +38,7 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
     required,
     name,
     defaultValue,
-    shouldUnregister = true,
+    shouldUnregister = false,
     clickToCopy = false,
     readOnly = false,
     disabled = false,

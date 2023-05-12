@@ -27,7 +27,7 @@ function ControlledAutocomplete(
     required = false,
     name,
     defaultValue,
-    shouldUnregister = true,
+    shouldUnregister = false,
     onBlur,
     onChange,
     description,
