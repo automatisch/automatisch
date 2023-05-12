@@ -36,7 +36,7 @@ function ExecutionDate(props: Pick<IExecution, 'createdAt'>) {
   const relativeCreatedAt = createdAt.toRelative();
 
   return (
-    <Tooltip title={createdAt.toLocaleString(DateTime.DATE_MED)}>
+    <Tooltip title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}>
       <Typography variant="body1" gutterBottom>
         {relativeCreatedAt}
       </Typography>

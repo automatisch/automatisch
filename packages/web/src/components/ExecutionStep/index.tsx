@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { DateTime } from 'luxon';
 import { useQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -6,6 +7,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import type { IApp, IExecutionStep, IStep } from '@automatisch/types';
 
@@ -28,6 +30,22 @@ type ExecutionStepProps = {
   index?: number;
   executionStep: IExecutionStep;
 };
+
+function ExecutionStepDate(props: Pick<IExecutionStep, 'createdAt'>) {
+  const formatMessage = useFormatMessage();
+  const createdAt = DateTime.fromMillis(parseInt(props.createdAt, 10));
+  const relativeCreatedAt = createdAt.toRelative();
+
+  return (
+    <Tooltip title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}>
+      <Typography variant="caption" gutterBottom>
+        {formatMessage('executionStep.executedAt', {
+          datetime: relativeCreatedAt
+        })}
+      </Typography>
+    </Tooltip>
+  );
+}
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -56,7 +74,7 @@ export default function ExecutionStep(
   return (
     <Wrapper elevation={1} data-test="execution-step">
       <Header>
-        <Stack direction="row" alignItems="center" gap={2}>
+        <Stack direction="row" gap={2}>
           <AppIconWrapper>
             <AppIcon url={app?.iconUrl} name={app?.name} />
 
@@ -65,7 +83,7 @@ export default function ExecutionStep(
             </AppIconStatusIconWrapper>
           </AppIconWrapper>
 
-          <div>
+          <Box flex="1">
             <Typography variant="caption">
               {isTrigger
                 ? formatMessage('flowStep.triggerType')
@@ -75,7 +93,11 @@ export default function ExecutionStep(
             <Typography variant="body2">
               {step.position}. {app?.name}
             </Typography>
-          </div>
+          </Box>
+
+          <Box alignSelf="flex-end">
+            <ExecutionStepDate createdAt={executionStep.createdAt} />
+          </Box>
         </Stack>
       </Header>
 
