@@ -83,6 +83,7 @@
   "execution.statusFailure": "Failure",
   "execution.noDataTitle": "No data",
   "execution.noDataMessage": "We successfully ran the execution, but there was no new data to process.",
+  "executionStep.executedAt": "executed {datetime}",
   "profileSettings.title": "My Profile",
   "profileSettings.fullName": "Full name",
   "profileSettings.email": "Email",
