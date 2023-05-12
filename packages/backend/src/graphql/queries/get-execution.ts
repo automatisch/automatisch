@@ -16,6 +16,7 @@ const getExecution = async (
         steps: true,
       },
     })
+    .withSoftDeleted()
     .findById(params.executionId)
     .throwIfNotFound();
 
