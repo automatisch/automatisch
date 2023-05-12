@@ -101,7 +101,7 @@ function SignUpForm() {
               error={touchedFields.fullName && !!errors?.fullName}
               helperText={
                 touchedFields.fullName && errors?.fullName?.message
-                  ? formatMessage(errors?.fullName?.message, {
+                  ? formatMessage(errors?.fullName?.message as string, {
                       inputName: formatMessage('signupForm.fullNameFieldLabel'),
                     })
                   : ''
@@ -118,7 +118,7 @@ function SignUpForm() {
               error={touchedFields.email && !!errors?.email}
               helperText={
                 touchedFields.email && errors?.email?.message
-                  ? formatMessage(errors?.email?.message, {
+                  ? formatMessage(errors?.email?.message as string, {
                       inputName: formatMessage('signupForm.emailFieldLabel'),
                     })
                   : ''
@@ -134,7 +134,7 @@ function SignUpForm() {
               error={touchedFields.password && !!errors?.password}
               helperText={
                 touchedFields.password && errors?.password?.message
-                  ? formatMessage(errors?.password?.message, {
+                  ? formatMessage(errors?.password?.message as string, {
                       inputName: formatMessage('signupForm.passwordFieldLabel'),
                     })
                   : ''
@@ -151,7 +151,7 @@ function SignUpForm() {
               helperText={
                 touchedFields.confirmPassword &&
                 errors?.confirmPassword?.message
-                  ? formatMessage(errors?.confirmPassword?.message, {
+                  ? formatMessage(errors?.confirmPassword?.message as string, {
                       inputName: formatMessage(
                         'signupForm.confirmPasswordFieldLabel'
                       ),

@@ -77,7 +77,7 @@ export default function ResetPasswordForm() {
               error={touchedFields.password && !!errors?.password}
               helperText={
                 touchedFields.password && errors?.password?.message
-                  ? formatMessage(errors?.password?.message, {
+                  ? formatMessage(errors?.password?.message as string, {
                       inputName: formatMessage('resetPasswordForm.passwordFieldLabel'),
                     })
                   : ''
@@ -94,7 +94,7 @@ export default function ResetPasswordForm() {
               helperText={
                 touchedFields.confirmPassword &&
                 errors?.confirmPassword?.message
-                  ? formatMessage(errors?.confirmPassword?.message, {
+                  ? formatMessage(errors?.confirmPassword?.message as string, {
                       inputName: formatMessage(
                         'resetPasswordForm.confirmPasswordFieldLabel'
                       ),

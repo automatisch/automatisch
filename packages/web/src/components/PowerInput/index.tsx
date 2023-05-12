@@ -83,7 +83,7 @@ const PowerInput = (props: PowerInputProps) => {
       name={name}
       control={control}
       defaultValue={defaultValue}
-      shouldUnregister={shouldUnregister ?? true}
+      shouldUnregister={shouldUnregister ?? false}
       render={({
         field: {
           value,
