@@ -58,7 +58,10 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
   const editorContext = React.useContext(EditorContext);
   const [executeFlow, { data, error, loading, called, reset }] = useMutation(
     EXECUTE_FLOW,
-    { context: { autoSnackbar: false } }
+    {
+      refetchQueries: ['GetStepWithTestExecutions'],
+      context: { autoSnackbar: false }
+    }
   );
   const response = data?.executeFlow?.data;
 

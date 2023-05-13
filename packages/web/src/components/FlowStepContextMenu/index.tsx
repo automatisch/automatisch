@@ -19,7 +19,7 @@ function FlowStepContextMenu(
 ): React.ReactElement {
   const { stepId, onClose, anchorEl, deletable } = props;
   const [deleteStep] = useMutation(DELETE_STEP, {
-    refetchQueries: ['GetFlow'],
+    refetchQueries: ['GetFlow', 'GetStepWithTestExecutions'],
   });
   const formatMessage = useFormatMessage();
 
