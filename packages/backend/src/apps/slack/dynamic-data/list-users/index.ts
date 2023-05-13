@@ -1,12 +1,14 @@
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 
-type TChannel = {
+type TMember = {
   id: string;
-  name: string;
+  profile: {
+    real_name_normalized: string;
+  };
 }
 
-type TConversationListResponseData = {
-  channels: TChannel[],
+type TUserListResponseData = {
+  members: TMember[],
   response_metadata?: {
     next_cursor: string
   };
@@ -16,15 +18,15 @@ type TConversationListResponseData = {
 }
 
 type TResponse = {
-  data: TConversationListResponseData;
+  data: TUserListResponseData;
 }
 
 export default {
-  name: 'List channels',
-  key: 'listChannels',
+  name: 'List users',
+  key: 'listUsers',
 
   async run($: IGlobalVariable) {
-    const channels: {
+    const users: {
       data: IJSONObject[];
       error: IJSONObject | null;
     } = {
@@ -34,9 +36,8 @@ export default {
 
     let nextCursor;
     do {
-      const response: TResponse = await $.http.get('/conversations.list', {
+      const response: TResponse = await $.http.get('/users.list', {
         params: {
-          types: 'public_channel,private_channel',
           cursor: nextCursor,
           limit: 1000,
         }
@@ -52,14 +53,14 @@ export default {
         throw new Error(JSON.stringify(response.data, null, 2));
       }
 
-      for (const channel of response.data.channels) {
-        channels.data.push({
-          value: channel.id as string,
-          name: channel.name as string,
+      for (const member of response.data.members) {
+        users.data.push({
+          value: member.id as string,
+          name: member.profile.real_name_normalized as string,
         });
       }
     } while (nextCursor);
 
-    return channels;
+    return users;
   },
 };
