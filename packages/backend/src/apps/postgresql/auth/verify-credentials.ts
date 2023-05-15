@@ -14,9 +14,11 @@ const verifyCredentials = async ($: IGlobalVariable) => {
     version: $.auth.data.version,
     host: $.auth.data.host,
     port: Number($.auth.data.port),
+    enableSsl:
+      $.auth.data.enableSsl === 'true' || $.auth.data.enableSsl === true,
     user: $.auth.data.user,
     password: $.auth.data.password,
-    database: $.auth.data.database
+    database: $.auth.data.database,
   });
 };
 
