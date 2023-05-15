@@ -8,6 +8,9 @@ services:
     volumes:
       - ..:/workspace:cached
     command: sleep infinity
+    ports:
+      - '3000:3000'
+      - '3001:3001'
   postgres:
     image: 'postgres:14.5-alpine'
     environment:

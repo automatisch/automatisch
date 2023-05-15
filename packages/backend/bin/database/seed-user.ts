@@ -1,3 +1,6 @@
 import { createUser } from './utils';
 
-createUser();
+(async () => {
+  await createUser();
+  process.exit();
+})();
