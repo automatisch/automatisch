@@ -23,6 +23,7 @@ export default {
       readOnly: false,
       value: '127.0.0.1',
       placeholder: null,
+      description: 'The host of the PostgreSQL database.',
       clickToCopy: false,
     },
     {
@@ -33,16 +34,39 @@ export default {
       readOnly: false,
       value: '5432',
       placeholder: null,
+      description: 'The port of the PostgreSQL database.',
       clickToCopy: false,
     },
     {
+      key: 'enableSsl',
+      label: 'Enable SSL',
+      type: 'dropdown' as const,
+      required: true,
+      readOnly: false,
+      value: 'false',
+      description: 'The port of the PostgreSQL database.',
+      variables: false,
+      clickToCopy: false,
+      options: [
+        {
+          label: 'True',
+          value: 'true',
+        },
+        {
+          label: 'False',
+          value: 'false',
+        },
+      ],
+    },
+    {
       key: 'database',
-      label: 'Database Name',
+      label: 'Database name',
       type: 'string' as const,
       required: true,
       readOnly: false,
       value: null,
       placeholder: null,
+      description: 'The database name of the PostgreSQL database.',
       clickToCopy: false,
     },
     {
@@ -53,8 +77,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description:
-        'The user who has access on postgres database.',
+      description: 'The user who has access on postgres database.',
       clickToCopy: false,
     },
     {
@@ -65,11 +88,11 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
+      description: 'The password of the PostgreSQL database user.',
       clickToCopy: false,
     },
-
   ],
 
   verifyCredentials,
-  isStillVerified
+  isStillVerified,
 };
