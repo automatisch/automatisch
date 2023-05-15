@@ -85,7 +85,7 @@ export default async (request: IRequest, response: Response) => {
   });
 
   if (testRun) {
-    return response.sendStatus(200);
+    return response.sendStatus(204);
   }
 
   const nextStep = await triggerStep.getNextStep();
@@ -104,5 +104,5 @@ export default async (request: IRequest, response: Response) => {
 
   await actionQueue.add(jobName, jobPayload, jobOptions);
 
-  return response.sendStatus(200);
+  return response.sendStatus(204);
 };
