@@ -4,7 +4,13 @@ import type { Request } from 'express';
 
 // Type definitions for automatisch
 
-export type IJSONValue = string | number | boolean | IJSONObject | IJSONArray;
+export type IJSONValue =
+  | string
+  | number
+  | boolean
+  | null
+  | IJSONObject
+  | IJSONArray;
 export type IJSONArray = Array<IJSONValue>;
 export interface IJSONObject {
   [x: string]: IJSONValue;
@@ -338,7 +344,7 @@ export type TPaymentPlan = {
   name: string;
   limit: string;
   productId: string;
-}
+};
 
 export type TSubscription = {
   status: string;
@@ -354,28 +360,28 @@ export type TSubscription = {
     title: string;
     action: BillingCardAction;
   };
-}
+};
 
 type TBillingCardAction = TBillingTextCardAction | TBillingLinkCardAction;
 
 type TBillingTextCardAction = {
   type: 'text';
   text: string;
-}
+};
 
 type TBillingLinkCardAction = {
   type: 'link';
   text: string;
   src: string;
-}
+};
 
 type TInvoice = {
-  id: number
-  amount: number
-  currency: string
-  payout_date: string
-  receipt_url: string
-}
+  id: number;
+  amount: number;
+  currency: string;
+  payout_date: string;
+  receipt_url: string;
+};
 
 declare module 'axios' {
   interface AxiosResponse {
