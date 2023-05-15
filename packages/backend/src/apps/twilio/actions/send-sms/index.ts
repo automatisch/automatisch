@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'node:url';
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
@@ -8,11 +9,21 @@ export default defineAction({
     {
       label: 'From Number',
       key: 'fromNumber',
-      type: 'string' as const,
+      type: 'dropdown' as const,
       required: true,
       description:
         'The number to send the SMS from. Include country code. Example: 15551234567',
-      variables: true,
+      variables: false,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listIncomingPhoneNumbers',
+          },
+        ],
+      },
     },
     {
       label: 'To Number',
@@ -35,14 +46,20 @@ export default defineAction({
 
   async run($) {
     const requestPath = `/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages.json`;
-    const messageBody = $.step.parameters.message;
+    const messageBody = $.step.parameters.message as string;
 
-    const fromNumber = '+' + ($.step.parameters.fromNumber as string).trim();
-    const toNumber = '+' + ($.step.parameters.toNumber as string).trim();
+    const fromNumber = ($.step.parameters.fromNumber as string).trim();
+    const toNumber = ($.step.parameters.toNumber as string).trim();
+
+    const payload = new URLSearchParams({
+      Body: messageBody,
+      From: fromNumber,
+      To: toNumber,
+    }).toString();
 
     const response = await $.http.post(
       requestPath,
-      `Body=${messageBody}&From=${fromNumber}&To=${toNumber}`
+      payload,
     );
 
     $.setActionItem({ raw: response.data });
