@@ -96,8 +96,7 @@ function useDynamicData(stepId: string | undefined, schema: IField) {
       getDynamicData({
         variables: {
           stepId,
-          key: computedVariables.key,
-          parameters: omit(computedVariables, 'key'),
+          ...computedVariables,
         },
       });
     }
