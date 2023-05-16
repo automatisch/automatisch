@@ -26,7 +26,7 @@ export default defineTrigger({
             value: 'listIncomingPhoneNumbers',
           },
           {
-            name: 'valueType',
+            name: 'parameters.valueType',
             value: 'sid',
           }
         ],
