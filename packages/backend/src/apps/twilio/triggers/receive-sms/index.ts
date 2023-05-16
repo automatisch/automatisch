@@ -60,13 +60,13 @@ export default defineTrigger({
   },
 
   async unregisterHook($) {
-    const toNumber = $.step.parameters.toNumber as string;
+    const phoneNumberSid = $.step.parameters.phoneNumberSid as string;
     const payload = new URLSearchParams({
       SmsUrl: '',
     }).toString();
 
     await $.http.post(
-      `/2010-04-01/Accounts/${$.auth.data.accountSid}/IncomingPhoneNumbers/PN${toNumber}.json`,
+      `/2010-04-01/Accounts/${$.auth.data.accountSid}/IncomingPhoneNumbers/${phoneNumberSid}.json`,
       payload
     );
   },
