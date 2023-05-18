@@ -7,14 +7,19 @@ const newFilesInFolder = async ($: IGlobalVariable) => {
   } else {
     q += ` and parents in 'root'`;
   }
-  const params = {
+  const params: Record<string, unknown> = {
     pageToken: undefined as unknown as string,
     orderBy: 'createdTime desc',
     fields: '*',
     pageSize: 1000,
     q,
     driveId: $.step.parameters.driveId,
+    supportsAllDrives: true,
   };
+
+  if ($.step.parameters.driveId) {
+    params.includeItemsFromAllDrives = true;
+  }
 
   do {
     const { data } = await $.http.get(`/v3/files`, { params });
