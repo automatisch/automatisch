@@ -1,14 +1,19 @@
 import { IGlobalVariable } from '@automatisch/types';
 
 const newFiles = async ($: IGlobalVariable) => {
-  const params = {
+  const params: Record<string, unknown> = {
     pageToken: undefined as unknown as string,
     orderBy: 'createdTime desc',
     fields: '*',
     pageSize: 1000,
     q: `mimeType!='application/vnd.google-apps.folder'`,
     driveId: $.step.parameters.driveId,
+    supportsAllDrives: true,
   };
+
+  if ($.step.parameters.driveId) {
+    params.includeItemsFromAllDrives = true;
+  }
 
   do {
     const { data } = await $.http.get('/v3/files', { params });

@@ -1,14 +1,19 @@
 import { IGlobalVariable } from '@automatisch/types';
 
 const newSpreadsheets = async ($: IGlobalVariable) => {
-  const params = {
+  const params: Record<string, unknown> = {
     pageToken: undefined as unknown as string,
     orderBy: 'createdTime desc',
     q: `mimeType='application/vnd.google-apps.spreadsheet'`,
     fields: '*',
     pageSize: 1000,
     driveId: $.step.parameters.driveId,
+    supportsAllDrives: true,
   };
+
+  if ($.step.parameters.driveId) {
+    params.includeItemsFromAllDrives = true;
+  }
 
   do {
     const { data } = await $.http.get(
