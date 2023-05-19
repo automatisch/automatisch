@@ -13,6 +13,7 @@ const newSpreadsheets = async ($: IGlobalVariable) => {
 
   if ($.step.parameters.driveId) {
     params.includeItemsFromAllDrives = true;
+    params.corpora = 'drive';
   }
 
   do {
