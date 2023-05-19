@@ -14,6 +14,7 @@ Following integrations are currently supported by Automatisch.
 - [Github](/apps/github/triggers)
 - [Google Drive](/apps/google-drive/triggers)
 - [Google Forms](/apps/google-forms/triggers)
+- [Google Sheets](/apps/google-sheets/triggers)
 - [HTTP Request](/apps/http-request/actions)
 - [Ntfy](/apps/ntfy/actions)
 - [OpenAI](/apps/openai/actions)
