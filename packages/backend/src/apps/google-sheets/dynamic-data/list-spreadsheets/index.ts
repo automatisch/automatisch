@@ -22,6 +22,7 @@ export default {
 
     if ($.step.parameters.driveId) {
       params.includeItemsFromAllDrives = true;
+      params.corpora = 'drive';
     }
 
     do {
