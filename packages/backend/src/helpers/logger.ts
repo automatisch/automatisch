@@ -9,10 +9,6 @@ const levels = {
   debug: 4,
 };
 
-const level = () => {
-  return appConfig.appEnv === 'development' ? 'debug' : 'info';
-};
-
 const colors = {
   error: 'red',
   warn: 'yellow',
@@ -41,7 +37,7 @@ const transports = [
 ];
 
 export const logger = winston.createLogger({
-  level: level(),
+  level: appConfig.logLevel,
   levels,
   format,
   transports,

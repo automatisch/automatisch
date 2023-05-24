@@ -9,6 +9,7 @@ type AppConfig = {
   webAppUrl: string;
   webhookUrl: string;
   appEnv: string;
+  logLevel: string;
   isDev: boolean;
   isProd: boolean;
   postgresDatabase: string;
@@ -80,6 +81,7 @@ const appConfig: AppConfig = {
   protocol,
   port,
   appEnv: appEnv,
+  logLevel: process.env.LOG_LEVEL || 'info',
   isDev: appEnv === 'development',
   isProd: appEnv === 'production',
   version: process.env.npm_package_version,
