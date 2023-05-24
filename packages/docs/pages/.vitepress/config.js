@@ -69,6 +69,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Filter',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/filter/actions' },
+            { text: 'Connection', link: '/apps/filter/connection' },
+          ],
+        },
+        {
           text: 'Flickr',
           collapsible: true,
           collapsed: true,
