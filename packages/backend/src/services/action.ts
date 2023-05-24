@@ -4,6 +4,7 @@ import Execution from '../models/execution';
 import ExecutionStep from '../models/execution-step';
 import computeParameters from '../helpers/compute-parameters';
 import globalVariable from '../helpers/global-variable';
+import { logger } from '../helpers/logger';
 import HttpError from '../errors/http';
 import EarlyExitError from '../errors/early-exit';
 import AlreadyProcessedError from '../errors/already-processed';
@@ -53,6 +54,8 @@ export const processAction = async (options: ProcessActionOptions) => {
     const shouldNotConsiderAsError = shouldEarlyExit || shouldNotProcess;
 
     if (!shouldNotConsiderAsError) {
+      logger.error(error);
+
       if (error instanceof HttpError) {
         $.actionOutput.error = error.details;
       } else {
