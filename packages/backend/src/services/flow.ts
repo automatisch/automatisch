@@ -3,6 +3,7 @@ import globalVariable from '../helpers/global-variable';
 import EarlyExitError from '../errors/early-exit';
 import AlreadyProcessedError from '../errors/already-processed';
 import HttpError from '../errors/http';
+import { logger } from '../helpers/logger';
 
 type ProcessFlowOptions = {
   flowId: string;
@@ -35,6 +36,8 @@ export const processFlow = async (options: ProcessFlowOptions) => {
     const shouldNotConsiderAsError = shouldEarlyExit || shouldNotProcess;
 
     if (!shouldNotConsiderAsError) {
+      logger.error(error);
+
       if (error instanceof HttpError) {
         $.triggerOutput.error = error.details;
       } else {
