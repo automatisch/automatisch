@@ -2,6 +2,7 @@ import Crypto from 'node:crypto';
 import { Response } from 'express';
 import { IRequest, ITriggerItem } from '@automatisch/types';
 
+import logger from '../../helpers/logger';
 import Flow from '../../models/flow';
 import { processTrigger } from '../../services/trigger';
 import actionQueue from '../../queues/action';
@@ -13,8 +14,19 @@ import {
 } from '../../helpers/remove-job-configuration';
 
 export default async (request: IRequest, response: Response) => {
+  const flowId = request.params.flowId;
+
+  // in case it's our built-in generic webhook trigger
+  let computedRequestPayload = {
+    headers: request.headers,
+    body: request.body,
+    query: request.query,
+  };
+  logger.debug(`Handling incoming webhook request at ${request.originalUrl}.`);
+  logger.debug(computedRequestPayload);
+
   const flow = await Flow.query()
-    .findById(request.params.flowId)
+    .findById(flowId)
     .throwIfNotFound();
 
   const user = await flow.$relatedQuery('user');
@@ -56,26 +68,19 @@ export default async (request: IRequest, response: Response) => {
   }
 
   // in case trigger type is 'webhook'
-  let payload = request.body;
-
-  // in case it's our built-in generic webhook trigger
-  if (isWebhookApp) {
-    payload = {
-      headers: request.headers,
-      body: request.body,
-      query: request.query,
-    };
+  if (!isWebhookApp) {
+    computedRequestPayload = request.body;
   }
 
   const triggerItem: ITriggerItem = {
-    raw: payload,
+    raw: computedRequestPayload,
     meta: {
       internalId: Crypto.randomUUID(),
     },
   };
 
-  const { flowId, executionId } = await processTrigger({
-    flowId: flow.id,
+  const { executionId } = await processTrigger({
+    flowId,
     stepId: triggerStep.id,
     triggerItem,
     testRun,
