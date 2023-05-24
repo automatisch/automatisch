@@ -10,6 +10,7 @@ Following integrations are currently supported by Automatisch.
 - [Delay](/apps/delay/actions)
 - [Discord](/apps/discord/actions)
 - [Dropbox](/apps/dropbox/actions)
+- [Filter](/apps/filter/actions)
 - [Flickr](/apps/flickr/triggers)
 - [Github](/apps/github/triggers)
 - [Google Drive](/apps/google-drive/triggers)
