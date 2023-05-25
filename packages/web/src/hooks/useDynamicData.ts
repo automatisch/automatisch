@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
 import type { UseFormReturn } from 'react-hook-form';
 import isEqual from 'lodash/isEqual';
-import omit from 'lodash/omit';
 import type {
   IField,
   IFieldDropdownSource,
@@ -13,7 +12,7 @@ import type {
 
 import { GET_DYNAMIC_DATA } from 'graphql/queries/get-dynamic-data';
 
-const variableRegExp = /({.*?})/g;
+const variableRegExp = /({.*?})/;
 
 function computeArguments(
   args: IFieldDropdownSource['arguments'],

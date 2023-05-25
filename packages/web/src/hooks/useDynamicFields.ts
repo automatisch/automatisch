@@ -12,7 +12,7 @@ import type {
 
 import { GET_DYNAMIC_FIELDS } from 'graphql/queries/get-dynamic-fields';
 
-const variableRegExp = /({.*?})/g;
+const variableRegExp = /({.*?})/;
 
 // TODO: extract this function to a separate file
 function computeArguments(
@@ -64,7 +64,10 @@ function useDynamicFields(stepId: string | undefined, schema: IField) {
   const computedVariables = React.useMemo(() => {
     if (schema.type === 'dropdown' && schema.additionalFields) {
       try {
-        const variables = computeArguments(schema.additionalFields.arguments, getValues);
+        const variables = computeArguments(
+          schema.additionalFields.arguments,
+          getValues
+        );
 
         // if computed variables are the same, return the last computed variables.
         if (isEqual(variables, lastComputedVariables.current)) {
