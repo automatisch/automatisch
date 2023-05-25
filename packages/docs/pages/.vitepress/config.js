@@ -111,6 +111,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/google-sheets/triggers' },
+            { text: 'Actions', link: '/apps/google-sheets/actions' },
             { text: 'Connection', link: '/apps/google-sheets/connection' },
           ],
         },
