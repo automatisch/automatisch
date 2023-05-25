@@ -8,12 +8,12 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './pipeline_events';
+import data from './pipeline_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Pipeline events',
+  name: 'Pipeline event',
   description:
-    'Pipeline events (triggered when the status of a pipeline changes)',
+    'Pipeline event (triggered when the status of a pipeline changes)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#pipeline-events',
   key: GITLAB_EVENT_TYPE.pipeline_events,
   type: 'webhook',

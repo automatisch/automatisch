@@ -8,12 +8,12 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './feature_flag_events';
+import data from './feature_flag_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Feature flag events',
+  name: 'Feature flag event',
   description:
-    'Feature flag events (triggered when a feature flag is turned on or off)',
+    'Feature flag event (triggered when a feature flag is turned on or off)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#feature-flag-events',
   key: GITLAB_EVENT_TYPE.feature_flag_events,
   type: 'webhook',

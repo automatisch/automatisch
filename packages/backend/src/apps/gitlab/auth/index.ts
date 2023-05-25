@@ -6,18 +6,6 @@ import refreshToken from './refresh-token';
 export default {
   fields: [
     {
-      key: 'oInstanceUrl',
-      label: 'Gitlab instance URL',
-      type: 'string' as const,
-      required: false,
-      readOnly: false,
-      value: 'https://gitlab.com',
-      placeholder: 'https://gitlab.com',
-      description: 'Your Gitlab instance URL. Default is https://gitlab.com.',
-      docUrl: 'https://automatisch.io/docs/gitlab#oauth-redirect-url',
-      clickToCopy: true,
-    },
-    {
       key: 'oAuthRedirectUrl',
       label: 'OAuth Redirect URL',
       type: 'string' as const,
@@ -27,6 +15,18 @@ export default {
       placeholder: null,
       description:
         'When asked to input an OAuth callback or redirect URL in Gitlab OAuth, enter the URL above.',
+      docUrl: 'https://automatisch.io/docs/gitlab#oauth-redirect-url',
+      clickToCopy: true,
+    },
+    {
+      key: 'instanceUrl',
+      label: 'Gitlab instance URL',
+      type: 'string' as const,
+      required: false,
+      readOnly: false,
+      value: 'https://gitlab.com',
+      placeholder: 'https://gitlab.com',
+      description: 'Your Gitlab instance URL. Default is https://gitlab.com.',
       docUrl: 'https://automatisch.io/docs/gitlab#oauth-redirect-url',
       clickToCopy: true,
     },

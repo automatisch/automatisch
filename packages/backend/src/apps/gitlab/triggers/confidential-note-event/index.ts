@@ -9,12 +9,12 @@ import {
 } from '../lib';
 
 // confidential_note_events has the same event data as note_events
-import data from './note_events';
+import data from './note_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Confidential comment events',
+  name: 'Confidential comment event',
   description:
-    'Confidential comment events (triggered when a new confidential comment is made on commits, merge requests, issues, and code snippets)',
+    'Confidential comment event (triggered when a new confidential comment is made on commits, merge requests, issues, and code snippets)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#comment-events',
   key: GITLAB_EVENT_TYPE.confidential_note_events,
   type: 'webhook',

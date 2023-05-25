@@ -8,12 +8,12 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './issues_events';
+import data from './issue_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Issue events',
+  name: 'Issue event',
   description:
-    'Issue events (triggered when a new issue is created or an existing issue is updated, closed, or reopened)',
+    'Issue event (triggered when a new issue is created or an existing issue is updated, closed, or reopened)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#issue-events',
   key: GITLAB_EVENT_TYPE.issues_events,
   type: 'webhook',

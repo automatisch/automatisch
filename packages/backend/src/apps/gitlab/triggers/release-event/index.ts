@@ -8,12 +8,11 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './releases_events';
+import data from './release_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Release events',
-  description:
-    'Release events (triggered when a release is created or updated)',
+  name: 'Release event',
+  description: 'Release event (triggered when a release is created or updated)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#release-events',
   key: GITLAB_EVENT_TYPE.releases_events,
   type: 'webhook',

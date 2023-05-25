@@ -8,12 +8,12 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './wiki_page_events';
+import data from './wiki_page_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Wiki page events',
+  name: 'Wiki page event',
   description:
-    'Wiki page events (triggered when a wiki page is created, updated, or deleted)',
+    'Wiki page event (triggered when a wiki page is created, updated, or deleted)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#wiki-page-events',
   key: GITLAB_EVENT_TYPE.wiki_page_events,
   type: 'webhook',
