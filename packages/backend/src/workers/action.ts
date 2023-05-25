@@ -26,6 +26,8 @@ export const worker = new Worker(
     const { stepId, flowId, executionId, computedParameters, executionStep } =
       await processAction(job.data as JobData);
 
+    if (executionStep.isFailed) return;
+
     const step = await Step.query().findById(stepId).throwIfNotFound();
     const nextStep = await step.getNextStep();
 
