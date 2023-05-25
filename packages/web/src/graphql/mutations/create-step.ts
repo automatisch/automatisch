@@ -8,7 +8,9 @@ export const CREATE_STEP = gql`
       key
       appKey
       parameters
+      iconUrl
       position
+      webhookUrl
       status
       connection {
         id

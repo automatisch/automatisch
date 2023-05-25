@@ -162,5 +162,7 @@
   "trialBadge.over": "Trial is over",
   "trialOverAlert.text": "Your free trial is over. Please <link>upgrade</link> your plan to continue using Automatisch.",
   "checkoutCompletedAlert.text": "Thank you for upgrading your subscription and supporting our self-funded business!",
-  "subscriptionCancelledAlert.text": "Your subscription is cancelled, but you can continue using Automatisch until {date}."
+  "subscriptionCancelledAlert.text": "Your subscription is cancelled, but you can continue using Automatisch until {date}.",
+  "customAutocomplete.noOptions": "No options available.",
+  "powerInputSuggestions.noOptions": "No options available."
 }

@@ -21,7 +21,7 @@ export default defineAction({
       required: false,
       description:
         'The Google Drive where your spreadsheet resides. If nothing is selected, then your personal Google Drive will be used.',
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',
@@ -40,7 +40,7 @@ export default defineAction({
       required: true,
       dependsOn: ['parameters.driveId'],
       description: 'The spreadsheets in your Google Drive.',
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',
@@ -63,7 +63,7 @@ export default defineAction({
       required: true,
       dependsOn: ['parameters.spreadsheetId'],
       description: 'The worksheets in your selected spreadsheet.',
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',

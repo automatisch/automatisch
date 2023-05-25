@@ -3,38 +3,63 @@ import type { IStep } from '@automatisch/types';
 const joinBy = (delimiter = '.', ...args: string[]) =>
   args.filter(Boolean).join(delimiter);
 
-const process = (data: any, parentKey?: any, index?: number): any[] => {
+type TProcessPayload = {
+  data: any;
+  parentKey: string;
+  index?: number;
+  parentLabel?: string;
+};
+
+const process = ({ data, parentKey, index, parentLabel = '' }: TProcessPayload): any[] => {
   if (typeof data !== 'object') {
     return [
       {
-        name: `${parentKey}.${index}`,
-        value: data,
+        label: `${parentLabel}.${index}`,
+        value: `${parentKey}.${index}`,
+        sampleValue: data,
       },
     ];
   }
 
   const entries = Object.entries(data);
 
-  return entries.flatMap(([name, value]) => {
-    const fullName = joinBy(
+  return entries.flatMap(([name, sampleValue]) => {
+    const label = joinBy(
+      '.',
+      parentLabel,
+      (index as number)?.toString(),
+      name
+    );
+
+    const value = joinBy(
       '.',
       parentKey,
       (index as number)?.toString(),
       name
     );
 
-    if (Array.isArray(value)) {
-      return value.flatMap((item, index) => process(item, fullName, index));
+    if (Array.isArray(sampleValue)) {
+      return sampleValue.flatMap((item, index) => process({
+        data: item,
+        parentKey: value,
+        index,
+        parentLabel: label
+      }));
     }
 
-    if (typeof value === 'object' && value !== null) {
-      return process(value, fullName);
+    if (typeof sampleValue === 'object' && sampleValue !== null) {
+      return process({
+        data: sampleValue,
+        parentKey: value,
+        parentLabel: label,
+      });
     }
 
     return [
       {
-        name: fullName,
+        label,
         value,
+        sampleValue,
       },
     ];
   });
@@ -52,12 +77,11 @@ export const processStepWithExecutions = (steps: IStep[]): any[] => {
     .map((step: IStep, index: number) => ({
       id: step.id,
       // TODO: replace with step.name once introduced
-      name: `${index + 1}. ${
-        (step.appKey || '').charAt(0)?.toUpperCase() + step.appKey?.slice(1)
-      }`,
-      output: process(
-        step.executionSteps?.[0]?.dataOut || {},
-        `step.${step.id}`
-      ),
+      name: `${index + 1}. ${(step.appKey || '').charAt(0)?.toUpperCase() + step.appKey?.slice(1)
+        }`,
+      output: process({
+        data: step.executionSteps?.[0]?.dataOut || {},
+        parentKey: `step.${step.id}`,
+      }),
     }));
 };

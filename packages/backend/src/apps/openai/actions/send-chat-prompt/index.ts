@@ -19,7 +19,7 @@ export default defineAction({
       key: 'model',
       type: 'dropdown' as const,
       required: true,
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',
@@ -35,7 +35,7 @@ export default defineAction({
       label: 'Messages',
       key: 'messages',
       type: 'dynamic' as const,
-      required: false,
+      required: true,
       description: 'Add or remove messages as needed',
       value: [{ role: 'system', body: '' }],
       fields: [

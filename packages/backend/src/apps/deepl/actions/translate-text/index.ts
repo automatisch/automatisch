@@ -20,7 +20,7 @@ export default defineAction({
       type: 'dropdown' as const,
       required: true,
       description: 'Language to translate the text to.',
-      variables: false,
+      variables: true,
       value: '',
       options: [
         { label: 'Bulgarian', value: 'BG' },

@@ -11,7 +11,7 @@ export default defineAction({
       type: 'dropdown' as const,
       required: true,
       description: 'Pick a channel to send the message to.',
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',

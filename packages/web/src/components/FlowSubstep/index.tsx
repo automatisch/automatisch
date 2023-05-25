@@ -4,7 +4,7 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import type { IField, IStep, ISubstep } from '@automatisch/types';
+import type { IStep, ISubstep } from '@automatisch/types';
 
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
@@ -21,25 +21,6 @@ type FlowSubstepProps = {
   step: IStep;
 };
 
-const validateSubstep = (substep: ISubstep, step: IStep) => {
-  if (!substep) return true;
-
-  const args: IField[] = substep.arguments || [];
-
-  return args.every((arg) => {
-    if (arg.required === false) {
-      return true;
-    }
-
-    const argValue = step.parameters?.[arg.key];
-
-    // `false` is an exceptional valid value
-    if (argValue === false) return true;
-
-    return argValue !== undefined && argValue !== null;
-  });
-};
-
 function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
   const {
     substep,
@@ -54,19 +35,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
 
   const editorContext = React.useContext(EditorContext);
   const formContext = useFormContext();
-  const [validationStatus, setValidationStatus] = React.useState<
-    boolean | null
-  >(validateSubstep(substep, formContext.getValues() as IStep));
-
-  React.useEffect(() => {
-    function validate(step: unknown) {
-      const validationResult = validateSubstep(substep, step as IStep);
-      setValidationStatus(validationResult);
-    }
-    const subscription = formContext.watch(validate);
-
-    return () => subscription.unsubscribe();
-  }, [substep, formContext.watch]);
+  const validationStatus = formContext.formState.isValid;
 
   const onToggle = expanded ? onCollapse : onExpand;
 

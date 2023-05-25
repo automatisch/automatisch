@@ -21,6 +21,7 @@ class Flow extends Base {
   published_at: string;
   remoteWebhookId: string;
   executions?: Execution[];
+  lastExecution?: Execution;
   user?: User;
 
   static tableName = 'flows';
@@ -58,6 +59,17 @@ class Flow extends Base {
         to: 'executions.flow_id',
       },
     },
+    lastExecution: {
+      relation: Base.HasOneRelation,
+      modelClass: Execution,
+      join: {
+        from: 'flows.id',
+        to: 'executions.flow_id',
+      },
+      filter(builder: ExtendedQueryBuilder<Execution>) {
+        builder.orderBy('created_at', 'desc').limit(1).first();
+      },
+    },
     user: {
       relation: Base.HasOneRelation,
       modelClass: User,
@@ -89,10 +101,7 @@ class Flow extends Base {
   }
 
   async lastInternalId() {
-    const lastExecution = await this.$relatedQuery('executions')
-      .orderBy('created_at', 'desc')
-      .limit(1)
-      .first();
+    const lastExecution = await this.$relatedQuery('lastExecution');
 
     return lastExecution ? (lastExecution as Execution).internalId : null;
   }

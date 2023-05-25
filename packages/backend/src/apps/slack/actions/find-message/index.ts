@@ -23,7 +23,7 @@ export default defineAction({
         'Sort messages by their match strength or by their date. Default is score.',
       required: true,
       value: 'score',
-      variables: false,
+      variables: true,
       options: [
         {
           label: 'Match strength',
@@ -43,7 +43,7 @@ export default defineAction({
         'Sort matching messages in ascending or descending order. Default is descending.',
       required: true,
       value: 'desc',
-      variables: false,
+      variables: true,
       options: [
         {
           label: 'Descending (newest or best match first)',

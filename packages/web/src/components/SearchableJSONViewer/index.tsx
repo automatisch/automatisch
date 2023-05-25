@@ -1,69 +1,17 @@
 import * as React from 'react';
-import get from 'lodash/get';
-import set from 'lodash/set';
 import throttle from 'lodash/throttle';
 import isEmpty from 'lodash/isEmpty';
-import forIn from 'lodash/forIn';
-import isPlainObject from 'lodash/isPlainObject';
 import { Box, Typography } from '@mui/material';
 
 import { IJSONObject } from '@automatisch/types';
 import JSONViewer from 'components/JSONViewer';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';
+import filterObject from 'helpers/filterObject';
 
 type JSONViewerProps = {
   data: IJSONObject;
 };
-
-function aggregate(
-  data: any,
-  searchTerm: string,
-  result = {},
-  prefix: string[] = [],
-  withinArray = false
-) {
-  if (withinArray) {
-    const containerValue = get(result, prefix, []);
-
-    result = aggregate(
-      data,
-      searchTerm,
-      result,
-      prefix.concat(containerValue.length.toString())
-    );
-
-    return result;
-  }
-
-  if (isPlainObject(data)) {
-    forIn(data, (value, key) => {
-      const fullKey = [...prefix, key];
-
-      if (key.toLowerCase().includes(searchTerm)) {
-        set(result, fullKey, value);
-        return;
-      }
-
-      result = aggregate(value, searchTerm, result, fullKey);
-    });
-  }
-
-  if (Array.isArray(data)) {
-    forIn(data, (value) => {
-      result = aggregate(value, searchTerm, result, prefix, true);
-    });
-  }
-
-  if (
-    ['string', 'number'].includes(typeof data) &&
-    String(data).toLowerCase().includes(searchTerm)
-  ) {
-    set(result, prefix, data);
-  }
-
-  return result;
-}
 
 const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
   const [filteredData, setFilteredData] = React.useState<IJSONObject | null>(
@@ -81,7 +29,7 @@ const SearchableJSONViewer = ({ data }: JSONViewerProps) => {
           return;
         }
 
-        const newFilteredData = aggregate(data, search);
+        const newFilteredData = filterObject(data, search);
 
         if (isEmpty(newFilteredData)) {
           setFilteredData(null);

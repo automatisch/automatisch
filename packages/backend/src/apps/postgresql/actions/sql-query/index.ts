@@ -27,7 +27,7 @@ export default defineAction({
           key: 'parameter',
           type: 'string' as const,
           required: true,
-          variables: false,
+          variables: true,
         },
         {
           label: 'Value',

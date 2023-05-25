@@ -13,7 +13,7 @@ export default defineAction({
       required: true,
       value: null,
       description: 'Delay for unit, e.g. minutes, hours, days, weeks.',
-      variables: false,
+      variables: true,
       options: [
         {
           label: 'Minutes',
