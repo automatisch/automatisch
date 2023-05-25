@@ -5,7 +5,7 @@ const verifyCredentials = async ($: IGlobalVariable) => {
   // ref: https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow
 
   const response = await $.http.post(
-    `${$.auth.data.oInstanceUrl}/oauth/token`,
+    '/oauth/token',
     {
       client_id: $.auth.data.clientId,
       client_secret: $.auth.data.clientSecret,

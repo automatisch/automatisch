@@ -78,7 +78,7 @@ export const getRegisterHookFn =
       subscriptionPayload
     );
 
-    await $.flow.setRemoteWebhookId(`${data.id}`);
+    await $.flow.setRemoteWebhookId(data.id.toString());
   };
 
 export const unregisterHook = async ($: IGlobalVariable) => {

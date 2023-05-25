@@ -8,12 +8,12 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './tag_push_events';
+import data from './tag_push_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Tag events',
+  name: 'Tag event',
   description:
-    'Tag events (triggered when you create or delete tags in the repository)',
+    'Tag event (triggered when you create or delete tags in the repository)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#tag-events',
   key: GITLAB_EVENT_TYPE.tag_push_events,
   type: 'webhook',

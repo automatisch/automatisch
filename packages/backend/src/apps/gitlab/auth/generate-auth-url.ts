@@ -1,5 +1,6 @@
 import { IGlobalVariable } from '@automatisch/types';
 import { URLSearchParams } from 'url';
+import getBaseUrl from '../common/get-base-url';
 
 export default async function generateAuthUrl($: IGlobalVariable) {
   // ref: https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow
@@ -11,14 +12,13 @@ export default async function generateAuthUrl($: IGlobalVariable) {
     redirect_uri: $.auth.data.oAuthRedirectUrl as string,
     scope: scopes.join(' '),
     response_type: 'code',
-    state: `${Date.now()}`,
+    state: Date.now().toString(),
   });
 
-  const url = `${
-    $.auth.data.oInstanceUrl
-  }/oauth/authorize?${searchParams.toString()}`;
+  const baseUrl = getBaseUrl($);
+  const path = `/oauth/authorize?${searchParams.toString()}`;
 
   await $.auth.set({
-    url,
+    url: baseUrl + path,
   });
 }

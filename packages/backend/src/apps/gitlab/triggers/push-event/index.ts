@@ -8,7 +8,7 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './push_events';
+import data from './push_event';
 
 export const branchFilterStrategyArgumentDescriptor = {
   label: 'What type of filter to use?',
@@ -44,8 +44,8 @@ export const pushEventsBranchFilterArgumentDescriptor = {
 };
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Push events',
-  description: 'Push events (triggered when you push to the repository)',
+  name: 'Push event',
+  description: 'Push event (triggered when you push to the repository)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#push-events',
   key: GITLAB_EVENT_TYPE.push_events,
   type: 'webhook',

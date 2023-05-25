@@ -8,12 +8,12 @@ import {
   unregisterHook,
 } from '../lib';
 
-import data from './note_events';
+import data from './note_event';
 
 export const triggerDescriptor: IRawTrigger = {
-  name: 'Comment events',
+  name: 'Comment event',
   description:
-    'Comment events (triggered when a new comment is made on commits, merge requests, issues, and code snippets)',
+    'Comment event (triggered when a new comment is made on commits, merge requests, issues, and code snippets)',
   // info: 'https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#comment-events',
   key: GITLAB_EVENT_TYPE.note_events,
   type: 'webhook',
