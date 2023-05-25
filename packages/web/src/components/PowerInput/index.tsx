@@ -1,25 +1,26 @@
-import * as React from 'react';
 import ClickAwayListener from '@mui/base/ClickAwayListener';
-import Chip from '@mui/material/Chip';
-import Popper from '@mui/material/Popper';
-import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import * as React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { createEditor } from 'slate';
-import { Slate, Editable, useSelected, useFocused } from 'slate-react';
+import { Editable } from 'slate-react';
+
+import Slate from 'components/Slate';
+import Element from 'components/Slate/Element';
 
 import {
-  serialize,
+  customizeEditor,
   deserialize,
   insertVariable,
-  customizeEditor,
-} from './utils';
-import Suggestions from './Suggestions';
+  serialize,
+} from 'components/Slate/utils';
 import { StepExecutionsContext } from 'contexts/StepExecutions';
 
-import { FakeInput, InputLabelWrapper, ChildrenWrapper } from './style';
-import { VariableElement } from './types';
+import { VariableElement } from 'components/Slate/types';
+import Popper from './Popper';
 import { processStepWithExecutions } from './data';
+import { ChildrenWrapper, FakeInput, InputLabelWrapper } from './style';
 
 type PowerInputProps = {
   onChange?: (value: string) => void;
@@ -59,6 +60,12 @@ const PowerInput = (props: PowerInputProps) => {
   const [showVariableSuggestions, setShowVariableSuggestions] =
     React.useState(false);
 
+  const disappearSuggestionsOnShift = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === 'Tab') {
+      setShowVariableSuggestions(false);
+    }
+  }
+
   const stepsWithVariables = React.useMemo(() => {
     return processStepWithExecutions(priorStepsWithExecutions);
   }, [priorStepsWithExecutions]);
@@ -93,7 +100,7 @@ const PowerInput = (props: PowerInputProps) => {
       }) => (
         <Slate
           editor={editor}
-          value={deserialize(value, stepsWithVariables)}
+          value={deserialize(value, [], stepsWithVariables)}
           onChange={(value) => {
             controllerOnChange(serialize(value));
           }}
@@ -122,6 +129,7 @@ const PowerInput = (props: PowerInputProps) => {
                   readOnly={disabled}
                   style={{ width: '100%' }}
                   renderElement={renderElement}
+                  onKeyDown={disappearSuggestionsOnShift}
                   onFocus={() => {
                     setShowVariableSuggestions(true);
                   }}
@@ -134,74 +142,18 @@ const PowerInput = (props: PowerInputProps) => {
               {/* ghost placer for the variables popover */}
               <div ref={editorRef} style={{ position: 'absolute', right: 16, left: 16 }} />
 
-              <FormHelperText variant="outlined">{description}</FormHelperText>
-
-              <SuggestionsPopper
+              <Popper
                 open={showVariableSuggestions}
                 anchorEl={editorRef.current}
                 data={stepsWithVariables}
                 onSuggestionClick={handleVariableSuggestionClick}
               />
+
+              <FormHelperText variant="outlined">{description}</FormHelperText>
             </ChildrenWrapper>
           </ClickAwayListener>
         </Slate>
       )}
-    />
-  );
-};
-
-const SuggestionsPopper = (props: any) => {
-  const { open, anchorEl, data, onSuggestionClick } = props;
-
-  return (
-    <Popper
-      open={open}
-      anchorEl={anchorEl}
-      style={{ width: anchorEl?.clientWidth, zIndex: 1 }}
-      modifiers={[
-        {
-          name: 'flip',
-          enabled: false,
-          options: {
-            altBoundary: false,
-          },
-        },
-      ]}
-    >
-      <Suggestions data={data} onSuggestionClick={onSuggestionClick} />
-    </Popper>
-  );
-};
-
-const Element = (props: any) => {
-  const { attributes, children, element } = props;
-  switch (element.type) {
-    case 'variable':
-      return <Variable {...props} />;
-    default:
-      return <p {...attributes}>{children}</p>;
-  }
-};
-
-const Variable = ({ attributes, children, element }: any) => {
-  const selected = useSelected();
-  const focused = useFocused();
-  const label = (
-    <>
-      {element.name}
-      {children}
-    </>
-  );
-  return (
-    <Chip
-      {...attributes}
-      component="span"
-      contentEditable={false}
-      style={{
-        boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none',
-      }}
-      size="small"
-      label={label}
     />
   );
 };

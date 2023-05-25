@@ -12,7 +12,7 @@ export default defineAction({
       type: 'dropdown' as const,
       required: true,
       description: 'Pick a channel to send the message to.',
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',
@@ -40,7 +40,7 @@ export default defineAction({
       value: false,
       description:
         'If you choose no, this message will appear to come from you. Direct messages are always sent by bots.',
-      variables: false,
+      variables: true,
       options: [
         {
           label: 'Yes',

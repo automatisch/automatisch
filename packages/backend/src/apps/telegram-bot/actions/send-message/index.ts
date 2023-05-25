@@ -29,7 +29,7 @@ export default defineAction({
       required: false,
       value: false,
       description: 'Sends the message silently. Users will receive a notification with no sound.',
-      variables: false,
+      variables: true,
       options: [
         {
           label: 'Yes',

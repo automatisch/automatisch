@@ -84,7 +84,7 @@ export default defineAction({
           type: 'string' as const,
           required: true,
           description: 'Header key',
-          variables: false,
+          variables: true,
         },
         {
           label: 'Value',
@@ -132,7 +132,7 @@ export default defineAction({
 
       throwIfFileSizeExceedsLimit(metadataResponse.headers['content-length']);
       // eslint-disable-next-line no-empty
-    } catch {}
+    } catch { }
 
     const requestData: AxiosRequestConfig = {
       url,

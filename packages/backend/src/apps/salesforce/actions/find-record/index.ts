@@ -10,6 +10,7 @@ export default defineAction({
       key: 'object',
       type: 'dropdown' as const,
       required: true,
+      variables: true,
       description: 'Pick which type of object you want to search for.',
       source: {
         type: 'query',
@@ -28,7 +29,7 @@ export default defineAction({
       type: 'dropdown' as const,
       description: 'Pick which field to search by',
       required: true,
-      variables: false,
+      variables: true,
       dependsOn: ['parameters.object'],
       source: {
         type: 'query',

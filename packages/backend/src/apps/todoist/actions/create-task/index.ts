@@ -10,7 +10,7 @@ export default defineAction({
       key: 'projectId',
       type: 'dropdown' as const,
       required: false,
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',
@@ -27,7 +27,7 @@ export default defineAction({
       key: 'sectionId',
       type: 'dropdown' as const,
       required: false,
-      variables: false,
+      variables: true,
       dependsOn: ['parameters.projectId'],
       source: {
         type: 'query',

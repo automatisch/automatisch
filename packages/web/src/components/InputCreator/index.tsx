@@ -8,6 +8,7 @@ import useDynamicData from 'hooks/useDynamicData';
 import PowerInput from 'components/PowerInput';
 import TextField from 'components/TextField';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
+import ControlledCustomAutocomplete from 'components/ControlledCustomAutocomplete';
 import DynamicField from 'components/DynamicField';
 
 type InputCreatorProps = {
@@ -81,22 +82,44 @@ export default function InputCreator(
 
     return (
       <React.Fragment>
-        <ControlledAutocomplete
-          key={computedName}
-          name={computedName}
-          dependsOn={schema.dependsOn}
-          fullWidth
-          disablePortal
-          disableClearable={required}
-          options={preparedOptions}
-          renderInput={(params) => <MuiTextField {...params} label={label} />}
-          defaultValue={value as string}
-          description={description}
-          loading={loading}
-          disabled={disabled}
-          showOptionValue={showOptionValue}
-          shouldUnregister={shouldUnregister}
-        />
+        {!schema.variables && (
+          <ControlledAutocomplete
+            key={computedName}
+            name={computedName}
+            dependsOn={schema.dependsOn}
+            fullWidth
+            disablePortal
+            disableClearable={required}
+            options={preparedOptions}
+            renderInput={(params) => <MuiTextField {...params} label={label} />}
+            defaultValue={value as string}
+            description={description}
+            loading={loading}
+            disabled={disabled}
+            showOptionValue={showOptionValue}
+            shouldUnregister={shouldUnregister}
+          />
+        )}
+
+        {schema.variables && (
+          <ControlledCustomAutocomplete
+            key={computedName}
+            name={computedName}
+            dependsOn={schema.dependsOn}
+            label={label}
+            fullWidth
+            disablePortal
+            disableClearable={required}
+            options={preparedOptions}
+            renderInput={(params) => <MuiTextField {...params} label={label} />}
+            defaultValue={value as string}
+            description={description}
+            loading={loading}
+            disabled={disabled}
+            showOptionValue={showOptionValue}
+            shouldUnregister={shouldUnregister}
+          />
+        )}
 
         {(additionalFieldsLoading && !additionalFields?.length) && <div>
           <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />

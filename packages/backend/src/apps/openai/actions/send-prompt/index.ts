@@ -14,7 +14,7 @@ export default defineAction({
       key: 'model',
       type: 'dropdown' as const,
       required: true,
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',

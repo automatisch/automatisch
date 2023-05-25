@@ -13,7 +13,7 @@ export default defineAction({
       required: true,
       description:
         'The number to send the SMS from. Include country code. Example: 15551234567',
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',

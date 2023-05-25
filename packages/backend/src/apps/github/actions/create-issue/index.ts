@@ -11,7 +11,7 @@ export default defineAction({
       key: 'repo',
       type: 'dropdown' as const,
       required: false,
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',

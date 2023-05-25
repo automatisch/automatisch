@@ -16,14 +16,14 @@ export default defineAction({
       type: 'string' as const,
       value: 'public',
       required: true,
-      variables: false,
+      variables: true,
     },
     {
       label: 'Table name',
       key: 'table',
       type: 'string' as const,
       required: true,
-      variables: false,
+      variables: true,
     },
     {
       label: 'Column - value entries',
@@ -37,7 +37,7 @@ export default defineAction({
           key: 'columnName',
           type: 'string' as const,
           required: true,
-          variables: false,
+          variables: true,
         },
         {
           label: 'Value',
@@ -52,7 +52,7 @@ export default defineAction({
       label: 'Run-time parameters',
       key: 'params',
       type: 'dynamic' as const,
-      required: false,
+      required: true,
       description: 'Change run-time configuration parameters with SET command',
       fields: [
         {
@@ -60,7 +60,7 @@ export default defineAction({
           key: 'parameter',
           type: 'string' as const,
           required: true,
-          variables: false,
+          variables: true,
         },
         {
           label: 'Value',

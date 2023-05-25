@@ -41,6 +41,7 @@ import {
   Header,
   Wrapper,
 } from './style';
+import isEmpty from 'helpers/isEmpty';
 
 type FlowStepProps = {
   collapsed?: boolean;
@@ -75,7 +76,13 @@ function generateValidationSchema(substeps: ISubstep[]) {
           if (required) {
             substepArgumentValidations[key] = substepArgumentValidations[
               key
-            ].required(`${key} is required.`);
+            ]
+              .required(`${key} is required.`)
+              .test(
+                'empty-check',
+                `${key} must be not empty`,
+                (value: any) => !isEmpty(value),
+              );
           }
 
           // if the field depends on another field, add the dependsOn required validation
