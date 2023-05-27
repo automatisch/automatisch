@@ -18,7 +18,9 @@ const hashItem = async (value: string) => {
 
 const newItemsInFeed = async ($: IGlobalVariable) => {
   const { data } = await $.http.get($.step.parameters.feedUrl as string);
-  const parser = new XMLParser();
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+  });
   const parsedData = parser.parse(data);
 
   // naive implementation to cover atom and rss feeds
