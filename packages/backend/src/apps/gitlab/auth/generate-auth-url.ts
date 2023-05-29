@@ -1,5 +1,5 @@
 import { IGlobalVariable } from '@automatisch/types';
-import { URLSearchParams } from 'url';
+import { URL, URLSearchParams } from 'url';
 import getBaseUrl from '../common/get-base-url';
 
 export default async function generateAuthUrl($: IGlobalVariable) {
@@ -19,6 +19,6 @@ export default async function generateAuthUrl($: IGlobalVariable) {
   const path = `/oauth/authorize?${searchParams.toString()}`;
 
   await $.auth.set({
-    url: baseUrl + path,
+    url: new URL(path, baseUrl).toString(),
   });
 }
