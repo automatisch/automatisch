@@ -36,7 +36,7 @@ const validateSubstep = (substep: ISubstep, step: IStep) => {
     // `false` is an exceptional valid value
     if (argValue === false) return true;
 
-    return Boolean(argValue);
+    return argValue !== undefined && argValue !== null;
   });
 };
 
