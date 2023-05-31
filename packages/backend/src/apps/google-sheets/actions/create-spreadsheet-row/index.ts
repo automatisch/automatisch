@@ -10,9 +10,9 @@ type TSheetsResponse = {
 };
 
 export default defineAction({
-  name: 'Create Spreadsheet Row',
+  name: 'Create spreadsheet row',
   key: 'createSpreadsheetRow',
-  description: 'Creates a new row in a specific spreadsheet.',
+  description: 'Creates a new row in a specified spreadsheet.',
   arguments: [
     {
       label: 'Drive',
