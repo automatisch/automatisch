@@ -12,6 +12,7 @@ export const GET_DYNAMIC_FIELDS = gql`
       type
       required
       description
+      variables
       options {
         label
         value
