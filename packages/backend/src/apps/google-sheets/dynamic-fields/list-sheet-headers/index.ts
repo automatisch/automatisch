@@ -36,6 +36,8 @@ export default {
       (sheet) => sheet.properties.sheetId === $.step.parameters.worksheetId
     );
 
+    if (!selectedSheet) return;
+
     const sheetName = selectedSheet.properties.title;
 
     const range = `${sheetName}!1:1`;
