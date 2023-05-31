@@ -15,12 +15,14 @@ type TSheetsValueResponse = {
   values: string[][];
 };
 
+const hasValue = (value: any) => value !== null && value !== undefined;
+
 export default {
   name: 'List Sheet Headers',
   key: 'listSheetHeaders',
 
   async run($: IGlobalVariable) {
-    if (!$.step.parameters.spreadsheetId || !$.step.parameters.worksheetId) {
+    if (!hasValue($.step.parameters.spreadsheetId) || !hasValue($.step.parameters.worksheetId)) {
       return;
     }
 
