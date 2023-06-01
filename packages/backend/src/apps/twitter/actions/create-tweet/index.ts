@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
-  name: 'Create Tweet',
+  name: 'Create tweet',
   key: 'createTweet',
   description: 'Create a tweet.',
   arguments: [

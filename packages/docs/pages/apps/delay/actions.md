@@ -1,9 +1,9 @@
 ---
 favicon: /favicons/delay.svg
 items:
-  - name: Delay For
+  - name: Delay for
     desc: Delays the execution of the next action by a specified amount of time.
-  - name: Delay Until
+  - name: Delay until
     desc: Delays the execution of the next action until a specified date.
 ---
 

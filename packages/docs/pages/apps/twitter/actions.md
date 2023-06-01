@@ -1,9 +1,9 @@
 ---
 favicon: /favicons/twitter.svg
 items:
-  - name: Create Tweet
+  - name: Create tweet
     desc: Create a tweet.
-  - name: Search User
+  - name: Search user
     desc: Search a user.
 ---
 

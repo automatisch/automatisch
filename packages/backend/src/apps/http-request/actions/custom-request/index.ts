@@ -6,15 +6,17 @@ type TMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 type THeaderEntry = {
   key: string;
   value: string;
-}
+};
 
 type THeaderEntries = THeaderEntry[];
 
 function isPossiblyTextBased(contentType: string) {
   if (!contentType) return false;
 
-  return contentType.startsWith('application/json')
-    || contentType.startsWith('text/');
+  return (
+    contentType.startsWith('application/json') ||
+    contentType.startsWith('text/')
+  );
 }
 
 function throwIfFileSizeExceedsLimit(contentLength: string) {
@@ -28,7 +30,7 @@ function throwIfFileSizeExceedsLimit(contentLength: string) {
 }
 
 export default defineAction({
-  name: 'Custom Request',
+  name: 'Custom request',
   key: 'customRequest',
   description: 'Makes a custom HTTP request by providing raw details.',
   arguments: [
@@ -69,10 +71,12 @@ export default defineAction({
       type: 'dynamic' as const,
       required: false,
       description: 'Add or remove headers as needed',
-      value: [{
-        key: 'Content-Type',
-        value: 'application/json'
-      }],
+      value: [
+        {
+          key: 'Content-Type',
+          value: 'application/json',
+        },
+      ],
       fields: [
         {
           label: 'Key',
@@ -89,9 +93,9 @@ export default defineAction({
           required: true,
           description: 'Header value',
           variables: true,
-        }
+        },
       ],
-    }
+    },
   ],
 
   async run($) {
@@ -100,30 +104,35 @@ export default defineAction({
     const url = $.step.parameters.url as string;
     const headers = $.step.parameters.headers as THeaderEntries;
 
-    const headersObject: Record<string, string> = headers.reduce((result, entry) => {
-      const key = entry.key?.toLowerCase();
-      const value = entry.value;
+    const headersObject: Record<string, string> = headers.reduce(
+      (result, entry) => {
+        const key = entry.key?.toLowerCase();
+        const value = entry.value;
 
-      if (key && value) {
-        return {
-          ...result,
-          [entry.key?.toLowerCase()]: entry.value
+        if (key && value) {
+          return {
+            ...result,
+            [entry.key?.toLowerCase()]: entry.value,
+          };
         }
-      }
 
-      return result;
-    }, {});
+        return result;
+      },
+      {}
+    );
 
     let contentType = headersObject['content-type'];
 
     // in case HEAD request is not supported by the URL
     try {
-      const metadataResponse = await $.http.head(url, { headers: headersObject });
+      const metadataResponse = await $.http.head(url, {
+        headers: headersObject,
+      });
       contentType = metadataResponse.headers['content-type'];
 
       throwIfFileSizeExceedsLimit(metadataResponse.headers['content-length']);
       // eslint-disable-next-line no-empty
-    } catch { }
+    } catch {}
 
     const requestData: AxiosRequestConfig = {
       url,

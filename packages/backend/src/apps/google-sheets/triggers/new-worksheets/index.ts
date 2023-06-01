@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import newWorksheets from './new-worksheets';
 
 export default defineTrigger({
-  name: 'New Worksheets',
+  name: 'New worksheets',
   key: 'newWorksheets',
   pollInterval: 15,
   description: 'Triggers when you create a new worksheet in a spreadsheet.',

@@ -1,7 +1,7 @@
 ---
 favicon: /favicons/deepl.svg
 items:
-  - name: Translate Text
+  - name: Translate text
     desc: Translates text from one language to another.
 ---
 

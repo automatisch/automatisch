@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import updatedFiles from './updated-files';
 
 export default defineTrigger({
-  name: 'Updated Files',
+  name: 'Updated files',
   key: 'updatedFiles',
   pollInterval: 15,
   description:

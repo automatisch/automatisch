@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import newFormResponses from './new-form-responses';
 
 export default defineTrigger({
-  name: 'New Form Responses',
+  name: 'New form responses',
   key: 'newFormResponses',
   pollInterval: 15,
   description: 'Triggers when a new form response is submitted.',

@@ -1,7 +1,7 @@
 ---
 favicon: /favicons/google-forms.svg
 items:
-  - name: New Form Responses
+  - name: New form responses
     desc: Triggers when a new form response is submitted
 ---
 

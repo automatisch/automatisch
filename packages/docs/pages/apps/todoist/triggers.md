@@ -1,7 +1,7 @@
 ---
 favicon: /favicons/todoist.svg
 items:
-  - name: Get Tasks
+  - name: Get tasks
     desc: Finds tasks in Todoist, optionally matching specified parameters.
 ---
 

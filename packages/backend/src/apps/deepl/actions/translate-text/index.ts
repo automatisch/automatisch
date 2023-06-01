@@ -2,7 +2,7 @@ import qs from 'qs';
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
-  name: 'Translate Text',
+  name: 'Translate text',
   key: 'translateText',
   description: 'Translates text from one language to another.',
   arguments: [
