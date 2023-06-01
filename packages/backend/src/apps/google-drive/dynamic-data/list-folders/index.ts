@@ -1,7 +1,7 @@
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 
 export default {
-  name: 'List Folders',
+  name: 'List folders',
   key: 'listFolders',
 
   async run($: IGlobalVariable) {

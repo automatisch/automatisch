@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import getActiveTasks from './get-tasks';
 
 export default defineTrigger({
-  name: 'Get Active Tasks',
+  name: 'Get active tasks',
   key: 'getActiveTasks',
   pollInterval: 15,
   description: 'Triggers when new Task(s) are found',

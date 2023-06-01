@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import newFolders from './new-folders';
 
 export default defineTrigger({
-  name: 'New Folders',
+  name: 'New folders',
   key: 'newFolders',
   pollInterval: 15,
   description:

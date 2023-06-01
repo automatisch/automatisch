@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
-  name: 'Create Task',
+  name: 'Create task',
   key: 'createTask',
   description: 'Creates a Task in Todoist',
   arguments: [
@@ -59,8 +59,7 @@ export default defineAction({
       type: 'string' as const,
       required: true,
       variables: true,
-      description:
-        'Task content, may be markdown. Example: "Foo"',
+      description: 'Task content, may be markdown. Example: "Foo"',
     },
     {
       label: 'Description',
@@ -68,22 +67,16 @@ export default defineAction({
       type: 'string' as const,
       required: false,
       variables: true,
-      description:
-        'Task description, may be markdown. Example: "Foo"',
+      description: 'Task description, may be markdown. Example: "Foo"',
     },
   ],
 
   async run($) {
     const requestPath = `/tasks`;
-    const {
-      projectId,
-      sectionId,
-      labels,
-      content,
-      description
-    } = $.step.parameters;
+    const { projectId, sectionId, labels, content, description } =
+      $.step.parameters;
 
-    const labelsArray = (labels as string).split(',')
+    const labelsArray = (labels as string).split(',');
 
     const payload = {
       content,
@@ -91,7 +84,7 @@ export default defineAction({
       project_id: projectId || null,
       labels: labelsArray || null,
       section_id: sectionId || null,
-    }
+    };
 
     const response = await $.http.post(requestPath, payload);
 

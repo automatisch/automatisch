@@ -1,13 +1,13 @@
 ---
 favicon: /favicons/stripe.svg
 items:
-  - name: New Payouts
+  - name: New payouts
     desc: Triggers when stripe sent a payout to a third-party bank account or vice versa.
-    org: Stripe Documentation
+    org: Stripe documentation
     orgLink: https://stripe.com/docs/api/payouts/object
-  - name: New Balance Transactions
+  - name: New balance transactions
     desc: Triggers when a fund has been moved through your stripe account.
-    org: Stripe Documentation
+    org: Stripe documentation
     orgLink: https://stripe.com/docs/api/balance_transactions/object
 ---
 

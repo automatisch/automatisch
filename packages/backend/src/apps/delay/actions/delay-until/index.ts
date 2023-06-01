@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
-  name: 'Delay Until',
+  name: 'Delay until',
   key: 'delayUntil',
   description:
     'Delays the execution of the next action until a specified date.',

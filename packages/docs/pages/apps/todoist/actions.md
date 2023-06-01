@@ -1,7 +1,7 @@
 ---
 favicon: /favicons/todoist.svg
 items:
-  - name: Create Task
+  - name: Create task
     desc: Creates a task in Todoist.
 ---
 
