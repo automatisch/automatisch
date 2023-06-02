@@ -1,8 +1,6 @@
 import Context from '../../types/express/context';
-import axios from 'axios';
 import globalVariable from '../../helpers/global-variable';
 import App from '../../models/app';
-import GenerateAuthUrlError from '../../errors/generate-auth-url';
 
 type Params = {
   input: {
@@ -31,12 +29,7 @@ const generateAuthUrl = async (
   const app = await App.findOneByKey(connection.key);
 
   const $ = await globalVariable({ connection, app });
-  try {
-    await authInstance.generateAuthUrl($);
-    await axios.get(connection.formattedData.url as string);
-  } catch (error) {
-    throw new GenerateAuthUrlError(error);
-  }
+  await authInstance.generateAuthUrl($);
 
   return connection.formattedData;
 };
