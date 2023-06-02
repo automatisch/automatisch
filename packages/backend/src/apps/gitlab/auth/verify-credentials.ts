@@ -34,7 +34,7 @@ const verifyCredentials = async ($: IGlobalVariable) => {
     scope: data.scope,
     tokenType: data.token_type,
     userId: currentUser.id,
-    screenName: currentUser.username,
+    screenName: `${currentUser.username} @ ${$.auth.data.instanceUrl}`,
   });
 };
 
