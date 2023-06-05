@@ -28,7 +28,7 @@ export default defineTrigger({
           {
             name: 'parameters.valueType',
             value: 'sid',
-          }
+          },
         ],
       },
     },
@@ -37,12 +37,14 @@ export default defineTrigger({
   async testRun($) {
     await fetchMessages($);
 
-    if (!isEmpty($.lastExecutionStep?.dataOut)) {
+    const lastExecutionStep = await $.getLastExecutionStep();
+
+    if (!isEmpty(lastExecutionStep?.dataOut)) {
       $.pushTriggerItem({
-        raw: $.lastExecutionStep.dataOut,
+        raw: lastExecutionStep.dataOut,
         meta: {
           internalId: '',
-        }
+        },
       });
     }
   },
