@@ -10,6 +10,7 @@ import PaginationItem from '@mui/material/PaginationItem';
 import type { IExecution } from '@automatisch/types';
 
 import NoResultFound from 'components/NoResultFound';
+import ExecutionsFilter from 'components/ExecutionsFilter';
 import ExecutionRow from 'components/ExecutionRow';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
@@ -60,25 +61,22 @@ export default function Executions(): React.ReactElement {
             <PageTitle>{formatMessage('executions.title')}</PageTitle>
           </Grid>
         </Grid>
-
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
-
+        <ExecutionsFilter />
+        <Divider sx={{ mt: 2, mb: 2 }} />
         {loading && (
           <CircularProgress
             data-test="executions-loader"
             sx={{ display: 'block', margin: '20px auto' }}
           />
         )}
-
         {!loading && !hasExecutions && (
           <NoResultFound text={formatMessage('executions.noExecutions')} />
         )}
-
         {!loading &&
           executions?.map((execution) => (
             <ExecutionRow key={execution.id} execution={execution} />
           ))}
-
         {pageInfo && pageInfo.totalPages > 1 && (
           <Pagination
             sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
