@@ -23,7 +23,7 @@ export default async (request: IRequest, response: Response) => {
     query: request.query,
   };
   logger.debug(`Handling incoming webhook request at ${request.originalUrl}.`);
-  logger.debug(computedRequestPayload);
+  logger.debug(JSON.stringify(computedRequestPayload, null, 2));
 
   const flow = await Flow.query()
     .findById(flowId)
