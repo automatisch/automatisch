@@ -80,9 +80,10 @@ const globalVariable = async (
       testRun,
       exit: () => {
         throw new EarlyExitError();
-      }
+      },
     },
-    lastExecutionStep: (await step?.getLastExecutionStep())?.toJSON(),
+    getLastExecutionStep: async () =>
+      (await step?.getLastExecutionStep())?.toJSON(),
     triggerOutput: {
       data: [],
     },

@@ -331,7 +331,7 @@ export type IGlobalVariable = {
     testRun: boolean;
     exit: () => void;
   };
-  lastExecutionStep?: IExecutionStep;
+  getLastExecutionStep?: () => Promise<IExecutionStep>;
   webhookUrl?: string;
   triggerOutput?: ITriggerOutput;
   actionOutput?: IActionOutput;

@@ -20,12 +20,14 @@ export default defineTrigger({
   ],
 
   async testRun($) {
-    if (!isEmpty($.lastExecutionStep?.dataOut)) {
+    const lastExecutionStep = await $.getLastExecutionStep();
+
+    if (!isEmpty(lastExecutionStep?.dataOut)) {
       $.pushTriggerItem({
-        raw: $.lastExecutionStep.dataOut,
+        raw: lastExecutionStep.dataOut,
         meta: {
           internalId: '',
-        }
+        },
       });
     }
   },
@@ -35,20 +37,15 @@ export default defineTrigger({
       name: $.flow.id,
       type: 'POST',
       url: $.webhookUrl,
-      filters: [$.step.parameters.filters]
+      filters: [$.step.parameters.filters],
     };
 
-    const { data } = await $.http.post(
-      `/v2/public/api/webhooks`,
-      payload
-    );
+    const { data } = await $.http.post(`/v2/public/api/webhooks`, payload);
 
     await $.flow.setRemoteWebhookId(data.id);
   },
 
   async unregisterHook($) {
-    await $.http.delete(
-      `/v2/public/api/webhooks/${$.flow.remoteWebhookId}`
-    );
+    await $.http.delete(`/v2/public/api/webhooks/${$.flow.remoteWebhookId}`);
   },
 });
