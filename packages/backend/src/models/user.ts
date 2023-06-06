@@ -102,7 +102,7 @@ class User extends Base {
         to: 'users.id',
       },
       filter(builder: ExtendedQueryBuilder<UsageData>) {
-        builder.orderBy('created_at', 'desc').first();
+        builder.orderBy('created_at', 'desc').limit(1).first();
       },
     },
     subscriptions: {
@@ -121,7 +121,7 @@ class User extends Base {
         to: 'users.id',
       },
       filter(builder: ExtendedQueryBuilder<Subscription>) {
-        builder.orderBy('created_at', 'desc').first();
+        builder.orderBy('created_at', 'desc').limit(1).first();
       },
     },
   });
