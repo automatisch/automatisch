@@ -13,6 +13,7 @@ Following integrations are currently supported by Automatisch.
 - [Filter](/apps/filter/actions)
 - [Flickr](/apps/flickr/triggers)
 - [Github](/apps/github/triggers)
+- [Gitlab](/apps/gitlab/triggers)
 - [Google Drive](/apps/google-drive/triggers)
 - [Google Forms](/apps/google-forms/triggers)
 - [Google Sheets](/apps/google-sheets/triggers)
