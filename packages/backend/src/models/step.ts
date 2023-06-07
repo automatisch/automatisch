@@ -1,5 +1,6 @@
 import { URL } from 'node:url';
 import { QueryContext, ModelOptions } from 'objection';
+import get from 'lodash.get';
 import type { IJSONObject, IStep } from '@automatisch/types';
 import Base from './base';
 import App from './app';
@@ -22,6 +23,7 @@ class Step extends Base {
   connection?: Connection;
   flow: Flow;
   executionSteps: ExecutionStep[];
+  webhookPath?: string;
 
   static tableName = 'steps';
 
@@ -43,6 +45,7 @@ class Step extends Base {
       },
       position: { type: 'integer' },
       parameters: { type: 'object' },
+      webhookPath: { type: ['string', 'null'] },
     },
   };
 
@@ -77,17 +80,52 @@ class Step extends Base {
     },
   });
 
+  get webhookUrl() {
+    return new URL(this.webhookPath, appConfig.webhookUrl).toString();
+  }
+
   get iconUrl() {
     if (!this.appKey) return null;
 
     return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
-  get webhookUrl() {
-    if (this.appKey !== 'webhook') return null;
+  async computeWebhookPath() {
+    if (this.type === 'action') return null;
 
-    const url = new URL(`/webhooks/${this.flowId}`, appConfig.webhookUrl);
-    return url.toString();
+    const triggerCommand = await this.getTriggerCommand();
+
+    if (!triggerCommand) return null;
+
+    const {
+      useSingletonWebhook,
+      singletonWebhookRefValueParameter,
+      type,
+    } = triggerCommand;
+
+    const isWebhook = type === 'webhook';
+
+    if (!isWebhook) return null;
+
+    if (singletonWebhookRefValueParameter) {
+      const parameterValue = get(this.parameters, singletonWebhookRefValueParameter);
+      return `/webhooks/connections/${this.connectionId}/${parameterValue}`;
+    }
+
+    if (useSingletonWebhook) {
+      return `/webhooks/connections/${this.connectionId}`;
+    }
+
+    return `/webhooks/flows/${this.flowId}`;
+  }
+
+  async getWebhookUrl() {
+    if (this.type === 'action') return;
+
+    const path = await this.computeWebhookPath();
+    const webhookUrl = new URL(path, appConfig.webhookUrl).toString();
+
+    return webhookUrl;
   }
 
   async $afterInsert(queryContext: QueryContext) {
@@ -165,6 +203,18 @@ class Step extends Base {
     ).arguments;
 
     return existingArguments;
+  }
+
+  async updateWebhookUrl() {
+    if (this.isAction) return this;
+
+    const payload = {
+      webhookPath: await this.computeWebhookPath(),
+    };
+
+    await this.$query().patchAndFetch(payload);
+
+    return this;
   }
 }
 

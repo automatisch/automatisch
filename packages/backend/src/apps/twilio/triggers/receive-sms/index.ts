@@ -34,6 +34,9 @@ export default defineTrigger({
     },
   ],
 
+  useSingletonWebhook: true,
+  singletonWebhookRefValueParameter: 'phoneNumberSid',
+
   async testRun($) {
     await fetchMessages($);
 

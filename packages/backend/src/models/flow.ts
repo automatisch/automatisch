@@ -18,6 +18,7 @@ class Flow extends Base {
   active: boolean;
   status: 'paused' | 'published' | 'draft';
   steps: Step[];
+  triggerStep: Step;
   published_at: string;
   remoteWebhookId: string;
   executions?: Execution[];
@@ -49,6 +50,20 @@ class Flow extends Base {
       },
       filter(builder: ExtendedQueryBuilder<Step>) {
         builder.orderBy('position', 'asc');
+      },
+    },
+    triggerStep: {
+      relation: Base.HasOneRelation,
+      modelClass: Step,
+      join: {
+        from: 'flows.id',
+        to: 'steps.flow_id',
+      },
+      filter(builder: ExtendedQueryBuilder<Step>) {
+        builder
+          .where('type', 'trigger')
+          .limit(1)
+          .first();
       },
     },
     executions: {

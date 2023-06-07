@@ -67,6 +67,7 @@ export const GET_APPS = gql`
         name
         key
         type
+        showWebhookUrl
         pollInterval
         description
         substeps {

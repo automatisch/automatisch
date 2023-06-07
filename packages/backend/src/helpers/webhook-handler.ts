@@ -2,28 +2,23 @@ import Crypto from 'node:crypto';
 import { Response } from 'express';
 import { IRequest, ITriggerItem } from '@automatisch/types';
 
-import logger from '../../helpers/logger';
-import Flow from '../../models/flow';
-import { processTrigger } from '../../services/trigger';
-import actionQueue from '../../queues/action';
-import globalVariable from '../../helpers/global-variable';
-import QuotaExceededError from '../../errors/quote-exceeded';
+import Flow from '../models/flow';
+import { processTrigger } from '../services/trigger';
+import actionQueue from '../queues/action';
+import globalVariable from './global-variable';
+import QuotaExceededError from '../errors/quote-exceeded';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '../../helpers/remove-job-configuration';
+} from './remove-job-configuration';
 
-export default async (request: IRequest, response: Response) => {
-  const flowId = request.params.flowId;
-
+export default async (flowId: string, request: IRequest, response: Response) => {
   // in case it's our built-in generic webhook trigger
   let computedRequestPayload = {
     headers: request.headers,
     body: request.body,
     query: request.query,
   };
-  logger.debug(`Handling incoming webhook request at ${request.originalUrl}.`);
-  logger.debug(JSON.stringify(computedRequestPayload, null, 2));
 
   const flow = await Flow.query()
     .findById(flowId)
@@ -39,32 +34,11 @@ export default async (request: IRequest, response: Response) => {
   }
 
   const triggerStep = await flow.getTriggerStep();
-  const triggerCommand = await triggerStep.getTriggerCommand();
   const app = await triggerStep.getApp();
   const isWebhookApp = app.key === 'webhook';
 
-  if (testRun && !isWebhookApp) {
-    return response.sendStatus(404);
-  }
-
-  if (triggerCommand.type !== 'webhook') {
-    return response.sendStatus(404);
-  }
-
-  if (app.auth?.verifyWebhook) {
-    const $ = await globalVariable({
-      flow,
-      connection: await triggerStep.$relatedQuery('connection'),
-      app,
-      step: triggerStep,
-      request,
-    });
-
-    const verified = await app.auth.verifyWebhook($);
-
-    if (!verified) {
-      return response.sendStatus(401);
-    }
+  if ((testRun && !isWebhookApp)) {
+    return response.status(404);
   }
 
   // in case trigger type is 'webhook'
@@ -87,7 +61,7 @@ export default async (request: IRequest, response: Response) => {
   });
 
   if (testRun) {
-    return response.sendStatus(204);
+    return response.status(204);
   }
 
   const nextStep = await triggerStep.getNextStep();
@@ -106,5 +80,5 @@ export default async (request: IRequest, response: Response) => {
 
   await actionQueue.add(jobName, jobPayload, jobOptions);
 
-  return response.sendStatus(204);
+  return response.status(204);
 };

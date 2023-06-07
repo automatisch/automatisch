@@ -60,7 +60,7 @@ export interface IStep {
   key?: string;
   appKey?: string;
   iconUrl: string;
-  webhookUrl: string;
+  webhookUrl?: string;
   type: 'action' | 'trigger';
   connectionId?: string;
   status: string;
@@ -241,14 +241,16 @@ export interface IBaseTrigger {
   name: string;
   key: string;
   type?: 'webhook' | 'polling';
+  showWebhookUrl?: boolean;
   pollInterval?: number;
   description: string;
+  useSingletonWebhook?: boolean;
+  singletonWebhookRefValueParameter?: string;
   getInterval?(parameters: IStep['parameters']): string;
   run?($: IGlobalVariable): Promise<void>;
   testRun?($: IGlobalVariable): Promise<void>;
   registerHook?($: IGlobalVariable): Promise<void>;
   unregisterHook?($: IGlobalVariable): Promise<void>;
-  sort?(item: ITriggerItem, nextItem: ITriggerItem): number;
 }
 
 export interface IRawTrigger extends IBaseTrigger {
@@ -306,7 +308,7 @@ export type IGlobalVariable = {
     set: (args: IJSONObject) => Promise<null>;
     data: IJSONObject;
   };
-  app: IApp;
+  app?: IApp;
   http?: IHttpClient;
   request?: IRequest;
   flow?: {
@@ -333,6 +335,7 @@ export type IGlobalVariable = {
   };
   getLastExecutionStep?: () => Promise<IExecutionStep>;
   webhookUrl?: string;
+  singletonWebhookUrl?: string;
   triggerOutput?: ITriggerOutput;
   actionOutput?: IActionOutput;
   pushTriggerItem?: (triggerItem: ITriggerItem) => void;
