@@ -4,7 +4,7 @@ import paddlePlans from './plans.ee';
 import webhooks from './webhooks.ee';
 
 const paddleInfo = {
-  sandbox: appConfig.isDev ? true : false,
+  sandbox: appConfig.isProd ? false : true,
   vendorId: appConfig.paddleVendorId,
 };
 
