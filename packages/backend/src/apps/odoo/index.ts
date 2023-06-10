@@ -1,4 +1,5 @@
 import defineApp from '../../helpers/define-app';
+import auth from './auth';
 
 export default defineApp({
     name: 'Odoo',
@@ -9,4 +10,5 @@ export default defineApp({
     baseUrl: 'https://odoo.com',
     apiBaseUrl: 'https://odoo.com',
     primaryColor: '714B67',
+    auth
 });
