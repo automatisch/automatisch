@@ -1,4 +1,5 @@
-import verifyCredentials from "./verify-credentials"
+import verifyCredentials from "./verify-credentials";
+import isStillVerified from "./is-still-verified";
 
 export default {
     fields: [
@@ -59,5 +60,6 @@ export default {
         }
     ],
 
-    verifyCredentials
+    verifyCredentials,
+    isStillVerified
 };
