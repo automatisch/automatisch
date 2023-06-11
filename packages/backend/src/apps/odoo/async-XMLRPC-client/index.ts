@@ -1,6 +1,6 @@
 import xmlrpc from 'xmlrpc';
 
-const asyncMethodCall = async(client: xmlrpc.Client, method: string, params: any[]) => {
+const asyncMethodCall = async(client: xmlrpc.Client, method: string, params: any[]): Promise<number> => {
     return new Promise(
         (resolve, reject) => {
             client.methodCall(
