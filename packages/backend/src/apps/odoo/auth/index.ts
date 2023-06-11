@@ -1,3 +1,5 @@
+import verifyCredentials from "./verify-credentials"
+
 export default {
     fields: [
         {
@@ -9,6 +11,17 @@ export default {
             value: null,
             placeholder: null,
             description: 'Host name of your Odoo Server',
+            clickToCopy: false,
+        },
+        {
+            key: 'port',
+            label: 'Host HTTP Port',
+            type: 'string' as const,
+            required: false,
+            readOnly: false,
+            value: null,
+            placeholder: null,
+            description: 'Port that the host is running on, defaults to 443 (HTTPS)',
             clickToCopy: false,
         },
         {
@@ -45,4 +58,6 @@ export default {
             clickToCopy: false
         }
     ],
+
+    verifyCredentials
 };
