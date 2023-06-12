@@ -87,13 +87,22 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Github',
+          text: 'GitHub',
           collapsible: true,
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/github/triggers' },
             { text: 'Actions', link: '/apps/github/actions' },
             { text: 'Connection', link: '/apps/github/connection' },
+          ],
+        },
+        {
+          text: 'GitLab',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/gitlab/triggers' },
+            { text: 'Connection', link: '/apps/gitlab/connection' },
           ],
         },
         {
