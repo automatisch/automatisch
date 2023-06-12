@@ -16,6 +16,23 @@ export default defineAction({
             variables: true,
         },
         {
+            label: 'Type',
+            key: 'type',
+            type: 'dropdown' as const,
+            required: true,
+            variables: false,
+            options: [
+                {
+                    label: "Lead",
+                    value: "lead"
+                },
+                {
+                    label: "Opportunity",
+                    value: "opportunity"
+                }
+            ]
+        },
+        {
             label: 'Lead\'s Email',
             key: 'email',
             type: 'string' as const,
@@ -90,7 +107,7 @@ export default defineAction({
                 [
                     {
                         name: $.step.parameters.name,
-                        type: "lead",
+                        type: $.step.parameters.type,
                         email_from: $.step.parameters.email,
                         contact_name: $.step.parameters.contactName,
                         phone: $.step.parameters.phoneNumber,
