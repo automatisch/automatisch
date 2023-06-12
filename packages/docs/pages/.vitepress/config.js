@@ -152,6 +152,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'PostgreSQL',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/postgresql/actions' },
+            { text: 'Connection', link: '/apps/postgresql/connection' },
+          ],
+        },
+        {
           text: 'RSS',
           collapsible: true,
           collapsed: true,
