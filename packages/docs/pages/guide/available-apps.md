@@ -19,6 +19,7 @@ Following integrations are currently supported by Automatisch.
 - [HTTP Request](/apps/http-request/actions)
 - [Ntfy](/apps/ntfy/actions)
 - [OpenAI](/apps/openai/actions)
+- [PostgreSQL](/apps/postgresql/actions)
 - [RSS](/apps/rss/triggers)
 - [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)
