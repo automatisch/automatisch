@@ -1,10 +1,11 @@
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import getIncomingPhoneNumber from '../../common/get-incoming-phone-number';
 
 const fetchMessages = async ($: IGlobalVariable) => {
-  const toNumber = $.step.parameters.toNumber as string;
+  const incomingPhoneNumber = await getIncomingPhoneNumber($);
 
   let response;
-  let requestPath = `/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages.json?To=${toNumber}`;
+  let requestPath = `/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages.json?To=${incomingPhoneNumber.phone_number}`;
 
   do {
     response = await $.http.get(requestPath);
