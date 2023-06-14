@@ -20,6 +20,7 @@ Following integrations are currently supported by Automatisch.
 - [HTTP Request](/apps/http-request/actions)
 - [Notion](/apps/notion/triggers)
 - [Ntfy](/apps/ntfy/actions)
+- [Odoo](/apps/odoo/actions)
 - [OpenAI](/apps/openai/actions)
 - [PostgreSQL](/apps/postgresql/actions)
 - [RSS](/apps/rss/triggers)
