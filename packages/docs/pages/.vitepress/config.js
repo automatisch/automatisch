@@ -143,6 +143,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Notion',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/notion/triggers' },
+            { text: 'Connection', link: '/apps/notion/connection' },
+          ],
+        },
+        {
           text: 'Ntfy',
           collapsible: true,
           collapsed: true,

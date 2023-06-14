@@ -44,9 +44,12 @@ const getDynamicData = async (
     $.step.parameters[parameterKey] = parameterValue;
   }
 
-  const priorExecutionSteps = await ExecutionStep.query().where({
-    execution_id: (await flow.$relatedQuery('lastExecution')).id,
-  });
+  const lastExecution = await flow.$relatedQuery('lastExecution');
+  const lastExecutionId = lastExecution?.id;
+
+  const priorExecutionSteps = lastExecutionId ? await ExecutionStep.query().where({
+    execution_id: lastExecutionId,
+  }) : [];
 
   // compute variables in parameters
   const computedParameters = computeParameters($.step.parameters, priorExecutionSteps);
