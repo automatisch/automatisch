@@ -12,4 +12,4 @@ To create a connection you need to supply the following information:
 * The email account that will be accessed though the Odoo instance
 * The API key created for the Odoo account
 
-Odoo's [API documentation](https://www.odoo.com/documentation/16.0/developer/reference/external_api.html#api-keys) explains how to create API keys. 
+Odoo's [API documentation](https://www.odoo.com/documentation/latest/developer/reference/external_api.html#api-keys) explains how to create API keys. 
