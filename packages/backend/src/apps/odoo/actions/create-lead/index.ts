@@ -1,5 +1,5 @@
 import defineAction from '../../../../helpers/define-action';
-import asyncMethodCall from '../../async-XMLRPC-client';
+import {authenticate, asyncMethodCall} from '../../async-XMLRPC-client';
 import xmlrpc from 'xmlrpc';
 
 export default defineAction({
@@ -67,26 +67,9 @@ export default defineAction({
   ],
 
   async run($) {
+    const uid = await authenticate($);
+
     const port = $.auth.data.port ? parseInt($.auth.data.port.toString()) : 443;
-    const authClient = await xmlrpc.createClient(
-      {
-        host: $.auth.data.hostName.toString(),
-        port: port,
-        path: '/xmlrpc/2/common',
-      }
-    );
-
-    const uid = await asyncMethodCall(
-      authClient,
-      'authenticate',
-      [
-        $.auth.data.databaseName,
-        $.auth.data.email,
-        $.auth.data.apiKey,
-        []
-      ]
-    );
-
     const objectClient = await xmlrpc.createClient(
       {
         host: $.auth.data.hostName.toString(),
@@ -100,7 +83,7 @@ export default defineAction({
       'execute_kw',
       [
         $.auth.data.databaseName,
-        parseInt(uid.toString()),
+        uid,
         $.auth.data.apiKey,
         'crm.lead',
         'create',
