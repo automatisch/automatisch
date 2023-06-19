@@ -143,6 +143,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Mattermost',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/mattermost/actions' },
+            { text: 'Connection', link: '/apps/notion/connection' },
+          ],
+        },
+        {
           text: 'Notion',
           collapsible: true,
           collapsed: true,
