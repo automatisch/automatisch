@@ -24,6 +24,7 @@
   "dependencies": {
     "@automatisch/web": "^0.7.1",
     "@bull-board/express": "^3.10.1",
+    "@casl/ability": "^6.5.0",
     "@graphql-tools/graphql-file-loader": "^7.3.4",
     "@graphql-tools/load": "^7.5.2",
     "@rudderstack/rudder-sdk-node": "^1.1.2",

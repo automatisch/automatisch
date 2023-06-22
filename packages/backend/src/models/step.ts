@@ -46,6 +46,9 @@ class Step extends Base {
       position: { type: 'integer' },
       parameters: { type: 'object' },
       webhookPath: { type: ['string', 'null'] },
+      deletedAt: { type: 'string' },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
@@ -97,18 +100,18 @@ class Step extends Base {
 
     if (!triggerCommand) return null;
 
-    const {
-      useSingletonWebhook,
-      singletonWebhookRefValueParameter,
-      type,
-    } = triggerCommand;
+    const { useSingletonWebhook, singletonWebhookRefValueParameter, type } =
+      triggerCommand;
 
     const isWebhook = type === 'webhook';
 
     if (!isWebhook) return null;
 
     if (singletonWebhookRefValueParameter) {
-      const parameterValue = get(this.parameters, singletonWebhookRefValueParameter);
+      const parameterValue = get(
+        this.parameters,
+        singletonWebhookRefValueParameter
+      );
       return `/webhooks/connections/${this.connectionId}/${parameterValue}`;
     }
 

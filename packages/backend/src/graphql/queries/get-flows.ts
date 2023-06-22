@@ -10,6 +10,8 @@ type Params = {
 };
 
 const getFlows = async (_parent: unknown, params: Params, context: Context) => {
+  context.currentUser.can('read', 'Flow');
+
   const flowsQuery = context.currentUser
     .$relatedQuery('flows')
     .joinRelated({
