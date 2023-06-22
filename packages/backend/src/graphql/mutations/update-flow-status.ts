@@ -18,6 +18,8 @@ const updateFlowStatus = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('publish', 'Flow');
+
   let flow = await context.currentUser
     .$relatedQuery('flows')
     .findOne({
@@ -55,7 +57,7 @@ const updateFlowStatus = async (
   } else {
     if (newActiveValue) {
       flow = await flow.$query().patchAndFetch({
-        published_at: new Date().toISOString(),
+        publishedAt: new Date().toISOString(),
       });
 
       const jobName = `${JOB_NAME}-${flow.id}`;
@@ -78,9 +80,12 @@ const updateFlowStatus = async (
     }
   }
 
-  flow = await flow.$query().withGraphFetched('steps').patchAndFetch({
-    active: newActiveValue,
-  });
+  flow = await flow
+    .$query()
+    .withGraphFetched('steps')
+    .patchAndFetch({
+      active: newActiveValue,
+    });
 
   return flow;
 };

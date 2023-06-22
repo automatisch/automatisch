@@ -24,6 +24,9 @@ class UsageData extends Base {
       subscriptionId: { type: 'string', format: 'uuid' },
       consumedTaskCount: { type: 'integer' },
       nextResetAt: { type: 'string' },
+      deletedAt: { type: 'string' },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 

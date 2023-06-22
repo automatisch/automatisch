@@ -1,4 +1,5 @@
 import User from '../../models/user';
+import Role from '../../models/role';
 
 type Params = {
   input: {
@@ -17,11 +18,13 @@ const createUser = async (_parent: unknown, params: Params) => {
     throw new Error('User already exists!');
   }
 
+  const role = await Role.query().findOne({ key: 'user' });
+
   const user = await User.query().insert({
     fullName,
     email,
     password,
-    role: 'user',
+    roleId: role.id,
   });
 
   return user;

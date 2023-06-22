@@ -46,6 +46,9 @@ class Step extends Base {
       position: { type: 'integer' },
       parameters: { type: 'object' },
       webhookPath: { type: ['string', 'null'] },
+      deletedAt: { type: 'string' },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
