@@ -12,7 +12,15 @@ const isAuthenticated = rule()(async (_parent, _args, req) => {
     const { userId } = jwt.verify(token, appConfig.appSecretKey) as {
       userId: string;
     };
-    req.currentUser = await User.query().findById(userId).throwIfNotFound();
+    req.currentUser = await User
+      .query()
+      .findById(userId)
+      .joinRelated({
+        permissions: true,
+      })
+      .withGraphFetched({
+        permissions: true,
+      });
 
     return true;
   } catch (error) {

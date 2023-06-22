@@ -46,6 +46,9 @@ class Subscription extends Base {
       nextBillDate: { type: 'string' },
       lastBillDate: { type: 'string' },
       cancellationEffectiveDate: { type: 'string' },
+      deletedAt: { type: 'string' },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
@@ -84,7 +87,7 @@ class Subscription extends Base {
     return (
       this.status === 'deleted' &&
       Number(this.cancellationEffectiveDate) >
-        DateTime.now().startOf('day').toMillis()
+      DateTime.now().startOf('day').toMillis()
     );
   }
 

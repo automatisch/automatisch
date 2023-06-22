@@ -15,7 +15,7 @@ const buildQueryBuidlerForClass = (): ForClassMethod => {
       modelClass
     );
     qb.onBuild((builder) => {
-      if (!builder.context().withSoftDeleted) {
+      if (!builder.context().withSoftDeleted && qb.modelClass().jsonSchema.properties.deletedAt) {
         builder.whereNull(
           `${qb.modelClass().tableName}.${DELETED_COLUMN_NAME}`
         );

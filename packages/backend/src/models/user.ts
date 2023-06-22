@@ -1,13 +1,18 @@
+import crypto from 'node:crypto';
 import { QueryContext, ModelOptions } from 'objection';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
 import { DateTime } from 'luxon';
+import { Ability } from '@casl/ability';
+import type { Subject } from '@casl/ability';
+
 import appConfig from '../config/app';
 import Base from './base';
 import ExtendedQueryBuilder from './query-builder';
 import Connection from './connection';
 import Flow from './flow';
 import Step from './step';
+import Role from './role';
+import Permission from './permission';
 import Execution from './execution';
 import UsageData from './usage-data.ee';
 import Subscription from './subscription.ee';
@@ -16,8 +21,8 @@ class User extends Base {
   id!: string;
   fullName!: string;
   email!: string;
+  roleId: string;
   password!: string;
-  role: string;
   resetPasswordToken: string;
   resetPasswordTokenSentAt: string;
   trialExpiryDate: string;
@@ -29,6 +34,8 @@ class User extends Base {
   currentUsageData?: UsageData;
   subscriptions?: Subscription[];
   currentSubscription?: Subscription;
+  role: Role;
+  permissions: Permission[];
 
   static tableName = 'users';
 
@@ -41,7 +48,13 @@ class User extends Base {
       fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string', minLength: 1, maxLength: 255 },
-      role: { type: 'string', enum: ['admin', 'user'] },
+      resetPasswordToken: { type: 'string' },
+      resetPasswordTokenSentAt: { type: 'string' },
+      trialExpiryDate: { type: 'string' },
+      roleId: { type: 'string', format: 'uuid' },
+      deletedAt: { type: 'string' },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
@@ -122,6 +135,26 @@ class User extends Base {
       },
       filter(builder: ExtendedQueryBuilder<Subscription>) {
         builder.orderBy('created_at', 'desc').limit(1).first();
+      },
+    },
+    role: {
+      relation: Base.HasOneRelation,
+      modelClass: Role,
+      join: {
+        from: 'roles.id',
+        to: 'users.role_id',
+      },
+    },
+    permissions: {
+      relation: Base.ManyToManyRelation,
+      modelClass: Permission,
+      join: {
+        from: 'users.role_id',
+        through: {
+          from: 'roles_permissions.role_id',
+          to: 'roles_permissions.permission_id',
+        },
+        to: 'permissions.id',
       },
     },
   });
@@ -247,6 +280,30 @@ class User extends Base {
         nextResetAt: DateTime.now().plus({ days: 30 }).toISODate(),
       });
     }
+  }
+
+  get ability() {
+    if (!this.permissions) {
+      throw new Error('User.permissions must be fetched!');
+    }
+
+    return new Ability(this.permissions);
+  }
+
+  can(action: string, subject: Subject) {
+    const can = this.ability.can(action, subject);
+
+    if (!can) throw new Error('Not authorized!');
+
+    return can;
+  }
+
+  cannot(action: string, subject: Subject) {
+    const cannot = this.ability.cannot(action, subject);
+
+    if (cannot) throw new Error('Not authorized!');
+
+    return cannot;
   }
 }
 
