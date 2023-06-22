@@ -31,6 +31,9 @@ class ExecutionStep extends Base {
       dataOut: { type: ['object', 'null'] },
       status: { type: 'string', enum: ['success', 'failure'] },
       errorDetails: { type: ['object', 'null'] },
+      deletedAt: { type: 'string' },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 

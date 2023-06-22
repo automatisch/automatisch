@@ -40,6 +40,9 @@ class Connection extends Base {
       userId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean', default: false },
       draft: { type: 'boolean' },
+      deletedAt: { type: 'string' },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
