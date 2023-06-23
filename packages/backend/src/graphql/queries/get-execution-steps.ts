@@ -12,6 +12,8 @@ const getExecutionSteps = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('read', 'Execution');
+
   const execution = await context.currentUser
     .$relatedQuery('executions')
     .withSoftDeleted()
