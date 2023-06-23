@@ -13,6 +13,8 @@ const createConnection = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('create', 'Connection');
+
   await App.findOneByKey(params.input.key);
 
   return await context.currentUser.$relatedQuery('connections').insert({
