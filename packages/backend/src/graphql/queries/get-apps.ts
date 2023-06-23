@@ -1,5 +1,5 @@
-import App from '../../models/app';
 import { IApp } from '@automatisch/types';
+import App from '../../models/app';
 
 type Params = {
   name: string;
