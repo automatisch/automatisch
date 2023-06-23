@@ -11,6 +11,8 @@ const deleteStep = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('update', 'Flow');
+
   const step = await context.currentUser
     .$relatedQuery('steps')
     .withGraphFetched('flow')
