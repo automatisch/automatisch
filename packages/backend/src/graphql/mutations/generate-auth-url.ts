@@ -13,6 +13,8 @@ const generateAuthUrl = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('create', 'Connection');
+
   const connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
