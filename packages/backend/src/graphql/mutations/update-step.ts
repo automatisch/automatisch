@@ -23,6 +23,8 @@ const updateStep = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('update', 'Flow');
+
   const { input } = params;
 
   let step = await context.currentUser
