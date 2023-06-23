@@ -5,6 +5,8 @@ type Params = {
 };
 
 const getFlow = async (_parent: unknown, params: Params, context: Context) => {
+  context.currentUser.can('read', 'Flow');
+
   const flow = await context.currentUser
     .$relatedQuery('flows')
     .withGraphJoined('[steps.[connection]]')
