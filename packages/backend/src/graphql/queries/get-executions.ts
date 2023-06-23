@@ -12,6 +12,8 @@ const getExecutions = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('read', 'Execution');
+
   const selectStatusStatement = `
     case
       when count(*) filter (where execution_steps.status = 'failure') > 0
