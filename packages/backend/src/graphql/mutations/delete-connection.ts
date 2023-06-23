@@ -11,6 +11,8 @@ const deleteConnection = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('delete', 'Connection');
+
   await context.currentUser
     .$relatedQuery('connections')
     .delete()
