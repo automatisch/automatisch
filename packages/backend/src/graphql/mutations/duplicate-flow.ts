@@ -53,6 +53,8 @@ const duplicateFlow = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('create', 'Flow');
+
   const flow = await context.currentUser
     .$relatedQuery('flows')
     .withGraphJoined('[steps]')
