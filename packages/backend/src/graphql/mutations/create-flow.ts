@@ -14,6 +14,8 @@ const createFlow = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('create', 'Flow');
+
   const connectionId = params?.input?.connectionId;
   const appKey = params?.input?.triggerAppKey;
 
