@@ -13,6 +13,8 @@ const verifyConnection = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('create', 'Connection');
+
   let connection = await context.currentUser
     .$relatedQuery('connections')
     .findOne({
