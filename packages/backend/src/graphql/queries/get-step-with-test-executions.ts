@@ -11,6 +11,8 @@ const getStepWithTestExecutions = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('update', 'Flow');
+
   const step = await context.currentUser
     .$relatedQuery('steps')
     .findOne({ 'steps.id': params.stepId })
