@@ -13,6 +13,8 @@ const deleteFlow = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('delete', 'Flow');
+
   const flow = await context.currentUser
     .$relatedQuery('flows')
     .findOne({
