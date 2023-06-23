@@ -1,6 +1,6 @@
+import { IConnection } from '@automatisch/types';
 import App from '../../models/app';
 import Context from '../../types/express/context';
-import { IApp, IConnection } from '@automatisch/types';
 
 type Params = {
   name: string;
@@ -11,6 +11,8 @@ const getConnectedApps = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('read', 'Connection');
+
   let apps = await App.findAll(params.name);
 
   const connections = await context.currentUser

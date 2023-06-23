@@ -6,6 +6,8 @@ type Params = {
 };
 
 const getApp = async (_parent: unknown, params: Params, context: Context) => {
+  context.currentUser.can('read', 'Connection');
+
   const app = await App.findOneByKey(params.key);
 
   if (context.currentUser) {
