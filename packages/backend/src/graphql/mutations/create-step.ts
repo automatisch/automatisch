@@ -22,6 +22,8 @@ const createStep = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('update', 'Flow');
+
   const { input } = params;
 
   if (input.appKey && input.key) {

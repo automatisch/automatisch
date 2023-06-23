@@ -12,6 +12,8 @@ const executeFlow = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('update', 'Flow');
+
   const { stepId } = params.input;
 
   const untilStep = await context.currentUser

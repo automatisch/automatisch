@@ -12,6 +12,8 @@ const updateFlow = async (
   params: Params,
   context: Context
 ) => {
+  context.currentUser.can('update', 'Flow');
+
   let flow = await context.currentUser
     .$relatedQuery('flows')
     .findOne({
