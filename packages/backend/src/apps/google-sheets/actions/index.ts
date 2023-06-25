@@ -1,4 +1,4 @@
-import createSpreadsheetRow from './create-spreadsheet-row';
 import createSpreadsheet from './create-spreadsheet';
+import createSpreadsheetRow from './create-spreadsheet-row';
 
-export default [createSpreadsheetRow, createSpreadsheet];
+export default [createSpreadsheet, createSpreadsheetRow];
