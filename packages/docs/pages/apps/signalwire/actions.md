@@ -2,7 +2,7 @@
 favicon: /favicons/signalwire.svg
 items:
   - name: Send an SMS
-    desc: Sends an SMS
+    desc: Sends an SMS.
 ---
 
 <script setup>
