@@ -337,6 +337,15 @@ export default defineConfig({
             { text: 'Connection', link: '/apps/webhooks/connection' },
           ],
         },
+        {
+          text: 'WordPress',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/wordpress/triggers' },
+            { text: 'Connection', link: '/apps/wordpress/connection' },
+          ],
+        },
       ],
       '/': [
         {
