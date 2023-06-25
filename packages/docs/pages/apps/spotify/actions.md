@@ -2,7 +2,7 @@
 favicon: /favicons/spotify.svg
 items:
   - name: Create playlist
-    desc: Create a playlist on user's account
+    desc: Create a playlist on user's account.
 ---
 
 <script setup>
