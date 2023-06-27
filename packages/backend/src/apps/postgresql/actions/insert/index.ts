@@ -88,6 +88,8 @@ export default defineAction({
       .returning('*')
       .insert(data) as IJSONObject;
 
+    client.destroy();
+
     $.setActionItem({ raw: response[0] as IJSONObject });
   },
 });
