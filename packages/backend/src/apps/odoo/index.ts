@@ -9,8 +9,8 @@ export default defineApp({
   authDocUrl: 'https://automatisch.io/docs/apps/odoo/connection',
   supportsConnections: true,
   baseUrl: 'https://odoo.com',
-  apiBaseUrl: 'https://odoo.com',
-  primaryColor: '714B67',
+  apiBaseUrl: '',
+  primaryColor: '9c5789',
   auth,
   actions
 });

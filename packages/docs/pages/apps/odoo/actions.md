@@ -1,8 +1,8 @@
 ---
 favicon: /favicons/odoo.svg
 items:
-  - name: Create a lead/opportunity
-    desc: Create a new CRM record in your Odoo instance as a lead or opportunity
+  - name: Create a lead or opportunity
+    desc: Creates a new CRM record as a lead or opportunity.
 ---
 
 <script setup>

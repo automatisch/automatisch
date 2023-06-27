@@ -1,12 +1,16 @@
-import {IGlobalVariable} from '@automatisch/types';
-import {authenticate} from '../async-XMLRPC-client';
+import { IGlobalVariable } from '@automatisch/types';
+import { authenticate } from '../common/xmlrpc-client';
 
 const verifyCredentials = async ($: IGlobalVariable) => {
-  await authenticate($);
+  try {
+    await authenticate($);
 
-  await $.auth.set({
-    screenName: `${$.auth.data.hostName} - ${$.auth.data.databaseName} - ${$.auth.data.email}`,
-  });
+    await $.auth.set({
+      screenName: `${$.auth.data.email} @ ${$.auth.data.databaseName} - ${$.auth.data.host}`,
+    });
+  } catch (error) {
+    throw new Error('Failed while authorizing!');
+  }
 }
 
 export default verifyCredentials;

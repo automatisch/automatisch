@@ -1,10 +1,9 @@
 import defineAction from '../../../../helpers/define-action';
-import {authenticate, asyncMethodCall} from '../../async-XMLRPC-client';
-import xmlrpc from 'xmlrpc';
+import { authenticate, asyncMethodCall } from '../../common/xmlrpc-client';
 
 export default defineAction({
   name: 'Create Lead',
-  key: 'odooCreateLead',
+  key: 'createLead',
   description: '',
   arguments: [
     {
@@ -12,7 +11,7 @@ export default defineAction({
       key: 'name',
       type: 'string' as const,
       required: true,
-      description: 'Name of the lead object',
+      description: 'Lead name',
       variables: true,
     },
     {
@@ -20,7 +19,7 @@ export default defineAction({
       key: 'type',
       type: 'dropdown' as const,
       required: true,
-      variables: false,
+      variables: true,
       options: [
         {
           label: 'Lead',
@@ -33,7 +32,7 @@ export default defineAction({
       ]
     },
     {
-      label: 'Lead\'s Email',
+      label: "Email",
       key: 'email',
       type: 'string' as const,
       required: false,
@@ -41,7 +40,7 @@ export default defineAction({
       variables: true,
     },
     {
-      label: 'Lead\'s Name',
+      label: "Contact Name",
       key: 'contactName',
       type: 'string' as const,
       required: false,
@@ -68,42 +67,35 @@ export default defineAction({
 
   async run($) {
     const uid = await authenticate($);
-
-    const port = $.auth.data.port ? parseInt($.auth.data.port.toString()) : 443;
-    const objectClient = await xmlrpc.createClient(
+    const id = await asyncMethodCall(
+      $,
       {
-        host: $.auth.data.hostName.toString(),
-        port: port,
-        path: '/xmlrpc/2/object'
-      }
-    )
-
-    const leadID = await asyncMethodCall(
-      objectClient,
-      'execute_kw',
-      [
-        $.auth.data.databaseName,
-        uid,
-        $.auth.data.apiKey,
-        'crm.lead',
-        'create',
-        [
-          {
-            name: $.step.parameters.name,
-            type: $.step.parameters.type,
-            email_from: $.step.parameters.email,
-            contact_name: $.step.parameters.contactName,
-            phone: $.step.parameters.phoneNumber,
-            mobile: $.step.parameters.mobileNumber
-          }
-        ]
-      ]
+        method: 'execute_kw',
+        params: [
+          $.auth.data.databaseName,
+          uid,
+          $.auth.data.apiKey,
+          'crm.lead',
+          'create',
+          [
+            {
+              name: $.step.parameters.name,
+              type: $.step.parameters.type,
+              email_from: $.step.parameters.email,
+              contact_name: $.step.parameters.contactName,
+              phone: $.step.parameters.phoneNumber,
+              mobile: $.step.parameters.mobileNumber
+            }
+          ]
+        ],
+        path: 'object',
+      },
     );
 
     $.setActionItem(
       {
         raw: {
-          leadID
+          id: id
         }
       }
     )

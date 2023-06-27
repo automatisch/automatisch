@@ -4,7 +4,7 @@ import isStillVerified from './is-still-verified';
 export default {
   fields: [
     {
-      key: 'hostName',
+      key: 'host',
       label: 'Host Name',
       type: 'string' as const,
       required: true,
@@ -16,11 +16,11 @@ export default {
     },
     {
       key: 'port',
-      label: 'Host HTTP Port',
+      label: 'Port',
       type: 'string' as const,
-      required: false,
+      required: true,
       readOnly: false,
-      value: null,
+      value: '443',
       placeholder: null,
       description: 'Port that the host is running on, defaults to 443 (HTTPS)',
       clickToCopy: false,
@@ -33,7 +33,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Name of your Odoo Database',
+      description: 'Name of your Odoo database',
       clickToCopy: false,
     },
     {
@@ -44,7 +44,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Email Address of the account that will be interacting with the Database',
+      description: 'Email Address of the account that will be interacting with the database',
       clickToCopy: false
     },
     {
