@@ -46,6 +46,7 @@ export default defineAction({
 
     const queryStatemnt = $.step.parameters.queryStatement;
     const { rows } = await client.raw(queryStatemnt);
+    client.destroy();
 
     $.setActionItem({
       raw: {

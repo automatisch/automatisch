@@ -5,6 +5,7 @@ import getClient from '../common/postgres-client';
 const verifyCredentials = async ($: IGlobalVariable) => {
   const client = getClient($);
   const checkConnection = await client.raw('SELECT 1');
+  client.destroy();
 
   logger.debug(checkConnection);
 
