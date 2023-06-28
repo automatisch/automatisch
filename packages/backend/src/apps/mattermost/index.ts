@@ -11,8 +11,8 @@ export default defineApp({
   key: 'mattermost',
   iconUrl: '{BASE_URL}/apps/mattermost/assets/favicon.svg',
   authDocUrl: 'https://automatisch.io/docs/apps/slack/connection',
-  baseUrl: 'https://mattermost.com', // there is no SaaS version of this app, user always need to provide address of own instance when creating connection
-  apiBaseUrl: 'https://mattermost.com',
+  baseUrl: 'https://mattermost.com',
+  apiBaseUrl: '', // there is no cloud version of this app, user always need to provide address of own instance when creating connection
   primaryColor: '4a154b',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addXRequestedWithHeader, addAuthHeader],
