@@ -161,6 +161,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Odoo',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/odoo/actions' },
+            { text: 'Connection', link: '/apps/odoo/connection' },
+          ],
+        },
+        {
           text: 'OpenAI',
           collapsible: true,
           collapsed: true,
