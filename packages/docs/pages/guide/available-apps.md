@@ -18,6 +18,7 @@ Following integrations are currently supported by Automatisch.
 - [Google Forms](/apps/google-forms/triggers)
 - [Google Sheets](/apps/google-sheets/triggers)
 - [HTTP Request](/apps/http-request/actions)
+- [Mattermost](/apps/mattermost/actions)
 - [Notion](/apps/notion/triggers)
 - [Ntfy](/apps/ntfy/actions)
 - [Odoo](/apps/odoo/actions)
