@@ -5,6 +5,7 @@ export const EXECUTION = (executionId: string): string =>
   `/executions/${executionId}`;
 
 export const LOGIN = '/login';
+export const LOGIN_CALLBACK = `${LOGIN}/callback`;
 export const SIGNUP = '/sign-up';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const RESET_PASSWORD = '/reset-password';

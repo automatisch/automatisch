@@ -14,6 +14,7 @@ import Step from './step';
 import Role from './role';
 import Permission from './permission';
 import Execution from './execution';
+import Identity from './identity.ee';
 import UsageData from './usage-data.ee';
 import Subscription from './subscription.ee';
 
@@ -36,18 +37,19 @@ class User extends Base {
   currentSubscription?: Subscription;
   role: Role;
   permissions: Permission[];
+  identities: Identity[];
 
   static tableName = 'users';
 
   static jsonSchema = {
     type: 'object',
-    required: ['fullName', 'email', 'password'],
+    required: ['fullName', 'email'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
       fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
-      password: { type: 'string', minLength: 1, maxLength: 255 },
+      password: { type: 'string' },
       resetPasswordToken: { type: 'string' },
       resetPasswordTokenSentAt: { type: 'string' },
       trialExpiryDate: { type: 'string' },
@@ -157,6 +159,14 @@ class User extends Base {
         to: 'permissions.id',
       },
     },
+    identities: {
+      relation: Base.HasManyRelation,
+      modelClass: Identity,
+      join: {
+        from: 'identities.user_id',
+        to: 'users.id',
+      }
+    }
   });
 
   login(password: string) {
@@ -191,7 +201,9 @@ class User extends Base {
   }
 
   async generateHash() {
-    this.password = await bcrypt.hash(this.password, 10);
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
   }
 
   async startTrialPeriod() {
@@ -265,9 +277,7 @@ class User extends Base {
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    if (this.password) {
-      await this.generateHash();
-    }
+    await this.generateHash();
   }
 
   async $afterInsert(queryContext: QueryContext) {

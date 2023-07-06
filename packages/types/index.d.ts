@@ -386,6 +386,20 @@ type TInvoice = {
   receipt_url: string;
 };
 
+type TSamlAuthProvider = {
+  id: string;
+  name: string;
+  certificate: string;
+  signatureAlgorithm: "sha1" | "sha256" | "sha512";
+  issuer: string;
+  entryPoint: string;
+  firstnameAttributeName: string;
+  surnameAttributeName: string;
+  emailAttributeName: string;
+  roleAttributeName: string;
+  defaultRoleId: string;
+}
+
 declare module 'axios' {
   interface AxiosResponse {
     httpError?: IJSONObject;
