@@ -33,6 +33,7 @@ const authentication = shield(
     Query: {
       '*': isAuthenticated,
       getAutomatischInfo: allow,
+      getSamlAuthProviders: allow,
       healthcheck: allow,
     },
     Mutation: {

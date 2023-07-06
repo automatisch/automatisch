@@ -33,7 +33,32 @@ services:
       - '6379:6379'
     expose:
       - 6379
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1
+    restart: always
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=postgres
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_USERNAME=automatisch_user
+      - KC_DB_PASSWORD=automatisch_password
+      - KC_HEALTH_ENABLED=true
+    ports:
+      - "8080:8080"
+    command: start-dev
+    depends_on:
+      - postgres
+    healthcheck:
+      test: "curl -f http://localhost:8080/health/ready || exit 1"
+    volumes:
+      - keycloak:/opt/keycloak/data/
+    expose:
+      - 8080
 
 volumes:
   postgres_data:
   redis_data:
+  keycloak:

@@ -8,6 +8,7 @@ import Execution from 'pages/Execution';
 import Flows from 'pages/Flows';
 import Flow from 'pages/Flow';
 import Login from 'pages/Login';
+import LoginCallback from 'pages/LoginCallback';
 import SignUp from 'pages/SignUp/index.ee';
 import ForgotPassword from 'pages/ForgotPassword/index.ee';
 import ResetPassword from 'pages/ResetPassword/index.ee';
@@ -81,6 +82,11 @@ export default (
           <Login />
         </PublicLayout>
       }
+    />
+
+    <Route
+      path={URLS.LOGIN_CALLBACK}
+      element={<LoginCallback />}
     />
 
     <Route
