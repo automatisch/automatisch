@@ -129,6 +129,7 @@
   "loginForm.submit": "Login",
   "loginForm.noAccount": "Don't have an Automatisch account yet?",
   "loginForm.signUp": "Sign up",
+  "loginPage.divider": "OR",
   "forgotPasswordForm.title": "Forgot password",
   "forgotPasswordForm.submit": "Send reset instructions",
   "forgotPasswordForm.instructionsSent": "The instructions have been sent!",

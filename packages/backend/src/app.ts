@@ -17,6 +17,7 @@ import {
 } from './helpers/create-bull-board-handler';
 import injectBullBoardHandler from './helpers/inject-bull-board-handler';
 import router from './routes';
+import configurePassport from './helpers/passport';
 
 createBullBoardHandler(serverAdapter);
 
@@ -50,6 +51,9 @@ app.use(
   })
 );
 app.use(cors(corsOptions));
+
+configurePassport(app);
+
 app.use('/', router);
 
 webUIHandler(app);

@@ -18,6 +18,7 @@ import getInvoices from './queries/get-invoices.ee';
 import getAutomatischInfo from './queries/get-automatisch-info';
 import getTrialStatus from './queries/get-trial-status.ee';
 import getSubscriptionStatus from './queries/get-subscription-status.ee';
+import getSamlAuthProviders from './queries/get-saml-auth-providers.ee';
 import healthcheck from './queries/healthcheck';
 
 const queryResolvers = {
@@ -41,6 +42,7 @@ const queryResolvers = {
   getAutomatischInfo,
   getTrialStatus,
   getSubscriptionStatus,
+  getSamlAuthProviders,
   healthcheck,
 };
 
