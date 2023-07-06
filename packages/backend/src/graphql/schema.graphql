@@ -41,6 +41,7 @@ type Query {
   getAutomatischInfo: GetAutomatischInfo
   getTrialStatus: GetTrialStatus
   getSubscriptionStatus: GetSubscriptionStatus
+  getSamlAuthProviders: [GetSamlAuthProviders]
   healthcheck: AppHealth
 }
 
@@ -552,6 +553,12 @@ type PaymentPlan {
   limit: String
   price: String
   productId: String
+}
+
+type GetSamlAuthProviders {
+  id: String
+  name: String
+  issuer: String
 }
 
 schema {
