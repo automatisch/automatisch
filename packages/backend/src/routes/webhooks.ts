@@ -3,7 +3,8 @@ import multer from 'multer';
 
 import { IRequest } from '@automatisch/types';
 import appConfig from '../config/app';
-import webhookHandler from '../controllers/webhooks/handler';
+import webhookHandlerByFlowId from '../controllers/webhooks/handler-by-flow-id';
+import webhookHandlerByConnectionIdAndRefValue from '../controllers/webhooks/handler-by-connection-id-and-ref-value';
 
 const router = Router();
 const upload = multer();
@@ -25,9 +26,20 @@ const exposeError = (handler: RequestHandler) => async (req: IRequest, res: Resp
   }
 }
 
-router.get('/:flowId', exposeError(webhookHandler));
-router.put('/:flowId', exposeError(webhookHandler));
-router.patch('/:flowId', exposeError(webhookHandler));
-router.post('/:flowId', exposeError(webhookHandler));
+function createRouteHandler(path: string, handler: (req: IRequest, res: Response, next: NextFunction) => void) {
+  const wrappedHandler = exposeError(handler);
+
+  router
+    .route(path)
+    .get(wrappedHandler)
+    .put(wrappedHandler)
+    .patch(wrappedHandler)
+    .post(wrappedHandler);
+};
+
+createRouteHandler('/connections/:connectionId/:refValue', webhookHandlerByConnectionIdAndRefValue);
+createRouteHandler('/connections/:connectionId', webhookHandlerByConnectionIdAndRefValue);
+createRouteHandler('/flows/:flowId', webhookHandlerByFlowId);
+createRouteHandler('/:flowId', webhookHandlerByFlowId);
 
 export default router;

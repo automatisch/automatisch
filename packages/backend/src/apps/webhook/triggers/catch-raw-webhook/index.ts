@@ -5,6 +5,7 @@ export default defineTrigger({
   name: 'Catch raw webhook',
   key: 'catchRawWebhook',
   type: 'webhook',
+  showWebhookUrl: true,
   description: 'Triggers when the webhook receives a request.',
 
   async testRun($) {

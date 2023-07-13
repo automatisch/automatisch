@@ -3,7 +3,6 @@ import Connection from '../models/connection';
 import Flow from '../models/flow';
 import Step from '../models/step';
 import Execution from '../models/execution';
-import appConfig from '../config/app';
 import {
   IJSONObject,
   IApp,
@@ -17,7 +16,7 @@ import AlreadyProcessedError from '../errors/already-processed';
 
 type GlobalVariableOptions = {
   connection?: Connection;
-  app: IApp;
+  app?: IApp;
   flow?: Flow;
   step?: Step;
   execution?: Execution;
@@ -117,32 +116,36 @@ const globalVariable = async (
     $.request = request;
   }
 
-  $.http = createHttpClient({
-    $,
-    baseURL: app.apiBaseUrl,
-    beforeRequest: app.beforeRequest,
-  });
-
-  if (flow) {
-    const webhookUrl = appConfig.webhookUrl + '/webhooks/' + flow.id;
-
-    $.webhookUrl = webhookUrl;
+  if (app) {
+    $.http = createHttpClient({
+      $,
+      baseURL: app.apiBaseUrl,
+      beforeRequest: app.beforeRequest,
+    });
   }
 
-  if (isTrigger && (await step.getTriggerCommand()).type === 'webhook') {
-    $.flow.setRemoteWebhookId = async (remoteWebhookId) => {
-      await flow.$query().patchAndFetch({
-        remoteWebhookId,
-      });
+  if (step) {
+    $.webhookUrl = await step.getWebhookUrl();
+  }
 
-      $.flow.remoteWebhookId = remoteWebhookId;
-    };
+  if (isTrigger) {
+    const triggerCommand = await step.getTriggerCommand();
 
-    $.flow.remoteWebhookId = flow.remoteWebhookId;
+    if (triggerCommand.type === 'webhook') {
+      $.flow.setRemoteWebhookId = async (remoteWebhookId) => {
+        await flow.$query().patchAndFetch({
+          remoteWebhookId,
+        });
+
+        $.flow.remoteWebhookId = remoteWebhookId;
+      };
+
+      $.flow.remoteWebhookId = flow.remoteWebhookId;
+    }
   }
 
   const lastInternalIds =
-    testRun || (flow && step.isAction) ? [] : await flow?.lastInternalIds(2000);
+    testRun || (flow && step?.isAction) ? [] : await flow?.lastInternalIds(2000);
 
   const isAlreadyProcessed = (internalId: string) => {
     return lastInternalIds?.includes(internalId);

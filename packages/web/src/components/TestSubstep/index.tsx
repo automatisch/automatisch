@@ -18,6 +18,7 @@ import type { IStep, ISubstep } from '@automatisch/types';
 type TestSubstepProps = {
   substep: ISubstep;
   expanded?: boolean;
+  showWebhookUrl?: boolean;
   onExpand: () => void;
   onCollapse: () => void;
   onChange?: ({ step }: { step: IStep }) => void;
@@ -52,6 +53,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     onSubmit,
     onContinue,
     step,
+    showWebhookUrl = false,
   } = props;
 
   const formatMessage = useFormatMessage();
@@ -119,7 +121,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
             </Alert>
           )}
 
-          {step.webhookUrl && (
+          {step.webhookUrl && showWebhookUrl && (
             <WebhookUrlInfo webhookUrl={step.webhookUrl} sx={{ mb: 2 }} />
           )}
 

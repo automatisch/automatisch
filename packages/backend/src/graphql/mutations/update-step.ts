@@ -60,6 +60,8 @@ const updateStep = async (
     })
     .withGraphFetched('connection');
 
+  await step.updateWebhookUrl();
+
   return step;
 };
 

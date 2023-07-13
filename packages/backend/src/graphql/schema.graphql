@@ -82,6 +82,7 @@ type Trigger {
   name: String
   key: String
   description: String
+  showWebhookUrl: Boolean
   pollInterval: Int
   type: String
   substeps: [Substep]

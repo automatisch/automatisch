@@ -166,12 +166,8 @@ export default function FlowStep(
 
   const actionsOrTriggers: Array<ITrigger | IAction> =
     (isTrigger ? app?.triggers : app?.actions) || [];
-  const substeps = React.useMemo(
-    () =>
-      actionsOrTriggers?.find(({ key }: ITrigger | IAction) => key === step.key)
-        ?.substeps || [],
-    [actionsOrTriggers, step?.key]
-  );
+  const actionOrTrigger = actionsOrTriggers?.find(({ key }) => key === step.key);
+  const substeps = actionOrTrigger?.substeps || [];
 
   const handleChange = React.useCallback(({ step }: { step: IStep }) => {
     onChange(step);
@@ -283,7 +279,7 @@ export default function FlowStep(
                   step={step}
                 />
 
-                {substeps?.length > 0 &&
+                {actionOrTrigger && substeps?.length > 0 &&
                   substeps.map((substep: ISubstep, index: number) => (
                     <React.Fragment key={`${substep?.name}-${index}`}>
                       {substep.key === 'chooseConnection' && app && (
@@ -308,6 +304,7 @@ export default function FlowStep(
                           onSubmit={expandNextStep}
                           onChange={handleChange}
                           onContinue={onContinue}
+                          showWebhookUrl={'showWebhookUrl' in actionOrTrigger ? actionOrTrigger.showWebhookUrl : false}
                           step={step}
                         />
                       )}

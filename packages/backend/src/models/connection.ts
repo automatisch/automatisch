@@ -1,12 +1,16 @@
 import { QueryContext, ModelOptions } from 'objection';
 import type { RelationMappings } from 'objection';
 import { AES, enc } from 'crypto-js';
+import { IRequest } from '@automatisch/types';
+import App from './app';
 import Base from './base';
 import User from './user';
 import Step from './step';
+import ExtendedQueryBuilder from './query-builder';
 import appConfig from '../config/app';
 import { IJSONObject } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
+import globalVariable from '../helpers/global-variable';
 
 class Connection extends Base {
   id!: string;
@@ -18,6 +22,9 @@ class Connection extends Base {
   draft: boolean;
   count?: number;
   flowCount?: number;
+  user?: User;
+  steps?: Step[];
+  triggerSteps?: Step[];
 
   static tableName = 'connections';
 
@@ -51,6 +58,17 @@ class Connection extends Base {
       join: {
         from: 'connections.id',
         to: 'steps.connection_id',
+      },
+    },
+    triggerSteps: {
+      relation: Base.HasManyRelation,
+      modelClass: Step,
+      join: {
+        from: 'connections.id',
+        to: 'steps.connection_id',
+      },
+      filter(builder: ExtendedQueryBuilder<Step>) {
+        builder.where('type', '=', 'trigger');
       },
     },
   });
@@ -109,6 +127,27 @@ class Connection extends Base {
   async $afterUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$afterUpdate(opt, queryContext);
     Telemetry.connectionUpdated(this);
+  }
+
+  async getApp() {
+    if (!this.key) return null;
+
+    return await App.findOneByKey(this.key);
+  }
+
+  async verifyWebhook(request: IRequest) {
+    if (!this.key) return true;
+
+    const app = await this.getApp();
+
+    const $ = await globalVariable({
+      connection: this,
+      request,
+    });
+
+    if (!app.auth?.verifyWebhook) return true;
+
+    return app.auth.verifyWebhook($);
   }
 }
 
