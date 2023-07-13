@@ -8,7 +8,7 @@ items:
   - name: Delete
     desc: Delete rows found based on the given where clause entries.
   - name: SQL query
-    desc: Executes the given SQL statement..
+    desc: Executes the given SQL statement.
 ---
 
 <script setup>

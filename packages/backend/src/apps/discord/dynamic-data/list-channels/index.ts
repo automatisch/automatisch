@@ -19,8 +19,8 @@ export default {
 
     channels.data = response.data
       .filter((channel: IJSONObject) => {
-        // filter in text channels only
-        return channel.type === 0;
+        // filter in text channels and announcement channels only
+        return channel.type === 0 || channel.type === 5;
       })
       .map((channel: IJSONObject) => {
         return {

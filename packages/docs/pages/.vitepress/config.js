@@ -143,6 +143,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Mattermost',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/mattermost/actions' },
+            { text: 'Connection', link: '/apps/mattermost/connection' },
+          ],
+        },
+        {
           text: 'Notion',
           collapsible: true,
           collapsed: true,
@@ -158,6 +167,15 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/ntfy/actions' },
             { text: 'Connection', link: '/apps/ntfy/connection' },
+          ],
+        },
+        {
+          text: 'Odoo',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/odoo/actions' },
+            { text: 'Connection', link: '/apps/odoo/connection' },
           ],
         },
         {

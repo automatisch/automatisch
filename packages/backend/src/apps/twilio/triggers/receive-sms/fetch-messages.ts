@@ -11,8 +11,20 @@ const fetchMessages = async ($: IGlobalVariable) => {
     response = await $.http.get(requestPath);
 
     response.data.messages.forEach((message: IJSONObject) => {
+      const computedMessage = {
+        To: message.to,
+        Body: message.body,
+        From: message.from,
+        SmsSid: message.sid,
+        NumMedia: message.num_media,
+        SmsStatus: message.status,
+        AccountSid: message.account_sid,
+        ApiVersion: message.api_version,
+        NumSegments: message.num_segments,
+      };
+
       const dataItem = {
-        raw: message,
+        raw: computedMessage,
         meta: {
           internalId: message.date_sent as string,
         },

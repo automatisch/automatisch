@@ -1,8 +1,10 @@
 ---
 favicon: /favicons/google-sheets.svg
 items:
-  - name: Create Spreadsheet Row
-    desc: Creates a new row in a specific spreadsheet
+  - name: Create spreadsheet
+    desc: Create a blank spreadsheet or duplicate an existing spreadsheet. Optionally, provide headers.
+  - name: Create spreadsheet row
+    desc: Creates a new row in a specific spreadsheet.
 ---
 
 <script setup>

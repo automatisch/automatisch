@@ -102,6 +102,8 @@ export default defineAction({
       })
       .del() as IJSONArray;
 
+    client.destroy();
+
     $.setActionItem({
       raw: {
         rows: response
