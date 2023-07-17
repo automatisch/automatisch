@@ -157,6 +157,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/notion/triggers' },
+            { text: 'Actions', link: '/apps/notion/actions' },
             { text: 'Connection', link: '/apps/notion/connection' },
           ],
         },
