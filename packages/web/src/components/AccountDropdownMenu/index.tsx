@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
 
+import Can from 'components/Can';
 import apolloClient from 'graphql/client';
 import * as URLS from 'config/urls';
 import useAuthentication from 'hooks/useAuthentication';
@@ -53,6 +54,15 @@ function AccountDropdownMenu(
       <MenuItem component={Link} to={URLS.SETTINGS_DASHBOARD}>
         {formatMessage('accountDropdownMenu.settings')}
       </MenuItem>
+
+      <Can I="read" a="User">
+        <MenuItem
+          component={Link}
+          to={URLS.ADMIN_SETTINGS_DASHBOARD}
+        >
+          {formatMessage('accountDropdownMenu.adminSettings')}
+        </MenuItem>
+      </Can>
 
       <MenuItem onClick={logout} data-test="logout-item">
         {formatMessage('accountDropdownMenu.logout')}

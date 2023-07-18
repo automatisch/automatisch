@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
-import { CREATE_USER } from 'graphql/mutations/create-user.ee';
+import { REGISTER_USER } from 'graphql/mutations/register-user.ee';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import { LOGIN } from 'graphql/mutations/login';
@@ -40,7 +40,7 @@ function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
   const formatMessage = useFormatMessage();
-  const [createUser, { loading: createUserLoading }] = useMutation(CREATE_USER);
+  const [registerUser, { loading: registerUserLoading }] = useMutation(REGISTER_USER);
   const [login, { loading: loginLoading }] = useMutation(LOGIN);
 
   React.useEffect(() => {
@@ -51,7 +51,7 @@ function SignUpForm() {
 
   const handleSubmit = async (values: any) => {
     const { fullName, email, password } = values;
-    await createUser({
+    await registerUser({
       variables: {
         input: { fullName, email, password },
       },
@@ -165,7 +165,7 @@ function SignUpForm() {
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, mt: 3 }}
-              loading={createUserLoading || loginLoading}
+              loading={registerUserLoading || loginLoading}
               fullWidth
               data-test="signUp-button"
             >

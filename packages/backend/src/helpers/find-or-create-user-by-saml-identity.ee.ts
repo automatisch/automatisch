@@ -22,7 +22,7 @@ const findOrCreateUserBySamlIdentity = async (userIdentity: Record<string, unkno
     return user;
   }
 
-  const createdUser = await User.query().insertGraphAndFetch({
+  const createdUser = await User.query().insertGraph({
     fullName: [
       mappedUser.name,
       mappedUser.surname
@@ -40,7 +40,7 @@ const findOrCreateUserBySamlIdentity = async (userIdentity: Record<string, unkno
     ]
   }, {
     relate: ['identities']
-  });
+  }).returning('*');
 
   return createdUser;
 };

@@ -95,6 +95,30 @@ export interface IUser {
   connections: IConnection[];
   flows: IFlow[];
   steps: IStep[];
+  role: IRole;
+  permissions: IPermission[];
+}
+
+export interface IRole {
+  id: string;
+  key: string;
+  name: string;
+  description: string;
+  isAdmin: boolean;
+  permissions: IPermission[];
+}
+
+export interface IPermission {
+  id: string;
+  action: string;
+  subject: string;
+  conditions: string[];
+}
+
+export interface IPermissionCatalog {
+  actions: { label: string; key: string; subjects: string[] }[];
+  subjects: { label: string; key: string; }[];
+  conditions: { label: string; key: string; }[];
 }
 
 export interface IFieldDropdown {

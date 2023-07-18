@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import type { LinkProps } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import debounce from 'lodash/debounce';
 import Box from '@mui/material/Box';
@@ -12,6 +11,7 @@ import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import type { IFlow } from '@automatisch/types';
 
+import Can from 'components/Can';
 import FlowRow from 'components/FlowRow';
 import NoResultFound from 'components/NoResultFound';
 import ConditionalIconButton from 'components/ConditionalIconButton';
@@ -88,16 +88,6 @@ export default function Flows(): React.ReactElement {
     setFlowName(event.target.value);
   }, []);
 
-  const CreateFlowLink = React.useMemo(
-    () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
-        function InlineLink(linkProps, ref) {
-          return <Link ref={ref} to={URLS.CREATE_FLOW} {...linkProps} />;
-        }
-      ),
-    []
-  );
-
   return (
     <Box sx={{ py: 3 }}>
       <Container>
@@ -118,18 +108,24 @@ export default function Flows(): React.ReactElement {
             alignItems="center"
             order={{ xs: 1, sm: 2 }}
           >
-            <ConditionalIconButton
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              component={CreateFlowLink}
-              fullWidth
-              icon={<AddIcon />}
-              data-test="create-flow-button"
-            >
-              {formatMessage('flows.create')}
-            </ConditionalIconButton>
+            <Can I="create" a="Flow" passThrough>
+              {(allowed) => (
+                <ConditionalIconButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  component={Link}
+                  fullWidth
+                  disabled={!allowed}
+                  icon={<AddIcon />}
+                  to={URLS.CREATE_FLOW}
+                  data-test="create-flow-button"
+                >
+                  {formatMessage('flows.create')}
+                </ConditionalIconButton>
+              )}
+            </Can>
           </Grid>
         </Grid>
 

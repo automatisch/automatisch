@@ -1,12 +1,17 @@
 import {
   Model,
   Page,
+  ModelClass,
   PartialModelObject,
   ForClassMethod,
   AnyQueryBuilder,
 } from 'objection';
 
 const DELETED_COLUMN_NAME = 'deleted_at';
+
+const supportsSoftDeletion = (modelClass: ModelClass<any>) => {
+  return modelClass.jsonSchema.properties.deletedAt;
+}
 
 const buildQueryBuidlerForClass = (): ForClassMethod => {
   return (modelClass) => {
@@ -15,7 +20,7 @@ const buildQueryBuidlerForClass = (): ForClassMethod => {
       modelClass
     );
     qb.onBuild((builder) => {
-      if (!builder.context().withSoftDeleted && qb.modelClass().jsonSchema.properties.deletedAt) {
+      if (!builder.context().withSoftDeleted && supportsSoftDeletion(qb.modelClass())) {
         builder.whereNull(
           `${qb.modelClass().tableName}.${DELETED_COLUMN_NAME}`
         );
@@ -38,9 +43,13 @@ class ExtendedQueryBuilder<M extends Model, R = M[]> extends Model.QueryBuilder<
   static forClass: ForClassMethod = buildQueryBuidlerForClass();
 
   delete() {
-    return this.patch({
-      [DELETED_COLUMN_NAME]: new Date().toISOString(),
-    } as unknown as PartialModelObject<M>);
+    if (supportsSoftDeletion(this.modelClass())) {
+      return this.patch({
+        [DELETED_COLUMN_NAME]: new Date().toISOString(),
+      } as unknown as PartialModelObject<M>);
+    }
+
+    return super.delete();
   }
 
   hardDelete() {

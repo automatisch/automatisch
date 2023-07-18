@@ -1,6 +1,8 @@
 import { IConnection } from '@automatisch/types';
 import App from '../../models/app';
 import Context from '../../types/express/context';
+import Flow from '../../models/flow';
+import Connection from '../../models/connection';
 
 type Params = {
   name: string;
@@ -11,19 +13,25 @@ const getConnectedApps = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('read', 'Connection');
+  const conditions = context.currentUser.can('read', 'Connection');
+
+  const userConnections = context.currentUser.$relatedQuery('connections');
+  const allConnections = Connection.query();
+  const connectionBaseQuery = conditions.isCreator ? userConnections : allConnections;
+
+  const userFlows = context.currentUser.$relatedQuery('flows');
+  const allFlows = Flow.query();
+  const flowBaseQuery = conditions.isCreator ? userFlows : allFlows;
 
   let apps = await App.findAll(params.name);
 
-  const connections = await context.currentUser
-    .$relatedQuery('connections')
+  const connections = await connectionBaseQuery
     .select('connections.key')
     .where({ draft: false })
     .count('connections.id as count')
     .groupBy('connections.key');
 
-  const flows = await context.currentUser
-    .$relatedQuery('flows')
+  const flows = await flowBaseQuery
     .withGraphJoined('steps')
     .orderBy('created_at', 'desc');
 

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import Typography from '@mui/material/Typography';
 import type { AlertProps } from '@mui/material/Alert';
 
-import { generateExternalLink } from '../../helpers/translation-values';
+import { generateExternalLink } from '../../helpers/translationValues';
 import { WEBHOOK_DOCS } from '../../config/urls';
 import TextField from '../TextField';
 import { Alert } from './style';

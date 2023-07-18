@@ -16,13 +16,27 @@ export async function up(knex: Knex): Promise<void> {
     .select('role')
     .groupBy('role');
 
+  let shouldCreateAdminRole = true;
   for (const { role } of uniqueUserRoles) {
     // skip empty roles
     if (!role) continue;
 
+    const lowerCaseRole = lowerCase(role);
+
+    if (lowerCaseRole === 'admin') {
+      shouldCreateAdminRole = false;
+    }
+
     await knex('roles').insert({
       name: capitalize(role),
-      key: lowerCase(role),
+      key: lowerCaseRole,
+    });
+  }
+
+  if (shouldCreateAdminRole) {
+    await knex('roles').insert({
+      name: 'Admin',
+      key: 'admin',
     });
   }
 }

@@ -12,7 +12,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import { processStep } from 'helpers/authenticationSteps';
 import InputCreator from 'components/InputCreator';
-import { generateExternalLink } from '../../helpers/translation-values';
+import { generateExternalLink } from '../../helpers/translationValues';
 import { Form } from './style';
 
 type AddAppConnectionProps = {

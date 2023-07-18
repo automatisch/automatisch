@@ -15,7 +15,7 @@ import Container from 'components/Container';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import DeleteAccountDialog from 'components/DeleteAccountDialog/index.ee';
-import { UPDATE_USER } from 'graphql/mutations/update-user';
+import { UPDATE_CURRENT_USER } from 'graphql/mutations/update-current-user';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -47,7 +47,7 @@ function ProfileSettings() {
   const { enqueueSnackbar } = useSnackbar();
   const currentUser = useCurrentUser();
   const formatMessage = useFormatMessage();
-  const [updateUser] = useMutation(UPDATE_USER);
+  const [updateCurrentUser] = useMutation(UPDATE_CURRENT_USER);
 
   const handleProfileSettingsUpdate = async (data: any) => {
     const { fullName, password, email } = data;
@@ -61,12 +61,12 @@ function ProfileSettings() {
       mutationInput.password = password;
     }
 
-    await updateUser({
+    await updateCurrentUser({
       variables: {
         input: mutationInput,
       },
       optimisticResponse: {
-        updateUser: {
+        updateCurrentUser: {
           __typename: 'User',
           id: currentUser.id,
           fullName,
@@ -89,7 +89,7 @@ function ProfileSettings() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end">
-        <StyledForm
+          <StyledForm
             defaultValues={{ ...currentUser, password: '', confirmPassword: '' }}
             onSubmit={handleProfileSettingsUpdate}
             resolver={yupResolver(validationSchema)}

@@ -13,6 +13,7 @@ export async function up(knex: Knex): Promise<void> {
     table.text('email_attribute_name').notNullable();
     table.text('role_attribute_name').notNullable();
     table.uuid('default_role_id').references('id').inTable('roles');
+    table.boolean('active').defaultTo(false);
 
     table.timestamps(true, true);
   });

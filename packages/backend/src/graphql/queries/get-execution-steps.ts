@@ -1,5 +1,6 @@
 import Context from '../../types/express/context';
 import paginate from '../../helpers/pagination';
+import Execution from '../../models/execution';
 
 type Params = {
   executionId: string;
@@ -12,10 +13,12 @@ const getExecutionSteps = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('read', 'Execution');
+  const conditions = context.currentUser.can('read', 'Execution');
+  const userExecutions = context.currentUser.$relatedQuery('executions');
+  const allExecutions = Execution.query();
+  const executionBaseQuery = conditions.isCreator ? userExecutions : allExecutions;
 
-  const execution = await context.currentUser
-    .$relatedQuery('executions')
+  const execution = await executionBaseQuery
     .withSoftDeleted()
     .findById(params.executionId)
     .throwIfNotFound();

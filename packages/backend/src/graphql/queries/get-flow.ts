@@ -1,14 +1,17 @@
 import Context from '../../types/express/context';
+import Flow from '../../models/flow';
 
 type Params = {
   id: string;
 };
 
 const getFlow = async (_parent: unknown, params: Params, context: Context) => {
-  context.currentUser.can('read', 'Flow');
+  const conditions = context.currentUser.can('read', 'Flow');
+  const userFlows = context.currentUser.$relatedQuery('flows');
+  const allFlows = Flow.query();
+  const baseQuery = conditions.isCreator ? userFlows : allFlows;
 
-  const flow = await context.currentUser
-    .$relatedQuery('flows')
+  const flow = await baseQuery
     .withGraphJoined('[steps.[connection]]')
     .orderBy('steps.position', 'asc')
     .findOne({ 'flows.id': params.id })
