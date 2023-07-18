@@ -1,11 +1,24 @@
-import Context from '../../types/express/context';
-import deleteUserQueue from '../../queues/delete-user.ee';
 import { Duration } from 'luxon';
+import Context from '../../types/express/context';
+import User from '../../models/user';
+import deleteUserQueue from '../../queues/delete-user.ee';
 
-const deleteUser = async (_parent: unknown, params: never, context: Context) => {
-  const id = context.currentUser.id;
+type Params = {
+  input: {
+    id: string;
+  };
+};
 
-  await context.currentUser.$query().delete();
+const deleteUser = async (
+  _parent: unknown,
+  params: Params,
+  context: Context
+) => {
+  context.currentUser.can('delete', 'User');
+
+  const id = params.input.id;
+
+  await User.query().deleteById(id);
 
   const jobName = `Delete user - ${id}`;
   const jobPayload = { id };

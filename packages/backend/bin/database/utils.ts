@@ -3,36 +3,16 @@ import logger from '../../src/helpers/logger';
 import client from './client';
 import User from '../../src/models/user';
 import Role from '../../src/models/role';
-import Permission from '../../src/models/permission';
 import '../../src/config/orm';
 
-async function seedPermissionsIfNeeded() {
-  const existingPermissions = await Permission.query().limit(1).first();
-
-  if (!existingPermissions) return;
-
-  const getPermission = (subject: string, actions: string[]) => actions.map(action => ({ subject, action }));
-
-  await Permission.query().insert([
-    ...getPermission('Connection', ['create', 'read', 'delete', 'update']),
-    ...getPermission('Execution', ['read']),
-    ...getPermission('Flow', ['create', 'delete', 'publish', 'read', 'update']),
-    ...getPermission('Role', ['create', 'delete', 'read', 'update']),
-    ...getPermission('User', ['create', 'delete', 'read', 'update']),
-  ])
-}
-
-async function createOrFetchRole() {
-  const role = await Role.query().limit(1).first();
-
-  if (!role) {
-    const createdRole = await Role.query().insertAndFetch({
-      name: 'Admin',
-      key: 'admin',
-    });
-
-    return createdRole;
-  }
+async function fetchAdminRole() {
+  const role = await Role
+    .query()
+    .where({
+      key: 'admin'
+    })
+    .limit(1)
+    .first();
 
   return role;
 }
@@ -43,9 +23,7 @@ export async function createUser(
 ) {
   const UNIQUE_VIOLATION_CODE = '23505';
 
-  await seedPermissionsIfNeeded();
-
-  const role = await createOrFetchRole();
+  const role = await fetchAdminRole();
   const userParams = {
     email,
     password,

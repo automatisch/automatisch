@@ -6,9 +6,6 @@ export async function up(knex: Knex): Promise<void> {
   });
 }
 
-export async function down(knex: Knex): Promise<void> {
-  return await knex.schema.alterTable('users', table => {
-    // what do we do? passwords cannot be left empty
-    // table.string('password').notNullable().alter();
-  });
+export async function down(): Promise<void> {
+  // void
 }

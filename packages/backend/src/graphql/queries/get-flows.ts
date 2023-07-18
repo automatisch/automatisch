@@ -1,3 +1,4 @@
+import Flow from '../../models/flow';
 import Context from '../../types/express/context';
 import paginate from '../../helpers/pagination';
 
@@ -10,10 +11,12 @@ type Params = {
 };
 
 const getFlows = async (_parent: unknown, params: Params, context: Context) => {
-  context.currentUser.can('read', 'Flow');
+  const conditions = context.currentUser.can('read', 'Flow');
+  const userFlows = context.currentUser.$relatedQuery('flows');
+  const allFlows = Flow.query();
+  const baseQuery = conditions.isCreator ? userFlows : allFlows;
 
-  const flowsQuery = context.currentUser
-    .$relatedQuery('flows')
+  const flowsQuery = baseQuery
     .joinRelated({
       steps: true,
     })

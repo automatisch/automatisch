@@ -1,22 +1,25 @@
-import crypto from 'node:crypto';
-import { QueryContext, ModelOptions } from 'objection';
 import bcrypt from 'bcrypt';
 import { DateTime } from 'luxon';
-import { Ability } from '@casl/ability';
-import type { Subject } from '@casl/ability';
+import crypto from 'node:crypto';
+import {
+  ModelOptions,
+  QueryContext
+} from 'objection';
 
 import appConfig from '../config/app';
+import checkLicense from '../helpers/check-license.ee';
+import userAbility from '../helpers/user-ability';
 import Base from './base';
-import ExtendedQueryBuilder from './query-builder';
 import Connection from './connection';
-import Flow from './flow';
-import Step from './step';
-import Role from './role';
-import Permission from './permission';
 import Execution from './execution';
+import Flow from './flow';
 import Identity from './identity.ee';
-import UsageData from './usage-data.ee';
+import Permission from './permission';
+import ExtendedQueryBuilder from './query-builder';
+import Role from './role';
+import Step from './step';
 import Subscription from './subscription.ee';
+import UsageData from './usage-data.ee';
 
 class User extends Base {
   id!: string;
@@ -148,15 +151,11 @@ class User extends Base {
       },
     },
     permissions: {
-      relation: Base.ManyToManyRelation,
+      relation: Base.HasManyRelation,
       modelClass: Permission,
       join: {
         from: 'users.role_id',
-        through: {
-          from: 'roles_permissions.role_id',
-          to: 'roles_permissions.permission_id',
-        },
-        to: 'permissions.id',
+        to: 'permissions.role_id',
       },
     },
     identities: {
@@ -292,23 +291,43 @@ class User extends Base {
     }
   }
 
-  get ability() {
-    if (!this.permissions) {
-      throw new Error('User.permissions must be fetched!');
+  async $afterFind(): Promise<any> {
+    const hasValidLicense = await checkLicense();
+
+    if (hasValidLicense) return this;
+
+    if (Array.isArray(this.permissions)) {
+      this.permissions = this.permissions.filter((permission) => {
+        const isRolePermission = permission.subject === 'Role';
+
+        return !isRolePermission;
+      });
     }
 
-    return new Ability(this.permissions);
+    return this;
   }
 
-  can(action: string, subject: Subject) {
+  get ability(): ReturnType<typeof userAbility> {
+    return userAbility(this);
+  }
+
+  can(action: string, subject: string) {
     const can = this.ability.can(action, subject);
 
     if (!can) throw new Error('Not authorized!');
 
-    return can;
+    const relevantRule = this.ability.relevantRuleFor(action, subject);
+
+    const conditions = relevantRule?.conditions as string[] || [];
+    const conditionMap: Record<string, true> = Object
+      .fromEntries(
+        conditions.map((condition) => [condition, true])
+      )
+
+    return conditionMap;
   }
 
-  cannot(action: string, subject: Subject) {
+  cannot(action: string, subject: string) {
     const cannot = this.ability.cannot(action, subject);
 
     if (cannot) throw new Error('Not authorized!');

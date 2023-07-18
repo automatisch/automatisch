@@ -1,6 +1,7 @@
 import { IDynamicData, IJSONObject } from '@automatisch/types';
 import Context from '../../types/express/context';
 import App from '../../models/app';
+import Step from '../../models/step';
 import ExecutionStep from '../../models/execution-step';
 import globalVariable from '../../helpers/global-variable';
 import computeParameters from '../../helpers/compute-parameters';
@@ -16,10 +17,12 @@ const getDynamicData = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('update', 'Flow');
+  const conditions = context.currentUser.can('update', 'Flow');
+  const userSteps = context.currentUser.$relatedQuery('steps');
+  const allSteps = Step.query();
+  const stepBaseQuery = conditions.isCreator ? userSteps : allSteps;
 
-  const step = await context.currentUser
-    .$relatedQuery('steps')
+  const step = await stepBaseQuery
     .withGraphFetched({
       connection: true,
       flow: true,

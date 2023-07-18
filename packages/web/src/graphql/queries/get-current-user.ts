@@ -6,6 +6,16 @@ export const GET_CURRENT_USER = gql`
       id
       fullName
       email
+      role {
+        id
+        isAdmin
+      }
+      permissions {
+        id
+        action
+        subject
+        conditions
+      }
     }
   }
 `;

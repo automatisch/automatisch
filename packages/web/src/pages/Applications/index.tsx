@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
-import type { LinkProps } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -9,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import AddIcon from '@mui/icons-material/Add';
 import type { IApp } from '@automatisch/types';
 
+import Can from 'components/Can';
 import NoResultFound from 'components/NoResultFound';
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
@@ -39,16 +39,6 @@ export default function Applications(): React.ReactElement {
     navigate(URLS.APPS);
   }, [navigate]);
 
-  const NewAppConnectionLink = React.useMemo(
-    () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
-        function InlineLink(linkProps, ref) {
-          return <Link ref={ref} to={URLS.NEW_APP_CONNECTION} {...linkProps} />;
-        }
-      ),
-    []
-  );
-
   return (
     <Box sx={{ py: 3 }}>
       <Container>
@@ -69,18 +59,24 @@ export default function Applications(): React.ReactElement {
             alignItems="center"
             order={{ xs: 1, sm: 2 }}
           >
-            <ConditionalIconButton
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              component={NewAppConnectionLink}
-              fullWidth
-              icon={<AddIcon />}
-              data-test="add-connection-button"
-            >
-              {formatMessage('apps.addConnection')}
-            </ConditionalIconButton>
+            <Can I="create" a="Connection" passThrough>
+              {(allowed) => (
+                <ConditionalIconButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  component={Link}
+                  to={URLS.NEW_APP_CONNECTION}
+                  fullWidth
+                  disabled={!allowed}
+                  icon={<AddIcon />}
+                  data-test="add-connection-button"
+                >
+                  {formatMessage('apps.addConnection')}
+                </ConditionalIconButton>
+              )}
+            </Can>
           </Grid>
         </Grid>
 

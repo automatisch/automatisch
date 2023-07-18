@@ -6,6 +6,7 @@ import type { PopoverProps } from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import { useSnackbar } from 'notistack';
 
+import Can from 'components/Can';
 import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
 import { DUPLICATE_FLOW } from 'graphql/mutations/duplicate-flow';
 import * as URLS from 'config/urls';
@@ -72,13 +73,39 @@ export default function ContextMenu(
       hideBackdrop={false}
       anchorEl={anchorEl}
     >
-      <MenuItem component={Link} to={URLS.FLOW(flowId)}>
-        {formatMessage('flow.view')}
-      </MenuItem>
+      <Can I="read" a="Flow" passThrough>
+        {(allowed) => (
+          <MenuItem
+            disabled={!allowed}
+            component={Link}
+            to={URLS.FLOW(flowId)}
+          >
+            {formatMessage('flow.view')}
+          </MenuItem>
+        )}
+      </Can>
 
-      <MenuItem onClick={onFlowDuplicate}>{formatMessage('flow.duplicate')}</MenuItem>
+      <Can I="create" a="Flow" passThrough>
+        {(allowed) => (
+          <MenuItem
+            disabled={!allowed}
+            onClick={onFlowDuplicate}
+          >
+            {formatMessage('flow.duplicate')}
+          </MenuItem>
+        )}
+      </Can>
 
-      <MenuItem onClick={onFlowDelete}>{formatMessage('flow.delete')}</MenuItem>
+      <Can I="delete" a="Flow" passThrough>
+        {(allowed) => (
+          <MenuItem
+            disabled={!allowed}
+            onClick={onFlowDelete}
+          >
+            {formatMessage('flow.delete')}
+          </MenuItem>
+        )}
+      </Can>
     </Menu>
   );
 }

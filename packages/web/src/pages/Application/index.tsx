@@ -10,7 +10,6 @@ import {
   useMatch,
   useNavigate,
 } from 'react-router-dom';
-import type { LinkProps } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
@@ -67,41 +66,6 @@ export default function Application(): React.ReactElement | null {
   const goToApplicationPage = () => navigate('connections');
   const app = data?.getApp || {};
 
-  const NewConnectionLink = React.useMemo(
-    () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
-        function InlineLink(linkProps, ref) {
-          return (
-            <Link
-              ref={ref}
-              to={URLS.APP_ADD_CONNECTION(appKey)}
-              {...linkProps}
-            />
-          );
-        }
-      ),
-    [appKey]
-  );
-
-  const NewFlowLink = React.useMemo(
-    () =>
-      React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
-        function InlineLink(linkProps, ref) {
-          return (
-            <Link
-              ref={ref}
-              to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
-                appKey,
-                connectionId
-              )}
-              {...linkProps}
-            />
-          );
-        }
-      ),
-    [appKey, connectionId]
-  );
-
   if (loading) return null;
 
   return (
@@ -131,7 +95,11 @@ export default function Application(): React.ReactElement | null {
                       variant="contained"
                       color="primary"
                       size="large"
-                      component={NewFlowLink}
+                      component={Link}
+                      to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
+                        appKey,
+                        connectionId
+                      )}
                       fullWidth
                       icon={<AddIcon />}
                     >
@@ -148,7 +116,8 @@ export default function Application(): React.ReactElement | null {
                       variant="contained"
                       color="primary"
                       size="large"
-                      component={NewConnectionLink}
+                      component={Link}
+                      to={URLS.APP_ADD_CONNECTION(appKey)}
                       fullWidth
                       icon={<AddIcon />}
                       data-test="add-connection-button"
