@@ -1,4 +1,5 @@
 import Base from './base';
+import Permission from './permission';
 import User from './user';
 
 class Role extends Base {
@@ -7,6 +8,7 @@ class Role extends Base {
   key: string;
   description: string;
   users?: User[];
+  permissions?: Permission[];
 
   static tableName = 'roles';
 
@@ -24,6 +26,10 @@ class Role extends Base {
     },
   };
 
+  static get virtualAttributes() {
+    return ['isAdmin'];
+  }
+
   static relationMappings = () => ({
     users: {
       relation: Base.HasManyRelation,
@@ -33,7 +39,23 @@ class Role extends Base {
         to: 'users.role_id',
       },
     },
+    permissions: {
+      relation: Base.ManyToManyRelation,
+      modelClass: Permission,
+      join: {
+        from: 'roles.id',
+        through: {
+          from: 'roles_permissions.role_id',
+          to: 'roles_permissions.permission_id',
+        },
+        to: 'permissions.id',
+      },
+    },
   });
+
+  get isAdmin() {
+    return this.key === 'admin';
+  }
 }
 
 export default Role;

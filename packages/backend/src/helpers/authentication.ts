@@ -15,10 +15,12 @@ const isAuthenticated = rule()(async (_parent, _args, req) => {
     req.currentUser = await User
       .query()
       .findById(userId)
-      .joinRelated({
+      .leftJoinRelated({
+        role: true,
         permissions: true,
       })
       .withGraphFetched({
+        role: true,
         permissions: true,
       });
 
@@ -38,9 +40,9 @@ const authentication = shield(
     },
     Mutation: {
       '*': isAuthenticated,
-      login: allow,
-      createUser: allow,
+      registerUser: allow,
       forgotPassword: allow,
+      login: allow,
       resetPassword: allow,
     },
   },

@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { QueryContext, ModelOptions } from 'objection';
 import bcrypt from 'bcrypt';
 import { DateTime } from 'luxon';
-import { Ability } from '@casl/ability';
+import { PureAbility, fieldPatternMatcher, mongoQueryMatcher } from '@casl/ability';
 import type { Subject } from '@casl/ability';
 
 import appConfig from '../config/app';
@@ -297,7 +297,11 @@ class User extends Base {
       throw new Error('User.permissions must be fetched!');
     }
 
-    return new Ability(this.permissions);
+    // We're not using mongo, but our fields, conditions match
+    return new PureAbility(this.permissions, {
+      conditionsMatcher: mongoQueryMatcher,
+      fieldMatcher: fieldPatternMatcher
+    });
   }
 
   can(action: string, subject: Subject) {

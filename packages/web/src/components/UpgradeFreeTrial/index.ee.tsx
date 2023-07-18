@@ -58,7 +58,7 @@ export default function UpgradeFreeTrial() {
             alignItems="stretch"
           >
             <TableContainer component={Paper}>
-              <Table aria-label="simple table">
+              <Table>
                 <TableHead
                   sx={{
                     backgroundColor: (theme) =>

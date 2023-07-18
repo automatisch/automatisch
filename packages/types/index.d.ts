@@ -95,6 +95,15 @@ export interface IUser {
   connections: IConnection[];
   flows: IFlow[];
   steps: IStep[];
+  role: IRole;
+}
+
+export interface IRole {
+  id: string;
+  key: string;
+  name: string;
+  description: string;
+  isAdmin: boolean;
 }
 
 export interface IFieldDropdown {

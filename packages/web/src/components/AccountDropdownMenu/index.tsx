@@ -54,6 +54,10 @@ function AccountDropdownMenu(
         {formatMessage('accountDropdownMenu.settings')}
       </MenuItem>
 
+      <MenuItem component={Link} to={URLS.ADMIN_SETTINGS_DASHBOARD}>
+        {formatMessage('accountDropdownMenu.adminSettings')}
+      </MenuItem>
+
       <MenuItem onClick={logout} data-test="logout-item">
         {formatMessage('accountDropdownMenu.logout')}
       </MenuItem>

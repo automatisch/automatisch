@@ -4,7 +4,7 @@
   "license": "See LICENSE file",
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
-    "dev": "ts-node-dev --exit-child src/server.ts",
+    "dev": "ts-node-dev --watch 'src/graphql/schema.graphql' --exit-child src/server.ts",
     "worker": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/worker.ts",
     "build": "tsc && yarn copy-statics",
     "build:watch": "nodemon --watch 'src/**/*.ts' --watch 'bin/**/*.ts' --exec yarn build --ext ts",

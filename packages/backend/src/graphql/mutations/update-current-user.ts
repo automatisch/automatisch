@@ -8,7 +8,7 @@ type Params = {
   };
 };
 
-const updateUser = async (
+const updateCurrentUser = async (
   _parent: unknown,
   params: Params,
   context: Context
@@ -22,4 +22,4 @@ const updateUser = async (
   return user;
 };
 
-export default updateUser;
+export default updateCurrentUser;

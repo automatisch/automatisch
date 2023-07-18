@@ -19,6 +19,7 @@ export default function ConditionalIconButton(props: any): React.ReactElement {
         type={buttonProps.type}
         size={buttonProps.size}
         component={buttonProps.component}
+        to={buttonProps.to}
       >
         {icon}
       </IconButton>
