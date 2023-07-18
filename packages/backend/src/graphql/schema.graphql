@@ -42,31 +42,45 @@ type Query {
   getTrialStatus: GetTrialStatus
   getSubscriptionStatus: GetSubscriptionStatus
   getSamlAuthProviders: [GetSamlAuthProviders]
+  getUsers(
+    limit: Int!
+    offset: Int!
+  ): UserConnection
+  getUser(id: String!): User
+  getRoles: [Role]
+  getRole(id: String!): Role
+  getPermissionCatalog: PermissionCatalog
   healthcheck: AppHealth
 }
 
 type Mutation {
   createConnection(input: CreateConnectionInput): Connection
-  generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
-  updateConnection(input: UpdateConnectionInput): Connection
-  resetConnection(input: ResetConnectionInput): Connection
-  verifyConnection(input: VerifyConnectionInput): Connection
-  deleteConnection(input: DeleteConnectionInput): Boolean
   createFlow(input: CreateFlowInput): Flow
+  createRole(input: CreateRoleInput): Role
+  createStep(input: CreateStepInput): Step
+  createUser(input: CreateUserInput): User
+  deleteConnection(input: DeleteConnectionInput): Boolean
+  deleteCurrentUser: Boolean
+  deleteFlow(input: DeleteFlowInput): Boolean
+  deleteRole(input: DeleteRoleInput): Boolean
+  deleteStep(input: DeleteStepInput): Step
+  deleteUser(input: DeleteUserInput): Boolean
+  duplicateFlow(input: DuplicateFlowInput): Flow
+  executeFlow(input: ExecuteFlowInput): executeFlowType
+  forgotPassword(input: ForgotPasswordInput): Boolean
+  generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
+  login(input: LoginInput): Auth
+  registerUser(input: RegisterUserInput): User
+  resetConnection(input: ResetConnectionInput): Connection
+  resetPassword(input: ResetPasswordInput): Boolean
+  updateConnection(input: UpdateConnectionInput): Connection
+  updateCurrentUser(input: UpdateCurrentUserInput): User
   updateFlow(input: UpdateFlowInput): Flow
   updateFlowStatus(input: UpdateFlowStatusInput): Flow
-  executeFlow(input: ExecuteFlowInput): executeFlowType
-  deleteFlow(input: DeleteFlowInput): Boolean
-  duplicateFlow(input: DuplicateFlowInput): Flow
-  createStep(input: CreateStepInput): Step
+  updateRole(input: UpdateRoleInput): Role
   updateStep(input: UpdateStepInput): Step
-  deleteStep(input: DeleteStepInput): Step
-  createUser(input: CreateUserInput): User
-  deleteUser: Boolean
   updateUser(input: UpdateUserInput): User
-  forgotPassword(input: ForgotPasswordInput): Boolean
-  resetPassword(input: ResetPasswordInput): Boolean
-  login(input: LoginInput): Auth
+  verifyConnection(input: VerifyConnectionInput): Connection
 }
 
 """
@@ -278,6 +292,15 @@ type Execution {
   flow: Flow
 }
 
+type UserConnection {
+  edges: [UserEdge]
+  pageInfo: PageInfo
+}
+
+type UserEdge {
+  node: User
+}
+
 input CreateConnectionInput {
   key: String!
   formattedData: JSONObject!
@@ -361,9 +384,31 @@ input CreateUserInput {
   fullName: String!
   email: String!
   password: String!
+  role: UserRoleInput!
+}
+
+input UserRoleInput {
+  id: String
 }
 
 input UpdateUserInput {
+  id: String!
+  fullName: String
+  email: String
+  role: UserRoleInput
+}
+
+input DeleteUserInput {
+  id: String!
+}
+
+input RegisterUserInput {
+  fullName: String!
+  email: String!
+  password: String!
+}
+
+input UpdateCurrentUserInput {
   email: String
   password: String
   fullName: String
@@ -381,6 +426,29 @@ input ResetPasswordInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input PermissionInput {
+  action: String!
+  subject: String!
+  conditions: [String]
+}
+
+input CreateRoleInput {
+  name: String!
+  description: String
+  permissions: [PermissionInput]
+}
+
+input UpdateRoleInput {
+  id: String!
+  name: String!
+  description: String
+  permissions: [PermissionInput]
+}
+
+input DeleteRoleInput {
+  id: String!
 }
 
 """
@@ -454,9 +522,19 @@ type User {
   id: String
   fullName: String
   email: String
-  role: String
+  role: Role
+  permissions: [Permission]
   createdAt: String
   updatedAt: String
+}
+
+type Role {
+  id: String
+  name: String
+  key: String
+  description: String
+  isAdmin: Boolean
+  permissions: [Permission]
 }
 
 type PageInfo {
@@ -559,6 +637,35 @@ type GetSamlAuthProviders {
   id: String
   name: String
   issuer: String
+}
+
+type Permission {
+  id: String
+  action: String
+  subject: String
+  conditions: [String]
+}
+
+type PermissionCatalog {
+  actions: [Action]
+  subjects: [Subject]
+  conditions: [Condition]
+}
+
+type Action {
+  label: String
+  key: String
+  subjects: [String]
+}
+
+type Condition {
+  key: String
+  label: String
+}
+
+type Subject {
+  label: String
+  key: String
 }
 
 schema {

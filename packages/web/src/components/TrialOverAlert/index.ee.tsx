@@ -3,7 +3,7 @@ import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 
 import * as URLS from 'config/urls';
-import { generateInternalLink } from 'helpers/translation-values';
+import { generateInternalLink } from 'helpers/translationValues';
 import useTrialStatus from 'hooks/useTrialStatus.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 

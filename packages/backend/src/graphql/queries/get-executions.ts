@@ -1,5 +1,6 @@
 import { raw } from 'objection';
 import Context from '../../types/express/context';
+import Execution from '../../models/execution';
 import paginate from '../../helpers/pagination';
 
 type Params = {
@@ -12,7 +13,11 @@ const getExecutions = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('read', 'Execution');
+  const conditions = context.currentUser.can('read', 'Execution');
+
+  const userExecutions = context.currentUser.$relatedQuery('executions');
+  const allExecutions = Execution.query();
+  const executionBaseQuery = conditions.isCreator ? userExecutions : allExecutions;
 
   const selectStatusStatement = `
     case
@@ -23,8 +28,7 @@ const getExecutions = async (
     as status
   `;
 
-  const executions = context.currentUser
-    .$relatedQuery('executions')
+  const executions = executionBaseQuery
     .joinRelated('executionSteps as execution_steps')
     .select('executions.*', raw(selectStatusStatement))
     .withSoftDeleted()

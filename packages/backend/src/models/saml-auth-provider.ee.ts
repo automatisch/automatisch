@@ -16,6 +16,7 @@ class SamlAuthProvider extends Base {
   emailAttributeName: string;
   roleAttributeName: string;
   defaultRoleId: string;
+  active: boolean;
 
   static tableName = 'saml_auth_providers';
 
@@ -45,7 +46,8 @@ class SamlAuthProvider extends Base {
       surnameAttributeName: { type: 'string', minLength: 1 },
       emailAttributeName: { type: 'string', minLength: 1 },
       roleAttributeName: { type: 'string', minLength: 1 },
-      defaultRoleId: { type: 'string', format: 'uuid' }
+      defaultRoleId: { type: 'string', format: 'uuid' },
+      active: { type: 'boolean' },
     },
   };
 
