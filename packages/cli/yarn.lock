@@ -15593,11 +15593,6 @@ winston@^3.6.0, winston@^3.7.1:
     triple-beam "^1.3.0"
     winston-transport "^4.5.0"
 
-word-wrap@^1.2.3, word-wrap@~1.2.3:
-  version "1.2.3"
-  resolved "https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.3.tgz"
-  integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
-
 workbox-background-sync@6.5.4:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/workbox-background-sync/-/workbox-background-sync-6.5.4.tgz#3141afba3cc8aa2ae14c24d0f6811374ba8ff6a9"
