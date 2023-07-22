@@ -143,6 +143,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'IMAP',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/imap/triggers' },
+            { text: 'Connection', link: '/apps/imap/connection' },
+          ]
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
