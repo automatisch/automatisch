@@ -128,3 +128,6 @@ dist
 
 # MacOS finder preferences
 .DS_store
+
+# JetBrains project settings
+.idea
