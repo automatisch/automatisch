@@ -394,6 +394,11 @@ declare module 'axios' {
   interface AxiosRequestConfig {
     additionalProperties?: Record<string, unknown>;
   }
+
+  // ref: https://github.com/axios/axios/issues/5095
+  interface AxiosInstance {
+    create(config?: CreateAxiosDefaults): AxiosInstance;
+  }
 }
 
 export interface IRequest extends Request {

@@ -1,8 +1,10 @@
-import axios, { AxiosRequestConfig } from 'axios';
-export { AxiosInstance as IHttpClient } from 'axios';
 import { IHttpClientParams } from '@automatisch/types';
-import { URL } from 'url';
+import { AxiosRequestConfig } from 'axios';
+import { URL } from 'node:url';
+export { AxiosInstance as IHttpClient } from 'axios';
+
 import HttpError from '../../errors/http';
+import axios from '../axios-with-proxy';
 
 const removeBaseUrlForAbsoluteUrls = (
   requestConfig: AxiosRequestConfig
