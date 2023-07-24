@@ -3,7 +3,7 @@ import ExecutionStep from '../models/execution-step';
 import get from 'lodash.get';
 
 // INFO: don't remove space in allowed character group!
-const variableRegExp = /({{step\.[\da-zA-Z-]+(?:\.[\da-zA-Z-_ ]+)+}})/g;
+const variableRegExp = /({{step\.[\da-zA-Z-]+(?:\.[\da-zA-Z-_ :]+)+}})/g;
 
 export default function computeParameters(
   parameters: Step['parameters'],
@@ -42,7 +42,7 @@ export default function computeParameters(
     if (Array.isArray(value)) {
       return {
         ...result,
-        [key]: value.map(item => computeParameters(item, executionSteps)),
+        [key]: value.map((item) => computeParameters(item, executionSteps)),
       };
     }
 
