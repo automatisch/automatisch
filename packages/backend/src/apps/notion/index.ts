@@ -3,6 +3,7 @@ import addAuthHeader from './common/add-auth-header';
 import addNotionVersionHeader from './common/add-notion-version-header';
 import auth from './auth';
 import triggers from './triggers';
+import actions from './actions';
 import dynamicData from './dynamic-data';
 
 export default defineApp({
@@ -14,11 +15,9 @@ export default defineApp({
   authDocUrl: 'https://automatisch.io/docs/apps/notion/connection',
   primaryColor: '000000',
   supportsConnections: true,
-  beforeRequest: [
-    addAuthHeader,
-    addNotionVersionHeader,
-  ],
+  beforeRequest: [addAuthHeader, addNotionVersionHeader],
   auth,
   triggers,
+  actions,
   dynamicData,
 });
