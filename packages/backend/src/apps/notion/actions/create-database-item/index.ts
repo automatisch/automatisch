@@ -8,7 +8,7 @@ type TBody = {
 };
 
 export default defineAction({
-  name: 'Create Database Item',
+  name: 'Create database item',
   key: 'createDatabaseItem',
   description: 'Creates an item in a database.',
   arguments: [
