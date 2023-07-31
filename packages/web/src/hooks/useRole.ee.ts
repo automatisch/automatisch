@@ -6,7 +6,7 @@ import { GET_ROLE } from 'graphql/queries/get-role.ee';
 
 type QueryResponse = {
   getRole: IRole;
-}
+};
 
 export default function useRole(roleId?: string) {
   const [getRole, { data, loading }] = useLazyQuery<QueryResponse>(GET_ROLE);
@@ -15,14 +15,14 @@ export default function useRole(roleId?: string) {
     if (roleId) {
       getRole({
         variables: {
-          id: roleId
-        }
+          id: roleId,
+        },
       });
     }
   }, [roleId]);
 
   return {
     role: data?.getRole,
-    loading
+    loading,
   };
 }

@@ -14,17 +14,21 @@ import * as React from 'react';
 import ControlledCheckbox from 'components/ControlledCheckbox';
 import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 import PermissionSettings from './PermissionSettings.ee';
+import PermissionCatalogFieldLoader from './PermissionCatalogFieldLoader';
 
 type PermissionCatalogFieldProps = {
   name?: string;
   disabled?: boolean;
 };
 
-const PermissionCatalogField = ({ name = 'permissions', disabled = false }: PermissionCatalogFieldProps) => {
-  const permissionCatalog = usePermissionCatalog();
+const PermissionCatalogField = ({
+  name = 'permissions',
+  disabled = false,
+}: PermissionCatalogFieldProps) => {
+  const { permissionCatalog, loading } = usePermissionCatalog();
   const [dialogName, setDialogName] = React.useState<string>();
 
-  if (!permissionCatalog) return (<React.Fragment />);
+  if (loading) return <PermissionCatalogFieldLoader />;
 
   return (
     <TableContainer component={Paper}>
@@ -33,14 +37,14 @@ const PermissionCatalogField = ({ name = 'permissions', disabled = false }: Perm
           <TableRow>
             <TableCell component="th" />
 
-            {permissionCatalog.actions.map(action => (
+            {permissionCatalog.actions.map((action) => (
               <TableCell component="th" key={action.key}>
                 <Typography
                   variant="subtitle1"
                   align="center"
                   sx={{
                     color: 'text.secondary',
-                    fontWeight: 700
+                    fontWeight: 700,
                   }}
                 >
                   {action.label}
@@ -58,21 +62,12 @@ const PermissionCatalogField = ({ name = 'permissions', disabled = false }: Perm
               sx={{ '&:last-child td': { border: 0 } }}
             >
               <TableCell scope="row">
-                <Typography
-                  variant="subtitle2"
-                >
-                  {subject.label}
-                </Typography>
+                <Typography variant="subtitle2">{subject.label}</Typography>
               </TableCell>
 
               {permissionCatalog.actions.map((action) => (
-                <TableCell
-                  key={`${subject.key}.${action.key}`}
-                  align="center"
-                >
-                  <Typography
-                    variant="subtitle2"
-                  >
+                <TableCell key={`${subject.key}.${action.key}`} align="center">
+                  <Typography variant="subtitle2">
                     {action.subjects.includes(subject.key) && (
                       <ControlledCheckbox
                         disabled={disabled}
@@ -86,11 +81,7 @@ const PermissionCatalogField = ({ name = 'permissions', disabled = false }: Perm
               ))}
 
               <TableCell>
-                <Stack
-                  direction="row"
-                  gap={1}
-                  justifyContent="right"
-                >
+                <Stack direction="row" gap={1} justifyContent="right">
                   <IconButton
                     color="info"
                     size="small"
@@ -116,7 +107,7 @@ const PermissionCatalogField = ({ name = 'permissions', disabled = false }: Perm
         </TableBody>
       </Table>
     </TableContainer>
-  )
+  );
 };
 
 export default PermissionCatalogField;

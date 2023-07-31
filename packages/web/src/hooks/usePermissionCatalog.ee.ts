@@ -3,8 +3,13 @@ import { IPermissionCatalog } from '@automatisch/types';
 
 import { GET_PERMISSION_CATALOG } from 'graphql/queries/get-permission-catalog.ee';
 
-export default function usePermissionCatalog(): IPermissionCatalog {
-  const { data } = useQuery(GET_PERMISSION_CATALOG);
+type UsePermissionCatalogReturn = {
+  permissionCatalog: IPermissionCatalog;
+  loading: boolean;
+};
 
-  return data?.getPermissionCatalog;
+export default function usePermissionCatalog(): UsePermissionCatalogReturn {
+  const { data, loading } = useQuery(GET_PERMISSION_CATALOG);
+
+  return { permissionCatalog: data?.getPermissionCatalog, loading };
 }
