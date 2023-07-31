@@ -6,7 +6,7 @@ import actions from './actions';
 import dynamicData from './dynamic-data';
 
 export default defineApp({
-  name: 'Github',
+  name: 'GitHub',
   key: 'github',
   baseUrl: 'https://github.com',
   apiBaseUrl: 'https://api.github.com',

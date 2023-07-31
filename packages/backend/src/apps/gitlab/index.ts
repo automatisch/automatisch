@@ -6,7 +6,7 @@ import triggers from './triggers';
 import dynamicData from './dynamic-data';
 
 export default defineApp({
-  name: 'Gitlab',
+  name: 'GitLab',
   key: 'gitlab',
   baseUrl: 'https://gitlab.com',
   apiBaseUrl: 'https://gitlab.com',
