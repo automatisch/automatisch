@@ -16,17 +16,17 @@ import Form from 'components/Form';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { Skeleton } from '@mui/material';
 
 type EditUserParams = {
   userId: string;
-}
+};
 
 function generateRoleOptions(roles: IRole[]) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
 
 // TODO: introduce interaction feedback upon deletion (successful + failure)
-// TODO: introduce loading bar
 export default function EditUser(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
@@ -42,14 +42,12 @@ export default function EditUser(): React.ReactElement {
           fullName: userDataToUpdate.fullName,
           email: userDataToUpdate.email,
           role: {
-            id: userDataToUpdate.role?.id
-          }
-        }
-      }
+            id: userDataToUpdate.role?.id,
+          },
+        },
+      },
     });
   };
-
-  if (userLoading) return <React.Fragment />;
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
@@ -59,43 +57,57 @@ export default function EditUser(): React.ReactElement {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Form defaultValues={user} onSubmit={handleUserUpdate}>
+          {userLoading ? (
             <Stack direction="column" gap={2}>
-              <TextField
-                required={true}
-                name="fullName"
-                label={formatMessage('userForm.fullName')}
-                fullWidth
-              />
-
-              <TextField
-                required={true}
-                name="email"
-                label={formatMessage('userForm.email')}
-                fullWidth
-              />
-
-              <ControlledAutocomplete
-                name="role.id"
-                fullWidth
-                disablePortal
-                disableClearable={true}
-                options={generateRoleOptions(roles)}
-                renderInput={(params) => <MuiTextField {...params} label={formatMessage('userForm.role')} />}
-                loading={rolesLoading}
-              />
-
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ boxShadow: 2 }}
-                loading={loading}
-              >
-                {formatMessage('editUser.submit')}
-              </LoadingButton>
+              <Skeleton variant="rounded" height={55} />
+              <Skeleton variant="rounded" height={55} />
+              <Skeleton variant="rounded" height={55} />
+              <Skeleton variant="rounded" height={45} />
             </Stack>
-          </Form>
+          ) : (
+            <Form defaultValues={user} onSubmit={handleUserUpdate}>
+              <Stack direction="column" gap={2}>
+                <TextField
+                  required={true}
+                  name="fullName"
+                  label={formatMessage('userForm.fullName')}
+                  fullWidth
+                />
+
+                <TextField
+                  required={true}
+                  name="email"
+                  label={formatMessage('userForm.email')}
+                  fullWidth
+                />
+
+                <ControlledAutocomplete
+                  name="role.id"
+                  fullWidth
+                  disablePortal
+                  disableClearable={true}
+                  options={generateRoleOptions(roles)}
+                  renderInput={(params) => (
+                    <MuiTextField
+                      {...params}
+                      label={formatMessage('userForm.role')}
+                    />
+                  )}
+                  loading={rolesLoading}
+                />
+
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ boxShadow: 2 }}
+                  loading={loading}
+                >
+                  {formatMessage('editUser.submit')}
+                </LoadingButton>
+              </Stack>
+            </Form>
+          )}
         </Grid>
       </Grid>
     </Container>

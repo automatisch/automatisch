@@ -13,13 +13,13 @@ import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 
 import DeleteUserButton from 'components/DeleteUserButton/index.ee';
+import ListLoader from 'components/ListLoader';
 import useUsers from 'hooks/useUsers';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
 
 // TODO: introduce translation entries
 // TODO: introduce interaction feedback upon deletion (successful + failure)
-// TODO: introduce loading bar
 export default function UserList(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const { users, loading } = useUsers();
@@ -51,42 +51,38 @@ export default function UserList(): React.ReactElement {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((user) => (
-            <TableRow
-              key={user.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell scope="row">
-                <Typography
-                  variant="subtitle2"
-                >
-                  {user.fullName}
-                </Typography>
-              </TableCell>
+          {loading ? (
+            <ListLoader rowsNumber={3} cellNumber={2} />
+          ) : (
+            users.map((user) => (
+              <TableRow
+                key={user.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell scope="row">
+                  <Typography variant="subtitle2">{user.fullName}</Typography>
+                </TableCell>
 
-              <TableCell>
-                <Typography
-                  variant="subtitle2"
-                >
-                  {user.email}
-                </Typography>
-              </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2">{user.email}</Typography>
+                </TableCell>
 
-              <TableCell>
-                <Stack direction="row" gap={1} justifyContent="right">
-                  <IconButton
-                    size="small"
-                    component={Link}
-                    to={URLS.USER(user.id)}
-                  >
-                    <EditIcon />
-                  </IconButton>
+                <TableCell>
+                  <Stack direction="row" gap={1} justifyContent="right">
+                    <IconButton
+                      size="small"
+                      component={Link}
+                      to={URLS.USER(user.id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
 
-                  <DeleteUserButton userId={user.id} />
-                </Stack>
-              </TableCell>
-            </TableRow>
-          ))}
+                    <DeleteUserButton userId={user.id} />
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>

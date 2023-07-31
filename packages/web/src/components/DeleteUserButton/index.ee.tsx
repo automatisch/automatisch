@@ -9,7 +9,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 type DeleteUserButtonProps = {
   userId: string;
-}
+};
 
 export default function DeleteUserButton(props: DeleteUserButtonProps) {
   const { userId } = props;

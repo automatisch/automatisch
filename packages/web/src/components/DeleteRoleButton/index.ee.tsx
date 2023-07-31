@@ -9,7 +9,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 type DeleteRoleButtonProps = {
   roleId: string;
-}
+};
 
 export default function DeleteRoleButton(props: DeleteRoleButtonProps) {
   const { roleId } = props;

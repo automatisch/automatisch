@@ -13,13 +13,13 @@ import PageTitle from 'components/PageTitle';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { Skeleton } from '@mui/material';
 
 type EditRoleParams = {
   roleId: string;
-}
+};
 
 // TODO: introduce interaction feedback upon deletion (successful + failure)
-// TODO: introduce loading bar
 export default function EditRole(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [updateRole, { loading }] = useMutation(UPDATE_ROLE);
@@ -33,12 +33,10 @@ export default function EditRole(): React.ReactElement {
           id: roleId,
           name: roleData.name,
           description: roleData.description,
-        }
-      }
+        },
+      },
     });
   };
-
-  if (roleLoading) return <React.Fragment />;
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
@@ -48,33 +46,41 @@ export default function EditRole(): React.ReactElement {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Form defaultValues={role} onSubmit={handleRoleUpdate}>
+          {roleLoading ? (
             <Stack direction="column" gap={2}>
-              <TextField
-                required={true}
-                name="name"
-                label={formatMessage('roleForm.name')}
-                fullWidth
-              />
-
-              <TextField
-                required={true}
-                name="description"
-                label={formatMessage('roleForm.description')}
-                fullWidth
-              />
-
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ boxShadow: 2 }}
-                loading={loading}
-              >
-                {formatMessage('editRole.submit')}
-              </LoadingButton>
+              <Skeleton variant="rounded" height={55} />
+              <Skeleton variant="rounded" height={55} />
+              <Skeleton variant="rounded" height={45} />
             </Stack>
-          </Form>
+          ) : (
+            <Form defaultValues={role} onSubmit={handleRoleUpdate}>
+              <Stack direction="column" gap={2}>
+                <TextField
+                  required={true}
+                  name="name"
+                  label={formatMessage('roleForm.name')}
+                  fullWidth
+                />
+
+                <TextField
+                  required={true}
+                  name="description"
+                  label={formatMessage('roleForm.description')}
+                  fullWidth
+                />
+
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ boxShadow: 2 }}
+                  loading={loading}
+                >
+                  {formatMessage('editRole.submit')}
+                </LoadingButton>
+              </Stack>
+            </Form>
+          )}
         </Grid>
       </Grid>
     </Container>
