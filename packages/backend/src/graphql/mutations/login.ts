@@ -13,7 +13,7 @@ const TOKEN_EXPIRES_IN = '14d';
 
 const login = async (_parent: unknown, params: Params) => {
   const user = await User.query().findOne({
-    email: params.input.email,
+    email: params.input.email.toLowerCase(),
   });
 
   if (user && (await user.login(params.input.password))) {
