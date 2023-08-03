@@ -17,6 +17,7 @@ const getFlows = async (_parent: unknown, params: Params, context: Context) => {
   const baseQuery = conditions.isCreator ? userFlows : allFlows;
 
   const flowsQuery = baseQuery
+    .clone()
     .joinRelated({
       steps: true,
     })

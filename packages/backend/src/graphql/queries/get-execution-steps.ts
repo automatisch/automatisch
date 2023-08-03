@@ -19,6 +19,7 @@ const getExecutionSteps = async (
   const executionBaseQuery = conditions.isCreator ? userExecutions : allExecutions;
 
   const execution = await executionBaseQuery
+    .clone()
     .withSoftDeleted()
     .findById(params.executionId)
     .throwIfNotFound();

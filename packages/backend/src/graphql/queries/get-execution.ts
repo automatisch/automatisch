@@ -16,6 +16,7 @@ const getExecution = async (
   const executionBaseQuery = conditions.isCreator ? userExecutions : allExecutions;
 
   const execution = await executionBaseQuery
+    .clone()
     .withGraphFetched({
       flow: {
         steps: true,

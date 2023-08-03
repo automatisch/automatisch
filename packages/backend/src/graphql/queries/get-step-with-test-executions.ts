@@ -18,10 +18,12 @@ const getStepWithTestExecutions = async (
   const stepBaseQuery = conditions.isCreator ? userSteps : allSteps;
 
   const step = await stepBaseQuery
+    .clone()
     .findOne({ 'steps.id': params.stepId })
     .throwIfNotFound();
 
   const previousStepsWithCurrentStep = await stepBaseQuery
+    .clone()
     .withGraphJoined('executionSteps')
     .where('flow_id', '=', step.flowId)
     .andWhere('position', '<', step.position)

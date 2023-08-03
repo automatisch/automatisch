@@ -21,6 +21,7 @@ const getDynamicFields = async (
   const stepBaseQuery = conditions.isCreator ? userSteps : allSteps;
 
   const step = await stepBaseQuery
+    .clone()
     .withGraphFetched({
       connection: true,
       flow: true,
