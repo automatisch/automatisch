@@ -17,7 +17,9 @@ const config: Config = {
   supportEmailAddress: 'support@automatisch.io'
 };
 
-if (!config.apiUrl) {
+if (!config.apiUrl && !config.graphqlUrl) {
+  config.apiUrl = '/';
+} else if (!config.apiUrl) {
   config.apiUrl = (new URL(config.graphqlUrl)).origin;
 }
 
