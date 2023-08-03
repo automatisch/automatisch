@@ -19,6 +19,7 @@ const testConnection = async (
   const connectionBaseQuery = conditions.isCreator ? userConnections : allConnections;
 
   let connection = await connectionBaseQuery
+    .clone()
     .findOne({
       id: params.id,
     })

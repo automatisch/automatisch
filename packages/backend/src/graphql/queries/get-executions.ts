@@ -29,6 +29,7 @@ const getExecutions = async (
   `;
 
   const executions = executionBaseQuery
+    .clone()
     .joinRelated('executionSteps as execution_steps')
     .select('executions.*', raw(selectStatusStatement))
     .withSoftDeleted()

@@ -17,6 +17,7 @@ const getApp = async (_parent: unknown, params: Params, context: Context) => {
 
   if (context.currentUser) {
     const connections = await connectionBaseQuery
+      .clone()
       .select('connections.*')
       .fullOuterJoinRelated('steps')
       .where({

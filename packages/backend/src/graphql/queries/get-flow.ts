@@ -12,6 +12,7 @@ const getFlow = async (_parent: unknown, params: Params, context: Context) => {
   const baseQuery = conditions.isCreator ? userFlows : allFlows;
 
   const flow = await baseQuery
+    .clone()
     .withGraphJoined('[steps.[connection]]')
     .orderBy('steps.position', 'asc')
     .findOne({ 'flows.id': params.id })

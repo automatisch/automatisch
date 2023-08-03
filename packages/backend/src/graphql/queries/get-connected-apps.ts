@@ -26,12 +26,14 @@ const getConnectedApps = async (
   let apps = await App.findAll(params.name);
 
   const connections = await connectionBaseQuery
+    .clone()
     .select('connections.key')
     .where({ draft: false })
     .count('connections.id as count')
     .groupBy('connections.key');
 
   const flows = await flowBaseQuery
+    .clone()
     .withGraphJoined('steps')
     .orderBy('created_at', 'desc');
 
