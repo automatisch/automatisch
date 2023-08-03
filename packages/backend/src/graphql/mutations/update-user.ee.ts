@@ -32,11 +32,10 @@ const updateUser = async (
     // void
   }
 
-  const user = await User.query()
-    .patchAndFetchById(
-      params.input.id,
-      userPayload,
-    );
+  const user = await User.query().patchAndFetchById(
+    params.input.id,
+    userPayload
+  );
 
   return user;
 };

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useMutation } from '@apollo/client';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useSnackbar } from 'notistack';
 
 import Can from 'components/Can';
 import ConfirmationDialog from 'components/ConfirmationDialog';
@@ -11,7 +12,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 type DeleteRoleButtonProps = {
   disabled?: boolean;
   roleId: string;
-}
+};
 
 export default function DeleteRoleButton(props: DeleteRoleButtonProps) {
   const { disabled, roleId } = props;
@@ -21,17 +22,25 @@ export default function DeleteRoleButton(props: DeleteRoleButtonProps) {
     refetchQueries: ['GetRoles'],
   });
   const formatMessage = useFormatMessage();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleConfirm = React.useCallback(async () => {
-    await deleteRole();
+    try {
+      await deleteRole();
 
-    setShowConfirmation(false);
+      setShowConfirmation(false);
+      enqueueSnackbar(formatMessage('deleteRoleButton.successfullyDeleted'), {
+        variant: 'success',
+      });
+    } catch (error) {
+      throw new Error('Failed while deleting!');
+    }
   }, [deleteRole]);
 
   return (
     <>
       <Can I="delete" a="Role" passThrough>
-        {allowed => (
+        {(allowed) => (
           <IconButton
             disabled={!allowed || disabled}
             onClick={() => setShowConfirmation(true)}

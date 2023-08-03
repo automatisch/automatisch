@@ -17,7 +17,6 @@ import useUsers from 'hooks/useUsers';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
 
-// TODO: introduce interaction feedback upon deletion (successful + failure)
 // TODO: introduce loading bar
 export default function UserList(): React.ReactElement {
   const formatMessage = useFormatMessage();
@@ -56,19 +55,11 @@ export default function UserList(): React.ReactElement {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell scope="row">
-                <Typography
-                  variant="subtitle2"
-                >
-                  {user.fullName}
-                </Typography>
+                <Typography variant="subtitle2">{user.fullName}</Typography>
               </TableCell>
 
               <TableCell>
-                <Typography
-                  variant="subtitle2"
-                >
-                  {user.email}
-                </Typography>
+                <Typography variant="subtitle2">{user.email}</Typography>
               </TableCell>
 
               <TableCell>

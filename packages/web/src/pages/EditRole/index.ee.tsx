@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
@@ -22,9 +23,8 @@ import useRole from 'hooks/useRole.ee';
 
 type EditRoleParams = {
   roleId: string;
-}
+};
 
-// TODO: introduce interaction feedback upon deletion (successful + failure)
 // TODO: introduce loading bar
 export default function EditRole(): React.ReactElement {
   const formatMessage = useFormatMessage();
@@ -32,22 +32,33 @@ export default function EditRole(): React.ReactElement {
   const navigate = useNavigate();
   const { roleId } = useParams<EditRoleParams>();
   const { role, loading: roleLoading } = useRole(roleId);
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleRoleUpdate = async (roleData: Partial<RoleWithComputedPermissions>) => {
-    const newPermissions = getPermissions(roleData.computedPermissions);
+  const handleRoleUpdate = async (
+    roleData: Partial<RoleWithComputedPermissions>
+  ) => {
+    try {
+      const newPermissions = getPermissions(roleData.computedPermissions);
 
-    await updateRole({
-      variables: {
-        input: {
-          id: roleId,
-          name: roleData.name,
-          description: roleData.description,
-          permissions: newPermissions,
-        }
-      },
-    });
+      await updateRole({
+        variables: {
+          input: {
+            id: roleId,
+            name: roleData.name,
+            description: roleData.description,
+            permissions: newPermissions,
+          },
+        },
+      });
 
-    navigate(URLS.ROLES);
+      enqueueSnackbar(formatMessage('editRole.successfullyUpdated'), {
+        variant: 'success',
+      });
+
+      navigate(URLS.ROLES);
+    } catch (error) {
+      throw new Error('Failed while updating!');
+    }
   };
 
   if (roleLoading || !role) return <React.Fragment />;
@@ -82,7 +93,10 @@ export default function EditRole(): React.ReactElement {
                 fullWidth
               />
 
-              <PermissionCatalogField name='computedPermissions' disabled={role.isAdmin} />
+              <PermissionCatalogField
+                name="computedPermissions"
+                disabled={role.isAdmin}
+              />
 
               <LoadingButton
                 type="submit"

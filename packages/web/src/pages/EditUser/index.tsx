@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -7,9 +7,11 @@ import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { IUser, IRole } from '@automatisch/types';
+import { useSnackbar } from 'notistack';
 
 import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import Can from 'components/Can';
+import * as URLS from 'config/urls';
 import useUser from 'hooks/useUser';
 import useRoles from 'hooks/useRoles.ee';
 import PageTitle from 'components/PageTitle';
@@ -20,13 +22,12 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 type EditUserParams = {
   userId: string;
-}
+};
 
 function generateRoleOptions(roles: IRole[]) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
 
-// TODO: introduce interaction feedback upon deletion (successful + failure)
 // TODO: introduce loading bar
 export default function EditUser(): React.ReactElement {
   const formatMessage = useFormatMessage();
@@ -34,20 +35,32 @@ export default function EditUser(): React.ReactElement {
   const { userId } = useParams<EditUserParams>();
   const { user, loading: userLoading } = useUser(userId);
   const { roles, loading: rolesLoading } = useRoles();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
-  const handleUserUpdate = (userDataToUpdate: Partial<IUser>) => {
-    updateUser({
-      variables: {
-        input: {
-          id: userId,
-          fullName: userDataToUpdate.fullName,
-          email: userDataToUpdate.email,
-          role: {
-            id: userDataToUpdate.role?.id
-          }
-        }
-      }
-    });
+  const handleUserUpdate = async (userDataToUpdate: Partial<IUser>) => {
+    try {
+      await updateUser({
+        variables: {
+          input: {
+            id: userId,
+            fullName: userDataToUpdate.fullName,
+            email: userDataToUpdate.email,
+            role: {
+              id: userDataToUpdate.role?.id,
+            },
+          },
+        },
+      });
+
+      enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
+        variant: 'success',
+      });
+
+      navigate(URLS.USERS);
+    } catch (error) {
+      throw new Error('Failed while updating!');
+    }
   };
 
   if (userLoading) return <React.Fragment />;
@@ -76,14 +89,19 @@ export default function EditUser(): React.ReactElement {
                 fullWidth
               />
 
-              <Can I='update' a='Role'>
+              <Can I="update" a="Role">
                 <ControlledAutocomplete
                   name="role.id"
                   fullWidth
                   disablePortal
                   disableClearable={true}
                   options={generateRoleOptions(roles)}
-                  renderInput={(params) => <MuiTextField {...params} label={formatMessage('userForm.role')} />}
+                  renderInput={(params) => (
+                    <MuiTextField
+                      {...params}
+                      label={formatMessage('userForm.role')}
+                    />
+                  )}
                   loading={rolesLoading}
                 />
               </Can>
