@@ -42,10 +42,7 @@ type Query {
   getTrialStatus: GetTrialStatus
   getSubscriptionStatus: GetSubscriptionStatus
   getSamlAuthProviders: [GetSamlAuthProviders]
-  getUsers(
-    limit: Int!
-    offset: Int!
-  ): UserConnection
+  getUsers(limit: Int!, offset: Int!): UserConnection
   getUser(id: String!): User
   getRoles: [Role]
   getRole(id: String!): Role
@@ -81,6 +78,7 @@ type Mutation {
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
+  createSamlAuthProvider(input: CreateSamlAuthProviderInput): SamlAuthProvider
 }
 
 """
@@ -292,6 +290,20 @@ type Execution {
   flow: Flow
 }
 
+type SamlAuthProvider {
+  id: String
+  name: String
+  certificate: String
+  signatureAlgorithm: String
+  issuer: String
+  entryPoint: String
+  firstnameAttributeName: String
+  surnameAttributeName: String
+  emailAttributeName: String
+  roleAttributeName: String
+  active: Boolean
+}
+
 type UserConnection {
   edges: [UserEdge]
   pageInfo: PageInfo
@@ -321,6 +333,20 @@ input ResetConnectionInput {
 
 input VerifyConnectionInput {
   id: String!
+}
+
+input CreateSamlAuthProviderInput {
+  name: String!
+  certificate: String!
+  signatureAlgorithm: String!
+  issuer: String!
+  entryPoint: String!
+  firstnameAttributeName: String!
+  surnameAttributeName: String!
+  emailAttributeName: String!
+  roleAttributeName: String!
+  defaultRoleId: String!
+  active: Boolean!
 }
 
 input DeleteConnectionInput {

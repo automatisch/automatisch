@@ -1,10 +1,7 @@
 import bcrypt from 'bcrypt';
 import { DateTime } from 'luxon';
 import crypto from 'node:crypto';
-import {
-  ModelOptions,
-  QueryContext
-} from 'objection';
+import { ModelOptions, QueryContext } from 'objection';
 
 import appConfig from '../config/app';
 import checkLicense from '../helpers/check-license.ee';
@@ -164,8 +161,8 @@ class User extends Base {
       join: {
         from: 'identities.user_id',
         to: 'users.id',
-      }
-    }
+      },
+    },
   });
 
   login(password: string) {
@@ -299,8 +296,10 @@ class User extends Base {
     if (Array.isArray(this.permissions)) {
       this.permissions = this.permissions.filter((permission) => {
         const isRolePermission = permission.subject === 'Role';
+        const isSamlAuthProviderPermission =
+          permission.subject === 'SamlAuthProvider';
 
-        return !isRolePermission;
+        return !isRolePermission && !isSamlAuthProviderPermission;
       });
     }
 
@@ -318,11 +317,10 @@ class User extends Base {
 
     const relevantRule = this.ability.relevantRuleFor(action, subject);
 
-    const conditions = relevantRule?.conditions as string[] || [];
-    const conditionMap: Record<string, true> = Object
-      .fromEntries(
-        conditions.map((condition) => [condition, true])
-      )
+    const conditions = (relevantRule?.conditions as string[]) || [];
+    const conditionMap: Record<string, true> = Object.fromEntries(
+      conditions.map((condition) => [condition, true])
+    );
 
     return conditionMap;
   }

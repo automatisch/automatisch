@@ -8,7 +8,7 @@ class SamlAuthProvider extends Base {
   id!: string;
   name: string;
   certificate: string;
-  signatureAlgorithm: SamlConfig["signatureAlgorithm"];
+  signatureAlgorithm: SamlConfig['signatureAlgorithm'];
   issuer: string;
   entryPoint: string;
   firstnameAttributeName: string;
@@ -39,7 +39,10 @@ class SamlAuthProvider extends Base {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
       certificate: { type: 'string', minLength: 1 },
-      signatureAlgorithm: { type: 'string', enum: ['sha1', 'sha256', 'sha512'] },
+      signatureAlgorithm: {
+        type: 'string',
+        enum: ['sha1', 'sha256', 'sha512'],
+      },
       issuer: { type: 'string', minLength: 1 },
       entryPoint: { type: 'string', minLength: 1 },
       firstnameAttributeName: { type: 'string', minLength: 1 },
@@ -74,7 +77,7 @@ class SamlAuthProvider extends Base {
       entryPoint: this.entryPoint,
       issuer: this.issuer,
       signatureAlgorithm: this.signatureAlgorithm,
-    }
+    };
   }
 }
 
