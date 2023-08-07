@@ -18,7 +18,7 @@ type Params = {
   };
 };
 
-const createSamlAuthProvider = async (
+const upsertSamlAuthProvider = async (
   _parent: unknown,
   params: Params,
   context: Context
@@ -51,4 +51,4 @@ const createSamlAuthProvider = async (
   return samlAuthProvider;
 };
 
-export default createSamlAuthProvider;
+export default upsertSamlAuthProvider;
