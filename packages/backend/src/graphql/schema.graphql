@@ -42,6 +42,7 @@ type Query {
   getTrialStatus: GetTrialStatus
   getSubscriptionStatus: GetSubscriptionStatus
   listSamlAuthProviders: [ListSamlAuthProviders]
+  getSamlAuthProvider: SamlAuthProvider
   getUsers(limit: Int!, offset: Int!): UserConnection
   getUser(id: String!): User
   getRoles: [Role]
