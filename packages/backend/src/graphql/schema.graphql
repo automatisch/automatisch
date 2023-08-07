@@ -41,7 +41,7 @@ type Query {
   getAutomatischInfo: GetAutomatischInfo
   getTrialStatus: GetTrialStatus
   getSubscriptionStatus: GetSubscriptionStatus
-  getSamlAuthProviders: [GetSamlAuthProviders]
+  listSamlAuthProviders: [ListSamlAuthProviders]
   getUsers(limit: Int!, offset: Int!): UserConnection
   getUser(id: String!): User
   getRoles: [Role]
@@ -659,7 +659,7 @@ type PaymentPlan {
   productId: String
 }
 
-type GetSamlAuthProviders {
+type ListSamlAuthProviders {
   id: String
   name: String
   issuer: String

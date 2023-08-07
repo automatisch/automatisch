@@ -12,8 +12,7 @@ const isAuthenticated = rule()(async (_parent, _args, req) => {
     const { userId } = jwt.verify(token, appConfig.appSecretKey) as {
       userId: string;
     };
-    req.currentUser = await User
-      .query()
+    req.currentUser = await User.query()
       .findById(userId)
       .leftJoinRelated({
         role: true,
@@ -35,7 +34,7 @@ const authentication = shield(
     Query: {
       '*': isAuthenticated,
       getAutomatischInfo: allow,
-      getSamlAuthProviders: allow,
+      listSamlAuthProviders: allow,
       healthcheck: allow,
     },
     Mutation: {
