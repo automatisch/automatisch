@@ -79,6 +79,7 @@ type Mutation {
   updateUser(input: UpdateUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
   createSamlAuthProvider(input: CreateSamlAuthProviderInput): SamlAuthProvider
+  updateSamlAuthProvider(input: UpdateSamlAuthProviderInput): SamlAuthProvider
 }
 
 """
@@ -336,6 +337,20 @@ input VerifyConnectionInput {
 }
 
 input CreateSamlAuthProviderInput {
+  name: String!
+  certificate: String!
+  signatureAlgorithm: String!
+  issuer: String!
+  entryPoint: String!
+  firstnameAttributeName: String!
+  surnameAttributeName: String!
+  emailAttributeName: String!
+  roleAttributeName: String!
+  defaultRoleId: String!
+  active: Boolean!
+}
+
+input UpdateSamlAuthProviderInput {
   name: String!
   certificate: String!
   signatureAlgorithm: String!
