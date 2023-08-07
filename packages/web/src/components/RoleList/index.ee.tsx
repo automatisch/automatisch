@@ -17,7 +17,6 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
 import * as URLS from 'config/urls';
 
-// TODO: introduce interaction feedback upon deletion (successful + failure)
 // TODO: introduce loading bar
 export default function RoleList(): React.ReactElement {
   const formatMessage = useFormatMessage();
@@ -56,19 +55,11 @@ export default function RoleList(): React.ReactElement {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell scope="row">
-                <Typography
-                  variant="subtitle2"
-                >
-                  {role.name}
-                </Typography>
+                <Typography variant="subtitle2">{role.name}</Typography>
               </TableCell>
 
               <TableCell scope="row">
-                <Typography
-                  variant="subtitle2"
-                >
-                  {role.description}
-                </Typography>
+                <Typography variant="subtitle2">{role.description}</Typography>
               </TableCell>
 
               <TableCell>
@@ -81,10 +72,7 @@ export default function RoleList(): React.ReactElement {
                     <EditIcon />
                   </IconButton>
 
-                  <DeleteRoleButton
-                    disabled={role.isAdmin}
-                    roleId={role.id}
-                  />
+                  <DeleteRoleButton disabled={role.isAdmin} roleId={role.id} />
                 </Stack>
               </TableCell>
             </TableRow>

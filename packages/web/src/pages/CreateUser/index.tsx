@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { IUser, IRole } from '@automatisch/types';
+import { useSnackbar } from 'notistack';
 
 import { CREATE_USER } from 'graphql/mutations/create-user.ee';
 import * as URLS from 'config/urls';
@@ -27,22 +28,31 @@ export default function CreateUser(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [createUser, { loading }] = useMutation(CREATE_USER);
   const { roles, loading: rolesLoading } = useRoles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleUserCreation = async (userData: Partial<IUser>) => {
-    await createUser({
-      variables: {
-        input: {
-          fullName: userData.fullName,
-          password: userData.password,
-          email: userData.email,
-          role: {
-            id: userData.role?.id
-          }
-        }
-      }
-    });
+    try {
+      await createUser({
+        variables: {
+          input: {
+            fullName: userData.fullName,
+            password: userData.password,
+            email: userData.email,
+            role: {
+              id: userData.role?.id,
+            },
+          },
+        },
+      });
 
-    navigate(URLS.USERS);
+      enqueueSnackbar(formatMessage('createUser.successfullyCreated'), {
+        variant: 'success',
+      });
+
+      navigate(URLS.USERS);
+    } catch (error) {
+      throw new Error('Failed while creating!');
+    }
   };
 
   return (
@@ -77,14 +87,19 @@ export default function CreateUser(): React.ReactElement {
                 fullWidth
               />
 
-              <Can I='update' a='Role'>
+              <Can I="update" a="Role">
                 <ControlledAutocomplete
                   name="role.id"
                   fullWidth
                   disablePortal
                   disableClearable={true}
                   options={generateRoleOptions(roles)}
-                  renderInput={(params) => <MuiTextField {...params} label={formatMessage('userForm.role')} />}
+                  renderInput={(params) => (
+                    <MuiTextField
+                      {...params}
+                      label={formatMessage('userForm.role')}
+                    />
+                  )}
                   loading={rolesLoading}
                 />
               </Can>

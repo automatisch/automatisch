@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
+import { useSnackbar } from 'notistack';
 
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
@@ -22,21 +23,32 @@ export default function CreateRole(): React.ReactElement {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [createRole, { loading }] = useMutation(CREATE_ROLE);
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleRoleCreation = async (roleData: Partial<RoleWithComputedPermissions>) => {
-    const permissions = getPermissions(roleData.computedPermissions);
+  const handleRoleCreation = async (
+    roleData: Partial<RoleWithComputedPermissions>
+  ) => {
+    try {
+      const permissions = getPermissions(roleData.computedPermissions);
 
-    await createRole({
-      variables: {
-        input: {
-          name: roleData.name,
-          description: roleData.description,
-          permissions,
-        }
-      }
-    });
+      await createRole({
+        variables: {
+          input: {
+            name: roleData.name,
+            description: roleData.description,
+            permissions,
+          },
+        },
+      });
 
-    navigate(URLS.ROLES);
+      enqueueSnackbar(formatMessage('createRole.successfullyCreated'), {
+        variant: 'success',
+      });
+
+      navigate(URLS.ROLES);
+    } catch (error) {
+      throw new Error('Failed while creating!');
+    }
   };
 
   return (
@@ -62,7 +74,7 @@ export default function CreateRole(): React.ReactElement {
                 fullWidth
               />
 
-              <PermissionCatalogField name='computedPermissions' />
+              <PermissionCatalogField name="computedPermissions" />
 
               <LoadingButton
                 type="submit"
