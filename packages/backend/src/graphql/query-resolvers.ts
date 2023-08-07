@@ -19,7 +19,7 @@ import getPaymentPlans from './queries/get-payment-plans.ee';
 import getPermissionCatalog from './queries/get-permission-catalog.ee';
 import getRole from './queries/get-role.ee';
 import getRoles from './queries/get-roles.ee';
-import getSamlAuthProviders from './queries/get-saml-auth-providers.ee';
+import listSamlAuthProviders from './queries/list-saml-auth-providers.ee';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions';
 import getSubscriptionStatus from './queries/get-subscription-status.ee';
 import getTrialStatus from './queries/get-trial-status.ee';
@@ -46,7 +46,7 @@ const queryResolvers = {
   getPermissionCatalog,
   getRole,
   getRoles,
-  getSamlAuthProviders,
+  listSamlAuthProviders,
   getStepWithTestExecutions,
   getSubscriptionStatus,
   getTrialStatus,
