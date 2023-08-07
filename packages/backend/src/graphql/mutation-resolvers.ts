@@ -25,6 +25,7 @@ import updateRole from './mutations/update-role.ee';
 import updateStep from './mutations/update-step';
 import updateUser from './mutations/update-user.ee';
 import verifyConnection from './mutations/verify-connection';
+import createSamlAuthProvider from './mutations/create-saml-auth-provider.ee';
 
 const mutationResolvers = {
   createConnection,
@@ -54,6 +55,7 @@ const mutationResolvers = {
   updateRole,
   updateStep,
   verifyConnection,
+  createSamlAuthProvider,
 };
 
 export default mutationResolvers;
