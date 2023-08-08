@@ -79,7 +79,7 @@ type Mutation {
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
-  createSamlAuthProvider(input: CreateSamlAuthProviderInput): SamlAuthProvider
+  upsertSamlAuthProvider(input: UpsertSamlAuthProviderInput): SamlAuthProvider
 }
 
 """
@@ -336,7 +336,7 @@ input VerifyConnectionInput {
   id: String!
 }
 
-input CreateSamlAuthProviderInput {
+input UpsertSamlAuthProviderInput {
   name: String!
   certificate: String!
   signatureAlgorithm: String!
