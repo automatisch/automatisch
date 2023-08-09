@@ -35,3 +35,4 @@ Following integrations are currently supported by Automatisch.
 - [Twitter](/apps/twitter/triggers)
 - [Typeform](/apps/typeform/triggers)
 - [Webhooks](/apps/webhooks/triggers)
+- [WordPress](/apps/wordpress/triggers)
