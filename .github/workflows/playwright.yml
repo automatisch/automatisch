@@ -1,9 +1,7 @@
 name: Automatisch UI Test
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  schedule:
+    - cron: '0 12 * * *'
 jobs:
   test:
     timeout-minutes: 60
