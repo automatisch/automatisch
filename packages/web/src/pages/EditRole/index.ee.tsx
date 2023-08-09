@@ -3,6 +3,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import Skeleton from '@mui/material/Skeleton';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -25,7 +26,6 @@ type EditRoleParams = {
   roleId: string;
 };
 
-// TODO: introduce loading bar
 export default function EditRole(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [updateRole, { loading }] = useMutation(UPDATE_ROLE);
@@ -61,8 +61,6 @@ export default function EditRole(): React.ReactElement {
     }
   };
 
-  if (roleLoading || !role) return <React.Fragment />;
-
   const roleWithComputedPermissions = getRoleWithComputedPermissions(role);
 
   return (
@@ -78,24 +76,34 @@ export default function EditRole(): React.ReactElement {
             onSubmit={handleRoleUpdate}
           >
             <Stack direction="column" gap={2}>
-              <TextField
-                disabled={role.isAdmin}
-                required={true}
-                name="name"
-                label={formatMessage('roleForm.name')}
-                fullWidth
-              />
+              {roleLoading && (
+                <>
+                  <Skeleton variant="rounded" height={55} />
+                  <Skeleton variant="rounded" height={55} />
+                </>
+              )}
+              {!roleLoading && role && (
+                <>
+                  <TextField
+                    disabled={role.isAdmin}
+                    required={true}
+                    name="name"
+                    label={formatMessage('roleForm.name')}
+                    fullWidth
+                  />
 
-              <TextField
-                disabled={role.isAdmin}
-                name="description"
-                label={formatMessage('roleForm.description')}
-                fullWidth
-              />
+                  <TextField
+                    disabled={role.isAdmin}
+                    name="description"
+                    label={formatMessage('roleForm.description')}
+                    fullWidth
+                  />
+                </>
+              )}
 
               <PermissionCatalogField
                 name="computedPermissions"
-                disabled={role.isAdmin}
+                disabled={role?.isAdmin}
               />
 
               <LoadingButton
@@ -104,7 +112,7 @@ export default function EditRole(): React.ReactElement {
                 color="primary"
                 sx={{ boxShadow: 2 }}
                 loading={loading}
-                disabled={role.isAdmin}
+                disabled={role?.isAdmin || roleLoading}
               >
                 {formatMessage('editRole.submit')}
               </LoadingButton>
