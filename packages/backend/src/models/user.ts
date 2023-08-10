@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import { ModelOptions, QueryContext } from 'objection';
 
 import appConfig from '../config/app';
-import checkLicense from '../helpers/check-license.ee';
+import { hasValidLicense } from '../helpers/license.ee';
 import userAbility from '../helpers/user-ability';
 import Base from './base';
 import Connection from './connection';
@@ -289,9 +289,7 @@ class User extends Base {
   }
 
   async $afterFind(): Promise<any> {
-    const hasValidLicense = await checkLicense();
-
-    if (hasValidLicense) return this;
+    if (await hasValidLicense()) return this;
 
     if (Array.isArray(this.permissions)) {
       this.permissions = this.permissions.filter((permission) => {

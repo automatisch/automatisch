@@ -5,7 +5,13 @@ import memoryCache from 'memory-cache';
 
 const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
 
-const checkLicense = async () => {
+const hasValidLicense = async () => {
+  const license = await getLicense();
+
+  return license ? true : false;
+};
+
+const getLicense = async () => {
   const licenseKey = appConfig.licenseKey;
 
   if (!licenseKey) {
@@ -20,13 +26,13 @@ const checkLicense = async () => {
   } else {
     try {
       const { data } = await axios.post(url, { licenseKey });
-      memoryCache.put(url, data.verified, CACHE_DURATION);
+      memoryCache.put(url, data, CACHE_DURATION);
 
-      return data.verified;
+      return data;
     } catch (error) {
       return false;
     }
   }
 };
 
-export default checkLicense;
+export { getLicense, hasValidLicense };
