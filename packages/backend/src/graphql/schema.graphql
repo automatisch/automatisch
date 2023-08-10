@@ -72,6 +72,7 @@ type Mutation {
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
   resetPassword(input: ResetPasswordInput): Boolean
+  updateConfig(input: JSONObject): JSONObject
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   updateFlow(input: UpdateFlowInput): Flow
@@ -79,8 +80,8 @@ type Mutation {
   updateRole(input: UpdateRoleInput): Role
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
-  verifyConnection(input: VerifyConnectionInput): Connection
   upsertSamlAuthProvider(input: UpsertSamlAuthProviderInput): SamlAuthProvider
+  verifyConnection(input: VerifyConnectionInput): Connection
 }
 
 """

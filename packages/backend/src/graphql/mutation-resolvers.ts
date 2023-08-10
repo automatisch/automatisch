@@ -17,6 +17,7 @@ import login from './mutations/login';
 import registerUser from './mutations/register-user.ee';
 import resetConnection from './mutations/reset-connection';
 import resetPassword from './mutations/reset-password.ee';
+import updateConfig from './mutations/update-config';
 import updateConnection from './mutations/update-connection';
 import updateCurrentUser from './mutations/update-current-user';
 import updateFlow from './mutations/update-flow';
@@ -24,8 +25,8 @@ import updateFlowStatus from './mutations/update-flow-status';
 import updateRole from './mutations/update-role.ee';
 import updateStep from './mutations/update-step';
 import updateUser from './mutations/update-user.ee';
-import verifyConnection from './mutations/verify-connection';
 import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee';
+import verifyConnection from './mutations/verify-connection';
 
 const mutationResolvers = {
   createConnection,
@@ -47,15 +48,16 @@ const mutationResolvers = {
   registerUser,
   resetConnection,
   resetPassword,
+  updateConfig,
   updateConnection,
   updateCurrentUser,
-  updateUser,
   updateFlow,
   updateFlowStatus,
   updateRole,
   updateStep,
-  verifyConnection,
+  updateUser,
   upsertSamlAuthProvider,
+  verifyConnection,
 };
 
 export default mutationResolvers;
