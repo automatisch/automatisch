@@ -593,6 +593,14 @@ type AppHealth {
 
 type GetAutomatischInfo {
   isCloud: Boolean
+  license: License
+}
+
+type License {
+  id: String
+  name: String
+  expireAt: String
+  verified: Boolean
 }
 
 type GetTrialStatus {
