@@ -33,22 +33,23 @@ type Query {
     key: String!
     parameters: JSONObject
   ): [SubstepArgument]
-  getCurrentUser: User
-  getPaymentPlans: [PaymentPlan]
-  getPaddleInfo: GetPaddleInfo
-  getBillingAndUsage: GetBillingAndUsage
-  getInvoices: [Invoice]
   getAutomatischInfo: GetAutomatischInfo
-  getTrialStatus: GetTrialStatus
-  getSubscriptionStatus: GetSubscriptionStatus
-  listSamlAuthProviders: [ListSamlAuthProviders]
-  getSamlAuthProvider: SamlAuthProvider
-  getUsers(limit: Int!, offset: Int!): UserConnection
-  getUser(id: String!): User
-  getRoles: [Role]
-  getRole(id: String!): Role
+  getBillingAndUsage: GetBillingAndUsage
+  getCurrentUser: User
+  getConfig(keys: [String]): JSONObject
+  getInvoices: [Invoice]
+  getPaddleInfo: GetPaddleInfo
+  getPaymentPlans: [PaymentPlan]
   getPermissionCatalog: PermissionCatalog
+  getRole(id: String!): Role
+  getRoles: [Role]
+  getSamlAuthProvider: SamlAuthProvider
+  getSubscriptionStatus: GetSubscriptionStatus
+  getTrialStatus: GetTrialStatus
+  getUser(id: String!): User
+  getUsers(limit: Int!, offset: Int!): UserConnection
   healthcheck: AppHealth
+  listSamlAuthProviders: [ListSamlAuthProviders]
 }
 
 type Mutation {
