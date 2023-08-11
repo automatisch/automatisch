@@ -3,6 +3,7 @@ import type { SamlConfig } from '@node-saml/passport-saml';
 import appConfig from '../config/app';
 import Base from './base';
 import Identity from './identity.ee';
+import SamlAuthProvidersRoleMapping from './saml-auth-providers-role-mapping.ee';
 
 class SamlAuthProvider extends Base {
   id!: string;
@@ -17,6 +18,7 @@ class SamlAuthProvider extends Base {
   roleAttributeName: string;
   defaultRoleId: string;
   active: boolean;
+  samlAuthProvidersRoleMappings?: SamlAuthProvidersRoleMapping[];
 
   static tableName = 'saml_auth_providers';
 
@@ -61,6 +63,14 @@ class SamlAuthProvider extends Base {
       join: {
         from: 'identities.provider_id',
         to: 'saml_auth_providers.id',
+      },
+    },
+    samlAuthProvidersRoleMappings: {
+      relation: Base.HasManyRelation,
+      modelClass: SamlAuthProvidersRoleMapping,
+      join: {
+        from: 'saml_auth_providers.id',
+        to: 'saml_auth_providers_role_mappings.saml_auth_provider_id',
       },
     },
   });

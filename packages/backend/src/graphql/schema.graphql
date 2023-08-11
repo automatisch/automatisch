@@ -81,6 +81,9 @@ type Mutation {
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
   upsertSamlAuthProvider(input: UpsertSamlAuthProviderInput): SamlAuthProvider
+  upsertSamlAuthProvidersRoleMappings(
+    input: UpsertSamlAuthProvidersRoleMappingsInput
+  ): [SamlAuthProvidersRoleMapping]
   verifyConnection(input: VerifyConnectionInput): Connection
 }
 
@@ -307,6 +310,13 @@ type SamlAuthProvider {
   active: Boolean
 }
 
+type SamlAuthProvidersRoleMapping {
+  id: String
+  samlAuthProviderId: String
+  roleId: String
+  remoteRoleName: String
+}
+
 type UserConnection {
   edges: [UserEdge]
   pageInfo: PageInfo
@@ -350,6 +360,16 @@ input UpsertSamlAuthProviderInput {
   roleAttributeName: String!
   defaultRoleId: String!
   active: Boolean!
+}
+
+input UpsertSamlAuthProvidersRoleMappingsInput {
+  samlAuthProviderId: String!
+  samlAuthProvidersRoleMappings: [SamlAuthProviderRoleMappingInput]
+}
+
+input SamlAuthProviderRoleMappingInput {
+  roleId: String!
+  remoteRoleName: String!
 }
 
 input DeleteConnectionInput {
