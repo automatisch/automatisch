@@ -1,3 +1,4 @@
+// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test.describe('Apps page', () => {
