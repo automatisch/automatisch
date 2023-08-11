@@ -36,6 +36,7 @@ const authentication = shield(
       getAutomatischInfo: allow,
       listSamlAuthProviders: allow,
       healthcheck: allow,
+      getConfig: allow,
     },
     Mutation: {
       '*': isAuthenticated,
