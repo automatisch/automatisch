@@ -93,6 +93,14 @@ export const GET_APPS = gql`
                 value
               }
             }
+            additionalFields {
+              type
+              name
+              arguments {
+                name
+                value
+              }
+            }
           }
         }
       }
