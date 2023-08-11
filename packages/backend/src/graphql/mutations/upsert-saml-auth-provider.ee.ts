@@ -33,17 +33,15 @@ const upsertSamlAuthProvider = async (
     .limit(1)
     .first();
 
-  let samlAuthProvider: SamlAuthProvider;
-
   if (!existingSamlAuthProvider) {
-    samlAuthProvider = await SamlAuthProvider.query().insert(
+    const samlAuthProvider = await SamlAuthProvider.query().insert(
       samlAuthProviderPayload
     );
 
     return samlAuthProvider;
   }
 
-  samlAuthProvider = await SamlAuthProvider.query().patchAndFetchById(
+  const samlAuthProvider = await SamlAuthProvider.query().patchAndFetchById(
     existingSamlAuthProvider.id,
     samlAuthProviderPayload
   );

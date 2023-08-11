@@ -26,6 +26,7 @@ import updateRole from './mutations/update-role.ee';
 import updateStep from './mutations/update-step';
 import updateUser from './mutations/update-user.ee';
 import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee';
+import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-providers-role-mappings.ee';
 import verifyConnection from './mutations/verify-connection';
 
 const mutationResolvers = {
@@ -57,6 +58,7 @@ const mutationResolvers = {
   updateStep,
   updateUser,
   upsertSamlAuthProvider,
+  upsertSamlAuthProvidersRoleMappings,
   verifyConnection,
 };
 
