@@ -17,6 +17,10 @@ yarn install
 
 Make sure that you have **PostgreSQL** and **Redis** installed and running.
 
+:::warning
+Scripts we have prepared for Automatisch work with PostgreSQL version 14. If you have a different version, you might have some problems with the database setup.
+:::
+
 Create a `.env` file in the backend package:
 
 ```bash
