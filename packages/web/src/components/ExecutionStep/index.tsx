@@ -37,10 +37,12 @@ function ExecutionStepDate(props: Pick<IExecutionStep, 'createdAt'>) {
   const relativeCreatedAt = createdAt.toRelative();
 
   return (
-    <Tooltip title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}>
+    <Tooltip
+      title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}
+    >
       <Typography variant="caption" gutterBottom>
         {formatMessage('executionStep.executedAt', {
-          datetime: relativeCreatedAt
+          datetime: relativeCreatedAt,
         })}
       </Typography>
     </Tooltip>
@@ -117,7 +119,7 @@ export default function ExecutionStep(
           <SearchableJSONViewer data={executionStep.dataIn} />
         </TabPanel>
 
-        <TabPanel value={activeTabIndex} index={1}>
+        <TabPanel value={activeTabIndex} index={1} data-test="data-out-panel">
           <SearchableJSONViewer data={executionStep.dataOut} />
         </TabPanel>
 
