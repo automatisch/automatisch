@@ -17,7 +17,7 @@ import login from './mutations/login';
 import registerUser from './mutations/register-user.ee';
 import resetConnection from './mutations/reset-connection';
 import resetPassword from './mutations/reset-password.ee';
-import updateConfig from './mutations/update-config';
+import updateConfig from './mutations/update-config.ee';
 import updateConnection from './mutations/update-connection';
 import updateCurrentUser from './mutations/update-current-user';
 import updateFlow from './mutations/update-flow';
