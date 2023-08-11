@@ -293,11 +293,13 @@ class User extends Base {
 
     if (Array.isArray(this.permissions)) {
       this.permissions = this.permissions.filter((permission) => {
-        const isRolePermission = permission.subject === 'Role';
-        const isSamlAuthProviderPermission =
-          permission.subject === 'SamlAuthProvider';
+        const restrictedSubjects = [
+          'Role',
+          'SamlAuthProvider',
+          'Config',
+        ];
 
-        return !isRolePermission && !isSamlAuthProviderPermission;
+        return !restrictedSubjects.includes(permission.subject);
       });
     }
 

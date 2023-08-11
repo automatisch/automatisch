@@ -1,5 +1,6 @@
-import Context from '../../types/express/context';
+import { hasValidLicense } from '../../helpers/license.ee';
 import Config from '../../models/config';
+import Context from '../../types/express/context';
 
 type Params = {
   keys: string[];
@@ -10,6 +11,8 @@ const getConfig = async (
   params: Params,
   context: Context
 ) => {
+  if (!await hasValidLicense()) return {};
+
   const configQuery = Config
     .query();
 

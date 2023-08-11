@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { IJSONObject } from '@automatisch/types';
 
-import { GET_CONFIG } from 'graphql/queries/get-config';
+import { GET_CONFIG } from 'graphql/queries/get-config.ee';
 
 type QueryResponse = {
   getConfig: IJSONObject;
