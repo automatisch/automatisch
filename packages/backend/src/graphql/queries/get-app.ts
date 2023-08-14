@@ -19,6 +19,10 @@ const getApp = async (_parent: unknown, params: Params, context: Context) => {
     const connections = await connectionBaseQuery
       .clone()
       .select('connections.*')
+      .withGraphFetched({
+        appConfig: true,
+        appAuthClient: true
+      })
       .fullOuterJoinRelated('steps')
       .where({
         'connections.key': params.key,
