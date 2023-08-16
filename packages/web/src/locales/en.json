@@ -192,6 +192,7 @@
   "editUser.successfullyUpdated": "The user has been updated.",
   "userList.fullName": "Full name",
   "userList.email": "Email",
+  "userList.role": "Role",
   "rolesPage.title": "Role management",
   "rolesPage.createRole": "Create role",
   "deleteRoleButton.title": "Delete role",
