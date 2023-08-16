@@ -3,6 +3,8 @@ import type { RelationMappings } from 'objection';
 import { AES, enc } from 'crypto-js';
 import { IRequest } from '@automatisch/types';
 import App from './app';
+import AppConfig from './app-config';
+import AppAuthClient from './app-auth-client';
 import Base from './base';
 import User from './user';
 import Step from './step';
@@ -25,6 +27,9 @@ class Connection extends Base {
   user?: User;
   steps?: Step[];
   triggerSteps?: Step[];
+  appAuthClientId?: string;
+  appAuthClient?: AppAuthClient;
+  appConfig?: AppConfig;
 
   static tableName = 'connections';
 
@@ -38,6 +43,7 @@ class Connection extends Base {
       data: { type: 'string' },
       formattedData: { type: 'object' },
       userId: { type: 'string', format: 'uuid' },
+      appAuthClientId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean', default: false },
       draft: { type: 'boolean' },
       deletedAt: { type: 'string' },
@@ -45,6 +51,10 @@ class Connection extends Base {
       updatedAt: { type: 'string' },
     },
   };
+
+  static get virtualAttributes() {
+    return ['reconnectable'];
+  }
 
   static relationMappings = (): RelationMappings => ({
     user: {
@@ -74,7 +84,35 @@ class Connection extends Base {
         builder.where('type', '=', 'trigger');
       },
     },
+    appConfig: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: AppConfig,
+      join: {
+        from: 'connections.key',
+        to: 'app_configs.key',
+      },
+    },
+    appAuthClient: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: AppAuthClient,
+      join: {
+        from: 'connections.app_auth_client_id',
+        to: 'app_auth_clients.id',
+      },
+    },
   });
+
+  get reconnectable() {
+    if (this.appAuthClientId) {
+      return this.appAuthClient.active;
+    }
+
+    if (this.appConfig) {
+      return !this.appConfig.disabled && this.appConfig.allowCustomConnection;
+    }
+
+    return true;
+  }
 
   encryptData(): void {
     if (!this.eligibleForEncryption()) return;

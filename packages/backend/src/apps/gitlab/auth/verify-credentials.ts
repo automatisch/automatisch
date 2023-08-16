@@ -25,6 +25,12 @@ const verifyCredentials = async ($: IGlobalVariable) => {
   $.auth.data.accessToken = data.access_token;
 
   const currentUser = await getCurrentUser($);
+  const screenName = [
+    currentUser.username,
+    $.auth.data.instanceUrl,
+  ]
+    .filter(Boolean)
+    .join(' @ ');
 
   await $.auth.set({
     clientId: $.auth.data.clientId,
@@ -34,7 +40,7 @@ const verifyCredentials = async ($: IGlobalVariable) => {
     scope: data.scope,
     tokenType: data.token_type,
     userId: currentUser.id,
-    screenName: `${currentUser.username} @ ${$.auth.data.instanceUrl}`,
+    screenName,
   });
 };
 

@@ -1,9 +1,12 @@
 import getApp from './queries/get-app';
+import getAppAuthClient from './queries/get-app-auth-client.ee';
+import getAppAuthClients from './queries/get-app-auth-clients.ee';
+import getAppConfig from './queries/get-app-config.ee';
 import getApps from './queries/get-apps';
 import getAutomatischInfo from './queries/get-automatisch-info';
 import getBillingAndUsage from './queries/get-billing-and-usage.ee';
-import getConnectedApps from './queries/get-connected-apps';
 import getConfig from './queries/get-config.ee';
+import getConnectedApps from './queries/get-connected-apps';
 import getCurrentUser from './queries/get-current-user';
 import getDynamicData from './queries/get-dynamic-data';
 import getDynamicFields from './queries/get-dynamic-fields';
@@ -30,6 +33,9 @@ import testConnection from './queries/test-connection';
 
 const queryResolvers = {
   getApp,
+  getAppAuthClient,
+  getAppAuthClients,
+  getAppConfig,
   getApps,
   getAutomatischInfo,
   getBillingAndUsage,

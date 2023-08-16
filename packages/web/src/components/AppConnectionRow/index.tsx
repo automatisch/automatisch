@@ -45,8 +45,15 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
   const formatMessage = useFormatMessage();
-  const { id, key, formattedData, verified, createdAt, flowCount } =
-    props.connection;
+  const {
+    id,
+    key,
+    formattedData,
+    verified,
+    createdAt,
+    flowCount,
+    reconnectable,
+  } = props.connection;
 
   const contextButtonRef = React.useRef<SVGSVGElement | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
@@ -159,7 +166,8 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
       {anchorEl && (
         <ConnectionContextMenu
           appKey={key}
-          connectionId={id}
+          connection={props.connection}
+          disableReconnection={!reconnectable}
           onClose={handleClose}
           onMenuItemClick={onContextMenuAction}
           anchorEl={anchorEl}

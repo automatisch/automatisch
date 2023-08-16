@@ -19,6 +19,7 @@
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
   "app.addConnection": "Add connection",
+  "app.addCustomConnection": "Add custom connection",
   "app.reconnectConnection": "Reconnect connection",
   "app.createFlow": "Create flow",
   "app.settings": "Settings",
@@ -69,6 +70,7 @@
   "filterConditions.orContinueIf": "OR continue if…",
   "chooseConnectionSubstep.continue": "Continue",
   "chooseConnectionSubstep.addNewConnection": "Add new connection",
+  "chooseConnectionSubstep.addNewSharedConnection": "Add new shared connection",
   "chooseConnectionSubstep.chooseConnection": "Choose connection",
   "flow.createdAt": "created {datetime}",
   "flow.updatedAt": "updated {datetime}",
@@ -209,5 +211,6 @@
   "roleList.description": "Description",
   "permissionSettings.cancel": "Cancel",
   "permissionSettings.apply": "Apply",
-  "permissionSettings.title": "Conditions"
+  "permissionSettings.title": "Conditions",
+  "appAuthClientsDialog.title": "Choose your authentication client"
 }

@@ -1,18 +1,21 @@
-import * as React from 'react';
-import { useQuery, useLazyQuery } from '@apollo/client';
-import TextField from '@mui/material/TextField';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
-import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import * as React from 'react';
 
 import type { IApp, IConnection, IStep, ISubstep } from '@automatisch/types';
-import useFormatMessage from 'hooks/useFormatMessage';
-import { EditorContext } from 'contexts/Editor';
-import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import AddAppConnection from 'components/AddAppConnection';
+import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
+import FlowSubstepTitle from 'components/FlowSubstepTitle';
+import useAppConfig from 'hooks/useAppConfig.ee';
+import { EditorContext } from 'contexts/Editor';
 import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
+import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 type ChooseConnectionSubstepProps = {
   application: IApp;
@@ -26,6 +29,7 @@ type ChooseConnectionSubstepProps = {
 };
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
+const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
 
 const optionGenerator = (
   connection: IConnection
@@ -53,11 +57,18 @@ function ChooseConnectionSubstep(
   const { connection, appKey } = step;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
+  const { authenticate } = useAuthenticateApp({
+    appKey: application.key,
+    useShared: true,
+  });
   const [showAddConnectionDialog, setShowAddConnectionDialog] =
+    React.useState(false);
+  const [showAddSharedConnectionDialog, setShowAddSharedConnectionDialog] =
     React.useState(false);
   const { data, loading, refetch } = useQuery(GET_APP_CONNECTIONS, {
     variables: { key: appKey },
   });
+  const { appConfig } = useAppConfig(application.key);
   // TODO: show detailed error when connection test/verification fails
   const [
     testConnection,
@@ -86,13 +97,49 @@ function ChooseConnectionSubstep(
         optionGenerator(connection)
       ) || [];
 
-    options.push({
-      label: formatMessage('chooseConnectionSubstep.addNewConnection'),
-      value: ADD_CONNECTION_VALUE,
-    });
+    if (!appConfig || appConfig.canCustomConnect) {
+      options.push({
+        label: formatMessage('chooseConnectionSubstep.addNewConnection'),
+        value: ADD_CONNECTION_VALUE,
+      });
+    }
+
+    if (appConfig?.canConnect) {
+      options.push({
+        label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
+        value: ADD_SHARED_CONNECTION_VALUE,
+      });
+    }
 
     return options;
-  }, [data, formatMessage]);
+  }, [data, formatMessage, appConfig]);
+
+  const handleClientClick = async (appAuthClientId: string) => {
+    try {
+      const response = await authenticate?.({
+        appAuthClientId,
+      });
+
+      const connectionId = response?.createConnection.id;
+
+      if (connectionId) {
+        await refetch();
+
+        onChange({
+          step: {
+            ...step,
+            connection: {
+              id: connectionId,
+            },
+          },
+        });
+      }
+    } catch (err) {
+      // void
+    } finally {
+      setShowAddSharedConnectionDialog(false);
+    }
+  };
 
   const { name } = substep;
 
@@ -128,6 +175,11 @@ function ChooseConnectionSubstep(
 
         if (connectionId === ADD_CONNECTION_VALUE) {
           setShowAddConnectionDialog(true);
+          return;
+        }
+
+        if (connectionId === ADD_SHARED_CONNECTION_VALUE) {
+          setShowAddSharedConnectionDialog(true);
           return;
         }
 
@@ -214,6 +266,14 @@ function ChooseConnectionSubstep(
         <AddAppConnection
           onClose={handleAddConnectionClose}
           application={application}
+        />
+      )}
+
+      {application && showAddSharedConnectionDialog && (
+        <AppAuthClientsDialog
+          appKey={application.key}
+          onClose={() => setShowAddSharedConnectionDialog(false)}
+          onClientClick={handleClientClick}
         />
       )}
     </React.Fragment>

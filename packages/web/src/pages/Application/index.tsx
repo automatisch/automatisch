@@ -19,9 +19,11 @@ import Tab from '@mui/material/Tab';
 import AddIcon from '@mui/icons-material/Add';
 
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAppConfig from 'hooks/useAppConfig.ee';
 import { GET_APP } from 'graphql/queries/get-app';
 import * as URLS from 'config/urls';
 
+import SplitButton from 'components/SplitButton';
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import AppConnections from 'components/AppConnections';
 import AppFlows from 'components/AppFlows';
@@ -33,6 +35,13 @@ import PageTitle from 'components/PageTitle';
 type ApplicationParams = {
   appKey: string;
   connectionId?: string;
+};
+
+type ConnectionOption = {
+  key: string;
+  label: string;
+  'data-test': string;
+  to: string;
 };
 
 const ReconnectConnection = (props: any): React.ReactElement => {
@@ -61,10 +70,35 @@ export default function Application(): React.ReactElement | null {
   const { appKey } = useParams() as ApplicationParams;
   const navigate = useNavigate();
   const { data, loading } = useQuery(GET_APP, { variables: { key: appKey } });
+  const { appConfig } = useAppConfig(appKey);
 
   const connectionId = searchParams.get('connectionId') || undefined;
   const goToApplicationPage = () => navigate('connections');
   const app = data?.getApp || {};
+
+  const connectionOptions = React.useMemo(() => {
+    const shouldHaveCustomConnection =
+      appConfig?.canConnect && appConfig?.canCustomConnect;
+    const options: ConnectionOption[] = [
+      {
+        label: formatMessage('app.addConnection'),
+        key: 'addConnection',
+        'data-test': 'add-connection-button',
+        to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.canConnect),
+      },
+    ];
+
+    if (shouldHaveCustomConnection) {
+      options.push({
+        label: formatMessage('app.addCustomConnection'),
+        key: 'addCustomConnection',
+        'data-test': 'add-custom-connection-button',
+        to: URLS.APP_ADD_CONNECTION(appKey),
+      });
+    }
+
+    return options;
+  }, [appKey, appConfig]);
 
   if (loading) return null;
 
@@ -111,19 +145,14 @@ export default function Application(): React.ReactElement | null {
                 <Route
                   path={`${URLS.CONNECTIONS}/*`}
                   element={
-                    <ConditionalIconButton
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      component={Link}
-                      to={URLS.APP_ADD_CONNECTION(appKey)}
-                      fullWidth
-                      icon={<AddIcon />}
-                      data-test="add-connection-button"
-                    >
-                      {formatMessage('app.addConnection')}
-                    </ConditionalIconButton>
+                    <SplitButton
+                      disabled={
+                        appConfig &&
+                        !appConfig?.canConnect &&
+                        !appConfig?.canCustomConnect
+                      }
+                      options={connectionOptions}
+                    />
                   }
                 />
               </Routes>
