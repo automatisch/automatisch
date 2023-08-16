@@ -87,6 +87,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Formatter',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/formatter/actions' },
+            { text: 'Connection', link: '/apps/formatter/connection' },
+          ],
+        },
+        {
           text: 'GitHub',
           collapsible: true,
           collapsed: true,
