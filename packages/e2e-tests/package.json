@@ -23,8 +23,7 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
-    "@playwright/test": "^1.36.2",
-    "cypress": "^10.9.0"
+    "@playwright/test": "^1.36.2"
   },
   "dependencies": {
     "dotenv": "^16.3.1"
