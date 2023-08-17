@@ -4,30 +4,34 @@ import { IUser } from '@automatisch/types';
 import { GET_USERS } from 'graphql/queries/get-users';
 
 type Edge = {
-  node: IUser
-}
+  node: IUser;
+};
 
 type QueryResponse = {
   getUsers: {
     pageInfo: {
       currentPage: number;
       totalPages: number;
-    }
-    edges: Edge[]
-  }
-}
+    };
+    edges: Edge[];
+  };
+};
 
-export default function useUsers() {
+const getLimitAndOffset = (page: number, rowsPerPage: number) => ({
+  limit: rowsPerPage,
+  offset: page * rowsPerPage,
+});
+
+export default function useUsers(page: number, rowsPerPage: number) {
   const { data, loading } = useQuery<QueryResponse>(GET_USERS, {
-    variables: {
-      limit: 100,
-      offset: 0
-    }
+    variables: getLimitAndOffset(page, rowsPerPage),
   });
   const users = data?.getUsers.edges.map(({ node }) => node) || [];
+  const pageInfo = data?.getUsers.pageInfo;
 
   return {
     users,
-    loading
+    pageInfo,
+    loading,
   };
 }

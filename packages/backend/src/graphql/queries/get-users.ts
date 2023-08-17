@@ -10,15 +10,14 @@ type Params = {
 const getUsers = async (_parent: unknown, params: Params, context: Context) => {
   context.currentUser.can('read', 'User');
 
-  const usersQuery = User
-    .query()
+  const usersQuery = User.query()
     .leftJoinRelated({
-      role: true
+      role: true,
     })
     .withGraphFetched({
-      role: true
+      role: true,
     })
-    .orderBy('full_name', 'desc');
+    .orderBy('full_name', 'asc');
 
   return paginate(usersQuery, params.limit, params.offset);
 };
