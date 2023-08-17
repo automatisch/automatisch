@@ -28,7 +28,7 @@ test.describe('Connections page', () => {
       connectionsPage,
     }) => {
       await connectionsPage.clickAddConnectionButton();
-      await expect(page).toHaveURL('/app/ntfy/connections/add');
+      await expect(page).toHaveURL('/app/ntfy/connections/add?shared=false');
     });
 
     test('shows add connection dialog to create a new connection', async ({
@@ -36,7 +36,7 @@ test.describe('Connections page', () => {
       connectionsPage,
     }) => {
       await connectionsPage.clickAddConnectionButton();
-      await expect(page).toHaveURL('/app/ntfy/connections/add');
+      await expect(page).toHaveURL('/app/ntfy/connections/add?shared=false');
       await page.getByTestId('create-connection-button').click();
       await expect(
         page.getByTestId('create-connection-button')

@@ -46,7 +46,7 @@ test.describe('Apps page', () => {
       applicationsPage,
     }) => {
       await page.getByTestId('app-list-item').first().click();
-      await expect(page).toHaveURL('/app/deepl/connections/add');
+      await expect(page).toHaveURL('/app/deepl/connections/add?shared=false');
       await expect(page.getByTestId('add-app-connection-dialog')).toBeVisible();
 
       await applicationsPage.clickAway();
@@ -57,7 +57,7 @@ test.describe('Apps page', () => {
       applicationsPage,
     }) => {
       await page.getByTestId('app-list-item').first().click();
-      await expect(page).toHaveURL('/app/deepl/connections/add');
+      await expect(page).toHaveURL('/app/deepl/connections/add?shared=false');
       await expect(page.getByTestId('add-app-connection-dialog')).toBeVisible();
       await applicationsPage.clickAway();
       await expect(page).toHaveURL('/app/deepl/connections');

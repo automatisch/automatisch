@@ -5,8 +5,8 @@
   "private": true,
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
-    "open": "cypress open",
-    "playwright": "playwright test"
+    "test": "playwright test",
+    "test:fast": "yarn test -j 90% --quiet --reporter null --ignore-snapshots"
   },
   "contributors": [
     {
