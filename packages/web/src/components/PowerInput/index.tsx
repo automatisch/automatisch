@@ -60,11 +60,13 @@ const PowerInput = (props: PowerInputProps) => {
   const [showVariableSuggestions, setShowVariableSuggestions] =
     React.useState(false);
 
-  const disappearSuggestionsOnShift = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const disappearSuggestionsOnShift = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.code === 'Tab') {
       setShowVariableSuggestions(false);
     }
-  }
+  };
 
   const stepsWithVariables = React.useMemo(() => {
     return processStepWithExecutions(priorStepsWithExecutions);
@@ -112,7 +114,10 @@ const PowerInput = (props: PowerInputProps) => {
             }}
           >
             {/* ref-able single child for ClickAwayListener */}
-            <ChildrenWrapper style={{ width: '100%' }} data-test="power-input">
+            <ChildrenWrapper
+              style={{ width: '100%' }}
+              data-test={`${name}-power-input`}
+            >
               <FakeInput disabled={disabled}>
                 <InputLabelWrapper>
                   <InputLabel
@@ -140,7 +145,10 @@ const PowerInput = (props: PowerInputProps) => {
                 />
               </FakeInput>
               {/* ghost placer for the variables popover */}
-              <div ref={editorRef} style={{ position: 'absolute', right: 16, left: 16 }} />
+              <div
+                ref={editorRef}
+                style={{ position: 'absolute', right: 16, left: 16 }}
+              />
 
               <Popper
                 open={showVariableSuggestions}
