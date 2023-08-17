@@ -3,7 +3,6 @@ const { test, expect } = require('../../fixtures/index');
 
 test.describe('Connections page', () => {
   test.beforeEach(async ({ page, connectionsPage }) => {
-    await connectionsPage.login();
     await page.getByTestId('apps-page-drawer-link').click();
     await page.goto('/app/ntfy/connections');
   });

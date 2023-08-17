@@ -3,8 +3,6 @@ const { test, expect } = require('../../fixtures/index');
 
 test.describe('Executions page', () => {
   test.beforeEach(async ({ page, executionsPage }) => {
-    await executionsPage.login();
-
     await page.getByTestId('executions-page-drawer-link').click();
     await page.getByTestId('execution-row').first().click();
 

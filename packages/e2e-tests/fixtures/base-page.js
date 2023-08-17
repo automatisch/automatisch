@@ -19,16 +19,4 @@ export class BasePage {
 
     return await this.page.screenshot({ path: computedPath, ...restOptions });
   }
-
-  async login() {
-    await this.page.goto('/login');
-    await this.page
-      .getByTestId('email-text-field')
-      .fill(process.env.LOGIN_EMAIL);
-    await this.page
-      .getByTestId('password-text-field')
-      .fill(process.env.LOGIN_PASSWORD);
-
-    await this.page.getByTestId('login-button').click();
-  }
 }

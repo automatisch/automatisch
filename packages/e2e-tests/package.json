@@ -6,7 +6,7 @@
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
     "test": "playwright test",
-    "test:fast": "yarn test -j 90% --quiet --reporter null --ignore-snapshots"
+    "test:fast": "yarn test -j 90% --quiet --reporter null --ignore-snapshots -x"
   },
   "contributors": [
     {

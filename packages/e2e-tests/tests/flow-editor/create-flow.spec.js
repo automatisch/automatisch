@@ -1,20 +1,19 @@
 // @ts-check
 const { FlowEditorPage } = require('../../fixtures/flow-editor-page');
+const { LoginPage } = require('../../fixtures/login-page');
 const { test, expect } = require('../../fixtures/index');
 
 test.describe.configure({ mode: 'serial' });
 
-let page;
 let flowEditorPage;
 
 test.beforeAll(async ({ browser }) => {
-  page = await browser.newPage();
+  const page = await browser.newPage();
+  await new LoginPage(page).login();
   flowEditorPage = new FlowEditorPage(page);
 });
 
 test('create flow', async ({}) => {
-  await flowEditorPage.login();
-
   await flowEditorPage.page.getByTestId('create-flow-button').click();
   await expect(flowEditorPage.page).toHaveURL(/\/editor\/create/);
   await expect(flowEditorPage.page).toHaveURL(

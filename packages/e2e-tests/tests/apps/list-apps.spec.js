@@ -3,7 +3,6 @@ const { test, expect } = require('../../fixtures/index');
 
 test.describe('Apps page', () => {
   test.beforeEach(async ({ page, applicationsPage }) => {
-    await applicationsPage.login();
     await page.getByTestId('apps-page-drawer-link').click();
   });
 
