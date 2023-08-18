@@ -1,7 +1,9 @@
-name: Automatisch UI Test
+name: Automatisch UI Tests
 on:
   schedule:
     - cron: '0 12 * * *'
+  workflow_dispatch:
+
 jobs:
   test:
     timeout-minutes: 60
