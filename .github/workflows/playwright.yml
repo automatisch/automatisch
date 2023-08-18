@@ -18,10 +18,11 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
       - name: Run Playwright tests
+        working-directory: ./packages/e2e-tests
         env:
           LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
           LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-        run: yarn playwright test
+        run: yarn test
       - uses: actions/upload-artifact@v3
         if: always()
         with:

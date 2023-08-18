@@ -2,8 +2,12 @@ const path = require('node:path');
 const { BasePage } = require('./base-page');
 
 export class FlowEditorPage extends BasePage {
+  /**
+   * @param {import('@playwright/test').Page} page
+   */
   constructor(page) {
     super(page);
+
     this.appAutocomplete = this.page.getByTestId('choose-app-autocomplete');
     this.eventAutocomplete = this.page.getByTestId('choose-event-autocomplete');
     this.continueButton = this.page.getByTestId('flow-substep-continue-button');
@@ -15,6 +19,7 @@ export class FlowEditorPage extends BasePage {
     this.publishFlowButton = this.page.getByTestId('publish-flow-button');
     this.infoSnackbar = this.page.getByTestId('flow-cannot-edit-info-snackbar');
     this.trigger = this.page.getByLabel('Trigger on weekends?');
+    this.stepCircularLoader = this.page.getByTestId('step-circular-loader');
   }
 
   async screenshot(options = {}) {

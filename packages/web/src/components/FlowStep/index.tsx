@@ -71,17 +71,18 @@ function generateValidationSchema(substeps: ISubstep[]) {
           substepArgumentValidations[key] = yup.mixed();
         }
 
-        if (typeof substepArgumentValidations[key] === 'object' && (arg.type === 'string' || arg.type === 'dropdown')) {
+        if (
+          typeof substepArgumentValidations[key] === 'object' &&
+          (arg.type === 'string' || arg.type === 'dropdown')
+        ) {
           // if the field is required, add the required validation
           if (required) {
-            substepArgumentValidations[key] = substepArgumentValidations[
-              key
-            ]
+            substepArgumentValidations[key] = substepArgumentValidations[key]
               .required(`${key} is required.`)
               .test(
                 'empty-check',
                 `${key} must be not empty`,
-                (value: any) => !isEmpty(value),
+                (value: any) => !isEmpty(value)
               );
           }
 
@@ -166,7 +167,9 @@ export default function FlowStep(
 
   const actionsOrTriggers: Array<ITrigger | IAction> =
     (isTrigger ? app?.triggers : app?.actions) || [];
-  const actionOrTrigger = actionsOrTriggers?.find(({ key }) => key === step.key);
+  const actionOrTrigger = actionsOrTriggers?.find(
+    ({ key }) => key === step.key
+  );
   const substeps = actionOrTrigger?.substeps || [];
 
   const handleChange = React.useCallback(({ step }: { step: IStep }) => {
@@ -187,7 +190,12 @@ export default function FlowStep(
   );
 
   if (!apps) {
-    return <CircularProgress sx={{ display: 'block', my: 2 }} />;
+    return (
+      <CircularProgress
+        data-test="step-circular-loader"
+        sx={{ display: 'block', my: 2 }}
+      />
+    );
   }
 
   const onContextMenuClose = (event: React.SyntheticEvent) => {
@@ -279,7 +287,8 @@ export default function FlowStep(
                   step={step}
                 />
 
-                {actionOrTrigger && substeps?.length > 0 &&
+                {actionOrTrigger &&
+                  substeps?.length > 0 &&
                   substeps.map((substep: ISubstep, index: number) => (
                     <React.Fragment key={`${substep?.name}-${index}`}>
                       {substep.key === 'chooseConnection' && app && (
@@ -304,7 +313,11 @@ export default function FlowStep(
                           onSubmit={expandNextStep}
                           onChange={handleChange}
                           onContinue={onContinue}
-                          showWebhookUrl={'showWebhookUrl' in actionOrTrigger ? actionOrTrigger.showWebhookUrl : false}
+                          showWebhookUrl={
+                            'showWebhookUrl' in actionOrTrigger
+                              ? actionOrTrigger.showWebhookUrl
+                              : false
+                          }
                           step={step}
                         />
                       )}
