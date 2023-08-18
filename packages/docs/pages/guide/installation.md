@@ -18,13 +18,13 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 
 ```bash
 # Clone the repository
-git clone git@github.com:automatisch/automatisch.git
+git clone https://github.com/automatisch/automatisch.git
 
 # Go to the repository folder
 cd automatisch
 
 # Start
-docker compose up
+docker-compose up
 ```
 
 ✌️ That's it; you have Automatisch running. Let's check it out by browsing [http://localhost:3000](https://localhost:3000)
