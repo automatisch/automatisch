@@ -1,10 +1,10 @@
 import { styled } from '@mui/material/styles';
-import MuiIconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import MuiTabs from '@mui/material/Tabs';
 
-export const FakeDropdownButton = styled(MuiIconButton)`
+export const ActionButtonsWrapper = styled(Stack)`
   position: absolute;
-  right: ${({ theme }) => theme.spacing(1)};
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
 `;

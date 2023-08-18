@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
+import { IconButton } from '@mui/material';
 import FormHelperText from '@mui/material/FormHelperText';
 import { AutocompleteProps } from '@mui/material/Autocomplete';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ClearIcon from '@mui/icons-material/Clear';
 import type { IFieldDropdownOption } from '@automatisch/types';
-import { FakeDropdownButton } from './style';
+import { ActionButtonsWrapper } from './style';
 
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import InputLabel from '@mui/material/InputLabel';
 import { createEditor } from 'slate';
-import { Editable, ReactEditor,} from 'slate-react';
+import { Editable, ReactEditor } from 'slate-react';
 
 import Slate from 'components/Slate';
 import Element from 'components/Slate/Element';
@@ -23,7 +25,11 @@ import {
   overrideEditorValue,
   focusEditor,
 } from 'components/Slate/utils';
-import { FakeInput, InputLabelWrapper, ChildrenWrapper, } from 'components/PowerInput/style';
+import {
+  FakeInput,
+  InputLabelWrapper,
+  ChildrenWrapper,
+} from 'components/PowerInput/style';
 import { VariableElement } from 'components/Slate/types';
 import CustomOptions from './CustomOptions';
 import { processStepWithExecutions } from 'components/PowerInput/data';
@@ -75,9 +81,11 @@ function ControlledCustomAutocomplete(
     onChange: controllerOnChange,
     onBlur: controllerOnBlur,
   } = field;
-  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
   const [isInitialValueSet, setInitialValue] = React.useState(false);
-  const [isSingleChoice, setSingleChoice] = React.useState<boolean | undefined>(undefined);
+  const [isSingleChoice, setSingleChoice] = React.useState<boolean | undefined>(
+    undefined
+  );
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef<HTMLDivElement | null>(null);
   const renderElement = React.useCallback(
@@ -104,12 +112,12 @@ function ControlledCustomAutocomplete(
   const promoteValue = () => {
     const serializedValue = serialize(editor.children);
     controllerOnChange(serializedValue);
-  }
+  };
 
   const resizeObserver = React.useMemo(function syncCustomOptionsPosition() {
     return new ResizeObserver(() => {
       forceUpdate();
-    })
+    });
   }, []);
 
   React.useEffect(() => {
@@ -121,24 +129,37 @@ function ControlledCustomAutocomplete(
     }
   }, dependsOnValues);
 
-  React.useEffect(function updateInitialValue() {
-    const hasOptions = options.length;
-    const isOptionsLoaded = loading === false;
-    if (!isInitialValueSet && hasOptions && isOptionsLoaded) {
-      setInitialValue(true);
+  React.useEffect(
+    function updateInitialValue() {
+      const hasOptions = options.length;
+      const isOptionsLoaded = loading === false;
+      if (!isInitialValueSet && hasOptions && isOptionsLoaded) {
+        setInitialValue(true);
 
-      const option: IFieldDropdownOption | undefined = options.find((option) => option.value === value);
+        const option: IFieldDropdownOption | undefined = options.find(
+          (option) => option.value === value
+        );
 
-      if (option) {
-        overrideEditorValue(editor, { option, focus: false });
-        setSingleChoice(true);
-      } else if (value) {
-        setSingleChoice(false);
+        if (option) {
+          overrideEditorValue(editor, { option, focus: false });
+          setSingleChoice(true);
+        } else if (value) {
+          setSingleChoice(false);
+        }
       }
-    }
-  }, [isInitialValueSet, options, loading]);
+    },
+    [isInitialValueSet, options, loading]
+  );
 
-  const hideSuggestionsOnShift = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  React.useEffect(() => {
+    if (!showVariableSuggestions && value !== serialize(editor.children)) {
+      promoteValue();
+    }
+  }, [showVariableSuggestions]);
+
+  const hideSuggestionsOnShift = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.code === 'Tab') {
       setShowVariableSuggestions(false);
     }
@@ -170,13 +191,18 @@ function ControlledCustomAutocomplete(
     (event: React.MouseEvent, option: IFieldDropdownOption) => {
       event.stopPropagation();
       overrideEditorValue(editor, { option, focus: false });
-
       setShowVariableSuggestions(false);
-
-      promoteValue();
+      setSingleChoice(true);
     },
     [stepsWithVariables]
   );
+
+  const handleClearButtonClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    resetEditor(editor);
+    promoteValue();
+    setSingleChoice(undefined);
+  };
 
   const reset = (tabIndex: 0 | 1) => {
     const isOptions = tabIndex === 0;
@@ -184,7 +210,7 @@ function ControlledCustomAutocomplete(
     setSingleChoice(isOptions);
 
     resetEditor(editor, { focus: true });
-  }
+  };
 
   return (
     <Slate
@@ -193,11 +219,7 @@ function ControlledCustomAutocomplete(
     >
       <ClickAwayListener
         mouseEvent="onMouseDown"
-        onClickAway={() => {
-          promoteValue();
-
-          setShowVariableSuggestions(false);
-        }}
+        onClickAway={() => setShowVariableSuggestions(false)}
       >
         {/* ref-able single child for ClickAwayListener */}
         <ChildrenWrapper style={{ width: '100%' }} data-test="power-input">
@@ -232,14 +254,27 @@ function ControlledCustomAutocomplete(
               }}
             />
 
-            <FakeDropdownButton
-              disabled={disabled}
-              edge="end"
-              size="small"
-              tabIndex={-1}
-            >
-              <ArrowDropDownIcon />
-            </FakeDropdownButton>
+            <ActionButtonsWrapper direction="row" mr={1.5}>
+              {isSingleChoice && serialize(editor.children) && (
+                <IconButton
+                  disabled={disabled}
+                  edge="end"
+                  size="small"
+                  tabIndex={-1}
+                  onClick={handleClearButtonClick}
+                >
+                  <ClearIcon />
+                </IconButton>
+              )}
+              <IconButton
+                disabled={disabled}
+                edge="end"
+                size="small"
+                tabIndex={-1}
+              >
+                <ArrowDropDownIcon />
+              </IconButton>
+            </ActionButtonsWrapper>
           </FakeInput>
           {/* ghost placer for the variables popover */}
           <div
@@ -247,14 +282,16 @@ function ControlledCustomAutocomplete(
             style={{
               position: 'absolute',
               right: 16,
-              left: 16
+              left: 16,
             }}
           />
 
           <CustomOptions
             label={label}
             open={showVariableSuggestions}
-            initialTabIndex={isSingleChoice === undefined ? undefined : (isSingleChoice ? 0 : 1)}
+            initialTabIndex={
+              isSingleChoice === undefined ? undefined : isSingleChoice ? 0 : 1
+            }
             anchorEl={editorRef.current}
             data={stepsWithVariables}
             options={options}
