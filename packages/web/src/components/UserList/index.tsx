@@ -45,6 +45,15 @@ export default function UserList(): React.ReactElement {
               </Typography>
             </TableCell>
 
+            <TableCell component="th">
+              <Typography
+                variant="subtitle1"
+                sx={{ color: 'text.secondary', fontWeight: 700 }}
+              >
+                {formatMessage('userList.role')}
+              </Typography>
+            </TableCell>
+
             <TableCell component="th" />
           </TableRow>
         </TableHead>
@@ -62,6 +71,10 @@ export default function UserList(): React.ReactElement {
 
                 <TableCell>
                   <Typography variant="subtitle2">{user.email}</Typography>
+                </TableCell>
+
+                <TableCell>
+                  <Typography variant="subtitle2">{user.role.name}</Typography>
                 </TableCell>
 
                 <TableCell>

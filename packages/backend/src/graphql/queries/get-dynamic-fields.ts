@@ -32,7 +32,7 @@ const getDynamicFields = async (
 
   const connection = step.connection;
 
-  if (!connection || !step.appKey) return null;
+  if (!step.appKey) return null;
 
   const app = await App.findOneByKey(step.appKey);
   const $ = await globalVariable({ connection, app, flow: step.flow, step });

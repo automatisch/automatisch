@@ -294,6 +294,7 @@ class User extends Base {
     if (Array.isArray(this.permissions)) {
       this.permissions = this.permissions.filter((permission) => {
         const restrictedSubjects = [
+          'App',
           'Role',
           'SamlAuthProvider',
           'Config',

@@ -1,3 +1,5 @@
+import createAppAuthClient from './mutations/create-app-auth-client.ee';
+import createAppConfig from './mutations/create-app-config.ee';
 import createConnection from './mutations/create-connection';
 import createFlow from './mutations/create-flow';
 import createRole from './mutations/create-role.ee';
@@ -17,6 +19,8 @@ import login from './mutations/login';
 import registerUser from './mutations/register-user.ee';
 import resetConnection from './mutations/reset-connection';
 import resetPassword from './mutations/reset-password.ee';
+import updateAppAuthClient from './mutations/update-app-auth-client.ee';
+import updateAppConfig from './mutations/update-app-config.ee';
 import updateConfig from './mutations/update-config.ee';
 import updateConnection from './mutations/update-connection';
 import updateCurrentUser from './mutations/update-current-user';
@@ -30,6 +34,8 @@ import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-pr
 import verifyConnection from './mutations/verify-connection';
 
 const mutationResolvers = {
+  createAppAuthClient,
+  createAppConfig,
   createConnection,
   createFlow,
   createRole,
@@ -49,6 +55,8 @@ const mutationResolvers = {
   registerUser,
   resetConnection,
   resetPassword,
+  updateAppAuthClient,
+  updateAppConfig,
   updateConfig,
   updateConnection,
   updateCurrentUser,

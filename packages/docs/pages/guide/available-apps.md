@@ -1,6 +1,6 @@
 # Available Apps
 
-Following integrations are currently supported by Automatisch.
+The following integrations are currently supported by Automatisch.
 
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
@@ -8,6 +8,7 @@ Following integrations are currently supported by Automatisch.
 - [Dropbox](/apps/dropbox/actions)
 - [Filter](/apps/filter/actions)
 - [Flickr](/apps/flickr/triggers)
+- [Formatter](/apps/formatter/actions)
 - [GitHub](/apps/github/triggers)
 - [GitLab](/apps/gitlab/triggers)
 - [Google Drive](/apps/google-drive/triggers)

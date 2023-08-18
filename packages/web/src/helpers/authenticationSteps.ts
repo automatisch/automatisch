@@ -57,7 +57,9 @@ const processOpenWithPopup = (
     popup?.focus();
 
     const closeCheckIntervalId = setInterval(() => {
-      if (popup.closed) {
+      if (!popup) return;
+
+      if (popup?.closed) {
         clearInterval(closeCheckIntervalId);
         reject({ message: 'Error occured while verifying credentials!' });
       }

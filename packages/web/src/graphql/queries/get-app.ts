@@ -39,7 +39,33 @@ export const GET_APP = gql`
             }
           }
         }
+        sharedAuthenticationSteps {
+          type
+          name
+          arguments {
+            name
+            value
+            type
+            properties {
+              name
+              value
+            }
+          }
+        }
         reconnectionSteps {
+          type
+          name
+          arguments {
+            name
+            value
+            type
+            properties {
+              name
+              value
+            }
+          }
+        }
+        sharedReconnectionSteps {
           type
           name
           arguments {
