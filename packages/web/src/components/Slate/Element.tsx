@@ -9,4 +9,4 @@ export default function Element(props: any) {
     default:
       return <p {...attributes}>{children}</p>;
   }
-};
+}
