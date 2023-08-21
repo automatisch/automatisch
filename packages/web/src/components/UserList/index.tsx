@@ -25,7 +25,12 @@ export default function UserList(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { users, pageInfo, loading } = useUsers(page, rowsPerPage);
+  const {
+    users,
+    pageInfo,
+    totalCount,
+    loading,
+  } = useUsers(page, rowsPerPage);
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -115,13 +120,13 @@ export default function UserList(): React.ReactElement {
                 </TableRow>
               ))}
           </TableBody>
-          {pageInfo && (
+          {totalCount && (
             <TableFooter>
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={[10, 25, 50, 100]}
                   page={page}
-                  count={pageInfo.totalPages * rowsPerPage}
+                  count={totalCount}
                   onPageChange={handleChangePage}
                   rowsPerPage={rowsPerPage}
                   onRowsPerPageChange={handleChangeRowsPerPage}

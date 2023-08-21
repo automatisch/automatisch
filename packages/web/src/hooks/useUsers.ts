@@ -13,6 +13,7 @@ type QueryResponse = {
       currentPage: number;
       totalPages: number;
     };
+    totalCount: number;
     edges: Edge[];
   };
 };
@@ -28,10 +29,12 @@ export default function useUsers(page: number, rowsPerPage: number) {
   });
   const users = data?.getUsers.edges.map(({ node }) => node) || [];
   const pageInfo = data?.getUsers.pageInfo;
+  const totalCount = data?.getUsers.totalCount;
 
   return {
     users,
     pageInfo,
+    totalCount,
     loading,
   };
 }

@@ -13,6 +13,7 @@ export const GET_USERS = gql`
         currentPage
         totalPages
       }
+      totalCount
       edges {
         node {
           id

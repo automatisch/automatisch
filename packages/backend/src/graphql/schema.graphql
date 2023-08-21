@@ -341,6 +341,7 @@ type SamlAuthProvidersRoleMapping {
 type UserConnection {
   edges: [UserEdge]
   pageInfo: PageInfo
+  totalCount: Int
 }
 
 type UserEdge {
