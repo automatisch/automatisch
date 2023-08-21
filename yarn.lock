@@ -2942,9 +2942,9 @@
     react-is "^18.2.0"
 
 "@node-saml/node-saml@^4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@node-saml/node-saml/-/node-saml-4.0.4.tgz#472a6b17021a0c9d8261964bf6e1dd686ae2d515"
-  integrity sha512-oybUBWBYVsHGckQxzyzlpRM4E2iuW3I2Ok/J9SwlotdmjvmZxSo6Ub74D9wltG8C9daJZYI57uy+1UK4FtcGXA==
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@node-saml/node-saml/-/node-saml-4.0.5.tgz#039e387095b54639b06df62b1b4a6d8941c6d907"
+  integrity sha512-J5DglElbY1tjOuaR1NPtjOXkXY5bpUhDoKVoeucYN98A3w4fwgjIOPqIGcb6cQsqFq2zZ6vTCeKn5C/hvefSaw==
   dependencies:
     "@types/debug" "^4.1.7"
     "@types/passport" "^1.0.11"
