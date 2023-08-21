@@ -1,206 +1,206 @@
 // @ts-check
-const { FlowEditorPage } = require('../../fixtures/flow-editor-page');
-const { LoginPage } = require('../../fixtures/login-page');
 const { test, expect } = require('../../fixtures/index');
 
-test.describe.configure({ mode: 'serial' });
-
-let flowEditorPage;
-
-test.beforeAll(async ({ browser }) => {
-  const page = await browser.newPage();
-  await new LoginPage(page).login();
-  flowEditorPage = new FlowEditorPage(page);
-});
-
-test('create flow', async () => {
-  await flowEditorPage.page.getByTestId('create-flow-button').click();
-  await expect(flowEditorPage.page).toHaveURL(/\/editor\/create/);
-  await expect(flowEditorPage.page).toHaveURL(
+test('Ensure creating a new flow works', async ({ page }) => {
+  await page.getByTestId('create-flow-button').click();
+  await expect(page).toHaveURL(/\/editor\/create/);
+  await expect(page).toHaveURL(
     /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
   );
+})
 
-  await expect(flowEditorPage.stepCircularLoader).not.toBeVisible();
-});
-
-test('has two steps by default', async () => {
-  await expect(flowEditorPage.page.getByTestId('flow-step')).toHaveCount(2);
-});
-
-test.describe('arrange Scheduler trigger', () => {
-  test.describe('choose app and event substep', () => {
-    test('choose application', async () => {
-      await flowEditorPage.appAutocomplete.click();
-      await flowEditorPage.page
-        .getByRole('option', { name: 'Scheduler' })
-        .click();
-    });
-
-    test('choose an event', async () => {
-      await expect(flowEditorPage.eventAutocomplete).toBeVisible();
-      await flowEditorPage.eventAutocomplete.click();
-      await flowEditorPage.page
-        .getByRole('option', { name: 'Every hour' })
-        .click();
-    });
-
-    test('continue to next step', async () => {
-      await flowEditorPage.continueButton.click();
-    });
-
-    test('collapses the substep', async () => {
-      await expect(flowEditorPage.appAutocomplete).not.toBeVisible();
-      await expect(flowEditorPage.eventAutocomplete).not.toBeVisible();
-    });
-  });
-
-  test.describe('set up a trigger', () => {
-    test('choose "yes" in "trigger on weekends?"', async () => {
-      await expect(flowEditorPage.trigger).toBeVisible();
-      await flowEditorPage.trigger.click();
-      await flowEditorPage.page.getByRole('option', { name: 'Yes' }).click();
-    });
-
-    test('continue to next step', async () => {
-      await flowEditorPage.continueButton.click();
-    });
-
-    test('collapses the substep', async () => {
-      await expect(flowEditorPage.trigger).not.toBeVisible();
-    });
-  });
-
-  test.describe('test trigger', () => {
-    test('show sample output', async () => {
-      await expect(flowEditorPage.testOuput).not.toBeVisible();
-      await flowEditorPage.continueButton.click();
-      await expect(flowEditorPage.testOuput).toBeVisible();
-      await flowEditorPage.screenshot({
-        path: 'Scheduler trigger test output.png',
+test(
+  'Create a new flow with a Scheduler step then an Ntfy step',
+  async ({ flowEditorPage, page }) => {
+    await test.step('create flow', async () => {
+      await test.step('navigate to new flow page', async () => {
+        await page.getByTestId('create-flow-button').click();
+        await page.waitForURL(
+          /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
+        );
       });
-      await flowEditorPage.continueButton.click();
-    });
-  });
-});
-
-test.describe('arrange Ntfy action', () => {
-  test.describe('choose app and event substep', () => {
-    test('choose application', async () => {
-      await flowEditorPage.appAutocomplete.click();
-      await flowEditorPage.page.getByRole('option', { name: 'Ntfy' }).click();
-    });
-
-    test('choose an event', async () => {
-      await expect(flowEditorPage.eventAutocomplete).toBeVisible();
-      await flowEditorPage.eventAutocomplete.click();
-      await flowEditorPage.page
-        .getByRole('option', { name: 'Send message' })
-        .click();
-    });
-
-    test('continue to next step', async () => {
-      await flowEditorPage.continueButton.click();
-    });
-
-    test('collapses the substep', async () => {
-      await expect(flowEditorPage.appAutocomplete).not.toBeVisible();
-      await expect(flowEditorPage.eventAutocomplete).not.toBeVisible();
-    });
-  });
-
-  test.describe('choose connection', () => {
-    test('choose connection list item', async () => {
-      await flowEditorPage.connectionAutocomplete.click();
-      await flowEditorPage.page.getByRole('option').first().click();
-    });
-
-    test('continue to next step', async () => {
-      await flowEditorPage.continueButton.click();
-    });
-
-    test('collapses the substep', async () => {
-      await expect(flowEditorPage.connectionAutocomplete).not.toBeVisible();
-    });
-  });
-
-  test.describe('set up action', () => {
-    test('fill topic and message body', async () => {
-      await flowEditorPage.page
-        .getByTestId('parameters.topic-power-input')
-        .locator('[contenteditable]')
-        .fill('Topic');
-      await flowEditorPage.page
-        .getByTestId('parameters.message-power-input')
-        .locator('[contenteditable]')
-        .fill('Message body');
-    });
-
-    test('continue to next step', async () => {
-      await flowEditorPage.continueButton.click();
-    });
-
-    test('collapses the substep', async () => {
-      await expect(flowEditorPage.connectionAutocomplete).not.toBeVisible();
-    });
-  });
-
-  test.describe('test trigger', () => {
-    test('show sample output', async () => {
-      await expect(flowEditorPage.testOuput).not.toBeVisible();
-      await flowEditorPage.page
-        .getByTestId('flow-substep-continue-button')
-        .first()
-        .click();
-      await expect(flowEditorPage.testOuput).toBeVisible();
-      await flowEditorPage.screenshot({
-        path: 'Ntfy action test output.png',
+      
+      await test.step('has two steps by default', async () => {
+        await expect(page.getByTestId('flow-step')).toHaveCount(2);
       });
-      await flowEditorPage.continueButton.click();
     });
-  });
-});
 
-test.describe('publish and unpublish', () => {
-  test('publish flow', async () => {
-    await expect(flowEditorPage.unpublishFlowButton).not.toBeVisible();
-    await expect(flowEditorPage.publishFlowButton).toBeVisible();
-    await flowEditorPage.publishFlowButton.click();
-    await expect(flowEditorPage.publishFlowButton).not.toBeVisible();
-  });
+    await test.step('setup Scheduler trigger', async () => {
+      await test.step('choose app and event substep', async () => {
+        await test.step('choose application', async () => {
+          await flowEditorPage.appAutocomplete.click();
+          await page
+            .getByRole('option', { name: 'Scheduler' })
+            .click();
+        });
 
-  test('shows read-only sticky snackbar', async () => {
-    await expect(flowEditorPage.infoSnackbar).toBeVisible();
-    await flowEditorPage.screenshot({
-      path: 'Published flow.png',
+        await test.step('choose and event', async () => {
+          await expect(flowEditorPage.eventAutocomplete).toBeVisible();
+          await flowEditorPage.eventAutocomplete.click();
+          await page
+            .getByRole('option', { name: 'Every hour' })
+            .click();
+        });
+
+        await test.step('continue to next step', async () => {
+          await flowEditorPage.continueButton.click();
+        });
+
+        await test.step('collapses the substep', async () => {
+          await expect(flowEditorPage.appAutocomplete).not.toBeVisible();
+          await expect(flowEditorPage.eventAutocomplete).not.toBeVisible();
+        });
+      });
+
+      await test.step('set up a trigger', async () => {
+        await test.step('choose "yes" in "trigger on weekends?"', async () => {
+          await expect(flowEditorPage.trigger).toBeVisible();
+          await flowEditorPage.trigger.click();
+          await page.getByRole('option', { name: 'Yes' }).click();
+        });
+    
+        await test.step('continue to next step', async () => {
+          await flowEditorPage.continueButton.click();
+        });
+    
+        await test.step('collapses the substep', async () => {
+          await expect(flowEditorPage.trigger).not.toBeVisible();
+        });
+      });
+
+      await test.step('test trigger', async () => {
+        await test.step('show sample output', async () => {
+          await expect(flowEditorPage.testOuput).not.toBeVisible();
+          await flowEditorPage.continueButton.click();
+          await expect(flowEditorPage.testOuput).toBeVisible();
+          await flowEditorPage.screenshot({
+            path: 'Scheduler trigger test output.png',
+          });
+          await flowEditorPage.continueButton.click();
+        });
+      });
     });
-  });
 
-  test('unpublish from snackbar', async () => {
-    await flowEditorPage.page
-      .getByTestId('unpublish-flow-from-snackbar')
-      .click();
-    await expect(flowEditorPage.infoSnackbar).not.toBeVisible();
-  });
-
-  test('publish once again', async () => {
-    await expect(flowEditorPage.publishFlowButton).toBeVisible();
-    await flowEditorPage.publishFlowButton.click();
-    await expect(flowEditorPage.publishFlowButton).not.toBeVisible();
-  });
-
-  test('unpublish from layout top bar', async () => {
-    await expect(flowEditorPage.unpublishFlowButton).toBeVisible();
-    await flowEditorPage.unpublishFlowButton.click();
-    await expect(flowEditorPage.unpublishFlowButton).not.toBeVisible();
-    await flowEditorPage.screenshot({
-      path: 'Unpublished flow.png',
+    await test.step('arrange Ntfy action', async () => {
+      await test.step('choose app and event substep', async () => {
+        await test.step('choose application', async () => {
+          await flowEditorPage.appAutocomplete.click();
+          await page.getByRole('option', { name: 'Ntfy' }).click();
+        });
+    
+        await test.step('choose an event', async () => {
+          await expect(flowEditorPage.eventAutocomplete).toBeVisible();
+          await flowEditorPage.eventAutocomplete.click();
+          await page
+            .getByRole('option', { name: 'Send message' })
+            .click();
+        });
+    
+        await test.step('continue to next step', async () => {
+          await flowEditorPage.continueButton.click();
+        });
+    
+        await test.step('collapses the substep', async () => {
+          await expect(flowEditorPage.appAutocomplete).not.toBeVisible();
+          await expect(flowEditorPage.eventAutocomplete).not.toBeVisible();
+        });
+      });
+    
+      await test.step('choose connection substep', async () => {
+        await test.step('choose connection list item', async () => {
+          await flowEditorPage.connectionAutocomplete.click();
+          await page.getByRole('option').first().click();
+        });
+    
+        await test.step('continue to next step', async () => {
+          await flowEditorPage.continueButton.click();
+        });
+    
+        await test.step('collapses the substep', async () => {
+          await expect(flowEditorPage.connectionAutocomplete).not.toBeVisible();
+        });
+      });
+    
+      await test.step('set up action substep', async () => {
+        await test.step('fill topic and message body', async () => {
+          await page
+            .getByTestId('parameters.topic-power-input')
+            .locator('[contenteditable]')
+            .fill('Topic');
+          await page
+            .getByTestId('parameters.message-power-input')
+            .locator('[contenteditable]')
+            .fill('Message body');
+        });
+    
+        await test.step('continue to next step', async () => {
+          await flowEditorPage.continueButton.click();
+        });
+    
+        await test.step('collapses the substep', async () => {
+          await expect(flowEditorPage.connectionAutocomplete).not.toBeVisible();
+        });
+      });
+    
+      await test.step('test trigger substep', async () => {
+        await test.step('show sample output', async () => {
+          await expect(flowEditorPage.testOuput).not.toBeVisible();
+          await page
+            .getByTestId('flow-substep-continue-button')
+            .first()
+            .click();
+          await expect(flowEditorPage.testOuput).toBeVisible();
+          await flowEditorPage.screenshot({
+            path: 'Ntfy action test output.png',
+          });
+          await flowEditorPage.continueButton.click();
+        });
+      });
     });
-  });
-});
 
-test.describe('in layout', () => {
-  test('can go back to flows page', async () => {
-    await flowEditorPage.page.getByTestId('editor-go-back-button').click();
-    await expect(flowEditorPage.page).toHaveURL('/flows');
-  });
-});
+    await test.step('publish and unpublish', async () => {
+      await test.step('publish flow', async () => {
+        await expect(flowEditorPage.unpublishFlowButton).not.toBeVisible();
+        await expect(flowEditorPage.publishFlowButton).toBeVisible();
+        await flowEditorPage.publishFlowButton.click();
+        await expect(flowEditorPage.publishFlowButton).not.toBeVisible();
+      });
+    
+      await test.step('shows read-only sticky snackbar', async () => {
+        await expect(flowEditorPage.infoSnackbar).toBeVisible();
+        await flowEditorPage.screenshot({
+          path: 'Published flow.png',
+        });
+      });
+    
+      await test.step('unpublish from snackbar', async () => {
+        await page
+          .getByTestId('unpublish-flow-from-snackbar')
+          .click();
+        await expect(flowEditorPage.infoSnackbar).not.toBeVisible();
+      });
+    
+      await test.step('publish once again', async () => {
+        await expect(flowEditorPage.publishFlowButton).toBeVisible();
+        await flowEditorPage.publishFlowButton.click();
+        await expect(flowEditorPage.publishFlowButton).not.toBeVisible();
+      });
+    
+      await test.step('unpublish from layout top bar', async () => {
+        await expect(flowEditorPage.unpublishFlowButton).toBeVisible();
+        await flowEditorPage.unpublishFlowButton.click();
+        await expect(flowEditorPage.unpublishFlowButton).not.toBeVisible();
+        await flowEditorPage.screenshot({
+          path: 'Unpublished flow.png',
+        });
+      });
+    });
+    
+    await test.step('in layout', async () => {
+      await test.step('can go back to flows page', async () => {
+        await page.getByTestId('editor-go-back-button').click();
+        await expect(page).toHaveURL('/flows');
+      });
+    });
+  }
+);
