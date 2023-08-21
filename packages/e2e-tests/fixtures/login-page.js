@@ -1,4 +1,5 @@
 const path = require('node:path');
+const { expect } = require('@playwright/test');
 const { BasePage } = require('./base-page');
 
 export class LoginPage extends BasePage {
@@ -9,7 +10,6 @@ export class LoginPage extends BasePage {
     super(page);
 
     this.page = page;
-
     this.emailTextField = this.page.getByTestId('email-text-field');
     this.passwordTextField = this.page.getByTestId('password-text-field');
     this.loginButton = this.page.getByTestId('login-button');
@@ -23,5 +23,7 @@ export class LoginPage extends BasePage {
     await this.passwordTextField.fill(process.env.LOGIN_PASSWORD);
 
     await this.loginButton.click();
+
+    await expect(this.loginButton).not.toBeVisible();
   }
 }

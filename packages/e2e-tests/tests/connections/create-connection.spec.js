@@ -19,7 +19,7 @@ test.describe('Connections page', () => {
 
   test.describe('can add connection', () => {
     test('has a button to open add connection dialog', async ({ page }) => {
-      await expect(page.getByTestId('add-connection-button')).toBeVisible();
+      await expect(page.getByTestId('add-connection-button')).toBeClickableLink();
     });
 
     test('add connection button takes user to add connection page', async ({

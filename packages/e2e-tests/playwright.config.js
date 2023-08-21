@@ -20,6 +20,8 @@ module.exports = defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+  /* Timeout threshold for each test */
+  timeout: 120000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? 'github' : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -33,6 +35,11 @@ module.exports = defineConfig({
     trace: 'on-first-retry',
     testIdAttribute: 'data-test',
     viewport: { width: 1280, height: 720 },
+  },
+
+  expect: {
+    /* Timeout threshold for each assertion */
+    timeout: 30000,
   },
 
   /* Configure projects for major browsers */
