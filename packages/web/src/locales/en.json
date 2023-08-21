@@ -15,6 +15,7 @@
   "settingsDrawer.billingAndUsage": "Billing and usage",
   "adminSettingsDrawer.users": "Users",
   "adminSettingsDrawer.roles": "Roles",
+  "adminSettingsDrawer.userInterface": "User Interface",
   "adminSettingsDrawer.goBack": "Go to the dashboard",
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
@@ -213,5 +214,12 @@
   "permissionSettings.cancel": "Cancel",
   "permissionSettings.apply": "Apply",
   "permissionSettings.title": "Conditions",
-  "appAuthClientsDialog.title": "Choose your authentication client"
+  "appAuthClientsDialog.title": "Choose your authentication client",
+  "userInterfacePage.title": "User Interface",
+  "userInterfacePage.successfullyUpdated": "User interface has been updated.",
+  "userInterfacePage.mainColor": "Primary main color",
+  "userInterfacePage.darkColor": "Primary dark color",
+  "userInterfacePage.lightColor": "Primary light color",
+  "userInterfacePage.svgData": "Logo SVG code",
+  "userInterfacePage.submit": "Update"
 }

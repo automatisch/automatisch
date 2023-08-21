@@ -8,7 +8,11 @@ type Params = {
   };
 };
 
-const updateConfig = async (_parent: unknown, params: Params, context: Context) => {
+const updateConfig = async (
+  _parent: unknown,
+  params: Params,
+  context: Context
+) => {
   context.currentUser.can('update', 'Config');
 
   const config = params.input;
@@ -18,22 +22,26 @@ const updateConfig = async (_parent: unknown, params: Params, context: Context) 
   for (const key of configKeys) {
     const newValue = config[key];
 
-    const entryUpdate = Config
-      .query()
-      .insert({
-        key,
-        value: {
-          data: newValue
-        }
-      })
-      .onConflict('key')
-      .merge({
-        value: {
-          data: newValue
-        }
-      });
+    if (newValue) {
+      const entryUpdate = Config.query()
+        .insert({
+          key,
+          value: {
+            data: newValue,
+          },
+        })
+        .onConflict('key')
+        .merge({
+          value: {
+            data: newValue,
+          },
+        });
 
-    updates.push(entryUpdate);
+      updates.push(entryUpdate);
+    } else {
+      const entryUpdate = Config.query().findOne({ key }).delete();
+      updates.push(entryUpdate);
+    }
   }
 
   await Promise.all(updates);

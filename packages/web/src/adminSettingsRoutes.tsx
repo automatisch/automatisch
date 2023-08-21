@@ -6,6 +6,7 @@ import CreateUser from 'pages/CreateUser';
 import Roles from 'pages/Roles/index.ee';
 import CreateRole from 'pages/CreateRole/index.ee';
 import EditRole from 'pages/EditRole/index.ee';
+import UserInterface from 'pages/UserInterface';
 
 import * as URLS from 'config/urls';
 import Can from 'components/Can';
@@ -74,6 +75,17 @@ export default (
         <Can I="update" a="Role">
           <AdminSettingsLayout>
             <EditRole />
+          </AdminSettingsLayout>
+        </Can>
+      }
+    />
+
+    <Route
+      path={URLS.USER_INTERFACE}
+      element={
+        <Can I="update" a="Config">
+          <AdminSettingsLayout>
+            <UserInterface />
           </AdminSettingsLayout>
         </Can>
       }
