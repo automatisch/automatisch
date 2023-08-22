@@ -1,3 +1,4 @@
+import Flow from '../../models/flow';
 import Context from '../../types/express/context';
 import flowQueue from '../../queues/flow';
 import { REMOVE_AFTER_30_DAYS_OR_150_JOBS, REMOVE_AFTER_7_DAYS_OR_50_JOBS } from '../../helpers/remove-job-configuration';
@@ -18,10 +19,14 @@ const updateFlowStatus = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('publish', 'Flow');
+  const conditions = context.currentUser.can('publish', 'Flow');
+  const isCreator = conditions.isCreator;
+  const allFlows = Flow.query();
+  const userFlows = context.currentUser.$relatedQuery('flows');
+  const baseQuery = isCreator ? userFlows : allFlows;
 
-  let flow = await context.currentUser
-    .$relatedQuery('flows')
+  let flow = await baseQuery
+    .clone()
     .findOne({
       id: params.input.id,
     })
