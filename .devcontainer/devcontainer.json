@@ -20,13 +20,11 @@
       "upgradePackages": true
     }
   },
-
   "hostRequirements": {
     "cpus": 4,
     "memory": "8gb",
     "storage": "32gb"
   },
-
   "portsAttributes": {
     "3000": {
       "label": "Backend",
@@ -39,15 +37,11 @@
       "protocol": "http"
     }
   },
-
   "forwardPorts": [3000, 3001],
-
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": ["bash", ".devcontainer/boot.sh"]
-
+  "postCreateCommand": ["bash", ".devcontainer/boot.sh"],
   // Configure tool-specific properties.
   // "customizations": {},
-
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
+  "remoteUser": "root"
 }
