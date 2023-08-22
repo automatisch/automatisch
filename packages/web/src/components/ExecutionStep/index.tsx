@@ -9,6 +9,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import type { IApp, IExecutionStep, IStep } from '@automatisch/types';
 
 import TabPanel from 'components/TabPanel';
@@ -30,6 +32,19 @@ type ExecutionStepProps = {
   index?: number;
   executionStep: IExecutionStep;
 };
+
+function ExecutionStepId(props: Pick<IExecutionStep, 'id'>) {
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <Typography variant="caption" fontWeight="bold">
+        ID:{' '}
+        <Typography variant="caption" component="span">
+          {props.id}
+        </Typography>
+      </Typography>
+    </Box>
+  );
+}
 
 function ExecutionStepDate(props: Pick<IExecutionStep, 'createdAt'>) {
   const formatMessage = useFormatMessage();
@@ -66,6 +81,8 @@ export default function ExecutionStep(
   });
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
+  const theme = useTheme();
+  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (!apps) return null;
 
@@ -80,12 +97,16 @@ export default function ExecutionStep(
           <AppIconWrapper>
             <AppIcon url={app?.iconUrl} name={app?.name} />
 
-            <AppIconStatusIconWrapper>
+            <AppIconStatusIconWrapper matchSmallScreens={matchSmallScreens}>
               {validationStatusIcon}
             </AppIconStatusIconWrapper>
           </AppIconWrapper>
 
           <Box flex="1">
+            {matchSmallScreens && (
+              <ExecutionStepId id={executionStep.step.id} />
+            )}
+
             <Typography variant="caption">
               {isTrigger
                 ? formatMessage('flowStep.triggerType')
@@ -95,11 +116,18 @@ export default function ExecutionStep(
             <Typography variant="body2">
               {step.position}. {app?.name}
             </Typography>
+
+            {matchSmallScreens && (
+              <ExecutionStepDate createdAt={executionStep.createdAt} />
+            )}
           </Box>
 
-          <Box alignSelf="flex-end">
-            <ExecutionStepDate createdAt={executionStep.createdAt} />
-          </Box>
+          {!matchSmallScreens && (
+            <Stack alignItems="flex-end" alignSelf="flex-end">
+              <ExecutionStepId id={executionStep.step.id} />
+              <ExecutionStepDate createdAt={executionStep.createdAt} />
+            </Stack>
+          )}
         </Stack>
       </Header>
 

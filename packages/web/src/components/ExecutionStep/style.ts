@@ -3,12 +3,20 @@ import Card from '@mui/material/Card';
 
 export const AppIconWrapper = styled('div')`
   position: relative;
+  display: flex;
+  align-items: center;
 `;
 
-export const AppIconStatusIconWrapper = styled('span')`
+type AppIconStatusIconWrapperProps = {
+  matchSmallScreens?: boolean;
+};
+
+export const AppIconStatusIconWrapper = styled('span', {
+  shouldForwardProp: (prop) => prop !== 'matchSmallScreens',
+})<AppIconStatusIconWrapperProps>`
   position: absolute;
   right: 0;
-  top: 0;
+  top: ${({ matchSmallScreens }) => (matchSmallScreens ? '20px' : '0')};
   transform: translate(50%, -50%);
   display: inline-flex;
 
