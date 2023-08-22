@@ -1,5 +1,6 @@
 import Context from '../../types/express/context';
 import testRun from '../../services/test-run';
+import Step from '../../models/step';
 
 type Params = {
   input: {
@@ -12,12 +13,16 @@ const executeFlow = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('update', 'Flow');
+  const conditions = context.currentUser.can('update', 'Flow');
+  const isCreator = conditions.isCreator;
+  const allSteps = Step.query();
+  const userSteps = context.currentUser.$relatedQuery('steps');
+  const baseQuery = isCreator ? userSteps : allSteps;
 
   const { stepId } = params.input;
 
-  const untilStep = await context.currentUser
-    .$relatedQuery('steps')
+  const untilStep = await baseQuery
+    .clone()
     .findById(stepId)
     .throwIfNotFound();
 
