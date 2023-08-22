@@ -1,6 +1,7 @@
 import { IJSONObject } from '@automatisch/types';
 import App from '../../models/app';
 import Step from '../../models/step';
+import Connection from '../../models/connection';
 import Context from '../../types/express/context';
 
 type Params = {
@@ -23,12 +24,14 @@ const updateStep = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('update', 'Flow');
+  const { isCreator } = context.currentUser.can('update', 'Flow');
+  const userSteps = context.currentUser.$relatedQuery('steps');
+  const allSteps = Step.query();
+  const baseQuery = isCreator ? userSteps : allSteps;
 
   const { input } = params;
 
-  let step = await context.currentUser
-    .$relatedQuery('steps')
+  let step = await baseQuery
     .findOne({
       'steps.id': input.id,
       flow_id: input.flow.id,
@@ -36,11 +39,24 @@ const updateStep = async (
     .throwIfNotFound();
 
   if (input.connection.id) {
-    const hasConnection = await context.currentUser
-      .$relatedQuery('connections')
-      .findById(input.connection?.id);
+    let canSeeAllConnections = false;
+    try {
+      const conditions = context.currentUser.can('read', 'Connection');
 
-    if (!hasConnection) {
+      canSeeAllConnections = !conditions.isCreator;
+    } catch {
+      // void
+    }
+
+    const userConnections = context.currentUser.$relatedQuery('connections');
+    const allConnections = Connection.query();
+    const baseConnectionsQuery = canSeeAllConnections ? allConnections : userConnections;
+
+    const connection = await baseConnectionsQuery
+      .clone()
+      .findById(input.connection?.id)
+
+    if (!connection) {
       throw new Error('The connection does not exist!');
     }
   }
