@@ -22,6 +22,7 @@ import getPermissionCatalog from './queries/get-permission-catalog.ee';
 import getRole from './queries/get-role.ee';
 import getRoles from './queries/get-roles.ee';
 import getSamlAuthProvider from './queries/get-saml-auth-provider.ee';
+import getSamlAuthProviderRoleMappings from './queries/get-saml-auth-provider-role-mappings.ee';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions';
 import getSubscriptionStatus from './queries/get-subscription-status.ee';
 import getTrialStatus from './queries/get-trial-status.ee';
@@ -56,6 +57,7 @@ const queryResolvers = {
   getRole,
   getRoles,
   getSamlAuthProvider,
+  getSamlAuthProviderRoleMappings,
   getStepWithTestExecutions,
   getSubscriptionStatus,
   getTrialStatus,
