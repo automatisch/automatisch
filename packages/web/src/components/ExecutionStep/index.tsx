@@ -9,8 +9,6 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import type { IApp, IExecutionStep, IStep } from '@automatisch/types';
 
 import TabPanel from 'components/TabPanel';
@@ -23,6 +21,7 @@ import {
   AppIconStatusIconWrapper,
   Content,
   Header,
+  Metadata,
   Wrapper,
 } from './style';
 
@@ -34,13 +33,18 @@ type ExecutionStepProps = {
 };
 
 function ExecutionStepId(props: Pick<IExecutionStep, 'id'>) {
+  const formatMessage = useFormatMessage();
+
+  const id = (
+    <Typography variant="caption" component="span">
+      {props.id}
+    </Typography>
+  );
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }} gridArea="id">
       <Typography variant="caption" fontWeight="bold">
-        ID:{' '}
-        <Typography variant="caption" component="span">
-          {props.id}
-        </Typography>
+        {formatMessage('executionStep.id', { id })}
       </Typography>
     </Box>
   );
@@ -81,8 +85,6 @@ export default function ExecutionStep(
   });
   const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
-  const theme = useTheme();
-  const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (!apps) return null;
 
@@ -93,41 +95,37 @@ export default function ExecutionStep(
   return (
     <Wrapper elevation={1} data-test="execution-step">
       <Header>
-        <Stack direction="row" gap={2}>
+        <Stack direction="row" gap={3}>
           <AppIconWrapper>
-            <AppIcon url={app?.iconUrl} name={app?.name} />
+            <AppIconStatusIconWrapper>
+              <AppIcon url={app?.iconUrl} name={app?.name} />
 
-            <AppIconStatusIconWrapper matchSmallScreens={matchSmallScreens}>
               {validationStatusIcon}
             </AppIconStatusIconWrapper>
           </AppIconWrapper>
 
-          <Box flex="1">
-            {matchSmallScreens && (
-              <ExecutionStepId id={executionStep.step.id} />
-            )}
+          <Metadata flex="1">
+            <ExecutionStepId id={executionStep.step.id} />
 
-            <Typography variant="caption">
-              {isTrigger
-                ? formatMessage('flowStep.triggerType')
-                : formatMessage('flowStep.actionType')}
-            </Typography>
+            <Box flex="1" gridArea="step">
+              <Typography variant="caption">
+                {isTrigger && formatMessage('flowStep.triggerType')}
+                {isAction && formatMessage('flowStep.actionType')}
+              </Typography>
 
-            <Typography variant="body2">
-              {step.position}. {app?.name}
-            </Typography>
+              <Typography variant="body2">
+                {step.position}. {app?.name}
+              </Typography>
+            </Box>
 
-            {matchSmallScreens && (
+            <Box
+              display="flex"
+              justifyContent={["left", "right"]}
+              gridArea="date"
+            >
               <ExecutionStepDate createdAt={executionStep.createdAt} />
-            )}
-          </Box>
-
-          {!matchSmallScreens && (
-            <Stack alignItems="flex-end" alignSelf="flex-end">
-              <ExecutionStepId id={executionStep.step.id} />
-              <ExecutionStepDate createdAt={executionStep.createdAt} />
-            </Stack>
-          )}
+            </Box>
+          </Metadata>
         </Stack>
       </Header>
 
