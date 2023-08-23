@@ -21,6 +21,7 @@ import {
   AppIconStatusIconWrapper,
   Content,
   Header,
+  Metadata,
   Wrapper,
 } from './style';
 
@@ -30,6 +31,24 @@ type ExecutionStepProps = {
   index?: number;
   executionStep: IExecutionStep;
 };
+
+function ExecutionStepId(props: Pick<IExecutionStep, 'id'>) {
+  const formatMessage = useFormatMessage();
+
+  const id = (
+    <Typography variant="caption" component="span">
+      {props.id}
+    </Typography>
+  );
+
+  return (
+    <Box sx={{ display: 'flex' }} gridArea="id">
+      <Typography variant="caption" fontWeight="bold">
+        {formatMessage('executionStep.id', { id })}
+      </Typography>
+    </Box>
+  );
+}
 
 function ExecutionStepDate(props: Pick<IExecutionStep, 'createdAt'>) {
   const formatMessage = useFormatMessage();
@@ -76,30 +95,37 @@ export default function ExecutionStep(
   return (
     <Wrapper elevation={1} data-test="execution-step">
       <Header>
-        <Stack direction="row" gap={2}>
+        <Stack direction="row" gap={3}>
           <AppIconWrapper>
-            <AppIcon url={app?.iconUrl} name={app?.name} />
-
             <AppIconStatusIconWrapper>
+              <AppIcon url={app?.iconUrl} name={app?.name} />
+
               {validationStatusIcon}
             </AppIconStatusIconWrapper>
           </AppIconWrapper>
 
-          <Box flex="1">
-            <Typography variant="caption">
-              {isTrigger
-                ? formatMessage('flowStep.triggerType')
-                : formatMessage('flowStep.actionType')}
-            </Typography>
+          <Metadata flex="1">
+            <ExecutionStepId id={executionStep.step.id} />
 
-            <Typography variant="body2">
-              {step.position}. {app?.name}
-            </Typography>
-          </Box>
+            <Box flex="1" gridArea="step">
+              <Typography variant="caption">
+                {isTrigger && formatMessage('flowStep.triggerType')}
+                {isAction && formatMessage('flowStep.actionType')}
+              </Typography>
 
-          <Box alignSelf="flex-end">
-            <ExecutionStepDate createdAt={executionStep.createdAt} />
-          </Box>
+              <Typography variant="body2">
+                {step.position}. {app?.name}
+              </Typography>
+            </Box>
+
+            <Box
+              display="flex"
+              justifyContent={["left", "right"]}
+              gridArea="date"
+            >
+              <ExecutionStepDate createdAt={executionStep.createdAt} />
+            </Box>
+          </Metadata>
         </Stack>
       </Header>
 
