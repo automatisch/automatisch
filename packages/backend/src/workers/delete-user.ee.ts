@@ -3,6 +3,7 @@ import { Worker } from 'bullmq';
 import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
+import appConfig from '../config/app';
 import User from '../models/user';
 import Execution from '../models/execution';
 import ExecutionStep from '../models/execution-step';
@@ -12,21 +13,34 @@ export const worker = new Worker(
   async (job) => {
     const { id } = job.data;
 
-    const user = await User.query().findById(id).throwIfNotFound();
+    const user = await User.query()
+      .withSoftDeleted()
+      .findById(id)
+      .throwIfNotFound();
 
     const executionIds = (
-      await user.$relatedQuery('executions').select('executions.id')
+      await user
+        .$relatedQuery('executions')
+        .withSoftDeleted()
+        .select('executions.id')
     ).map((execution: Execution) => execution.id);
 
     await ExecutionStep.query()
-      .hardDelete()
-      .whereIn('execution_id', executionIds);
-    await user.$relatedQuery('executions').hardDelete();
-    await user.$relatedQuery('steps').hardDelete();
-    await user.$relatedQuery('flows').hardDelete();
-    await user.$relatedQuery('connections').hardDelete();
+      .withSoftDeleted()
+      .whereIn('execution_id', executionIds)
+      .hardDelete();
+    await user.$relatedQuery('executions').withSoftDeleted().hardDelete();
+    await user.$relatedQuery('steps').withSoftDeleted().hardDelete();
+    await user.$relatedQuery('flows').withSoftDeleted().hardDelete();
+    await user.$relatedQuery('connections').withSoftDeleted().hardDelete();
+    await user.$relatedQuery('identities').withSoftDeleted().hardDelete();
 
-    await user.$query().hardDelete();
+    if (appConfig.isCloud) {
+      await user.$relatedQuery('subscriptions').withSoftDeleted().hardDelete();
+      await user.$relatedQuery('usageData').withSoftDeleted().hardDelete();
+    }
+
+    await user.$query().withSoftDeleted().hardDelete();
   },
   { connection: redisConfig }
 );
