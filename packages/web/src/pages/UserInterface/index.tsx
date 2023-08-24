@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useMutation } from '@apollo/client';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -9,6 +8,7 @@ import { useSnackbar } from 'notistack';
 import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
 import useConfig from 'hooks/useConfig';
 import PageTitle from 'components/PageTitle';
+import Container from 'components/Container';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -65,7 +65,7 @@ export default function UserInterface(): React.ReactElement {
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
-      <Grid container item xs={12} sm={9} md={8} lg={6}>
+      <Grid container item xs={12} sm={10} md={9}>
         <Grid item xs={12} sx={{ mb: [2, 5] }}>
           <PageTitle>{formatMessage('userInterfacePage.title')}</PageTitle>
         </Grid>

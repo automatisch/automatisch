@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import * as React from 'react';
@@ -10,6 +9,7 @@ import { useSnackbar } from 'notistack';
 
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
+import Container from 'components/Container';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
 import { CREATE_ROLE } from 'graphql/mutations/create-role.ee';
@@ -53,7 +53,7 @@ export default function CreateRole(): React.ReactElement {
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
-      <Grid container item xs={12} sm={9} md={8} lg={6}>
+      <Grid container item xs={12} sm={10} md={9}>
         <Grid item xs={12} sx={{ mb: [2, 5] }}>
           <PageTitle>{formatMessage('createRolePage.title')}</PageTitle>
         </Grid>
