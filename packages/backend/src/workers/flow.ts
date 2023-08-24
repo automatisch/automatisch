@@ -3,6 +3,7 @@ import { Worker } from 'bullmq';
 import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
+import flowQueue from '../queues/flow';
 import triggerQueue from '../queues/trigger';
 import { processFlow } from '../services/flow';
 import Flow from '../models/flow';
@@ -66,13 +67,25 @@ worker.on('completed', (job) => {
   logger.info(`JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has started!`);
 });
 
-worker.on('failed', (job, err) => {
+worker.on('failed', async (job, err) => {
   const errorMessage = `
     JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}
     \n ${err.stack}
   `;
 
   logger.error(errorMessage);
+
+  const flow = await Flow.query().findById(job.data.flowId);
+
+  if (!flow) {
+    await flowQueue.removeRepeatableByKey(job.repeatJobKey);
+
+    const flowNotFoundErrorMessage = `
+      JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has been deleted from Redis because flow was not found!
+    `;
+
+    logger.error(flowNotFoundErrorMessage);
+  }
 
   Sentry.captureException(err, {
     extra: {
