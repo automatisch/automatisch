@@ -5,6 +5,7 @@ import flowQueue from '../../queues/flow';
 import Flow from '../../models/flow';
 import Execution from '../../models/execution';
 import ExecutionStep from '../../models/execution-step';
+import appConfig from '../../config/app';
 
 const deleteCurrentUser = async (
   _parent: unknown,
@@ -14,7 +15,7 @@ const deleteCurrentUser = async (
   const id = context.currentUser.id;
 
   const flows = await context.currentUser.$relatedQuery('flows').where({
-    status: 'active',
+    active: true,
   });
 
   const repeatableJobs = await flowQueue.getRepeatableJobs();
@@ -39,6 +40,12 @@ const deleteCurrentUser = async (
   await context.currentUser.$relatedQuery('steps').delete();
   await Flow.query().whereIn('id', flowIds).delete();
   await context.currentUser.$relatedQuery('connections').delete();
+  await context.currentUser.$relatedQuery('identities').delete();
+
+  if (appConfig.isCloud) {
+    await context.currentUser.$relatedQuery('subscriptions').delete();
+    await context.currentUser.$relatedQuery('usageData').delete();
+  }
 
   await context.currentUser.$query().delete();
 
