@@ -3,6 +3,8 @@ import Context from '../../types/express/context';
 import deleteUserQueue from '../../queues/delete-user.ee';
 import flowQueue from '../../queues/flow';
 import Flow from '../../models/flow';
+import Execution from '../../models/execution';
+import ExecutionStep from '../../models/execution-step';
 
 const deleteCurrentUser = async (
   _parent: unknown,
@@ -25,14 +27,20 @@ const deleteCurrentUser = async (
     }
   }
 
-  await context.currentUser.$query().delete();
+  const executionIds = (
+    await context.currentUser
+      .$relatedQuery('executions')
+      .select('executions.id')
+  ).map((execution: Execution) => execution.id);
+  const flowIds = flows.map((flow) => flow.id);
 
-  await Flow.query()
-    .whereIn(
-      'id',
-      flows.map((flow) => flow.id)
-    )
-    .delete();
+  await ExecutionStep.query().delete().whereIn('execution_id', executionIds);
+  await context.currentUser.$relatedQuery('executions').delete();
+  await context.currentUser.$relatedQuery('steps').delete();
+  await Flow.query().whereIn('id', flowIds).delete();
+  await context.currentUser.$relatedQuery('connections').delete();
+
+  await context.currentUser.$query().delete();
 
   const jobName = `Delete user - ${id}`;
   const jobPayload = { id };
