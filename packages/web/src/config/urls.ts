@@ -3,12 +3,12 @@ import appConfig from './app';
 export const CONNECTIONS = '/connections';
 export const EXECUTIONS = '/executions';
 export const EXECUTION_PATTERN = '/executions/:executionId';
-export const EXECUTION = (executionId: string) =>
-  `/executions/${executionId}`;
+export const EXECUTION = (executionId: string) => `/executions/${executionId}`;
 
 export const LOGIN = '/login';
 export const LOGIN_CALLBACK = `${LOGIN}/callback`;
-export const SSO_LOGIN = (issuer: string) => `${appConfig.apiUrl}/login/saml/${issuer}`;
+export const SSO_LOGIN = (issuer: string) =>
+  `${appConfig.apiUrl}/login/saml/${issuer}`;
 export const SIGNUP = '/sign-up';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const RESET_PASSWORD = '/reset-password';
@@ -17,8 +17,7 @@ export const APPS = '/apps';
 export const NEW_APP_CONNECTION = '/apps/new';
 export const APP = (appKey: string) => `/app/${appKey}`;
 export const APP_PATTERN = '/app/:appKey';
-export const APP_CONNECTIONS = (appKey: string) =>
-  `/app/${appKey}/connections`;
+export const APP_CONNECTIONS = (appKey: string) => `/app/${appKey}/connections`;
 export const APP_CONNECTIONS_PATTERN = '/app/:appKey/connections';
 export const APP_ADD_CONNECTION = (appKey: string) =>
   `/app/${appKey}/connections/add`;
@@ -85,6 +84,7 @@ export const ROLES = `${ADMIN_SETTINGS}/roles`;
 export const ROLE = (roleId: string) => `${ROLES}/${roleId}`;
 export const ROLE_PATTERN = `${ROLES}/:roleId`;
 export const CREATE_ROLE = `${ROLES}/create`;
+export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
 
 export const DASHBOARD = FLOWS;
 

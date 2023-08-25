@@ -308,6 +308,7 @@ type SamlAuthProvider {
   emailAttributeName: String
   roleAttributeName: String
   active: Boolean
+  defaultRoleId: String
 }
 
 type SamlAuthProvidersRoleMapping {

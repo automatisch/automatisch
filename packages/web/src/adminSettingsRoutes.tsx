@@ -6,6 +6,7 @@ import CreateUser from 'pages/CreateUser';
 import Roles from 'pages/Roles/index.ee';
 import CreateRole from 'pages/CreateRole/index.ee';
 import EditRole from 'pages/EditRole/index.ee';
+import Authentication from 'pages/Authentication';
 
 import * as URLS from 'config/urls';
 import Can from 'components/Can';
@@ -75,6 +76,21 @@ export default (
           <AdminSettingsLayout>
             <EditRole />
           </AdminSettingsLayout>
+        </Can>
+      }
+    />
+
+    <Route
+      path={URLS.AUTHENTICATION}
+      element={
+        <Can I="read" a="SamlAuthProvider">
+          <Can I="update" a="SamlAuthProvider">
+            <Can I="create" a="SamlAuthProvider">
+              <AdminSettingsLayout>
+                <Authentication />
+              </AdminSettingsLayout>
+            </Can>
+          </Can>
         </Can>
       }
     />

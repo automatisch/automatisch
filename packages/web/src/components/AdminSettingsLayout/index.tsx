@@ -1,6 +1,7 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Groups';
+import LockIcon from '@mui/icons-material/LockPerson';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
@@ -18,25 +19,43 @@ type SettingsLayoutProps = {
 };
 
 type DrawerLink = {
-  Icon: SvgIconComponent,
-  primary: string,
-  to: string,
-}
+  Icon: SvgIconComponent;
+  primary: string;
+  to: string;
+};
 
-function createDrawerLinks({ canReadRole, canReadUser }: { canReadRole: boolean; canReadUser: boolean;  }) {
+function createDrawerLinks({
+  canReadRole,
+  canReadUser,
+  canManageSamlAuthProvider,
+}: {
+  canReadRole: boolean;
+  canReadUser: boolean;
+  canManageSamlAuthProvider: boolean;
+}) {
   const items = [
-      canReadUser ? {
-        Icon: GroupIcon,
-        primary: 'adminSettingsDrawer.users',
-        to: URLS.USERS,
-      } : null,
-      canReadRole ? {
-        Icon: GroupsIcon,
-        primary: 'adminSettingsDrawer.roles',
-        to: URLS.ROLES,
-      } : null
-    ]
-    .filter(Boolean) as DrawerLink[];
+    canReadUser
+      ? {
+          Icon: GroupIcon,
+          primary: 'adminSettingsDrawer.users',
+          to: URLS.USERS,
+        }
+      : null,
+    canReadRole
+      ? {
+          Icon: GroupsIcon,
+          primary: 'adminSettingsDrawer.roles',
+          to: URLS.ROLES,
+        }
+      : null,
+    canManageSamlAuthProvider
+      ? {
+          Icon: LockIcon,
+          primary: 'adminSettingsDrawer.authentication',
+          to: URLS.AUTHENTICATION,
+        }
+      : null,
+  ].filter(Boolean) as DrawerLink[];
 
   return items;
 }
@@ -62,6 +81,10 @@ export default function SettingsLayout({
   const drawerLinks = createDrawerLinks({
     canReadUser: currentUserAbility.can('read', 'User'),
     canReadRole: currentUserAbility.can('read', 'Role'),
+    canManageSamlAuthProvider:
+      currentUserAbility.can('read', 'SamlAuthProvider') &&
+      currentUserAbility.can('update', 'SamlAuthProvider') &&
+      currentUserAbility.can('create', 'SamlAuthProvider'),
   });
 
   return (
