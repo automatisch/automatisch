@@ -46,7 +46,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
   };
 
   return (
-    <MuiAppBar>
+    <MuiAppBar data-test="app-bar">
       <Container maxWidth={maxWidth} disableGutters>
         <Toolbar>
           <IconButton
@@ -61,7 +61,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
           </IconButton>
 
           <div style={{ flexGrow: 1, display: 'flex' }}>
-            <Link to={URLS.DASHBOARD}>
+            <Link to={URLS.DASHBOARD} data-test="logo">
               <Logo />
             </Link>
           </div>

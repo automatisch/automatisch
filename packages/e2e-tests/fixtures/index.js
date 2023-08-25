@@ -1,8 +1,9 @@
-const { test, expect} = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const { ApplicationsPage } = require('./applications-page');
 const { ConnectionsPage } = require('./connections-page');
 const { ExecutionsPage } = require('./executions-page');
 const { FlowEditorPage } = require('./flow-editor-page');
+const { UserInterfacePage } = require('./user-interface-page');
 const { LoginPage } = require('./login-page');
 
 exports.test = test.extend({
@@ -23,6 +24,9 @@ exports.test = test.extend({
   flowEditorPage: async ({ page }, use) => {
     await use(new FlowEditorPage(page));
   },
+  userInterfacePage: async ({ page }, use) => {
+    await use(new UserInterfacePage(page));
+  },
 });
 
 expect.extend({
@@ -30,7 +34,7 @@ expect.extend({
     await expect(locator).not.toHaveAttribute('aria-disabled', 'true');
 
     return { pass: true };
-  }
+  },
 });
 
 exports.expect = expect;

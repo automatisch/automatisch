@@ -6,6 +6,7 @@ export class BasePage {
    */
   constructor(page) {
     this.page = page;
+    this.snackbar = this.page.locator('#notistack-snackbar');
   }
 
   async clickAway() {
