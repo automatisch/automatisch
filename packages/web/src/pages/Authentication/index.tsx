@@ -93,7 +93,7 @@ function AuthenticationPage() {
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
-      <Grid container item xs={12} sm={9} md={8} lg={6}>
+      <Grid container item xs={12} sm={10} md={9}>
         <Grid container item xs={12} sx={{ mb: [2, 5] }}>
           <PageTitle>{formatMessage('authenticationPage.title')}</PageTitle>
         </Grid>
