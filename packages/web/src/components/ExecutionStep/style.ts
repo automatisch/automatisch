@@ -1,18 +1,22 @@
 import { styled, alpha } from '@mui/material/styles';
 import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
 
 export const AppIconWrapper = styled('div')`
-  position: relative;
+  display: flex;
+  align-items: center;
 `;
 
+
 export const AppIconStatusIconWrapper = styled('span')`
-  position: absolute;
-  right: 0;
-  top: 0;
-  transform: translate(50%, -50%);
   display: inline-flex;
+  position: relative;
 
   svg {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%, -50%);
     // to make it distinguishable over an app icon
     background: white;
     border-radius: 100%;
@@ -31,7 +35,7 @@ type HeaderProps = {
 
 export const Header = styled('div', {
   shouldForwardProp: (prop) => prop !== 'collapsed',
-})<HeaderProps>`
+}) <HeaderProps>`
   padding: ${({ theme }) => theme.spacing(2)};
   cursor: ${({ collapsed }) => (collapsed ? 'pointer' : 'unset')};
 `;
@@ -42,3 +46,20 @@ export const Content = styled('div')`
   border-right: none;
   padding: ${({ theme }) => theme.spacing(2, 0)};
 `;
+
+export const Metadata = styled(Box)`
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "step id"
+    "step date";
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+    "id"
+    "step"
+    "date";
+  }
+` as typeof Box;

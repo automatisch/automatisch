@@ -19,13 +19,26 @@ export const APP = (appKey: string) => `/app/${appKey}`;
 export const APP_PATTERN = '/app/:appKey';
 export const APP_CONNECTIONS = (appKey: string) => `/app/${appKey}/connections`;
 export const APP_CONNECTIONS_PATTERN = '/app/:appKey/connections';
-export const APP_ADD_CONNECTION = (appKey: string) =>
-  `/app/${appKey}/connections/add`;
+export const APP_ADD_CONNECTION = (appKey: string, shared = false) =>
+  `/app/${appKey}/connections/add?shared=${shared}`;
+export const APP_ADD_CONNECTION_WITH_AUTH_CLIENT_ID = (
+  appKey: string,
+  appAuthClientId: string
+) => `/app/${appKey}/connections/add?appAuthClientId=${appAuthClientId}`;
 export const APP_ADD_CONNECTION_PATTERN = '/app/:appKey/connections/add';
 export const APP_RECONNECT_CONNECTION = (
   appKey: string,
-  connectionId: string
-) => `/app/${appKey}/connections/${connectionId}/reconnect`;
+  connectionId: string,
+  appAuthClientId?: string
+) => {
+  const path = `/app/${appKey}/connections/${connectionId}/reconnect`;
+
+  if (appAuthClientId) {
+    return `${path}?appAuthClientId=${appAuthClientId}`;
+  }
+
+  return path;
+};
 export const APP_RECONNECT_CONNECTION_PATTERN =
   '/app/:appKey/connections/:connectionId/reconnect';
 export const APP_FLOWS = (appKey: string) => `/app/${appKey}/flows`;
@@ -84,6 +97,7 @@ export const ROLES = `${ADMIN_SETTINGS}/roles`;
 export const ROLE = (roleId: string) => `${ROLES}/${roleId}`;
 export const ROLE_PATTERN = `${ROLES}/:roleId`;
 export const CREATE_ROLE = `${ROLES}/create`;
+export const USER_INTERFACE = `${ADMIN_SETTINGS}/user-interface`;
 export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
 
 export const DASHBOARD = FLOWS;

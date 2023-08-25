@@ -67,11 +67,21 @@ function addReconnectionSteps(app: IApp): IApp {
 
   if (hasReconnectionSteps) return app;
 
-  const updatedSteps = replaceCreateConnectionsWithUpdate(
-    app.auth.authenticationSteps
-  );
+  if (app.auth.authenticationSteps) {
+    const updatedSteps = replaceCreateConnectionsWithUpdate(
+      app.auth.authenticationSteps
+    );
 
-  app.auth.reconnectionSteps = [resetConnectionStep, ...updatedSteps];
+    app.auth.reconnectionSteps = [resetConnectionStep, ...updatedSteps];
+  }
+
+  if (app.auth.sharedAuthenticationSteps) {
+    const updatedStepsWithEmbeddedDefaults = replaceCreateConnectionsWithUpdate(
+      app.auth.sharedAuthenticationSteps
+    );
+
+    app.auth.sharedReconnectionSteps = [resetConnectionStep, ...updatedStepsWithEmbeddedDefaults];
+  }
 
   return app;
 }

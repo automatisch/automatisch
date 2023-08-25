@@ -20,7 +20,7 @@ interface CustomOptionsProps {
   onTabChange: (tabIndex: 0 | 1) => void;
   label?: string;
   initialTabIndex?: 0 | 1;
-};
+}
 
 const CustomOptions = (props: CustomOptionsProps) => {
   const {
@@ -34,17 +34,23 @@ const CustomOptions = (props: CustomOptionsProps) => {
     label,
     initialTabIndex,
   } = props;
-  const [activeTabIndex, setActiveTabIndex] = React.useState<number | undefined>(undefined);
 
-  React.useEffect(function applyInitialActiveTabIndex() {
-    setActiveTabIndex((currentActiveTabIndex) => {
-      if (currentActiveTabIndex === undefined) {
-        return initialTabIndex;
-      }
+  const [activeTabIndex, setActiveTabIndex] = React.useState<
+    number | undefined
+  >(undefined);
 
-      return currentActiveTabIndex;
-    });
-  }, [initialTabIndex]);
+  React.useEffect(
+    function applyInitialActiveTabIndex() {
+      setActiveTabIndex((currentActiveTabIndex) => {
+        if (currentActiveTabIndex === undefined) {
+          return initialTabIndex;
+        }
+
+        return currentActiveTabIndex;
+      });
+    },
+    [initialTabIndex]
+  );
 
   return (
     <Popper
@@ -75,22 +81,15 @@ const CustomOptions = (props: CustomOptionsProps) => {
         </Tabs>
 
         <TabPanel value={activeTabIndex ?? 0} index={0}>
-          <Options
-            data={options}
-            onOptionClick={onOptionClick}
-          />
+          <Options data={options} onOptionClick={onOptionClick} />
         </TabPanel>
 
         <TabPanel value={activeTabIndex ?? 0} index={1}>
-          <Suggestions
-            data={data}
-            onSuggestionClick={onSuggestionClick}
-          />
+          <Suggestions data={data} onSuggestionClick={onSuggestionClick} />
         </TabPanel>
       </Paper>
     </Popper>
   );
 };
-
 
 export default CustomOptions;

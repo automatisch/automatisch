@@ -5,6 +5,9 @@ type Query {
     onlyWithActions: Boolean
   ): [App]
   getApp(key: String!): App
+  getAppConfig(key: String!): AppConfig
+  getAppAuthClient(id: String!): AppAuthClient
+  getAppAuthClients(appKey: String!, active: Boolean): [AppAuthClient]
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
@@ -44,15 +47,18 @@ type Query {
   getRole(id: String!): Role
   getRoles: [Role]
   getSamlAuthProvider: SamlAuthProvider
+  getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
   getSubscriptionStatus: GetSubscriptionStatus
   getTrialStatus: GetTrialStatus
   getUser(id: String!): User
   getUsers(limit: Int!, offset: Int!): UserConnection
   healthcheck: AppHealth
-  listSamlAuthProviders: [ListSamlAuthProviders]
+  listSamlAuthProviders: [ListSamlAuthProvider]
 }
 
 type Mutation {
+  createAppConfig(input: CreateAppConfigInput): AppConfig
+  createAppAuthClient(input: CreateAppAuthClientInput): AppAuthClient
   createConnection(input: CreateConnectionInput): Connection
   createFlow(input: CreateFlowInput): Flow
   createRole(input: CreateRoleInput): Role
@@ -72,6 +78,8 @@ type Mutation {
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
   resetPassword(input: ResetPasswordInput): Boolean
+  updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
+  updateAppConfig(input: UpdateAppConfigInput): AppConfig
   updateConfig(input: JSONObject): JSONObject
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
@@ -162,6 +170,16 @@ type SubstepArgumentAdditionalFieldsArgument {
   value: String
 }
 
+type AppConfig {
+  id: String
+  key: String
+  allowCustomConnection: Boolean
+  canConnect: Boolean
+  canCustomConnect: Boolean
+  shared: Boolean
+  disabled: Boolean
+}
+
 type App {
   name: String
   key: String
@@ -181,7 +199,9 @@ type App {
 type AppAuth {
   fields: [Field]
   authenticationSteps: [AuthenticationStep]
+  sharedAuthenticationSteps: [AuthenticationStep]
   reconnectionSteps: [ReconnectionStep]
+  sharedReconnectionSteps: [ReconnectionStep]
 }
 
 enum ArgumentEnumType {
@@ -219,6 +239,8 @@ type AuthLink {
 type Connection {
   id: String
   key: String
+  reconnectable: Boolean
+  appAuthClientId: String
   formattedData: ConnectionData
   verified: Boolean
   app: App
@@ -321,6 +343,7 @@ type SamlAuthProvidersRoleMapping {
 type UserConnection {
   edges: [UserEdge]
   pageInfo: PageInfo
+  totalCount: Int
 }
 
 type UserEdge {
@@ -329,7 +352,8 @@ type UserEdge {
 
 input CreateConnectionInput {
   key: String!
-  formattedData: JSONObject!
+  appAuthClientId: String
+  formattedData: JSONObject
 }
 
 input GenerateAuthUrlInput {
@@ -338,7 +362,8 @@ input GenerateAuthUrlInput {
 
 input UpdateConnectionInput {
   id: String!
-  formattedData: JSONObject!
+  formattedData: JSONObject
+  appAuthClientId: String
 }
 
 input ResetConnectionInput {
@@ -691,7 +716,7 @@ type PaymentPlan {
   productId: String
 }
 
-type ListSamlAuthProviders {
+type ListSamlAuthProvider {
   id: String
   name: String
   issuer: String
@@ -724,6 +749,41 @@ type Condition {
 type Subject {
   label: String
   key: String
+}
+
+input CreateAppConfigInput {
+  key: String
+  allowCustomConnection: Boolean
+  shared: Boolean
+  disabled: Boolean
+}
+
+input UpdateAppConfigInput {
+  id: String
+  allowCustomConnection: Boolean
+  shared: Boolean
+  disabled: Boolean
+}
+
+type AppAuthClient {
+  id: String
+  appConfigId: String
+  name: String
+  active: Boolean
+}
+
+input CreateAppAuthClientInput {
+  appConfigId: String
+  name: String
+  formattedAuthDefaults: JSONObject
+  active: Boolean
+}
+
+input UpdateAppAuthClientInput {
+  id: String
+  name: String
+  formattedAuthDefaults: JSONObject
+  active: Boolean
 }
 
 schema {

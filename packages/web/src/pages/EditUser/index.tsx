@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
@@ -16,6 +15,7 @@ import * as URLS from 'config/urls';
 import useUser from 'hooks/useUser';
 import useRoles from 'hooks/useRoles.ee';
 import PageTitle from 'components/PageTitle';
+import Container from 'components/Container';
 import Form from 'components/Form';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import TextField from 'components/TextField';
@@ -65,7 +65,7 @@ export default function EditUser(): React.ReactElement {
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
-      <Grid container item xs={12} sm={9} md={8} lg={6}>
+      <Grid container item xs={12} sm={10} md={9}>
         <Grid item xs={12} sx={{ mb: [2, 5] }}>
           <PageTitle>{formatMessage('editUserPage.title')}</PageTitle>
         </Grid>

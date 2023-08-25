@@ -27,6 +27,8 @@ export interface IConnection {
   flowCount?: number;
   appData?: IApp;
   createdAt: string;
+  reconnectable?: boolean;
+  appAuthClientId?: string;
 }
 
 export interface IExecutionStep {
@@ -247,6 +249,8 @@ export interface IAuth {
   fields?: IField[];
   authenticationSteps?: IAuthenticationStep[];
   reconnectionSteps?: IAuthenticationStep[];
+  sharedAuthenticationSteps?: IAuthenticationStep[];
+  sharedReconnectionSteps?: IAuthenticationStep[];
 }
 
 export interface ITriggerOutput {
@@ -424,6 +428,24 @@ type TSamlAuthProvider = {
   defaultRoleId: string;
   active: boolean;
 };
+
+type AppConfig = {
+  id: string;
+  key: string;
+  allowCustomConnection: boolean;
+  canConnect: boolean;
+  canCustomConnect: boolean;
+  shared: boolean;
+  disabled: boolean;
+}
+
+type AppAuthClient = {
+  id: string;
+  name: string;
+  appConfigId: string;
+  authDefaults: string;
+  formattedAuthDefaults: IJSONObject;
+}
 
 declare module 'axios' {
   interface AxiosResponse {

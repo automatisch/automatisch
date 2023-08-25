@@ -21,6 +21,7 @@ const paginate = async (
       currentPage: Math.ceil(offset / limit + 1),
       totalPages: Math.ceil(count / limit),
     },
+    totalCount: count,
     edges: records.map((record: Base) => ({
       node: record,
     })),

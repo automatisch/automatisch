@@ -2,6 +2,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LockIcon from '@mui/icons-material/LockPerson';
+import BrushIcon from '@mui/icons-material/Brush';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
@@ -27,10 +28,12 @@ type DrawerLink = {
 function createDrawerLinks({
   canReadRole,
   canReadUser,
+  canUpdateConfig,
   canManageSamlAuthProvider,
 }: {
   canReadRole: boolean;
   canReadUser: boolean;
+  canUpdateConfig: boolean;
   canManageSamlAuthProvider: boolean;
 }) {
   const items = [
@@ -46,6 +49,13 @@ function createDrawerLinks({
           Icon: GroupsIcon,
           primary: 'adminSettingsDrawer.roles',
           to: URLS.ROLES,
+        }
+      : null,
+    canUpdateConfig
+      ? {
+          Icon: BrushIcon,
+          primary: 'adminSettingsDrawer.userInterface',
+          to: URLS.USER_INTERFACE,
         }
       : null,
     canManageSamlAuthProvider
@@ -81,6 +91,7 @@ export default function SettingsLayout({
   const drawerLinks = createDrawerLinks({
     canReadUser: currentUserAbility.can('read', 'User'),
     canReadRole: currentUserAbility.can('read', 'Role'),
+    canUpdateConfig: currentUserAbility.can('update', 'Config'),
     canManageSamlAuthProvider:
       currentUserAbility.can('read', 'SamlAuthProvider') &&
       currentUserAbility.can('update', 'SamlAuthProvider') &&

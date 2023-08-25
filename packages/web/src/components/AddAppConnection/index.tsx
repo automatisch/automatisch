@@ -1,17 +1,19 @@
-import * as React from 'react';
+import type { IApp, IField, IJSONObject } from '@automatisch/types';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import Dialog from '@mui/material/Dialog';
-import LoadingButton from '@mui/lab/LoadingButton';
+import DialogTitle from '@mui/material/DialogTitle';
+import * as React from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
-import type { IApp, IJSONObject, IField } from '@automatisch/types';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import useFormatMessage from 'hooks/useFormatMessage';
-import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
-import { processStep } from 'helpers/authenticationSteps';
+import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
 import InputCreator from 'components/InputCreator';
+import * as URLS from 'config/urls';
+import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
+import useFormatMessage from 'hooks/useFormatMessage';
 import { generateExternalLink } from '../../helpers/translationValues';
 import { Form } from './style';
 
@@ -21,24 +23,27 @@ type AddAppConnectionProps = {
   connectionId?: string;
 };
 
-type Response = {
-  [key: string]: any;
-};
-
 export default function AddAppConnection(
   props: AddAppConnectionProps
 ): React.ReactElement {
   const { application, connectionId, onClose } = props;
   const { name, authDocUrl, key, auth } = application;
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const formatMessage = useFormatMessage();
   const [error, setError] = React.useState<IJSONObject | null>(null);
   const [inProgress, setInProgress] = React.useState(false);
   const hasConnection = Boolean(connectionId);
-  const steps = hasConnection
-    ? auth?.reconnectionSteps
-    : auth?.authenticationSteps;
+  const useShared = searchParams.get('shared') === 'true';
+  const appAuthClientId = searchParams.get('appAuthClientId') || undefined;
+  const { authenticate } = useAuthenticateApp({
+    appKey: key,
+    connectionId,
+    appAuthClientId,
+    useShared: !!appAuthClientId,
+  });
 
-  React.useEffect(() => {
+  React.useEffect(function relayProviderData() {
     if (window.opener) {
       window.opener.postMessage({
         source: 'automatisch',
@@ -48,50 +53,60 @@ export default function AddAppConnection(
     }
   }, []);
 
-  const submitHandler: SubmitHandler<FieldValues> = React.useCallback(
-    async (data) => {
-      if (!steps) return;
+  React.useEffect(
+    function initiateSharedAuthenticationForGivenAuthClient() {
+      if (!appAuthClientId) return;
+      if (!authenticate) return;
 
-      setInProgress(true);
-      setError(null);
+      const asyncAuthenticate = async () => {
+        await authenticate();
 
-      const response: Response = {
-        key,
-        connection: {
-          id: connectionId,
-        },
-        fields: data,
+        navigate(URLS.APP_CONNECTIONS(key));
       };
 
-      let stepIndex = 0;
-      while (stepIndex < steps.length) {
-        const step = steps[stepIndex];
-        const variables = computeAuthStepVariables(step.arguments, response);
-
-        try {
-          const stepResponse = await processStep(step, variables);
-
-          response[step.name] = stepResponse;
-        } catch (err) {
-          const error = err as IJSONObject;
-          console.log(error);
-          setError((error.graphQLErrors as IJSONObject[])?.[0]);
-          setInProgress(false);
-
-          break;
-        }
-
-        stepIndex++;
-
-        if (stepIndex === steps.length) {
-          onClose(response);
-        }
-      }
-
-      setInProgress(false);
+      asyncAuthenticate();
     },
-    [connectionId, key, steps, onClose]
+    [appAuthClientId, authenticate]
   );
+
+  const handleClientClick = (appAuthClientId: string) =>
+    navigate(URLS.APP_ADD_CONNECTION_WITH_AUTH_CLIENT_ID(key, appAuthClientId));
+
+  const handleAuthClientsDialogClose = () =>
+    navigate(URLS.APP_CONNECTIONS(key));
+
+  const submitHandler: SubmitHandler<FieldValues> = React.useCallback(
+    async (data) => {
+      if (!authenticate) return;
+
+      setInProgress(true);
+
+      try {
+        const response = await authenticate({
+          fields: data,
+        });
+        onClose(response as Record<string, unknown>);
+      } catch (err) {
+        const error = err as IJSONObject;
+        console.log(error);
+        setError((error.graphQLErrors as IJSONObject[])?.[0]);
+      } finally {
+        setInProgress(false);
+      }
+    },
+    [authenticate]
+  );
+
+  if (useShared)
+    return (
+      <AppAuthClientsDialog
+        appKey={key}
+        onClose={handleAuthClientsDialogClose}
+        onClientClick={handleClientClick}
+      />
+    );
+
+  if (appAuthClientId) return <React.Fragment />;
 
   return (
     <Dialog open={true} onClose={onClose} data-test="add-app-connection-dialog">

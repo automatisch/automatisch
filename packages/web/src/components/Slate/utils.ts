@@ -3,7 +3,13 @@ import { withHistory } from 'slate-history';
 import { ReactEditor, withReact } from 'slate-react';
 import { IFieldDropdownOption } from '@automatisch/types';
 
-import type { CustomEditor, CustomElement, CustomText, ParagraphElement, VariableElement } from './types';
+import type {
+  CustomEditor,
+  CustomElement,
+  CustomText,
+  ParagraphElement,
+  VariableElement,
+} from './types';
 
 type StepWithVariables = {
   id: string;
@@ -13,7 +19,7 @@ type StepWithVariables = {
     sampleValue: string;
     value: string;
   }[];
-}
+};
 
 type StepsWithVariables = StepWithVariables[];
 
@@ -26,10 +32,7 @@ function isCustomText(value: any): value is CustomText {
   return false;
 }
 
-function getStepPosition(
-  id: string,
-  stepsWithVariables: StepsWithVariables
-) {
+function getStepPosition(id: string, stepsWithVariables: StepsWithVariables) {
   const stepIndex = stepsWithVariables.findIndex((stepWithVariables) => {
     return stepWithVariables.id === id;
   });
@@ -48,29 +51,36 @@ function getVariableStepId(variable: string) {
   return stepId;
 }
 
-function getVariableSampleValue(variable: string, stepsWithVariables: StepsWithVariables) {
+function getVariableSampleValue(
+  variable: string,
+  stepsWithVariables: StepsWithVariables
+) {
   const variableStepId = getVariableStepId(variable);
-  const stepWithVariables = stepsWithVariables.find(({ id }: { id: string }) => id === variableStepId);
+  const stepWithVariables = stepsWithVariables.find(
+    ({ id }: { id: string }) => id === variableStepId
+  );
 
   if (!stepWithVariables) return null;
 
   const variableName = getVariableName(variable);
-  const variableData = stepWithVariables.output.find(({ value }) => variableName === value);
+  const variableData = stepWithVariables.output.find(
+    ({ value }) => variableName === value
+  );
 
   if (!variableData) return null;
 
   return variableData.sampleValue;
 }
 
-function getVariableDetails(variable: string, stepsWithVariables: StepsWithVariables) {
+function getVariableDetails(
+  variable: string,
+  stepsWithVariables: StepsWithVariables
+) {
   const variableName = getVariableName(variable);
   const stepId = getVariableStepId(variableName);
   const stepPosition = getStepPosition(stepId, stepsWithVariables);
   const sampleValue = getVariableSampleValue(variable, stepsWithVariables);
-  const label = variableName.replace(
-    `step.${stepId}.`,
-    `step${stepPosition}.`
-  );
+  const label = variableName.replace(`step.${stepId}.`, `step${stepPosition}.`);
 
   return {
     sampleValue,
@@ -114,7 +124,10 @@ export const deserialize = (
         type: 'paragraph',
         children: nodes.map((node) => {
           if (node.match(variableRegExp)) {
-            const variableDetails = getVariableDetails(node, stepsWithVariables);
+            const variableDetails = getVariableDetails(
+              node,
+              stepsWithVariables
+            );
 
             return {
               type: 'variable',
@@ -199,7 +212,10 @@ export const insertVariable = (
   variableData: Record<string, unknown>,
   stepsWithVariables: StepsWithVariables
 ) => {
-  const variableDetails = getVariableDetails(`{{${variableData.value}}}`, stepsWithVariables);
+  const variableDetails = getVariableDetails(
+    `{{${variableData.value}}}`,
+    stepsWithVariables
+  );
 
   const variable: VariableElement = {
     type: 'variable',
@@ -217,15 +233,18 @@ export const insertVariable = (
 export const focusEditor = (editor: CustomEditor) => {
   ReactEditor.focus(editor);
   editor.move();
-}
+};
 
-export const resetEditor = (editor: CustomEditor, options?: { focus: boolean }) => {
+export const resetEditor = (
+  editor: CustomEditor,
+  options?: { focus: boolean }
+) => {
   const focus = options?.focus || false;
 
   editor.removeNodes({
     at: {
       anchor: editor.start([]),
-      focus: editor.end([])
+      focus: editor.end([]),
     },
   });
 
@@ -235,9 +254,12 @@ export const resetEditor = (editor: CustomEditor, options?: { focus: boolean }) 
   if (focus) {
     focusEditor(editor);
   }
-}
+};
 
-export const overrideEditorValue = (editor: CustomEditor, options: { option: IFieldDropdownOption, focus: boolean }) => {
+export const overrideEditorValue = (
+  editor: CustomEditor,
+  options: { option: IFieldDropdownOption; focus: boolean }
+) => {
   const { option, focus } = options;
 
   const variable: ParagraphElement = {
@@ -245,8 +267,8 @@ export const overrideEditorValue = (editor: CustomEditor, options: { option: IFi
     children: [
       {
         value: option.value as string,
-        text: option.label as string
-      }
+        text: option.label as string,
+      },
     ],
   };
 
@@ -254,7 +276,7 @@ export const overrideEditorValue = (editor: CustomEditor, options: { option: IFi
     editor.removeNodes({
       at: {
         anchor: editor.start([]),
-        focus: editor.end([])
+        focus: editor.end([]),
       },
     });
 
@@ -270,9 +292,9 @@ export const createTextNode = (text: string): ParagraphElement => ({
   type: 'paragraph',
   children: [
     {
-      text
-    }
-  ]
+      text,
+    },
+  ],
 });
 
 export const customizeEditor = (editor: CustomEditor): CustomEditor => {
