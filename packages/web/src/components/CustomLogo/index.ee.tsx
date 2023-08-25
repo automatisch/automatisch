@@ -8,7 +8,10 @@ const CustomLogo = () => {
   const logoSvgData = config['logo.svgData'] as string;
 
   return (
-    <img src={`data:image/svg+xml;utf8,${encodeURIComponent(logoSvgData)}`} />
+    <img
+      data-test="custom-logo"
+      src={`data:image/svg+xml;utf8,${encodeURIComponent(logoSvgData)}`}
+    />
   );
 };
 

@@ -90,18 +90,21 @@ export default function UserInterface(): React.ReactElement {
                   name="palette.primary.main"
                   label={formatMessage('userInterfacePage.mainColor')}
                   fullWidth
+                  data-test="primary-main-color-input"
                 />
 
                 <ColorInput
                   name="palette.primary.dark"
                   label={formatMessage('userInterfacePage.darkColor')}
                   fullWidth
+                  data-test="primary-dark-color-input"
                 />
 
                 <ColorInput
                   name="palette.primary.light"
                   label={formatMessage('userInterfacePage.lightColor')}
                   fullWidth
+                  data-test="primary-light-color-input"
                 />
 
                 <TextField
@@ -109,6 +112,7 @@ export default function UserInterface(): React.ReactElement {
                   label={formatMessage('userInterfacePage.svgData')}
                   multiline
                   fullWidth
+                  data-test="logo-svg-data-text-field"
                 />
 
                 <LoadingButton
@@ -117,6 +121,7 @@ export default function UserInterface(): React.ReactElement {
                   color="primary"
                   sx={{ boxShadow: 2 }}
                   loading={loading}
+                  data-test="update-button"
                 >
                   {formatMessage('userInterfacePage.submit')}
                 </LoadingButton>

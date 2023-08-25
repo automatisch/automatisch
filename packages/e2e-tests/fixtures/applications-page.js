@@ -1,7 +1,9 @@
 const path = require('node:path');
-const { BasePage } = require('./base-page');
+const { AuthenticatedPage } = require('./authenticated-page');
 
-export class ApplicationsPage extends BasePage {
+export class ApplicationsPage extends AuthenticatedPage {
+  screenshotPath = '/applications';
+
   /**
    * @param {import('@playwright/test').Page} page
    */
@@ -10,13 +12,5 @@ export class ApplicationsPage extends BasePage {
 
     this.drawerLink = this.page.getByTestId('apps-page-drawer-link');
     this.addConnectionButton = this.page.getByTestId('add-connection-button');
-  }
-
-  async screenshot(options = {}) {
-    const { path: plainPath, ...restOptions } = options;
-
-    const computedPath = path.join('applications', plainPath);
-
-    return await super.screenshot({ path: computedPath, ...restOptions });
   }
 }

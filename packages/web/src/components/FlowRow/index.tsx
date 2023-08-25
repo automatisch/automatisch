@@ -18,7 +18,7 @@ type FlowRowProps = {
   flow: IFlow;
 };
 
-function getFlowStatusTranslationKey(status: IFlow["status"]): string {
+function getFlowStatusTranslationKey(status: IFlow['status']): string {
   if (status === 'published') {
     return 'flow.published';
   } else if (status === 'paused') {
@@ -28,7 +28,16 @@ function getFlowStatusTranslationKey(status: IFlow["status"]): string {
   return 'flow.draft';
 }
 
-function getFlowStatusColor(status: IFlow["status"]): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' {
+function getFlowStatusColor(
+  status: IFlow['status']
+):
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning' {
   if (status === 'published') {
     return 'success';
   } else if (status === 'paused') {
@@ -64,8 +73,12 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
 
   return (
     <>
-      <Card sx={{ mb: 1 }}>
-        <CardActionArea component={Link} to={URLS.FLOW(flow.id)}>
+      <Card sx={{ mb: 1 }} data-test="flow-row">
+        <CardActionArea
+          component={Link}
+          to={URLS.FLOW(flow.id)}
+          data-test="card-action-area"
+        >
           <CardContent>
             <Apps direction="row" gap={1} sx={{ gridArea: 'apps' }}>
               <FlowAppIcons steps={flow.steps} />
@@ -98,9 +111,7 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
                 size="small"
                 color={getFlowStatusColor(flow?.status)}
                 variant={flow?.active ? 'filled' : 'outlined'}
-                label={formatMessage(
-                  getFlowStatusTranslationKey(flow?.status)
-                )}
+                label={formatMessage(getFlowStatusTranslationKey(flow?.status))}
               />
 
               <IconButton

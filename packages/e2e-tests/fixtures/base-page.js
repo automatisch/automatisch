@@ -1,11 +1,14 @@
 const path = require('node:path');
 
 export class BasePage {
+  screenshotPath = '/';
+
   /**
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {
     this.page = page;
+    this.snackbar = this.page.locator('#notistack-snackbar');
   }
 
   async clickAway() {
@@ -15,7 +18,11 @@ export class BasePage {
   async screenshot(options = {}) {
     const { path: plainPath, ...restOptions } = options;
 
-    const computedPath = path.join('output/screenshots', plainPath);
+    const computedPath = path.join(
+      'output/screenshots',
+      this.screenshotPath,
+      plainPath
+    );
 
     return await this.page.screenshot({ path: computedPath, ...restOptions });
   }

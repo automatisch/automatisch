@@ -46,7 +46,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
   };
 
   return (
-    <MuiAppBar>
+    <MuiAppBar data-test="app-bar">
       <Container maxWidth={maxWidth} disableGutters>
         <Toolbar>
           <IconButton

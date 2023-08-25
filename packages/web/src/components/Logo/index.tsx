@@ -9,12 +9,12 @@ const Logo = () => {
   const { config, loading } = useConfig(['logo.svgData']);
 
   const logoSvgData = config?.['logo.svgData'] as string;
-  if (loading && !logoSvgData) return (<React.Fragment />);
+  if (loading && !logoSvgData) return <React.Fragment />;
 
   if (logoSvgData) return <CustomLogo />;
 
   return (
-    <Typography variant="h6" component="h1" noWrap>
+    <Typography variant="h6" component="h1" data-test="typography-logo" noWrap>
       <FormattedMessage id="brandText" />
     </Typography>
   );

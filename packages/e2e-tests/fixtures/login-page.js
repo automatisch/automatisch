@@ -3,6 +3,8 @@ const { expect } = require('@playwright/test');
 const { BasePage } = require('./base-page');
 
 export class LoginPage extends BasePage {
+  path = '/login';
+
   /**
    * @param {import('@playwright/test').Page} page
    */
@@ -14,8 +16,6 @@ export class LoginPage extends BasePage {
     this.passwordTextField = this.page.getByTestId('password-text-field');
     this.loginButton = this.page.getByTestId('login-button');
   }
-
-  path = '/login';
 
   async login() {
     await this.page.goto(this.path);

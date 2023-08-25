@@ -42,6 +42,7 @@ function createDrawerLinks({
           Icon: GroupIcon,
           primary: 'adminSettingsDrawer.users',
           to: URLS.USERS,
+          dataTest: 'users-drawer-link',
         }
       : null,
     canReadRole
@@ -49,6 +50,7 @@ function createDrawerLinks({
           Icon: GroupsIcon,
           primary: 'adminSettingsDrawer.roles',
           to: URLS.ROLES,
+          dataTest: 'roles-drawer-link',
         }
       : null,
     canUpdateConfig
@@ -56,6 +58,7 @@ function createDrawerLinks({
           Icon: BrushIcon,
           primary: 'adminSettingsDrawer.userInterface',
           to: URLS.USER_INTERFACE,
+          dataTest: 'user-interface-drawer-link',
         }
       : null,
     canManageSamlAuthProvider
@@ -63,6 +66,7 @@ function createDrawerLinks({
           Icon: LockIcon,
           primary: 'adminSettingsDrawer.authentication',
           to: URLS.AUTHENTICATION,
+          dataTest: 'authentication-drawer-link',
         }
       : null,
   ].filter(Boolean) as DrawerLink[];
@@ -75,6 +79,7 @@ const drawerBottomLinks = [
     Icon: ArrowBackIosNewIcon,
     primary: 'adminSettingsDrawer.goBack',
     to: '/',
+    dataTest: 'go-back-drawer-link',
   },
 ];
 
