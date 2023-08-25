@@ -98,6 +98,7 @@ export const ROLE = (roleId: string) => `${ROLES}/${roleId}`;
 export const ROLE_PATTERN = `${ROLES}/:roleId`;
 export const CREATE_ROLE = `${ROLES}/create`;
 export const USER_INTERFACE = `${ADMIN_SETTINGS}/user-interface`;
+export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
 
 export const DASHBOARD = FLOWS;
 

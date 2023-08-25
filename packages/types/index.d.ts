@@ -119,8 +119,8 @@ export interface IPermission {
 
 export interface IPermissionCatalog {
   actions: { label: string; key: string; subjects: string[] }[];
-  subjects: { label: string; key: string; }[];
-  conditions: { label: string; key: string; }[];
+  subjects: { label: string; key: string }[];
+  conditions: { label: string; key: string }[];
 }
 
 export interface IFieldDropdown {
@@ -418,7 +418,7 @@ type TSamlAuthProvider = {
   id: string;
   name: string;
   certificate: string;
-  signatureAlgorithm: "sha1" | "sha256" | "sha512";
+  signatureAlgorithm: 'sha1' | 'sha256' | 'sha512';
   issuer: string;
   entryPoint: string;
   firstnameAttributeName: string;
@@ -426,7 +426,8 @@ type TSamlAuthProvider = {
   emailAttributeName: string;
   roleAttributeName: string;
   defaultRoleId: string;
-}
+  active: boolean;
+};
 
 type AppConfig = {
   id: string;

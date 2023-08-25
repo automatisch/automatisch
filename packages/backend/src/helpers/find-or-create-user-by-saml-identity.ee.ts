@@ -48,7 +48,7 @@ const findOrCreateUserBySamlIdentity = async (
           .join(' '),
         email: mappedUser.email as string,
         roleId:
-          samlAuthProviderRoleMapping.roleId || samlAuthProvider.defaultRoleId,
+          samlAuthProviderRoleMapping?.roleId || samlAuthProvider.defaultRoleId,
         identities: [
           {
             remoteId: mappedUser.id as string,

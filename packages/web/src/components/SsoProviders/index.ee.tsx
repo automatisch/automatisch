@@ -28,7 +28,7 @@ function SsoProviders() {
               variant="outlined"
             >
               {formatMessage('ssoProviders.loginWithProvider', {
-                providerName: provider.name
+                providerName: provider.name,
               })}
             </Button>
           ))}

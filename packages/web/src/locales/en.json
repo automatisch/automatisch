@@ -15,6 +15,7 @@
   "settingsDrawer.billingAndUsage": "Billing and usage",
   "adminSettingsDrawer.users": "Users",
   "adminSettingsDrawer.roles": "Roles",
+  "adminSettingsDrawer.authentication": "Authentication",
   "adminSettingsDrawer.userInterface": "User Interface",
   "adminSettingsDrawer.goBack": "Go to the dashboard",
   "app.connectionCount": "{count} connections",
@@ -223,5 +224,19 @@
   "userInterfacePage.darkColor": "Primary dark color",
   "userInterfacePage.lightColor": "Primary light color",
   "userInterfacePage.svgData": "Logo SVG code",
-  "userInterfacePage.submit": "Update"
+  "userInterfacePage.submit": "Update",
+  "authenticationPage.title": "Single Sign-On with SAML",
+  "authenticationForm.active": "Active",
+  "authenticationForm.name": "Name",
+  "authenticationForm.certificate": "Certificate",
+  "authenticationForm.signatureAlgorithm": "Signature algorithm",
+  "authenticationForm.issuer": "Issuer",
+  "authenticationForm.entryPoint": "Entry point",
+  "authenticationForm.firstnameAttributeName": "Firstname attribute name",
+  "authenticationForm.surnameAttributeName": "Surname attribute name",
+  "authenticationForm.emailAttributeName": "Email attribute name",
+  "authenticationForm.roleAttributeName": "Role attribute name",
+  "authenticationForm.defaultRole": "Default role",
+  "authenticationForm.successfullySaved": "The provider has been saved.",
+  "authenticationForm.save": "Save"
 }

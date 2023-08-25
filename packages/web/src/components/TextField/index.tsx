@@ -67,6 +67,7 @@ export default function TextField(props: TextFieldProps): React.ReactElement {
         <MuiTextField
           {...textFieldProps}
           {...field}
+          required={required}
           disabled={disabled}
           onChange={(...args) => {
             controllerOnChange(...args);
