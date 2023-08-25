@@ -1,20 +1,15 @@
 const path = require('node:path');
-const { BasePage } = require('./base-page');
+const { AuthenticatedPage } = require('./authenticated-page');
 
-export class UserInterfacePage extends BasePage {
+export class UserInterfacePage extends AuthenticatedPage {
+  screenshotPath = '/user-interface';
+
+  /**
+   * @param {import('@playwright/test').Page} page
+   */
   constructor(page) {
     super(page);
 
-    this.profileMenuButton = this.page.getByTestId('profile-menu-button');
-    this.adminMenuItem = this.page.getByRole('menuitem', { name: 'Admin' });
-    this.userInterfaceDrawerItem = this.page.getByRole('button', {
-      name: 'User Interface',
-    });
-    this.appBar = this.page.getByTestId('app-bar');
-    this.goToDashboardButton = this.page.getByRole('button', {
-      name: 'Go to the dashboard',
-    });
-    this.logoSrc = this.page.getByTestId('logo').locator('img');
     this.flowRowCardActionArea = this.page
       .getByTestId('flow-row')
       .first()
@@ -39,14 +34,6 @@ export class UserInterfacePage extends BasePage {
     this.primaryLightColorButton = this.page
       .getByTestId('primary-light-color-input')
       .getByTestId('color-button');
-  }
-
-  async screenshot(options = {}) {
-    const { path: plainPath, ...restOptions } = options;
-
-    const computedPath = path.join('user-interface', plainPath);
-
-    return await super.screenshot({ path: computedPath, ...restOptions });
   }
 
   hexToRgb(hexColor) {

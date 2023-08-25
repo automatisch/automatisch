@@ -1,7 +1,7 @@
-import Button from '@mui/material/Button';
+import MuiButton from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-const StyledButton = styled(Button)(() => ({
+export const Button = styled(MuiButton)(() => ({
   backgroundSize: '8px 8px',
   backgroundPosition: '0 0, 4px 0, 4px -4px, 0px 4px',
   transition: 'none',
@@ -12,6 +12,4 @@ const StyledButton = styled(Button)(() => ({
   aspectRatio: '1 / 1',
   height: '24px',
   minWidth: 0,
-}));
-
-export { StyledButton };
+})) as typeof MuiButton;

@@ -1,7 +1,9 @@
 const path = require('node:path');
-const { BasePage } = require('./base-page');
+const { AuthenticatedPage } = require('./authenticated-page');
 
-export class FlowEditorPage extends BasePage {
+export class FlowEditorPage extends AuthenticatedPage {
+  screenshotPath = '/flow-editor';
+
   /**
    * @param {import('@playwright/test').Page} page
    */
@@ -20,13 +22,5 @@ export class FlowEditorPage extends BasePage {
     this.infoSnackbar = this.page.getByTestId('flow-cannot-edit-info-snackbar');
     this.trigger = this.page.getByLabel('Trigger on weekends?');
     this.stepCircularLoader = this.page.getByTestId('step-circular-loader');
-  }
-
-  async screenshot(options = {}) {
-    const { path: plainPath, ...restOptions } = options;
-
-    const computedPath = path.join('flow-editor', plainPath);
-
-    return await super.screenshot({ path: computedPath, ...restOptions });
   }
 }

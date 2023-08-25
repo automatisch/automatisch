@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonProps } from '@mui/material/Button';
-import { StyledButton } from './style';
+import { Button } from './style';
 
 const BG_IMAGE_FALLBACK =
   'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(135deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(135deg, transparent 75%, #ccc 75%) /*! @noflip */';
@@ -23,7 +23,7 @@ const ColorButton = (props: ColorButtonProps) => {
   } = props;
 
   return (
-    <StyledButton
+    <Button
       data-test="color-button"
       disableTouchRipple
       style={{

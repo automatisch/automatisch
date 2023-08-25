@@ -1,14 +1,8 @@
 const path = require('node:path');
-const { BasePage } = require('./base-page');
+const { AuthenticatedPage } = require('./authenticated-page');
 
-export class ConnectionsPage extends BasePage {
-  async screenshot(options = {}) {
-    const { path: plainPath, ...restOptions } = options;
-
-    const computedPath = path.join('connections', plainPath);
-
-    return await super.screenshot({ path: computedPath, ...restOptions });
-  }
+export class ConnectionsPage extends AuthenticatedPage {
+  screenshotPath = '/connections';
 
   async clickAddConnectionButton() {
     await this.page.getByTestId('add-connection-button').click();

@@ -14,7 +14,7 @@ test.describe('User interface page', () => {
   });
 
   test.describe('checks if the shown values are used', async () => {
-    test('checks shown primary main color', async ({ userInterfacePage }) => {
+    test('checks primary main color', async ({ userInterfacePage }) => {
       await userInterfacePage.primaryMainColorInput.waitFor({
         state: 'attached',
       });
@@ -29,7 +29,7 @@ test.describe('User interface page', () => {
       );
     });
 
-    test('checks shown primary dark color', async ({ userInterfacePage }) => {
+    test('checks primary dark color', async ({ userInterfacePage }) => {
       await userInterfacePage.primaryDarkColorInput.waitFor({
         state: 'attached',
       });
@@ -44,10 +44,10 @@ test.describe('User interface page', () => {
       );
     });
 
-    test('checks shown logo svg code', async ({ userInterfacePage }) => {
+    test('checks custom logo', async ({ userInterfacePage }) => {
       const initialLogoSvgCode =
         await userInterfacePage.logoSvgCodeInput.inputValue();
-      const logoSrcAttribute = await userInterfacePage.logoSrc.getAttribute(
+      const logoSrcAttribute = await userInterfacePage.customLogo.getAttribute(
         'src'
       );
       const svgCode = userInterfacePage.encodeSVG(initialLogoSvgCode);

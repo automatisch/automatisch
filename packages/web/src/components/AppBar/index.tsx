@@ -61,7 +61,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
           </IconButton>
 
           <div style={{ flexGrow: 1, display: 'flex' }}>
-            <Link to={URLS.DASHBOARD} data-test="logo">
+            <Link to={URLS.DASHBOARD}>
               <Logo />
             </Link>
           </div>
