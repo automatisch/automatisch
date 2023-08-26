@@ -6,7 +6,8 @@ test.describe('Apps page', () => {
     await applicationsPage.drawerLink.click();
   });
 
-  test('displays applications', async ({ applicationsPage }) => {
+  // no connected application exists in an empty account
+  test.skip('displays no applications', async ({ applicationsPage }) => {
     await applicationsPage.page.getByTestId('apps-loader').waitFor({
       state: 'detached',
     });

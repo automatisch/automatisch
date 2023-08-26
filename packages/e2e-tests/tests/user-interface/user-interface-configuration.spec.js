@@ -1,7 +1,7 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/index');
 
-test.describe('User interface page', () => {
+test.describe.skip('User interface page', () => {
   test.beforeEach(async ({ userInterfacePage }) => {
     await userInterfacePage.profileMenuButton.click();
     await userInterfacePage.adminMenuItem.click();

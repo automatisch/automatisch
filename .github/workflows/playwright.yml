@@ -1,31 +1,87 @@
 name: Automatisch UI Tests
 on:
+  push:
   schedule:
     - cron: '0 12 * * *'
   workflow_dispatch:
+
+env:
+  ENCRYPTION_KEY: sample_encryption_key
+  WEBHOOK_SECRET_KEY: sample_webhook_secret_key
+  APP_SECRET_KEY: sample_app_secret_key
+  POSTGRES_HOST: localhost
+  POSTGRES_DATABASE: automatisch
+  POSTGRES_PORT: 5432
+  POSTGRES_USERNAME: automatisch_user
+  POSTGRES_PASSWORD: automatisch_password
+  REDIS_HOST: localhost
+  APP_ENV: production
+  LICENSE_KEY: ${{ secrets.E2E_LICENSE_KEY }}
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.5-alpine
+        env:
+          POSTGRES_DB: automatisch
+          POSTGRES_USER: automatisch_user
+          POSTGRES_PASSWORD: automatisch_password
+        options: >-
+          --health-cmd "pg_isready -U automatisch_user -d automatisch"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7.0.4-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Install dependencies
-        run: yarn
+        run: yarn && yarn lerna bootstrap
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
+      - name: Build Automatisch
+        run: yarn lerna run --scope=@*/{web,backend,cli} build
+        env:
+          # Keep this until we clean up warnings in build processes
+          CI: false
+      - name: Migrate database
+        working-directory: ./packages/backend
+        run: yarn db:migrate --migrations-directory ./dist/src/db/migrations
+      - name: Seed user
+        working-directory: ./packages/backend
+        run: yarn db:seed:user &
+      - name: Run Automatisch
+        run: yarn start &
+        working-directory: ./packages/backend
+      - name: Run Automatisch worker
+        run: node dist/src/worker.js &
+        working-directory: ./packages/backend
       - name: Run Playwright tests
         working-directory: ./packages/e2e-tests
         env:
           LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
           LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+          BASE_URL: ${{ vars.E2E_BASE_URL }}
         run: yarn test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
-          path: test-results/
+          path: ./packages/e2e-tests/test-results/
           retention-days: 30

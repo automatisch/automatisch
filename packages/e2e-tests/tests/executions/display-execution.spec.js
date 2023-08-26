@@ -1,7 +1,8 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/index');
 
-test.describe('Executions page', () => {
+// no execution data exists in an empty account
+test.describe.skip('Executions page', () => {
   test.beforeEach(async ({ page, executionsPage }) => {
     await page.getByTestId('executions-page-drawer-link').click();
     await page.getByTestId('execution-row').first().click();
