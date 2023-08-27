@@ -17,13 +17,18 @@ export class LoginPage extends BasePage {
     this.loginButton = this.page.getByTestId('login-button');
   }
 
-  async login() {
+  async open() {
+    return await this.page.goto(this.path);
+  }
+
+  async login(
+    email = process.env.LOGIN_EMAIL,
+    password = process.env.LOGIN_PASSWORD
+  ) {
     await this.page.goto(this.path);
-    await this.emailTextField.fill(process.env.LOGIN_EMAIL);
-    await this.passwordTextField.fill(process.env.LOGIN_PASSWORD);
+    await this.emailTextField.fill(email);
+    await this.passwordTextField.fill(password);
 
     await this.loginButton.click();
-
-    await expect(this.loginButton).not.toBeVisible();
   }
 }

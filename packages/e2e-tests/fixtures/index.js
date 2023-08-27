@@ -8,7 +8,11 @@ const { LoginPage } = require('./login-page');
 
 exports.test = test.extend({
   page: async ({ page }, use) => {
-    await new LoginPage(page).login();
+    const loginPage = new LoginPage(page);
+    await loginPage.login();
+
+    await expect(loginPage.loginButton).not.toBeVisible();
+    await expect(page).toHaveURL('/flows');
 
     await use(page);
   },
@@ -26,6 +30,19 @@ exports.test = test.extend({
   },
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));
+  },
+});
+
+exports.publicTest = test.extend({
+  page: async ({ page }, use) => {
+    await use(page);
+  },
+  loginPage: async ({ page }, use) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.open();
+
+    await use(loginPage);
   },
 });
 
