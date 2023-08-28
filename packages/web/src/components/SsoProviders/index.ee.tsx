@@ -24,7 +24,7 @@ function SsoProviders() {
             <Button
               key={provider.id}
               component="a"
-              href={URLS.SSO_LOGIN(provider.issuer)}
+              href={provider.loginUrl}
               variant="outlined"
             >
               {formatMessage('ssoProviders.loginWithProvider', {

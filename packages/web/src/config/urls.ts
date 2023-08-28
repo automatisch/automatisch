@@ -1,5 +1,3 @@
-import appConfig from './app';
-
 export const CONNECTIONS = '/connections';
 export const EXECUTIONS = '/executions';
 export const EXECUTION_PATTERN = '/executions/:executionId';
@@ -7,8 +5,6 @@ export const EXECUTION = (executionId: string) => `/executions/${executionId}`;
 
 export const LOGIN = '/login';
 export const LOGIN_CALLBACK = `${LOGIN}/callback`;
-export const SSO_LOGIN = (issuer: string) =>
-  `${appConfig.apiUrl}/login/saml/${issuer}`;
 export const SIGNUP = '/sign-up';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const RESET_PASSWORD = '/reset-password';
