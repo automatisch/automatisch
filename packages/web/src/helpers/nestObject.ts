@@ -3,8 +3,8 @@ import set from 'lodash/set';
 
 export default function nestObject<T = IJSONObject>(
   config: IJSONObject | undefined
-): Partial<T> {
-  if (!config) return {};
+): Partial<T> | null {
+  if (!config || Object.keys(config).length === 0) return null;
   const result = {};
 
   for (const key in config) {

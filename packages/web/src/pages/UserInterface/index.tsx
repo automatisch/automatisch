@@ -14,7 +14,7 @@ import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import ColorInput from 'components/ColorInput';
 import nestObject from 'helpers/nestObject';
-import { Skeleton } from '@mui/material';
+import { Skeleton, useTheme } from '@mui/material';
 
 type UserInterface = {
   palette: {
@@ -32,6 +32,7 @@ type UserInterface = {
 
 export default function UserInterface(): React.ReactElement {
   const formatMessage = useFormatMessage();
+  const theme = useTheme();
   const [updateConfig, { loading }] = useMutation(UPDATE_CONFIG, {
     refetchQueries: ['GetConfig'],
   });
@@ -86,7 +87,13 @@ export default function UserInterface(): React.ReactElement {
           {!configLoading && (
             <Form
               onSubmit={handleUserInterfaceUpdate}
-              defaultValues={nestObject<UserInterface>(config)}
+              defaultValues={
+                nestObject<UserInterface>(config) || {
+                  'palette.primary.main': theme.palette.primary.main,
+                  'palette.primary.dark': theme.palette.primary.dark,
+                  'palette.primary.light': theme.palette.primary.light,
+                }
+              }
             >
               <Stack direction="column" gap={2}>
                 <TextField
