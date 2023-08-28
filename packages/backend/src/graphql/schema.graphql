@@ -46,6 +46,7 @@ type Query {
   getPermissionCatalog: PermissionCatalog
   getRole(id: String!): Role
   getRoles: [Role]
+  getNotifications: [Notification]
   getSamlAuthProvider: SamlAuthProvider
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
   getSubscriptionStatus: GetSubscriptionStatus
@@ -785,6 +786,13 @@ input UpdateAppAuthClientInput {
   name: String
   formattedAuthDefaults: JSONObject
   active: Boolean
+}
+
+type Notification {
+  name: String
+  createdAt: String
+  documentationUrl: String
+  description: String
 }
 
 schema {

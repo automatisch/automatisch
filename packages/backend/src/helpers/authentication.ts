@@ -1,7 +1,7 @@
-import { rule, shield, allow } from 'graphql-shield';
+import { allow, rule, shield } from 'graphql-shield';
 import jwt from 'jsonwebtoken';
-import User from '../models/user';
 import appConfig from '../config/app';
+import User from '../models/user';
 
 const isAuthenticated = rule()(async (_parent, _args, req) => {
   const token = req.headers['authorization'];
@@ -34,15 +34,16 @@ const authentication = shield(
     Query: {
       '*': isAuthenticated,
       getAutomatischInfo: allow,
-      listSamlAuthProviders: allow,
-      healthcheck: allow,
       getConfig: allow,
+      getNotifications: allow,
+      healthcheck: allow,
+      listSamlAuthProviders: allow,
     },
     Mutation: {
       '*': isAuthenticated,
-      registerUser: allow,
       forgotPassword: allow,
       login: allow,
+      registerUser: allow,
       resetPassword: allow,
     },
   },
