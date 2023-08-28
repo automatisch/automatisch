@@ -720,6 +720,7 @@ type ListSamlAuthProvider {
   id: String
   name: String
   issuer: String
+  loginUrl: String
 }
 
 type Permission {

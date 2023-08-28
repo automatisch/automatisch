@@ -5,6 +5,7 @@ export const LIST_SAML_AUTH_PROVIDERS = gql`
     listSamlAuthProviders {
       id
       name
+      loginUrl
       issuer
     }
   }

@@ -427,6 +427,7 @@ type TSamlAuthProvider = {
   roleAttributeName: string;
   defaultRoleId: string;
   active: boolean;
+  loginUrl: string;
 };
 
 type AppConfig = {
@@ -437,7 +438,7 @@ type AppConfig = {
   canCustomConnect: boolean;
   shared: boolean;
   disabled: boolean;
-}
+};
 
 type AppAuthClient = {
   id: string;
@@ -445,7 +446,7 @@ type AppAuthClient = {
   appConfigId: string;
   authDefaults: string;
   formattedAuthDefaults: IJSONObject;
-}
+};
 
 declare module 'axios' {
   interface AxiosResponse {

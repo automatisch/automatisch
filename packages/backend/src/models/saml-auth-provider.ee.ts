@@ -75,6 +75,14 @@ class SamlAuthProvider extends Base {
     },
   });
 
+  static get virtualAttributes() {
+    return ['loginUrl'];
+  }
+
+  get loginUrl() {
+    return new URL(`/login/saml/${this.issuer}`, appConfig.baseUrl).toString();
+  }
+
   get config(): SamlConfig {
     const callbackUrl = new URL(
       `/login/saml/${this.issuer}/callback`,
