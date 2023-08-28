@@ -2,8 +2,10 @@ import * as React from 'react';
 import { useMutation } from '@apollo/client';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import Skeleton from '@mui/material/Skeleton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useSnackbar } from 'notistack';
+import merge from 'lodash/merge';
 
 import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
 import useConfig from 'hooks/useConfig';
@@ -14,7 +16,11 @@ import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import ColorInput from 'components/ColorInput';
 import nestObject from 'helpers/nestObject';
-import { Skeleton, useTheme } from '@mui/material';
+import {
+  primaryMainColor,
+  primaryDarkColor,
+  primaryLightColor,
+} from 'styles/theme';
 
 type UserInterface = {
   palette: {
@@ -30,9 +36,19 @@ type UserInterface = {
   };
 };
 
+const getPrimaryMainColor = (color?: string) => color || primaryMainColor;
+const getPrimaryDarkColor = (color?: string) => color || primaryDarkColor;
+const getPrimaryLightColor = (color?: string) => color || primaryLightColor;
+
+const defaultValues = {
+  title: 'Automatisch',
+  'palette.primary.main': primaryMainColor,
+  'palette.primary.dark': primaryDarkColor,
+  'palette.primary.light': primaryLightColor,
+};
+
 export default function UserInterface(): React.ReactElement {
   const formatMessage = useFormatMessage();
-  const theme = useTheme();
   const [updateConfig, { loading }] = useMutation(UPDATE_CONFIG, {
     refetchQueries: ['GetConfig'],
   });
@@ -44,6 +60,10 @@ export default function UserInterface(): React.ReactElement {
     'logo.svgData',
   ]);
   const { enqueueSnackbar } = useSnackbar();
+  const configWithDefaults = merge(
+    defaultValues,
+    nestObject<UserInterface>(config)
+  );
 
   const handleUserInterfaceUpdate = async (uiData: Partial<UserInterface>) => {
     try {
@@ -51,9 +71,15 @@ export default function UserInterface(): React.ReactElement {
         variables: {
           input: {
             title: uiData?.title,
-            'palette.primary.main': uiData?.palette?.primary.main,
-            'palette.primary.dark': uiData?.palette?.primary.dark,
-            'palette.primary.light': uiData?.palette?.primary.light,
+            'palette.primary.main': getPrimaryMainColor(
+              uiData?.palette?.primary.main
+            ),
+            'palette.primary.dark': getPrimaryDarkColor(
+              uiData?.palette?.primary.dark
+            ),
+            'palette.primary.light': getPrimaryLightColor(
+              uiData?.palette?.primary.light
+            ),
             'logo.svgData': uiData?.logo?.svgData,
           },
         },
@@ -87,45 +113,45 @@ export default function UserInterface(): React.ReactElement {
           {!configLoading && (
             <Form
               onSubmit={handleUserInterfaceUpdate}
-              defaultValues={
-                nestObject<UserInterface>(config) || {
-                  'palette.primary.main': theme.palette.primary.main,
-                  'palette.primary.dark': theme.palette.primary.dark,
-                  'palette.primary.light': theme.palette.primary.light,
-                }
-              }
+              defaultValues={configWithDefaults}
             >
               <Stack direction="column" gap={2}>
                 <TextField
                   name="title"
-                  label={formatMessage('userInterfacePage.metadataTitle')}
+                  label={formatMessage('userInterfacePage.titleFieldLabel')}
                   fullWidth
                 />
 
                 <ColorInput
                   name="palette.primary.main"
-                  label={formatMessage('userInterfacePage.mainColor')}
+                  label={formatMessage(
+                    'userInterfacePage.primaryMainColorFieldLabel'
+                  )}
                   fullWidth
                   data-test="primary-main-color-input"
                 />
 
                 <ColorInput
                   name="palette.primary.dark"
-                  label={formatMessage('userInterfacePage.darkColor')}
+                  label={formatMessage(
+                    'userInterfacePage.primaryDarkColorFieldLabel'
+                  )}
                   fullWidth
                   data-test="primary-dark-color-input"
                 />
 
                 <ColorInput
                   name="palette.primary.light"
-                  label={formatMessage('userInterfacePage.lightColor')}
+                  label={formatMessage(
+                    'userInterfacePage.primaryLightColorFieldLabel'
+                  )}
                   fullWidth
                   data-test="primary-light-color-input"
                 />
 
                 <TextField
                   name="logo.svgData"
-                  label={formatMessage('userInterfacePage.svgData')}
+                  label={formatMessage('userInterfacePage.svgDataFieldLabel')}
                   multiline
                   fullWidth
                   data-test="logo-svg-data-text-field"
