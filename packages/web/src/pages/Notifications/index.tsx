@@ -17,7 +17,7 @@ interface INotification {
 
 export default function Updates(): React.ReactElement {
   const formatMessage = useFormatMessage();
-  const notifications = useNotifications();
+  const { notifications } = useNotifications();
 
   return (
     <Box sx={{ py: 3 }}>

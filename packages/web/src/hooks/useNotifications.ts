@@ -1,26 +1,20 @@
-import * as React from 'react';
-import appConfig from 'config/app';
+import { useQuery } from '@apollo/client';
+import type { Notification } from '@automatisch/types';
 
-interface INotification {
-  name: string;
-  createdAt: string;
-  documentationUrl: string;
-  description: string;
+import { GET_NOTIFICATIONS } from 'graphql/queries/get-notifications';
+
+type UseNotificationsReturn = {
+  notifications: Notification[];
+  loading: boolean;
 }
 
-export default function useNotifications(): INotification[] {
-  const [notifications, setNotifications] = React.useState<INotification[]>([]);
+export default function useNotifications(): UseNotificationsReturn {
+  const { data, loading } = useQuery(GET_NOTIFICATIONS);
 
-  React.useEffect(() => {
-    fetch(`${appConfig.notificationsUrl}/notifications.json`)
-      .then((response) => response.json())
-      .then((notifications) => {
-        if (Array.isArray(notifications) && notifications.length) {
-          setNotifications(notifications);
-        }
-      })
-      .catch(console.error);
-  }, []);
+  const notifications = data?.getNotifications || [];
 
-  return notifications;
+  return {
+    loading,
+    notifications,
+  };
 }

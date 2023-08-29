@@ -448,6 +448,13 @@ type AppAuthClient = {
   formattedAuthDefaults: IJSONObject;
 };
 
+type Notification = {
+  name: string;
+  createdAt: string;
+  documentationUrl: string;
+  description: string;
+}
+
 declare module 'axios' {
   interface AxiosResponse {
     httpError?: IJSONObject;
