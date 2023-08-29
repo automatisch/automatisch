@@ -175,6 +175,7 @@ export default function Application(): React.ReactElement | null {
                     value={URLS.APP_CONNECTIONS_PATTERN}
                     disabled={!app.supportsConnections}
                     component={Link}
+                    data-test="connections-tab"
                   />
 
                   <Tab
@@ -182,6 +183,7 @@ export default function Application(): React.ReactElement | null {
                     to={URLS.APP_FLOWS(appKey)}
                     value={URLS.APP_FLOWS_PATTERN}
                     component={Link}
+                    data-test="flows-tab"
                   />
                 </Tabs>
               </Box>
