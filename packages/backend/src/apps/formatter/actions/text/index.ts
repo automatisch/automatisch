@@ -4,6 +4,7 @@ import htmlToMarkdown from './transformers/html-to-markdown';
 import markdownToHtml from './transformers/markdown-to-html';
 import useDefaultValue from './transformers/use-default-value';
 import extractEmailAddress from './transformers/extract-email-address';
+import extractNumber from './transformers/extract-number';
 
 const transformers = {
   capitalize,
@@ -11,6 +12,7 @@ const transformers = {
   markdownToHtml,
   useDefaultValue,
   extractEmailAddress,
+  extractNumber,
 };
 
 export default defineAction({
@@ -32,6 +34,7 @@ export default defineAction({
         { label: 'Convert Markdown to HTML', value: 'markdownToHtml' },
         { label: 'Use Default Value', value: 'useDefaultValue' },
         { label: 'Extract Email Address', value: 'extractEmailAddress' },
+        { label: 'Extract Number', value: 'extractNumber' },
       ],
       additionalFields: {
         type: 'query',
