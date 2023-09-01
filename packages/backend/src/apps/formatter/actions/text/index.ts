@@ -5,6 +5,7 @@ import markdownToHtml from './transformers/markdown-to-html';
 import useDefaultValue from './transformers/use-default-value';
 import extractEmailAddress from './transformers/extract-email-address';
 import extractNumber from './transformers/extract-number';
+import lowercase from './transformers/lowercase';
 
 const transformers = {
   capitalize,
@@ -13,6 +14,7 @@ const transformers = {
   useDefaultValue,
   extractEmailAddress,
   extractNumber,
+  lowercase,
 };
 
 export default defineAction({
@@ -35,6 +37,7 @@ export default defineAction({
         { label: 'Use Default Value', value: 'useDefaultValue' },
         { label: 'Extract Email Address', value: 'extractEmailAddress' },
         { label: 'Extract Number', value: 'extractNumber' },
+        { label: 'Lowercase', value: 'lowercase' },
       ],
       additionalFields: {
         type: 'query',
