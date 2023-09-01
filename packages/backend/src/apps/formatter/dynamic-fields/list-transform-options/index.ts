@@ -8,6 +8,7 @@ import extractNumber from './options/extract-number';
 import lowercase from './options/lowercase';
 import pluralize from './options/pluralize';
 import trimWhitespace from './options/trim-whitespace';
+import replace from './options/replace';
 
 const options: IJSONObject = {
   capitalize,
@@ -19,6 +20,7 @@ const options: IJSONObject = {
   lowercase,
   pluralize,
   trimWhitespace,
+  replace,
 };
 
 export default {

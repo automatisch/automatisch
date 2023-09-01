@@ -8,6 +8,7 @@ import extractNumber from './transformers/extract-number';
 import lowercase from './transformers/lowercase';
 import pluralize from './transformers/pluralize';
 import trimWhitespace from './transformers/trim-whitespace';
+import replace from './transformers/replace';
 
 const transformers = {
   capitalize,
@@ -19,6 +20,7 @@ const transformers = {
   lowercase,
   pluralize,
   trimWhitespace,
+  replace,
 };
 
 export default defineAction({
@@ -44,6 +46,7 @@ export default defineAction({
         { label: 'Lowercase', value: 'lowercase' },
         { label: 'Pluralize', value: 'pluralize' },
         { label: 'Trim Whitespace', value: 'trimWhitespace' },
+        { label: 'Replace', value: 'replace' },
       ],
       additionalFields: {
         type: 'query',
