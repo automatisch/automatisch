@@ -5,6 +5,7 @@ import markdownToHtml from './options/markdown-to-html';
 import useDefaultValue from './options/use-default-value';
 import extractEmailAddress from './options/extract-email-address';
 import extractNumber from './options/extract-number';
+import lowercase from './options/lowercase';
 
 const options: IJSONObject = {
   capitalize,
@@ -13,6 +14,7 @@ const options: IJSONObject = {
   useDefaultValue,
   extractEmailAddress,
   extractNumber,
+  lowercase,
 };
 
 export default {
