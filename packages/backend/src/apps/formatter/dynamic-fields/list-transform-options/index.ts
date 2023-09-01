@@ -7,6 +7,7 @@ import extractEmailAddress from './options/extract-email-address';
 import extractNumber from './options/extract-number';
 import lowercase from './options/lowercase';
 import pluralize from './options/pluralize';
+import trimWhitespace from './options/trim-whitespace';
 
 const options: IJSONObject = {
   capitalize,
@@ -17,6 +18,7 @@ const options: IJSONObject = {
   extractNumber,
   lowercase,
   pluralize,
+  trimWhitespace,
 };
 
 export default {
