@@ -6,6 +6,7 @@ import useDefaultValue from './transformers/use-default-value';
 import extractEmailAddress from './transformers/extract-email-address';
 import extractNumber from './transformers/extract-number';
 import lowercase from './transformers/lowercase';
+import pluralize from './transformers/pluralize';
 
 const transformers = {
   capitalize,
@@ -15,6 +16,7 @@ const transformers = {
   extractEmailAddress,
   extractNumber,
   lowercase,
+  pluralize,
 };
 
 export default defineAction({
@@ -38,6 +40,7 @@ export default defineAction({
         { label: 'Extract Email Address', value: 'extractEmailAddress' },
         { label: 'Extract Number', value: 'extractNumber' },
         { label: 'Lowercase', value: 'lowercase' },
+        { label: 'Pluralize', value: 'pluralize' },
       ],
       additionalFields: {
         type: 'query',
