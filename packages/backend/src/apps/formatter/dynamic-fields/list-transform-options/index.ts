@@ -9,6 +9,7 @@ import pluralize from './options/pluralize';
 import replace from './options/replace';
 import trimWhitespace from './options/trim-whitespace';
 import useDefaultValue from './options/use-default-value';
+import performMathOperation from './options/perform-math-operation';
 
 const options: IJSONObject = {
   capitalize,
@@ -21,6 +22,7 @@ const options: IJSONObject = {
   replace,
   trimWhitespace,
   useDefaultValue,
+  performMathOperation,
 };
 
 export default {
