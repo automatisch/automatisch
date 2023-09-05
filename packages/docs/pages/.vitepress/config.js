@@ -272,6 +272,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Hubspot',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/hubspot/actions' },
+            { text: 'Connection', link: '/apps/hubspot/connection' },
+          ],
+        },
+        {
           text: 'Strava',
           collapsible: true,
           collapsed: true,
