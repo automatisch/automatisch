@@ -56,7 +56,7 @@ export default defineAction({
     {
       label: 'Owner ID',
       key: 'hubspot_owner_id',
-      type: 'number' as const,
+      type: 'string' as const,
       required: false,
       description: 'Contact Owner ID',
       variables: true,
