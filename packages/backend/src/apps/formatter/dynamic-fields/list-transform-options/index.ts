@@ -11,6 +11,7 @@ import trimWhitespace from './text/trim-whitespace';
 import useDefaultValue from './text/use-default-value';
 import performMathOperation from './numbers/perform-math-operation';
 import randomNumber from './numbers/random-number';
+import formatNumber from './numbers/format-number';
 
 const options: IJSONObject = {
   capitalize,
@@ -25,6 +26,7 @@ const options: IJSONObject = {
   useDefaultValue,
   performMathOperation,
   randomNumber,
+  formatNumber,
 };
 
 export default {

@@ -2,10 +2,12 @@ import defineAction from '../../../../helpers/define-action';
 
 import performMathOperation from './transformers/perform-math-operation';
 import randomNumber from './transformers/random-number';
+import formatNumber from './transformers/format-number';
 
 const transformers = {
   performMathOperation,
   randomNumber,
+  formatNumber,
 };
 
 export default defineAction({
@@ -23,6 +25,7 @@ export default defineAction({
       options: [
         { label: 'Perform Math Operation', value: 'performMathOperation' },
         { label: 'Random Number', value: 'randomNumber' },
+        { label: 'Format Number', value: 'formatNumber' },
       ],
       additionalFields: {
         type: 'query',
