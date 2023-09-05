@@ -1,9 +1,11 @@
 import defineAction from '../../../../helpers/define-action';
 
 import performMathOperation from './transformers/perform-math-operation';
+import randomNumber from './transformers/random-number';
 
 const transformers = {
   performMathOperation,
+  randomNumber,
 };
 
 export default defineAction({
@@ -20,6 +22,7 @@ export default defineAction({
       variables: true,
       options: [
         { label: 'Perform Math Operation', value: 'performMathOperation' },
+        { label: 'Random Number', value: 'randomNumber' },
       ],
       additionalFields: {
         type: 'query',
