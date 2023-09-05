@@ -28,6 +28,7 @@ The following integrations are currently supported by Automatisch.
 - [Slack](/apps/slack/actions)
 - [SMTP](/apps/smtp/actions)
 - [Spotify](/apps/spotify/actions)
+- [Hubspot](/apps/hubspot/actions)
 - [Strava](/apps/strava/actions)
 - [Stripe](/apps/stripe/triggers)
 - [Telegram](/apps/telegram-bot/actions)
