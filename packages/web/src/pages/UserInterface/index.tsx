@@ -24,6 +24,7 @@ type UserInterface = {
       main: string;
     };
   };
+  title: string;
   logo: {
     svgData: string;
   };
@@ -35,6 +36,7 @@ export default function UserInterface(): React.ReactElement {
     refetchQueries: ['GetConfig'],
   });
   const { config, loading: configLoading } = useConfig([
+    'title',
     'palette.primary.main',
     'palette.primary.light',
     'palette.primary.dark',
@@ -47,6 +49,7 @@ export default function UserInterface(): React.ReactElement {
       await updateConfig({
         variables: {
           input: {
+            title: uiData?.title,
             'palette.primary.main': uiData?.palette?.primary.main,
             'palette.primary.dark': uiData?.palette?.primary.dark,
             'palette.primary.light': uiData?.palette?.primary.light,
@@ -86,6 +89,12 @@ export default function UserInterface(): React.ReactElement {
               defaultValues={nestObject<UserInterface>(config)}
             >
               <Stack direction="column" gap={2}>
+                <TextField
+                  name="title"
+                  label={formatMessage('userInterfacePage.metadataTitle')}
+                  fullWidth
+                />
+
                 <ColorInput
                   name="palette.primary.main"
                   label={formatMessage('userInterfacePage.mainColor')}

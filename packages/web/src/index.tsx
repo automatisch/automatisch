@@ -4,6 +4,7 @@ import ThemeProvider from 'components/ThemeProvider';
 import IntlProvider from 'components/IntlProvider';
 import ApolloProvider from 'components/ApolloProvider';
 import SnackbarProvider from 'components/SnackbarProvider';
+import MetadataProvider from 'components/MetadataProvider';
 import { AuthenticationProvider } from 'contexts/Authentication';
 import { AutomatischInfoProvider } from 'contexts/AutomatischInfo';
 import Router from 'components/Router';
@@ -19,9 +20,11 @@ ReactDOM.render(
           <AutomatischInfoProvider>
             <IntlProvider>
               <ThemeProvider>
-                {routes}
+                <MetadataProvider>
+                  {routes}
 
-                <LiveChat />
+                  <LiveChat />
+                </MetadataProvider>
               </ThemeProvider>
             </IntlProvider>
           </AutomatischInfoProvider>
