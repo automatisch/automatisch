@@ -12,6 +12,7 @@ import useDefaultValue from './text/use-default-value';
 import performMathOperation from './numbers/perform-math-operation';
 import randomNumber from './numbers/random-number';
 import formatNumber from './numbers/format-number';
+import formatDateTime from './date-time/format-date-time';
 
 const options: IJSONObject = {
   capitalize,
@@ -27,6 +28,7 @@ const options: IJSONObject = {
   performMathOperation,
   randomNumber,
   formatNumber,
+  formatDateTime,
 };
 
 export default {
