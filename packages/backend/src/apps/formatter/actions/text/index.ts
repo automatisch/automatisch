@@ -1,5 +1,6 @@
-import capitalize from './transformers/capitalize';
 import defineAction from '../../../../helpers/define-action';
+
+import capitalize from './transformers/capitalize';
 import extractEmailAddress from './transformers/extract-email-address';
 import extractNumber from './transformers/extract-number';
 import htmlToMarkdown from './transformers/html-to-markdown';
@@ -34,7 +35,6 @@ export default defineAction({
       key: 'transform',
       type: 'dropdown' as const,
       required: true,
-      description: 'Pick a channel to send the message to.',
       variables: true,
       options: [
         { label: 'Capitalize', value: 'capitalize' },

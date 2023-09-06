@@ -1,14 +1,16 @@
 import { IGlobalVariable, IJSONObject } from '@automatisch/types';
-import capitalize from './options/capitalize';
-import extractEmailAddress from './options/extract-email-address';
-import extractNumber from './options/extract-number';
-import htmlToMarkdown from './options/html-to-markdown';
-import lowercase from './options/lowercase';
-import markdownToHtml from './options/markdown-to-html';
-import pluralize from './options/pluralize';
-import replace from './options/replace';
-import trimWhitespace from './options/trim-whitespace';
-import useDefaultValue from './options/use-default-value';
+import capitalize from './text/capitalize';
+import extractEmailAddress from './text/extract-email-address';
+import extractNumber from './text/extract-number';
+import htmlToMarkdown from './text/html-to-markdown';
+import lowercase from './text/lowercase';
+import markdownToHtml from './text/markdown-to-html';
+import pluralize from './text/pluralize';
+import replace from './text/replace';
+import trimWhitespace from './text/trim-whitespace';
+import useDefaultValue from './text/use-default-value';
+import performMathOperation from './numbers/perform-math-operation';
+import randomNumber from './numbers/random-number';
 
 const options: IJSONObject = {
   capitalize,
@@ -21,6 +23,8 @@ const options: IJSONObject = {
   replace,
   trimWhitespace,
   useDefaultValue,
+  performMathOperation,
+  randomNumber,
 };
 
 export default {
