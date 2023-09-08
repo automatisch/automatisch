@@ -1,4 +1,5 @@
 import Context from '../../types/express/context';
+import Connection from '../../models/connection';
 
 type Params = {
   input: {
@@ -11,10 +12,13 @@ const resetConnection = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('create', 'Connection');
+  const conditions = context.currentUser.can('update', 'Connection');
+  const userConnections = context.currentUser.$relatedQuery('connections');
+  const allConnections = Connection.query();
+  const baseQuery = conditions.isCreator ? userConnections : allConnections;
 
-  let connection = await context.currentUser
-    .$relatedQuery('connections')
+  let connection = await baseQuery
+    .clone()
     .findOne({
       id: params.input.id,
     })

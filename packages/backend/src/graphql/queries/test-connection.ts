@@ -13,15 +13,15 @@ const testConnection = async (
   params: Params,
   context: Context
 ) => {
-  const conditions = context.currentUser.can('update', 'Connection');
-  const userConnections = context.currentUser.$relatedQuery('connections');
+  const conditions = context.currentUser.can('read', 'Connection');
+  const userConnections = context.currentUser.relatedConnectionsQuery();
   const allConnections = Connection.query();
   const connectionBaseQuery = conditions.isCreator ? userConnections : allConnections;
 
   let connection = await connectionBaseQuery
     .clone()
     .findOne({
-      id: params.id,
+      'connections.id': params.id,
     })
     .throwIfNotFound();
 

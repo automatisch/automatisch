@@ -244,6 +244,7 @@ type AuthLink {
 type Connection {
   id: String
   key: String
+  shared: Boolean
   reconnectable: Boolean
   appAuthClientId: String
   formattedData: ConnectionData

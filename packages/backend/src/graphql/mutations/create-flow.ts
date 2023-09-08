@@ -28,11 +28,11 @@ const createFlow = async (
   });
 
   if (connectionId) {
-    const hasConnection = await context.currentUser
-      .$relatedQuery('connections')
+    const connection = await context.currentUser
+      .relatedConnectionsQuery()
       .findById(connectionId);
 
-    if (!hasConnection) {
+    if (!connection) {
       throw new Error('The connection does not exist!');
     }
   }

@@ -45,10 +45,11 @@ const updateStep = async (
 
       canSeeAllConnections = !conditions.isCreator;
     } catch {
-      // void
+      // The user does not have permission to read any connections!
+      throw new Error('The connection does not exist!');
     }
 
-    const userConnections = context.currentUser.$relatedQuery('connections');
+    const userConnections = context.currentUser.relatedConnectionsQuery();
     const allConnections = Connection.query();
     const baseConnectionsQuery = canSeeAllConnections ? allConnections : userConnections;
 

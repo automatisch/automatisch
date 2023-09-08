@@ -1,18 +1,18 @@
-import { QueryContext, ModelOptions } from 'objection';
-import type { RelationMappings } from 'objection';
+import { IJSONObject, IRequest } from '@automatisch/types';
 import { AES, enc } from 'crypto-js';
-import { IRequest } from '@automatisch/types';
-import App from './app';
-import AppConfig from './app-config';
-import AppAuthClient from './app-auth-client';
-import Base from './base';
-import User from './user';
-import Step from './step';
-import ExtendedQueryBuilder from './query-builder';
+import type { RelationMappings } from 'objection';
+import { ModelOptions, QueryContext } from 'objection';
 import appConfig from '../config/app';
-import { IJSONObject } from '@automatisch/types';
-import Telemetry from '../helpers/telemetry';
 import globalVariable from '../helpers/global-variable';
+import Telemetry from '../helpers/telemetry';
+import App from './app';
+import AppAuthClient from './app-auth-client';
+import AppConfig from './app-config';
+import Base from './base';
+import ExtendedQueryBuilder from './query-builder';
+import SharedConnection from './shared-connection';
+import Step from './step';
+import User from './user';
 
 class Connection extends Base {
   id!: string;
@@ -24,6 +24,9 @@ class Connection extends Base {
   draft: boolean;
   count?: number;
   flowCount?: number;
+  sharedConnections?: SharedConnection[];
+  // computed via `User.relevantConnectionsQuery`
+  shared?: boolean;
   user?: User;
   steps?: Step[];
   triggerSteps?: Step[];
@@ -46,6 +49,7 @@ class Connection extends Base {
       appAuthClientId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean', default: false },
       draft: { type: 'boolean' },
+      shared: { type: 'boolean', readOnly: true, },
       deletedAt: { type: 'string' },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
@@ -98,6 +102,14 @@ class Connection extends Base {
       join: {
         from: 'connections.app_auth_client_id',
         to: 'app_auth_clients.id',
+      },
+    },
+    sharedConnections: {
+      relation: Base.HasManyRelation,
+      modelClass: SharedConnection,
+      join: {
+        from: 'connections.id',
+        to: 'shared_connections.connection_id',
       },
     },
   });

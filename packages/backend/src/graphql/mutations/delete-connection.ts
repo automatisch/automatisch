@@ -1,4 +1,5 @@
 import Context from '../../types/express/context';
+import Connection from '../../models/connection';
 
 type Params = {
   input: {
@@ -11,10 +12,13 @@ const deleteConnection = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('delete', 'Connection');
+  const conditions = context.currentUser.can('delete', 'Connection');
+  const userConnections = context.currentUser.$relatedQuery('connections');
+  const allConnections = Connection.query();
+  const baseQuery = conditions.isCreator ? userConnections : allConnections;
 
-  await context.currentUser
-    .$relatedQuery('connections')
+  await baseQuery
+    .clone()
     .delete()
     .findOne({
       id: params.input.id,
