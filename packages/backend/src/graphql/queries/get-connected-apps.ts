@@ -15,7 +15,7 @@ const getConnectedApps = async (
 ) => {
   const conditions = context.currentUser.can('read', 'Connection');
 
-  const userConnections = context.currentUser.$relatedQuery('connections');
+  const userConnections = context.currentUser.relatedConnectionsQuery();
   const allConnections = Connection.query();
   const connectionBaseQuery = conditions.isCreator ? userConnections : allConnections;
 
@@ -25,8 +25,9 @@ const getConnectedApps = async (
 
   let apps = await App.findAll(params.name);
 
-  const connections = await connectionBaseQuery
-    .clone()
+  const connections = await Connection
+    .query()
+    .with('connections', connectionBaseQuery)
     .select('connections.key')
     .where({ draft: false })
     .count('connections.id as count')

@@ -53,6 +53,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
     createdAt,
     flowCount,
     reconnectable,
+    shared,
   } = props.connection;
 
   const contextButtonRef = React.useRef<SVGSVGElement | null>(null);
@@ -105,7 +106,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
           <CardContent>
             <Stack justifyContent="center" alignItems="flex-start" spacing={1}>
               <Typography variant="h6" sx={{ textAlign: 'left' }}>
-                {formattedData?.screenName}
+                {formattedData?.screenName} {shared && 'shared'}
               </Typography>
 
               <Typography variant="caption">

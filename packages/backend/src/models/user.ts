@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { DateTime } from 'luxon';
 import crypto from 'node:crypto';
-import { ModelOptions, QueryContext } from 'objection';
+import { raw, ModelOptions, QueryContext } from 'objection';
 
 import appConfig from '../config/app';
 import { hasValidLicense } from '../helpers/license.ee';
@@ -28,6 +28,7 @@ class User extends Base {
   resetPasswordTokenSentAt: string;
   trialExpiryDate: string;
   connections?: Connection[];
+  sharedConnections?: Connection[];
   flows?: Flow[];
   steps?: Step[];
   executions?: Execution[];
@@ -67,6 +68,18 @@ class User extends Base {
       join: {
         from: 'users.id',
         to: 'connections.user_id',
+      },
+    },
+    sharedConnections: {
+      relation: Base.ManyToManyRelation,
+      modelClass: Connection,
+      join: {
+        from: 'users.role_id',
+        through: {
+          from: 'shared_connections.role_id',
+          to: 'shared_connections.connection_id',
+        },
+        to: 'connections.id',
       },
     },
     flows: {
@@ -164,6 +177,40 @@ class User extends Base {
       },
     },
   });
+
+  relatedConnectionsQuery() {
+    return Connection
+      .query()
+      .select('connections.*', raw('shared_connections.role_id IS NOT NULL as shared'))
+      .leftJoin(
+        'shared_connections',
+        'connections.id',
+        '=',
+        'shared_connections.connection_id'
+      )
+      .join(
+        'users',
+        function () {
+          this
+            .on(
+              'users.id',
+              '=',
+              'connections.user_id',
+            )
+            .orOn(
+              'users.role_id',
+              '=',
+              'shared_connections.role_id'
+            )
+        },
+      )
+      .where(
+        'users.id',
+        '=',
+        this.id
+      )
+      .groupBy('connections.id', 'shared_connections.role_id');
+  }
 
   login(password: string) {
     return bcrypt.compare(password, this.password);
