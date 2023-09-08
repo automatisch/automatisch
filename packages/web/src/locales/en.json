@@ -220,6 +220,7 @@
   "appAuthClientsDialog.title": "Choose your authentication client",
   "userInterfacePage.title": "User Interface",
   "userInterfacePage.successfullyUpdated": "User interface has been updated.",
+  "userInterfacePage.metadataTitle": "Title",
   "userInterfacePage.mainColor": "Primary main color",
   "userInterfacePage.darkColor": "Primary dark color",
   "userInterfacePage.lightColor": "Primary light color",
