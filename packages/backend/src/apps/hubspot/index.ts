@@ -7,7 +7,7 @@ export default defineApp({
   name: 'Hubspot',
   key: 'hubspot',
   iconUrl: '{BASE_URL}/apps/hubspot/assets/favicon.svg',
-  authDocUrl: 'https://developers.hubspot.com/docs/api/crm/contacts',
+  authDocUrl: 'https://automatisch.io/docs/apps/hubspot/connection',
   supportsConnections: true,
   baseUrl: 'https://www.hubspot.com',
   apiBaseUrl: 'https://api.hubapi.com',
