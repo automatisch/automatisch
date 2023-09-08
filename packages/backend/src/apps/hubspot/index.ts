@@ -4,7 +4,7 @@ import actions from './actions';
 import auth from './auth';
 
 export default defineApp({
-  name: 'Hubspot',
+  name: 'HubSpot',
   key: 'hubspot',
   iconUrl: '{BASE_URL}/apps/hubspot/assets/favicon.svg',
   authDocUrl: 'https://automatisch.io/docs/apps/hubspot/connection',
