@@ -1,7 +1,6 @@
 import { IField, IGlobalVariable } from '@automatisch/types';
 import { URLSearchParams } from 'url';
-
-const scopes = ['crm.objects.contacts.read', 'crm.objects.contacts.write'];
+import scopes from '../common/scopes';
 
 export default async function generateAuthUrl($: IGlobalVariable) {
   const oauthRedirectUrlField = $.app.auth.fields.find(

@@ -1,8 +1,9 @@
 import { IGlobalVariable } from '@automatisch/types';
-import verifyCredentials from "./verify-credentials";
+import getAccessTokenInfo from '../common/get-access-token-info';
 
 const isStillVerified = async ($: IGlobalVariable) => {
-  await verifyCredentials($);
+  await getAccessTokenInfo($);
+
   return true;
 };
 

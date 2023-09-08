@@ -64,28 +64,25 @@ export default defineAction({
   ],
 
   async run($) {
-    const company = $.step.parameters.company as string || undefined;
-    const email = $.step.parameters.email as string || undefined;
-    const firstname = $.step.parameters.firstname as string || undefined;
-    const lastname = $.step.parameters.lastname as string || undefined;
-    const phone = $.step.parameters.phone as string || undefined;
-    const website = $.step.parameters.website as string || undefined;
-    const hubspot_owner_id = $.step.parameters.hubspot_owner_id as number || undefined;
+    const company = $.step.parameters.company as string;
+    const email = $.step.parameters.email as string;
+    const firstname = $.step.parameters.firstname as string;
+    const lastname = $.step.parameters.lastname as string;
+    const phone = $.step.parameters.phone as string;
+    const website = $.step.parameters.website as string;
+    const hubspot_owner_id = $.step.parameters.hubspot_owner_id as string;
 
-    const response = await $.http.post(
-      `crm/v3/objects/contacts`,
-      {
-        properties: {
-          company,
-          email,
-          firstname,
-          lastname,
-          phone,
-          website,
-          hubspot_owner_id,
-        }
-      }
-    );
+    const response = await $.http.post(`crm/v3/objects/contacts`, {
+      properties: {
+        company,
+        email,
+        firstname,
+        lastname,
+        phone,
+        website,
+        hubspot_owner_id,
+      },
+    });
 
     $.setActionItem({ raw: response.data });
   },
