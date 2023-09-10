@@ -1,6 +1,7 @@
 import SamlAuthProvider from '../../models/saml-auth-provider.ee';
 import SamlAuthProvidersRoleMapping from '../../models/saml-auth-providers-role-mapping.ee';
 import Context from '../../types/express/context';
+import isEmpty from 'lodash/isEmpty';
 
 type Params = {
   input: {
@@ -31,7 +32,7 @@ const upsertSamlAuthProvidersRoleMappings = async (
     .$relatedQuery('samlAuthProvidersRoleMappings')
     .delete();
 
-  if (!params.input.samlAuthProvidersRoleMappings) {
+  if (isEmpty(params.input.samlAuthProvidersRoleMappings)) {
     return [];
   }
 
