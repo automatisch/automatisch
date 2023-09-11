@@ -4,9 +4,12 @@ import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 
 type ControlledCheckboxProps = {
   name: string;
-} & CheckboxProps;
+  defaultValue?: boolean;
+} & Omit<CheckboxProps, 'defaultValue'>;
 
-export default function ControlledCheckbox(props: ControlledCheckboxProps): React.ReactElement {
+export default function ControlledCheckbox(
+  props: ControlledCheckboxProps
+): React.ReactElement {
   const { control } = useFormContext();
   const {
     required,
@@ -34,24 +37,25 @@ export default function ControlledCheckbox(props: ControlledCheckboxProps): Reac
           ...field
         },
       }) => {
-       return (
-        <Checkbox
-          {...checkboxProps}
-          {...field}
-          checked={!!value}
-          name={name}
-          disabled={disabled}
-          onChange={(...args) => {
-            controllerOnChange(...args);
-            onChange?.(...args);
-          }}
-          onBlur={(...args) => {
-            controllerOnBlur();
-            onBlur?.(...args);
-          }}
-          inputRef={ref}
-        />
-      )}}
+        return (
+          <Checkbox
+            {...checkboxProps}
+            {...field}
+            checked={!!value}
+            name={name}
+            disabled={disabled}
+            onChange={(...args) => {
+              controllerOnChange(...args);
+              onChange?.(...args);
+            }}
+            onBlur={(...args) => {
+              controllerOnBlur();
+              onBlur?.(...args);
+            }}
+            inputRef={ref}
+          />
+        );
+      }}
     />
   );
 }

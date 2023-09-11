@@ -74,7 +74,10 @@ export default function CreateRole(): React.ReactElement {
                 fullWidth
               />
 
-              <PermissionCatalogField name="computedPermissions" />
+              <PermissionCatalogField
+                name="computedPermissions"
+                defaultChecked={true}
+              />
 
               <LoadingButton
                 type="submit"
