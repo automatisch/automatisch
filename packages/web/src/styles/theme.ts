@@ -2,13 +2,16 @@ import { createTheme, alpha } from '@mui/material/styles';
 import { cardActionAreaClasses } from '@mui/material/CardActionArea';
 
 const referenceTheme = createTheme();
+export const primaryMainColor = '#0059F7';
+export const primaryLightColor = '#4286FF';
+export const primaryDarkColor = '#001F52';
 
 const extendedTheme = createTheme({
   palette: {
     primary: {
-      main: '#0059F7',
-      light: '#4286FF',
-      dark: '#001F52',
+      main: primaryMainColor,
+      light: primaryLightColor,
+      dark: primaryDarkColor,
       contrastText: '#fff',
     },
     divider: 'rgba(194, 194, 194, .2)',

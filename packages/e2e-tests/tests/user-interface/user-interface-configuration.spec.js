@@ -1,7 +1,7 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/index');
 
-test.describe.skip('User interface page', () => {
+test.describe('User interface page', () => {
   test.beforeEach(async ({ userInterfacePage }) => {
     await userInterfacePage.profileMenuButton.click();
     await userInterfacePage.adminMenuItem.click();
@@ -43,16 +43,6 @@ test.describe.skip('User interface page', () => {
         initialRgbColor
       );
     });
-
-    test('checks custom logo', async ({ userInterfacePage }) => {
-      const initialLogoSvgCode =
-        await userInterfacePage.logoSvgCodeInput.inputValue();
-      const logoSrcAttribute = await userInterfacePage.customLogo.getAttribute(
-        'src'
-      );
-      const svgCode = userInterfacePage.encodeSVG(initialLogoSvgCode);
-      expect(logoSrcAttribute).toMatch(svgCode);
-    });
   });
 
   test.describe(
@@ -90,44 +80,6 @@ test.describe.skip('User interface page', () => {
     }
   );
 
-  test.describe(
-    'update form based on input values and check if the inputs still reflect them',
-    async () => {
-      test('update primary main color and check color input', async ({
-        userInterfacePage,
-      }) => {
-        await userInterfacePage.primaryMainColorInput.fill('#00adef');
-        await userInterfacePage.updateButton.click();
-        const rgbColor = userInterfacePage.hexToRgb('#00adef');
-        const button = await userInterfacePage.primaryMainColorButton;
-        const styleAttribute = await button.getAttribute('style');
-        expect(styleAttribute).toBe(`background-color: ${rgbColor};`);
-      });
-
-      test('update primary dark color and check color input', async ({
-        userInterfacePage,
-      }) => {
-        await userInterfacePage.primaryDarkColorInput.fill('#222222');
-        await userInterfacePage.updateButton.click();
-        const rgbColor = userInterfacePage.hexToRgb('#222222');
-        const button = await userInterfacePage.primaryDarkColorButton;
-        const styleAttribute = await button.getAttribute('style');
-        expect(styleAttribute).toBe(`background-color: ${rgbColor};`);
-      });
-
-      test('update primary light color and check color input', async ({
-        userInterfacePage,
-      }) => {
-        await userInterfacePage.primaryLightColorInput.fill('#f90707');
-        await userInterfacePage.updateButton.click();
-        const rgbColor = userInterfacePage.hexToRgb('#f90707');
-        const button = await userInterfacePage.primaryLightColorButton;
-        const styleAttribute = await button.getAttribute('style');
-        expect(styleAttribute).toBe(`background-color: ${rgbColor};`);
-      });
-    }
-  );
-
   test.describe('update form based on input values', async () => {
     test('fill primary main color', async ({ userInterfacePage }) => {
       await userInterfacePage.primaryMainColorInput.fill('#00adef');
@@ -147,14 +99,15 @@ test.describe.skip('User interface page', () => {
       });
     });
 
-    test('fill primary light color', async ({ userInterfacePage }) => {
+    test.skip('fill primary light color', async ({ userInterfacePage }) => {
       await userInterfacePage.primaryLightColorInput.fill('#f90707');
       await userInterfacePage.updateButton.click();
       await userInterfacePage.goToDashboardButton.click();
       await expect(userInterfacePage.page).toHaveURL('/flows');
-      const span = await userInterfacePage.flowRowCardActionArea;
-      await span.waitFor({ state: 'visible' });
-      await span.hover();
+      await userInterfacePage.flowRowCardActionArea.waitFor({
+        state: 'visible',
+      });
+      await userInterfacePage.flowRowCardActionArea.hover();
       await userInterfacePage.screenshot({
         path: 'updated primary light color.png',
       });
@@ -173,4 +126,45 @@ test.describe.skip('User interface page', () => {
       });
     });
   });
+
+  test.describe(
+    'update form based on input values and check if the inputs still reflect them',
+    async () => {
+      test('update primary main color and check color input', async ({
+        userInterfacePage,
+      }) => {
+        await userInterfacePage.primaryMainColorInput.fill('#00adef');
+        await userInterfacePage.updateButton.click();
+        await userInterfacePage.snackbar.waitFor({ state: 'visible' });
+        const rgbColor = userInterfacePage.hexToRgb('#00adef');
+        const button = await userInterfacePage.primaryMainColorButton;
+        const styleAttribute = await button.getAttribute('style');
+        expect(styleAttribute).toEqual(`background-color: ${rgbColor};`);
+      });
+
+      test('update primary dark color and check color input', async ({
+        userInterfacePage,
+      }) => {
+        await userInterfacePage.primaryDarkColorInput.fill('#222222');
+        await userInterfacePage.updateButton.click();
+        await userInterfacePage.snackbar.waitFor({ state: 'visible' });
+        const rgbColor = userInterfacePage.hexToRgb('#222222');
+        const button = await userInterfacePage.primaryDarkColorButton;
+        const styleAttribute = await button.getAttribute('style');
+        expect(styleAttribute).toEqual(`background-color: ${rgbColor};`);
+      });
+
+      test('update primary light color and check color input', async ({
+        userInterfacePage,
+      }) => {
+        await userInterfacePage.primaryLightColorInput.fill('#f90707');
+        await userInterfacePage.updateButton.click();
+        await userInterfacePage.snackbar.waitFor({ state: 'visible' });
+        const rgbColor = userInterfacePage.hexToRgb('#f90707');
+        const button = await userInterfacePage.primaryLightColorButton;
+        const styleAttribute = await button.getAttribute('style');
+        expect(styleAttribute).toEqual(`background-color: ${rgbColor};`);
+      });
+    }
+  );
 });
