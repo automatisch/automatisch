@@ -7,5 +7,20 @@ Formatter is a built-in app shipped with Automatisch, and it doesn't need to tal
 - Capitalize
 - Convert HTML to Markdown
 - Convert Markdown to HTML
-- Use Default Value
 - Extract Email Address
+- Extract Number
+- Lowercase
+- Pluralize
+- Replace
+- Trim Whitespace
+- Use Default Value
+
+## Numbers
+
+- Perform Math Operation
+- Random Number
+- Format Number
+
+## Date / Time
+
+- Format Date / Time
