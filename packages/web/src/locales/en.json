@@ -245,5 +245,6 @@
   "roleMappingsForm.role": "Role",
   "roleMappingsForm.appendRoleMapping": "Append",
   "roleMappingsForm.save": "Save",
+  "roleMappingsForm.notFound": "No role mappings have found.",
   "roleMappingsForm.successfullySaved": "Role mappings have been saved."
 }

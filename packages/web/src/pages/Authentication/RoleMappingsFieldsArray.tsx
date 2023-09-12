@@ -11,7 +11,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import TextField from 'components/TextField';
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 
 function generateRoleOptions(roles: IRole[]) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -28,9 +28,11 @@ function RoleMappingsFieldArray() {
 
   const handleAppendMapping = () => append({ roleId: '', remoteRoleName: '' });
   const handleRemoveMapping = (index: number) => () => remove(index);
-
   return (
     <>
+      {fields.length === 0 && (
+        <Typography>{formatMessage('roleMappingsForm.notFound')}</Typography>
+      )}
       {fields.map((field, index) => (
         <div key={field.id}>
           <Stack
@@ -74,7 +76,6 @@ function RoleMappingsFieldArray() {
               size="large"
               sx={{ alignSelf: 'flex-start' }}
               onClick={handleRemoveMapping(index)}
-              disabled={fields.length === 1}
             >
               <DeleteIcon />
             </IconButton>
