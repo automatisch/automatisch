@@ -1,4 +1,4 @@
-# Hubspot
+# HubSpot
 
 :::info
 This page explains the steps you need to follow to set up the Hubspot connection in Automatisch. If any of the steps are outdated, please let us know!
@@ -19,4 +19,4 @@ This page explains the steps you need to follow to set up the Hubspot connection
 13. Paste the **Client ID** value into Automatisch as **Client ID**, respectively.
 14. Paste the **Client Secret** value into Automatisch as **Client Secret**, respectively.
 15. Click the **Submit** button on Automatisch.
-16. Now, you can start using the Spotify connection with Automatisch.
+16. Now, you can start using the HubSpot connection with Automatisch.

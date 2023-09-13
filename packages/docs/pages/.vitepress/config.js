@@ -152,6 +152,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'HubSpot',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/hubspot/actions' },
+            { text: 'Connection', link: '/apps/hubspot/connection' },
+          ],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
@@ -269,15 +278,6 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/spotify/actions' },
             { text: 'Connection', link: '/apps/spotify/connection' },
-          ],
-        },
-        {
-          text: 'Hubspot',
-          collapsible: true,
-          collapsed: true,
-          items: [
-            { text: 'Actions', link: '/apps/hubspot/actions' },
-            { text: 'Connection', link: '/apps/hubspot/connection' },
           ],
         },
         {
