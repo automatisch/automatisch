@@ -6,11 +6,10 @@ export default defineAction({
   description: `Create contact on user's account.`,
   arguments: [
     {
-      label: 'Company',
+      label: 'Company name',
       key: 'company',
       type: 'string' as const,
       required: false,
-      description: 'company name',
       variables: true,
     },
     {
@@ -18,7 +17,6 @@ export default defineAction({
       key: 'email',
       type: 'string' as const,
       required: false,
-      description: 'Contact email',
       variables: true,
     },
     {
@@ -26,7 +24,6 @@ export default defineAction({
       key: 'firstName',
       type: 'string' as const,
       required: false,
-      description: 'Contact First name',
       variables: true,
     },
     {
@@ -34,7 +31,7 @@ export default defineAction({
       key: 'lastName',
       type: 'string' as const,
       required: false,
-      description: 'Contact Last name',
+      description: 'Last name',
       variables: true,
     },
     {
@@ -42,7 +39,6 @@ export default defineAction({
       key: 'phone',
       type: 'string' as const,
       required: false,
-      description: 'Contact phone number',
       variables: true,
     },
     {
@@ -50,7 +46,6 @@ export default defineAction({
       key: 'website',
       type: 'string' as const,
       required: false,
-      description: 'Contact Webiste URL',
       variables: true,
     },
     {
@@ -58,7 +53,6 @@ export default defineAction({
       key: 'hubspotOwnerId',
       type: 'string' as const,
       required: false,
-      description: 'Contact Owner ID',
       variables: true,
     },
   ],
