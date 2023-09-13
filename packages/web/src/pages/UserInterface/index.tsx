@@ -7,6 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useSnackbar } from 'notistack';
 import merge from 'lodash/merge';
 
+import { GET_CONFIG } from 'graphql/queries/get-config.ee';
 import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
 import useConfig from 'hooks/useConfig';
 import PageTitle from 'components/PageTitle';
@@ -49,9 +50,7 @@ const defaultValues = {
 
 export default function UserInterface(): React.ReactElement {
   const formatMessage = useFormatMessage();
-  const [updateConfig, { loading }] = useMutation(UPDATE_CONFIG, {
-    refetchQueries: ['GetConfig'],
-  });
+  const [updateConfig, { loading }] = useMutation(UPDATE_CONFIG);
   const { config, loading: configLoading } = useConfig([
     'title',
     'palette.primary.main',
@@ -61,27 +60,69 @@ export default function UserInterface(): React.ReactElement {
   ]);
   const { enqueueSnackbar } = useSnackbar();
   const configWithDefaults = merge(
+    {},
     defaultValues,
     nestObject<UserInterface>(config)
   );
 
   const handleUserInterfaceUpdate = async (uiData: Partial<UserInterface>) => {
     try {
+      const input = {
+        title: uiData?.title,
+        'palette.primary.main': getPrimaryMainColor(
+          uiData?.palette?.primary.main
+        ),
+        'palette.primary.dark': getPrimaryDarkColor(
+          uiData?.palette?.primary.dark
+        ),
+        'palette.primary.light': getPrimaryLightColor(
+          uiData?.palette?.primary.light
+        ),
+        'logo.svgData': uiData?.logo?.svgData,
+      };
+
       await updateConfig({
         variables: {
-          input: {
-            title: uiData?.title,
-            'palette.primary.main': getPrimaryMainColor(
-              uiData?.palette?.primary.main
-            ),
-            'palette.primary.dark': getPrimaryDarkColor(
-              uiData?.palette?.primary.dark
-            ),
-            'palette.primary.light': getPrimaryLightColor(
-              uiData?.palette?.primary.light
-            ),
-            'logo.svgData': uiData?.logo?.svgData,
-          },
+          input,
+        },
+        optimisticResponse: {
+          updateConfig: input,
+        },
+        update: async function (cache, { data: { updateConfig } }) {
+          const newConfigWithDefaults = merge({}, defaultValues, updateConfig);
+
+          cache.writeQuery({
+            query: GET_CONFIG,
+            data: {
+              getConfig: newConfigWithDefaults,
+            },
+          });
+
+          cache.writeQuery({
+            query: GET_CONFIG,
+            data: {
+              getConfig: newConfigWithDefaults,
+            },
+            variables: {
+              keys: ['logo.svgData'],
+            },
+          });
+
+          cache.writeQuery({
+            query: GET_CONFIG,
+            data: {
+              getConfig: newConfigWithDefaults,
+            },
+            variables: {
+              keys: [
+                'title',
+                'palette.primary.main',
+                'palette.primary.light',
+                'palette.primary.dark',
+                'logo.svgData',
+              ],
+            },
+          });
         },
       });
 
