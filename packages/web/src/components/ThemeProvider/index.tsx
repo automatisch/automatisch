@@ -1,5 +1,6 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as BaseThemeProvider } from '@mui/material/styles';
+import clone from 'lodash/clone';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import * as React from 'react';
@@ -13,16 +14,19 @@ type ThemeProviderProps = {
 };
 
 const customizeTheme = (defaultTheme: typeof theme, config: IJSONObject) => {
+  // `clone` is needed so that the new theme reference triggers re-render
+  const shallowDefaultTheme = clone(defaultTheme);
+
   for (const key in config) {
     const value = config[key];
     const exists = get(defaultTheme, key);
 
     if (exists) {
-      set(defaultTheme, key, value);
+      set(shallowDefaultTheme, key, value);
     }
   }
 
-  return defaultTheme;
+  return shallowDefaultTheme;
 };
 
 const ThemeProvider = ({
