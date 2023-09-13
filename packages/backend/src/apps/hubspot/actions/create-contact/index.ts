@@ -14,7 +14,7 @@ export default defineAction({
       variables: true,
     },
     {
-      label: 'E-mail',
+      label: 'Email',
       key: 'email',
       type: 'string' as const,
       required: false,
@@ -23,7 +23,7 @@ export default defineAction({
     },
     {
       label: 'First name',
-      key: 'firstname',
+      key: 'firstName',
       type: 'string' as const,
       required: false,
       description: 'Contact First name',
@@ -31,7 +31,7 @@ export default defineAction({
     },
     {
       label: 'Last name',
-      key: 'lastname',
+      key: 'lastName',
       type: 'string' as const,
       required: false,
       description: 'Contact Last name',
@@ -55,7 +55,7 @@ export default defineAction({
     },
     {
       label: 'Owner ID',
-      key: 'hubspot_owner_id',
+      key: 'hubspotOwnerId',
       type: 'string' as const,
       required: false,
       description: 'Contact Owner ID',
@@ -66,21 +66,21 @@ export default defineAction({
   async run($) {
     const company = $.step.parameters.company as string;
     const email = $.step.parameters.email as string;
-    const firstname = $.step.parameters.firstname as string;
-    const lastname = $.step.parameters.lastname as string;
+    const firstName = $.step.parameters.firstName as string;
+    const lastName = $.step.parameters.lastName as string;
     const phone = $.step.parameters.phone as string;
     const website = $.step.parameters.website as string;
-    const hubspot_owner_id = $.step.parameters.hubspot_owner_id as string;
+    const hubspotOwnerId = $.step.parameters.hubspotOwnerId as string;
 
     const response = await $.http.post(`crm/v3/objects/contacts`, {
       properties: {
         company,
         email,
-        firstname,
-        lastname,
+        firstname: firstName,
+        lastname: lastName,
         phone,
         website,
-        hubspot_owner_id,
+        hubspot_owner_id: hubspotOwnerId,
       },
     });
 
