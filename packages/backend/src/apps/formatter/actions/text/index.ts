@@ -1,16 +1,27 @@
 import defineAction from '../../../../helpers/define-action';
+
 import capitalize from './transformers/capitalize';
-import htmlToMarkdown from './transformers/html-to-markdown';
-import markdownToHtml from './transformers/markdown-to-html';
-import useDefaultValue from './transformers/use-default-value';
 import extractEmailAddress from './transformers/extract-email-address';
+import extractNumber from './transformers/extract-number';
+import htmlToMarkdown from './transformers/html-to-markdown';
+import lowercase from './transformers/lowercase';
+import markdownToHtml from './transformers/markdown-to-html';
+import pluralize from './transformers/pluralize';
+import replace from './transformers/replace';
+import trimWhitespace from './transformers/trim-whitespace';
+import useDefaultValue from './transformers/use-default-value';
 
 const transformers = {
   capitalize,
-  htmlToMarkdown,
-  markdownToHtml,
-  useDefaultValue,
   extractEmailAddress,
+  extractNumber,
+  htmlToMarkdown,
+  lowercase,
+  markdownToHtml,
+  pluralize,
+  replace,
+  trimWhitespace,
+  useDefaultValue,
 };
 
 export default defineAction({
@@ -24,14 +35,18 @@ export default defineAction({
       key: 'transform',
       type: 'dropdown' as const,
       required: true,
-      description: 'Pick a channel to send the message to.',
       variables: true,
       options: [
         { label: 'Capitalize', value: 'capitalize' },
         { label: 'Convert HTML to Markdown', value: 'htmlToMarkdown' },
         { label: 'Convert Markdown to HTML', value: 'markdownToHtml' },
-        { label: 'Use Default Value', value: 'useDefaultValue' },
         { label: 'Extract Email Address', value: 'extractEmailAddress' },
+        { label: 'Extract Number', value: 'extractNumber' },
+        { label: 'Lowercase', value: 'lowercase' },
+        { label: 'Pluralize', value: 'pluralize' },
+        { label: 'Replace', value: 'replace' },
+        { label: 'Trim Whitespace', value: 'trimWhitespace' },
+        { label: 'Use Default Value', value: 'useDefaultValue' },
       ],
       additionalFields: {
         type: 'query',

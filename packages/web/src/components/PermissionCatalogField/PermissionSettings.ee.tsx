@@ -22,18 +22,14 @@ type PermissionSettingsProps = {
   onClose: () => void;
   fieldPrefix: string;
   subject: string;
+  defaultChecked?: boolean;
   actions: IPermissionCatalog['actions'];
   conditions: IPermissionCatalog['conditions'];
-}
+};
 
 export default function PermissionSettings(props: PermissionSettingsProps) {
-  const {
-    onClose,
-    fieldPrefix,
-    subject,
-    actions,
-    conditions,
-  } = props;
+  const { onClose, fieldPrefix, subject, actions, conditions, defaultChecked } =
+    props;
 
   const formatMessage = useFormatMessage();
   const { getValues, resetField } = useFormContext();
@@ -47,7 +43,7 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
     }
 
     onClose();
-  }
+  };
 
   const apply = () => {
     for (const action of actions) {
@@ -59,13 +55,11 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
     }
 
     onClose();
-  }
+  };
 
   return (
     <Dialog open onClose={cancel}>
-      <DialogTitle>
-        {formatMessage('permissionSettings.title')}
-      </DialogTitle>
+      <DialogTitle>{formatMessage('permissionSettings.title')}</DialogTitle>
 
       <DialogContent>
         <TableContainer component={Paper}>
@@ -74,14 +68,14 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
               <TableRow>
                 <TableCell component="th" />
 
-                {actions.map(action => (
+                {actions.map((action) => (
                   <TableCell component="th" key={action.key}>
                     <Typography
                       variant="subtitle1"
                       align="center"
                       sx={{
                         color: 'text.secondary',
-                        fontWeight: 700
+                        fontWeight: 700,
                       }}
                     >
                       {action.label}
@@ -97,9 +91,7 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
                   sx={{ '&:last-child td': { border: 0 } }}
                 >
                   <TableCell scope="row">
-                    <Typography
-                      variant="subtitle2"
-                    >
+                    <Typography variant="subtitle2">
                       {condition.label}
                     </Typography>
                   </TableCell>
@@ -109,13 +101,16 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
                       key={`${action.key}.${condition.key}`}
                       align="center"
                     >
-                      <Typography
-                        variant="subtitle2"
-                      >
+                      <Typography variant="subtitle2">
                         {action.subjects.includes(subject) && (
                           <ControlledCheckbox
                             name={`${fieldPrefix}.${action.key}.conditions.${condition.key}`}
-                            disabled={getValues(`${fieldPrefix}.${action.key}.value`) !== true}
+                            defaultValue={defaultChecked}
+                            disabled={
+                              getValues(
+                                `${fieldPrefix}.${action.key}.value`
+                              ) !== true
+                            }
                           />
                         )}
 
@@ -131,12 +126,14 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={cancel}>{formatMessage('permissionSettings.cancel')}</Button>
+        <Button onClick={cancel}>
+          {formatMessage('permissionSettings.cancel')}
+        </Button>
 
         <Button onClick={apply} color="error">
           {formatMessage('permissionSettings.apply')}
         </Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }
