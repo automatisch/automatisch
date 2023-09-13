@@ -27,7 +27,7 @@ function computeArguments(
       const sanitizedFieldPath = value.replace(/{|}/g, '');
       const computedValue = getValues(sanitizedFieldPath);
 
-      if (computedValue === undefined)
+      if (computedValue === undefined || computedValue === '')
         throw new Error(`The ${sanitizedFieldPath} field is required.`);
 
       set(result, name, computedValue);

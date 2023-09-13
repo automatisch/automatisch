@@ -80,7 +80,7 @@ function ChooseAppAndEventSubstep(
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
   const appOptions = React.useMemo(
-    () => apps?.map((app) => optionGenerator(app)),
+    () => apps?.map((app) => optionGenerator(app)) || [],
     [apps]
   );
   const actionsOrTriggers: Array<ITrigger | IAction> =
@@ -167,7 +167,7 @@ function ChooseAppAndEventSubstep(
           <Autocomplete
             fullWidth
             disablePortal
-            disableClearable
+            disableClearable={getOption(appOptions, step.appKey) !== undefined}
             disabled={editorContext.readOnly}
             options={appOptions}
             renderInput={(params) => (
@@ -176,7 +176,7 @@ function ChooseAppAndEventSubstep(
                 label={formatMessage('flowEditor.chooseApp')}
               />
             )}
-            value={getOption(appOptions, step.appKey)}
+            value={getOption(appOptions, step.appKey) || null}
             onChange={onAppChange}
             data-test="choose-app-autocomplete"
           />
@@ -191,7 +191,9 @@ function ChooseAppAndEventSubstep(
               <Autocomplete
                 fullWidth
                 disablePortal
-                disableClearable
+                disableClearable={
+                  getOption(actionOrTriggerOptions, step.key) !== undefined
+                }
                 disabled={editorContext.readOnly}
                 options={actionOrTriggerOptions}
                 renderInput={(params) => (
@@ -235,7 +237,7 @@ function ChooseAppAndEventSubstep(
                     )}
                   </li>
                 )}
-                value={getOption(actionOrTriggerOptions, step.key)}
+                value={getOption(actionOrTriggerOptions, step.key) || null}
                 onChange={onEventChange}
                 data-test="choose-event-autocomplete"
               />
