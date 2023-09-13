@@ -46,7 +46,7 @@ export default defineAction({
       variables: true,
     },
     {
-      label: 'Webiste URL',
+      label: 'Website URL',
       key: 'website',
       type: 'string' as const,
       required: false,
