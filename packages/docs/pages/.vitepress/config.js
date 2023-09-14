@@ -152,6 +152,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'HubSpot',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/hubspot/actions' },
+            { text: 'Connection', link: '/apps/hubspot/connection' },
+          ],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
