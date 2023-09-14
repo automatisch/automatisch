@@ -9,7 +9,7 @@
     "build": "tsc && yarn copy-statics",
     "build:watch": "nodemon --watch 'src/**/*.ts' --watch 'bin/**/*.ts' --exec yarn build --ext ts",
     "start": "node dist/src/server.js",
-    "pretest": "APP_ENV=test ts-node ./test/setup/create-database.ts",
+    "pretest": "APP_ENV=test ts-node ./test/setup/prepare-test-env.ts",
     "test": "APP_ENV=test ava",
     "lint": "eslint . --ignore-path ../../.eslintignore",
     "db:create": "ts-node ./bin/database/create.ts",
