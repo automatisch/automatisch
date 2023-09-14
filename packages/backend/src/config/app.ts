@@ -1,6 +1,12 @@
 import { URL } from 'node:url';
 import * as dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+
+if (process.env.APP_ENV === 'test') {
+  dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
+} else {
+  dotenv.config();
+}
 
 type AppConfig = {
   host: string;
