@@ -9,7 +9,8 @@
     "build": "tsc && yarn copy-statics",
     "build:watch": "nodemon --watch 'src/**/*.ts' --watch 'bin/**/*.ts' --exec yarn build --ext ts",
     "start": "node dist/src/server.js",
-    "test": "ava",
+    "pretest": "APP_ENV=test ts-node ./test/setup/prepare-test-env.ts",
+    "test": "APP_ENV=test ava",
     "lint": "eslint . --ignore-path ../../.eslintignore",
     "db:create": "ts-node ./bin/database/create.ts",
     "db:seed:user": "ts-node ./bin/database/seed-user.ts",
@@ -131,22 +132,11 @@
     "@types/pino": "^7.0.5",
     "@types/pluralize": "^0.0.30",
     "@types/showdown": "^2.0.1",
-    "ava": "^3.15.0",
+    "ava": "^5.3.1",
     "nodemon": "^2.0.13",
     "sinon": "^11.1.2",
     "ts-node": "^10.2.1",
     "ts-node-dev": "^1.1.8"
-  },
-  "ava": {
-    "files": [
-      "test/**/*"
-    ],
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
   },
   "publishConfig": {
     "access": "public"
