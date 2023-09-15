@@ -1,8 +1,9 @@
 name: Automatisch UI Tests
 on:
   push:
-  schedule:
-    - cron: '0 12 * * *'
+    branches:
+      - main
+  pull_request:
   workflow_dispatch:
 
 env:

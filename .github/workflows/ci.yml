@@ -1,5 +1,10 @@
 name: Automatisch CI
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
 jobs:
   linter:
     runs-on: ubuntu-latest

@@ -29,7 +29,6 @@ rm -rf .env
 echo "
 PORT=$WEB_PORT
 REACT_APP_GRAPHQL_URL=http://localhost:$BACKEND_PORT/graphql
-REACT_APP_NOTIFICATIONS_URL=https://notifications.automatisch.io
 " >> .env
 cd $CURRENT_DIR
 

@@ -430,6 +430,13 @@ type TSamlAuthProvider = {
   loginUrl: string;
 };
 
+type TSamlAuthProviderRole = {
+  id: string;
+  samlAuthProviderId: string;
+  roleId: string;
+  remoteRoleName: string;
+};
+
 type AppConfig = {
   id: string;
   key: string;
@@ -446,6 +453,13 @@ type AppAuthClient = {
   appConfigId: string;
   authDefaults: string;
   formattedAuthDefaults: IJSONObject;
+};
+
+type Notification = {
+  name: string;
+  createdAt: string;
+  documentationUrl: string;
+  description: string;
 };
 
 declare module 'axios' {

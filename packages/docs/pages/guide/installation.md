@@ -29,6 +29,20 @@ docker compose up
 
 ✌️ That's it; you have Automatisch running. Let's check it out by browsing [http://localhost:3000](https://localhost:3000)
 
+### Upgrade with Docker Compose
+
+If you want to upgrade the Automatisch version with docker compose, first you need to pull the main branch of Automatisch repository.
+
+```bash
+git pull origin main
+```
+
+Then you can run the following command to rebuild the containers with the new images.
+
+```bash
+docker compose up --force-recreate --build
+```
+
 ## Docker
 
 Automatisch comes with two services which are `main` and `worker`. They both use the same image and need to have the same environment variables except for the `WORKER` environment variable which is set to `true` for the worker service.

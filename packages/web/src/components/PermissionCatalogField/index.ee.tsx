@@ -19,11 +19,13 @@ import PermissionCatalogFieldLoader from './PermissionCatalogFieldLoader';
 type PermissionCatalogFieldProps = {
   name?: string;
   disabled?: boolean;
+  defaultChecked?: boolean;
 };
 
 const PermissionCatalogField = ({
   name = 'permissions',
   disabled = false,
+  defaultChecked = false,
 }: PermissionCatalogFieldProps) => {
   const { permissionCatalog, loading } = usePermissionCatalog();
   const [dialogName, setDialogName] = React.useState<string>();
@@ -98,6 +100,7 @@ const PermissionCatalogField = ({
                       subject={subject.key}
                       actions={permissionCatalog.actions}
                       conditions={permissionCatalog.conditions}
+                      defaultChecked={defaultChecked}
                     />
                   )}
                 </Stack>

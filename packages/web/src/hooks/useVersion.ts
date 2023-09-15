@@ -10,7 +10,7 @@ type TVersionInfo = {
 };
 
 export default function useVersion(): TVersionInfo {
-  const notifications = useNotifications();
+  const { notifications } = useNotifications();
   const { data } = useQuery(HEALTHCHECK, { fetchPolicy: 'cache-and-network' });
   const version = data?.healthcheck.version;
 
