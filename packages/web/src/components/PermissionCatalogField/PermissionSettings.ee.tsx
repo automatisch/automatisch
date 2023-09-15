@@ -22,14 +22,22 @@ type PermissionSettingsProps = {
   onClose: () => void;
   fieldPrefix: string;
   subject: string;
+  open?: boolean;
   defaultChecked?: boolean;
   actions: IPermissionCatalog['actions'];
   conditions: IPermissionCatalog['conditions'];
 };
 
 export default function PermissionSettings(props: PermissionSettingsProps) {
-  const { onClose, fieldPrefix, subject, actions, conditions, defaultChecked } =
-    props;
+  const {
+    onClose,
+    open = false,
+    fieldPrefix,
+    subject,
+    actions,
+    conditions,
+    defaultChecked,
+  } = props;
 
   const formatMessage = useFormatMessage();
   const { getValues, resetField } = useFormContext();
@@ -58,7 +66,7 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
   };
 
   return (
-    <Dialog open onClose={cancel}>
+    <Dialog open onClose={cancel} sx={{ display: open ? 'block' : 'none' }}>
       <DialogTitle>{formatMessage('permissionSettings.title')}</DialogTitle>
 
       <DialogContent>

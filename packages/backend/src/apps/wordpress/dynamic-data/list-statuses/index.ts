@@ -3,7 +3,7 @@ import { IGlobalVariable, IJSONObject } from '@automatisch/types';
 type Status = {
   slug: string;
   name: string;
-}
+};
 type Statuses = Record<string, Status>;
 
 export default {
@@ -29,7 +29,7 @@ export default {
       statuses.data.push({
         value: status.slug,
         name: status.name,
-      })
+      });
     }
 
     return statuses;
