@@ -76,9 +76,9 @@ jobs:
       - name: Run Playwright tests
         working-directory: ./packages/e2e-tests
         env:
-          LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
-          LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-          BASE_URL: ${{ vars.E2E_BASE_URL }}
+          LOGIN_EMAIL: user@automatisch.io
+          LOGIN_PASSWORD: sample
+          BASE_URL: http://localhost:3000
         run: yarn test
       - uses: actions/upload-artifact@v3
         if: always()
