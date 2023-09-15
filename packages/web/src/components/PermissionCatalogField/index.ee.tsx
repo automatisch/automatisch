@@ -93,16 +93,15 @@ const PermissionCatalogField = ({
                     <SettingsIcon />
                   </IconButton>
 
-                  {dialogName === subject.key && (
-                    <PermissionSettings
-                      onClose={() => setDialogName('')}
-                      fieldPrefix={`${name}.${subject.key}`}
-                      subject={subject.key}
-                      actions={permissionCatalog.actions}
-                      conditions={permissionCatalog.conditions}
-                      defaultChecked={defaultChecked}
-                    />
-                  )}
+                  <PermissionSettings
+                    open={dialogName === subject.key}
+                    onClose={() => setDialogName('')}
+                    fieldPrefix={`${name}.${subject.key}`}
+                    subject={subject.key}
+                    actions={permissionCatalog.actions}
+                    conditions={permissionCatalog.conditions}
+                    defaultChecked={defaultChecked}
+                  />
                 </Stack>
               </TableCell>
             </TableRow>
