@@ -119,6 +119,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/google-calendar/triggers' },
             { text: 'Connection', link: '/apps/google-calendar/connection' },
           ],
         },
