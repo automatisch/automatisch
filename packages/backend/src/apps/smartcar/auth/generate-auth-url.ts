@@ -4,8 +4,9 @@ import { URLSearchParams } from 'url';
 export default async function generateAuthUrl($: IGlobalVariable) {
   const scopes = [
     'read_odometer',
-    'read_vehicle_info',
+    'required:read_vehicle_info',
     'required:read_location',
+    'required:read_battery',
   ];
 
   const oauthRedirectUrlField = $.app.auth.fields.find(
