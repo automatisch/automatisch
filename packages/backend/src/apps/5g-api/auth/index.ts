@@ -1,5 +1,5 @@
 import verifyCredentials from './verify-credentials';
-// import isStillVerified from './is-still-verified';
+import isStillVerified from './is-still-verified';
 // import refreshToken from './refresh-token';
 
 export default {

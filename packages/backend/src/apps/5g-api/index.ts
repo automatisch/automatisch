@@ -1,5 +1,5 @@
 import defineApp from '../../helpers/define-app';
-// import addAuthHeader from './common/add-auth-header';
+import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
 import actions from './actions';
 
@@ -12,7 +12,7 @@ export default defineApp({
   baseUrl: 'https://developer.telekom.de',
   apiBaseUrl: 'https://api.developer.telekom.de',
   primaryColor: 'e20074',
-  // beforeRequest: [addAuthHeader],
+  beforeRequest: [addAuthHeader],
   auth,
   actions,
 });
