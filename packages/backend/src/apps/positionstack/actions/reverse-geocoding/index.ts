@@ -6,16 +6,16 @@ export default defineAction({
   description: 'Get the address of a location from its longitude and latitude.',
   arguments: [
     {
-      label: 'Longitude',
-      key: 'longitude',
+      label: 'Latitude',
+      key: 'latitude',
       type: 'string' as const,
       required: true,
       description: 'Longitude of the location.',
       variables: true,
     },
     {
-      label: 'Latitude',
-      key: 'latitude',
+      label: 'Longitude',
+      key: 'longitude',
       type: 'string' as const,
       required: true,
       description: 'Latitude of the location.',
