@@ -216,6 +216,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Pipedrive',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/pipedrive/triggers' },
+            { text: 'Connection', link: '/apps/pipedrive/connection' },
+          ],
+        },
+        {
           text: 'PostgreSQL',
           collapsible: true,
           collapsed: true,
