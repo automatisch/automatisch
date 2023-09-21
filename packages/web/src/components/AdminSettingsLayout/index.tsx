@@ -3,6 +3,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LockIcon from '@mui/icons-material/LockPerson';
 import BrushIcon from '@mui/icons-material/Brush';
+import AppsIcon from '@mui/icons-material/Apps';
+
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
@@ -69,6 +71,12 @@ function createDrawerLinks({
           dataTest: 'authentication-drawer-link',
         }
       : null,
+    {
+      Icon: AppsIcon,
+      primary: 'adminSettingsDrawer.apps',
+      to: URLS.ADMIN_APPS,
+      dataTest: 'apps-drawer-link',
+    },
   ].filter(Boolean) as DrawerLink[];
 
   return items;
