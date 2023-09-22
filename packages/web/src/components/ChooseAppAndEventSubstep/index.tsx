@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,11 +7,6 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
-
-import useFormatMessage from 'hooks/useFormatMessage';
-import { EditorContext } from 'contexts/Editor';
-import { GET_APPS } from 'graphql/queries/get-apps';
-import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import type {
   IApp,
   IStep,
@@ -20,6 +14,11 @@ import type {
   ITrigger,
   IAction,
 } from '@automatisch/types';
+
+import useFormatMessage from 'hooks/useFormatMessage';
+import useApps from 'hooks/useApps';
+import { EditorContext } from 'contexts/Editor';
+import FlowSubstepTitle from 'components/FlowSubstepTitle';
 
 type ChooseAppAndEventSubstepProps = {
   substep: ISubstep;
@@ -73,14 +72,14 @@ function ChooseAppAndEventSubstep(
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
 
-  const { data } = useQuery(GET_APPS, {
-    variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction },
+  const { apps } = useApps({
+    onlyWithTriggers: isTrigger,
+    onlyWithActions: isAction,
   });
-  const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
   const appOptions = React.useMemo(
-    () => apps?.map((app) => optionGenerator(app)),
+    () => apps?.map((app) => optionGenerator(app)) || [],
     [apps]
   );
   const actionsOrTriggers: Array<ITrigger | IAction> =
