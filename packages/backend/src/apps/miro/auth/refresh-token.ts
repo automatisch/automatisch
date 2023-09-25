@@ -14,6 +14,7 @@ const refreshToken = async ($: IGlobalVariable) => {
   await $.auth.set({
     accessToken: data.access_token,
     expiresIn: data.expires_in,
+    refreshToken: data.refresh_token,
     scope: data.scope,
     tokenType: data.token_type,
   });
