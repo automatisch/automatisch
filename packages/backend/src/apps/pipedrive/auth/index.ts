@@ -14,7 +14,7 @@ export default {
       value: '{WEB_APP_URL}/app/pipedrive/connections/add',
       placeholder: null,
       description:
-        'When asked to input a redirect URL in Google Cloud, enter the URL above.',
+        'When asked to input a redirect URL in Pipedrive, enter the URL above.',
       clickToCopy: true,
     },
     {
