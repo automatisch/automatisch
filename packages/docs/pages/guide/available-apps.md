@@ -23,6 +23,7 @@ The following integrations are currently supported by Automatisch.
 - [Odoo](/apps/odoo/actions)
 - [OpenAI](/apps/openai/actions)
 - [PostgreSQL](/apps/postgresql/actions)
+- [Pipedrive](/apps/pipedrive/triggers)
 - [RSS](/apps/rss/triggers)
 - [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)
