@@ -10,6 +10,7 @@ export default defineTrigger({
   async run($) {
     const params: Record<string, unknown> = {
       pageToken: undefined as unknown as string,
+      maxResults: 250,
     };
 
     do {
