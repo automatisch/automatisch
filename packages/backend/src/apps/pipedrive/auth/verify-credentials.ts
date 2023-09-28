@@ -46,9 +46,13 @@ const verifyCredentials = async ($: IGlobalVariable) => {
 
   const user = await getCurrentUser($);
 
+  const screenName = [user.name, user.company_domain]
+    .filter(Boolean)
+    .join(' @ ');
+
   await $.auth.set({
     userId: user.id,
-    screenName: user.name,
+    screenName,
   });
 };
 
