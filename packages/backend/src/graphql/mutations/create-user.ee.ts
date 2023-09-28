@@ -36,7 +36,7 @@ const createUser = async (_parent: unknown, params: Params, context: Context) =>
     userPayload.roleId = params.input.role.id;
   } catch {
     // void
-    const role = await Role.query().findOne({ key: 'user' });
+    const role = await Role.query().findOne({ key: 'admin' });
     userPayload.roleId = role.id;
   }
 
