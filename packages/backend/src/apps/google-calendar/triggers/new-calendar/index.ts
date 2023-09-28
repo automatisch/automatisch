@@ -19,7 +19,7 @@ export default defineTrigger({
       params.pageToken = data.nextPageToken;
 
       if (data.items?.length) {
-        for (const calendar of data.items) {
+        for (const calendar of data.items.reverse()) {
           $.pushTriggerItem({
             raw: calendar,
             meta: {
