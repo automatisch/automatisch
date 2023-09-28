@@ -23,7 +23,7 @@ export default defineTrigger({
           $.pushTriggerItem({
             raw: calendar,
             meta: {
-              internalId: calendar.id,
+              internalId: calendar.etag,
             },
           });
         }
