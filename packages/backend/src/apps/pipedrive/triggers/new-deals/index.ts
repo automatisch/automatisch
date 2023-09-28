@@ -37,7 +37,7 @@ export default defineTrigger({
         { params }
       );
 
-      if (!data.data.length) {
+      if (!data?.data?.length) {
         return;
       }
 
