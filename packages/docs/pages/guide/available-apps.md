@@ -22,6 +22,7 @@ The following integrations are currently supported by Automatisch.
 - [Ntfy](/apps/ntfy/actions)
 - [Odoo](/apps/odoo/actions)
 - [OpenAI](/apps/openai/actions)
+- [Pipedrive](/apps/pipedrive/triggers)
 - [PostgreSQL](/apps/postgresql/actions)
 - [RSS](/apps/rss/triggers)
 - [Salesforce](/apps/salesforce/triggers)
