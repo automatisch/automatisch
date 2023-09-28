@@ -11,6 +11,7 @@ The following integrations are currently supported by Automatisch.
 - [Formatter](/apps/formatter/actions)
 - [GitHub](/apps/github/triggers)
 - [GitLab](/apps/gitlab/triggers)
+- [Google Calendar](/apps/google-calendar/triggers)
 - [Google Drive](/apps/google-drive/triggers)
 - [Google Forms](/apps/google-forms/triggers)
 - [Google Sheets](/apps/google-sheets/triggers)
