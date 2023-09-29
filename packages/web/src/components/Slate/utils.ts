@@ -92,19 +92,13 @@ const variableRegExp = /({{.*?}})/;
 const stepIdRegExp = /^step.([\da-zA-Z-]*)/;
 
 export const deserialize = (
-  value: string,
+  value: boolean | string | number,
   options: readonly IFieldDropdownOption[],
   stepsWithVariables: StepsWithVariables
 ): Descendant[] => {
-  if (!value)
-    return [
-      {
-        type: 'paragraph',
-        children: [{ text: '' }],
-      },
-    ];
-
-  const selectedNativeOption = options.find((option) => value === option.value);
+  const selectedNativeOption = options?.find(
+    (option) => value === option.value
+  );
 
   if (selectedNativeOption) {
     return [
@@ -116,43 +110,54 @@ export const deserialize = (
     ];
   }
 
-  return value.split('\n').map((line) => {
-    const nodes = line.split(variableRegExp);
-
-    if (nodes.length > 1) {
-      return {
+  if (value === null || value === undefined || value === '')
+    return [
+      {
         type: 'paragraph',
-        children: nodes.map((node) => {
-          if (node.match(variableRegExp)) {
-            const variableDetails = getVariableDetails(
-              node,
-              stepsWithVariables
-            );
+        children: [{ text: '' }],
+      },
+    ];
+
+  return value
+    .toString()
+    .split('\n')
+    .map((line) => {
+      const nodes = line.split(variableRegExp);
+
+      if (nodes.length > 1) {
+        return {
+          type: 'paragraph',
+          children: nodes.map((node) => {
+            if (node.match(variableRegExp)) {
+              const variableDetails = getVariableDetails(
+                node,
+                stepsWithVariables
+              );
+
+              return {
+                type: 'variable',
+                name: variableDetails.label,
+                sampleValue: variableDetails.sampleValue,
+                value: node,
+                children: [{ text: '' }],
+              };
+            }
 
             return {
-              type: 'variable',
-              name: variableDetails.label,
-              sampleValue: variableDetails.sampleValue,
-              value: node,
-              children: [{ text: '' }],
+              text: node,
             };
-          }
+          }),
+        };
+      }
 
-          return {
-            text: node,
-          };
-        }),
+      return {
+        type: 'paragraph',
+        children: [{ text: line }],
       };
-    }
-
-    return {
-      type: 'paragraph',
-      children: [{ text: line }],
-    };
-  });
+    });
 };
 
-export const serialize = (value: Descendant[]): string => {
+export const serialize = (value: Descendant[]): string | number | null => {
   const serializedNodes = value.map((node) => serializeNode(node));
 
   const hasSingleNode = value.length === 1;
@@ -169,8 +174,12 @@ export const serialize = (value: Descendant[]): string => {
   return serializedValue;
 };
 
-const serializeNode = (node: CustomElement | Descendant): string => {
-  if (isCustomText(node)) return node.value;
+const serializeNode = (
+  node: CustomElement | Descendant
+): string | number | null => {
+  if (isCustomText(node)) {
+    return node.value;
+  }
 
   if (Text.isText(node)) {
     return node.text;
