@@ -131,6 +131,8 @@ const appConfig: AppConfig = {
   sentryDsn: process.env.SENTRY_DSN,
 };
 
+console.log('license', appConfig.licenseKey, appConfig.licenseKey?.length);
+
 if (!appConfig.encryptionKey) {
   throw new Error('ENCRYPTION_KEY environment variable needs to be set!');
 }
