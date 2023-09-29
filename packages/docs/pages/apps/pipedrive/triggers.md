@@ -3,6 +3,8 @@ favicon: /favicons/pipedrive.svg
 items:
   - name: New deals
     desc: Triggers when a new deal is created.
+  - name: New notes
+    desc: Triggers when a new note is created.
 ---
 
 <script setup>
