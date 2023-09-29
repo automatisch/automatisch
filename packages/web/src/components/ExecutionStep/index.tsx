@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { DateTime } from 'luxon';
-import { useQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -14,8 +13,9 @@ import type { IApp, IExecutionStep, IStep } from '@automatisch/types';
 import TabPanel from 'components/TabPanel';
 import SearchableJSONViewer from 'components/SearchableJSONViewer';
 import AppIcon from 'components/AppIcon';
-import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useApps from 'hooks/useApps';
+
 import {
   AppIconWrapper,
   AppIconStatusIconWrapper,
@@ -80,10 +80,10 @@ export default function ExecutionStep(
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
-  const { data } = useQuery(GET_APPS, {
-    variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction },
+  const { apps } = useApps({
+    onlyWithTriggers: isTrigger,
+    onlyWithActions: isAction,
   });
-  const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
   if (!apps) return null;
@@ -120,7 +120,7 @@ export default function ExecutionStep(
 
             <Box
               display="flex"
-              justifyContent={["left", "right"]}
+              justifyContent={['left', 'right']}
               gridArea="date"
             >
               <ExecutionStepDate createdAt={executionStep.createdAt} />

@@ -19,6 +19,9 @@ const refreshToken = async ($: IGlobalVariable) => {
     params.toString(),
     {
       headers,
+      additionalProperties: {
+        skipAddingAuthHeader: true,
+      },
     }
   );
 
