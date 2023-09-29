@@ -179,6 +179,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Miro',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/miro/actions' },
+            { text: 'Connection', link: '/apps/miro/connection' },
+          ],
+        },
+        {
           text: 'Notion',
           collapsible: true,
           collapsed: true,
