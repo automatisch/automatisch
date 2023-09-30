@@ -68,8 +68,8 @@ jobs:
         working-directory: ./packages/backend
         run: yarn db:seed:user &
       - name: Run Automatisch
-        run: yarn start &
-        working-directory: ./packages/backend
+        run: yarn start-mocked-backend &
+        working-directory: ./packages/e2e-tests
       - name: Run Automatisch worker
         run: node dist/src/worker.js &
         working-directory: ./packages/backend
