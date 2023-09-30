@@ -1,8 +1,3 @@
-import test from 'ava';
-
-const fn = () => 'foo';
-
-test('getUser graphQL query', (t) => {
-  // TODO: Write a test for getUser graphQL query
-  t.is(fn(), 'foo');
+test('adds 1 + 2 to equal 3', () => {
+  expect(1 + 2).toBe(3);
 });
