@@ -1,11 +1,12 @@
 import { client as knex } from '../../src/config/database';
+import { Knex } from 'knex';
 
 global.beforeAll(async () => {
-  global.knex = knex;
+  (global as any).knex = knex as Knex;
 });
 
 global.beforeEach(async function () {
-  this.transaction = await global.knex.transaction();
+  this.transaction = await (global as any).knex.transaction();
 });
 
 global.afterEach(async function () {
@@ -13,5 +14,5 @@ global.afterEach(async function () {
 });
 
 global.afterAll(async () => {
-  global.knex.destroy();
+  (global as any).knex.destroy();
 });
