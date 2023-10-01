@@ -1,6 +1,6 @@
 import appConfig from './src/config/app';
 
-const fileExtension = appConfig.isDev ? 'ts' : 'js';
+const fileExtension = appConfig.isDev || appConfig.isTest ? 'ts' : 'js';
 
 const knexConfig = {
   client: 'pg',
