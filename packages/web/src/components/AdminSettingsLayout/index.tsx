@@ -32,11 +32,13 @@ function createDrawerLinks({
   canReadUser,
   canUpdateConfig,
   canManageSamlAuthProvider,
+  canUpdateApp,
 }: {
   canReadRole: boolean;
   canReadUser: boolean;
   canUpdateConfig: boolean;
   canManageSamlAuthProvider: boolean;
+  canUpdateApp: boolean;
 }) {
   const items = [
     canReadUser
@@ -71,12 +73,14 @@ function createDrawerLinks({
           dataTest: 'authentication-drawer-link',
         }
       : null,
-    {
-      Icon: AppsIcon,
-      primary: 'adminSettingsDrawer.apps',
-      to: URLS.ADMIN_APPS,
-      dataTest: 'apps-drawer-link',
-    },
+    canUpdateApp
+      ? {
+          Icon: AppsIcon,
+          primary: 'adminSettingsDrawer.apps',
+          to: URLS.ADMIN_APPS,
+          dataTest: 'apps-drawer-link',
+        }
+      : null,
   ].filter(Boolean) as DrawerLink[];
 
   return items;
@@ -109,6 +113,7 @@ export default function SettingsLayout({
       currentUserAbility.can('read', 'SamlAuthProvider') &&
       currentUserAbility.can('update', 'SamlAuthProvider') &&
       currentUserAbility.can('create', 'SamlAuthProvider'),
+    canUpdateApp: currentUserAbility.can('update', 'App'),
   });
 
   return (

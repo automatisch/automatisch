@@ -111,9 +111,11 @@ export default (
     <Route
       path={URLS.ADMIN_APPS}
       element={
-        <AdminSettingsLayout>
-          <AdminApplications />
-        </AdminSettingsLayout>
+        <Can I="update" a="App">
+          <AdminSettingsLayout>
+            <AdminApplications />
+          </AdminSettingsLayout>
+        </Can>
       }
     />
 

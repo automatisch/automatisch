@@ -51,12 +51,8 @@ function AdminApplications() {
 
         {!appsLoading &&
           apps?.map((app: IApp) => (
-            <Grid item xs={12}>
-              <AppRow
-                key={app.name}
-                application={app}
-                url={URLS.ADMIN_APP(app.key)}
-              />
+            <Grid item xs={12} key={app.name}>
+              <AppRow application={app} url={URLS.ADMIN_APP(app.key)} />
             </Grid>
           ))}
       </Grid>
