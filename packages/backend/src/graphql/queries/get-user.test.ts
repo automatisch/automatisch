@@ -4,26 +4,28 @@ import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id'
 import Crypto from 'crypto';
 
 describe('getUser', () => {
-  it('should throw not authorized error for an unauthorized user', async () => {
-    const invalidUserId = '123123123';
+  describe('with unauthorized user', () => {
+    it('should throw not authorized error', async () => {
+      const invalidUserId = '123123123';
 
-    const query = `
-      query {
-        getUser(id: "${invalidUserId}") {
-          id
-          email
+      const query = `
+        query {
+          getUser(id: "${invalidUserId}") {
+            id
+            email
+          }
         }
-      }
-    `;
+      `;
 
-    const response = await request(app)
-      .post('/graphql')
-      .set('Authorization', 'invalid-token')
-      .send({ query })
-      .expect(200);
+      const response = await request(app)
+        .post('/graphql')
+        .set('Authorization', 'invalid-token')
+        .send({ query })
+        .expect(200);
 
-    expect(response.body.errors).toBeDefined();
-    expect(response.body.errors[0].message).toEqual('Not Authorised!');
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toEqual('Not Authorised!');
+    });
   });
 
   describe('with authorized user', () => {
