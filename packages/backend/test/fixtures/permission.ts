@@ -1,3 +1,4 @@
+import { IPermission } from '@automatisch/types';
 import createRole from './role';
 
 type PermissionParams = {
@@ -6,9 +7,11 @@ type PermissionParams = {
   subject?: string;
 };
 
-const createPermission = async (params: PermissionParams = {}) => {
+const createPermission = async (
+  params: PermissionParams = {}
+): Promise<IPermission> => {
   const permissionData = {
-    role_id: params?.roleId || (await createRole()).id,
+    roleId: params?.roleId || (await createRole()).id,
     action: params?.action || 'read',
     subject: params?.subject || 'User',
   };

@@ -1,9 +1,11 @@
+import { IRole } from '@automatisch/types';
+
 type RoleParams = {
   name?: string;
   key?: string;
 };
 
-const createRole = async (params: RoleParams = {}) => {
+const createRole = async (params: RoleParams = {}): Promise<IRole> => {
   params.name = params?.name || 'Viewer';
   params.key = params?.key || 'viewer';
 

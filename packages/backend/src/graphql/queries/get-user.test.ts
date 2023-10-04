@@ -1,10 +1,11 @@
-import request from 'supertest';
+import request, { Test } from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import Crypto from 'crypto';
 import createRole from '../../../test/fixtures/role';
 import createPermission from '../../../test/fixtures/permission';
 import createUser from '../../../test/fixtures/user';
+import { IRole, IUser } from '@automatisch/types';
 
 describe('getUser', () => {
   describe('with unauthorized user', () => {
@@ -32,11 +33,11 @@ describe('getUser', () => {
   });
 
   describe('with authorized user', () => {
-    let role: any,
-      currentUser: any,
-      anotherUser: any,
-      token: any,
-      requestObject: any;
+    let role: IRole,
+      currentUser: IUser,
+      anotherUser: IUser,
+      token: string,
+      requestObject: Test;
 
     beforeEach(async () => {
       role = await createRole({
@@ -87,12 +88,12 @@ describe('getUser', () => {
       const expectedResponsePayload = {
         data: {
           getUser: {
-            createdAt: anotherUser.created_at.getTime().toString(),
+            createdAt: (anotherUser.createdAt as Date).getTime().toString(),
             email: anotherUser.email,
-            fullName: anotherUser.full_name,
+            fullName: anotherUser.fullName,
             id: anotherUser.id,
             role: { id: role.id, name: role.name },
-            updatedAt: anotherUser.updated_at.getTime().toString(),
+            updatedAt: (anotherUser.updatedAt as Date).getTime().toString(),
           },
         },
       };

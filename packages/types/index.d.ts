@@ -99,6 +99,8 @@ export interface IUser {
   steps: IStep[];
   role: IRole;
   permissions: IPermission[];
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
 
 export interface IRole {

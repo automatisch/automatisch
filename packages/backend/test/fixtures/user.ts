@@ -10,8 +10,8 @@ type UserParams = {
 
 const createUser = async (params: UserParams = {}) => {
   const userData = {
-    role_id: params?.roleId || (await createRole()).id,
-    full_name: params?.fullName || faker.person.fullName(),
+    roleId: params?.roleId || (await createRole()).id,
+    fullName: params?.fullName || faker.person.fullName(),
     email: params?.email || faker.internet.email(),
     password: params?.password || faker.internet.password(),
   };
