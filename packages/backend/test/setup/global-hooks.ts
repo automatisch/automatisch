@@ -3,7 +3,6 @@ import { client as knex } from '../../src/config/database';
 import logger from '../../src/helpers/logger';
 
 global.beforeAll(async () => {
-  global.knexInstance = knex;
   global.knex = null;
   logger.silent = true;
 });
@@ -22,6 +21,5 @@ global.afterEach(async () => {
 });
 
 global.afterAll(async () => {
-  global.knexInstance.destroy();
   logger.silent = false;
 });
