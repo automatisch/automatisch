@@ -32,7 +32,11 @@ describe('getUser', () => {
   });
 
   describe('with authorized user', () => {
-    let role: any, currentUser: any, anotherUser: any, token: any;
+    let role: any,
+      currentUser: any,
+      anotherUser: any,
+      token: any,
+      requestObject: any;
 
     beforeEach(async () => {
       role = await createRole({
@@ -55,6 +59,9 @@ describe('getUser', () => {
       });
 
       token = createAuthTokenByUserId(currentUser.id);
+      requestObject = request(app)
+        .post('/graphql')
+        .set('Authorization', `${token}`);
     });
 
     it('should return user data for a valid user id', async () => {
@@ -75,11 +82,7 @@ describe('getUser', () => {
         }
       `;
 
-      const response = await request(app)
-        .post('/graphql')
-        .set('Authorization', `${token}`)
-        .send({ query })
-        .expect(200);
+      const response = await requestObject.send({ query }).expect(200);
 
       const expectedResponsePayload = {
         data: {
@@ -117,11 +120,7 @@ describe('getUser', () => {
         }
       `;
 
-      const response = await request(app)
-        .post('/graphql')
-        .set('Authorization', `${token}`)
-        .send({ query })
-        .expect(200);
+      const response = await requestObject.send({ query }).expect(200);
 
       expect(response.body.errors).toBeDefined();
       expect(response.body.errors[0].message).toEqual('NotFoundError');
