@@ -101,6 +101,25 @@ describe('getUser', () => {
       expect(response.body).toEqual(expectedResponsePayload);
     });
 
+    it('should not return user password for a valid user id', async () => {
+      const query = `
+        query {
+          getUser(id: "${anotherUser.id}") {
+            id
+            email
+            password
+          }
+        }
+      `;
+
+      const response = await requestObject.send({ query }).expect(400);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toEqual(
+        'Cannot query field "password" on type "User".'
+      );
+    });
+
     it('should return not found for invalid user id', async () => {
       const invalidUserId = Crypto.randomUUID();
 
