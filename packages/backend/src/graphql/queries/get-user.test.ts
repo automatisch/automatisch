@@ -2,6 +2,9 @@ import request from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import Crypto from 'crypto';
+import createRole from '../../../test/fixtures/role';
+import createPermission from '../../../test/fixtures/permission';
+import createUser from '../../../test/fixtures/user';
 
 describe('getUser', () => {
   describe('with unauthorized user', () => {
@@ -29,41 +32,32 @@ describe('getUser', () => {
   });
 
   describe('with authorized user', () => {
-    it('should return user data for a valid user id', async () => {
-      const [role] = await knex
-        .table('roles')
-        .insert({
-          key: 'sample',
-          name: 'sample',
-        })
-        .returning('*');
+    let role: any, currentUser: any, anotherUser: any, token: any;
 
-      await knex.table('permissions').insert({
-        action: 'read',
-        subject: 'User',
-        role_id: role.id,
+    beforeEach(async () => {
+      role = await createRole({
+        key: 'sample',
+        name: 'sample',
       });
 
-      const [currentUser] = await knex
-        .table('users')
-        .insert({
-          full_name: 'Test User',
-          email: 'sample@sample.com',
-          password: 'secret',
-          role_id: role.id,
-        })
-        .returning('*');
+      await createPermission({
+        action: 'read',
+        subject: 'User',
+        roleId: role.id,
+      });
 
-      const [anotherUser] = await global.knex
-        .table('users')
-        .insert({
-          full_name: 'Another User',
-          email: 'another@sample.com',
-          password: 'secret',
-          role_id: role.id,
-        })
-        .returning('*');
+      currentUser = await createUser({
+        roleId: role.id,
+      });
 
+      anotherUser = await createUser({
+        roleId: role.id,
+      });
+
+      token = createAuthTokenByUserId(currentUser.id);
+    });
+
+    it('should return user data for a valid user id', async () => {
       const query = `
         query {
           getUser(id: "${anotherUser.id}") {
@@ -80,8 +74,6 @@ describe('getUser', () => {
           }
         }
       `;
-
-      const token = createAuthTokenByUserId(currentUser.id);
 
       const response = await request(app)
         .post('/graphql')
@@ -106,49 +98,24 @@ describe('getUser', () => {
     });
 
     it('should return not found for invalid user id', async () => {
-      const [role] = await knex('roles')
-        .insert({
-          key: 'sample',
-          name: 'sample',
-        })
-        .returning('*');
-
-      await knex.table('permissions').insert({
-        action: 'read',
-        subject: 'User',
-        role_id: role.id,
-      });
-
-      const [currentUser] = await knex
-        .table('users')
-        .insert({
-          full_name: 'Test User',
-          email: 'sample@sample.com',
-          password: 'secret',
-          role_id: role.id,
-        })
-        .returning('*');
-
       const invalidUserId = Crypto.randomUUID();
 
       const query = `
-          query {
-            getUser(id: "${invalidUserId}") {
+        query {
+          getUser(id: "${invalidUserId}") {
+            id
+            email
+            fullName
+            email
+            createdAt
+            updatedAt
+            role {
               id
-              email
-              fullName
-              email
-              createdAt
-              updatedAt
-              role {
-                id
-                name
-              }
+              name
             }
           }
-        `;
-
-      const token = createAuthTokenByUserId(currentUser.id);
+        }
+      `;
 
       const response = await request(app)
         .post('/graphql')
