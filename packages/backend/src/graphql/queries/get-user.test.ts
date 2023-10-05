@@ -1,67 +1,71 @@
-import request from 'supertest';
+import request, { Test } from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import Crypto from 'crypto';
+import createRole from '../../../test/fixtures/role';
+import createPermission from '../../../test/fixtures/permission';
+import createUser from '../../../test/fixtures/user';
+import { IRole, IUser } from '@automatisch/types';
 
 describe('getUser', () => {
-  it('should throw not authorized error for an unauthorized user', async () => {
-    const invalidUserId = '123123123';
+  describe('with unauthorized user', () => {
+    it('should throw not authorized error', async () => {
+      const invalidUserId = '123123123';
 
-    const query = `
-      query {
-        getUser(id: "${invalidUserId}") {
-          id
-          email
+      const query = `
+        query {
+          getUser(id: "${invalidUserId}") {
+            id
+            email
+          }
         }
-      }
-    `;
+      `;
 
-    const response = await request(app)
-      .post('/graphql')
-      .set('Authorization', 'invalid-token')
-      .send({ query })
-      .expect(200);
+      const response = await request(app)
+        .post('/graphql')
+        .set('Authorization', 'invalid-token')
+        .send({ query })
+        .expect(200);
 
-    expect(response.body.errors).toBeDefined();
-    expect(response.body.errors[0].message).toEqual('Not Authorised!');
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toEqual('Not Authorised!');
+    });
   });
 
   describe('with authorized user', () => {
-    it('should return user data for a valid user id', async () => {
-      const [role] = await knex
-        .table('roles')
-        .insert({
-          key: 'sample',
-          name: 'sample',
-        })
-        .returning('*');
+    let role: IRole,
+      currentUser: IUser,
+      anotherUser: IUser,
+      token: string,
+      requestObject: Test;
 
-      await knex.table('permissions').insert({
-        action: 'read',
-        subject: 'User',
-        role_id: role.id,
+    beforeEach(async () => {
+      role = await createRole({
+        key: 'sample',
+        name: 'sample',
       });
 
-      const [currentUser] = await knex
-        .table('users')
-        .insert({
-          full_name: 'Test User',
-          email: 'sample@sample.com',
-          password: 'secret',
-          role_id: role.id,
-        })
-        .returning('*');
+      await createPermission({
+        action: 'read',
+        subject: 'User',
+        roleId: role.id,
+      });
 
-      const [anotherUser] = await global.knex
-        .table('users')
-        .insert({
-          full_name: 'Another User',
-          email: 'another@sample.com',
-          password: 'secret',
-          role_id: role.id,
-        })
-        .returning('*');
+      currentUser = await createUser({
+        roleId: role.id,
+      });
 
+      anotherUser = await createUser({
+        roleId: role.id,
+      });
+
+      token = createAuthTokenByUserId(currentUser.id);
+      requestObject = request(app)
+        .post('/graphql')
+        .set('Authorization', `${token}`);
+    });
+
+    it('should return user data for a valid user id', async () => {
       const query = `
         query {
           getUser(id: "${anotherUser.id}") {
@@ -79,23 +83,17 @@ describe('getUser', () => {
         }
       `;
 
-      const token = createAuthTokenByUserId(currentUser.id);
-
-      const response = await request(app)
-        .post('/graphql')
-        .set('Authorization', `${token}`)
-        .send({ query })
-        .expect(200);
+      const response = await requestObject.send({ query }).expect(200);
 
       const expectedResponsePayload = {
         data: {
           getUser: {
-            createdAt: anotherUser.created_at.getTime().toString(),
+            createdAt: (anotherUser.createdAt as Date).getTime().toString(),
             email: anotherUser.email,
-            fullName: anotherUser.full_name,
+            fullName: anotherUser.fullName,
             id: anotherUser.id,
             role: { id: role.id, name: role.name },
-            updatedAt: anotherUser.updated_at.getTime().toString(),
+            updatedAt: (anotherUser.updatedAt as Date).getTime().toString(),
           },
         },
       };
@@ -103,56 +101,46 @@ describe('getUser', () => {
       expect(response.body).toEqual(expectedResponsePayload);
     });
 
+    it('should not return user password for a valid user id', async () => {
+      const query = `
+        query {
+          getUser(id: "${anotherUser.id}") {
+            id
+            email
+            password
+          }
+        }
+      `;
+
+      const response = await requestObject.send({ query }).expect(400);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toEqual(
+        'Cannot query field "password" on type "User".'
+      );
+    });
+
     it('should return not found for invalid user id', async () => {
-      const [role] = await knex('roles')
-        .insert({
-          key: 'sample',
-          name: 'sample',
-        })
-        .returning('*');
-
-      await knex.table('permissions').insert({
-        action: 'read',
-        subject: 'User',
-        role_id: role.id,
-      });
-
-      const [currentUser] = await knex
-        .table('users')
-        .insert({
-          full_name: 'Test User',
-          email: 'sample@sample.com',
-          password: 'secret',
-          role_id: role.id,
-        })
-        .returning('*');
-
       const invalidUserId = Crypto.randomUUID();
 
       const query = `
-          query {
-            getUser(id: "${invalidUserId}") {
+        query {
+          getUser(id: "${invalidUserId}") {
+            id
+            email
+            fullName
+            email
+            createdAt
+            updatedAt
+            role {
               id
-              email
-              fullName
-              email
-              createdAt
-              updatedAt
-              role {
-                id
-                name
-              }
+              name
             }
           }
-        `;
+        }
+      `;
 
-      const token = createAuthTokenByUserId(currentUser.id);
-
-      const response = await request(app)
-        .post('/graphql')
-        .set('Authorization', `${token}`)
-        .send({ query })
-        .expect(200);
+      const response = await requestObject.send({ query }).expect(200);
 
       expect(response.body.errors).toBeDefined();
       expect(response.body.errors[0].message).toEqual('NotFoundError');
