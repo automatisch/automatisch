@@ -72,6 +72,7 @@ export default function InputCreator(
         disabled={disabled}
         fields={schema.fields}
         shouldUnregister={shouldUnregister}
+        stepId={stepId}
       />
     );
   }
