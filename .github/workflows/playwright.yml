@@ -80,6 +80,8 @@ jobs:
       - name: Create certificate
         run: mkcert automatisch.io "*.automatisch.io" localhost 127.0.0.1 ::1
         working-directory: ./packages/e2e-tests
+      - name: Set CAROOT environment variable
+        run: echo "NODE_EXTRA_CA_CERTS=$(mkcert -CAROOT)/rootCA.pem" >> "$GITHUB_ENV"
       - name: Override license server with local server
         run: sudo echo "127.0.0.1 license.automatisch.io" | sudo tee -a /etc/hosts
       - name: Run local license server
@@ -88,16 +90,14 @@ jobs:
       - name: Run Automatisch
         run: yarn start &
         working-directory: ./packages/backend
-        env:
-          NODE_EXTRA_CA_CERTS: '$(mkcert -CAROOT)/rootCA.pem'
       - name: Run Automatisch worker
         run: node dist/src/worker.js &
         working-directory: ./packages/backend
-        env:
-          NODE_EXTRA_CA_CERTS: '$(mkcert -CAROOT)/rootCA.pem'
       - name: Setup upterm session
+        if: false
         uses: lhotari/action-upterm@v1
         with:
+          limit-access-to-actor: true
           limit-access-to-users: barinali
       - name: Run Playwright tests
         working-directory: ./packages/e2e-tests
