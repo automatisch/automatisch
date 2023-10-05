@@ -7,13 +7,13 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import AppIcon from 'components/AppIcon';
-import * as URLS from 'config/urls';
 import type { IApp } from '@automatisch/types';
 
 import { CardContent, Typography } from './style';
 
 type AppRowProps = {
   application: IApp;
+  url: string;
 };
 
 const countTranslation = (value: React.ReactNode) => (
@@ -25,11 +25,11 @@ const countTranslation = (value: React.ReactNode) => (
 
 function AppRow(props: AppRowProps): React.ReactElement {
   const formatMessage = useFormatMessage();
-  const { name, key, primaryColor, iconUrl, connectionCount, flowCount } =
+  const { name, primaryColor, iconUrl, connectionCount, flowCount } =
     props.application;
 
   return (
-    <Link to={URLS.APP(key)} data-test="app-row">
+    <Link to={props.url} data-test="app-row">
       <Card sx={{ mb: 1 }}>
         <CardActionArea>
           <CardContent>
@@ -48,7 +48,7 @@ function AppRow(props: AppRowProps): React.ReactElement {
                 sx={{ display: ['none', 'inline-block'] }}
               >
                 {formatMessage('app.connectionCount', {
-                  count: countTranslation(connectionCount),
+                  count: countTranslation(connectionCount || '-'),
                 })}
               </Typography>
             </Box>
@@ -60,7 +60,7 @@ function AppRow(props: AppRowProps): React.ReactElement {
                 sx={{ display: ['none', 'inline-block'] }}
               >
                 {formatMessage('app.flowCount', {
-                  count: countTranslation(flowCount),
+                  count: countTranslation(flowCount || '-'),
                 })}
               </Typography>
             </Box>

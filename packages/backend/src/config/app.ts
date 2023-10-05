@@ -17,6 +17,7 @@ type AppConfig = {
   appEnv: string;
   logLevel: string;
   isDev: boolean;
+  isTest: boolean;
   isProd: boolean;
   postgresDatabase: string;
   postgresSchema: string;
@@ -89,6 +90,7 @@ const appConfig: AppConfig = {
   appEnv: appEnv,
   logLevel: process.env.LOG_LEVEL || 'info',
   isDev: appEnv === 'development',
+  isTest: appEnv === 'test',
   isProd: appEnv === 'production',
   version: process.env.npm_package_version,
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',

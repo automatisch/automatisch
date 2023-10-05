@@ -1,3 +1,4 @@
 import listBoards from './list-boards';
+import listFrames from './list-frames';
 
-export default [listBoards];
+export default [listBoards, listFrames];

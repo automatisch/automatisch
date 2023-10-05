@@ -95,6 +95,8 @@ export const ROLE_PATTERN = `${ROLES}/:roleId`;
 export const CREATE_ROLE = `${ROLES}/create`;
 export const USER_INTERFACE = `${ADMIN_SETTINGS}/user-interface`;
 export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
+export const ADMIN_APPS = `${ADMIN_SETTINGS}/apps`;
+export const ADMIN_APP = (appKey: string) => `${ADMIN_SETTINGS}/apps/${appKey}`;
 
 export const DASHBOARD = FLOWS;
 
