@@ -5,7 +5,7 @@
   "private": true,
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
-    "start-mocked-backend": "node ./backend-with-mock.js",
+    "start-mock-license-server": "node ./license-server-with-mock.js",
     "test": "playwright test",
     "test:fast": "yarn test -j 90% --quiet --reporter null --ignore-snapshots -x"
   },
@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "nock": "^13.3.3"
+    "micro": "^10.0.1",
+    "nock": "^13.3.3",
+    "openssl-self-signed-certificate": "^1.1.6"
   }
 }
