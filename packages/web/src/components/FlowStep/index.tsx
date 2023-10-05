@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -31,9 +31,9 @@ import ChooseConnectionSubstep from 'components/ChooseConnectionSubstep';
 import Form from 'components/Form';
 import FlowStepContextMenu from 'components/FlowStepContextMenu';
 import AppIcon from 'components/AppIcon';
-import { GET_APPS } from 'graphql/queries/get-apps';
 import { GET_STEP_WITH_TEST_EXECUTIONS } from 'graphql/queries/get-step-with-test-executions';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useApps from 'hooks/useApps';
 import {
   AppIconWrapper,
   AppIconStatusIconWrapper,
@@ -136,8 +136,10 @@ export default function FlowStep(
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState<number | null>(0);
-  const { data } = useQuery(GET_APPS, {
-    variables: { onlyWithTriggers: isTrigger, onlyWithActions: isAction },
+
+  const { apps } = useApps({
+    onlyWithTriggers: isTrigger,
+    onlyWithActions: isAction,
   });
   const [
     getStepWithTestExecutions,
@@ -162,7 +164,6 @@ export default function FlowStep(
     isTrigger,
   ]);
 
-  const apps: IApp[] = data?.getApps;
   const app = apps?.find((currentApp: IApp) => currentApp.key === step.appKey);
 
   const actionsOrTriggers: Array<ITrigger | IAction> =
