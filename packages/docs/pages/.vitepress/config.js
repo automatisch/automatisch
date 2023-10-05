@@ -230,6 +230,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/pipedrive/triggers' },
+            { text: 'Actions', link: '/apps/pipedrive/actions' },
             { text: 'Connection', link: '/apps/pipedrive/connection' },
           ],
         },

@@ -1,6 +1,7 @@
+import { knexSnakeCaseMappers } from 'objection';
 import appConfig from './src/config/app';
 
-const fileExtension = appConfig.isDev ? 'ts' : 'js';
+const fileExtension = appConfig.isDev || appConfig.isTest ? 'ts' : 'js';
 
 const knexConfig = {
   client: 'pg',
@@ -23,6 +24,7 @@ const knexConfig = {
   seeds: {
     directory: __dirname + '/src/db/seeds',
   },
+  ...(appConfig.isTest ? knexSnakeCaseMappers() : {}),
 };
 
 export default knexConfig;
