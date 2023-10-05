@@ -97,7 +97,9 @@ export default function Applications(): React.ReactElement {
         )}
 
         {!loading &&
-          apps?.map((app: IApp) => <AppRow key={app.name} application={app} />)}
+          apps?.map((app: IApp) => (
+            <AppRow key={app.name} application={app} url={URLS.APP(app.key)} />
+          ))}
 
         <Routes>
           <Route

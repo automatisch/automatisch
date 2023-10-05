@@ -18,6 +18,7 @@ export const GET_APPS = gql`
       authDocUrl
       primaryColor
       connectionCount
+      flowCount
       supportsConnections
       auth {
         fields {

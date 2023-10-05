@@ -11,6 +11,7 @@ import UserInterface from 'pages/UserInterface';
 
 import * as URLS from 'config/urls';
 import Can from 'components/Can';
+import AdminApplications from 'pages/AdminApplications';
 
 // TODO: consider introducing redirections to `/` as fallback
 export default (
@@ -103,6 +104,17 @@ export default (
               </AdminSettingsLayout>
             </Can>
           </Can>
+        </Can>
+      }
+    />
+
+    <Route
+      path={URLS.ADMIN_APPS}
+      element={
+        <Can I="update" a="App">
+          <AdminSettingsLayout>
+            <AdminApplications />
+          </AdminSettingsLayout>
         </Can>
       }
     />
