@@ -1,20 +1,20 @@
-import * as React from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
-import CardActionArea from '@mui/material/CardActionArea';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
-import { useSnackbar } from 'notistack';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { DateTime } from 'luxon';
+import * as React from 'react';
 
 import type { IConnection } from '@automatisch/types';
+import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
-import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { CardContent, Typography } from './style';
 
@@ -30,7 +30,7 @@ const countTranslation = (value: React.ReactNode) => (
 );
 
 function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const [verificationVisible, setVerificationVisible] = React.useState(false);
   const [testConnection, { called: testCalled, loading: testLoading }] =
     useLazyQuery(TEST_CONNECTION, {

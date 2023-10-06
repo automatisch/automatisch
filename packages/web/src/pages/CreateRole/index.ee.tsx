@@ -2,14 +2,14 @@ import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
-import { useSnackbar } from 'notistack';
 
+import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
-import Container from 'components/Container';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
 import { CREATE_ROLE } from 'graphql/mutations/create-role.ee';
@@ -23,7 +23,7 @@ export default function CreateRole(): React.ReactElement {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [createRole, { loading }] = useMutation(CREATE_ROLE);
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleRoleCreation = async (
     roleData: Partial<RoleWithComputedPermissions>

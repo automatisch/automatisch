@@ -1,15 +1,15 @@
-import * as React from 'react';
 import { useMutation } from '@apollo/client';
-import { Link } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
-import type { PopoverProps } from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
-import { useSnackbar } from 'notistack';
+import type { PopoverProps } from '@mui/material/Popover';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import Can from 'components/Can';
+import * as URLS from 'config/urls';
 import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
 import { DUPLICATE_FLOW } from 'graphql/mutations/duplicate-flow';
-import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 type ContextMenuProps = {
@@ -22,14 +22,11 @@ export default function ContextMenu(
   props: ContextMenuProps
 ): React.ReactElement {
   const { flowId, onClose, anchorEl } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const [deleteFlow] = useMutation(DELETE_FLOW);
-  const [duplicateFlow] = useMutation(
-    DUPLICATE_FLOW,
-    {
-      refetchQueries: ['GetFlows'],
-    }
-  );
+  const [duplicateFlow] = useMutation(DUPLICATE_FLOW, {
+    refetchQueries: ['GetFlows'],
+  });
   const formatMessage = useFormatMessage();
 
   const onFlowDuplicate = React.useCallback(async () => {
@@ -75,11 +72,7 @@ export default function ContextMenu(
     >
       <Can I="read" a="Flow" passThrough>
         {(allowed) => (
-          <MenuItem
-            disabled={!allowed}
-            component={Link}
-            to={URLS.FLOW(flowId)}
-          >
+          <MenuItem disabled={!allowed} component={Link} to={URLS.FLOW(flowId)}>
             {formatMessage('flow.view')}
           </MenuItem>
         )}
@@ -87,10 +80,7 @@ export default function ContextMenu(
 
       <Can I="create" a="Flow" passThrough>
         {(allowed) => (
-          <MenuItem
-            disabled={!allowed}
-            onClick={onFlowDuplicate}
-          >
+          <MenuItem disabled={!allowed} onClick={onFlowDuplicate}>
             {formatMessage('flow.duplicate')}
           </MenuItem>
         )}
@@ -98,10 +88,7 @@ export default function ContextMenu(
 
       <Can I="delete" a="Flow" passThrough>
         {(allowed) => (
-          <MenuItem
-            disabled={!allowed}
-            onClick={onFlowDelete}
-          >
+          <MenuItem disabled={!allowed} onClick={onFlowDelete}>
             {formatMessage('flow.delete')}
           </MenuItem>
         )}
