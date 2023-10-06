@@ -1,18 +1,18 @@
-import * as React from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import { yupResolver } from '@hookform/resolvers/yup';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useSnackbar } from 'notistack';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import * as React from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
-import * as URLS from 'config/urls';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
-import useFormatMessage from 'hooks/useFormatMessage';
+import * as URLS from 'config/urls';
 import { RESET_PASSWORD } from 'graphql/mutations/reset-password.ee';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 const validationSchema = yup.object().shape({
   password: yup.string().required('resetPasswordForm.mandatoryInput'),
@@ -23,7 +23,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ResetPasswordForm() {
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -41,7 +41,9 @@ export default function ResetPasswordForm() {
       },
     });
 
-    enqueueSnackbar(formatMessage('resetPasswordForm.passwordUpdated'), { variant: 'success' });
+    enqueueSnackbar(formatMessage('resetPasswordForm.passwordUpdated'), {
+      variant: 'success',
+    });
 
     navigate(URLS.LOGIN);
   };
@@ -78,14 +80,18 @@ export default function ResetPasswordForm() {
               helperText={
                 touchedFields.password && errors?.password?.message
                   ? formatMessage(errors?.password?.message as string, {
-                      inputName: formatMessage('resetPasswordForm.passwordFieldLabel'),
+                      inputName: formatMessage(
+                        'resetPasswordForm.passwordFieldLabel'
+                      ),
                     })
                   : ''
               }
             />
 
             <TextField
-              label={formatMessage('resetPasswordForm.confirmPasswordFieldLabel')}
+              label={formatMessage(
+                'resetPasswordForm.confirmPasswordFieldLabel'
+              )}
               name="confirmPassword"
               fullWidth
               margin="dense"

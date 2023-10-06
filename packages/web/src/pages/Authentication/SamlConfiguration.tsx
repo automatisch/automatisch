@@ -1,16 +1,15 @@
-import * as React from 'react';
+import { QueryResult, useMutation } from '@apollo/client';
+import { IRole, TSamlAuthProvider } from '@automatisch/types';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { IRole } from '@automatisch/types';
-import { useSnackbar } from 'notistack';
-import { TSamlAuthProvider } from '@automatisch/types';
-import { QueryResult, useMutation } from '@apollo/client';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import * as React from 'react';
 
-import Form from 'components/Form';
-import TextField from 'components/TextField';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
+import Form from 'components/Form';
 import Switch from 'components/Switch';
+import TextField from 'components/TextField';
 
 import { UPSERT_SAML_AUTH_PROVIDER } from 'graphql/mutations/upsert-saml-auth-provider';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -47,7 +46,7 @@ function SamlConfiguration({
 }: SamlConfigurationProps) {
   const formatMessage = useFormatMessage();
   const { roles, loading: rolesLoading } = useRoles();
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const [upsertSamlAuthProvider, { loading }] = useMutation(
     UPSERT_SAML_AUTH_PROVIDER
   );
