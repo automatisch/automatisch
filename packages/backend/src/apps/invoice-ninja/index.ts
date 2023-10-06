@@ -1,6 +1,7 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
+import triggers from './triggers';
 
 export default defineApp({
   name: 'Invoice Ninja',
@@ -13,4 +14,5 @@ export default defineApp({
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,
+  triggers,
 });
