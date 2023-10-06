@@ -11,6 +11,8 @@ items:
     desc: Triggers when a new payment is added.
   - name: New projects
     desc: Triggers when a new project is added.
+  - name: New quotes
+    desc: Triggers when a new quote is added.
 ---
 
 <script setup>
