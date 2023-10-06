@@ -7,6 +7,8 @@ items:
     desc: Triggers when a new credit is added.
   - name: New invoices
     desc: Triggers when a new invoice is added.
+  - name: New payments
+    desc: Triggers when a new payment is added.
 ---
 
 <script setup>
