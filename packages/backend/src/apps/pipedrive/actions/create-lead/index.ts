@@ -114,7 +114,7 @@ export default defineAction({
       key: 'expectedCloseDate',
       type: 'string' as const,
       required: false,
-      description: '',
+      description: 'E.g. 2023-10-23',
       variables: true,
     },
     {
@@ -122,7 +122,7 @@ export default defineAction({
       key: 'value',
       type: 'string' as const,
       required: false,
-      description: '',
+      description: 'E.g. 150',
       variables: true,
     },
     {
