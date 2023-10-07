@@ -3,6 +3,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import { GITLAB_EVENT_TYPE } from '../types';
 import {
   getRegisterHookFn,
+  getRunFn,
   getTestRunFn,
   projectArgumentDescriptor,
   unregisterHook,
@@ -19,6 +20,7 @@ export const triggerDescriptor: IRawTrigger = {
   key: GITLAB_EVENT_TYPE.confidential_note_events,
   type: 'webhook',
   arguments: [projectArgumentDescriptor],
+  run: ($) => getRunFn($),
   testRun: getTestRunFn(data),
   registerHook: getRegisterHookFn(GITLAB_EVENT_TYPE.confidential_note_events),
   unregisterHook,
