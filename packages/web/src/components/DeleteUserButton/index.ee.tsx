@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { useMutation } from '@apollo/client';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useSnackbar } from 'notistack';
+import IconButton from '@mui/material/IconButton';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import * as React from 'react';
 
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import { DELETE_USER } from 'graphql/mutations/delete-user.ee';
@@ -20,7 +20,7 @@ export default function DeleteUserButton(props: DeleteUserButtonProps) {
     refetchQueries: ['GetUsers'],
   });
   const formatMessage = useFormatMessage();
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleConfirm = React.useCallback(async () => {
     try {

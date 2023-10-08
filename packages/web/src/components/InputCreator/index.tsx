@@ -55,10 +55,9 @@ export default function InputCreator(
   } = schema;
 
   const { data, loading } = useDynamicData(stepId, schema);
-  const {
-    data: additionalFields,
-    loading: additionalFieldsLoading
-  } = useDynamicFields(stepId, schema);
+
+  const { data: additionalFields, loading: additionalFieldsLoading } =
+    useDynamicFields(stepId, schema);
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
 
   if (type === 'dynamic') {
@@ -73,6 +72,7 @@ export default function InputCreator(
         disabled={disabled}
         fields={schema.fields}
         shouldUnregister={shouldUnregister}
+        stepId={stepId}
       />
     );
   }
@@ -121,9 +121,11 @@ export default function InputCreator(
           />
         )}
 
-        {(additionalFieldsLoading && !additionalFields?.length) && <div>
-          <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
-        </div>}
+        {additionalFieldsLoading && !additionalFields?.length && (
+          <div>
+            <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
+          </div>
+        )}
 
         {additionalFields?.map((field) => (
           <InputCreator
@@ -154,9 +156,13 @@ export default function InputCreator(
             shouldUnregister={shouldUnregister}
           />
 
-          {(additionalFieldsLoading && !additionalFields?.length) && <div>
-            <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
-          </div>}
+          {additionalFieldsLoading && !additionalFields?.length && (
+            <div>
+              <CircularProgress
+                sx={{ display: 'block', margin: '20px auto' }}
+              />
+            </div>
+          )}
 
           {additionalFields?.map((field) => (
             <InputCreator
@@ -192,9 +198,11 @@ export default function InputCreator(
           shouldUnregister={shouldUnregister}
         />
 
-        {(additionalFieldsLoading && !additionalFields?.length) && <div>
-          <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
-        </div>}
+        {additionalFieldsLoading && !additionalFields?.length && (
+          <div>
+            <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
+          </div>
+        )}
 
         {additionalFields?.map((field) => (
           <InputCreator

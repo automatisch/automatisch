@@ -1,16 +1,16 @@
-import * as React from 'react';
 import { ApolloProvider as BaseApolloProvider } from '@apollo/client';
-import { useSnackbar } from 'notistack';
+import * as React from 'react';
 
 import { mutateAndGetClient } from 'graphql/client';
 import useAuthentication from 'hooks/useAuthentication';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
 type ApolloProviderProps = {
   children: React.ReactNode;
 };
 
 const ApolloProvider = (props: ApolloProviderProps): React.ReactElement => {
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const authentication = useAuthentication();
 
   const onError = React.useCallback(

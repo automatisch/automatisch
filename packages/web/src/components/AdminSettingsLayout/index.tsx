@@ -3,6 +3,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LockIcon from '@mui/icons-material/LockPerson';
 import BrushIcon from '@mui/icons-material/Brush';
+import AppsIcon from '@mui/icons-material/Apps';
+
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
@@ -30,11 +32,13 @@ function createDrawerLinks({
   canReadUser,
   canUpdateConfig,
   canManageSamlAuthProvider,
+  canUpdateApp,
 }: {
   canReadRole: boolean;
   canReadUser: boolean;
   canUpdateConfig: boolean;
   canManageSamlAuthProvider: boolean;
+  canUpdateApp: boolean;
 }) {
   const items = [
     canReadUser
@@ -69,6 +73,14 @@ function createDrawerLinks({
           dataTest: 'authentication-drawer-link',
         }
       : null,
+    canUpdateApp
+      ? {
+          Icon: AppsIcon,
+          primary: 'adminSettingsDrawer.apps',
+          to: URLS.ADMIN_APPS,
+          dataTest: 'apps-drawer-link',
+        }
+      : null,
   ].filter(Boolean) as DrawerLink[];
 
   return items;
@@ -101,6 +113,7 @@ export default function SettingsLayout({
       currentUserAbility.can('read', 'SamlAuthProvider') &&
       currentUserAbility.can('update', 'SamlAuthProvider') &&
       currentUserAbility.can('create', 'SamlAuthProvider'),
+    canUpdateApp: currentUserAbility.can('update', 'App'),
   });
 
   return (

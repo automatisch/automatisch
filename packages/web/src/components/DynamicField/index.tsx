@@ -25,14 +25,13 @@ interface DynamicFieldProps {
   docUrl?: string;
   clickToCopy?: boolean;
   disabled?: boolean;
-  fields: IFieldDynamic["fields"];
+  fields: IFieldDynamic['fields'];
   shouldUnregister?: boolean;
+  stepId?: string;
 }
 
-function DynamicField(
-  props: DynamicFieldProps
-): React.ReactElement {
-  const { label, description, fields, name, defaultValue } = props;
+function DynamicField(props: DynamicFieldProps): React.ReactElement {
+  const { label, description, fields, name, defaultValue, stepId } = props;
   const { control, setValue, getValues } = useFormContext();
   const fieldsValue = useWatch({ control, name }) as Record<string, unknown>[];
   const editorContext = React.useContext(EditorContext);
@@ -43,7 +42,7 @@ function DynamicField(
         ...previousValue,
         [field.key]: '',
         __id: uuidv4(),
-      }
+      };
     }, {});
   }, [fields]);
 
@@ -57,23 +56,31 @@ function DynamicField(
     }
   }, [getValues, createEmptyItem]);
 
-  const removeItem = React.useCallback((index) => {
-    if (fieldsValue.length === 1) return;
+  const removeItem = React.useCallback(
+    (index) => {
+      if (fieldsValue.length === 1) return;
 
-    const newFieldsValue = fieldsValue.filter((fieldValue, fieldIndex) => fieldIndex !== index);
+      const newFieldsValue = fieldsValue.filter(
+        (fieldValue, fieldIndex) => fieldIndex !== index
+      );
 
-    setValue(name, newFieldsValue);
-  }, [fieldsValue]);
+      setValue(name, newFieldsValue);
+    },
+    [fieldsValue]
+  );
 
-  React.useEffect(function addInitialGroupWhenEmpty() {
-    const fieldValues = getValues(name);
+  React.useEffect(
+    function addInitialGroupWhenEmpty() {
+      const fieldValues = getValues(name);
 
-    if (!fieldValues && defaultValue) {
-      setValue(name, defaultValue);
-    } else if (!fieldValues) {
-      setValue(name, [createEmptyItem()]);
-    }
-  }, [createEmptyItem, defaultValue]);
+      if (!fieldValues && defaultValue) {
+        setValue(name, defaultValue);
+      } else if (!fieldValues) {
+        setValue(name, [createEmptyItem()]);
+      }
+    },
+    [createEmptyItem, defaultValue]
+  );
 
   return (
     <React.Fragment>
@@ -81,14 +88,22 @@ function DynamicField(
 
       {fieldsValue?.map((field, index) => (
         <Stack direction="row" spacing={2} key={`fieldGroup-${field.__id}`}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 2 }} sx={{ display: 'flex', flex: 1 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 2 }}
+            sx={{ display: 'flex', flex: 1 }}
+          >
             {fields.map((fieldSchema, fieldSchemaIndex) => (
-              <Box sx={{ display: 'flex', flex: '1 0 0px' }} key={`field-${field.__id}-${fieldSchemaIndex}`}>
+              <Box
+                sx={{ display: 'flex', flex: '1 0 0px' }}
+                key={`field-${field.__id}-${fieldSchemaIndex}`}
+              >
                 <InputCreator
                   schema={fieldSchema}
                   namePrefix={`${name}.${index}`}
                   disabled={editorContext.readOnly}
                   shouldUnregister={false}
+                  stepId={stepId}
                 />
               </Box>
             ))}

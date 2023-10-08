@@ -5,6 +5,7 @@
   "private": true,
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
+    "start-mock-license-server": "node ./license-server-with-mock.js",
     "test": "playwright test",
     "test:fast": "yarn test -j 90% --quiet --reporter null --ignore-snapshots -x"
   },
@@ -26,6 +27,7 @@
     "@playwright/test": "^1.36.2"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "micro": "^10.0.1"
   }
 }

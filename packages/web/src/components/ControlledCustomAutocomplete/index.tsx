@@ -255,7 +255,7 @@ function ControlledCustomAutocomplete(
             />
 
             <ActionButtonsWrapper direction="row" mr={1.5}>
-              {isSingleChoice && serialize(editor.children) && (
+              {isSingleChoice && serialize(editor.children) !== '' && (
                 <IconButton
                   disabled={disabled}
                   edge="end"
