@@ -1,26 +1,26 @@
-import * as React from 'react';
 import { useMutation } from '@apollo/client';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Skeleton from '@mui/material/Skeleton';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useSnackbar } from 'notistack';
+import Grid from '@mui/material/Grid';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import merge from 'lodash/merge';
+import * as React from 'react';
 
-import { GET_CONFIG } from 'graphql/queries/get-config.ee';
-import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
-import useConfig from 'hooks/useConfig';
-import PageTitle from 'components/PageTitle';
+import ColorInput from 'components/ColorInput';
 import Container from 'components/Container';
 import Form from 'components/Form';
+import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
-import useFormatMessage from 'hooks/useFormatMessage';
-import ColorInput from 'components/ColorInput';
+import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
+import { GET_CONFIG } from 'graphql/queries/get-config.ee';
 import nestObject from 'helpers/nestObject';
+import useConfig from 'hooks/useConfig';
+import useFormatMessage from 'hooks/useFormatMessage';
 import {
-  primaryMainColor,
   primaryDarkColor,
   primaryLightColor,
+  primaryMainColor,
 } from 'styles/theme';
 
 type UserInterface = {
@@ -58,7 +58,7 @@ export default function UserInterface(): React.ReactElement {
     'palette.primary.dark',
     'logo.svgData',
   ]);
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const configWithDefaults = merge(
     {},
     defaultValues,

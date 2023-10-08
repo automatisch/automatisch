@@ -18,6 +18,7 @@
   "adminSettingsDrawer.authentication": "Authentication",
   "adminSettingsDrawer.userInterface": "User Interface",
   "adminSettingsDrawer.goBack": "Go to the dashboard",
+  "adminSettingsDrawer.apps": "Applications",
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
   "app.addConnection": "Add connection",
@@ -246,5 +247,6 @@
   "roleMappingsForm.appendRoleMapping": "Append",
   "roleMappingsForm.save": "Save",
   "roleMappingsForm.notFound": "No role mappings have found.",
-  "roleMappingsForm.successfullySaved": "Role mappings have been saved."
+  "roleMappingsForm.successfullySaved": "Role mappings have been saved.",
+  "adminApps.title": "Apps"
 }

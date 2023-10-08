@@ -31,7 +31,7 @@
     "lodash": "^4.17.21",
     "luxon": "^2.3.1",
     "mui-color-input": "^2.0.0",
-    "notistack": "^2.0.2",
+    "notistack": "^3.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.45.2",

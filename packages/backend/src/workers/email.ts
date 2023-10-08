@@ -7,10 +7,26 @@ import mailer from '../helpers/mailer.ee';
 import compileEmail from '../helpers/compile-email.ee';
 import appConfig from '../config/app';
 
+const isCloudSandbox = () => {
+  return appConfig.isCloud && !appConfig.isProd;
+};
+
+const isAutomatischEmail = (email: string) => {
+  return email.endsWith('@automatisch.io');
+};
+
 export const worker = new Worker(
   'email',
   async (job) => {
     const { email, subject, template, params } = job.data;
+
+    if (isCloudSandbox && !isAutomatischEmail(email)) {
+      logger.info(
+        'Only Automatisch emails are allowed for non-production environments!'
+      );
+
+      return;
+    }
 
     await mailer.sendMail({
       to: email,

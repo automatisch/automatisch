@@ -1,15 +1,15 @@
 import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
 
+import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
-import Container from 'components/Container';
 import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
@@ -32,7 +32,7 @@ export default function EditRole(): React.ReactElement {
   const navigate = useNavigate();
   const { roleId } = useParams<EditRoleParams>();
   const { role, loading: roleLoading } = useRole(roleId);
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleRoleUpdate = async (
     roleData: Partial<RoleWithComputedPermissions>
