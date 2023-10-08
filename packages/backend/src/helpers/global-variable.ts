@@ -102,7 +102,9 @@ const globalVariable = async (
 
       $.triggerOutput.data.push(triggerItem);
 
-      if ($.execution.testRun) {
+      const isWebhookApp = app.key === 'webhook';
+
+      if ($.execution.testRun && !isWebhookApp) {
         // early exit after receiving one item as it is enough for test execution
         throw new EarlyExitError();
       }
@@ -145,7 +147,9 @@ const globalVariable = async (
   }
 
   const lastInternalIds =
-    testRun || (flow && step?.isAction) ? [] : await flow?.lastInternalIds(2000);
+    testRun || (flow && step?.isAction)
+      ? []
+      : await flow?.lastInternalIds(2000);
 
   const isAlreadyProcessed = (internalId: string) => {
     return lastInternalIds?.includes(internalId);
