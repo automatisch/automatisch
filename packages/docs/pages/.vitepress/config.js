@@ -170,6 +170,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Invoice Ninja',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/invoice-ninja/connection' },
+          ],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
