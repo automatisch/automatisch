@@ -1,10 +1,10 @@
-import Crypto from 'node:crypto';
 import { Response } from 'express';
-import { IRequest, ITriggerItem } from '@automatisch/types';
+import { IRequest } from '@automatisch/types';
+import isEmpty from 'lodash/isEmpty';
 
 import Flow from '../models/flow';
 import { processTrigger } from '../services/trigger';
-import actionQueue from '../queues/action';
+import triggerQueue from '../queues/trigger';
 import globalVariable from './global-variable';
 import QuotaExceededError from '../errors/quote-exceeded';
 import {
@@ -12,18 +12,12 @@ import {
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
 } from './remove-job-configuration';
 
-export default async (flowId: string, request: IRequest, response: Response) => {
-  // in case it's our built-in generic webhook trigger
-  let computedRequestPayload = {
-    headers: request.headers,
-    body: request.body,
-    query: request.query,
-  };
-
-  const flow = await Flow.query()
-    .findById(flowId)
-    .throwIfNotFound();
-
+export default async (
+  flowId: string,
+  request: IRequest,
+  response: Response
+) => {
+  const flow = await Flow.query().findById(flowId).throwIfNotFound();
   const user = await flow.$relatedQuery('user');
 
   const testRun = !flow.active;
@@ -37,48 +31,60 @@ export default async (flowId: string, request: IRequest, response: Response) => 
   const app = await triggerStep.getApp();
   const isWebhookApp = app.key === 'webhook';
 
-  if ((testRun && !isWebhookApp)) {
+  if (testRun && !isWebhookApp) {
     return response.status(404);
   }
 
-  // in case trigger type is 'webhook'
-  if (!isWebhookApp) {
-    computedRequestPayload = request.body;
-  }
+  const connection = await triggerStep.$relatedQuery('connection');
 
-  const triggerItem: ITriggerItem = {
-    raw: computedRequestPayload,
-    meta: {
-      internalId: Crypto.randomUUID(),
-    },
-  };
-
-  const { executionId } = await processTrigger({
-    flowId,
-    stepId: triggerStep.id,
-    triggerItem,
+  const $ = await globalVariable({
+    flow,
+    connection,
+    app,
+    step: triggerStep,
     testRun,
+    request,
   });
 
-  if (testRun) {
+  const triggerCommand = await triggerStep.getTriggerCommand();
+  await triggerCommand.run($);
+
+  const reversedTriggerItems = $.triggerOutput.data.reverse();
+
+  // This is the case when we filter out the incoming data
+  // in the run method of the webhook trigger.
+  // In this case, we don't want to process anything.
+  if (isEmpty(reversedTriggerItems)) {
     return response.status(204);
   }
 
-  const nextStep = await triggerStep.getNextStep();
-  const jobName = `${executionId}-${nextStep.id}`;
+  for (const triggerItem of reversedTriggerItems) {
+    if (testRun) {
+      await processTrigger({
+        flowId,
+        stepId: triggerStep.id,
+        triggerItem,
+        testRun,
+      });
 
-  const jobPayload = {
-    flowId,
-    executionId,
-    stepId: nextStep.id,
-  };
+      continue;
+    }
 
-  const jobOptions = {
-    removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-    removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-  };
+    const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
 
-  await actionQueue.add(jobName, jobPayload, jobOptions);
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+    };
+
+    const jobPayload = {
+      flowId,
+      stepId: triggerStep.id,
+      triggerItem,
+    };
+
+    await triggerQueue.add(jobName, jobPayload, jobOptions);
+  }
 
   return response.status(204);
 };
