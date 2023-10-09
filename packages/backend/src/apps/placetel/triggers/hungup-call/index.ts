@@ -1,3 +1,4 @@
+import Crypto from 'crypto';
 import { IJSONObject } from '@automatisch/types';
 import defineTrigger from '../../../../helpers/define-trigger';
 
@@ -36,6 +37,17 @@ export default defineTrigger({
       ],
     },
   ],
+
+  async run($) {
+    const dataItem = {
+      raw: $.request.body,
+      meta: {
+        internalId: Crypto.randomUUID(),
+      },
+    };
+
+    $.pushTriggerItem(dataItem);
+  },
 
   async testRun($) {
     const response = await $.http.get('/v2/calls?order=desc');
