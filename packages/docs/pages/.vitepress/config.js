@@ -235,6 +235,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Placetel',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/placetel/triggers' },
+            { text: 'Connection', link: '/apps/placetel/connection' },
+          ],
+        },
+        {
           text: 'PostgreSQL',
           collapsible: true,
           collapsed: true,
