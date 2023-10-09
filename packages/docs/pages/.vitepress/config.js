@@ -175,6 +175,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/invoice-ninja/triggers' },
+            { text: 'Actions', link: '/apps/invoice-ninja/actions' },
             { text: 'Connection', link: '/apps/invoice-ninja/connection' },
           ],
         },
