@@ -107,7 +107,7 @@ export default defineTrigger({
     const dataItem = {
       raw: sampleEventData,
       meta: {
-        internalId: sampleEventData.call_id.toString(),
+        internalId: sampleEventData.call_id,
       },
     };
 
