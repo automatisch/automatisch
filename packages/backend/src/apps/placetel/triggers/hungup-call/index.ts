@@ -94,10 +94,6 @@ export default defineTrigger({
       numbers,
     };
 
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-
     const { data } = await $.http.put('/v2/subscriptions', subscriptionPayload);
 
     await $.flow.setRemoteWebhookId(data.id);
