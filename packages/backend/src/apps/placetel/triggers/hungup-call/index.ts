@@ -9,6 +9,35 @@ export default defineTrigger({
   description: 'Triggers when a call is hungup.',
   arguments: [
     {
+      label: 'Types',
+      key: 'types',
+      type: 'dynamic' as const,
+      required: false,
+      description: '',
+      fields: [
+        {
+          label: 'Type',
+          key: 'type',
+          type: 'dropdown' as const,
+          required: true,
+          description:
+            'Filter events by type. If the types are not specified, all types will be notified.',
+          variables: true,
+          options: [
+            { label: 'All', value: 'all' },
+            { label: 'Voicemail', value: 'voicemail' },
+            { label: 'Missed', value: 'missed' },
+            { label: 'Blocked', value: 'blocked' },
+            { label: 'Accepted', value: 'accepted' },
+            { label: 'Busy', value: 'busy' },
+            { label: 'Cancelled', value: 'cancelled' },
+            { label: 'Unavailable', value: 'unavailable' },
+            { label: 'Congestion', value: 'congestion' },
+          ],
+        },
+      ],
+    },
+    {
       label: 'Numbers',
       key: 'numbers',
       type: 'dynamic' as const,
@@ -39,39 +68,46 @@ export default defineTrigger({
   ],
 
   async run($) {
-    const dataItem = {
-      raw: $.request.body,
-      meta: {
-        internalId: Crypto.randomUUID(),
-      },
-    };
+    let types = ($.step.parameters.types as IJSONObject[]).map(
+      (type) => type.type
+    );
 
-    $.pushTriggerItem(dataItem);
+    if (types.length === 0) {
+      types = ['all'];
+    }
+
+    if (types.includes($.request.body.type) || types.includes('all')) {
+      const dataItem = {
+        raw: $.request.body,
+        meta: {
+          internalId: Crypto.randomUUID(),
+        },
+      };
+
+      $.pushTriggerItem(dataItem);
+    }
   },
 
   async testRun($) {
-    const response = await $.http.get('/v2/calls?order=desc');
+    const types = ($.step.parameters.types as IJSONObject[]).map(
+      (type) => type.type
+    );
 
-    if (!response?.data) {
-      return;
-    }
-
-    const lastCall = response.data[0];
-
-    const computedWebhookEvent = {
-      type: lastCall.type,
-      duration: lastCall.duration,
-      from: lastCall.from_number,
-      to: lastCall.to_number.number.number,
-      call_id: lastCall.id.toString(),
+    const sampleEventData = {
+      type: types[0] || 'missed',
+      duration: 0,
+      from: '01662223344',
+      to: '02229997766',
+      call_id:
+        '9c81d4776d3977d920a558cbd4f0950b168e32bd4b5cc141a85b6ed3aa530107',
       event: 'HungUp',
       direction: 'in',
     };
 
     const dataItem = {
-      raw: computedWebhookEvent,
+      raw: sampleEventData,
       meta: {
-        internalId: computedWebhookEvent.call_id.toString(),
+        internalId: sampleEventData.call_id.toString(),
       },
     };
 
