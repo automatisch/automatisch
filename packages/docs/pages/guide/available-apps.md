@@ -17,6 +17,7 @@ The following integrations are currently supported by Automatisch.
 - [Google Sheets](/apps/google-sheets/triggers)
 - [HTTP Request](/apps/http-request/actions)
 - [HubSpot](/apps/hubspot/actions)
+- [Invoice Ninja](/apps/invoice-ninja/triggers)
 - [Mattermost](/apps/mattermost/actions)
 - [Miro](/apps/miro/actions)
 - [Notion](/apps/notion/triggers)
