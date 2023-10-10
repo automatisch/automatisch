@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { useMutation } from '@apollo/client';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useSnackbar } from 'notistack';
+import IconButton from '@mui/material/IconButton';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import * as React from 'react';
 
 import Can from 'components/Can';
 import ConfirmationDialog from 'components/ConfirmationDialog';
@@ -22,7 +22,7 @@ export default function DeleteRoleButton(props: DeleteRoleButtonProps) {
     refetchQueries: ['GetRoles'],
   });
   const formatMessage = useFormatMessage();
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleConfirm = React.useCallback(async () => {
     try {

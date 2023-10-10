@@ -1,4 +1,5 @@
 import { URLSearchParams } from 'node:url';
+import Crypto from 'crypto';
 import isEmpty from 'lodash/isEmpty';
 import defineTrigger from '../../../../helpers/define-trigger';
 import fetchMessages from './fetch-messages';
@@ -36,6 +37,17 @@ export default defineTrigger({
 
   useSingletonWebhook: true,
   singletonWebhookRefValueParameter: 'phoneNumberSid',
+
+  async run($) {
+    const dataItem = {
+      raw: $.request.body,
+      meta: {
+        internalId: Crypto.randomUUID(),
+      },
+    };
+
+    $.pushTriggerItem(dataItem);
+  },
 
   async testRun($) {
     await fetchMessages($);

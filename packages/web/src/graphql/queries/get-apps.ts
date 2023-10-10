@@ -128,6 +128,36 @@ export const GET_APPS = gql`
                 value
               }
             }
+            fields {
+              label
+              key
+              type
+              required
+              description
+              variables
+              value
+              dependsOn
+              options {
+                label
+                value
+              }
+              source {
+                type
+                name
+                arguments {
+                  name
+                  value
+                }
+              }
+              additionalFields {
+                type
+                name
+                arguments {
+                  name
+                  value
+                }
+              }
+            }
           }
         }
       }

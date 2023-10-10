@@ -1,3 +1,4 @@
+import Crypto from 'crypto';
 import isEmpty from 'lodash/isEmpty';
 import defineTrigger from '../../../../helpers/define-trigger';
 
@@ -7,6 +8,21 @@ export default defineTrigger({
   type: 'webhook',
   showWebhookUrl: true,
   description: 'Triggers when the webhook receives a request.',
+
+  async run($) {
+    const dataItem = {
+      raw: {
+        headers: $.request.headers,
+        body: $.request.body,
+        query: $.request.query,
+      },
+      meta: {
+        internalId: Crypto.randomUUID(),
+      },
+    };
+
+    $.pushTriggerItem(dataItem);
+  },
 
   async testRun($) {
     const lastExecutionStep = await $.getLastExecutionStep();

@@ -1,16 +1,16 @@
-import { useMemo } from 'react';
-import Stack from '@mui/material/Stack';
+import { useMutation } from '@apollo/client';
 import { TSamlAuthProvider, TSamlAuthProviderRole } from '@automatisch/types';
-import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
-import { useMutation } from '@apollo/client';
-import { useSnackbar } from 'notistack';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import { useMemo } from 'react';
 
+import Form from 'components/Form';
 import { UPSERT_SAML_AUTH_PROVIDERS_ROLE_MAPPINGS } from 'graphql/mutations/upsert-saml-auth-providers-role-mappings';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useSamlAuthProviderRoleMappings from 'hooks/useSamlAuthProviderRoleMappings';
-import Form from 'components/Form';
 
 import RoleMappingsFieldArray from './RoleMappingsFieldsArray';
 
@@ -32,7 +32,7 @@ function generateFormRoleMappings(roleMappings: TSamlAuthProviderRole[]) {
 
 function RoleMappings({ provider, providerLoading }: RoleMappingsProps) {
   const formatMessage = useFormatMessage();
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const { roleMappings, loading: roleMappingsLoading } =
     useSamlAuthProviderRoleMappings(provider?.id);
   const [

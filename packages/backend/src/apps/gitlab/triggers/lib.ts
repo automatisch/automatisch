@@ -22,6 +22,17 @@ export const projectArgumentDescriptor = {
   },
 };
 
+export const getRunFn = async ($: IGlobalVariable) => {
+  const dataItem = {
+    raw: $.request.body,
+    meta: {
+      internalId: Crypto.randomUUID(),
+    },
+  };
+
+  $.pushTriggerItem(dataItem);
+};
+
 export const getTestRunFn =
   (eventData: IJSONObject) => ($: IGlobalVariable) => {
     /*

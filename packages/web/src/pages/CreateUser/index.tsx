@@ -1,23 +1,23 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import { IRole, IUser } from '@automatisch/types';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { IUser, IRole } from '@automatisch/types';
-import { useSnackbar } from 'notistack';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { CREATE_USER } from 'graphql/mutations/create-user.ee';
-import * as URLS from 'config/urls';
 import Can from 'components/Can';
-import useRoles from 'hooks/useRoles.ee';
-import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
-import Form from 'components/Form';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
+import Form from 'components/Form';
+import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
+import * as URLS from 'config/urls';
+import { CREATE_USER } from 'graphql/mutations/create-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useRoles from 'hooks/useRoles.ee';
 
 function generateRoleOptions(roles: IRole[]) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -28,7 +28,7 @@ export default function CreateUser(): React.ReactElement {
   const formatMessage = useFormatMessage();
   const [createUser, { loading }] = useMutation(CREATE_USER);
   const { roles, loading: rolesLoading } = useRoles();
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleUserCreation = async (userData: Partial<IUser>) => {
     try {

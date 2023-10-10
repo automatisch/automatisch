@@ -170,6 +170,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Invoice Ninja',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/invoice-ninja/connection' },
+          ],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
@@ -232,6 +240,15 @@ export default defineConfig({
             { text: 'Triggers', link: '/apps/pipedrive/triggers' },
             { text: 'Actions', link: '/apps/pipedrive/actions' },
             { text: 'Connection', link: '/apps/pipedrive/connection' },
+          ],
+        },
+        {
+          text: 'Placetel',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/placetel/triggers' },
+            { text: 'Connection', link: '/apps/placetel/connection' },
           ],
         },
         {

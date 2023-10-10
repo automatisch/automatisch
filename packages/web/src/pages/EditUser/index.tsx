@@ -1,25 +1,25 @@
-import * as React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import { IRole, IUser } from '@automatisch/types';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
+import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
-import Skeleton from '@mui/material/Skeleton';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { IUser, IRole } from '@automatisch/types';
-import { useSnackbar } from 'notistack';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import * as React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import Can from 'components/Can';
-import * as URLS from 'config/urls';
-import useUser from 'hooks/useUser';
-import useRoles from 'hooks/useRoles.ee';
-import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
-import Form from 'components/Form';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
+import Form from 'components/Form';
+import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
+import * as URLS from 'config/urls';
+import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useRoles from 'hooks/useRoles.ee';
+import useUser from 'hooks/useUser';
 
 type EditUserParams = {
   userId: string;
@@ -35,7 +35,7 @@ export default function EditUser(): React.ReactElement {
   const { userId } = useParams<EditUserParams>();
   const { user, loading: userLoading } = useUser(userId);
   const { roles, loading: rolesLoading } = useRoles();
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
 
   const handleUserUpdate = async (userDataToUpdate: Partial<IUser>) => {
