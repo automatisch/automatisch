@@ -37,7 +37,21 @@ app.use(morgan);
 app.use(
   express.json({
     limit: appConfig.requestBodySizeLimit,
-    type: () => true,
+    type: (req) => {
+      const hasJsonContent =
+        req.headers['content-type'].indexOf('application/json') === 0;
+
+      if (hasJsonContent) {
+        return true;
+      }
+
+      try {
+        JSON.parse((req as IRequest).body);
+        return true;
+      } catch {
+        return false;
+      }
+    },
     verify(req, res, buf) {
       (req as IRequest).rawBody = buf;
     },
