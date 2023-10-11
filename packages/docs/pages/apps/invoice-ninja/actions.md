@@ -5,6 +5,8 @@ items:
     desc: Creates a new client.
   - name: Create invoice
     desc: Creates a new invoice.
+  - name: Create payment
+    desc: Creates a new payment.
 ---
 
 <script setup>

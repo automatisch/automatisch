@@ -1,3 +1,4 @@
 import listClients from './list-clients';
+import listInvoices from './list-invoices';
 
-export default [listClients];
+export default [listClients, listInvoices];
