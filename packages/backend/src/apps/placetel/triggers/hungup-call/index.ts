@@ -1,6 +1,7 @@
 import Crypto from 'crypto';
 import { IJSONObject } from '@automatisch/types';
 import defineTrigger from '../../../../helpers/define-trigger';
+import getRawBody from 'raw-body';
 
 export default defineTrigger({
   name: 'Hungup Call',
@@ -68,6 +69,13 @@ export default defineTrigger({
   ],
 
   async run($) {
+    const stringBody = await getRawBody($.request, {
+      length: $.request.headers['content-length'],
+      encoding: true,
+    });
+
+    const jsonRequestBody = JSON.parse(stringBody);
+
     let types = ($.step.parameters.types as IJSONObject[]).map(
       (type) => type.type
     );
@@ -76,9 +84,9 @@ export default defineTrigger({
       types = ['all'];
     }
 
-    if (types.includes($.request.body.type) || types.includes('all')) {
+    if (types.includes(jsonRequestBody.type) || types.includes('all')) {
       const dataItem = {
-        raw: $.request.body,
+        raw: jsonRequestBody,
         meta: {
           internalId: Crypto.randomUUID(),
         },

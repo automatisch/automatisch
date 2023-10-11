@@ -37,7 +37,6 @@ app.use(morgan);
 app.use(
   express.json({
     limit: appConfig.requestBodySizeLimit,
-    type: () => true,
     verify(req, res, buf) {
       (req as IRequest).rawBody = buf;
     },
