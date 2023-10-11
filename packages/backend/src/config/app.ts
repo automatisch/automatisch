@@ -55,6 +55,7 @@ type AppConfig = {
   paddlePublicKey: string;
   licenseKey: string;
   sentryDsn: string;
+  CI: boolean;
 };
 
 const host = process.env.HOST || 'localhost';
@@ -131,6 +132,7 @@ const appConfig: AppConfig = {
   paddlePublicKey: process.env.PADDLE_PUBLIC_KEY,
   licenseKey: process.env.LICENSE_KEY,
   sentryDsn: process.env.SENTRY_DSN,
+  CI: process.env.CI === 'true',
 };
 
 if (!appConfig.encryptionKey) {
