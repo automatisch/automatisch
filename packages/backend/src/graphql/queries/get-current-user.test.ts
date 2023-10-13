@@ -46,7 +46,7 @@ describe('getCurrentUser', () => {
       token = createAuthTokenByUserId(currentUser.id);
       requestObject = request(app)
         .post('/graphql')
-        .set('Authorization', `${token}`);
+        .set('Authorization', token);
     });
 
     it('should return user data', async () => {
