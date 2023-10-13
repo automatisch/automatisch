@@ -13,12 +13,18 @@ type Params = {
   };
 };
 
-const createUser = async (_parent: unknown, params: Params, context: Context) => {
+const createUser = async (
+  _parent: unknown,
+  params: Params,
+  context: Context
+) => {
   context.currentUser.can('create', 'User');
 
   const { fullName, email, password } = params.input;
 
-  const existingUser = await User.query().findOne({ email });
+  const existingUser = await User.query().findOne({
+    email: email.toLowerCase(),
+  });
 
   if (existingUser) {
     throw new Error('User already exists!');

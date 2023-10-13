@@ -12,7 +12,9 @@ type Params = {
 const registerUser = async (_parent: unknown, params: Params) => {
   const { fullName, email, password } = params.input;
 
-  const existingUser = await User.query().findOne({ email });
+  const existingUser = await User.query().findOne({
+    email: email.toLowerCase(),
+  });
 
   if (existingUser) {
     throw new Error('User already exists!');
