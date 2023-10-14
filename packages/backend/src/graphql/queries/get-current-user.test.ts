@@ -6,7 +6,7 @@ import createUser from '../../../test/fixtures/user';
 import { IRole, IUser } from '@automatisch/types';
 
 describe('graphQL getCurrentUser query', () => {
-  describe('with unauthorized user', () => {
+  describe('with unauthenticated user', () => {
     it('should throw not authorized error', async () => {
       const invalidUserToken = 'invalid-token';
 
@@ -30,7 +30,7 @@ describe('graphQL getCurrentUser query', () => {
     });
   });
 
-  describe('with authorized user', () => {
+  describe('with authenticated user', () => {
     let role: IRole, currentUser: IUser, token: string, requestObject: Test;
 
     beforeEach(async () => {
@@ -44,9 +44,7 @@ describe('graphQL getCurrentUser query', () => {
       });
 
       token = createAuthTokenByUserId(currentUser.id);
-      requestObject = request(app)
-        .post('/graphql')
-        .set('Authorization', token);
+      requestObject = request(app).post('/graphql').set('Authorization', token);
     });
 
     it('should return user data', async () => {
