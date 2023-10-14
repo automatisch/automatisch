@@ -7,7 +7,7 @@ import createPermission from '../../../test/fixtures/permission';
 import createUser from '../../../test/fixtures/user';
 import { IRole, IUser } from '@automatisch/types';
 
-describe('getUser', () => {
+describe('graphQL getUser query', () => {
   describe('with unauthorized user', () => {
     it('should throw not authorized error', async () => {
       const invalidUserId = '123123123';

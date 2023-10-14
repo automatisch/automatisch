@@ -5,7 +5,7 @@ import createRole from '../../../test/fixtures/role';
 import createUser from '../../../test/fixtures/user';
 import { IRole, IUser } from '@automatisch/types';
 
-describe('getCurrentUser', () => {
+describe('graphQL getCurrentUser query', () => {
   describe('with unauthorized user', () => {
     it('should throw not authorized error', async () => {
       const invalidUserToken = 'invalid-token';
