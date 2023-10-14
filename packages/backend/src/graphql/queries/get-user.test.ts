@@ -90,7 +90,7 @@ describe('graphQL getUser query', () => {
         token = createAuthTokenByUserId(currentUser.id);
         requestObject = request(app)
           .post('/graphql')
-          .set('Authorization', `${token}`);
+          .set('Authorization', token);
       });
 
       it('should return user data for a valid user id', async () => {
