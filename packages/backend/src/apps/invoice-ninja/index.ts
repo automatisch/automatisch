@@ -1,7 +1,9 @@
 import defineApp from '../../helpers/define-app';
+import setBaseUrl from './common/set-base-url';
 import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
 import triggers from './triggers';
+import actions from './actions';
 
 export default defineApp({
   name: 'Invoice Ninja',
@@ -12,7 +14,8 @@ export default defineApp({
   authDocUrl: 'https://automatisch.io/docs/apps/invoice-ninja/connection',
   primaryColor: '000000',
   supportsConnections: true,
-  beforeRequest: [addAuthHeader],
+  beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   triggers,
+  actions,
 });
