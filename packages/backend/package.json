@@ -10,7 +10,7 @@
     "build:watch": "nodemon --watch 'src/**/*.ts' --watch 'bin/**/*.ts' --exec yarn build --ext ts",
     "start": "node dist/src/server.js",
     "pretest": "APP_ENV=test ts-node ./test/setup/prepare-test-env.ts",
-    "test": "APP_ENV=test jest",
+    "test": "APP_ENV=test jest --verbose",
     "lint": "eslint . --ignore-path ../../.eslintignore",
     "db:create": "ts-node ./bin/database/create.ts",
     "db:seed:user": "ts-node ./bin/database/seed-user.ts",
