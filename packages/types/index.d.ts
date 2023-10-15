@@ -125,6 +125,12 @@ export interface IPermissionCatalog {
   conditions: { label: string; key: string }[];
 }
 
+export interface IConfig {
+  id: string;
+  key: string;
+  value: IJSONObject;
+}
+
 export interface IFieldDropdown {
   key: string;
   label: string;
