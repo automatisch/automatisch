@@ -47,7 +47,7 @@ export default function AddAppConnection(
     if (window.opener) {
       window.opener.postMessage({
         source: 'automatisch',
-        payload: window.location.search,
+        payload: { search: window.location.search, hash: window.location.hash },
       });
       window.close();
     }
