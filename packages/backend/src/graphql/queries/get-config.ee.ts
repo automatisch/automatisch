@@ -1,26 +1,20 @@
 import { hasValidLicense } from '../../helpers/license.ee';
 import Config from '../../models/config';
-import Context from '../../types/express/context';
 
 type Params = {
   keys: string[];
 };
 
-const getConfig = async (
-  _parent: unknown,
-  params: Params,
-  context: Context
-) => {
-  if (!await hasValidLicense()) return {};
+const getConfig = async (_parent: unknown, params: Params) => {
+  if (!(await hasValidLicense())) return {};
 
-  const configQuery = Config
-    .query();
+  const configQuery = Config.query();
 
   if (Array.isArray(params.keys)) {
     configQuery.whereIn('key', params.keys);
   }
 
-  const config = await configQuery;
+  const config = await configQuery.orderBy('key', 'asc');
 
   return config.reduce((computedConfig, configEntry) => {
     const { key, value } = configEntry;
