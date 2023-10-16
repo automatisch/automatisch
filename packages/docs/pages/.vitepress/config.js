@@ -411,6 +411,12 @@ export default defineConfig({
             { text: 'Connection', link: '/apps/wordpress/connection' },
           ],
         },
+        {
+          text: 'Youtube',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/youtube/connection' }],
+        },
       ],
       '/': [
         {
