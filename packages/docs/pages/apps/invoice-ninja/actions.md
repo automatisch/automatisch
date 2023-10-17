@@ -7,6 +7,8 @@ items:
     desc: Creates a new invoice.
   - name: Create payment
     desc: Creates a new payment.
+  - name: Create product
+    desc: Creates a new product.
 ---
 
 <script setup>
