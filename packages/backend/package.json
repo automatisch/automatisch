@@ -60,6 +60,7 @@
     "https-proxy-agent": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.0",
+    "libphonenumber-js": "^1.10.48",
     "lodash.get": "^4.4.2",
     "luxon": "2.5.2",
     "memory-cache": "^0.2.0",
