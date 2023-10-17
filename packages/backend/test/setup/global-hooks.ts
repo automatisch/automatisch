@@ -21,6 +21,8 @@ global.beforeEach(async () => {
 global.afterEach(async () => {
   await global.knex.rollback();
   Model.knex(knex);
+
+  jest.clearAllMocks();
 });
 
 global.afterAll(async () => {
