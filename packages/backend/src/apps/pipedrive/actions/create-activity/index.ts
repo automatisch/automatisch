@@ -11,7 +11,7 @@ function filterProvidedFields(body: Record<string, unknown>) {
 
 export default defineAction({
   name: 'Create activity',
-  key: 'createNote',
+  key: 'createActivity',
   description: 'Creates a new activity.',
   arguments: [
     {
