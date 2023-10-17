@@ -415,7 +415,10 @@ export default defineConfig({
           text: 'Youtube',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/youtube/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/youtube/triggers' },
+            { text: 'Connection', link: '/apps/youtube/connection' },
+          ],
         },
       ],
       '/': [
