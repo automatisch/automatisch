@@ -23,7 +23,7 @@ export default {
       );
       params.start = data.additional_data?.pagination?.next_start;
 
-      if (data.data.length) {
+      if (data.data?.length) {
         for (const person of data.data) {
           persons.data.push({
             value: person.id,

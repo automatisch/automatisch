@@ -15,11 +15,7 @@ export default {
       `${$.auth.data.apiDomain}/api/v1/leadLabels`
     );
 
-    if (!data?.data) {
-      return { data: [] };
-    }
-
-    if (data.data.length) {
+    if (data.data?.length) {
       for (const leadLabel of data.data) {
         const name = `${leadLabel.name} (${leadLabel.color})`;
         leadLabels.data.push({
