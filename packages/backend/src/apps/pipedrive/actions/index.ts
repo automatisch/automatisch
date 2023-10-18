@@ -3,6 +3,7 @@ import createDeal from './create-deal';
 import createLead from './create-lead';
 import createNote from './create-note';
 import createOrganization from './create-organization';
+import createPerson from './create-person';
 
 export default [
   createActivity,
@@ -10,4 +11,5 @@ export default [
   createLead,
   createNote,
   createOrganization,
+  createPerson,
 ];
