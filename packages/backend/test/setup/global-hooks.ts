@@ -1,6 +1,16 @@
 import { Model } from 'objection';
 import { client as knex } from '../../src/config/database';
 import logger from '../../src/helpers/logger';
+import { mockConfigState, resetMockConfig } from './set-mock-config';
+
+jest.mock('../../src/config/app', () => ({
+  ...jest.requireActual('../../src/config/app').default,
+  get isCloud() {
+    return mockConfigState.isCloud !== undefined
+      ? mockConfigState.isCloud
+      : jest.requireActual('../../src/config/app').default.isCloud;
+  },
+}));
 
 global.beforeAll(async () => {
   global.knex = null;
@@ -23,6 +33,7 @@ global.afterEach(async () => {
   Model.knex(knex);
 
   jest.clearAllMocks();
+  resetMockConfig();
 });
 
 global.afterAll(async () => {
