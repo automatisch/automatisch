@@ -5,6 +5,7 @@ import listLeads from './list-leads';
 import listLeadLabels from './list-lead-labels';
 import listOrganizations from './list-organizations';
 import listOrganizationLabelField from './list-organization-label-field';
+import listPersonLabelField from './list-person-label-field';
 import listPersons from './list-persons';
 import listUsers from './list-users';
 
@@ -16,6 +17,7 @@ export default [
   listLeadLabels,
   listOrganizations,
   listOrganizationLabelField,
+  listPersonLabelField,
   listPersons,
   listUsers,
 ];
