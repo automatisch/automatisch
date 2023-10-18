@@ -101,6 +101,7 @@ export interface IUser {
   permissions: IPermission[];
   createdAt: string | Date;
   updatedAt: string | Date;
+  trialExpiryDate: string | Date;
 }
 
 export interface IRole {
