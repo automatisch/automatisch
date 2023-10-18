@@ -15,7 +15,7 @@ export default {
       `${$.auth.data.apiDomain}/api/v1/currencies`
     );
 
-    if (data.data.length) {
+    if (data.data?.length) {
       for (const currency of data.data) {
         currencies.data.push({
           value: currency.code,

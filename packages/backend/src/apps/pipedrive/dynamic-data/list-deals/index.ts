@@ -19,11 +19,7 @@ export default {
       params,
     });
 
-    if (!data?.data) {
-      return { data: [] };
-    }
-
-    if (data.data.length) {
+    if (data.data?.length) {
       for (const deal of data.data) {
         deals.data.push({
           value: deal.id,

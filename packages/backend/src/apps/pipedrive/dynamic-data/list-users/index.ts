@@ -13,7 +13,7 @@ export default {
 
     const { data } = await $.http.get(`${$.auth.data.apiDomain}/api/v1/users`);
 
-    if (data.data.length) {
+    if (data.data?.length) {
       for (const user of data.data) {
         users.data.push({
           value: user.id,
