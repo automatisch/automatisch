@@ -1,7 +1,7 @@
-import { setMockConfig } from '../../../test/setup/set-mock-config';
 import request from 'supertest';
 import app from '../../app';
 import * as license from '../../helpers/license.ee';
+import appConfig from '../../config/app';
 
 describe('graphQL getAutomatischInfo query', () => {
   const query = `
@@ -21,6 +21,8 @@ describe('graphQL getAutomatischInfo query', () => {
   describe('and without valid license', () => {
     beforeEach(async () => {
       jest.spyOn(license, 'getLicense').mockResolvedValue(false);
+
+      jest.replaceProperty(appConfig, 'isCloud', false)
     });
 
     it('should return empty license data', async () => {
@@ -61,7 +63,7 @@ describe('graphQL getAutomatischInfo query', () => {
 
     describe('and with cloud flag enabled', () => {
       beforeEach(async () => {
-        setMockConfig({ isCloud: true });
+        jest.replaceProperty(appConfig, 'isCloud', true)
       });
 
       it('should return all license data', async () => {
@@ -90,7 +92,7 @@ describe('graphQL getAutomatischInfo query', () => {
 
     describe('and with cloud flag disabled', () => {
       beforeEach(async () => {
-        setMockConfig({ isCloud: false });
+        jest.replaceProperty(appConfig, 'isCloud', false)
       });
 
       it('should return all license data', async () => {

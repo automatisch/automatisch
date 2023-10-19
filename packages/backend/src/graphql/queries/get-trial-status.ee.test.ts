@@ -1,4 +1,3 @@
-import { setMockConfig } from '../../../test/setup/set-mock-config';
 import request from 'supertest';
 import app from '../../app';
 import { IUser } from '@automatisch/types';
@@ -6,6 +5,7 @@ import User from '../../models/user';
 import createUser from '../../../test/fixtures/user';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import { DateTime } from 'luxon';
+import appConfig from '../../config/app';
 
 describe('graphQL getTrialStatus query', () => {
   const query = `
@@ -43,7 +43,7 @@ describe('graphQL getTrialStatus query', () => {
 
     describe('and with cloud flag disabled', () => {
       beforeEach(async () => {
-        setMockConfig({ isCloud: false });
+        jest.replaceProperty(appConfig, 'isCloud', false);
       });
 
       it('should return null', async () => {
@@ -63,7 +63,7 @@ describe('graphQL getTrialStatus query', () => {
 
     describe('and with cloud flag enabled', () => {
       beforeEach(async () => {
-        setMockConfig({ isCloud: true });
+        jest.replaceProperty(appConfig, 'isCloud', true);
       });
 
       describe('and not in trial and has active subscription', () => {
