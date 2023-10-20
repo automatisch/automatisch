@@ -43,3 +43,4 @@ The following integrations are currently supported by Automatisch.
 - [Typeform](/apps/typeform/triggers)
 - [Webhooks](/apps/webhooks/triggers)
 - [WordPress](/apps/wordpress/triggers)
+- [Youtube](/apps/youtube/triggers)
