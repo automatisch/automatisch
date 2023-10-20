@@ -73,10 +73,7 @@ export default defineAction({
 
     const {
       data: { data },
-    } = await $.http.post(
-      `${$.auth.data.apiDomain}/api/v1/organizations`,
-      body
-    );
+    } = await $.http.post('/api/v1/organizations', body);
 
     $.setActionItem({
       raw: data,

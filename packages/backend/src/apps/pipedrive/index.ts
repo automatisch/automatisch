@@ -1,5 +1,6 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
+import setBaseUrl from './common/set-base-url';
 import auth from './auth';
 import triggers from './triggers';
 import actions from './actions';
@@ -14,7 +15,7 @@ export default defineApp({
   authDocUrl: 'https://automatisch.io/docs/apps/pipedrive/connection',
   primaryColor: 'FFFFFF',
   supportsConnections: true,
-  beforeRequest: [addAuthHeader],
+  beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   triggers,
   actions,
