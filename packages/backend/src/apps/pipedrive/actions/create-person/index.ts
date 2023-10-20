@@ -1,4 +1,5 @@
 import defineAction from '../../../../helpers/define-action';
+import { filterProvidedFields } from '../../common/filter-provided-fields';
 
 type TEmail = {
   __id: string;
@@ -9,15 +10,6 @@ type TPhone = {
   __id: string;
   phone: string;
 }[];
-
-function filterProvidedFields(body: Record<string, unknown>) {
-  return Object.keys(body).reduce<Record<string, unknown>>((result, key) => {
-    if (body[key]) {
-      result[key] = body[key];
-    }
-    return result;
-  }, {});
-}
 
 export default defineAction({
   name: 'Create person',
