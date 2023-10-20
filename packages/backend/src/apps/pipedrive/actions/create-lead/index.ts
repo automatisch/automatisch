@@ -1,17 +1,9 @@
 import defineAction from '../../../../helpers/define-action';
+import { filterProvidedFields } from '../../common/filter-provided-fields';
 
 type LabelIds = { __id: string; leadLabelId: string }[];
 
 type LabelValue = { amount?: number; currency?: string };
-
-function filterProvidedFields(body: Record<string, unknown>) {
-  return Object.keys(body).reduce<Record<string, unknown>>((result, key) => {
-    if (body[key]) {
-      result[key] = body[key];
-    }
-    return result;
-  }, {});
-}
 
 export default defineAction({
   name: 'Create lead',
@@ -176,17 +168,11 @@ export default defineAction({
       organization_id: Number(organizationId),
       owner_id: Number(ownerId),
       expected_close_date: expectedCloseDate as string,
+      label_ids: onlyLabelIds,
+      value: labelValue,
     };
 
     const body = filterProvidedFields(fields);
-
-    if (onlyLabelIds.length) {
-      body.label_ids = onlyLabelIds;
-    }
-
-    if (Object.keys(labelValue).length) {
-      body.value = labelValue;
-    }
 
     const {
       data: { data },
