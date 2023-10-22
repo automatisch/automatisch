@@ -66,6 +66,7 @@ export class AdminUsersPage extends AuthenticatedPage {
 
   /**
    * @param {string} email 
+   * @returns {import('@playwright/test').Locator | null}
    */
   async findUserPageWithEmail (email) {
     // start at the first page
