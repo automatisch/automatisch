@@ -69,12 +69,14 @@ export default function CreateRole(): React.ReactElement {
                 name="name"
                 label={formatMessage('roleForm.name')}
                 fullWidth
+                data-test="name-input"
               />
 
               <TextField
                 name="description"
                 label={formatMessage('roleForm.description')}
                 fullWidth
+                data-test="description-input"
               />
 
               <PermissionCatalogField
@@ -88,6 +90,7 @@ export default function CreateRole(): React.ReactElement {
                 color="primary"
                 sx={{ boxShadow: 2 }}
                 loading={loading}
+                data-test="create-button"
               >
                 {formatMessage('createRole.submit')}
               </LoadingButton>

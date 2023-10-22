@@ -62,6 +62,7 @@ const PermissionCatalogField = ({
             <TableRow
               key={subject.key}
               sx={{ '&:last-child td': { border: 0 } }}
+              data-test={`${subject.key}-permission-row`}
             >
               <TableCell scope="row">
                 <Typography variant="subtitle2">{subject.label}</Typography>
@@ -74,6 +75,7 @@ const PermissionCatalogField = ({
                       <ControlledCheckbox
                         disabled={disabled}
                         name={`${name}.${subject.key}.${action.key}.value`}
+                        dataTest={`${action.key.toLowerCase()}-checkbox`}
                       />
                     )}
 
@@ -89,6 +91,7 @@ const PermissionCatalogField = ({
                     size="small"
                     onClick={() => setDialogName(subject.key)}
                     disabled={disabled}
+                    data-test="permission-settings-button"
                   >
                     <SettingsIcon />
                   </IconButton>

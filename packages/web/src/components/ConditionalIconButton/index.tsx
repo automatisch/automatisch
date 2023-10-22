@@ -21,6 +21,7 @@ export default function ConditionalIconButton(props: any): React.ReactElement {
         component={buttonProps.component}
         to={buttonProps.to}
         disabled={buttonProps.disabled}
+        data-test={buttonProps['data-test']}
       >
         {icon}
       </IconButton>

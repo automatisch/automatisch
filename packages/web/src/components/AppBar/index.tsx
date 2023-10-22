@@ -56,6 +56,7 @@ export default function AppBar(props: AppBarProps): React.ReactElement {
             aria-label="open drawer"
             onClick={drawerOpen ? onDrawerClose : onDrawerOpen}
             sx={{ mr: 2 }}
+            data-test="drawer-menu-button"
           >
             {drawerOpen && matchSmallScreens ? <MenuOpenIcon /> : <MenuIcon />}
           </IconButton>

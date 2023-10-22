@@ -25,6 +25,11 @@ export class AdminUsersPage extends AuthenticatedPage {
   async navigateTo () {
     await this.profileMenuButton.click();
     await this.adminMenuItem.click();
+    if (await this.usersLoader.isVisible()) {
+      await this.usersLoader.waitFor({
+        state: 'detached'
+      });
+    }
   }
 
   /**
@@ -69,6 +74,11 @@ export class AdminUsersPage extends AuthenticatedPage {
    * @returns {import('@playwright/test').Locator | null}
    */
   async findUserPageWithEmail (email) {
+    if (await this.usersLoader.isVisible()) {
+      await this.usersLoader.waitFor({
+        state: 'detached'
+      });
+    }
     // start at the first page
     const firstPageDisabled = await this.firstPageButton.isDisabled();
     if (!firstPageDisabled) {
@@ -76,6 +86,11 @@ export class AdminUsersPage extends AuthenticatedPage {
     }
 
     while (true) {
+      if (await this.usersLoader.isVisible()) {
+        await this.usersLoader.waitFor({
+          state: 'detached'
+        });
+      }
       const rowLocator = await this.getUserRowByEmail(email);
       if ((await rowLocator.count()) === 1) {
         return rowLocator;
