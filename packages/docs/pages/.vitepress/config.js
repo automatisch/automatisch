@@ -263,6 +263,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Pushover',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/pushover/connection' }],
+        },
+        {
           text: 'RSS',
           collapsible: true,
           collapsed: true,
