@@ -1,0 +1,48 @@
+name: Automatisch Backend Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on:
+      - ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.5-alpine
+        env:
+          POSTGRES_DB: automatisch_test
+          POSTGRES_USER: automatisch_test_user
+          POSTGRES_PASSWORD: automatisch_test_user_password
+        options: >-
+          --health-cmd "pg_isready -U automatisch_test_user -d automatisch_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7.0.4-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: cd packages/backend && yarn
+      - name: Copy .env-example.test file to .env.test
+        run: cd packages/backend && cp .env-example.test .env.test
+      - name: Run tests
+        run: cd packages/backend && yarn test

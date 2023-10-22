@@ -1,13 +1,5 @@
 import defineAction from '../../../../helpers/define-action';
-
-function filterProvidedFields(body: Record<string, unknown>) {
-  return Object.keys(body).reduce<Record<string, unknown>>((result, key) => {
-    if (body[key]) {
-      result[key] = body[key];
-    }
-    return result;
-  }, {});
-}
+import { filterProvidedFields } from '../../common/filter-provided-fields';
 
 export default defineAction({
   name: 'Create deal',
@@ -236,7 +228,7 @@ export default defineAction({
 
     const {
       data: { data },
-    } = await $.http.post(`${$.auth.data.apiDomain}/api/v1/deals`, body);
+    } = await $.http.post('/api/v1/deals', body);
 
     $.setActionItem({
       raw: data,

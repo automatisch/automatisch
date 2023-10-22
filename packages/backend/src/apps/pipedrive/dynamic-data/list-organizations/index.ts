@@ -15,11 +15,7 @@ export default {
       `${$.auth.data.apiDomain}/api/v1/organizations`
     );
 
-    if (!data?.data) {
-      return { data: [] };
-    }
-
-    if (data.data.length) {
+    if (data.data?.length) {
       for (const organization of data.data) {
         organizations.data.push({
           value: organization.id,

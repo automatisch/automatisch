@@ -9,6 +9,10 @@ items:
     desc: Creates a new lead.
   - name: Create note
     desc: Creates a new note.
+  - name: Create organization
+    desc: Creates a new organization.
+  - name: Create person
+    desc: Creates a new person.
 ---
 
 <script setup>

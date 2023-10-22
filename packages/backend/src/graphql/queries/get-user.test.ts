@@ -7,8 +7,8 @@ import createPermission from '../../../test/fixtures/permission';
 import createUser from '../../../test/fixtures/user';
 import { IRole, IUser } from '@automatisch/types';
 
-describe('getUser', () => {
-  describe('with unauthorized user', () => {
+describe('graphQL getUser query', () => {
+  describe('with unauthenticated user', () => {
     it('should throw not authorized error', async () => {
       const invalidUserId = '123123123';
 
@@ -32,118 +32,147 @@ describe('getUser', () => {
     });
   });
 
-  describe('with authorized user', () => {
-    let role: IRole,
-      currentUser: IUser,
-      anotherUser: IUser,
-      token: string,
-      requestObject: Test;
+  describe('with authenticated user', () => {
+    describe('and without permissions', () => {
+      it('should throw not authorized error', async () => {
+        const userWithoutPermissions = await createUser();
+        const anotherUser = await createUser();
 
-    beforeEach(async () => {
-      role = await createRole({
-        key: 'sample',
-        name: 'sample',
-      });
-
-      await createPermission({
-        action: 'read',
-        subject: 'User',
-        roleId: role.id,
-      });
-
-      currentUser = await createUser({
-        roleId: role.id,
-      });
-
-      anotherUser = await createUser({
-        roleId: role.id,
-      });
-
-      token = createAuthTokenByUserId(currentUser.id);
-      requestObject = request(app)
-        .post('/graphql')
-        .set('Authorization', `${token}`);
-    });
-
-    it('should return user data for a valid user id', async () => {
-      const query = `
-        query {
-          getUser(id: "${anotherUser.id}") {
-            id
-            email
-            fullName
-            email
-            createdAt
-            updatedAt
-            role {
+        const query = `
+          query {
+            getUser(id: "${anotherUser.id}") {
               id
-              name
+              email
             }
           }
-        }
-      `;
+        `;
 
-      const response = await requestObject.send({ query }).expect(200);
+        const token = createAuthTokenByUserId(userWithoutPermissions.id);
 
-      const expectedResponsePayload = {
-        data: {
-          getUser: {
-            createdAt: (anotherUser.createdAt as Date).getTime().toString(),
-            email: anotherUser.email,
-            fullName: anotherUser.fullName,
-            id: anotherUser.id,
-            role: { id: role.id, name: role.name },
-            updatedAt: (anotherUser.updatedAt as Date).getTime().toString(),
+        const response = await request(app)
+          .post('/graphql')
+          .set('Authorization', token)
+          .send({ query })
+          .expect(200);
+
+        expect(response.body.errors).toBeDefined();
+        expect(response.body.errors[0].message).toEqual('Not authorized!');
+      });
+    });
+
+    describe('and correct permissions', () => {
+      let role: IRole,
+        currentUser: IUser,
+        anotherUser: IUser,
+        token: string,
+        requestObject: Test;
+
+      beforeEach(async () => {
+        role = await createRole({
+          key: 'sample',
+          name: 'sample',
+        });
+
+        await createPermission({
+          action: 'read',
+          subject: 'User',
+          roleId: role.id,
+        });
+
+        currentUser = await createUser({
+          roleId: role.id,
+        });
+
+        anotherUser = await createUser({
+          roleId: role.id,
+        });
+
+        token = createAuthTokenByUserId(currentUser.id);
+        requestObject = request(app)
+          .post('/graphql')
+          .set('Authorization', token);
+      });
+
+      it('should return user data for a valid user id', async () => {
+        const query = `
+          query {
+            getUser(id: "${anotherUser.id}") {
+              id
+              email
+              fullName
+              email
+              createdAt
+              updatedAt
+              role {
+                id
+                name
+              }
+            }
+          }
+        `;
+
+        const response = await requestObject.send({ query }).expect(200);
+
+        const expectedResponsePayload = {
+          data: {
+            getUser: {
+              createdAt: (anotherUser.createdAt as Date).getTime().toString(),
+              email: anotherUser.email,
+              fullName: anotherUser.fullName,
+              id: anotherUser.id,
+              role: { id: role.id, name: role.name },
+              updatedAt: (anotherUser.updatedAt as Date).getTime().toString(),
+            },
           },
-        },
-      };
+        };
 
-      expect(response.body).toEqual(expectedResponsePayload);
-    });
+        expect(response.body).toEqual(expectedResponsePayload);
+      });
 
-    it('should not return user password for a valid user id', async () => {
-      const query = `
-        query {
-          getUser(id: "${anotherUser.id}") {
-            id
-            email
-            password
-          }
-        }
-      `;
-
-      const response = await requestObject.send({ query }).expect(400);
-
-      expect(response.body.errors).toBeDefined();
-      expect(response.body.errors[0].message).toEqual(
-        'Cannot query field "password" on type "User".'
-      );
-    });
-
-    it('should return not found for invalid user id', async () => {
-      const invalidUserId = Crypto.randomUUID();
-
-      const query = `
-        query {
-          getUser(id: "${invalidUserId}") {
-            id
-            email
-            fullName
-            email
-            createdAt
-            updatedAt
-            role {
+      it('should not return user password for a valid user id', async () => {
+        const query = `
+          query {
+            getUser(id: "${anotherUser.id}") {
               id
-              name
+              email
+              password
             }
           }
-        }
-      `;
+        `;
 
-      const response = await requestObject.send({ query }).expect(200);
+        const response = await requestObject.send({ query }).expect(400);
 
-      expect(response.body.errors).toBeDefined();
-      expect(response.body.errors[0].message).toEqual('NotFoundError');
+        expect(response.body.errors).toBeDefined();
+        expect(response.body.errors[0].message).toEqual(
+          'Cannot query field "password" on type "User".'
+        );
+      });
+
+      it('should return not found for invalid user id', async () => {
+        const invalidUserId = Crypto.randomUUID();
+
+        const query = `
+          query {
+            getUser(id: "${invalidUserId}") {
+              id
+              email
+              fullName
+              email
+              createdAt
+              updatedAt
+              role {
+                id
+                name
+              }
+            }
+          }
+        `;
+
+        const response = await requestObject.send({ query }).expect(200);
+
+        expect(response.body.errors).toBeDefined();
+        expect(response.body.errors[0].message).toEqual('NotFoundError');
+      });
     });
   });
 });

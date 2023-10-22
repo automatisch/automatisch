@@ -170,6 +170,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Invoice Ninja',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/invoice-ninja/triggers' },
+            { text: 'Actions', link: '/apps/invoice-ninja/actions' },
+            { text: 'Connection', link: '/apps/invoice-ninja/connection' },
+          ],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
@@ -235,6 +245,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Placetel',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/placetel/triggers' },
+            { text: 'Connection', link: '/apps/placetel/connection' },
+          ],
+        },
+        {
           text: 'PostgreSQL',
           collapsible: true,
           collapsed: true,
@@ -242,6 +261,12 @@ export default defineConfig({
             { text: 'Actions', link: '/apps/postgresql/actions' },
             { text: 'Connection', link: '/apps/postgresql/connection' },
           ],
+        },
+        {
+          text: 'Pushover',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/pushover/connection' }],
         },
         {
           text: 'RSS',
@@ -390,6 +415,15 @@ export default defineConfig({
           items: [
             { text: 'Triggers', link: '/apps/wordpress/triggers' },
             { text: 'Connection', link: '/apps/wordpress/connection' },
+          ],
+        },
+        {
+          text: 'Youtube',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/youtube/triggers' },
+            { text: 'Connection', link: '/apps/youtube/connection' },
           ],
         },
       ],

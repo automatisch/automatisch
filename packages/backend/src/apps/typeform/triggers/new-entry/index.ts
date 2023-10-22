@@ -1,3 +1,4 @@
+import Crypto from 'crypto';
 import appConfig from '../../../../config/app';
 import defineTrigger from '../../../../helpers/define-trigger';
 
@@ -26,6 +27,17 @@ export default defineTrigger({
       },
     },
   ],
+
+  async run($) {
+    const dataItem = {
+      raw: $.request.body,
+      meta: {
+        internalId: Crypto.randomUUID(),
+      },
+    };
+
+    $.pushTriggerItem(dataItem);
+  },
 
   async testRun($) {
     const { data: form } = await $.http.get(

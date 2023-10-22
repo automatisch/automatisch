@@ -12,6 +12,7 @@ import useDefaultValue from './text/use-default-value';
 import performMathOperation from './numbers/perform-math-operation';
 import randomNumber from './numbers/random-number';
 import formatNumber from './numbers/format-number';
+import formatPhoneNumber from './numbers/format-phone-number';
 import formatDateTime from './date-time/format-date-time';
 
 const options: IJSONObject = {
@@ -28,6 +29,7 @@ const options: IJSONObject = {
   performMathOperation,
   randomNumber,
   formatNumber,
+  formatPhoneNumber,
   formatDateTime,
 };
 

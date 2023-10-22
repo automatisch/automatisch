@@ -1,25 +1,14 @@
 import createRole from './role';
 import { faker } from '@faker-js/faker';
+import User from '../../src/models/user';
 
-type UserParams = {
-  roleId?: string;
-  fullName?: string;
-  email?: string;
-  password?: string;
-};
+const createUser = async (params: Partial<User> = {}) => {
+  params.roleId = params?.roleId || (await createRole()).id;
+  params.fullName = params?.fullName || faker.person.fullName();
+  params.email = params?.email || faker.internet.email();
+  params.password = params?.password || faker.internet.password();
 
-const createUser = async (params: UserParams = {}) => {
-  const userData = {
-    roleId: params?.roleId || (await createRole()).id,
-    fullName: params?.fullName || faker.person.fullName(),
-    email: params?.email || faker.internet.email(),
-    password: params?.password || faker.internet.password(),
-  };
-
-  const [user] = await global.knex
-    .table('users')
-    .insert(userData)
-    .returning('*');
+  const [user] = await global.knex.table('users').insert(params).returning('*');
 
   return user;
 };

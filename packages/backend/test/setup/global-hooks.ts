@@ -5,6 +5,9 @@ import logger from '../../src/helpers/logger';
 global.beforeAll(async () => {
   global.knex = null;
   logger.silent = true;
+
+  // Remove default roles and permissions before running the test suite
+  await knex.raw('TRUNCATE TABLE roles, permissions CASCADE');
 });
 
 global.beforeEach(async () => {
@@ -18,6 +21,9 @@ global.beforeEach(async () => {
 global.afterEach(async () => {
   await global.knex.rollback();
   Model.knex(knex);
+
+  jest.restoreAllMocks();
+  jest.clearAllMocks();
 });
 
 global.afterAll(async () => {

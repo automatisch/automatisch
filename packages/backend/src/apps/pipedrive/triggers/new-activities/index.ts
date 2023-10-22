@@ -32,10 +32,9 @@ export default defineTrigger({
     };
 
     do {
-      const { data } = await $.http.get<ResponseData>(
-        `${$.auth.data.apiDomain}/api/v1/activities`,
-        { params }
-      );
+      const { data } = await $.http.get<ResponseData>('/api/v1/activities', {
+        params,
+      });
 
       if (!data?.data?.length) {
         return;

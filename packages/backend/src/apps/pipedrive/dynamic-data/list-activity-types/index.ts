@@ -15,11 +15,7 @@ export default {
       `${$.auth.data.apiDomain}/api/v1/activityTypes`
     );
 
-    if (!data?.data) {
-      return { data: [] };
-    }
-
-    if (data.data.length) {
+    if (data.data?.length) {
       for (const activityType of data.data) {
         activityTypes.data.push({
           value: activityType.key_string,

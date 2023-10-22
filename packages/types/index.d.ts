@@ -101,6 +101,7 @@ export interface IUser {
   permissions: IPermission[];
   createdAt: string | Date;
   updatedAt: string | Date;
+  trialExpiryDate: string | Date;
 }
 
 export interface IRole {
@@ -123,6 +124,12 @@ export interface IPermissionCatalog {
   actions: { label: string; key: string; subjects: string[] }[];
   subjects: { label: string; key: string }[];
   conditions: { label: string; key: string }[];
+}
+
+export interface IConfig {
+  id: string;
+  key: string;
+  value: IJSONObject;
 }
 
 export interface IFieldDropdown {

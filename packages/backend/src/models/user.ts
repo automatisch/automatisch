@@ -263,6 +263,8 @@ class User extends Base {
 
   async $beforeInsert(queryContext: QueryContext) {
     await super.$beforeInsert(queryContext);
+
+    this.email = this.email.toLowerCase();
     await this.generateHash();
 
     if (appConfig.isCloud) {
@@ -273,6 +275,7 @@ class User extends Base {
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
+    this.email = this.email.toLowerCase();
     await this.generateHash();
   }
 

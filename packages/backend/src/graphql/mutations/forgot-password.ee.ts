@@ -15,7 +15,7 @@ type Params = {
 const forgotPassword = async (_parent: unknown, params: Params) => {
   const { email } = params.input;
 
-  const user = await User.query().findOne({ email });
+  const user = await User.query().findOne({ email: email.toLowerCase() });
 
   if (!user) {
     throw new Error('Email address not found!');

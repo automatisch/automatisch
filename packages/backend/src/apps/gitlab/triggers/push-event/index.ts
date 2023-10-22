@@ -3,6 +3,7 @@ import defineTrigger from '../../../../helpers/define-trigger';
 import { GITLAB_EVENT_TYPE } from '../types';
 import {
   getRegisterHookFn,
+  getRunFn,
   getTestRunFn,
   projectArgumentDescriptor,
   unregisterHook,
@@ -54,6 +55,7 @@ export const triggerDescriptor: IRawTrigger = {
     branchFilterStrategyArgumentDescriptor,
     pushEventsBranchFilterArgumentDescriptor,
   ],
+  run: ($) => getRunFn($),
   testRun: getTestRunFn(data),
   registerHook: getRegisterHookFn(GITLAB_EVENT_TYPE.push_events),
   unregisterHook,
