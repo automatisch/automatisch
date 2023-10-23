@@ -1,5 +1,7 @@
 import defineApp from '../../helpers/define-app';
 import auth from './auth';
+import actions from './actions';
+import dynamicData from './dynamic-data';
 
 export default defineApp({
   name: 'Pushover',
@@ -11,4 +13,6 @@ export default defineApp({
   primaryColor: '249DF1',
   supportsConnections: true,
   auth,
+  actions,
+  dynamicData,
 });
