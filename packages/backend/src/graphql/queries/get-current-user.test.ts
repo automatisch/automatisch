@@ -1,8 +1,8 @@
 import request, { Test } from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
-import createRole from '../../../test/factories/role';
-import createUser from '../../../test/factories/user';
+import { createRole } from '../../../test/factories/role';
+import { createUser } from '../../../test/factories/user';
 import { IRole, IUser } from '@automatisch/types';
 
 describe('graphQL getCurrentUser query', () => {

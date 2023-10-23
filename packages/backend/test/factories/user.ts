@@ -1,8 +1,8 @@
-import createRole from './role';
+import { createRole } from './role';
 import { faker } from '@faker-js/faker';
 import User from '../../src/models/user';
 
-const createUser = async (params: Partial<User> = {}) => {
+export const createUser = async (params: Partial<User> = {}) => {
   params.roleId = params?.roleId || (await createRole()).id;
   params.fullName = params?.fullName || faker.person.fullName();
   params.email = params?.email || faker.internet.email();
@@ -12,5 +12,3 @@ const createUser = async (params: Partial<User> = {}) => {
 
   return user;
 };
-
-export default createUser;

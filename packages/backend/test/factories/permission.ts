@@ -1,5 +1,5 @@
 import { IPermission } from '@automatisch/types';
-import createRole from './role';
+import { createRole } from './role';
 
 type PermissionParams = {
   roleId?: string;
@@ -7,7 +7,7 @@ type PermissionParams = {
   subject?: string;
 };
 
-const createPermission = async (
+export const createPermission = async (
   params: PermissionParams = {}
 ): Promise<IPermission> => {
   const permissionData = {
@@ -23,5 +23,3 @@ const createPermission = async (
 
   return permission;
 };
-
-export default createPermission;
