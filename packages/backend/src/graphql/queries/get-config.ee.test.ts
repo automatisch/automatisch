@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../app';
-import createConfig from '../../../test/fixtures/config';
+import createConfig from '../../../test/factories/config';
 import { IConfig } from '@automatisch/types';
 import * as license from '../../helpers/license.ee';
 

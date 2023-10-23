@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../../app';
 import { IUser } from '@automatisch/types';
 import User from '../../models/user';
-import createUser from '../../../test/fixtures/user';
+import createUser from '../../../test/factories/user';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import { DateTime } from 'luxon';
 import appConfig from '../../config/app';
