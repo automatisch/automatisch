@@ -29,6 +29,7 @@ export default function AppConnections(
       <NoResultFound
         to={URLS.APP_ADD_CONNECTION(appKey)}
         text={formatMessage('app.noConnections')}
+        data-test="connections-no-results"
       />
     );
   }

@@ -45,6 +45,7 @@ export default function AppFlows(props: AppFlowsProps): React.ReactElement {
       <NoResultFound
         to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(appKey, connectionId)}
         text={formatMessage('app.noFlows')}
+        data-test="flows-no-results"
       />
     );
   }

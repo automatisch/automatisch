@@ -190,6 +190,7 @@ export default function InputCreator(
           onChange={onChange}
           onBlur={onBlur}
           name={computedName}
+          data-test={`${computedName}-text`}
           label={label}
           fullWidth
           helperText={description}
