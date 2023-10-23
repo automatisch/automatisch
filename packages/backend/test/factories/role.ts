@@ -5,7 +5,7 @@ type RoleParams = {
   key?: string;
 };
 
-const createRole = async (params: RoleParams = {}): Promise<IRole> => {
+export const createRole = async (params: RoleParams = {}): Promise<IRole> => {
   params.name = params?.name || 'Viewer';
   params.key = params?.key || 'viewer';
 
@@ -13,5 +13,3 @@ const createRole = async (params: RoleParams = {}): Promise<IRole> => {
 
   return role;
 };
-
-export default createRole;

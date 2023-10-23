@@ -2,7 +2,7 @@ import Connection from '../../src/models/connection';
 import appConfig from '../../src/config/app';
 import { AES } from 'crypto-js';
 
-const createConnection = async (params: Partial<Connection> = {}) => {
+export const createConnection = async (params: Partial<Connection> = {}) => {
   params.key = params?.key || 'deepl';
 
   const formattedData = params.formattedData || {
@@ -22,5 +22,3 @@ const createConnection = async (params: Partial<Connection> = {}) => {
 
   return connection;
 };
-
-export default createConnection;
