@@ -20,7 +20,11 @@ type Query {
   ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
   getExecution(executionId: String!): Execution
-  getExecutions(limit: Int!, offset: Int!): ExecutionConnection
+  getExecutions(
+    limit: Int!
+    offset: Int!
+    filters: ExecutionFiltersInput
+  ): ExecutionConnection
   getExecutionSteps(
     executionId: String!
     limit: Int!
@@ -793,6 +797,10 @@ type Notification {
   createdAt: String
   documentationUrl: String
   description: String
+}
+
+input ExecutionFiltersInput {
+  flowId: String
 }
 
 schema {
