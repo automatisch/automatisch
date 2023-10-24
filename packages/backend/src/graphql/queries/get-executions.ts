@@ -6,6 +6,10 @@ import paginate from '../../helpers/pagination';
 type Filters = {
   flowId?: string;
   status?: string;
+  updatedAt?: {
+    from?: string;
+    to?: string;
+  };
 }
 
 type Params = {
@@ -20,6 +24,7 @@ const getExecutions = async (
   context: Context
 ) => {
   const conditions = context.currentUser.can('read', 'Execution');
+
   const filters = params.filters;
 
   const userExecutions = context.currentUser.$relatedQuery('executions');
@@ -57,6 +62,18 @@ const getExecutions = async (
   if (filters?.status) {
     computedExecutions.where('executions.status', filters.status);
   }
+
+  if (filters?.updatedAt) {
+    const updatedAtFilter = filters.updatedAt;
+    if (updatedAtFilter.from) {
+      computedExecutions.where('executions.updated_at', '>=', updatedAtFilter.from);
+    }
+
+    if (updatedAtFilter.to) {
+      computedExecutions.where('executions.updated_at', '<=', updatedAtFilter.to);
+    }
+  }
+
   return paginate(computedExecutions, params.limit, params.offset);
 };
 
