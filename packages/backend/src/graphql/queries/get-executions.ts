@@ -3,9 +3,14 @@ import Context from '../../types/express/context';
 import Execution from '../../models/execution';
 import paginate from '../../helpers/pagination';
 
+type Filters = {
+  flowId?: string;
+}
+
 type Params = {
   limit: number;
   offset: number;
+  filters?: Filters;
 };
 
 const getExecutions = async (
@@ -40,6 +45,10 @@ const getExecutions = async (
     })
     .groupBy('executions.id')
     .orderBy('updated_at', 'desc');
+
+  if (params.filters?.flowId) {
+    executions.where('flow_id', params.filters.flowId);
+  }
 
   return paginate(executions, params.limit, params.offset);
 };
