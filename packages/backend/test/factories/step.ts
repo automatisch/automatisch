@@ -5,7 +5,7 @@ export const createStep = async (params: Partial<Step> = {}) => {
   params.flowId = params?.flowId || (await createFlow()).id;
   params.type = params?.type || 'action';
 
-  const [lastStep] = await global.knex
+  const lastStep = await global.knex
     .table('steps')
     .where('flowId', params.flowId)
     .andWhere('deletedAt', '!=', null)
