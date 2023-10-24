@@ -801,6 +801,7 @@ type Notification {
 
 input ExecutionFiltersInput {
   flowId: String
+  status: String
 }
 
 schema {

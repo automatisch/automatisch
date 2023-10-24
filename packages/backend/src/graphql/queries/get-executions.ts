@@ -5,6 +5,7 @@ import paginate from '../../helpers/pagination';
 
 type Filters = {
   flowId?: string;
+  status?: string;
 }
 
 type Params = {
@@ -19,6 +20,7 @@ const getExecutions = async (
   context: Context
 ) => {
   const conditions = context.currentUser.can('read', 'Execution');
+  const filters = params.filters;
 
   const userExecutions = context.currentUser.$relatedQuery('executions');
   const allExecutions = Execution.query();
@@ -46,11 +48,16 @@ const getExecutions = async (
     .groupBy('executions.id')
     .orderBy('updated_at', 'desc');
 
-  if (params.filters?.flowId) {
-    executions.where('flow_id', params.filters.flowId);
+  const computedExecutions = Execution.query().with('executions', executions);
+
+  if (filters?.flowId) {
+    computedExecutions.where('executions.flow_id', filters.flowId);
   }
 
-  return paginate(executions, params.limit, params.offset);
+  if (filters?.status) {
+    computedExecutions.where('executions.status', filters.status);
+  }
+  return paginate(computedExecutions, params.limit, params.offset);
 };
 
 export default getExecutions;
