@@ -6,7 +6,7 @@ export const createExecution = async (params: Partial<Execution> = {}) => {
   params.testRun = params?.testRun || false;
 
   const [execution] = await global.knex
-    .table('execution')
+    .table('executions')
     .insert(params)
     .returning('*');
 
