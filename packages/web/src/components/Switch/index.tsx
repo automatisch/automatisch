@@ -25,6 +25,7 @@ export default function Switch(props: SwitchProps): React.ReactElement {
     onChange,
     label,
     FormControlLabelProps,
+    className,
     ...switchProps
   } = props;
 
@@ -45,6 +46,7 @@ export default function Switch(props: SwitchProps): React.ReactElement {
         },
       }) => (
         <FormControlLabel
+          className={className}
           {...FormControlLabelProps}
           control={
             <MuiSwitch

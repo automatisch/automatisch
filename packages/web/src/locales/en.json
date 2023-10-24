@@ -248,5 +248,13 @@
   "roleMappingsForm.save": "Save",
   "roleMappingsForm.notFound": "No role mappings have found.",
   "roleMappingsForm.successfullySaved": "Role mappings have been saved.",
-  "adminApps.title": "Apps"
+  "adminApps.title": "Apps",
+  "adminApps.connections": "Connections",
+  "adminApps.authClients": "Auth clients",
+  "adminApps.settings": "Settings",
+  "adminAppsSettings.allowCustomConnection": "Allow custom connection",
+  "adminAppsSettings.shared": "Shared",
+  "adminAppsSettings.disabled": "Disabled",
+  "adminAppsSettings.save": "Save",
+  "adminAppsSettings.successfullySaved": "Settings have been saved."
 }
