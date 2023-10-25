@@ -11,7 +11,7 @@ type Filters = {
     from?: string;
     to?: string;
   };
-}
+};
 
 type Params = {
   limit: number;
@@ -30,7 +30,9 @@ const getExecutions = async (
 
   const userExecutions = context.currentUser.$relatedQuery('executions');
   const allExecutions = Execution.query();
-  const executionBaseQuery = conditions.isCreator ? userExecutions : allExecutions;
+  const executionBaseQuery = conditions.isCreator
+    ? userExecutions
+    : allExecutions;
 
   const selectStatusStatement = `
     case
@@ -48,8 +50,7 @@ const getExecutions = async (
     .groupBy('executions.id')
     .orderBy('updated_at', 'desc');
 
-  const computedExecutions = Execution
-    .query()
+  const computedExecutions = Execution.query()
     .with('executions', executions)
     .withSoftDeleted()
     .withGraphFetched({
@@ -69,20 +70,16 @@ const getExecutions = async (
   if (filters?.updatedAt) {
     const updatedAtFilter = filters.updatedAt;
     if (updatedAtFilter.from) {
-      const isoFromDateTime = DateTime
-        .fromMillis(
-          parseInt(updatedAtFilter.from, 10)
-        )
-        .toISO();
+      const isoFromDateTime = DateTime.fromMillis(
+        parseInt(updatedAtFilter.from, 10)
+      ).toISO();
       computedExecutions.where('executions.updated_at', '>=', isoFromDateTime);
     }
 
     if (updatedAtFilter.to) {
-      const isoToDateTime = DateTime
-        .fromMillis(
-          parseInt(updatedAtFilter.to, 10)
-        )
-        .toISO();
+      const isoToDateTime = DateTime.fromMillis(
+        parseInt(updatedAtFilter.to, 10)
+      ).toISO();
       computedExecutions.where('executions.updated_at', '<=', isoToDateTime);
     }
   }

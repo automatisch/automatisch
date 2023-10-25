@@ -13,7 +13,9 @@ export const createStep = async (params: Partial<Step> = {}) => {
     .first();
 
   params.position = params?.position || (lastStep?.position || 0) + 1;
-  params.status = params?.status || 'incomplete';
+  params.status = params?.status || 'completed';
+  params.appKey =
+    params?.appKey || (params.type === 'action' ? 'webhook' : 'deepl');
 
   const [step] = await global.knex.table('steps').insert(params).returning('*');
 

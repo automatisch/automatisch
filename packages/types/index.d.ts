@@ -51,8 +51,8 @@ export interface IExecution {
   testRun: boolean;
   status: 'success' | 'failure';
   executionSteps: IExecutionStep[];
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: string | Date;
+  createdAt: string | Date;
 }
 
 export interface IStep {
@@ -83,8 +83,8 @@ export interface IFlow {
   active: boolean;
   status: 'paused' | 'published' | 'draft';
   steps: IStep[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
   remoteWebhookId: string;
   lastInternalId: () => Promise<string>;
 }
