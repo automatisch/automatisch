@@ -1,4 +1,5 @@
 import { raw } from 'objection';
+import { DateTime } from 'luxon';
 import Context from '../../types/express/context';
 import Execution from '../../models/execution';
 import paginate from '../../helpers/pagination';
@@ -66,11 +67,21 @@ const getExecutions = async (
   if (filters?.updatedAt) {
     const updatedAtFilter = filters.updatedAt;
     if (updatedAtFilter.from) {
-      computedExecutions.where('executions.updated_at', '>=', updatedAtFilter.from);
+      const isoFromDateTime = DateTime
+        .fromMillis(
+          parseInt(updatedAtFilter.from, 10)
+        )
+        .toISO();
+      computedExecutions.where('executions.updated_at', '>=', isoFromDateTime);
     }
 
     if (updatedAtFilter.to) {
-      computedExecutions.where('executions.updated_at', '<=', updatedAtFilter.to);
+      const isoToDateTime = DateTime
+        .fromMillis(
+          parseInt(updatedAtFilter.to, 10)
+        )
+        .toISO();
+      computedExecutions.where('executions.updated_at', '<=', isoToDateTime);
     }
   }
 
