@@ -45,16 +45,18 @@ const getExecutions = async (
     .clone()
     .joinRelated('executionSteps as execution_steps')
     .select('executions.*', raw(selectStatusStatement))
+    .groupBy('executions.id')
+    .orderBy('updated_at', 'desc');
+
+  const computedExecutions = Execution
+    .query()
+    .with('executions', executions)
     .withSoftDeleted()
     .withGraphFetched({
       flow: {
         steps: true,
       },
-    })
-    .groupBy('executions.id')
-    .orderBy('updated_at', 'desc');
-
-  const computedExecutions = Execution.query().with('executions', executions);
+    });
 
   if (filters?.flowId) {
     computedExecutions.where('executions.flow_id', filters.flowId);
