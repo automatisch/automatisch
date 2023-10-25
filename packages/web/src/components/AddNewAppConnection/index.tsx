@@ -74,7 +74,12 @@ export default function AddNewAppConnection(
   }, []);
 
   return (
-    <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={true}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      data-test="add-app-connection-dialog">
       <DialogTitle>{formatMessage('apps.addNewAppConnection')}</DialogTitle>
 
       <Box px={3}>

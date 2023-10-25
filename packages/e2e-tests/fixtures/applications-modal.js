@@ -13,9 +13,9 @@ export class ApplicationsModal extends BasePage {
   constructor (page) {
     super(page);
     this.modal = page.getByTestId('add-app-connection-dialog');
-    this.searchInput = page.getByTestId('search-for-app-text-field');
-    this.appListItem = page.getByTestId('app-list-item');
-    this.appLoader = page.getByTestId('search-for-app-loader');
+    this.searchInput = this.modal.getByTestId('search-for-app-text-field');
+    this.appListItem = this.modal.getByTestId('app-list-item');
+    this.appLoader = this.modal.getByTestId('search-for-app-loader');
   }
 
   /**
