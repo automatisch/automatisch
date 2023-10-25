@@ -27,6 +27,7 @@ The following integrations are currently supported by Automatisch.
 - [Pipedrive](/apps/pipedrive/triggers)
 - [Placetel](/apps/placetel/triggers)
 - [PostgreSQL](/apps/postgresql/actions)
+- [Pushover](/apps/pushover/actions)
 - [RSS](/apps/rss/triggers)
 - [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)

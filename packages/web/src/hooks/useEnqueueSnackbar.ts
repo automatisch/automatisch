@@ -1,7 +1,8 @@
 import type {
   OptionsWithExtraProps,
   SnackbarMessage,
-  VariantType
+  VariantType,
+  SnackbarKey
 } from 'notistack';
 import { useSnackbar } from 'notistack';
 
@@ -10,9 +11,20 @@ type ExtendedOptionsWithExtraProps<V extends VariantType> = OptionsWithExtraProp
 }
 
 export default function useEnqueueSnackbar() {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   return function wrappedEnqueueSnackbar<V extends VariantType>(message: SnackbarMessage, options: ExtendedOptionsWithExtraProps<V>) {
-    return enqueueSnackbar(message, options);
+    const key: SnackbarKey = enqueueSnackbar(
+      message,
+      {
+        ...(options || {}) as Record<string, unknown>,
+        SnackbarProps: {
+          onClick: () => closeSnackbar(key),
+          ...(options.SnackbarProps || {}) as Record<string, unknown>
+        }
+      }
+    );
+
+    return key;
   };
 }

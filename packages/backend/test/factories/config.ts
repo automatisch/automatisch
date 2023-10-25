@@ -6,7 +6,7 @@ type ConfigParams = {
   value?: IJSONObject;
 };
 
-const createConfig = async (params: ConfigParams = {}) => {
+export const createConfig = async (params: ConfigParams = {}) => {
   const configData = {
     key: params?.key || faker.lorem.word(),
     value: params?.value || { data: 'sampleConfig' },
@@ -19,5 +19,3 @@ const createConfig = async (params: ConfigParams = {}) => {
 
   return config;
 };
-
-export default createConfig;

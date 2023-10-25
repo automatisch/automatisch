@@ -266,7 +266,10 @@ export default defineConfig({
           text: 'Pushover',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/pushover/connection' }],
+          items: [
+            { text: 'Actions', link: '/apps/pushover/actions' },
+            { text: 'Connection', link: '/apps/pushover/connection' },
+          ],
         },
         {
           text: 'RSS',
@@ -369,6 +372,12 @@ export default defineConfig({
             { text: 'Actions', link: '/apps/todoist/actions' },
             { text: 'Connection', link: '/apps/todoist/connection' },
           ],
+        },
+        {
+          text: 'Trello',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/trello/connection' }],
         },
         {
           text: 'Twilio',

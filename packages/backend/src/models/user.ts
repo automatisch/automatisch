@@ -275,7 +275,10 @@ class User extends Base {
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    this.email = this.email.toLowerCase();
+    if (this.email) {
+      this.email = this.email.toLowerCase();
+    }
+
     await this.generateHash();
   }
 

@@ -2,9 +2,9 @@ import request from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import Crypto from 'crypto';
-import createRole from '../../../test/fixtures/role';
-import createPermission from '../../../test/fixtures/permission';
-import createUser from '../../../test/fixtures/user';
+import { createRole } from '../../../test/factories/role';
+import { createPermission } from '../../../test/factories/permission';
+import { createUser } from '../../../test/factories/user';
 import { IRole, IUser, IPermission } from '@automatisch/types';
 import * as license from '../../helpers/license.ee';
 

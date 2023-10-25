@@ -97,6 +97,16 @@ export const USER_INTERFACE = `${ADMIN_SETTINGS}/user-interface`;
 export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
 export const ADMIN_APPS = `${ADMIN_SETTINGS}/apps`;
 export const ADMIN_APP = (appKey: string) => `${ADMIN_SETTINGS}/apps/${appKey}`;
+export const ADMIN_APP_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey`;
+export const ADMIN_APP_SETTINGS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/settings`;
+export const ADMIN_APP_AUTH_CLIENTS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/auth-clients`;
+export const ADMIN_APP_CONNECTIONS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/connections`;
+export const ADMIN_APP_CONNECTIONS = (appKey: string) =>
+  `${ADMIN_SETTINGS}/apps/${appKey}/connections`;
+export const ADMIN_APP_SETTINGS = (appKey: string) =>
+  `${ADMIN_SETTINGS}/apps/${appKey}/settings`;
+export const ADMIN_APP_AUTH_CLIENTS = (appKey: string) =>
+  `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients`;
 
 export const DASHBOARD = FLOWS;
 
