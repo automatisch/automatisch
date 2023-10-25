@@ -1,6 +1,8 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
+import triggers from './triggers';
+import dynamicData from './dynamic-data';
 
 export default defineApp({
   name: 'Trello',
@@ -13,4 +15,6 @@ export default defineApp({
   primaryColor: '0079bf',
   beforeRequest: [addAuthHeader],
   auth,
+  triggers,
+  dynamicData,
 });
