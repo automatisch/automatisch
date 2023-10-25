@@ -9,7 +9,7 @@ test('Github OAuth integration', async ({ page, applicationsPage }) => {
         await page.waitForURL('/apps');
       }
       const connectionModal = await applicationsPage.openAddConnectionModal();
-      expect(connectionModal.modal).toBeVisible();
+      await expect(connectionModal.modal).toBeVisible();
       return await connectionModal.selectLink('github');
     }
   );
@@ -18,7 +18,7 @@ test('Github OAuth integration', async ({ page, applicationsPage }) => {
     'Ensure the github connection modal is visible',
     async () => {
       const connectionModal = githubConnectionPage.addConnectionModal;
-      expect(connectionModal.modal).toBeVisible();
+      await expect(connectionModal.modal).toBeVisible();
       return connectionModal;
     }
   );
@@ -35,9 +35,9 @@ test('Github OAuth integration', async ({ page, applicationsPage }) => {
   );
 
   await test.step('Ensure github popup is not a 404', async () => {
-    // expect(githubPopup).toBeVisible();
+    // await expect(githubPopup).toBeVisible();
     const title = await githubPopup.title();
-    expect(title).not.toMatch(/^Page not found/);
+    await expect(title).not.toMatch(/^Page not found/);
   });
 
   /* Skip these in CI
