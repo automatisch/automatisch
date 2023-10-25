@@ -24,10 +24,17 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.2.0",
     "@playwright/test": "^1.36.2"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
     "dotenv": "^16.3.1",
-    "micro": "^10.0.1"
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "micro": "^10.0.1",
+    "prettier": "^2.5.1"
   }
 }

@@ -14,6 +14,7 @@ type ConfirmationDialogProps = {
   cancelButtonChildren: React.ReactNode;
   confirmButtionChildren: React.ReactNode;
   open?: boolean;
+  'data-test'?: string;
 }
 
 export default function ConfirmationDialog(props: ConfirmationDialogProps) {
@@ -26,9 +27,9 @@ export default function ConfirmationDialog(props: ConfirmationDialogProps) {
     confirmButtionChildren,
     open = true,
   } = props;
-
+  const dataTest = props['data-test'];
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} data-test={dataTest}>
       {title && (
         <DialogTitle>
           {title}
@@ -44,11 +45,16 @@ export default function ConfirmationDialog(props: ConfirmationDialogProps) {
 
       <DialogActions>
         {(cancelButtonChildren && onClose) && (
-          <Button onClick={onClose}>{cancelButtonChildren}</Button>
+          <Button
+            onClick={onClose}
+            data-test="confirmation-cancel-button">{cancelButtonChildren}</Button>
         )}
 
         {(confirmButtionChildren && onConfirm) && (
-          <Button onClick={onConfirm} color="error">
+          <Button
+            onClick={onConfirm}
+            color="error"
+            data-test="confirmation-confirm-button">
             {confirmButtionChildren}
           </Button>
         )}

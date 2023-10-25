@@ -83,23 +83,34 @@ export default function UserList(): React.ReactElement {
             </TableRow>
           </TableHead>
           <TableBody>
-            {loading && <ListLoader rowsNumber={3} columnsNumber={2} />}
+            {loading && <ListLoader
+              data-test="users-list-loader"
+              rowsNumber={3}
+              columnsNumber={2} />}
             {!loading &&
               users.map((user) => (
                 <TableRow
                   key={user.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  data-test="user-row"
                 >
                   <TableCell scope="row">
-                    <Typography variant="subtitle2">{user.fullName}</Typography>
+                    <Typography
+                      variant="subtitle2"
+                      data-test="user-full-name">{user.fullName}</Typography>
                   </TableCell>
 
                   <TableCell>
-                    <Typography variant="subtitle2">{user.email}</Typography>
+                    <Typography
+                      variant="subtitle2"
+                      data-test="user-email">{user.email}</Typography>
                   </TableCell>
 
                   <TableCell>
-                    <Typography variant="subtitle2">
+                    <Typography
+                      variant="subtitle2"
+                      data-test="user-role"
+                    >
                       {user.role.name}
                     </Typography>
                   </TableCell>
@@ -110,11 +121,14 @@ export default function UserList(): React.ReactElement {
                         size="small"
                         component={Link}
                         to={URLS.USER(user.id)}
+                        data-test="user-edit"
                       >
                         <EditIcon />
                       </IconButton>
 
-                      <DeleteUserButton userId={user.id} />
+                      <DeleteUserButton
+                        data-test="user-delete"
+                        userId={user.id} />
                     </Stack>
                   </TableCell>
                 </TableRow>
@@ -124,6 +138,8 @@ export default function UserList(): React.ReactElement {
             <TableFooter>
               <TableRow>
                 <TablePagination
+                  data-total-count={totalCount}
+                  data-rows-per-page={rowsPerPage}
                   rowsPerPageOptions={[10, 25, 50, 100]}
                   page={page}
                   count={totalCount}

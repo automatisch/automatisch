@@ -52,6 +52,7 @@ export default function TablePaginationActions(
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
         aria-label="first page"
+        data-test="first-page-button"
       >
         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
@@ -59,6 +60,7 @@ export default function TablePaginationActions(
         onClick={handleBackButtonClick}
         disabled={page === 0}
         aria-label="previous page"
+        data-test="previous-page-button"
       >
         {theme.direction === 'rtl' ? (
           <KeyboardArrowRight />
@@ -70,6 +72,7 @@ export default function TablePaginationActions(
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page"
+        data-test="next-page-button"
       >
         {theme.direction === 'rtl' ? (
           <KeyboardArrowLeft />
@@ -81,6 +84,7 @@ export default function TablePaginationActions(
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
+        data-test="last-page-button"
       >
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
