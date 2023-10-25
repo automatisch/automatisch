@@ -435,6 +435,14 @@ export default defineConfig({
             { text: 'Connection', link: '/apps/youtube/connection' },
           ],
         },
+        {
+          text: 'Zendesk',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/zendesk/connection' },
+          ],
+        },
       ],
       '/': [
         {
