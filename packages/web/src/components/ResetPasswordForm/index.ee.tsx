@@ -43,6 +43,9 @@ export default function ResetPasswordForm() {
 
     enqueueSnackbar(formatMessage('resetPasswordForm.passwordUpdated'), {
       variant: 'success',
+      SnackbarProps: {
+        'data-test': 'snackbar-reset-password-success'
+      }
     });
 
     navigate(URLS.LOGIN);

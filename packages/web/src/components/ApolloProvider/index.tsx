@@ -15,7 +15,12 @@ const ApolloProvider = (props: ApolloProviderProps): React.ReactElement => {
 
   const onError = React.useCallback(
     (message) => {
-      enqueueSnackbar(message, { variant: 'error' });
+      enqueueSnackbar(message, {
+        variant: 'error',
+        SnackbarProps: {
+          'data-test': 'snackbar-error'
+        }
+      });
     },
     [enqueueSnackbar]
   );

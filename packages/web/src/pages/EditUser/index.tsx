@@ -55,6 +55,10 @@ export default function EditUser(): React.ReactElement {
 
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-edit-user-success',
+          persist: true
+        }
       });
 
       navigate(URLS.USERS);

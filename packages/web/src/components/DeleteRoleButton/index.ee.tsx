@@ -31,6 +31,9 @@ export default function DeleteRoleButton(props: DeleteRoleButtonProps) {
       setShowConfirmation(false);
       enqueueSnackbar(formatMessage('deleteRoleButton.successfullyDeleted'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-delete-role-success'
+        }
       });
     } catch (error) {
       throw new Error('Failed while deleting!');

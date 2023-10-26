@@ -36,6 +36,9 @@ export default function ContextMenu(
 
     enqueueSnackbar(formatMessage('flow.successfullyDuplicated'), {
       variant: 'success',
+      SnackbarProps: {
+        'data-test': 'snackbar-duplicate-flow-success'
+      }
     });
 
     onClose();

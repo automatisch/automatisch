@@ -47,6 +47,10 @@ export default function CreateUser(): React.ReactElement {
 
       enqueueSnackbar(formatMessage('createUser.successfullyCreated'), {
         variant: 'success',
+        persist: true,
+        SnackbarProps: {
+          'data-test': 'snackbar-create-user-success',
+        }
       });
 
       navigate(URLS.USERS);

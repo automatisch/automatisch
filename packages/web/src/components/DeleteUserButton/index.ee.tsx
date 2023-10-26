@@ -29,6 +29,9 @@ export default function DeleteUserButton(props: DeleteUserButtonProps) {
       setShowConfirmation(false);
       enqueueSnackbar(formatMessage('deleteUserButton.successfullyDeleted'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-delete-user-success'
+        }
       });
     } catch (error) {
       throw new Error('Failed while deleting!');

@@ -35,10 +35,9 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-create-user-success'
+          );
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
         }
@@ -65,10 +64,9 @@ test.describe('User management page', () => {
           await adminEditUserPage.fullNameInput.fill(newUserInfo.fullName);
           await adminEditUserPage.updateButton.click();
 
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-edit-user-success'
+          );
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
 
@@ -86,10 +84,10 @@ test.describe('User management page', () => {
           await adminUsersPage.clickDeleteUser(userRow);
           const modal = adminUsersPage.deleteUserModal;
           await modal.deleteButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });          
-          const snackbar = await adminUsersPage.getSnackbarData();
+        
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-delete-user-success'
+          );
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
           await expect(userRow).not.toBeVisible(false);
@@ -115,10 +113,9 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-create-user-success'
+          );
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
         }
@@ -132,10 +129,9 @@ test.describe('User management page', () => {
           await adminUsersPage.clickDeleteUser(userRow);
           const modal = adminUsersPage.deleteUserModal;
           await modal.deleteButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-delete-user-success'
+          );
           await expect(snackbar).not.toBeNull();
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
@@ -163,6 +159,7 @@ test.describe('User management page', () => {
             happen here, i.e. if this should create a new user, stay the
             same, un-delete the user, or something else
           */
+          // await adminUsersPage.getSnackbarData('snackbar-error');
           await adminUsersPage.closeSnackbar();
         }
       );
@@ -187,10 +184,9 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-create-user-success'
+          );
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
         }
@@ -209,11 +205,9 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          await adminCreateUserPage.snackbar.waitFor({
-            state: 'attached'
-          });
+          
           await expect(page.url()).toBe(createUserPageUrl);
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
           await expect(snackbar.variant).toBe('error');
           await adminUsersPage.closeSnackbar();
         }
@@ -241,10 +235,9 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-create-user-success'
+          );
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
         }
@@ -262,10 +255,9 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-create-user-success'
+          );
           await expect(snackbar.variant).toBe('success');
           await adminUsersPage.closeSnackbar();
         }
@@ -282,10 +274,9 @@ test.describe('User management page', () => {
           const editPageUrl = page.url();
           await adminEditUserPage.updateButton.click();
 
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          const snackbar = await adminUsersPage.getSnackbarData();
+          const snackbar = await adminUsersPage.getSnackbarData(
+            'snackbar-error'
+          );
           await expect(snackbar.variant).toBe('error');
           await adminUsersPage.closeSnackbar();
           await expect(page.url()).toBe(editPageUrl);

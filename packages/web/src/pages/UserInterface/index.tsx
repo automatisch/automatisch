@@ -128,6 +128,9 @@ export default function UserInterface(): React.ReactElement {
 
       enqueueSnackbar(formatMessage('userInterfacePage.successfullyUpdated'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-update-user-interface-success'
+        }
       });
     } catch (error) {
       throw new Error('Failed while updating!');

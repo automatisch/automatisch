@@ -78,6 +78,9 @@ function ProfileSettings() {
 
     enqueueSnackbar(formatMessage('profileSettings.updatedProfile'), {
       variant: 'success',
+      SnackbarProps: {
+        'data-test': 'snackbar-update-profile-settings-success'
+      }
     });
   };
 
