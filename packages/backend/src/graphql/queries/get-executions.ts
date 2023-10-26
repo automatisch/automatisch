@@ -7,7 +7,7 @@ import paginate from '../../helpers/pagination';
 type Filters = {
   flowId?: string;
   status?: string;
-  updatedAt?: {
+  createdAt?: {
     from?: string;
     to?: string;
   };
@@ -46,7 +46,7 @@ const getExecutions = async (
     .joinRelated('executionSteps as execution_steps')
     .select('executions.*', raw(selectStatusStatement))
     .groupBy('executions.id')
-    .orderBy('updated_at', 'desc');
+    .orderBy('created_at', 'desc');
 
   const computedExecutions = Execution
     .query()
@@ -66,24 +66,24 @@ const getExecutions = async (
     computedExecutions.where('executions.status', filters.status);
   }
 
-  if (filters?.updatedAt) {
-    const updatedAtFilter = filters.updatedAt;
-    if (updatedAtFilter.from) {
+  if (filters?.createdAt) {
+    const createdAtFilter = filters.createdAt;
+    if (createdAtFilter.from) {
       const isoFromDateTime = DateTime
         .fromMillis(
-          parseInt(updatedAtFilter.from, 10)
+          parseInt(createdAtFilter.from, 10)
         )
         .toISO();
-      computedExecutions.where('executions.updated_at', '>=', isoFromDateTime);
+      computedExecutions.where('executions.created_at', '>=', isoFromDateTime);
     }
 
-    if (updatedAtFilter.to) {
+    if (createdAtFilter.to) {
       const isoToDateTime = DateTime
         .fromMillis(
-          parseInt(updatedAtFilter.to, 10)
+          parseInt(createdAtFilter.to, 10)
         )
         .toISO();
-      computedExecutions.where('executions.updated_at', '<=', isoToDateTime);
+      computedExecutions.where('executions.created_at', '<=', isoToDateTime);
     }
   }
 

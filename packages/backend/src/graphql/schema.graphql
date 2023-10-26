@@ -799,14 +799,14 @@ type Notification {
   description: String
 }
 
-input ExecutionUpdatedAtFilterInput {
+input ExecutionCreatedAtFilterInput {
   from: String
   to: String
 }
 
 input ExecutionFiltersInput {
   flowId: String
-  updatedAt: ExecutionUpdatedAtFilterInput
+  createdAt: ExecutionCreatedAtFilterInput
   status: String
 }
 
