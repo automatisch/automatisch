@@ -6,6 +6,7 @@ const addAuthHeader: TBeforeRequest = ($, requestConfig) => {
   if (instanceUrl) {
     requestConfig.baseURL = instanceUrl as string;
   }
+
   if (tokenType && accessToken) {
     requestConfig.headers.Authorization = `${tokenType} ${$.auth.data.accessToken}`;
   }

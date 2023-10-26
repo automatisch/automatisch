@@ -6,13 +6,14 @@ const verifyCredentials = async ($: IGlobalVariable) => {
   await getAccessToken($);
 
   const user = await getCurrentUser($);
-  const subdomain = extractSubdomain(user.url);
-  const name = (user.name as string).replace(/ /g, '');
+  const subdomain = extractSubdomain($.auth.data.instanceUrl);
+  const name = user.name as string;
+  const screenName = [name, subdomain].filter(Boolean).join(' @ ');
 
   await $.auth.set({
-    screenName: `${name}@${subdomain}`,
+    screenName,
     apiToken: $.auth.data.apiToken,
-    instanceUrl: user.url,
+    instanceUrl: $.auth.data.instanceUrl,
     email: $.auth.data.email,
   });
 };
