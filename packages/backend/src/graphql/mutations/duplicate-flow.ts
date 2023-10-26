@@ -81,6 +81,10 @@ const duplicateFlow = async (
         parameters: updateStepVariables(step.parameters, newStepIds),
       });
 
+    if (duplicatedStep.isTrigger) {
+      await duplicatedStep.updateWebhookUrl();
+    }
+
     newStepIds[step.id] = duplicatedStep.id;
   }
 
