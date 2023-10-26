@@ -435,17 +435,17 @@ describe('graphQL getExecutions query', () => {
         });
 
         it('should return only executions data within date range', async () => {
-          const updatedAtFrom = (executionOne.updatedAt as Date)
+          const createdAtFrom = (executionOne.createdAt as Date)
             .getTime()
             .toString();
 
-          const updatedAtTo = (executionOne.updatedAt as Date)
+          const createdAtTo = (executionOne.createdAt as Date)
             .getTime()
             .toString();
 
           const query = `
             query {
-              getExecutions(limit: 10, offset: 0, filters: { updatedAt: { from: "${updatedAtFrom}", to: "${updatedAtTo}" }}) {
+              getExecutions(limit: 10, offset: 0, filters: { createdAt: { from: "${createdAtFrom}", to: "${createdAtTo}" }}) {
                 pageInfo {
                   currentPage
                   totalPages
