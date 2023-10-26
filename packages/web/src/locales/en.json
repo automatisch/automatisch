@@ -89,7 +89,7 @@
   "executions.title": "Executions",
   "executions.noExecutions": "There is no execution data point to show.",
   "execution.id": "Execution ID: {id}",
-  "execution.updatedAt": "updated {datetime}",
+  "execution.createdAt": "created {datetime}",
   "execution.test": "Test run",
   "execution.statusSuccess": "Success",
   "execution.statusFailure": "Failure",

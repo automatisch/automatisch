@@ -1,24 +1,15 @@
-import { IPermission } from '@automatisch/types';
+import Permission from '../../src/models/permission';
 import { createRole } from './role';
 
-type PermissionParams = {
-  roleId?: string;
-  action?: string;
-  subject?: string;
-};
-
-export const createPermission = async (
-  params: PermissionParams = {}
-): Promise<IPermission> => {
-  const permissionData = {
-    roleId: params?.roleId || (await createRole()).id,
-    action: params?.action || 'read',
-    subject: params?.subject || 'User',
-  };
+export const createPermission = async (params: Partial<Permission> = {}) => {
+  params.roleId = params?.roleId || (await createRole()).id;
+  params.action = params?.action || 'read';
+  params.subject = params?.subject || 'User';
+  params.conditions = params?.conditions || ['isCreator'];
 
   const [permission] = await global.knex
     .table('permissions')
-    .insert(permissionData)
+    .insert(params)
     .returning('*');
 
   return permission;

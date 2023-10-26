@@ -65,8 +65,8 @@ export default function FlowRow(props: FlowRowProps): React.ReactElement {
     setAnchorEl(contextButtonRef.current);
   };
 
-  const createdAt = DateTime.fromMillis(parseInt(flow.createdAt, 10));
-  const updatedAt = DateTime.fromMillis(parseInt(flow.updatedAt, 10));
+  const createdAt = DateTime.fromMillis(parseInt(flow.createdAt as string, 10));
+  const updatedAt = DateTime.fromMillis(parseInt(flow.updatedAt as string, 10));
   const isUpdated = updatedAt > createdAt;
   const relativeCreatedAt = createdAt.toRelative();
   const relativeUpdatedAt = updatedAt.toRelative();

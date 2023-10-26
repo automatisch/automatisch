@@ -23,8 +23,10 @@ export default function ExecutionRow(
   const { execution } = props;
   const { flow } = execution;
 
-  const updatedAt = DateTime.fromMillis(parseInt(execution.updatedAt, 10));
-  const relativeUpdatedAt = updatedAt.toRelative();
+  const createdAt = DateTime.fromMillis(
+    parseInt(execution.createdAt as string, 10)
+  );
+  const relativeCreatedAt = createdAt.toRelative();
 
   return (
     <Link to={URLS.EXECUTION(execution.id)} data-test="execution-row">
@@ -41,8 +43,8 @@ export default function ExecutionRow(
               </Typography>
 
               <Typography variant="caption" noWrap>
-                {formatMessage('execution.updatedAt', {
-                  datetime: relativeUpdatedAt,
+                {formatMessage('execution.createdAt', {
+                  datetime: relativeCreatedAt,
                 })}
               </Typography>
             </Title>
