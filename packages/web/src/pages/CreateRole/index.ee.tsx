@@ -43,6 +43,9 @@ export default function CreateRole(): React.ReactElement {
 
       enqueueSnackbar(formatMessage('createRole.successfullyCreated'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-create-role-success'
+        }
       });
 
       navigate(URLS.ROLES);

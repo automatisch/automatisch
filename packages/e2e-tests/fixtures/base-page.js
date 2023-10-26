@@ -14,11 +14,12 @@ export class BasePage {
    */
   constructor(page) {
     this.page = page;
-    this.snackbar = this.page.locator('.notistack-MuiContent');
+    this.snackbar = page.locator('*[data-test^="snackbar"]');
   }
 
   /**
    * Finds the latest snackbar message and extracts relevant data
+   * @param {string | undefined} testId 
    * @returns {(
    *  null | {
    *    variant: SnackbarVariant,
@@ -27,25 +28,13 @@ export class BasePage {
    *  }
    * )} 
    */
-  async getSnackbarData () {
-    if (await this.snackbar.count() === 0) {
-      return null;
+  async getSnackbarData (testId) {
+    if (!testId) {
+      testId = 'snackbar';
     }
-    const snack = this.snackbar.first(); // uses flex: column-reverse
-    const classList = await snack.evaluate(node => Array.from(node.classList));
-    /** @type SnackbarVariant */
-    let variant = 'default';
-    if (classList.includes('notistack-MuiContent-success')) {
-      variant = 'success'
-    } else if (classList.includes('notistack-MuiContent-warning')) {
-      variant = 'warning'
-    } else if (classList.includes('notistack-MuiContent-error')) {
-      variant = 'error'
-    } else if (classList.includes('notistack-MuiContent-info')) {
-      variant = 'info'
-    }
+    const snack = this.page.getByTestId(testId);
     return {
-      variant,
+      variant: await snack.getAttribute('data-snackbar-variant'),
       text: await snack.evaluate(node => node.innerText),
       dataset: await snack.evaluate(node => {
         function getChildren (n) {

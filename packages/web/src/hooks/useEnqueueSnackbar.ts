@@ -20,7 +20,11 @@ export default function useEnqueueSnackbar() {
         ...(options || {}) as Record<string, unknown>,
         SnackbarProps: {
           onClick: () => closeSnackbar(key),
-          ...(options.SnackbarProps || {}) as Record<string, unknown>
+          ...({
+            'data-test': 'snackbar', // keep above options.snackbarProps
+            'data-snackbar-variant': `${options.variant}` || 'default',
+          }) as Record<string, string>,
+          ...(options.SnackbarProps || {}) as Record<string, unknown>,
         }
       }
     );

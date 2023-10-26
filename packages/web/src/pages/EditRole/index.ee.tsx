@@ -53,6 +53,9 @@ export default function EditRole(): React.ReactElement {
 
       enqueueSnackbar(formatMessage('editRole.successfullyUpdated'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-edit-role-success'
+        }
       });
 
       navigate(URLS.ROLES);

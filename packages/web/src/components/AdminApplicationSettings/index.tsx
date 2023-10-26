@@ -6,13 +6,13 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useMutation } from '@apollo/client';
-import { useSnackbar } from 'notistack';
 
 import { CREATE_APP_CONFIG } from 'graphql/mutations/create-app-config';
 import { UPDATE_APP_CONFIG } from 'graphql/mutations/update-app-config';
 
 import Form from 'components/Form';
 import { Switch } from './style';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
 type AdminApplicationSettingsProps = {
   appKey: string;
@@ -36,7 +36,7 @@ function AdminApplicationSettings(
   );
 
   const formatMessage = useFormatMessage();
-  const { enqueueSnackbar } = useSnackbar();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleSubmit = async (values: any) => {
     try {
@@ -55,6 +55,9 @@ function AdminApplicationSettings(
       }
       enqueueSnackbar(formatMessage('adminAppsSettings.successfullySaved'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-save-admin-apps-settings-success'
+        }
       });
     } catch (error) {
       throw new Error('Failed while saving!');

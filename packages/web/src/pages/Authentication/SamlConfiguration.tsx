@@ -93,6 +93,9 @@ function SamlConfiguration({
 
       enqueueSnackbar(formatMessage('authenticationForm.successfullySaved'), {
         variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-save-saml-provider-success'
+        }
       });
     } catch (error) {
       throw new Error('Failed while saving!');

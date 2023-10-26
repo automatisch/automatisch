@@ -82,6 +82,9 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
 
         enqueueSnackbar(formatMessage('connection.deletedMessage'), {
           variant: 'success',
+          SnackbarProps: {
+            'data-test': 'snackbar-delete-connection-success'
+          }
         });
       } else if (action.type === 'test') {
         setVerificationVisible(true);
