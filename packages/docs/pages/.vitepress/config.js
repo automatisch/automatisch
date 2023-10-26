@@ -377,7 +377,10 @@ export default defineConfig({
           text: 'Trello',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/trello/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/trello/triggers' },
+            { text: 'Connection', link: '/apps/trello/connection' },
+          ],
         },
         {
           text: 'Twilio',
