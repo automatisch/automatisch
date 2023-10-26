@@ -1,3 +1,3 @@
-const authScope: string[] = ['users:read'];
+const authScope: string[] = ['read', 'write'];
 
 export default authScope;
