@@ -37,7 +37,7 @@ export default function DeleteUserButton(props: DeleteUserButtonProps) {
 
   return (
     <>
-      <IconButton onClick={() => setShowConfirmation(true)} size="small">
+      <IconButton data-test="delete-button" onClick={() => setShowConfirmation(true)} size="small">
         <DeleteIcon />
       </IconButton>
 
@@ -49,6 +49,7 @@ export default function DeleteUserButton(props: DeleteUserButtonProps) {
         onConfirm={handleConfirm}
         cancelButtonChildren={formatMessage('deleteUserButton.cancel')}
         confirmButtionChildren={formatMessage('deleteUserButton.confirm')}
+        data-test="delete-user-modal"
       />
     </>
   );

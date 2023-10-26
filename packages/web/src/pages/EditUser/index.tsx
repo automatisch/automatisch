@@ -87,6 +87,7 @@ export default function EditUser(): React.ReactElement {
                   required={true}
                   name="fullName"
                   label={formatMessage('userForm.fullName')}
+                  data-test="full-name-input"
                   fullWidth
                 />
 
@@ -94,6 +95,7 @@ export default function EditUser(): React.ReactElement {
                   required={true}
                   name="email"
                   label={formatMessage('userForm.email')}
+                  data-test="email-input"
                   fullWidth
                 />
 
@@ -120,6 +122,7 @@ export default function EditUser(): React.ReactElement {
                   color="primary"
                   sx={{ boxShadow: 2 }}
                   loading={loading}
+                  data-test="update-button"
                 >
                   {formatMessage('editUser.submit')}
                 </LoadingButton>

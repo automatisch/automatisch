@@ -5,6 +5,7 @@ const { ExecutionsPage } = require('./executions-page');
 const { FlowEditorPage } = require('./flow-editor-page');
 const { UserInterfacePage } = require('./user-interface-page');
 const { LoginPage } = require('./login-page');
+const { adminFixtures } = require('./admin');
 
 exports.test = test.extend({
   page: async ({ page }, use) => {
@@ -31,6 +32,7 @@ exports.test = test.extend({
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));
   },
+  ...adminFixtures
 });
 
 exports.publicTest = test.extend({

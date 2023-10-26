@@ -69,6 +69,7 @@ export default function CreateUser(): React.ReactElement {
                 required={true}
                 name="fullName"
                 label={formatMessage('userForm.fullName')}
+                data-test="full-name-input"
                 fullWidth
               />
 
@@ -76,6 +77,7 @@ export default function CreateUser(): React.ReactElement {
                 required={true}
                 name="email"
                 label={formatMessage('userForm.email')}
+                data-test="email-input"
                 fullWidth
               />
 
@@ -84,6 +86,7 @@ export default function CreateUser(): React.ReactElement {
                 name="password"
                 label={formatMessage('userForm.password')}
                 type="password"
+                data-test="password-input"
                 fullWidth
               />
 
@@ -110,6 +113,7 @@ export default function CreateUser(): React.ReactElement {
                 color="primary"
                 sx={{ boxShadow: 2 }}
                 loading={loading}
+                data-test="create-button"
               >
                 {formatMessage('createUser.submit')}
               </LoadingButton>
