@@ -377,7 +377,10 @@ export default defineConfig({
           text: 'Trello',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/trello/connection' }],
+          items: [
+            { text: 'Actions', link: '/apps/trello/actions' },
+            { text: 'Connection', link: '/apps/trello/connection' },
+          ],
         },
         {
           text: 'Twilio',
@@ -439,9 +442,7 @@ export default defineConfig({
           text: 'Zendesk',
           collapsible: true,
           collapsed: true,
-          items: [
-            { text: 'Connection', link: '/apps/zendesk/connection' },
-          ],
+          items: [{ text: 'Connection', link: '/apps/zendesk/connection' }],
         },
       ],
       '/': [

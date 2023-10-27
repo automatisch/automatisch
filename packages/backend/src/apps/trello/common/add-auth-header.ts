@@ -5,6 +5,8 @@ const addAuthHeader: TBeforeRequest = ($, requestConfig) => {
     requestConfig.headers.Authorization = `OAuth oauth_consumer_key="${$.auth.data.apiKey}", oauth_token="${$.auth.data.token}"`;
   }
 
+  requestConfig.headers.Accept = 'application/json';
+
   return requestConfig;
 };
 
