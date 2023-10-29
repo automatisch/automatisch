@@ -4,4 +4,6 @@ module.exports = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['./test/setup/global-hooks.ts'],
   globalTeardown: './test/setup/global-teardown.ts',
+  collectCoverage: true,
+  collectCoverageFrom: ['src/graphql/queries/*.ts'],
 };
