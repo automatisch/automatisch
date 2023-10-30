@@ -1,9 +1,9 @@
-import request, { Test } from 'supertest';
+// @ts-nocheck
+import request from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import { createRole } from '../../../test/factories/role';
 import { createUser } from '../../../test/factories/user';
-import { IRole, IUser } from '@automatisch/types';
 
 describe('graphQL getCurrentUser query', () => {
   describe('with unauthenticated user', () => {
@@ -31,7 +31,7 @@ describe('graphQL getCurrentUser query', () => {
   });
 
   describe('with authenticated user', () => {
-    let role: IRole, currentUser: IUser, token: string, requestObject: Test;
+    let role, currentUser, token, requestObject;
 
     beforeEach(async () => {
       role = await createRole({
@@ -70,12 +70,12 @@ describe('graphQL getCurrentUser query', () => {
       const expectedResponsePayload = {
         data: {
           getCurrentUser: {
-            createdAt: (currentUser.createdAt as Date).getTime().toString(),
+            createdAt: currentUser.createdAt.getTime().toString(),
             email: currentUser.email,
             fullName: currentUser.fullName,
             id: currentUser.id,
             role: { id: role.id, name: role.name },
-            updatedAt: (currentUser.updatedAt as Date).getTime().toString(),
+            updatedAt: currentUser.updatedAt.getTime().toString(),
           },
         },
       };

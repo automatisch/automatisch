@@ -1,6 +1,6 @@
+// @ts-nocheck
 import request from 'supertest';
 import app from '../../app';
-import { IUser } from '@automatisch/types';
 import User from '../../models/user';
 import { createUser } from '../../../test/factories/user';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
@@ -32,7 +32,7 @@ describe('graphQL getTrialStatus query', () => {
   });
 
   describe('with authenticated user', () => {
-    let user: IUser, userToken: string;
+    let user, userToken;
 
     beforeEach(async () => {
       const trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
@@ -54,7 +54,7 @@ describe('graphQL getTrialStatus query', () => {
           .expect(200);
 
         const expectedResponsePayload = {
-          data: { getTrialStatus: null as string },
+          data: { getTrialStatus: null },
         };
 
         expect(response.body).toEqual(expectedResponsePayload);
@@ -82,7 +82,7 @@ describe('graphQL getTrialStatus query', () => {
             .expect(200);
 
           const expectedResponsePayload = {
-            data: { getTrialStatus: null as string },
+            data: { getTrialStatus: null },
           };
 
           expect(response.body).toEqual(expectedResponsePayload);

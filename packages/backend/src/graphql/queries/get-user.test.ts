@@ -1,11 +1,11 @@
-import request, { Test } from 'supertest';
+// @ts-nocheck
+import request from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import Crypto from 'crypto';
 import { createRole } from '../../../test/factories/role';
 import { createPermission } from '../../../test/factories/permission';
 import { createUser } from '../../../test/factories/user';
-import { IRole, IUser } from '@automatisch/types';
 
 describe('graphQL getUser query', () => {
   describe('with unauthenticated user', () => {
@@ -61,11 +61,7 @@ describe('graphQL getUser query', () => {
     });
 
     describe('and correct permissions', () => {
-      let role: IRole,
-        currentUser: IUser,
-        anotherUser: IUser,
-        token: string,
-        requestObject: Test;
+      let role, currentUser, anotherUser, token, requestObject;
 
       beforeEach(async () => {
         role = await createRole({
@@ -116,12 +112,12 @@ describe('graphQL getUser query', () => {
         const expectedResponsePayload = {
           data: {
             getUser: {
-              createdAt: (anotherUser.createdAt as Date).getTime().toString(),
+              createdAt: anotherUser.createdAt.getTime().toString(),
               email: anotherUser.email,
               fullName: anotherUser.fullName,
               id: anotherUser.id,
               role: { id: role.id, name: role.name },
-              updatedAt: (anotherUser.updatedAt as Date).getTime().toString(),
+              updatedAt: anotherUser.updatedAt.getTime().toString(),
             },
           },
         };
