@@ -1,6 +1,8 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-headers';
 import auth from './auth';
+import actions from './actions';
+import dynamicData from './dynamic-data';
 
 export default defineApp({
   name: 'Zendesk',
@@ -13,4 +15,6 @@ export default defineApp({
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,
+  actions,
+  dynamicData,
 });
