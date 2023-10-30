@@ -442,7 +442,10 @@ export default defineConfig({
           text: 'Zendesk',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/zendesk/connection' }],
+          items: [
+            { text: 'Actions', link: '/apps/zendesk/actions' },
+            { text: 'Connection', link: '/apps/zendesk/connection' },
+          ],
         },
       ],
       '/': [
