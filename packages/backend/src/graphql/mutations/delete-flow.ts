@@ -25,9 +25,9 @@ const deleteFlow = async (
     .throwIfNotFound();
 
   const triggerStep = await flow.getTriggerStep();
-  const trigger = await triggerStep.getTriggerCommand();
+  const trigger = await triggerStep?.getTriggerCommand();
 
-  if (trigger.type === 'webhook' && trigger?.unregisterHook) {
+  if (trigger?.type === 'webhook' && trigger.unregisterHook) {
     const $ = await globalVariable({
       flow,
       connection: await triggerStep.$relatedQuery('connection'),
