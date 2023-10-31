@@ -1,22 +1,22 @@
+// @ts-nocheck
 import request from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
 import { createRole } from '../../../test/factories/role';
 import { createPermission } from '../../../test/factories/permission';
 import { createUser } from '../../../test/factories/user';
-import { IRole, IUser } from '@automatisch/types';
 import * as license from '../../helpers/license.ee';
 
 describe('graphQL getRoles query', () => {
-  let currentUserRole: IRole,
-    roleOne: IRole,
-    roleSecond: IRole,
-    query: string,
-    userWithPermissions: IUser,
-    userWithoutPermissions: IUser,
-    tokenWithPermissions: string,
-    tokenWithoutPermissions: string,
-    invalidToken: string;
+  let currentUserRole,
+    roleOne,
+    roleSecond,
+    query,
+    userWithPermissions,
+    userWithoutPermissions,
+    tokenWithPermissions,
+    tokenWithoutPermissions,
+    invalidToken;
 
   beforeEach(async () => {
     currentUserRole = await createRole({ name: 'Current user role' });

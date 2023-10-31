@@ -1,8 +1,8 @@
+// @ts-nocheck
 import request from 'supertest';
 import app from '../../app';
 import appConfig from '../../config/app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
-import { IJSONObject } from '@automatisch/types';
 import { createRole } from '../../../test/factories/role';
 import { createPermission } from '../../../test/factories/permission';
 import { createUser } from '../../../test/factories/user';
@@ -10,7 +10,6 @@ import { createFlow } from '../../../test/factories/flow';
 import { createStep } from '../../../test/factories/step';
 import { createExecution } from '../../../test/factories/execution';
 import { createExecutionStep } from '../../../test/factories/execution-step';
-import { IRole, IUser, IExecution, IFlow, IStep } from '@automatisch/types';
 
 describe('graphQL getExecutions query', () => {
   const query = `
@@ -74,25 +73,25 @@ describe('graphQL getExecutions query', () => {
     });
 
     describe('and with correct permission', () => {
-      let role: IRole,
-        currentUser: IUser,
-        anotherUser: IUser,
-        token: string,
-        flowOne: IFlow,
-        stepOneForFlowOne: IStep,
-        stepTwoForFlowOne: IStep,
-        executionOne: IExecution,
-        flowTwo: IFlow,
-        stepOneForFlowTwo: IStep,
-        stepTwoForFlowTwo: IStep,
-        executionTwo: IExecution,
-        flowThree: IFlow,
-        stepOneForFlowThree: IStep,
-        stepTwoForFlowThree: IStep,
-        executionThree: IExecution,
-        expectedResponseForExecutionOne: IJSONObject,
-        expectedResponseForExecutionTwo: IJSONObject,
-        expectedResponseForExecutionThree: IJSONObject;
+      let role,
+        currentUser,
+        anotherUser,
+        token,
+        flowOne,
+        stepOneForFlowOne,
+        stepTwoForFlowOne,
+        executionOne,
+        flowTwo,
+        stepOneForFlowTwo,
+        stepTwoForFlowTwo,
+        executionTwo,
+        flowThree,
+        stepOneForFlowThree,
+        stepTwoForFlowThree,
+        executionThree,
+        expectedResponseForExecutionOne,
+        expectedResponseForExecutionTwo,
+        expectedResponseForExecutionThree;
 
       beforeEach(async () => {
         role = await createRole({
@@ -195,7 +194,7 @@ describe('graphQL getExecutions query', () => {
 
         expectedResponseForExecutionOne = {
           node: {
-            createdAt: (executionOne.createdAt as Date).getTime().toString(),
+            createdAt: executionOne.createdAt.getTime().toString(),
             flow: {
               active: flowOne.active,
               id: flowOne.id,
@@ -212,13 +211,13 @@ describe('graphQL getExecutions query', () => {
             id: executionOne.id,
             status: 'success',
             testRun: executionOne.testRun,
-            updatedAt: (executionOne.updatedAt as Date).getTime().toString(),
+            updatedAt: executionOne.updatedAt.getTime().toString(),
           },
         };
 
         expectedResponseForExecutionTwo = {
           node: {
-            createdAt: (executionTwo.createdAt as Date).getTime().toString(),
+            createdAt: executionTwo.createdAt.getTime().toString(),
             flow: {
               active: flowTwo.active,
               id: flowTwo.id,
@@ -235,13 +234,13 @@ describe('graphQL getExecutions query', () => {
             id: executionTwo.id,
             status: 'failure',
             testRun: executionTwo.testRun,
-            updatedAt: (executionTwo.updatedAt as Date).getTime().toString(),
+            updatedAt: executionTwo.updatedAt.getTime().toString(),
           },
         };
 
         expectedResponseForExecutionThree = {
           node: {
-            createdAt: (executionThree.createdAt as Date).getTime().toString(),
+            createdAt: executionThree.createdAt.getTime().toString(),
             flow: {
               active: flowThree.active,
               id: flowThree.id,
@@ -258,7 +257,7 @@ describe('graphQL getExecutions query', () => {
             id: executionThree.id,
             status: 'failure',
             testRun: executionThree.testRun,
-            updatedAt: (executionThree.updatedAt as Date).getTime().toString(),
+            updatedAt: executionThree.updatedAt.getTime().toString(),
           },
         };
       });
@@ -435,13 +434,9 @@ describe('graphQL getExecutions query', () => {
         });
 
         it('should return only executions data within date range', async () => {
-          const createdAtFrom = (executionOne.createdAt as Date)
-            .getTime()
-            .toString();
+          const createdAtFrom = executionOne.createdAt.getTime().toString();
 
-          const createdAtTo = (executionOne.createdAt as Date)
-            .getTime()
-            .toString();
+          const createdAtTo = executionOne.createdAt.getTime().toString();
 
           const query = `
             query {
