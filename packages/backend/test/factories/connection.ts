@@ -10,6 +10,8 @@ export const createConnection = async (params: Partial<Connection> = {}) => {
     authenticationKey: 'test key',
   };
 
+  delete params.formattedData;
+
   params.data = AES.encrypt(
     JSON.stringify(formattedData),
     appConfig.encryptionKey
