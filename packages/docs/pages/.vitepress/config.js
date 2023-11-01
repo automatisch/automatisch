@@ -393,6 +393,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Twitch',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/twitch/connection' }],
+        },
+        {
           text: 'Twitter',
           collapsible: true,
           collapsed: true,
