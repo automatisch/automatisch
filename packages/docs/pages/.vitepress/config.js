@@ -99,7 +99,10 @@ export default defineConfig({
           text: 'Ghost',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/ghost/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/ghost/triggers' },
+            { text: 'Connection', link: '/apps/ghost/connection' },
+          ],
         },
         {
           text: 'GitHub',
