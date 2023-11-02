@@ -54,7 +54,7 @@ test.describe('Apps page', () => {
       test.setTimeout(60000);
 
       await applicationsPage.page.getByTestId('app-list-item').first().click();
-      await expect(applicationsPage.page).toHaveURL('/app/deepl/connections/add?shared=false');
+      await expect(applicationsPage.page).toHaveURL('/app/carbone/connections/add?shared=false');
       await expect(applicationsPage.page.getByTestId('add-app-connection-dialog')).toBeVisible();
 
       await applicationsPage.clickAway();
@@ -64,10 +64,10 @@ test.describe('Apps page', () => {
       applicationsPage,
     }) => {
       await applicationsPage.page.getByTestId('app-list-item').first().click();
-      await expect(applicationsPage.page).toHaveURL('/app/deepl/connections/add?shared=false');
+      await expect(applicationsPage.page).toHaveURL('/app/carbone/connections/add?shared=false');
       await expect(applicationsPage.page.getByTestId('add-app-connection-dialog')).toBeVisible();
       await applicationsPage.clickAway();
-      await expect(applicationsPage.page).toHaveURL('/app/deepl/connections');
+      await expect(applicationsPage.page).toHaveURL('/app/carbone/connections');
       await expect(applicationsPage.page.getByTestId('add-app-connection-dialog')).toBeHidden();
     });
   });
