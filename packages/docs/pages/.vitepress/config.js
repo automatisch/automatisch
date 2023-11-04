@@ -272,6 +272,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Removebg',
+          collapsible: true,
+          collapsed: true,
+          items: [{text: 'Connection', link: '/apps/removepg/connection'}]
+        },
+        {
           text: 'RSS',
           collapsible: true,
           collapsed: true,
