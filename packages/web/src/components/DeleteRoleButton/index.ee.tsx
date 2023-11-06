@@ -48,6 +48,7 @@ export default function DeleteRoleButton(props: DeleteRoleButtonProps) {
             disabled={!allowed || disabled}
             onClick={() => setShowConfirmation(true)}
             size="small"
+            data-test="role-delete"
           >
             <DeleteIcon />
           </IconButton>
@@ -62,6 +63,7 @@ export default function DeleteRoleButton(props: DeleteRoleButtonProps) {
         onConfirm={handleConfirm}
         cancelButtonChildren={formatMessage('deleteRoleButton.cancel')}
         confirmButtionChildren={formatMessage('deleteRoleButton.confirm')}
+        data-test="delete-role-modal"
       />
     </>
   );

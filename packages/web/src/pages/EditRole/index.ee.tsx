@@ -92,6 +92,7 @@ export default function EditRole(): React.ReactElement {
                     required={true}
                     name="name"
                     label={formatMessage('roleForm.name')}
+                    data-test="name-input"
                     fullWidth
                   />
 
@@ -99,6 +100,7 @@ export default function EditRole(): React.ReactElement {
                     disabled={role.isAdmin}
                     name="description"
                     label={formatMessage('roleForm.description')}
+                    data-test="description-input"
                     fullWidth
                   />
                 </>
@@ -116,6 +118,7 @@ export default function EditRole(): React.ReactElement {
                 sx={{ boxShadow: 2 }}
                 loading={loading}
                 disabled={role?.isAdmin || roleLoading}
+                data-test="update-button"
               >
                 {formatMessage('editRole.submit')}
               </LoadingButton>

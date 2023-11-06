@@ -5,6 +5,7 @@ import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 type ControlledCheckboxProps = {
   name: string;
   defaultValue?: boolean;
+  dataTest?: string;
 } & Omit<CheckboxProps, 'defaultValue'>;
 
 export default function ControlledCheckbox(
@@ -18,6 +19,7 @@ export default function ControlledCheckbox(
     disabled = false,
     onBlur,
     onChange,
+    dataTest,
     ...checkboxProps
   } = props;
 
@@ -53,6 +55,7 @@ export default function ControlledCheckbox(
               onBlur?.(...args);
             }}
             inputRef={ref}
+            data-test={dataTest}
           />
         );
       }}
