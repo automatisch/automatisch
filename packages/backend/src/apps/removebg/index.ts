@@ -2,10 +2,8 @@ import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
 
-
-
 export default defineApp({
-  name: 'Removebg',
+  name: 'Remove.bg',
   key: 'removebg',
   iconUrl: '{BASE_URL}/apps/removebg/assets/favicon.svg',
   authDocUrl: 'https://automatisch.io/docs/apps/removebg/connection',
