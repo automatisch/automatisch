@@ -1,4 +1,5 @@
 import App from '../../models/app';
+import Flow from '../../models/flow';
 import Context from '../../types/express/context';
 
 type Params = {
@@ -22,7 +23,10 @@ const createStep = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('update', 'Flow');
+  const conditions = context.currentUser.can('update', 'Flow');
+  const userFlows = context.currentUser.$relatedQuery('flows');
+  const allFlows = Flow.query();
+  const flowsQuery = conditions.isCreator ? userFlows : allFlows;
 
   const { input } = params;
 
@@ -34,8 +38,7 @@ const createStep = async (
     await App.findOneByKey(input.appKey);
   }
 
-  const flow = await context.currentUser
-    .$relatedQuery('flows')
+  const flow = await flowsQuery
     .findOne({
       id: input.flow.id,
     })
