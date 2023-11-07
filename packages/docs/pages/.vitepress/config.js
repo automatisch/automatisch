@@ -33,6 +33,12 @@ export default defineConfig({
     sidebar: {
       '/apps/': [
         {
+          text: 'Carbone',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/carbone/connection' }],
+        },
+        {
           text: 'DeepL',
           collapsible: true,
           collapsed: true,
