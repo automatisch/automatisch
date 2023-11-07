@@ -2,6 +2,7 @@
 
 The following integrations are currently supported by Automatisch.
 
+- [Carbone](/apps/carbone/connection)
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
 - [Discord](/apps/discord/actions)
