@@ -17,6 +17,7 @@ export default defineAction({
       key: 'parentPageId',
       type: 'dropdown' as const,
       required: true,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',
