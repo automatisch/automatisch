@@ -2,6 +2,7 @@ import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-header';
 import setBaseUrl from './common/set-base-url';
 import auth from './auth';
+import triggers from './triggers';
 
 export default defineApp({
   name: 'Ghost',
@@ -14,4 +15,5 @@ export default defineApp({
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
+  triggers,
 });

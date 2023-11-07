@@ -9,6 +9,7 @@ The following integrations are currently supported by Automatisch.
 - [Filter](/apps/filter/actions)
 - [Flickr](/apps/flickr/triggers)
 - [Formatter](/apps/formatter/actions)
+- [Ghost](/apps/ghost/triggers)
 - [GitHub](/apps/github/triggers)
 - [GitLab](/apps/gitlab/triggers)
 - [Google Calendar](/apps/google-calendar/triggers)
