@@ -26,7 +26,7 @@ export default defineConfig({
       },
       {
         text: 'Apps',
-        link: '/apps/deepl/actions',
+        link: '/apps/carbone/connection',
         activeMatch: '/apps/',
       },
     ],
