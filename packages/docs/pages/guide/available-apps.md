@@ -28,6 +28,7 @@ The following integrations are currently supported by Automatisch.
 - [Placetel](/apps/placetel/triggers)
 - [PostgreSQL](/apps/postgresql/actions)
 - [Pushover](/apps/pushover/actions)
+- [Remove.bg](/apps/removebg/actions)
 - [RSS](/apps/rss/triggers)
 - [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)
