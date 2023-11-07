@@ -96,6 +96,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Ghost',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/ghost/connection' }],
+        },
+        {
           text: 'GitHub',
           collapsible: true,
           collapsed: true,
