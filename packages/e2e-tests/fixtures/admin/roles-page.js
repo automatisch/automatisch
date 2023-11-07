@@ -1,5 +1,5 @@
 const { AuthenticatedPage } = require('../authenticated-page');
-const { DeleteRoleModal } = require('./delete-role-modal')
+const { DeleteRoleModal } = require('./delete-role-modal');
 
 export class AdminRolesPage extends AuthenticatedPage {
   screenshotPath = '/admin-roles';
@@ -7,7 +7,7 @@ export class AdminRolesPage extends AuthenticatedPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
-  constructor (page) {
+  constructor(page) {
     super(page);
     this.roleDrawerLink = page.getByTestId('roles-drawer-link');
     this.createRoleButton = page.getByTestId('create-role');
@@ -17,62 +17,64 @@ export class AdminRolesPage extends AuthenticatedPage {
   }
 
   /**
-   * 
+   *
    * @param {boolean} isMobile - navigation on smaller devices requires the
-   * user to open up the drawer menu 
+   * user to open up the drawer menu
    */
-  async navigateTo (isMobile=false) {
+  async navigateTo(isMobile = false) {
     await this.profileMenuButton.click();
     await this.adminMenuItem.click();
     if (isMobile) {
       await this.drawerMenuButton.click();
     }
     await this.roleDrawerLink.click();
-  }
-
-  /**
-   * @param {string} name 
-   */
-  async getRoleRowByName (name) {
-    return this.roleRow.filter({
-      has: this.page.getByTestId('role-name').filter({
-        hasText: name
-      })
+    await this.rolesLoader.waitFor({
+      state: 'detached',
     });
   }
 
   /**
-   * @param {import('@playwright/test').Locator} row 
+   * @param {string} name
    */
-  async getRowData (row) {
-    return {
-      role: await row.getByTestId('role-name').textContent(),
-      description: await row.getByTestId('role-description').textContent(),
-      canEdit: await row.getByTestId(
-          'role-edit'
-        ).isEnabled(),
-      canDelete: await row.getByTestId(
-          'role-delete'
-        ).isEnabled()
-    }
+  async getRoleRowByName(name) {
+    await this.rolesLoader.waitFor({
+      state: 'detached',
+    });
+    return this.roleRow.filter({
+      has: this.page.getByTestId('role-name').filter({
+        hasText: name,
+      }),
+    });
   }
 
   /**
-   * @param {import('@playwright/test').Locator} row 
+   * @param {import('@playwright/test').Locator} row
    */
-  async clickEditRole (row) {
+  async getRowData(row) {
+    return {
+      role: await row.getByTestId('role-name').textContent(),
+      description: await row.getByTestId('role-description').textContent(),
+      canEdit: await row.getByTestId('role-edit').isEnabled(),
+      canDelete: await row.getByTestId('role-delete').isEnabled(),
+    };
+  }
+
+  /**
+   * @param {import('@playwright/test').Locator} row
+   */
+  async clickEditRole(row) {
     await row.getByTestId('role-edit').click();
   }
 
   /**
-   * @param {import('@playwright/test').Locator} row 
+   * @param {import('@playwright/test').Locator} row
    */
-  async clickDeleteRole (row) {
+  async clickDeleteRole(row) {
     await row.getByTestId('role-delete').click();
     return this.deleteRoleModal;
   }
 
-  async editRole (subject) {
+  async editRole(subject) {
     const row = await this.getRoleRowByName(subject);
     await this.clickEditRole(row);
   }

@@ -2,7 +2,7 @@ const { test, expect } = require('../../fixtures/index');
 const { LoginPage } = require('../../fixtures/login-page');
 
 test.describe('Role management page', () => {
-  test.skip('Admin role is not deletable', async ({ adminRolesPage }) => {
+  test('Admin role is not deletable', async ({ adminRolesPage }) => {
     await adminRolesPage.navigateTo();
     const adminRow = await adminRolesPage.getRoleRowByName('Admin');
     const rowCount = await adminRow.count();
