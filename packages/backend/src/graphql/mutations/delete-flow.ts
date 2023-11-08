@@ -1,4 +1,5 @@
 import Context from '../../types/express/context';
+import Flow from '../../models/flow';
 import Execution from '../../models/execution';
 import ExecutionStep from '../../models/execution-step';
 import globalVariable from '../../helpers/global-variable';
@@ -15,10 +16,13 @@ const deleteFlow = async (
   params: Params,
   context: Context
 ) => {
-  context.currentUser.can('delete', 'Flow');
+  const conditions = context.currentUser.can('delete', 'Flow');
+  const isCreator = conditions.isCreator;
+  const allFlows = Flow.query();
+  const userFlows = context.currentUser.$relatedQuery('flows');
+  const baseQuery = isCreator ? userFlows : allFlows;
 
-  const flow = await context.currentUser
-    .$relatedQuery('flows')
+  const flow = await baseQuery
     .findOne({
       id: params.input.id,
     })
