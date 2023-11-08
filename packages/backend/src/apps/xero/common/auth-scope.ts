@@ -4,6 +4,7 @@ const authScope: string[] = [
   'profile',
   'email',
   'accounting.transactions',
+  'accounting.settings',
 ];
 
 export default authScope;
