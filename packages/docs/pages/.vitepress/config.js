@@ -36,7 +36,10 @@ export default defineConfig({
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/carbone/connection' }],
+          items: [
+            { text: 'Actions', link: '/apps/carbone/actions' },
+            { text: 'Connection', link: '/apps/carbone/connection' },
+          ],
         },
         {
           text: 'DeepL',
