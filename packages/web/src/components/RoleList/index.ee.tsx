@@ -49,21 +49,29 @@ export default function RoleList(): React.ReactElement {
           </TableRow>
         </TableHead>
         <TableBody>
-          {loading && <ListLoader rowsNumber={3} columnsNumber={2} />}
+          {loading && <ListLoader
+            rowsNumber={3}
+            columnsNumber={2}
+            data-test="roles-list-loader" />}
           {!loading &&
             roles.map((role) => (
               <TableRow
                 key={role.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                data-test="role-row"
               >
                 <TableCell scope="row">
-                  <Typography variant="subtitle2">{role.name}</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    data-test="role-name"
+                  >{role.name}</Typography>
                 </TableCell>
 
                 <TableCell scope="row">
-                  <Typography variant="subtitle2">
-                    {role.description}
-                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    data-test="role-description"
+                  >{role.description}</Typography>
                 </TableCell>
 
                 <TableCell>
@@ -72,6 +80,7 @@ export default function RoleList(): React.ReactElement {
                       size="small"
                       component={Link}
                       to={URLS.ROLE(role.id)}
+                      data-test="role-edit"
                     >
                       <EditIcon />
                     </IconButton>
@@ -79,6 +88,7 @@ export default function RoleList(): React.ReactElement {
                     <DeleteRoleButton
                       disabled={role.isAdmin}
                       roleId={role.id}
+                      data-test="role-delete"
                     />
                   </Stack>
                 </TableCell>

@@ -66,10 +66,15 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
   };
 
   return (
-    <Dialog open onClose={cancel} sx={{ display: open ? 'block' : 'none' }}>
+    <Dialog
+      open
+      onClose={cancel}
+      sx={{ display: open ? 'block' : 'none' }}
+      data-test={`${subject}-role-conditions-modal`}
+    >
       <DialogTitle>{formatMessage('permissionSettings.title')}</DialogTitle>
 
-      <DialogContent>
+      <DialogContent data-test="role-conditions-modal-body">
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -113,6 +118,7 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
                         {action.subjects.includes(subject) && (
                           <ControlledCheckbox
                             name={`${fieldPrefix}.${action.key}.conditions.${condition.key}`}
+                            dataTest={`${condition.key}-${action.key.toLowerCase()}-checkbox`}
                             defaultValue={defaultChecked}
                             disabled={
                               getValues(
