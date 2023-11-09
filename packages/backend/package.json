@@ -1,6 +1,6 @@
 {
   "name": "@automatisch/backend",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "license": "See LICENSE file",
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "scripts": {
@@ -23,7 +23,7 @@
     "prebuild": "rm -rf ./dist"
   },
   "dependencies": {
-    "@automatisch/web": "^0.9.3",
+    "@automatisch/web": "^0.10.0",
     "@bull-board/express": "^3.10.1",
     "@casl/ability": "^6.5.0",
     "@graphql-tools/graphql-file-loader": "^7.3.4",
@@ -116,7 +116,7 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
-    "@automatisch/types": "^0.9.3",
+    "@automatisch/types": "^0.10.0",
     "@faker-js/faker": "^8.1.0",
     "@types/bcrypt": "^5.0.0",
     "@types/bull": "^3.15.8",
