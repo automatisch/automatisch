@@ -462,6 +462,7 @@ type AppAuthClient = {
   appConfigId: string;
   authDefaults: string;
   formattedAuthDefaults: IJSONObject;
+  active: boolean;
 };
 
 type Notification = {

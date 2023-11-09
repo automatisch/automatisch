@@ -107,6 +107,10 @@ export const ADMIN_APP_SETTINGS = (appKey: string) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/settings`;
 export const ADMIN_APP_AUTH_CLIENTS = (appKey: string) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients`;
+export const ADMIN_APP_AUTH_CLIENT = (appKey: string, id: string) =>
+  `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients/${id}`;
+export const ADMIN_APP_AUTH_CLIENTS_CREATE = (appKey: string) =>
+  `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients/create`;
 
 export const DASHBOARD = FLOWS;
 

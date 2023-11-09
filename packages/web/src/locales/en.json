@@ -256,5 +256,14 @@
   "adminAppsSettings.shared": "Shared",
   "adminAppsSettings.disabled": "Disabled",
   "adminAppsSettings.save": "Save",
-  "adminAppsSettings.successfullySaved": "Settings have been saved."
+  "adminAppsSettings.successfullySaved": "Settings have been saved.",
+  "adminAppsAuthClients.noAuthClients": "You don't have any auth clients yet.",
+  "adminAppsAuthClients.statusActive": "Active",
+  "adminAppsAuthClients.statusInactive": "Inactive",
+  "createAuthClient.button": "Create auth client",
+  "createAuthClient.title": "Create auth client",
+  "authClient.buttonSubmit": "Submit",
+  "authClient.inputName": "Name",
+  "authClient.inputActive": "Active",
+  "updateAuthClient.title": "Update auth client"
 }
