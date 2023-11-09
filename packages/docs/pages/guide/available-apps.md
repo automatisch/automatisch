@@ -48,5 +48,6 @@ The following integrations are currently supported by Automatisch.
 - [Typeform](/apps/typeform/triggers)
 - [Webhooks](/apps/webhooks/triggers)
 - [WordPress](/apps/wordpress/triggers)
+- [Xero](/apps/xero/triggers)
 - [Youtube](/apps/youtube/triggers)
 - [Zendesk](/apps/zendesk/actions)

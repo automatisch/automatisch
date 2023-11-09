@@ -454,6 +454,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Xero',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/xero/triggers' },
+            { text: 'Connection', link: '/apps/xero/connection' },
+          ],
+        },
+        {
           text: 'Youtube',
           collapsible: true,
           collapsed: true,
