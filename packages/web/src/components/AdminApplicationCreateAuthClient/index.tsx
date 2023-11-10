@@ -22,19 +22,21 @@ export default function AdminApplicationCreateAuthClient(
   const { appKey, application, onClose } = props;
   const { auth } = application;
   const formatMessage = useFormatMessage();
-  const [inProgress, setInProgress] = React.useState(false);
   const [error, setError] = React.useState<IJSONObject | null>(null);
   const { appConfig, loading: loadingAppConfig } = useAppConfig(appKey);
-  const [createAppConfig] = useMutation(CREATE_APP_CONFIG, {
-    refetchQueries: ['GetAppConfig'],
-  });
-  const [createAppAuthClient] = useMutation(CREATE_APP_AUTH_CLIENT, {
-    refetchQueries: ['GetAppAuthClients'],
-  });
+  const [createAppConfig, { loading: loadingCreateAppConfig }] = useMutation(
+    CREATE_APP_CONFIG,
+    {
+      refetchQueries: ['GetAppConfig'],
+    }
+  );
+  const [createAppAuthClient, { loading: loadingCreateAppAuthClient }] =
+    useMutation(CREATE_APP_AUTH_CLIENT, {
+      refetchQueries: ['GetAppAuthClients'],
+    });
 
   const submitHandler: SubmitHandler<FieldValues> = async (values) => {
     try {
-      setInProgress(true);
       let appConfigId = appConfig?.id;
 
       if (!appConfigId) {
@@ -68,8 +70,6 @@ export default function AdminApplicationCreateAuthClient(
     } catch (err) {
       const error = err as IJSONObject;
       setError((error.graphQLErrors as IJSONObject[])?.[0]);
-    } finally {
-      setInProgress(false);
     }
   };
 
@@ -107,7 +107,7 @@ export default function AdminApplicationCreateAuthClient(
       loading={loadingAppConfig}
       submitHandler={submitHandler}
       authFields={auth?.fields}
-      inProgress={inProgress}
+      submitting={loadingCreateAppConfig || loadingCreateAppAuthClient}
       defaultValues={defaultValues}
     />
   );

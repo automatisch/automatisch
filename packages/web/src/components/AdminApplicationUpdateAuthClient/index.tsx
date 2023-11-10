@@ -25,22 +25,21 @@ export default function AdminApplicationUpdateAuthClient(
   }));
 
   const formatMessage = useFormatMessage();
-  const [inProgress, setInProgress] = React.useState(false);
   const [error, setError] = React.useState<IJSONObject | null>(null);
 
   const { clientId } = useParams();
   const { appAuthClient, loading: loadingAuthClient } =
     useAppAuthClient(clientId);
-  const [updateAppAuthClient] = useMutation(UPDATE_APP_AUTH_CLIENT, {
-    refetchQueries: ['GetAppAuthClients'],
-  });
+  const [updateAppAuthClient, { loading: loadingUpdateAppAuthClient }] =
+    useMutation(UPDATE_APP_AUTH_CLIENT, {
+      refetchQueries: ['GetAppAuthClients'],
+    });
 
   const submitHandler: SubmitHandler<FieldValues> = async (values) => {
     if (!appAuthClient) {
       return;
     }
     try {
-      setInProgress(true);
       const { name, active, ...formattedAuthDefaults } = values;
       await updateAppAuthClient({
         variables: {
@@ -56,8 +55,6 @@ export default function AdminApplicationUpdateAuthClient(
     } catch (err) {
       const error = err as IJSONObject;
       setError((error.graphQLErrors as IJSONObject[])?.[0]);
-    } finally {
-      setInProgress(false);
     }
   };
 
@@ -95,7 +92,7 @@ export default function AdminApplicationUpdateAuthClient(
       loading={loadingAuthClient}
       submitHandler={submitHandler}
       authFields={authFields}
-      inProgress={inProgress}
+      submitting={loadingUpdateAppAuthClient}
       defaultValues={defaultValues}
       disabled={!appAuthClient}
     />

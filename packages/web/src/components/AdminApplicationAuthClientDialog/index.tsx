@@ -22,7 +22,7 @@ type AdminApplicationAuthClientDialogProps = {
   authFields?: IField[];
   defaultValues: UseFormProps['defaultValues'];
   loading: boolean;
-  inProgress: boolean;
+  submitting: boolean;
   disabled?: boolean;
   error: IJSONObject | null;
   submitHandler: SubmitHandler<FieldValues>;
@@ -39,7 +39,7 @@ export default function AdminApplicationAuthClientDialog(
     loading,
     submitHandler,
     authFields,
-    inProgress,
+    submitting,
     defaultValues,
     disabled = false,
   } = props;
@@ -92,7 +92,7 @@ export default function AdminApplicationAuthClientDialog(
                     variant="contained"
                     color="primary"
                     sx={{ boxShadow: 2 }}
-                    loading={inProgress}
+                    loading={submitting}
                     disabled={disabled || !isDirty}
                   >
                     {formatMessage('authClient.buttonSubmit')}
