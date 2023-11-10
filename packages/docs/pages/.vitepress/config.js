@@ -293,7 +293,10 @@ export default defineConfig({
           text: 'Reddit',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/reddit/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/reddit/triggers' },
+            { text: 'Connection', link: '/apps/reddit/connection' },
+          ],
         },
         {
           text: 'Remove.bg',
