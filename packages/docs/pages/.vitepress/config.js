@@ -295,6 +295,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/reddit/triggers' },
+            { text: 'Actions', link: '/apps/reddit/actions' },
             { text: 'Connection', link: '/apps/reddit/connection' },
           ],
         },
