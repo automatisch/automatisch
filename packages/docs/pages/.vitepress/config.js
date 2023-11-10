@@ -290,6 +290,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Reddit',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/reddit/connection' }],
+        },
+        {
           text: 'Remove.bg',
           collapsible: true,
           collapsed: true,
@@ -451,6 +457,15 @@ export default defineConfig({
           items: [
             { text: 'Triggers', link: '/apps/wordpress/triggers' },
             { text: 'Connection', link: '/apps/wordpress/connection' },
+          ],
+        },
+        {
+          text: 'Xero',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/xero/triggers' },
+            { text: 'Connection', link: '/apps/xero/connection' },
           ],
         },
         {
