@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import type { IApp, IJSONObject } from '@automatisch/types';
+import type { IApp } from '@automatisch/types';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { CREATE_APP_CONFIG } from 'graphql/mutations/create-app-config';
@@ -22,55 +22,53 @@ export default function AdminApplicationCreateAuthClient(
   const { appKey, application, onClose } = props;
   const { auth } = application;
   const formatMessage = useFormatMessage();
-  const [error, setError] = React.useState<IJSONObject | null>(null);
   const { appConfig, loading: loadingAppConfig } = useAppConfig(appKey);
-  const [createAppConfig, { loading: loadingCreateAppConfig }] = useMutation(
-    CREATE_APP_CONFIG,
-    {
-      refetchQueries: ['GetAppConfig'],
-    }
-  );
-  const [createAppAuthClient, { loading: loadingCreateAppAuthClient }] =
-    useMutation(CREATE_APP_AUTH_CLIENT, {
-      refetchQueries: ['GetAppAuthClients'],
-    });
+  const [
+    createAppConfig,
+    { loading: loadingCreateAppConfig, error: createAppConfigError },
+  ] = useMutation(CREATE_APP_CONFIG, {
+    refetchQueries: ['GetAppConfig'],
+    context: { autoSnackbar: false },
+  });
+  const [
+    createAppAuthClient,
+    { loading: loadingCreateAppAuthClient, error: createAppAuthClientError },
+  ] = useMutation(CREATE_APP_AUTH_CLIENT, {
+    refetchQueries: ['GetAppAuthClients'],
+    context: { autoSnackbar: false },
+  });
 
   const submitHandler: SubmitHandler<FieldValues> = async (values) => {
-    try {
-      let appConfigId = appConfig?.id;
+    let appConfigId = appConfig?.id;
 
-      if (!appConfigId) {
-        const { data: appConfigData } = await createAppConfig({
-          variables: {
-            input: {
-              key: appKey,
-              allowCustomConnection: false,
-              shared: false,
-              disabled: false,
-            },
-          },
-        });
-        appConfigId = appConfigData.createAppConfig.id;
-      }
-
-      const { name, active, ...formattedAuthDefaults } = values;
-
-      await createAppAuthClient({
+    if (!appConfigId) {
+      const { data: appConfigData } = await createAppConfig({
         variables: {
           input: {
-            appConfigId,
-            name,
-            active,
-            formattedAuthDefaults,
+            key: appKey,
+            allowCustomConnection: false,
+            shared: false,
+            disabled: false,
           },
         },
       });
-
-      onClose();
-    } catch (err) {
-      const error = err as IJSONObject;
-      setError((error.graphQLErrors as IJSONObject[])?.[0]);
+      appConfigId = appConfigData.createAppConfig.id;
     }
+
+    const { name, active, ...formattedAuthDefaults } = values;
+
+    await createAppAuthClient({
+      variables: {
+        input: {
+          appConfigId,
+          name,
+          active,
+          formattedAuthDefaults,
+        },
+      },
+    });
+
+    onClose();
   };
 
   const getAuthFieldsDefaultValues = useCallback(() => {
@@ -102,7 +100,7 @@ export default function AdminApplicationCreateAuthClient(
   return (
     <AdminApplicationAuthClientDialog
       onClose={onClose}
-      error={error}
+      error={createAppConfigError || createAppAuthClientError}
       title={formatMessage('createAuthClient.title')}
       loading={loadingAppConfig}
       submitHandler={submitHandler}

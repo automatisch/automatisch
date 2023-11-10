@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import type { IApp, IJSONObject } from '@automatisch/types';
+import type { IApp } from '@automatisch/types';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { UPDATE_APP_AUTH_CLIENT } from 'graphql/mutations/update-app-auth-client';
@@ -25,37 +25,32 @@ export default function AdminApplicationUpdateAuthClient(
   }));
 
   const formatMessage = useFormatMessage();
-  const [error, setError] = React.useState<IJSONObject | null>(null);
 
   const { clientId } = useParams();
   const { appAuthClient, loading: loadingAuthClient } =
     useAppAuthClient(clientId);
-  const [updateAppAuthClient, { loading: loadingUpdateAppAuthClient }] =
+  const [updateAppAuthClient, { loading: loadingUpdateAppAuthClient, error }] =
     useMutation(UPDATE_APP_AUTH_CLIENT, {
       refetchQueries: ['GetAppAuthClients'],
+      context: { autoSnackbar: false },
     });
 
   const submitHandler: SubmitHandler<FieldValues> = async (values) => {
     if (!appAuthClient) {
       return;
     }
-    try {
-      const { name, active, ...formattedAuthDefaults } = values;
-      await updateAppAuthClient({
-        variables: {
-          input: {
-            id: appAuthClient.id,
-            name,
-            active,
-            formattedAuthDefaults,
-          },
+    const { name, active, ...formattedAuthDefaults } = values;
+    await updateAppAuthClient({
+      variables: {
+        input: {
+          id: appAuthClient.id,
+          name,
+          active,
+          formattedAuthDefaults,
         },
-      });
-      onClose();
-    } catch (err) {
-      const error = err as IJSONObject;
-      setError((error.graphQLErrors as IJSONObject[])?.[0]);
-    }
+      },
+    });
+    onClose();
   };
 
   const getAuthFieldsDefaultValues = useCallback(() => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { IJSONObject, IField } from '@automatisch/types';
+import type { IField } from '@automatisch/types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import type { UseFormProps } from 'react-hook-form';
+import type { ApolloError } from '@apollo/client';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import InputCreator from 'components/InputCreator';
@@ -24,7 +25,7 @@ type AdminApplicationAuthClientDialogProps = {
   loading: boolean;
   submitting: boolean;
   disabled?: boolean;
-  error: IJSONObject | null;
+  error?: ApolloError;
   submitHandler: SubmitHandler<FieldValues>;
   onClose: () => void;
 };
@@ -54,11 +55,6 @@ export default function AdminApplicationAuthClientDialog(
           sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
         >
           {error.message}
-          {error.details && (
-            <pre style={{ whiteSpace: 'pre-wrap' }}>
-              {JSON.stringify(error.details, null, 2)}
-            </pre>
-          )}
         </Alert>
       )}
       <DialogContent>
