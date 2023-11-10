@@ -23,7 +23,7 @@ function AdminApplicationAuthClients(
 ): React.ReactElement {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
-  const { appAuthClients, loading } = useAppAuthClients(appKey);
+  const { appAuthClients, loading } = useAppAuthClients({ appKey });
 
   if (loading)
     return <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />;
@@ -37,9 +37,19 @@ function AdminApplicationAuthClients(
     );
   }
 
+  const sortedAuthClients = appAuthClients.slice().sort((a, b) => {
+    if (a.id < b.id) {
+      return -1;
+    }
+    if (a.id > b.id) {
+      return 1;
+    }
+    return 0;
+  });
+
   return (
     <div>
-      {appAuthClients?.map((client) => (
+      {sortedAuthClients.map((client) => (
         <Card sx={{ mb: 1 }} key={client.id}>
           <CardActionArea
             component={Link}

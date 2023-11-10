@@ -17,7 +17,7 @@ type AppAuthClientsDialogProps = {
 
 export default function AppAuthClientsDialog(props: AppAuthClientsDialogProps) {
   const { appKey, onClientClick, onClose } = props;
-  const { appAuthClients } = useAppAuthClients(appKey, true);
+  const { appAuthClients } = useAppAuthClients({ appKey, active: true });
   const formatMessage = useFormatMessage();
 
   React.useEffect(

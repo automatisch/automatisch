@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import type { IApp, IJSONObject } from '@automatisch/types';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
@@ -73,7 +73,7 @@ export default function AdminApplicationCreateAuthClient(
     }
   };
 
-  const getAuthFieldsDefaultValues = () => {
+  const getAuthFieldsDefaultValues = useCallback(() => {
     if (!auth?.fields) {
       return {};
     }
@@ -81,10 +81,23 @@ export default function AdminApplicationCreateAuthClient(
       [key: string]: any;
     } = {};
     auth.fields.forEach((field) => {
-      defaultValues[field.key] = field.value;
+      if (field.value || field.type !== 'string') {
+        defaultValues[field.key] = field.value;
+      } else if (field.type === 'string') {
+        defaultValues[field.key] = '';
+      }
     });
     return defaultValues;
-  };
+  }, [auth?.fields]);
+
+  const defaultValues = useMemo(
+    () => ({
+      name: '',
+      active: false,
+      ...getAuthFieldsDefaultValues(),
+    }),
+    [getAuthFieldsDefaultValues]
+  );
 
   return (
     <AdminApplicationAuthClientDialog
@@ -95,11 +108,7 @@ export default function AdminApplicationCreateAuthClient(
       submitHandler={submitHandler}
       authFields={auth?.fields}
       inProgress={inProgress}
-      defaultValues={{
-        name: '',
-        active: false,
-        ...getAuthFieldsDefaultValues(),
-      }}
+      defaultValues={defaultValues}
     />
   );
 }

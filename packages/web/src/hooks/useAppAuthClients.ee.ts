@@ -8,7 +8,13 @@ type QueryResponse = {
   getAppAuthClients: AppAuthClient[];
 };
 
-export default function useAppAuthClient(appKey: string, active?: boolean) {
+export default function useAppAuthClient({
+  appKey,
+  active,
+}: {
+  appKey: string;
+  active?: boolean;
+}) {
   const [getAppAuthClients, { data, loading }] = useLazyQuery<QueryResponse>(
     GET_APP_AUTH_CLIENTS,
     {

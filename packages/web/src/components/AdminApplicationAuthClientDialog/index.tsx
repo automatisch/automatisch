@@ -69,31 +69,37 @@ export default function AdminApplicationAuthClientDialog(
           />
         ) : (
           <DialogContentText tabIndex={-1} component="div">
-            <Form onSubmit={submitHandler} defaultValues={defaultValues}>
-              <Switch
-                name="active"
-                label={formatMessage('authClient.inputActive')}
-              />
-              <TextField
-                required={true}
-                name="name"
-                label={formatMessage('authClient.inputName')}
-                fullWidth
-              />
-              {authFields?.map((field: IField) => (
-                <InputCreator key={field.key} schema={field} />
-              ))}
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ boxShadow: 2 }}
-                loading={inProgress}
-                disabled={disabled}
-              >
-                {formatMessage('authClient.buttonSubmit')}
-              </LoadingButton>
-            </Form>
+            <Form
+              onSubmit={submitHandler}
+              defaultValues={defaultValues}
+              render={({ formState: { isDirty } }) => (
+                <>
+                  <Switch
+                    name="active"
+                    label={formatMessage('authClient.inputActive')}
+                  />
+                  <TextField
+                    required={true}
+                    name="name"
+                    label={formatMessage('authClient.inputName')}
+                    fullWidth
+                  />
+                  {authFields?.map((field: IField) => (
+                    <InputCreator key={field.key} schema={field} />
+                  ))}
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{ boxShadow: 2 }}
+                    loading={inProgress}
+                    disabled={disabled || !isDirty}
+                  >
+                    {formatMessage('authClient.buttonSubmit')}
+                  </LoadingButton>
+                </>
+              )}
+            ></Form>
           </DialogContentText>
         )}
       </DialogContent>

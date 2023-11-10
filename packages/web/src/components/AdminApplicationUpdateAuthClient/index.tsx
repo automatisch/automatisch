@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import type { IApp, IJSONObject } from '@automatisch/types';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
@@ -19,6 +19,11 @@ export default function AdminApplicationUpdateAuthClient(
 ): React.ReactElement {
   const { application, onClose } = props;
   const { auth } = application;
+  const authFields = auth?.fields?.map((field) => ({
+    ...field,
+    required: false,
+  }));
+
   const formatMessage = useFormatMessage();
   const [inProgress, setInProgress] = React.useState(false);
   const [error, setError] = React.useState<IJSONObject | null>(null);
@@ -47,7 +52,6 @@ export default function AdminApplicationUpdateAuthClient(
           },
         },
       });
-
       onClose();
     } catch (err) {
       const error = err as IJSONObject;
@@ -57,18 +61,31 @@ export default function AdminApplicationUpdateAuthClient(
     }
   };
 
-  const getAuthFieldsDefaultValues = () => {
-    if (!auth?.fields) {
+  const getAuthFieldsDefaultValues = useCallback(() => {
+    if (!authFields) {
       return {};
     }
     const defaultValues: {
       [key: string]: any;
     } = {};
-    auth.fields.forEach((field) => {
-      defaultValues[field.key] = field.value;
+    authFields.forEach((field) => {
+      if (field.value || field.type !== 'string') {
+        defaultValues[field.key] = field.value;
+      } else if (field.type === 'string') {
+        defaultValues[field.key] = '';
+      }
     });
     return defaultValues;
-  };
+  }, [auth?.fields]);
+
+  const defaultValues = useMemo(
+    () => ({
+      name: appAuthClient?.name || '',
+      active: appAuthClient?.active || false,
+      ...getAuthFieldsDefaultValues(),
+    }),
+    [appAuthClient, getAuthFieldsDefaultValues]
+  );
 
   return (
     <AdminApplicationAuthClientDialog
@@ -77,13 +94,9 @@ export default function AdminApplicationUpdateAuthClient(
       title={formatMessage('updateAuthClient.title')}
       loading={loadingAuthClient}
       submitHandler={submitHandler}
-      authFields={auth?.fields}
+      authFields={authFields}
       inProgress={inProgress}
-      defaultValues={{
-        name: appAuthClient?.name || '',
-        active: appAuthClient?.active || false,
-        ...getAuthFieldsDefaultValues(),
-      }}
+      defaultValues={defaultValues}
       disabled={!appAuthClient}
     />
   );
