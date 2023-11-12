@@ -5,12 +5,12 @@ export class LoginPage extends BasePage {
   static defaultEmail = process.env.LOGIN_EMAIL;
   static defaultPassword = process.env.LOGIN_PASSWORD;
 
-  static setDefaultLogin (email, password) {
+  static setDefaultLogin(email, password) {
     this.defaultEmail = email;
     this.defaultPassword = password;
   }
 
-  static resetDefaultLogin () {
+  static resetDefaultLogin() {
     this.defaultEmail = process.env.LOGIN_EMAIL;
     this.defaultPassword = process.env.LOGIN_PASSWORD;
   }
@@ -25,6 +25,7 @@ export class LoginPage extends BasePage {
     this.emailTextField = this.page.getByTestId('email-text-field');
     this.passwordTextField = this.page.getByTestId('password-text-field');
     this.loginButton = this.page.getByTestId('login-button');
+    this.pageTitle = this.page.getByTestId('login-form-title');
   }
 
   async open() {

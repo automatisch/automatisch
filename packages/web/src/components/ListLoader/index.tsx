@@ -11,15 +11,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 type ListLoaderProps = {
   rowsNumber: number;
   columnsNumber: number;
+  'data-test'?: string;
 };
 
-const ListLoader = ({ rowsNumber, columnsNumber }: ListLoaderProps) => {
+const ListLoader = ({
+  rowsNumber,
+  columnsNumber,
+  'data-test': dataTest,
+}: ListLoaderProps) => {
   return (
     <>
       {[...Array(rowsNumber)].map((row, index) => (
         <TableRow
           key={index}
           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          data-test={dataTest && index === 0 ? dataTest : undefined}
         >
           {[...Array(columnsNumber)].map((cell, index) => (
             <TableCell key={index} scope="row">

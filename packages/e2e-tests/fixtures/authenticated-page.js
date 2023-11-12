@@ -12,7 +12,9 @@ export class AuthenticatedPage extends BasePage {
 
     this.profileMenuButton = this.page.getByTestId('profile-menu-button');
     this.adminMenuItem = this.page.getByRole('menuitem', { name: 'Admin' });
-    this.userInterfaceDrawerItem = this.page.getByTestId('user-interface-drawer-link');
+    this.userInterfaceDrawerItem = this.page.getByTestId(
+      'user-interface-drawer-link'
+    );
     this.appBar = this.page.getByTestId('app-bar');
     this.drawerMenuButton = this.page.getByTestId('drawer-menu-button');
     this.goToDashboardButton = this.page.getByTestId('go-back-drawer-link');

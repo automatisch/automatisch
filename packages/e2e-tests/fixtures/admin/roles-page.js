@@ -14,6 +14,7 @@ export class AdminRolesPage extends AuthenticatedPage {
     this.deleteRoleModal = new DeleteRoleModal(page);
     this.roleRow = page.getByTestId('role-row');
     this.rolesLoader = page.getByTestId('roles-list-loader');
+    this.pageTitle = page.getByTestId('roles-page-title');
   }
 
   /**
@@ -28,8 +29,9 @@ export class AdminRolesPage extends AuthenticatedPage {
       await this.drawerMenuButton.click();
     }
     await this.roleDrawerLink.click();
+    await this.isMounted();
     await this.rolesLoader.waitFor({
-      state: 'detached',
+      state: 'detached'
     });
   }
 

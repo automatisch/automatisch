@@ -50,7 +50,7 @@ export default function CreateUser(): React.ReactElement {
         persist: true,
         SnackbarProps: {
           'data-test': 'snackbar-create-user-success',
-        }
+        },
       });
 
       navigate(URLS.USERS);
@@ -63,7 +63,9 @@ export default function CreateUser(): React.ReactElement {
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
         <Grid item xs={12} sx={{ mb: [2, 5] }}>
-          <PageTitle>{formatMessage('createUserPage.title')}</PageTitle>
+          <PageTitle data-test="create-user-title">
+            {formatMessage('createUserPage.title')}
+          </PageTitle>
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>

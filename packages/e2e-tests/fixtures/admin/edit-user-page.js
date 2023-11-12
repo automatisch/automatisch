@@ -15,6 +15,7 @@ export class AdminEditUserPage extends AuthenticatedPage {
     this.emailInput = page.getByTestId('email-input');
     this.roleInput = page.getByTestId('role.id-autocomplete');
     this.updateButton = page.getByTestId('update-button');
+    this.pageTitle = page.getByTestId('edit-user-title');
   }
 
   generateUser () {

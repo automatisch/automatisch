@@ -18,16 +18,12 @@ function RolesPage() {
       <Grid container item xs={12} sm={10} md={9}>
         <Grid container sx={{ mb: [0, 3] }} columnSpacing={1.5} rowSpacing={3}>
           <Grid container item xs sm alignItems="center">
-            <PageTitle>{formatMessage('rolesPage.title')}</PageTitle>
+            <PageTitle data-test="roles-page-title">
+              {formatMessage('rolesPage.title')}
+            </PageTitle>
           </Grid>
 
-          <Grid
-            container
-            item
-            xs="auto"
-            sm="auto"
-            alignItems="center"
-          >
+          <Grid container item xs="auto" sm="auto" alignItems="center">
             <ConditionalIconButton
               type="submit"
               variant="contained"
