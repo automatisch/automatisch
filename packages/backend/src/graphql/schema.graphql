@@ -53,6 +53,7 @@ type Query {
   getNotifications: [Notification]
   getSamlAuthProvider: SamlAuthProvider
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
+  getSharedConnectionRoleIds(id: String!): [String]
   getSubscriptionStatus: GetSubscriptionStatus
   getTrialStatus: GetTrialStatus
   getUser(id: String!): User
