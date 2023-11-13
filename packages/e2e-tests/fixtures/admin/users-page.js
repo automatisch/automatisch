@@ -10,7 +10,7 @@ export class AdminUsersPage extends AuthenticatedPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
-  constructor (page) {
+  constructor(page) {
     super(page);
     this.createUserButton = page.getByTestId('create-user');
     this.userRow = page.getByTestId('user-row');
@@ -20,14 +20,16 @@ export class AdminUsersPage extends AuthenticatedPage {
     this.nextPageButton = page.getByTestId('next-page-button');
     this.lastPageButton = page.getByTestId('last-page-button');
     this.usersLoader = page.getByTestId('users-list-loader');
+    this.pageTitle = page.getByTestId('users-page-title');
   }
 
-  async navigateTo () {
+  async navigateTo() {
     await this.profileMenuButton.click();
     await this.adminMenuItem.click();
+    await this.isMounted();
     if (await this.usersLoader.isVisible()) {
       await this.usersLoader.waitFor({
-        state: 'detached'
+        state: 'detached',
       });
     }
   }
@@ -35,48 +37,48 @@ export class AdminUsersPage extends AuthenticatedPage {
   /**
    * @param {string} email
    */
-  async getUserRowByEmail (email) {
+  async getUserRowByEmail(email) {
     return this.userRow.filter({
       has: this.page.getByTestId('user-email').filter({
-        hasText: email
-      })
+        hasText: email,
+      }),
     });
   }
 
   /**
-   * @param {import('@playwright/test').Locator} row 
+   * @param {import('@playwright/test').Locator} row
    */
-  async getRowData (row) {
+  async getRowData(row) {
     return {
       fullName: await row.getByTestId('user-full-name').textContent(),
       email: await row.getByTestId('user-email').textContent(),
-      role: await row.getByTestId('user-role').textContent()
-    }
+      role: await row.getByTestId('user-role').textContent(),
+    };
   }
 
   /**
-   * @param {import('@playwright/test').Locator} row 
+   * @param {import('@playwright/test').Locator} row
    */
-  async clickEditUser (row) {
+  async clickEditUser(row) {
     await row.getByTestId('user-edit').click();
   }
 
   /**
-   * @param {import('@playwright/test').Locator} row 
+   * @param {import('@playwright/test').Locator} row
    */
-  async clickDeleteUser (row) {
+  async clickDeleteUser(row) {
     await row.getByTestId('delete-button').click();
     return this.deleteUserModal;
   }
 
   /**
-   * @param {string} email 
+   * @param {string} email
    * @returns {import('@playwright/test').Locator | null}
    */
-  async findUserPageWithEmail (email) {
+  async findUserPageWithEmail(email) {
     if (await this.usersLoader.isVisible()) {
       await this.usersLoader.waitFor({
-        state: 'detached'
+        state: 'detached',
       });
     }
     // start at the first page
@@ -88,10 +90,11 @@ export class AdminUsersPage extends AuthenticatedPage {
     while (true) {
       if (await this.usersLoader.isVisible()) {
         await this.usersLoader.waitFor({
-          state: 'detached'
+          state: 'detached',
         });
       }
       const rowLocator = await this.getUserRowByEmail(email);
+      console.log('rowLocator.count', email, await rowLocator.count());
       if ((await rowLocator.count()) === 1) {
         return rowLocator;
       }
@@ -103,7 +106,7 @@ export class AdminUsersPage extends AuthenticatedPage {
     }
   }
 
-  async getTotalRows () {
+  async getTotalRows() {
     return await this.page.evaluate(() => {
       const node = document.querySelector('[data-total-count]');
       if (node) {
@@ -116,7 +119,7 @@ export class AdminUsersPage extends AuthenticatedPage {
     });
   }
 
-  async getRowsPerPage () {
+  async getRowsPerPage() {
     return await this.page.evaluate(() => {
       const node = document.querySelector('[data-rows-per-page]');
       if (node) {

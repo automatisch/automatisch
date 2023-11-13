@@ -57,8 +57,8 @@ export default function EditUser(): React.ReactElement {
         variant: 'success',
         SnackbarProps: {
           'data-test': 'snackbar-edit-user-success',
-          persist: true
-        }
+          persist: true,
+        },
       });
 
       navigate(URLS.USERS);
@@ -71,7 +71,9 @@ export default function EditUser(): React.ReactElement {
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
         <Grid item xs={12} sx={{ mb: [2, 5] }}>
-          <PageTitle>{formatMessage('editUserPage.title')}</PageTitle>
+          <PageTitle data-test="edit-user-title">
+            {formatMessage('editUserPage.title')}
+          </PageTitle>
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>

@@ -15,45 +15,46 @@ export class BasePage {
   constructor(page) {
     this.page = page;
     this.snackbar = page.locator('*[data-test^="snackbar"]');
+    this.pageTitle = this.page.getByTestId('page-title');
   }
 
   /**
    * Finds the latest snackbar message and extracts relevant data
-   * @param {string | undefined} testId 
+   * @param {string | undefined} testId
    * @returns {(
    *  null | {
    *    variant: SnackbarVariant,
    *    text: string,
    *    dataset: { [key: string]: string }
    *  }
-   * )} 
+   * )}
    */
-  async getSnackbarData (testId) {
+  async getSnackbarData(testId) {
     if (!testId) {
       testId = 'snackbar';
     }
     const snack = this.page.getByTestId(testId);
     return {
       variant: await snack.getAttribute('data-snackbar-variant'),
-      text: await snack.evaluate(node => node.innerText),
-      dataset: await snack.evaluate(node => {
-        function getChildren (n) {
+      text: await snack.evaluate((node) => node.innerText),
+      dataset: await snack.evaluate((node) => {
+        function getChildren(n) {
           return [n].concat(
-            ...Array.from(n.children).map(c => getChildren(c))
+            ...Array.from(n.children).map((c) => getChildren(c))
           );
         }
-        const datasets = getChildren(node).map(
-          n => Object.assign({}, n.dataset)
+        const datasets = getChildren(node).map((n) =>
+          Object.assign({}, n.dataset)
         );
         return Object.assign({}, ...datasets);
-      })
+      }),
     };
   }
 
   /**
    * Closes all snackbars, should be replaced later
    */
-  async closeSnackbar () {
+  async closeSnackbar() {
     const snackbars = await this.snackbar.all();
     for (const snackbar of snackbars) {
       await snackbar.click();
@@ -77,5 +78,9 @@ export class BasePage {
     );
 
     return await this.page.screenshot({ path: computedPath, ...restOptions });
+  }
+
+  async isMounted() {
+    await this.pageTitle.waitFor({ state: 'attached' });
   }
 }

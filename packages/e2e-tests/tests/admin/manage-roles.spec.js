@@ -22,6 +22,7 @@ test.describe('Role management page', () => {
     await test.step('Create a new role', async () => {
       await adminRolesPage.navigateTo();
       await adminRolesPage.createRoleButton.click();
+      await adminCreateRolePage.isMounted();
       await adminCreateRolePage.nameInput.fill('Create Edit Test');
       await adminCreateRolePage.descriptionInput.fill('Test description');
       await adminCreateRolePage.createButton.click();
@@ -54,6 +55,7 @@ test.describe('Role management page', () => {
 
     await test.step('Edit the role', async () => {
       await adminRolesPage.clickEditRole(roleRow);
+      await adminEditRolePage.isMounted();
       await adminEditRolePage.nameInput.fill('Create Update Test');
       await adminEditRolePage.descriptionInput.fill('Update test description');
       await adminEditRolePage.updateButton.click();
@@ -70,6 +72,7 @@ test.describe('Role management page', () => {
     roleRow = await test.step(
       'Make sure changes reflected on roles page',
       async () => {
+        await adminRolesPage.isMounted();
         const roleRow = await adminRolesPage.getRoleRowByName(
           'Create Update Test'
         );
@@ -110,6 +113,8 @@ test.describe('Role management page', () => {
   // This test breaks right now
   test.skip('Make sure create/edit role page is scrollable', async ({
     adminRolesPage,
+    adminEditRolePage,
+    adminCreateRolePage,
     page,
   }) => {
     const initViewportSize = page.viewportSize;
@@ -121,6 +126,7 @@ test.describe('Role management page', () => {
     await test.step('Ensure create role page is scrollable', async () => {
       await adminRolesPage.navigateTo(true);
       await adminRolesPage.createRoleButton.click();
+      await adminCreateRolePage.isMounted();
 
       const initScrollTop = await page.evaluate(() => {
         return document.documentElement.scrollTop;
@@ -138,6 +144,7 @@ test.describe('Role management page', () => {
       await adminRolesPage.navigateTo(true);
       const adminRow = await adminRolesPage.getRoleRowByName('Admin');
       await adminRolesPage.clickEditRole(adminRow);
+      await adminEditRolePage.isMounted();
 
       const initScrollTop = await page.evaluate(() => {
         return document.documentElement.scrollTop;
@@ -166,6 +173,7 @@ test.describe('Role management page', () => {
     await adminRolesPage.navigateTo();
     await test.step('Create a new role', async () => {
       await adminRolesPage.createRoleButton.click();
+      await adminCreateRolePage.isMounted();
       await adminCreateRolePage.nameInput.fill('Delete Role');
       await adminCreateRolePage.createButton.click();
       await adminCreateRolePage.snackbar.waitFor({
@@ -268,6 +276,7 @@ test.describe('Role management page', () => {
     await adminRolesPage.navigateTo();
     await test.step('Create a new role', async () => {
       await adminRolesPage.createRoleButton.click();
+      await adminCreateRolePage.isMounted();
       await adminCreateRolePage.nameInput.fill('Cannot Delete Role');
       await adminCreateRolePage.createButton.click();
       await adminCreateRolePage.snackbar.waitFor({
@@ -282,6 +291,7 @@ test.describe('Role management page', () => {
     await test.step('Create a new user with this role', async () => {
       await adminUsersPage.navigateTo();
       await adminUsersPage.createUserButton.click();
+      await adminCreateUserPage.isMounted();
       await adminCreateUserPage.fullNameInput.fill('User Delete Role Test');
       await adminCreateUserPage.emailInput.fill(
         'user-delete-role-test@automatisch.io'
@@ -306,6 +316,7 @@ test.describe('Role management page', () => {
       const row = await adminUsersPage.findUserPageWithEmail(
         'user-delete-role-test@automatisch.io'
       );
+      // await test.waitForTimeout(10000);
       const modal = await adminUsersPage.clickDeleteUser(row);
       await modal.deleteButton.click();
       await adminUsersPage.snackbar.waitFor({
@@ -348,6 +359,7 @@ test('Accessibility of role management page', async ({
   await test.step('Create the basic test role', async () => {
     await adminRolesPage.navigateTo();
     await adminRolesPage.createRoleButton.click();
+    await adminCreateRolePage.isMounted();
     await adminCreateRolePage.nameInput.fill('Basic Test');
     await adminCreateRolePage.createButton.click();
     await adminCreateRolePage.snackbar.waitFor({
@@ -363,6 +375,7 @@ test('Accessibility of role management page', async ({
   await test.step('Create a new user with the basic role', async () => {
     await adminUsersPage.navigateTo();
     await adminUsersPage.createUserButton.click();
+    await adminCreateUserPage.isMounted();
     await adminCreateUserPage.fullNameInput.fill('Role Test');
     await adminCreateUserPage.emailInput.fill('basic-role-test@automatisch.io');
     await adminCreateUserPage.passwordInput.fill('sample');
@@ -378,7 +391,7 @@ test('Accessibility of role management page', async ({
       'snackbar-create-user-success'
     );
     await expect(snackbar.variant).toBe('success');
-    await adminCreateRolePage.closeSnackbar();
+    await adminCreateUserPage.closeSnackbar();
   });
 
   await test.step('Logout and login to the basic role user', async () => {
@@ -386,6 +399,7 @@ test('Accessibility of role management page', async ({
     await page.getByTestId('logout-item').click();
     // await page.reload({ waitUntil: 'networkidle' });
     const loginPage = new LoginPage(page);
+    // await loginPage.isMounted();
     await loginPage.login('basic-role-test@automatisch.io', 'sample');
     await expect(loginPage.loginButton).not.toBeVisible();
     await expect(page).toHaveURL('/flows');
@@ -414,6 +428,7 @@ test('Accessibility of role management page', async ({
     await page.getByTestId('profile-menu-button').click();
     await page.getByTestId('logout-item').click();
     const loginPage = new LoginPage(page);
+    await loginPage.isMounted();
     await loginPage.login();
   });
 
@@ -423,6 +438,7 @@ test('Accessibility of role management page', async ({
       'basic-role-test@automatisch.io'
     );
     await adminUsersPage.clickEditUser(row);
+    await adminEditUserPage.isMounted();
     await adminEditUserPage.roleInput.click();
     await adminEditUserPage.page.getByRole('option', { name: 'Admin' }).click();
     await adminEditUserPage.updateButton.click();
