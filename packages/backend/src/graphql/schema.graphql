@@ -84,6 +84,7 @@ type Mutation {
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
   resetPassword(input: ResetPasswordInput): Boolean
+  shareConnection(input: ShareConnectionInput): Connection
   updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
   updateAppConfig(input: UpdateAppConfigInput): AppConfig
   updateConfig(input: JSONObject): JSONObject
@@ -810,6 +811,11 @@ input ExecutionFiltersInput {
   flowId: String
   createdAt: ExecutionCreatedAtFilterInput
   status: String
+}
+
+input ShareConnectionInput {
+  id: String!
+  roleIds: [String]
 }
 
 schema {
