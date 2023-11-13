@@ -24,6 +24,7 @@ import getRole from './queries/get-role.ee';
 import getRoles from './queries/get-roles.ee';
 import getSamlAuthProviderRoleMappings from './queries/get-saml-auth-provider-role-mappings.ee';
 import getSamlAuthProvider from './queries/get-saml-auth-provider.ee';
+import getSharedConnectionRoleIds from './queries/get-shared-connection-role-ids.ee';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions';
 import getSubscriptionStatus from './queries/get-subscription-status.ee';
 import getTrialStatus from './queries/get-trial-status.ee';
@@ -60,6 +61,7 @@ const queryResolvers = {
   getRoles,
   getSamlAuthProvider,
   getSamlAuthProviderRoleMappings,
+  getSharedConnectionRoleIds,
   getStepWithTestExecutions,
   getSubscriptionStatus,
   getTrialStatus,
