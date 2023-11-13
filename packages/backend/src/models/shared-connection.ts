@@ -11,7 +11,7 @@ class SharedConnection extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['name', 'key'],
+    required: ['roleId', 'connectionId'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
