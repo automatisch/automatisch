@@ -31,7 +31,7 @@ The following integrations are currently supported by Automatisch.
 - [PostgreSQL](/apps/postgresql/actions)
 - [Pushover](/apps/pushover/actions)
 - [Reddit](/apps/reddit/triggers)
-- [Remove.bg](/apps/removebg/connection)
+- [Remove.bg](/apps/removebg/actions)
 - [RSS](/apps/rss/triggers)
 - [Salesforce](/apps/salesforce/triggers)
 - [Scheduler](/apps/scheduler/triggers)
