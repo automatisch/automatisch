@@ -1,5 +1,5 @@
 import { IField, IGlobalVariable } from '@automatisch/types';
-import getCurrentUser from '../common/get-current-user';
+import getCurrentUser from '../../amazon-s3/common/get-current-user';
 
 type TUser = {
   displayName: string;
