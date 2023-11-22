@@ -303,7 +303,10 @@ export default defineConfig({
           text: 'Remove.bg',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/removebg/connection' }],
+          items: [
+            { text: 'Actions', link: '/apps/removebg/actions' },
+            { text: 'Connection', link: '/apps/removebg/connection' }
+          ],
         },
         {
           text: 'RSS',
