@@ -1,6 +1,7 @@
 import defineApp from '../../helpers/define-app';
 import addAuthHeader from './common/add-auth-headers';
 import auth from './auth';
+import triggers from './triggers';
 import actions from './actions';
 import dynamicData from './dynamic-data';
 
@@ -15,6 +16,7 @@ export default defineApp({
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,
+  triggers,
   actions,
   dynamicData,
 });
