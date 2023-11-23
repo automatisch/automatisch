@@ -25,7 +25,7 @@ export default {
       const response = await $.http.get('/api/v2/users', { params });
       const allUsers = response?.data?.users;
       hasMore = response?.data?.meta?.has_more;
-      params['page[after]'] = response.data.links?.after_cursor;
+      params['page[after]'] = response.data.meta?.after_cursor;
 
       if (allUsers?.length) {
         for (const user of allUsers) {
