@@ -21,7 +21,7 @@ export default {
       const response = await $.http.get('/api/v2/groups', { params });
       const allGroups = response?.data?.groups;
       hasMore = response?.data?.meta?.has_more;
-      params['page[after]'] = response.data.links?.after_cursor;
+      params['page[after]'] = response.data.meta?.after_cursor;
 
       if (allGroups?.length) {
         for (const group of allGroups) {
