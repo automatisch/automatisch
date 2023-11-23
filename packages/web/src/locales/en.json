@@ -265,5 +265,21 @@
   "authClient.buttonSubmit": "Submit",
   "authClient.inputName": "Name",
   "authClient.inputActive": "Active",
-  "updateAuthClient.title": "Update auth client"
+  "updateAuthClient.title": "Update auth client",
+  "adminAppsConnections.noConnections": "You don't have any connections yet.",
+  "adminAppsConnections.createConnection": "Create connection",
+  "adminAppsConnections.deletedMessage": "The connection has been deleted.",
+  "adminAppsConnections.addedAt": "added {datetime}",
+  "adminAppsConnections.testing": "Testing...",
+  "adminAppsConnections.testSuccessful": "Test successful",
+  "adminAppsConnections.testFailed": "Test failed",
+  "adminAppsConnections.testConnection": "Test connection",
+  "adminAppsConnections.delete": "Delete",
+  "adminAppsConnections.reconnect": "Reconnect",
+  "adminAppsConnections.shareConnection": "Share connection",
+  "adminAppsConnections.reconnectConnection": "Reconnect connection",
+  "adminAppsConnections.callToDocs": "Visit <docsLink>our documentation</docsLink> to see how to add connection for {appName}.",
+  "adminAppsConnections.submit": "Submit",
+  "adminAppsConnections.selectAll": "Select all roles",
+  "adminAppsConnections.deselectAll": "Deselect all roles"
 }

@@ -27,9 +27,26 @@ import AdminApplicationSettings from 'components/AdminApplicationSettings';
 import AdminApplicationAuthClients from 'components/AdminApplicationAuthClients';
 import AdminApplicationCreateAuthClient from 'components/AdminApplicationCreateAuthClient';
 import AdminApplicationUpdateAuthClient from 'components/AdminApplicationUpdateAuthClient';
+import AdminApplicationConnections from 'components/AdminApplicationConnections';
+import AdminApplicationConnectionCreate from 'components/AdminApplicationConnectionCreate';
+import AdminApplicationConnectionShare from 'components/AdminApplicationConnectionShare';
 
 type AdminApplicationParams = {
   appKey: string;
+  connectionId?: string;
+};
+
+const ReconnectConnection = (props: any): React.ReactElement => {
+  const { application, onClose } = props;
+  const { connectionId } = useParams() as AdminApplicationParams;
+
+  return (
+    <AdminApplicationConnectionCreate
+      onClose={onClose}
+      application={application}
+      connectionId={connectionId}
+    />
+  );
 };
 
 export default function AdminApplication(): React.ReactElement | null {
@@ -57,6 +74,7 @@ export default function AdminApplication(): React.ReactElement | null {
   const app = data?.getApp || {};
 
   const goToAuthClientsPage = () => navigate('auth-clients');
+  const goToConnectionsPage = () => navigate('connections');
 
   if (loading) return null;
 
@@ -120,7 +138,7 @@ export default function AdminApplication(): React.ReactElement | null {
                 />
                 <Route
                   path={`/connections/*`}
-                  element={<div>App connections</div>}
+                  element={<AdminApplicationConnections appKey={appKey} />}
                 />
                 <Route
                   path="/"
@@ -150,6 +168,33 @@ export default function AdminApplication(): React.ReactElement | null {
             <AdminApplicationUpdateAuthClient
               application={app}
               onClose={goToAuthClientsPage}
+            />
+          }
+        />
+        <Route
+          path="/connections/create"
+          element={
+            <AdminApplicationConnectionCreate
+              onClose={goToConnectionsPage}
+              application={app}
+            />
+          }
+        />
+        <Route
+          path="/connections/:connectionId/reconnect"
+          element={
+            <ReconnectConnection
+              application={app}
+              onClose={goToConnectionsPage}
+            />
+          }
+        />
+        <Route
+          path="/connections/:connectionId/share"
+          element={
+            <AdminApplicationConnectionShare
+              onClose={goToConnectionsPage}
+              application={app}
             />
           }
         />

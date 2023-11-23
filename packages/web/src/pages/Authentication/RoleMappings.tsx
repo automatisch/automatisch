@@ -65,8 +65,8 @@ function RoleMappings({ provider, providerLoading }: RoleMappingsProps) {
         enqueueSnackbar(formatMessage('roleMappingsForm.successfullySaved'), {
           variant: 'success',
           SnackbarProps: {
-            'data-test': 'snackbar-update-role-mappings-success'
-          }
+            'data-test': 'snackbar-update-role-mappings-success',
+          },
         });
       }
     } catch (error) {
