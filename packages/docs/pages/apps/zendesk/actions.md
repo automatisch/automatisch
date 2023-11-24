@@ -3,6 +3,8 @@ favicon: /favicons/zendesk.svg
 items:
   - name: Create ticket
     desc: Creates a new ticket.
+  - name: Find ticket
+    desc: Finds an existing ticket.
   - name: Update ticket
     desc: Modify the status of an existing ticket or append comments.
 ---
