@@ -12,7 +12,6 @@ import LiveChat from 'components/LiveChat/index.ee';
 import routes from 'routes';
 import reportWebVitals from './reportWebVitals';
 
-
 ReactDOM.render(
   <Router>
     <SnackbarProvider>
