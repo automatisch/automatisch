@@ -1,4 +1,4 @@
 import sendMessageToChannel from './send-message-to-channel';
-import createNewEvent from './create-new-event';
+import createNewScheduledEvent from './create-new-scheduled-event';
 
-export default [sendMessageToChannel, createNewEvent];
+export default [sendMessageToChannel, createNewScheduledEvent];
