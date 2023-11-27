@@ -7,6 +7,8 @@ items:
     desc: Creates a new user.
   - name: Update ticket
     desc: Modify the status of an existing ticket or append comments.
+  - name: Update user
+    desc: Modifies an already existing user.
 ---
 
 <script setup>

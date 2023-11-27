@@ -1,4 +1,10 @@
-import { IGlobalVariable, IJSONObject } from '@automatisch/types';
+import { IGlobalVariable, IJSONArray, IJSONObject } from '@automatisch/types';
+
+type Params = {
+  'page[size]': number;
+  'page[after]': string;
+  role?: IJSONArray;
+};
 
 export default {
   name: 'List users',
@@ -13,13 +19,17 @@ export default {
     let hasMore;
     const showUserRole = $.step.parameters.showUserRole === 'true';
     const includeAdmins = $.step.parameters.includeAdmins === 'true';
+    const includeAllUsers = $.step.parameters.includeAllUsers === 'true';
     const role = includeAdmins ? ['admin', 'agent'] : ['agent'];
 
-    const params = {
+    const params: Params = {
       'page[size]': 100,
-      role,
       'page[after]': undefined as unknown as string,
     };
+
+    if (!includeAllUsers) {
+      params.role = role;
+    }
 
     do {
       const response = await $.http.get('/api/v2/users', { params });
