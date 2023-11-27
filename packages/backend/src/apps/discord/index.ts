@@ -4,6 +4,7 @@ import auth from './auth';
 import dynamicData from './dynamic-data';
 import actions from './actions';
 import triggers from './triggers';
+import dynamicFields from './dynamic-fields';
 
 export default defineApp({
   name: 'Discord',
@@ -17,6 +18,7 @@ export default defineApp({
   beforeRequest: [addAuthHeader],
   auth,
   dynamicData,
+  dynamicFields,
   triggers,
   actions,
 });
