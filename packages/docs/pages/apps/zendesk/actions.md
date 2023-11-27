@@ -5,6 +5,8 @@ items:
     desc: Creates a new ticket.
   - name: Create user
     desc: Creates a new user.
+  - name: Find user
+    desc: Finds an existing user.
   - name: Update ticket
     desc: Modify the status of an existing ticket or append comments.
   - name: Update user
