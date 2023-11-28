@@ -1,9 +1,9 @@
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
-  name: 'Create a new scheduled event',
-  key: 'createNewScheduledEvent',
-  description: 'Creates a new event',
+  name: 'Create a scheduled event',
+  key: 'createScheduledEvent',
+  description: 'Creates a scheduled event',
   arguments: [
     {
       label: 'Type',
