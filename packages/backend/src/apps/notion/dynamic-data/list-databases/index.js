@@ -22,10 +22,7 @@ export default {
       for (const database of response.data.results) {
         databases.data.push({
           value: database.id,
-          name:
-            database.title?.length > 0
-              ? database.title[0].plain_text
-              : 'Untitled Database',
+          name: database.title?.[0]?.plain_text || 'Untitled Database',
         });
       }
     } while (payload.start_cursor);
