@@ -30,7 +30,7 @@ const optionGenerator = (connection) => ({
 });
 
 const getOption = (options, connectionId) =>
-  options.find((connection) => connection.value === connectionId) || null;
+  options.find((connection) => connection.value === connectionId) || undefined;
 
 function ChooseConnectionSubstep(props) {
   const {
@@ -205,6 +205,7 @@ function ChooseConnectionSubstep(props) {
                 label={formatMessage(
                   'chooseConnectionSubstep.chooseConnection',
                 )}
+                required
               />
             )}
             value={getOption(connectionOptions, connection?.id)}

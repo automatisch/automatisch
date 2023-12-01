@@ -183,7 +183,7 @@ function ControlledCustomAutocomplete(props) {
                 variant="outlined"
                 sx={{ bgcolor: 'white', display: 'inline-block', px: 0.75 }}
               >
-                {label}
+                {`${label}${required ? ' *' : ''}`}
               </InputLabel>
             </InputLabelWrapper>
 
