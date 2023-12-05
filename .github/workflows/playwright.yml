@@ -4,7 +4,7 @@ on:
     branches:
       - main
   pull_request:
-    paths_ignore:
+    paths-ignore:
       - 'packages/backend/src/apps/**'
   workflow_dispatch:
 
