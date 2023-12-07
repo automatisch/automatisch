@@ -2,6 +2,7 @@
 
 The following integrations are currently supported by Automatisch.
 
+- [Better Stack](/apps/better-stack/actions)
 - [Carbone](/apps/carbone/actions)
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
