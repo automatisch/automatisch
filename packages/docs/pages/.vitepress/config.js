@@ -33,6 +33,14 @@ export default defineConfig({
     sidebar: {
       '/apps/': [
         {
+          text: 'Better Stack',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/better-stack/connection' },
+          ],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
@@ -305,7 +313,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
