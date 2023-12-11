@@ -1,6 +1,4 @@
-import { IGlobalVariable } from '@automatisch/types';
-
-const verifyCredentials = async ($: IGlobalVariable) => {
+const verifyCredentials = async ($) => {
   await $.http.get('/v2/metadata');
 
   await $.auth.set({

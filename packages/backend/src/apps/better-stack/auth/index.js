@@ -1,12 +1,12 @@
-import verifyCredentials from './verify-credentials';
-import isStillVerified from './is-still-verified';
+import verifyCredentials from './verify-credentials.js';
+import isStillVerified from './is-still-verified.js';
 
 export default {
   fields: [
     {
       key: 'screenName',
       label: 'Screen Name',
-      type: 'string' as const,
+      type: 'string',
       required: true,
       readOnly: false,
       value: null,
@@ -18,7 +18,7 @@ export default {
     {
       key: 'apiKey',
       label: 'API Key',
-      type: 'string' as const,
+      type: 'string',
       required: true,
       readOnly: false,
       value: null,
