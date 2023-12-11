@@ -32,8 +32,10 @@ export const asyncMethodCall = async <T = number>($: IGlobalVariable, { method, 
 export const getClient = ($: IGlobalVariable, { path = 'common' }) => {
   const host = $.auth.data.host as string;
   const port = Number($.auth.data.port as string);
+  const secure = $.auth.data.secure === 'true';
+  const createClientFunction = secure ? xmlrpc.createSecureClient : xmlrpc.createClient;
 
-  return xmlrpc.createClient(
+  return createClientFunction(
     {
       host,
       port,
