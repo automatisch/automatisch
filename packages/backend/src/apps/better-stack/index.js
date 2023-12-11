@@ -1,6 +1,6 @@
-import defineApp from '../../helpers/define-app';
-import addAuthHeader from './common/add-auth-header';
-import auth from './auth';
+import defineApp from '../../helpers/define-app.js';
+import addAuthHeader from './common/add-auth-header.js';
+import auth from './auth/index.js';
 
 export default defineApp({
   name: 'Better Stack',
