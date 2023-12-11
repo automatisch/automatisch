@@ -11,7 +11,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Host name of your Odoo Server',
+      description: 'Host name of your Odoo Server (e.g. sub.domain.com without the protocol)',
       clickToCopy: false,
     },
     {
@@ -24,6 +24,27 @@ export default {
       placeholder: null,
       description: 'Port that the host is running on, defaults to 443 (HTTPS)',
       clickToCopy: false,
+    },
+    {
+      key: 'secure',
+      label: 'Secure',
+      type: 'dropdown' as const,
+      required: true,
+      readOnly: false,
+      value: 'true',
+      description: 'True if the host communicates via secure protocol.',
+      variables: false,
+      clickToCopy: false,
+      options: [
+        {
+          label: 'True',
+          value: 'true',
+        },
+        {
+          label: 'False',
+          value: 'false',
+        },
+      ],
     },
     {
       key: 'databaseName',
@@ -40,7 +61,7 @@ export default {
       key: 'email',
       label: 'Email Address',
       type: 'string' as const,
-      requires: true,
+      required: true,
       readOnly: false,
       value: null,
       placeholder: null,
