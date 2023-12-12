@@ -69,6 +69,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Disqus',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/disqus/connection' }],
+        },
+        {
           text: 'Dropbox',
           collapsible: true,
           collapsed: true,
@@ -305,7 +311,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
