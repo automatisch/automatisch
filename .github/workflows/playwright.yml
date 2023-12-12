@@ -6,6 +6,7 @@ on:
   pull_request:
     paths-ignore:
       - 'packages/backend/src/apps/**'
+      - '.github/workflows/playwright.yml'
   workflow_dispatch:
 
 env:

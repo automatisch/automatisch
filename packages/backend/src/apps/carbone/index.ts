@@ -3,6 +3,7 @@ import addAuthHeader from './common/add-auth-header';
 import auth from './auth';
 import actions from './actions';
 
+// Here is a test comment
 export default defineApp({
   name: 'Carbone',
   key: 'carbone',
