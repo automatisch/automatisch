@@ -13,6 +13,7 @@ const getAutomatischInfo = async () => {
 
   return {
     isCloud: appConfig.isCloud,
+    isMation: appConfig.isMation,
     license: computedLicense,
   };
 };

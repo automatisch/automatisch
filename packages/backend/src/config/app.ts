@@ -49,6 +49,7 @@ type AppConfig = {
   smtpPassword: string;
   fromEmail: string;
   isCloud: boolean;
+  isMation: boolean;
   isSelfHosted: boolean;
   paddleVendorId: number;
   paddleVendorAuthCode: string;
@@ -127,6 +128,7 @@ const appConfig: AppConfig = {
   fromEmail: process.env.FROM_EMAIL,
   isCloud: process.env.AUTOMATISCH_CLOUD === 'true',
   isSelfHosted: process.env.AUTOMATISCH_CLOUD !== 'true',
+  isMation: process.env.MATION === 'true',
   paddleVendorId: Number(process.env.PADDLE_VENDOR_ID),
   paddleVendorAuthCode: process.env.PADDLE_VENDOR_AUTH_CODE,
   paddlePublicKey: process.env.PADDLE_PUBLIC_KEY,
