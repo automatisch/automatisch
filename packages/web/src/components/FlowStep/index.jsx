@@ -11,9 +11,6 @@ import IconButton from '@mui/material/IconButton';
 import ErrorIcon from '@mui/icons-material/Error';
 import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
@@ -33,76 +30,16 @@ import {
   Header,
   Wrapper,
 } from './style';
-import isEmpty from 'helpers/isEmpty';
 import { StepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
 import useActions from 'hooks/useActions';
 import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
 import useActionSubsteps from 'hooks/useActionSubsteps';
 import useStepWithTestExecutions from 'hooks/useStepWithTestExecutions';
+import { generateValidationSchema } from './validation';
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
-
-function generateValidationSchema(substeps) {
-  const fieldValidations = substeps?.reduce(
-    (allValidations, { arguments: args }) => {
-      if (!args || !Array.isArray(args)) return allValidations;
-      const substepArgumentValidations = {};
-      for (const arg of args) {
-        const { key, required } = arg;
-        // base validation for the field if not exists
-        if (!substepArgumentValidations[key]) {
-          substepArgumentValidations[key] = yup.mixed();
-        }
-        if (
-          typeof substepArgumentValidations[key] === 'object' &&
-          (arg.type === 'string' || arg.type === 'dropdown')
-        ) {
-          // if the field is required, add the required validation
-          if (required) {
-            substepArgumentValidations[key] = substepArgumentValidations[key]
-              .required(`${key} is required.`)
-              .test(
-                'empty-check',
-                `${key} must be not empty`,
-                (value) => !isEmpty(value),
-              );
-          }
-          // if the field depends on another field, add the dependsOn required validation
-          if (Array.isArray(arg.dependsOn) && arg.dependsOn.length > 0) {
-            for (const dependsOnKey of arg.dependsOn) {
-              const missingDependencyValueMessage = `We're having trouble loading '${key}' data as required field '${dependsOnKey}' is missing.`;
-              // TODO: make `dependsOnKey` agnostic to the field. However, nested validation schema is not supported.
-              // So the fields under the `parameters` key are subject to their siblings only and thus, `parameters.` is removed.
-              substepArgumentValidations[key] = substepArgumentValidations[
-                key
-              ].when(`${dependsOnKey.replace('parameters.', '')}`, {
-                is: (value) => Boolean(value) === false,
-                then: (schema) =>
-                  schema
-                    .notOneOf([''], missingDependencyValueMessage)
-                    .required(missingDependencyValueMessage),
-              });
-            }
-          }
-        }
-      }
-
-      return {
-        ...allValidations,
-        ...substepArgumentValidations,
-      };
-    },
-    {},
-  );
-
-  const validationSchema = yup.object({
-    parameters: yup.object(fieldValidations),
-  });
-
-  return yupResolver(validationSchema);
-}
 
 function FlowStep(props) {
   const { collapsed, onChange, onContinue, flowId } = props;
