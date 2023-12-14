@@ -646,6 +646,7 @@ type AppHealth {
 
 type GetAutomatischInfo {
   isCloud: Boolean
+  isMation: Boolean
   license: License
 }
 

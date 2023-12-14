@@ -9,6 +9,7 @@ describe('graphQL getAutomatischInfo query', () => {
     query {
       getAutomatischInfo {
         isCloud
+        isMation
         license {
           id
           name
@@ -24,6 +25,7 @@ describe('graphQL getAutomatischInfo query', () => {
       jest.spyOn(license, 'getLicense').mockResolvedValue(false);
 
       jest.replaceProperty(appConfig, 'isCloud', false);
+      jest.replaceProperty(appConfig, 'isMation', false);
     });
 
     it('should return empty license data', async () => {
@@ -36,6 +38,7 @@ describe('graphQL getAutomatischInfo query', () => {
         data: {
           getAutomatischInfo: {
             isCloud: false,
+            isMation: false,
             license: {
               id: null,
               name: null,
@@ -77,6 +80,7 @@ describe('graphQL getAutomatischInfo query', () => {
           data: {
             getAutomatischInfo: {
               isCloud: true,
+              isMation: false,
               license: {
                 expireAt: '2025-08-09T10:56:54.144Z',
                 id: '123123',
@@ -105,6 +109,69 @@ describe('graphQL getAutomatischInfo query', () => {
         const expectedResponsePayload = {
           data: {
             getAutomatischInfo: {
+              isCloud: false,
+              isMation: false,
+              license: {
+                expireAt: '2025-08-09T10:56:54.144Z',
+                id: '123123',
+                name: 'Test License',
+                verified: true,
+              },
+            },
+          },
+        };
+
+        expect(response.body).toEqual(expectedResponsePayload);
+      });
+    });
+
+    describe('and with mation flag enabled', () => {
+      beforeEach(async () => {
+        jest.replaceProperty(appConfig, 'isCloud', false);
+        jest.replaceProperty(appConfig, 'isMation', true);
+      });
+
+      it('should return all license data', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .send({ query })
+          .expect(200);
+
+        const expectedResponsePayload = {
+          data: {
+            getAutomatischInfo: {
+              isCloud: false,
+              isMation: true,
+              license: {
+                expireAt: '2025-08-09T10:56:54.144Z',
+                id: '123123',
+                name: 'Test License',
+                verified: true,
+              },
+            },
+          },
+        };
+
+        expect(response.body).toEqual(expectedResponsePayload);
+      });
+    });
+
+    describe('and with mation flag disabled', () => {
+      beforeEach(async () => {
+        jest.replaceProperty(appConfig, 'isCloud', false);
+        jest.replaceProperty(appConfig, 'isMation', false);
+      });
+
+      it('should return all license data', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .send({ query })
+          .expect(200);
+
+        const expectedResponsePayload = {
+          data: {
+            getAutomatischInfo: {
+              isMation: false,
               isCloud: false,
               license: {
                 expireAt: '2025-08-09T10:56:54.144Z',
