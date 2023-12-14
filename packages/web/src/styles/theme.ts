@@ -1,3 +1,5 @@
+import { deepmerge } from '@mui/utils';
+import type { Theme } from '@mui/material/styles';
 import { createTheme, alpha } from '@mui/material/styles';
 import { cardActionAreaClasses } from '@mui/material/CardActionArea';
 
@@ -6,7 +8,7 @@ export const primaryMainColor = '#0059F7';
 export const primaryLightColor = '#4286FF';
 export const primaryDarkColor = '#001F52';
 
-const extendedTheme = createTheme({
+export const defaultTheme = createTheme({
   palette: {
     primary: {
       main: primaryMainColor,
@@ -280,4 +282,24 @@ const extendedTheme = createTheme({
   },
 });
 
-export default extendedTheme;
+export const mationTheme = createTheme(deepmerge(defaultTheme, {
+  palette: {
+    primary: {
+      main: '#2962FF',
+      light: '#448AFF',
+      dark: '#2962FF',
+      contrastText: '#fff',
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: ({ theme }: { theme: Theme }) => ({
+          zIndex: theme.zIndex.drawer + 1,
+        }),
+      },
+    },
+  },
+}));
+
+export default defaultTheme;

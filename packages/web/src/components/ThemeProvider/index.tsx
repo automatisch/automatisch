@@ -7,19 +7,20 @@ import * as React from 'react';
 
 import { IJSONObject } from '@automatisch/types';
 import useConfig from 'hooks/useConfig';
-import theme from 'styles/theme';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
+import { defaultTheme, mationTheme } from 'styles/theme';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
 };
 
-const customizeTheme = (defaultTheme: typeof theme, config: IJSONObject) => {
+const customizeTheme = (theme: typeof defaultTheme, config: IJSONObject) => {
   // `clone` is needed so that the new theme reference triggers re-render
-  const shallowDefaultTheme = clone(defaultTheme);
+  const shallowDefaultTheme = clone(theme);
 
   for (const key in config) {
     const value = config[key];
-    const exists = get(defaultTheme, key);
+    const exists = get(theme, key);
 
     if (exists) {
       set(shallowDefaultTheme, key, value);
@@ -33,18 +34,21 @@ const ThemeProvider = ({
   children,
   ...props
 }: ThemeProviderProps): React.ReactElement => {
-  const { config, loading } = useConfig();
+  const { isMation, loading: automatischInfoLoading } = useAutomatischInfo();
+  const { config, loading: configLoading } = useConfig();
 
   const customTheme = React.useMemo(() => {
-    if (!config) return theme;
+    const installationTheme = isMation ? mationTheme : defaultTheme;
 
-    const customTheme = customizeTheme(theme, config);
+    if (configLoading || automatischInfoLoading) return installationTheme;
+
+    const customTheme = customizeTheme(installationTheme, config || {});
 
     return customTheme;
-  }, [config]);
+  }, [configLoading, config, isMation, automatischInfoLoading]);
 
   // TODO: maybe a global loading state for the custom theme?
-  if (loading) return <></>;
+  if (automatischInfoLoading || configLoading) return <></>;
 
   return (
     <BaseThemeProvider theme={customTheme} {...props}>

@@ -5,11 +5,15 @@ import { GET_AUTOMATISCH_INFO } from 'graphql/queries/get-automatisch-info';
 
 export type AutomatischInfoContextParams = {
   isCloud: boolean;
+  isMation: boolean;
+  loading: boolean;
 };
 
 export const AutomatischInfoContext =
   React.createContext<AutomatischInfoContextParams>({
     isCloud: false,
+    isMation: false,
+    loading: true,
   });
 
 type AutomatischInfoProviderProps = {
@@ -23,13 +27,15 @@ export const AutomatischInfoProvider = (
   const { data, loading } = useQuery(GET_AUTOMATISCH_INFO);
 
   const isCloud = data?.getAutomatischInfo?.isCloud;
+  const isMation = data?.getAutomatischInfo?.isMation;
 
   const value = React.useMemo(() => {
     return {
       isCloud,
-      loading
+      isMation,
+      loading,
     };
-  }, [isCloud, loading]);
+  }, [isCloud, isMation, loading]);
 
   return (
     <AutomatischInfoContext.Provider value={value}>
