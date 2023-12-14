@@ -170,6 +170,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Google Tasks',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/google-tasks/connection' },
+          ],
+        },
+        {
           text: 'HTTP Request',
           collapsible: true,
           collapsed: true,
@@ -305,7 +313,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
