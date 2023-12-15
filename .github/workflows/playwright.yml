@@ -4,8 +4,11 @@ on:
     branches:
       - main
   pull_request:
-    paths-ignore:
-      - 'packages/backend/src/apps/**'
+    paths:
+      - 'packages/backend/**'
+      - 'packages/e2e-tests/**'
+      - 'packages/web/**'
+      - '!packages/backend/src/apps/**'
   workflow_dispatch:
 
 env:
