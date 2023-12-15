@@ -3,6 +3,8 @@ import { AutomatischInfoContext } from 'contexts/AutomatischInfo';
 
 type UseAutomatischInfoReturn = {
   isCloud: boolean;
+  isMation: boolean;
+  loading: boolean;
 };
 
 export default function useAutomatischInfo(): UseAutomatischInfoReturn {
@@ -10,5 +12,7 @@ export default function useAutomatischInfo(): UseAutomatischInfoReturn {
 
   return {
     isCloud: automatischInfoContext.isCloud,
+    isMation: automatischInfoContext.isMation,
+    loading: automatischInfoContext.loading,
   };
 }
