@@ -16,10 +16,16 @@ env:
   WEBHOOK_SECRET_KEY: sample_webhook_secret_key
   APP_SECRET_KEY: sample_app_secret_key
   POSTGRES_HOST: localhost
+  PGHOST: localhost
   POSTGRES_DATABASE: automatisch
+  POSTGRES_DATABASE_TEMPLATE: automatisch_template
+  PGDATABASE: postgres
   POSTGRES_PORT: 5432
+  PGPORT: 5432
   POSTGRES_USERNAME: automatisch_user
+  PGUSER: postgres
   POSTGRES_PASSWORD: automatisch_password
+  PGPASSWORD: password
   REDIS_HOST: localhost
   APP_ENV: production
   LICENSE_KEY: dummy_license_key
@@ -33,9 +39,9 @@ jobs:
       postgres:
         image: postgres:14.5-alpine
         env:
-          POSTGRES_DB: automatisch
-          POSTGRES_USER: automatisch_user
-          POSTGRES_PASSWORD: automatisch_password
+          # POSTGRES_DB: postgres # automatisch
+          # POSTGRES_USER: automatisch_user
+          POSTGRES_PASSWORD: password # automatisch_password
         options: >-
           --health-cmd "pg_isready -U automatisch_user -d automatisch"
           --health-interval 10s
@@ -58,6 +64,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Install psql
+        run: |
+          sudo apt update
+          sudo apt install -y postgresql-client
+      - name: Setup database
+        run: |
+          psql -U postgres -d postgres -ec "CREATE USER $POSTGRES_USERNAME WITH PASSWORD '$POSTGRES_PASSWORD'"
+          psql -U postgres -d postgres -ec "CREATE DATABASE $POSTGRES_DATABASE WITH OWNER $POSTGRES_USERNAME"
+          psql -U postgres -d postgres -ec "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DATABASE TO $POSTGRES_USERNAME"
       - name: Install dependencies
         run: yarn && yarn lerna bootstrap
       - name: Install Playwright Browsers
