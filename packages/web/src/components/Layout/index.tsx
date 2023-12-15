@@ -12,6 +12,7 @@ import * as URLS from 'config/urls';
 import useVersion from 'hooks/useVersion';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
 
 type PublicLayoutProps = {
   children: React.ReactNode;
@@ -38,19 +39,36 @@ const drawerLinks = [
   },
 ];
 
-const generateDrawerBottomLinks = ({ notificationBadgeContent = 0 }) => [
-  {
-    Icon: NotificationsIcon,
-    primary: 'settingsDrawer.notifications',
-    to: URLS.UPDATES,
-    badgeContent: notificationBadgeContent,
-  },
-];
+type GenerateDrawerBottomLinksOptions = {
+  isMation: boolean;
+  loading: boolean;
+  notificationBadgeContent: number;
+};
+
+const generateDrawerBottomLinks = ({
+  isMation,
+  loading,
+  notificationBadgeContent = 0,
+}: GenerateDrawerBottomLinksOptions) => {
+  if (loading || isMation) {
+    return [];
+  }
+
+  return [
+    {
+      Icon: NotificationsIcon,
+      primary: 'settingsDrawer.notifications',
+      to: URLS.UPDATES,
+      badgeContent: notificationBadgeContent,
+    },
+  ];
+};
 
 export default function PublicLayout({
   children,
 }: PublicLayoutProps): React.ReactElement {
   const version = useVersion();
+  const { isMation, loading } = useAutomatischInfo();
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
@@ -60,6 +78,8 @@ export default function PublicLayout({
 
   const drawerBottomLinks = generateDrawerBottomLinks({
     notificationBadgeContent: version.newVersionCount,
+    loading,
+    isMation,
   });
 
   return (

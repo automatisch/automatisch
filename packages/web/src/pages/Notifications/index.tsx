@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
@@ -7,6 +8,8 @@ import Container from 'components/Container';
 import NotificationCard from 'components/NotificationCard';
 import PageTitle from 'components/PageTitle';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
+import * as URLS from 'config/urls';
 
 interface INotification {
   name: string;
@@ -16,8 +19,19 @@ interface INotification {
 }
 
 export default function Updates(): React.ReactElement {
+  const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const { notifications } = useNotifications();
+  const { isMation, loading } = useAutomatischInfo();
+
+  React.useEffect(
+    function redirectToHomepageInMation() {
+      if (!loading && isMation) {
+        navigate(URLS.DASHBOARD);
+      }
+    },
+    [loading, isMation]
+  );
 
   return (
     <Box sx={{ py: 3 }}>
