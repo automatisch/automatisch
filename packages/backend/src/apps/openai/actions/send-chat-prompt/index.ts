@@ -105,7 +105,7 @@ export default defineAction({
       description: `Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.`
     },
     {
-      label: 'presencePenalty',
+      label: 'Presence Penalty',
       key: 'presencePenalty',
       type: 'string' as const,
       required: false,
