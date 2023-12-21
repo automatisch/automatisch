@@ -53,6 +53,7 @@ type Query {
   getNotifications: [Notification]
   getSamlAuthProvider: SamlAuthProvider
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
+  getSharedConnectionRoleIds(id: String!): [String]
   getSubscriptionStatus: GetSubscriptionStatus
   getTrialStatus: GetTrialStatus
   getUser(id: String!): User
@@ -83,6 +84,7 @@ type Mutation {
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
   resetPassword(input: ResetPasswordInput): Boolean
+  shareConnection(input: ShareConnectionInput): Connection
   updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
   updateAppConfig(input: UpdateAppConfigInput): AppConfig
   updateConfig(input: JSONObject): JSONObject
@@ -244,6 +246,7 @@ type AuthLink {
 type Connection {
   id: String
   key: String
+  shared: Boolean
   reconnectable: Boolean
   appAuthClientId: String
   formattedData: ConnectionData
@@ -809,6 +812,11 @@ input ExecutionFiltersInput {
   flowId: String
   createdAt: ExecutionCreatedAtFilterInput
   status: String
+}
+
+input ShareConnectionInput {
+  id: String!
+  roleIds: [String]
 }
 
 schema {

@@ -103,6 +103,13 @@ export const ADMIN_APP_AUTH_CLIENTS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/au
 export const ADMIN_APP_CONNECTIONS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/connections`;
 export const ADMIN_APP_CONNECTIONS = (appKey: string) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/connections`;
+export const ADMIN_APP_CONNECTIONS_CREATE = (appKey: string, shared = false) =>
+  `${ADMIN_SETTINGS}/apps/${appKey}/connections/create?shared=${shared}`;
+export const ADMIN_APP_CONNECTIONS_CREATE_WITH_AUTH_CLIENT_ID = (
+  appKey: string,
+  appAuthClientId: string
+) =>
+  `${ADMIN_SETTINGS}/apps/${appKey}/connections/create?appAuthClientId=${appAuthClientId}`;
 export const ADMIN_APP_SETTINGS = (appKey: string) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/settings`;
 export const ADMIN_APP_AUTH_CLIENTS = (appKey: string) =>
@@ -111,6 +118,23 @@ export const ADMIN_APP_AUTH_CLIENT = (appKey: string, id: string) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients/${id}`;
 export const ADMIN_APP_AUTH_CLIENTS_CREATE = (appKey: string) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients/create`;
+export const ADMIN_APP_RECONNECT_CONNECTION = (
+  appKey: string,
+  connectionId: string,
+  appAuthClientId?: string
+) => {
+  const path = `${ADMIN_SETTINGS}/apps/${appKey}/connections/${connectionId}/reconnect`;
+
+  if (appAuthClientId) {
+    return `${path}?appAuthClientId=${appAuthClientId}`;
+  }
+
+  return path;
+};
+export const ADMIN_APP_SHARE_CONNECTION = (
+  appKey: string,
+  connectionId: string
+) => `${ADMIN_SETTINGS}/apps/${appKey}/connections/${connectionId}/share`;
 
 export const DASHBOARD = FLOWS;
 

@@ -7,6 +7,7 @@ export const GET_APP_CONNECTIONS = gql`
       connections {
         id
         key
+        shared
         reconnectable
         appAuthClientId
         verified

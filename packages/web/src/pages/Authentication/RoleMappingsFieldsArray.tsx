@@ -5,13 +5,12 @@ import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import { Divider, Typography } from '@mui/material';
 
 import useRoles from 'hooks/useRoles.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
-
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import TextField from 'components/TextField';
-import { Divider, Typography } from '@mui/material';
 
 function generateRoleOptions(roles: IRole[]) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));

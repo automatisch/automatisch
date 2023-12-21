@@ -23,6 +23,7 @@ export interface IConnection {
   formattedData?: IJSONObject;
   userId: string;
   verified: boolean;
+  shared?: boolean;
   count?: number;
   flowCount?: number;
   appData?: IApp;

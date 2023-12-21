@@ -1,3 +1,4 @@
+import type { IConnection } from '@automatisch/types';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -7,27 +8,20 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { DateTime } from 'luxon';
 import * as React from 'react';
 
-import type { IConnection } from '@automatisch/types';
-import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useFormatMessage from 'hooks/useFormatMessage';
+
+import ConnectionContextMenu from '../AppConnectionContextMenu';
 import { CardContent, Typography } from './style';
 
 type AppConnectionRowProps = {
   connection: IConnection;
 };
-
-const countTranslation = (value: React.ReactNode) => (
-  <>
-    <Typography variant="body1">{value}</Typography>
-    <br />
-  </>
-);
 
 function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
   const enqueueSnackbar = useEnqueueSnackbar();
@@ -45,16 +39,8 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
   const formatMessage = useFormatMessage();
-  const {
-    id,
-    key,
-    formattedData,
-    verified,
-    createdAt,
-    flowCount,
-    reconnectable,
-    shared,
-  } = props.connection;
+  const { id, key, formattedData, verified, createdAt, reconnectable, shared } =
+    props.connection;
 
   const contextButtonRef = React.useRef<SVGSVGElement | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
@@ -81,11 +67,8 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
           },
         });
 
-        enqueueSnackbar(formatMessage('connection.deletedMessage'), {
+        enqueueSnackbar(formatMessage('adminAppsConnections.deletedMessage'), {
           variant: 'success',
-          SnackbarProps: {
-            'data-test': 'snackbar-delete-connection-success'
-          }
         });
       } else if (action.type === 'test') {
         setVerificationVisible(true);
@@ -101,7 +84,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
 
   return (
     <>
-      <Card sx={{ my: 2 }} data-test="app-connection-row">
+      <Card sx={{ my: 2 }}>
         <CardActionArea onClick={onContextMenuClick}>
           <CardContent>
             <Stack justifyContent="center" alignItems="flex-start" spacing={1}>
@@ -110,7 +93,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
               </Typography>
 
               <Typography variant="caption">
-                {formatMessage('connection.addedAt', {
+                {formatMessage('adminAppsConnections.addedAt', {
                   datetime: relativeCreatedAt,
                 })}
               </Typography>
@@ -122,7 +105,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
                   <>
                     <CircularProgress size={16} />
                     <Typography variant="caption">
-                      {formatMessage('connection.testing')}
+                      {formatMessage('adminAppsConnections.testing')}
                     </Typography>
                   </>
                 )}
@@ -130,7 +113,7 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
                   <>
                     <CheckCircleIcon fontSize="small" color="success" />
                     <Typography variant="caption">
-                      {formatMessage('connection.testSuccessful')}
+                      {formatMessage('adminAppsConnections.testSuccessful')}
                     </Typography>
                   </>
                 )}
@@ -141,23 +124,11 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
                     <>
                       <ErrorIcon fontSize="small" color="error" />
                       <Typography variant="caption">
-                        {formatMessage('connection.testFailed')}
+                        {formatMessage('adminAppsConnections.testFailed')}
                       </Typography>
                     </>
                   )}
               </Stack>
-            </Box>
-
-            <Box sx={{ px: 2 }}>
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                sx={{ display: ['none', 'inline-block'] }}
-              >
-                {formatMessage('connection.flowCount', {
-                  count: countTranslation(flowCount),
-                })}
-              </Typography>
             </Box>
 
             <Box>

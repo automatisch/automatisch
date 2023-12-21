@@ -5,13 +5,16 @@ import { GET_ROLES } from 'graphql/queries/get-roles.ee';
 
 type QueryResponse = {
   getRoles: IRole[];
-}
+};
 
 export default function useRoles() {
-  const { data, loading } = useQuery<QueryResponse>(GET_ROLES, { context: { autoSnackbar: false } });
+  const { data, loading, error } = useQuery<QueryResponse>(GET_ROLES, {
+    context: { autoSnackbar: false },
+  });
 
   return {
     roles: data?.getRoles || [],
-    loading
+    loading,
+    error,
   };
 }

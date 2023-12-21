@@ -19,6 +19,7 @@ import login from './mutations/login';
 import registerUser from './mutations/register-user.ee';
 import resetConnection from './mutations/reset-connection';
 import resetPassword from './mutations/reset-password.ee';
+import shareConnection from './mutations/share-connection.ee';
 import updateAppAuthClient from './mutations/update-app-auth-client.ee';
 import updateAppConfig from './mutations/update-app-config.ee';
 import updateConfig from './mutations/update-config.ee';
@@ -55,6 +56,7 @@ const mutationResolvers = {
   registerUser,
   resetConnection,
   resetPassword,
+  shareConnection,
   updateAppAuthClient,
   updateAppConfig,
   updateConfig,
