@@ -6,6 +6,7 @@ import getApps from './queries/get-apps';
 import getAutomatischInfo from './queries/get-automatisch-info';
 import getBillingAndUsage from './queries/get-billing-and-usage.ee';
 import getConfig from './queries/get-config.ee';
+import getUseJsFile from './queries/get-use-js-file.js';
 import getConnectedApps from './queries/get-connected-apps';
 import getCurrentUser from './queries/get-current-user';
 import getDynamicData from './queries/get-dynamic-data';
@@ -68,6 +69,7 @@ const queryResolvers = {
   healthcheck,
   listSamlAuthProviders,
   testConnection,
+  getUseJsFile,
 };
 
 export default queryResolvers;

@@ -11,6 +11,7 @@ type Query {
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
+  getUseJsFile: JSONObject
   getFlows(
     limit: Int!
     offset: Int!

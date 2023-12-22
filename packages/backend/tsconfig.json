@@ -2,11 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "lib": ["es2021"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "outDir": "dist",
     "paths": {
       "*": ["../../node_modules/*", "node_modules/*", "src/types/*"]
