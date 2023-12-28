@@ -9,13 +9,7 @@ import HttpError from '../errors/http';
 import EarlyExitError from '../errors/early-exit';
 import AlreadyProcessedError from '../errors/already-processed';
 
-type ProcessActionOptions = {
-  flowId: string;
-  executionId: string;
-  stepId: string;
-};
-
-export const processAction = async (options: ProcessActionOptions) => {
+export const processAction = async (options) => {
   const { flowId, stepId, executionId } = options;
 
   const flow = await Flow.query().findById(flowId).throwIfNotFound();

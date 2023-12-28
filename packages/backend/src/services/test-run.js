@@ -1,13 +1,9 @@
 import Step from '../models/step';
-import { processFlow } from '../services/flow';
-import { processTrigger } from '../services/trigger';
-import { processAction } from '../services/action';
+import { processFlow } from './flow';
+import { processTrigger } from './trigger';
+import { processAction } from './action';
 
-type TestRunOptions = {
-  stepId: string;
-};
-
-const testRun = async (options: TestRunOptions) => {
+const testRun = async (options) => {
   const untilStep = await Step.query()
     .findById(options.stepId)
     .throwIfNotFound();
