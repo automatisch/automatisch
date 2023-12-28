@@ -1,11 +1,11 @@
 import { Worker } from 'bullmq';
+import process from 'node:process';
 
 import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
 import appConfig from '../config/app';
 import User from '../models/user';
-import Execution from '../models/execution';
 import ExecutionStep from '../models/execution-step';
 
 export const worker = new Worker(
@@ -23,7 +23,7 @@ export const worker = new Worker(
         .$relatedQuery('executions')
         .withSoftDeleted()
         .select('executions.id')
-    ).map((execution: Execution) => execution.id);
+    ).map((execution) => execution.id);
 
     await ExecutionStep.query()
       .withSoftDeleted()

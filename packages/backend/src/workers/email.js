@@ -1,4 +1,5 @@
 import { Worker } from 'bullmq';
+import process from 'node:process';
 
 import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
@@ -11,7 +12,7 @@ const isCloudSandbox = () => {
   return appConfig.isCloud && !appConfig.isProd;
 };
 
-const isAutomatischEmail = (email: string) => {
+const isAutomatischEmail = (email) => {
   return email.endsWith('@automatisch.io');
 };
 
