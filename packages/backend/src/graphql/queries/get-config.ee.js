@@ -1,11 +1,7 @@
 import { hasValidLicense } from '../../helpers/license.ee';
 import Config from '../../models/config';
 
-type Params = {
-  keys: string[];
-};
-
-const getConfig = async (_parent: unknown, params: Params) => {
+const getConfig = async (_parent, params) => {
   if (!(await hasValidLicense())) return {};
 
   const configQuery = Config.query();
@@ -22,7 +18,7 @@ const getConfig = async (_parent: unknown, params: Params) => {
     computedConfig[key] = value?.data;
 
     return computedConfig;
-  }, {} as Record<string, unknown>);
+  }, {});
 };
 
 export default getConfig;

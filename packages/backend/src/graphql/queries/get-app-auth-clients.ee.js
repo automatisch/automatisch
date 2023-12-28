@@ -1,12 +1,6 @@
 import AppConfig from '../../models/app-config';
-import Context from '../../types/express/context';
 
-type Params = {
-  appKey: string;
-  active: boolean;
-};
-
-const getAppAuthClients = async (_parent: unknown, params: Params, context: Context) => {
+const getAppAuthClients = async (_parent, params, context) => {
   let canSeeAllClients = false;
   try {
     context.currentUser.can('read', 'App');
@@ -16,8 +10,7 @@ const getAppAuthClients = async (_parent: unknown, params: Params, context: Cont
     // void
   }
 
-  const appConfig = await AppConfig
-    .query()
+  const appConfig = await AppConfig.query()
     .findOne({
       key: params.appKey,
     })
@@ -30,8 +23,8 @@ const getAppAuthClients = async (_parent: unknown, params: Params, context: Cont
 
   if (!canSeeAllClients) {
     appAuthClients.where({
-      active: true
-    })
+      active: true,
+    });
   }
 
   return await appAuthClients;

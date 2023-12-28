@@ -1,22 +1,14 @@
-import Context from '../../types/express/context';
 import App from '../../models/app';
 import Connection from '../../models/connection';
 import globalVariable from '../../helpers/global-variable';
 
-type Params = {
-  id: string;
-  data: object;
-};
-
-const testConnection = async (
-  _parent: unknown,
-  params: Params,
-  context: Context
-) => {
+const testConnection = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Connection');
   const userConnections = context.currentUser.$relatedQuery('connections');
   const allConnections = Connection.query();
-  const connectionBaseQuery = conditions.isCreator ? userConnections : allConnections;
+  const connectionBaseQuery = conditions.isCreator
+    ? userConnections
+    : allConnections;
 
   let connection = await connectionBaseQuery
     .clone()

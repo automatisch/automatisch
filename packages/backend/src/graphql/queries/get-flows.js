@@ -1,16 +1,7 @@
 import Flow from '../../models/flow';
-import Context from '../../types/express/context';
 import paginate from '../../helpers/pagination';
 
-type Params = {
-  appKey?: string;
-  connectionId?: string;
-  name?: string;
-  limit: number;
-  offset: number;
-};
-
-const getFlows = async (_parent: unknown, params: Params, context: Context) => {
+const getFlows = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Flow');
   const userFlows = context.currentUser.$relatedQuery('flows');
   const allFlows = Flow.query();
