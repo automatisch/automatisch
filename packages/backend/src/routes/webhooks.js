@@ -1,7 +1,6 @@
-import express, { Response, Router, NextFunction, RequestHandler } from 'express';
+import express, { Router } from 'express';
 import multer from 'multer';
 
-import { IRequest } from '@automatisch/types';
 import appConfig from '../config/app';
 import webhookHandlerByFlowId from '../controllers/webhooks/handler-by-flow-id';
 import webhookHandlerByConnectionIdAndRefValue from '../controllers/webhooks/handler-by-connection-id-and-ref-value';
@@ -11,22 +10,24 @@ const upload = multer();
 
 router.use(upload.none());
 
-router.use(express.text({
-  limit: appConfig.requestBodySizeLimit,
-  verify(req, res, buf) {
-    (req as IRequest).rawBody = buf;
-  },
-}));
+router.use(
+  express.text({
+    limit: appConfig.requestBodySizeLimit,
+    verify(req, res, buf) {
+      req.rawBody = buf;
+    },
+  })
+);
 
-const exposeError = (handler: RequestHandler) => async (req: IRequest, res: Response, next: NextFunction) => {
+const exposeError = (handler) => async (req, res, next) => {
   try {
     await handler(req, res, next);
   } catch (err) {
     next(err);
   }
-}
+};
 
-function createRouteHandler(path: string, handler: (req: IRequest, res: Response, next: NextFunction) => void) {
+function createRouteHandler(path, handler) {
   const wrappedHandler = exposeError(handler);
 
   router
@@ -35,10 +36,16 @@ function createRouteHandler(path: string, handler: (req: IRequest, res: Response
     .put(wrappedHandler)
     .patch(wrappedHandler)
     .post(wrappedHandler);
-};
+}
 
-createRouteHandler('/connections/:connectionId/:refValue', webhookHandlerByConnectionIdAndRefValue);
-createRouteHandler('/connections/:connectionId', webhookHandlerByConnectionIdAndRefValue);
+createRouteHandler(
+  '/connections/:connectionId/:refValue',
+  webhookHandlerByConnectionIdAndRefValue
+);
+createRouteHandler(
+  '/connections/:connectionId',
+  webhookHandlerByConnectionIdAndRefValue
+);
 createRouteHandler('/flows/:flowId', webhookHandlerByFlowId);
 createRouteHandler('/:flowId', webhookHandlerByFlowId);
 
