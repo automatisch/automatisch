@@ -1,11 +1,6 @@
 import appConfig from '../../config/app';
-import Context from '../../types/express/context';
 
-const getSubscriptionStatus = async (
-  _parent: unknown,
-  _params: unknown,
-  context: Context
-) => {
+const getSubscriptionStatus = async (_parent, _params, context) => {
   if (!appConfig.isCloud) return;
 
   const currentSubscription = await context.currentUser.$relatedQuery(

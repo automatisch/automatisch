@@ -1,11 +1,6 @@
 import AppAuthClient from '../../models/app-auth-client';
-import Context from '../../types/express/context';
 
-type Params = {
-  id: string;
-};
-
-const getAppAuthClient = async (_parent: unknown, params: Params, context: Context) => {
+const getAppAuthClient = async (_parent, params, context) => {
   let canSeeAllClients = false;
   try {
     context.currentUser.can('read', 'App');
@@ -15,8 +10,7 @@ const getAppAuthClient = async (_parent: unknown, params: Params, context: Conte
     // void
   }
 
-  const appAuthClient = AppAuthClient
-    .query()
+  const appAuthClient = AppAuthClient.query()
     .findById(params.id)
     .throwIfNotFound();
 

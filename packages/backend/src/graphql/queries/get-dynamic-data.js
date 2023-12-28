@@ -1,22 +1,10 @@
-import { IDynamicData, IJSONObject } from '@automatisch/types';
-import Context from '../../types/express/context';
 import App from '../../models/app';
 import Step from '../../models/step';
 import ExecutionStep from '../../models/execution-step';
 import globalVariable from '../../helpers/global-variable';
 import computeParameters from '../../helpers/compute-parameters';
 
-type Params = {
-  stepId: string;
-  key: string;
-  parameters: IJSONObject;
-};
-
-const getDynamicData = async (
-  _parent: unknown,
-  params: Params,
-  context: Context
-) => {
+const getDynamicData = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');
   const userSteps = context.currentUser.$relatedQuery('steps');
   const allSteps = Step.query();
@@ -40,9 +28,7 @@ const getDynamicData = async (
   const app = await App.findOneByKey(step.appKey);
   const $ = await globalVariable({ connection, app, flow, step });
 
-  const command = app.dynamicData.find(
-    (data: IDynamicData) => data.key === params.key
-  );
+  const command = app.dynamicData.find((data) => data.key === params.key);
 
   // apply run-time parameters that're not persisted yet
   for (const parameterKey in params.parameters) {
@@ -53,12 +39,17 @@ const getDynamicData = async (
   const lastExecution = await flow.$relatedQuery('lastExecution');
   const lastExecutionId = lastExecution?.id;
 
-  const priorExecutionSteps = lastExecutionId ? await ExecutionStep.query().where({
-    execution_id: lastExecutionId,
-  }) : [];
+  const priorExecutionSteps = lastExecutionId
+    ? await ExecutionStep.query().where({
+        execution_id: lastExecutionId,
+      })
+    : [];
 
   // compute variables in parameters
-  const computedParameters = computeParameters($.step.parameters, priorExecutionSteps);
+  const computedParameters = computeParameters(
+    $.step.parameters,
+    priorExecutionSteps
+  );
 
   $.step.parameters = computedParameters;
 

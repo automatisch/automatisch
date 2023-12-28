@@ -1,12 +1,9 @@
-import Context from '../../types/express/context';
 import Billing from '../../helpers/billing/index.ee';
 
-const getInvoices = async (
-  _parent: unknown,
-  _params: unknown,
-  context: Context
-) => {
-  const subscription = await context.currentUser.$relatedQuery('currentSubscription');
+const getInvoices = async (_parent, _params, context) => {
+  const subscription = await context.currentUser.$relatedQuery(
+    'currentSubscription'
+  );
 
   if (!subscription) {
     return;
