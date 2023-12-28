@@ -1,15 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
 import logger from './logger';
 
-import BaseError from '../errors/base';
-
 // Do not remove `next` argument as the function signature will not fit for an error handler middleware
-const errorHandler = (
-  err: BaseError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+const errorHandler = (err, req, res, next) => {
   if (err.message === 'Not Found') {
     res.status(404).end();
   } else {
