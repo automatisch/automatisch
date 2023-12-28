@@ -1,11 +1,8 @@
-import { Response } from 'express';
-import { IRequest } from '@automatisch/types';
-
 import Flow from '../../models/flow';
 import logger from '../../helpers/logger';
 import handler from '../../helpers/webhook-handler';
 
-export default async (request: IRequest, response: Response) => {
+export default async (request, response) => {
   const computedRequestPayload = {
     headers: request.headers,
     body: request.body,
