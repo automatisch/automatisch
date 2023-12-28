@@ -19,7 +19,7 @@ process.on('SIGTERM', async () => {
 });
 
 removeCancelledSubscriptionsQueue.on('error', (err) => {
-  if ((err as any).code === CONNECTION_REFUSED) {
+  if (err.code === CONNECTION_REFUSED) {
     logger.error('Make sure you have installed Redis and it is running.', err);
     process.exit();
   }
