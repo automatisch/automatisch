@@ -1,22 +1,22 @@
-import { IJSONObject } from '@automatisch/types';
-
 export default class BaseError extends Error {
   details = {};
-  statusCode?: number;
 
-  constructor(error?: string | IJSONObject) {
-    let computedError: Record<string, unknown>;
+  constructor(error) {
+    let computedError;
+
     try {
-      computedError = JSON.parse(error as string);
+      computedError = JSON.parse(error);
     } catch {
-      computedError = (typeof error === 'string' || Array.isArray(error)) ? { error } : error;
+      computedError =
+        typeof error === 'string' || Array.isArray(error) ? { error } : error;
     }
 
-    let computedMessage: string;
+    let computedMessage;
+
     try {
       // challenge to input to see if it is stringified JSON
-      JSON.parse(error as string);
-      computedMessage = error as string;
+      JSON.parse(error);
+      computedMessage = error;
     } catch {
       if (typeof error === 'string') {
         computedMessage = error;
