@@ -1,35 +1,33 @@
 import { Worker } from 'bullmq';
+import process from 'node:process';
 
-import { IJSONObject, ITriggerItem } from '@automatisch/types';
 import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
 import logger from '../helpers/logger';
-import actionQueue from '../queues/action';
 import Step from '../models/step';
-import { processTrigger } from '../services/trigger';
+import actionQueue from '../queues/action';
+import { processAction } from '../services/action';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
 } from '../helpers/remove-job-configuration';
+import delayAsMilliseconds from '../helpers/delay-as-milliseconds';
 
-type JobData = {
-  flowId: string;
-  stepId: string;
-  triggerItem?: ITriggerItem;
-  error?: IJSONObject;
-};
+const DEFAULT_DELAY_DURATION = 0;
 
 export const worker = new Worker(
-  'trigger',
+  'action',
   async (job) => {
-    const { flowId, executionId, stepId, executionStep } = await processTrigger(
-      job.data as JobData
-    );
+    const { stepId, flowId, executionId, computedParameters, executionStep } =
+      await processAction(job.data);
 
     if (executionStep.isFailed) return;
 
     const step = await Step.query().findById(stepId).throwIfNotFound();
     const nextStep = await step.getNextStep();
+
+    if (!nextStep) return;
+
     const jobName = `${executionId}-${nextStep.id}`;
 
     const jobPayload = {
@@ -41,7 +39,16 @@ export const worker = new Worker(
     const jobOptions = {
       removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
       removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+      delay: DEFAULT_DELAY_DURATION,
     };
+
+    if (step.appKey === 'delay') {
+      jobOptions.delay = delayAsMilliseconds(step.key, computedParameters);
+    }
+
+    if (step.appKey === 'filter' && !executionStep.dataOut) {
+      return;
+    }
 
     await actionQueue.add(jobName, jobPayload, jobOptions);
   },
