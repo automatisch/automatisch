@@ -9,17 +9,17 @@ const redisConnection = {
   connection: redisConfig,
 };
 
-const actionQueue = new Queue('action', redisConnection);
+const emailQueue = new Queue('email', redisConnection);
 
 process.on('SIGTERM', async () => {
-  await actionQueue.close();
+  await emailQueue.close();
 });
 
-actionQueue.on('error', (err) => {
-  if ((err as any).code === CONNECTION_REFUSED) {
+emailQueue.on('error', (err) => {
+  if (err.code === CONNECTION_REFUSED) {
     logger.error('Make sure you have installed Redis and it is running.', err);
     process.exit();
   }
 });
 
-export default actionQueue;
+export default emailQueue;
