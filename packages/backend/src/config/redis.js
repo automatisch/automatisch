@@ -1,16 +1,6 @@
 import appConfig from './app';
 
-type TRedisConfig = {
-  host: string,
-  port: number,
-  username?: string,
-  password?: string,
-  tls?: Record<string, unknown>,
-  enableReadyCheck?: boolean,
-  enableOfflineQueue: boolean,
-}
-
-const redisConfig: TRedisConfig = {
+const redisConfig = {
   host: appConfig.redisHost,
   port: appConfig.redisPort,
   username: appConfig.redisUsername,

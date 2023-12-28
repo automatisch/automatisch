@@ -1,63 +1,13 @@
 import { URL } from 'node:url';
 import * as dotenv from 'dotenv';
 import path from 'path';
+import process from 'node:process';
 
 if (process.env.APP_ENV === 'test') {
   dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
 } else {
   dotenv.config();
 }
-
-type AppConfig = {
-  host: string;
-  protocol: string;
-  port: string;
-  webAppUrl: string;
-  webhookUrl: string;
-  appEnv: string;
-  logLevel: string;
-  isDev: boolean;
-  isTest: boolean;
-  isProd: boolean;
-  postgresDatabase: string;
-  postgresSchema: string;
-  postgresPort: number;
-  postgresHost: string;
-  postgresUsername: string;
-  postgresPassword?: string;
-  version: string;
-  postgresEnableSsl: boolean;
-  baseUrl: string;
-  encryptionKey: string;
-  webhookSecretKey: string;
-  appSecretKey: string;
-  serveWebAppSeparately: boolean;
-  redisHost: string;
-  redisPort: number;
-  redisUsername: string;
-  redisPassword: string;
-  redisTls: boolean;
-  enableBullMQDashboard: boolean;
-  bullMQDashboardUsername: string;
-  bullMQDashboardPassword: string;
-  telemetryEnabled: boolean;
-  requestBodySizeLimit: string;
-  smtpHost: string;
-  smtpPort: number;
-  smtpSecure: boolean;
-  smtpUser: string;
-  smtpPassword: string;
-  fromEmail: string;
-  isCloud: boolean;
-  isMation: boolean;
-  isSelfHosted: boolean;
-  paddleVendorId: number;
-  paddleVendorAuthCode: string;
-  paddlePublicKey: string;
-  licenseKey: string;
-  sentryDsn: string;
-  CI: boolean;
-};
 
 const host = process.env.HOST || 'localhost';
 const protocol = process.env.PROTOCOL || 'http';
@@ -85,7 +35,7 @@ webhookUrl = webhookUrl.substring(0, webhookUrl.length - 1);
 
 const appEnv = process.env.APP_ENV || 'development';
 
-const appConfig: AppConfig = {
+const appConfig = {
   host,
   protocol,
   port,
