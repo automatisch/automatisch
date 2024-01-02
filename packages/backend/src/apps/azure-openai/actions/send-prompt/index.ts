@@ -10,23 +10,6 @@ export default defineAction({
   description: 'Creates a completion for the provided prompt and parameters.',
   arguments: [
     {
-      label: 'Model',
-      key: 'model',
-      type: 'dropdown' as const,
-      required: true,
-      variables: true,
-      source: {
-        type: 'query',
-        name: 'getDynamicData',
-        arguments: [
-          {
-            name: 'key',
-            value: 'listModels',
-          },
-        ],
-      },
-    },
-    {
       label: 'Prompt',
       key: 'prompt',
       type: 'string' as const,
@@ -40,7 +23,7 @@ export default defineAction({
       type: 'string' as const,
       required: false,
       variables: true,
-      description: 'What sampling temperature to use. Higher values mean the model will take more risk. Try 0.9 for more creative applications, and 0 for ones with a well-defined answer. We generally recommend altering this or Top P but not both.'
+      description: 'What sampling temperature to use, between 0 and 2. Higher values means the model will take more risks. Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer. We generally recommend altering this or Top P but not both.'
     },
     {
       label: 'Maximum tokens',
@@ -64,7 +47,7 @@ export default defineAction({
       type: 'string' as const,
       required: false,
       variables: true,
-      description: 'An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with Top P probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.'
+      description: 'An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.'
     },
     {
       label: 'Frequency Penalty',
@@ -95,7 +78,7 @@ export default defineAction({
       frequency_penalty: castFloatOrUndefined($.step.parameters.frequencyPenalty as string),
       presence_penalty: castFloatOrUndefined($.step.parameters.presencePenalty as string),
     };
-    const { data } = await $.http.post('/v1/completions', payload);
+    const { data } = await $.http.post(`/deployments/${$.auth.data.deploymentId}/completions`, payload);
 
     $.setActionItem({
       raw: data,
