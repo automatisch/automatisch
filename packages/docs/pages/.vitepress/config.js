@@ -305,7 +305,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
@@ -447,6 +447,12 @@ export default defineConfig({
             { text: 'Triggers', link: '/apps/typeform/triggers' },
             { text: 'Connection', link: '/apps/typeform/connection' },
           ],
+        },
+        {
+          text: 'Vtiger CRM',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/vtiger-crm/connection' }],
         },
         {
           text: 'Webhooks',
