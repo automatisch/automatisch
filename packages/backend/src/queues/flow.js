@@ -9,17 +9,17 @@ const redisConnection = {
   connection: redisConfig,
 };
 
-const deleteUserQueue = new Queue('delete-user', redisConnection);
+const flowQueue = new Queue('flow', redisConnection);
 
 process.on('SIGTERM', async () => {
-  await deleteUserQueue.close();
+  await flowQueue.close();
 });
 
-deleteUserQueue.on('error', (err) => {
-  if ((err as any).code === CONNECTION_REFUSED) {
+flowQueue.on('error', (err) => {
+  if (err.code === CONNECTION_REFUSED) {
     logger.error('Make sure you have installed Redis and it is running.', err);
     process.exit();
   }
 });
 
-export default deleteUserQueue;
+export default flowQueue;

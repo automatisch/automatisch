@@ -9,17 +9,17 @@ const redisConnection = {
   connection: redisConfig,
 };
 
-const triggerQueue = new Queue('trigger', redisConnection);
+const actionQueue = new Queue('action', redisConnection);
 
 process.on('SIGTERM', async () => {
-  await triggerQueue.close();
+  await actionQueue.close();
 });
 
-triggerQueue.on('error', (err) => {
-  if ((err as any).code === CONNECTION_REFUSED) {
+actionQueue.on('error', (err) => {
+  if (err.code === CONNECTION_REFUSED) {
     logger.error('Make sure you have installed Redis and it is running.', err);
     process.exit();
   }
 });
 
-export default triggerQueue;
+export default actionQueue;
