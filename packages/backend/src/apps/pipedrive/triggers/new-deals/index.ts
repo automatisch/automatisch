@@ -6,17 +6,6 @@ type Payload = {
   sort: string;
 };
 
-type ResponseData = {
-  data: {
-    id: number;
-  }[];
-  additional_data: {
-    pagination: {
-      next_start: number;
-    };
-  };
-};
-
 export default defineTrigger({
   name: 'New deals',
   key: 'newDeals',
@@ -32,7 +21,7 @@ export default defineTrigger({
     };
 
     do {
-      const { data } = await $.http.get<ResponseData>('/api/v1/deals', {
+      const { data } = await $.http.get('/api/v1/deals', {
         params,
       });
 

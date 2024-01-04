@@ -6,15 +6,6 @@ type THeaders = {
   header: string;
 }[];
 
-type TSheetsResponse = {
-  sheets: {
-    properties: {
-      sheetId: string;
-      title: string;
-    };
-  }[];
-};
-
 type TBody = {
   requests: IJSONObject[];
 };
@@ -114,9 +105,8 @@ export default defineAction({
   async run($) {
     const {
       data: { sheets },
-    } = await $.http.get<TSheetsResponse>(
-      `/v4/spreadsheets/${$.step.parameters.spreadsheetId}`
-    );
+    } = await $.http.get(`/v4/spreadsheets/${$.step.parameters.spreadsheetId}`);
+
     const selectedSheet = sheets.find(
       (sheet) => sheet.properties.title === $.step.parameters.title
     );

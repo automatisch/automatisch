@@ -1,14 +1,5 @@
 import defineAction from '../../../../helpers/define-action';
 
-type TSheetsResponse = {
-  sheets: {
-    properties: {
-      sheetId: string;
-      title: string;
-    };
-  }[];
-};
-
 export default defineAction({
   name: 'Create spreadsheet row',
   key: 'createSpreadsheetRow',
@@ -102,9 +93,7 @@ export default defineAction({
   async run($) {
     const {
       data: { sheets },
-    } = await $.http.get<TSheetsResponse>(
-      `/v4/spreadsheets/${$.step.parameters.spreadsheetId}`
-    );
+    } = await $.http.get(`/v4/spreadsheets/${$.step.parameters.spreadsheetId}`);
 
     const selectedSheet = sheets.find(
       (sheet) => sheet.properties.sheetId === $.step.parameters.worksheetId

@@ -32,7 +32,7 @@ export default defineTrigger({
     };
 
     do {
-      const { data } = await $.http.get<ResponseData>('/api/v1/leads', {
+      const { data } = await $.http.get('/api/v1/leads', {
         params,
       });
 
