@@ -1,4 +1,5 @@
 import { Worker } from 'bullmq';
+import process from 'node:process';
 
 import * as Sentry from '../helpers/sentry.ee';
 import redisConfig from '../config/redis';
