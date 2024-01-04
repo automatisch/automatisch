@@ -1,13 +1,7 @@
-import Context from '../../types/express/context';
 import paginate from '../../helpers/pagination';
 import User from '../../models/user';
 
-type Params = {
-  limit: number;
-  offset: number;
-};
-
-const getUsers = async (_parent: unknown, params: Params, context: Context) => {
+const getUsers = async (_parent, params, context) => {
   context.currentUser.can('read', 'User');
 
   const usersQuery = User.query()

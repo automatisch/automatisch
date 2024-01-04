@@ -1,23 +1,15 @@
-import { IConnection } from '@automatisch/types';
 import App from '../../models/app';
-import Context from '../../types/express/context';
 import Flow from '../../models/flow';
 import Connection from '../../models/connection';
 
-type Params = {
-  name: string;
-};
-
-const getConnectedApps = async (
-  _parent: unknown,
-  params: Params,
-  context: Context
-) => {
+const getConnectedApps = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Connection');
 
   const userConnections = context.currentUser.$relatedQuery('connections');
   const allConnections = Connection.query();
-  const connectionBaseQuery = conditions.isCreator ? userConnections : allConnections;
+  const connectionBaseQuery = conditions.isCreator
+    ? userConnections
+    : allConnections;
 
   const userFlows = context.currentUser.$relatedQuery('flows');
   const allFlows = Flow.query();
@@ -51,7 +43,7 @@ const getConnectedApps = async (
     })
     .map((app) => {
       const connection = connections.find(
-        (connection) => (connection as IConnection).key === app.key
+        (connection) => connection.key === app.key
       );
 
       app.connectionCount = connection?.count || 0;

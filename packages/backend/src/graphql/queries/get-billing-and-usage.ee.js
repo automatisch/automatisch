@@ -1,17 +1,8 @@
 import { DateTime } from 'luxon';
-import { TSubscription } from '@automatisch/types';
-
-import Context from '../../types/express/context';
 import Billing from '../../helpers/billing/index.ee';
-import Execution from '../../models/execution';
 import ExecutionStep from '../../models/execution-step';
-import Subscription from '../../models/subscription.ee';
 
-const getBillingAndUsage = async (
-  _parent: unknown,
-  _params: unknown,
-  context: Context
-) => {
+const getBillingAndUsage = async (_parent, _params, context) => {
   const persistedSubscription = await context.currentUser.$relatedQuery(
     'currentSubscription'
   );
@@ -28,7 +19,7 @@ const getBillingAndUsage = async (
   };
 };
 
-const paidSubscription = (subscription: Subscription): TSubscription => {
+const paidSubscription = (subscription) => {
   const currentPlan = Billing.paddlePlans.find(
     (plan) => plan.productId === subscription.paddlePlanId
   );
@@ -63,7 +54,7 @@ const paidSubscription = (subscription: Subscription): TSubscription => {
   };
 };
 
-const freeTrialSubscription = (): TSubscription => {
+const freeTrialSubscription = () => {
   return {
     status: null,
     monthlyQuota: {
@@ -85,15 +76,15 @@ const freeTrialSubscription = (): TSubscription => {
   };
 };
 
-const executionIds = async (context: Context) => {
+const executionIds = async (context) => {
   return (
     await context.currentUser
       .$relatedQuery('executions')
       .select('executions.id')
-  ).map((execution: Execution) => execution.id);
+  ).map((execution) => execution.id);
 };
 
-const executionStepCount = async (context: Context) => {
+const executionStepCount = async (context) => {
   const executionStepCount = await ExecutionStep.query()
     .whereIn('execution_id', await executionIds(context))
     .andWhere(

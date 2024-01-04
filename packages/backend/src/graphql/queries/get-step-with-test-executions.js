@@ -1,17 +1,8 @@
 import { ref } from 'objection';
 import ExecutionStep from '../../models/execution-step';
 import Step from '../../models/step';
-import Context from '../../types/express/context';
 
-type Params = {
-  stepId: string;
-};
-
-const getStepWithTestExecutions = async (
-  _parent: unknown,
-  params: Params,
-  context: Context
-) => {
+const getStepWithTestExecutions = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');
   const userSteps = context.currentUser.$relatedQuery('steps');
   const allSteps = Step.query();
