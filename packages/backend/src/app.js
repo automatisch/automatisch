@@ -2,7 +2,6 @@ import createError from 'http-errors';
 import express from 'express';
 import cors from 'cors';
 
-import { IRequest } from '@automatisch/types';
 import appConfig from './config/app';
 import corsOptions from './config/cors-options';
 import morgan from './helpers/morgan';
@@ -38,7 +37,7 @@ app.use(
   express.json({
     limit: appConfig.requestBodySizeLimit,
     verify(req, res, buf) {
-      (req as IRequest).rawBody = buf;
+      req.rawBody = buf;
     },
   })
 );
@@ -47,7 +46,7 @@ app.use(
     extended: true,
     limit: appConfig.requestBodySizeLimit,
     verify(req, res, buf) {
-      (req as IRequest).rawBody = buf;
+      req.rawBody = buf;
     },
   })
 );
