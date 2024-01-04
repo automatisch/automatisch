@@ -1,12 +1,6 @@
-import { IJSONObject } from '@automatisch/types';
 import { faker } from '@faker-js/faker';
 
-type ConfigParams = {
-  key?: string;
-  value?: IJSONObject;
-};
-
-export const createConfig = async (params: ConfigParams = {}) => {
+export const createConfig = async (params = {}) => {
   const configData = {
     key: params?.key || faker.lorem.word(),
     value: params?.value || { data: 'sampleConfig' },

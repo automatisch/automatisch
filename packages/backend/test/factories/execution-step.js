@@ -1,10 +1,7 @@
-import ExecutionStep from '../../src/models/execution-step';
 import { createExecution } from './execution';
 import { createStep } from './step';
 
-export const createExecutionStep = async (
-  params: Partial<ExecutionStep> = {}
-) => {
+export const createExecutionStep = async (params = {}) => {
   params.executionId = params?.executionId || (await createExecution()).id;
   params.stepId = params?.stepId || (await createStep()).id;
   params.status = params?.status || 'success';

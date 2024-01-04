@@ -1,7 +1,6 @@
-import Step from '../../src/models/step';
 import { createFlow } from './flow';
 
-export const createStep = async (params: Partial<Step> = {}) => {
+export const createStep = async (params = {}) => {
   params.flowId = params?.flowId || (await createFlow()).id;
   params.type = params?.type || 'action';
 
