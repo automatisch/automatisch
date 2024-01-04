@@ -1,17 +1,9 @@
-import type { QueryContext } from 'objection';
 import Base from './base';
 import Flow from './flow';
 import ExecutionStep from './execution-step';
 import Telemetry from '../helpers/telemetry';
 
 class Execution extends Base {
-  id!: string;
-  flowId!: string;
-  testRun: boolean;
-  internalId: string;
-  executionSteps: ExecutionStep[];
-  flow?: Flow;
-
   static tableName = 'executions';
 
   static jsonSchema = {
@@ -47,7 +39,7 @@ class Execution extends Base {
     },
   });
 
-  async $afterInsert(queryContext: QueryContext) {
+  async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.executionCreated(this);
   }

@@ -2,11 +2,6 @@ import Base from './base';
 import SamlAuthProvider from './saml-auth-provider.ee';
 
 class SamlAuthProvidersRoleMapping extends Base {
-  id!: string;
-  samlAuthProviderId: string;
-  roleId: string;
-  remoteRoleName: string;
-
   static tableName = 'saml_auth_providers_role_mappings';
 
   static jsonSchema = {

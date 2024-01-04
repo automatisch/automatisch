@@ -4,14 +4,6 @@ import User from './user';
 import Subscription from './subscription.ee';
 
 class UsageData extends Base {
-  id!: string;
-  userId!: string;
-  subscriptionId?: string;
-  consumedTaskCount!: number;
-  nextResetAt!: string;
-  subscription?: Subscription;
-  user?: User;
-
   static tableName = 'usage_data';
 
   static jsonSchema = {

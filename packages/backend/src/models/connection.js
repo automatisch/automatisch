@@ -1,36 +1,15 @@
-import { QueryContext, ModelOptions } from 'objection';
-import type { RelationMappings } from 'objection';
 import { AES, enc } from 'crypto-js';
-import { IRequest } from '@automatisch/types';
 import App from './app';
 import AppConfig from './app-config';
 import AppAuthClient from './app-auth-client';
 import Base from './base';
 import User from './user';
 import Step from './step';
-import ExtendedQueryBuilder from './query-builder';
 import appConfig from '../config/app';
-import { IJSONObject } from '@automatisch/types';
 import Telemetry from '../helpers/telemetry';
 import globalVariable from '../helpers/global-variable';
 
 class Connection extends Base {
-  id!: string;
-  key!: string;
-  data: string;
-  formattedData?: IJSONObject;
-  userId!: string;
-  verified: boolean;
-  draft: boolean;
-  count?: number;
-  flowCount?: number;
-  user?: User;
-  steps?: Step[];
-  triggerSteps?: Step[];
-  appAuthClientId?: string;
-  appAuthClient?: AppAuthClient;
-  appConfig?: AppConfig;
-
   static tableName = 'connections';
 
   static jsonSchema = {
@@ -56,7 +35,7 @@ class Connection extends Base {
     return ['reconnectable'];
   }
 
-  static relationMappings = (): RelationMappings => ({
+  static relationMappings = () => ({
     user: {
       relation: Base.BelongsToOneRelation,
       modelClass: User,
@@ -80,7 +59,7 @@ class Connection extends Base {
         from: 'connections.id',
         to: 'steps.connection_id',
       },
-      filter(builder: ExtendedQueryBuilder<Step>) {
+      filter(builder) {
         builder.where('type', '=', 'trigger');
       },
     },
@@ -114,7 +93,7 @@ class Connection extends Base {
     return true;
   }
 
-  encryptData(): void {
+  encryptData() {
     if (!this.eligibleForEncryption()) return;
 
     this.data = AES.encrypt(
@@ -125,7 +104,7 @@ class Connection extends Base {
     delete this.formattedData;
   }
 
-  decryptData(): void {
+  decryptData() {
     if (!this.eligibleForDecryption()) return;
 
     this.formattedData = JSON.parse(
@@ -133,39 +112,36 @@ class Connection extends Base {
     );
   }
 
-  eligibleForEncryption(): boolean {
+  eligibleForEncryption() {
     return this.formattedData ? true : false;
   }
 
-  eligibleForDecryption(): boolean {
+  eligibleForDecryption() {
     return this.data ? true : false;
   }
 
   // TODO: Make another abstraction like beforeSave instead of using
   // beforeInsert and beforeUpdate separately for the same operation.
-  async $beforeInsert(queryContext: QueryContext): Promise<void> {
+  async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
     this.encryptData();
   }
 
-  async $beforeUpdate(
-    opt: ModelOptions,
-    queryContext: QueryContext
-  ): Promise<void> {
+  async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     this.encryptData();
   }
 
-  async $afterFind(): Promise<void> {
+  async $afterFind() {
     this.decryptData();
   }
 
-  async $afterInsert(queryContext: QueryContext) {
+  async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.connectionCreated(this);
   }
 
-  async $afterUpdate(opt: ModelOptions, queryContext: QueryContext) {
+  async $afterUpdate(opt, queryContext) {
     await super.$afterUpdate(opt, queryContext);
     Telemetry.connectionUpdated(this);
   }
@@ -176,7 +152,7 @@ class Connection extends Base {
     return await App.findOneByKey(this.key);
   }
 
-  async verifyWebhook(request: IRequest) {
+  async verifyWebhook(request) {
     if (!this.key) return true;
 
     const app = await this.getApp();

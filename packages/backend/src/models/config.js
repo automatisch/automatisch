@@ -1,11 +1,6 @@
-import { IJSONValue } from '@automatisch/types';
 import Base from './base';
 
 class Config extends Base {
-  id!: string;
-  key!: string;
-  value!: { data: IJSONValue };
-
   static tableName = 'config';
 
   static jsonSchema = {

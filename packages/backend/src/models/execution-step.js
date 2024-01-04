@@ -1,5 +1,3 @@
-import type { QueryContext } from 'objection';
-import { IJSONObject } from '@automatisch/types';
 import appConfig from '../config/app';
 import Base from './base';
 import Execution from './execution';
@@ -7,17 +5,6 @@ import Step from './step';
 import Telemetry from '../helpers/telemetry';
 
 class ExecutionStep extends Base {
-  id!: string;
-  executionId!: string;
-  stepId!: string;
-  dataIn!: IJSONObject;
-  dataOut!: IJSONObject;
-  errorDetails: IJSONObject;
-  status: 'success' | 'failure';
-  step: Step;
-  execution?: Execution;
-  count?: number;
-
   static tableName = 'execution_steps';
 
   static jsonSchema = {
@@ -60,7 +47,7 @@ class ExecutionStep extends Base {
     return this.status === 'failure';
   }
 
-  async $afterInsert(queryContext: QueryContext) {
+  async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.executionStepCreated(this);
 

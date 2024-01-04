@@ -1,10 +1,4 @@
 import { ValidationError } from 'objection';
-import type {
-  ModelOptions,
-  QueryContext,
-  StaticHookArguments,
-} from 'objection';
-import ExtendedQueryBuilder from './query-builder';
 import Base from './base';
 import Step from './step';
 import User from './user';
@@ -12,19 +6,6 @@ import Execution from './execution';
 import Telemetry from '../helpers/telemetry';
 
 class Flow extends Base {
-  id!: string;
-  name!: string;
-  userId!: string;
-  active: boolean;
-  status: 'paused' | 'published' | 'draft';
-  steps: Step[];
-  triggerStep: Step;
-  publishedAt: string;
-  remoteWebhookId: string;
-  executions?: Execution[];
-  lastExecution?: Execution;
-  user?: User;
-
   static tableName = 'flows';
 
   static jsonSchema = {
@@ -52,7 +33,7 @@ class Flow extends Base {
         from: 'flows.id',
         to: 'steps.flow_id',
       },
-      filter(builder: ExtendedQueryBuilder<Step>) {
+      filter(builder) {
         builder.orderBy('position', 'asc');
       },
     },
@@ -63,11 +44,8 @@ class Flow extends Base {
         from: 'flows.id',
         to: 'steps.flow_id',
       },
-      filter(builder: ExtendedQueryBuilder<Step>) {
-        builder
-          .where('type', 'trigger')
-          .limit(1)
-          .first();
+      filter(builder) {
+        builder.where('type', 'trigger').limit(1).first();
       },
     },
     executions: {
@@ -85,7 +63,7 @@ class Flow extends Base {
         from: 'flows.id',
         to: 'executions.flow_id',
       },
-      filter(builder: ExtendedQueryBuilder<Execution>) {
+      filter(builder) {
         builder.orderBy('created_at', 'desc').limit(1).first();
       },
     },
@@ -99,7 +77,7 @@ class Flow extends Base {
     },
   });
 
-  static async afterFind(args: StaticHookArguments<any>): Promise<any> {
+  static async afterFind(args) {
     const { result } = args;
 
     const referenceFlow = result[0];
@@ -122,7 +100,7 @@ class Flow extends Base {
   async lastInternalId() {
     const lastExecution = await this.$relatedQuery('lastExecution');
 
-    return lastExecution ? (lastExecution as Execution).internalId : null;
+    return lastExecution ? lastExecution.internalId : null;
   }
 
   async lastInternalIds(itemCount = 50) {
@@ -134,15 +112,12 @@ class Flow extends Base {
     return lastExecutions.map((execution) => execution.internalId);
   }
 
-  async $beforeUpdate(
-    opt: ModelOptions,
-    queryContext: QueryContext
-  ): Promise<void> {
+  async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
     if (!this.active) return;
 
-    const oldFlow = opt.old as Flow;
+    const oldFlow = opt.old;
 
     const incompleteStep = await oldFlow.$relatedQuery('steps').findOne({
       status: 'incomplete',
@@ -168,17 +143,17 @@ class Flow extends Base {
     return;
   }
 
-  async $afterInsert(queryContext: QueryContext) {
+  async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.flowCreated(this);
   }
 
-  async $afterUpdate(opt: ModelOptions, queryContext: QueryContext) {
+  async $afterUpdate(opt, queryContext) {
     await super.$afterUpdate(opt, queryContext);
     Telemetry.flowUpdated(this);
   }
 
-  async getTriggerStep(): Promise<Step> {
+  async getTriggerStep() {
     return await this.$relatedQuery('steps').findOne({
       type: 'trigger',
     });

@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import { DateTime } from 'luxon';
 import crypto from 'node:crypto';
-import { ModelOptions, QueryContext } from 'objection';
 
 import appConfig from '../config/app';
 import { hasValidLicense } from '../helpers/license.ee';
@@ -12,33 +11,12 @@ import Execution from './execution';
 import Flow from './flow';
 import Identity from './identity.ee';
 import Permission from './permission';
-import ExtendedQueryBuilder from './query-builder';
 import Role from './role';
 import Step from './step';
 import Subscription from './subscription.ee';
 import UsageData from './usage-data.ee';
 
 class User extends Base {
-  id!: string;
-  fullName!: string;
-  email!: string;
-  roleId: string;
-  password!: string;
-  resetPasswordToken: string;
-  resetPasswordTokenSentAt: string;
-  trialExpiryDate: string;
-  connections?: Connection[];
-  flows?: Flow[];
-  steps?: Step[];
-  executions?: Execution[];
-  usageData?: UsageData[];
-  currentUsageData?: UsageData;
-  subscriptions?: Subscription[];
-  currentSubscription?: Subscription;
-  role: Role;
-  permissions: Permission[];
-  identities: Identity[];
-
   static tableName = 'users';
 
   static jsonSchema = {
@@ -116,7 +94,7 @@ class User extends Base {
         from: 'usage_data.user_id',
         to: 'users.id',
       },
-      filter(builder: ExtendedQueryBuilder<UsageData>) {
+      filter(builder) {
         builder.orderBy('created_at', 'desc').limit(1).first();
       },
     },
@@ -135,7 +113,7 @@ class User extends Base {
         from: 'subscriptions.user_id',
         to: 'users.id',
       },
-      filter(builder: ExtendedQueryBuilder<Subscription>) {
+      filter(builder) {
         builder.orderBy('created_at', 'desc').limit(1).first();
       },
     },
@@ -165,7 +143,7 @@ class User extends Base {
     },
   });
 
-  login(password: string) {
+  login(password) {
     return bcrypt.compare(password, this.password);
   }
 
@@ -176,7 +154,7 @@ class User extends Base {
     await this.$query().patch({ resetPasswordToken, resetPasswordTokenSentAt });
   }
 
-  async resetPassword(password: string) {
+  async resetPassword(password) {
     return await this.$query().patch({
       resetPasswordToken: null,
       resetPasswordTokenSentAt: null,
@@ -235,9 +213,7 @@ class User extends Base {
       return false;
     }
 
-    const expiryDate = DateTime.fromJSDate(
-      this.trialExpiryDate as unknown as Date
-    );
+    const expiryDate = DateTime.fromJSDate(this.trialExpiryDate);
     const now = DateTime.now();
 
     return now < expiryDate;
@@ -261,7 +237,7 @@ class User extends Base {
     return currentUsageData.consumedTaskCount < plan.quota;
   }
 
-  async $beforeInsert(queryContext: QueryContext) {
+  async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
 
     this.email = this.email.toLowerCase();
@@ -272,7 +248,7 @@ class User extends Base {
     }
   }
 
-  async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
+  async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
     if (this.email) {
@@ -282,7 +258,7 @@ class User extends Base {
     await this.generateHash();
   }
 
-  async $afterInsert(queryContext: QueryContext) {
+  async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
 
     if (appConfig.isCloud) {
@@ -294,7 +270,7 @@ class User extends Base {
     }
   }
 
-  async $afterFind(): Promise<any> {
+  async $afterFind() {
     if (await hasValidLicense()) return this;
 
     if (Array.isArray(this.permissions)) {
@@ -313,26 +289,26 @@ class User extends Base {
     return this;
   }
 
-  get ability(): ReturnType<typeof userAbility> {
+  get ability() {
     return userAbility(this);
   }
 
-  can(action: string, subject: string) {
+  can(action, subject) {
     const can = this.ability.can(action, subject);
 
     if (!can) throw new Error('Not authorized!');
 
     const relevantRule = this.ability.relevantRuleFor(action, subject);
 
-    const conditions = (relevantRule?.conditions as string[]) || [];
-    const conditionMap: Record<string, true> = Object.fromEntries(
+    const conditions = relevantRule?.conditions || [];
+    const conditionMap = Object.fromEntries(
       conditions.map((condition) => [condition, true])
     );
 
     return conditionMap;
   }
 
-  cannot(action: string, subject: string) {
+  cannot(action, subject) {
     const cannot = this.ability.cannot(action, subject);
 
     if (cannot) throw new Error('Not authorized!');

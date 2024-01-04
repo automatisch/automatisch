@@ -3,14 +3,6 @@ import Base from './base';
 import AppAuthClient from './app-auth-client';
 
 class AppConfig extends Base {
-  id!: string;
-  key!: string;
-  allowCustomConnection: boolean;
-  shared: boolean;
-  disabled: boolean;
-  app?: App;
-  appAuthClients?: AppAuthClient[];
-
   static tableName = 'app_configs';
 
   static jsonSchema = {
@@ -46,16 +38,13 @@ class AppConfig extends Base {
   }
 
   get canConnect() {
-    const hasSomeActiveAppAuthClients = !!this.appAuthClients
-      ?.some(appAuthClient => appAuthClient.active);
+    const hasSomeActiveAppAuthClients = !!this.appAuthClients?.some(
+      (appAuthClient) => appAuthClient.active
+    );
     const shared = this.shared;
     const active = this.disabled === false;
 
-    const conditions = [
-      hasSomeActiveAppAuthClients,
-      shared,
-      active
-    ];
+    const conditions = [hasSomeActiveAppAuthClients, shared, active];
 
     return conditions.every(Boolean);
   }

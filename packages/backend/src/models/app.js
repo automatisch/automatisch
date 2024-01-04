@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { join } from 'path';
-import { IApp } from '@automatisch/types';
 import appInfoConverter from '../helpers/app-info-converter';
 import getApp from '../helpers/get-app';
 
@@ -10,7 +9,7 @@ class App {
     .readdirSync(this.folderPath)
     .filter((file) => fs.statSync(this.folderPath + '/' + file).isDirectory());
 
-  static async findAll(name?: string, stripFuncs = true): Promise<IApp[]> {
+  static async findAll(name, stripFuncs = true) {
     if (!name)
       return Promise.all(
         this.list.map(
@@ -25,39 +24,45 @@ class App {
     );
   }
 
-  static async findOneByName(name: string, stripFuncs = false): Promise<IApp> {
+  static async findOneByName(name, stripFuncs = false) {
     const rawAppData = await getApp(name.toLocaleLowerCase(), stripFuncs);
 
     return appInfoConverter(rawAppData);
   }
 
-  static async findOneByKey(key: string, stripFuncs = false): Promise<IApp> {
+  static async findOneByKey(key, stripFuncs = false) {
     const rawAppData = await getApp(key, stripFuncs);
 
     return appInfoConverter(rawAppData);
   }
 
-  static async checkAppAndAction(appKey: string, actionKey: string): Promise<void> {
+  static async checkAppAndAction(appKey, actionKey) {
     const app = await this.findOneByKey(appKey);
 
     if (!actionKey) return;
 
-    const hasAction = app.actions?.find(action => action.key === actionKey);
+    const hasAction = app.actions?.find((action) => action.key === actionKey);
 
     if (!hasAction) {
-      throw new Error(`${app.name} does not have an action with the "${actionKey}" key!`);
+      throw new Error(
+        `${app.name} does not have an action with the "${actionKey}" key!`
+      );
     }
   }
 
-  static async checkAppAndTrigger(appKey: string, triggerKey: string): Promise<void> {
+  static async checkAppAndTrigger(appKey, triggerKey) {
     const app = await this.findOneByKey(appKey);
 
     if (!triggerKey) return;
 
-    const hasTrigger = app.triggers?.find(trigger => trigger.key === triggerKey);
+    const hasTrigger = app.triggers?.find(
+      (trigger) => trigger.key === triggerKey
+    );
 
     if (!hasTrigger) {
-      throw new Error(`${app.name} does not have a trigger with the "${triggerKey}" key!`);
+      throw new Error(
+        `${app.name} does not have a trigger with the "${triggerKey}" key!`
+      );
     }
   }
 }

@@ -1,25 +1,10 @@
 import { URL } from 'node:url';
-import type { SamlConfig } from '@node-saml/passport-saml';
 import appConfig from '../config/app';
 import Base from './base';
 import Identity from './identity.ee';
 import SamlAuthProvidersRoleMapping from './saml-auth-providers-role-mapping.ee';
 
 class SamlAuthProvider extends Base {
-  id!: string;
-  name: string;
-  certificate: string;
-  signatureAlgorithm: SamlConfig['signatureAlgorithm'];
-  issuer: string;
-  entryPoint: string;
-  firstnameAttributeName: string;
-  surnameAttributeName: string;
-  emailAttributeName: string;
-  roleAttributeName: string;
-  defaultRoleId: string;
-  active: boolean;
-  samlAuthProvidersRoleMappings?: SamlAuthProvidersRoleMapping[];
-
   static tableName = 'saml_auth_providers';
 
   static jsonSchema = {
@@ -83,7 +68,7 @@ class SamlAuthProvider extends Base {
     return new URL(`/login/saml/${this.issuer}`, appConfig.baseUrl).toString();
   }
 
-  get config(): SamlConfig {
+  get config() {
     const callbackUrl = new URL(
       `/login/saml/${this.issuer}/callback`,
       appConfig.baseUrl

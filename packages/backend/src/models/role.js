@@ -3,13 +3,6 @@ import Permission from './permission';
 import User from './user';
 
 class Role extends Base {
-  id!: string;
-  name!: string;
-  key: string;
-  description: string;
-  users?: User[];
-  permissions?: Permission[];
-
   static tableName = 'roles';
 
   static jsonSchema = {

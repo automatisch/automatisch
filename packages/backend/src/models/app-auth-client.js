@@ -1,19 +1,9 @@
-import { IJSONObject } from '@automatisch/types';
 import { AES, enc } from 'crypto-js';
-import { ModelOptions, QueryContext } from 'objection';
 import appConfig from '../config/app';
 import AppConfig from './app-config';
 import Base from './base';
 
 class AppAuthClient extends Base {
-  id!: string;
-  name: string;
-  active: boolean;
-  appConfigId!: string;
-  authDefaults: string;
-  formattedAuthDefaults?: IJSONObject;
-  appConfig?: AppConfig;
-
   static tableName = 'app_auth_clients';
 
   static jsonSchema = {
@@ -42,7 +32,7 @@ class AppAuthClient extends Base {
     },
   });
 
-  encryptData(): void {
+  encryptData() {
     if (!this.eligibleForEncryption()) return;
 
     this.authDefaults = AES.encrypt(
@@ -52,7 +42,7 @@ class AppAuthClient extends Base {
 
     delete this.formattedAuthDefaults;
   }
-  decryptData(): void {
+  decryptData() {
     if (!this.eligibleForDecryption()) return;
 
     this.formattedAuthDefaults = JSON.parse(
@@ -60,30 +50,27 @@ class AppAuthClient extends Base {
     );
   }
 
-  eligibleForEncryption(): boolean {
+  eligibleForEncryption() {
     return this.formattedAuthDefaults ? true : false;
   }
 
-  eligibleForDecryption(): boolean {
+  eligibleForDecryption() {
     return this.authDefaults ? true : false;
   }
 
   // TODO: Make another abstraction like beforeSave instead of using
   // beforeInsert and beforeUpdate separately for the same operation.
-  async $beforeInsert(queryContext: QueryContext): Promise<void> {
+  async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
     this.encryptData();
   }
 
-  async $beforeUpdate(
-    opt: ModelOptions,
-    queryContext: QueryContext
-  ): Promise<void> {
+  async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     this.encryptData();
   }
 
-  async $afterFind(): Promise<void> {
+  async $afterFind() {
     this.decryptData();
   }
 }

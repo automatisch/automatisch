@@ -1,7 +1,5 @@
 import { URL } from 'node:url';
-import { QueryContext, ModelOptions } from 'objection';
 import get from 'lodash.get';
-import type { IJSONObject, IStep } from '@automatisch/types';
 import Base from './base';
 import App from './app';
 import Flow from './flow';
@@ -11,20 +9,6 @@ import Telemetry from '../helpers/telemetry';
 import appConfig from '../config/app';
 
 class Step extends Base {
-  id!: string;
-  flowId!: string;
-  key?: string;
-  appKey?: string;
-  type!: IStep['type'];
-  connectionId?: string;
-  status: 'incomplete' | 'completed';
-  position!: number;
-  parameters: IJSONObject;
-  connection?: Connection;
-  flow: Flow;
-  executionSteps: ExecutionStep[];
-  webhookPath?: string;
-
   static tableName = 'steps';
 
   static jsonSchema = {
@@ -100,18 +84,18 @@ class Step extends Base {
 
     if (!triggerCommand) return null;
 
-    const {
-      useSingletonWebhook,
-      singletonWebhookRefValueParameter,
-      type,
-    } = triggerCommand;
+    const { useSingletonWebhook, singletonWebhookRefValueParameter, type } =
+      triggerCommand;
 
     const isWebhook = type === 'webhook';
 
     if (!isWebhook) return null;
 
     if (singletonWebhookRefValueParameter) {
-      const parameterValue = get(this.parameters, singletonWebhookRefValueParameter);
+      const parameterValue = get(
+        this.parameters,
+        singletonWebhookRefValueParameter
+      );
       return `/webhooks/connections/${this.connectionId}/${parameterValue}`;
     }
 
@@ -131,21 +115,21 @@ class Step extends Base {
     return webhookUrl;
   }
 
-  async $afterInsert(queryContext: QueryContext) {
+  async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.stepCreated(this);
   }
 
-  async $afterUpdate(opt: ModelOptions, queryContext: QueryContext) {
+  async $afterUpdate(opt, queryContext) {
     await super.$afterUpdate(opt, queryContext);
     Telemetry.stepUpdated(this);
   }
 
-  get isTrigger(): boolean {
+  get isTrigger() {
     return this.type === 'trigger';
   }
 
-  get isAction(): boolean {
+  get isAction() {
     return this.type === 'action';
   }
 

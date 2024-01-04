@@ -1,12 +1,6 @@
 import Base from './base';
 
 class Permission extends Base {
-  id: string;
-  roleId: string;
-  action: string;
-  subject: string;
-  conditions: string[];
-
   static tableName = 'permissions';
 
   static jsonSchema = {

@@ -5,20 +5,6 @@ import { DateTime } from 'luxon';
 import { getPlanById } from '../helpers/billing/plans.ee';
 
 class Subscription extends Base {
-  id!: string;
-  userId!: string;
-  paddleSubscriptionId!: string;
-  paddlePlanId!: string;
-  updateUrl!: string;
-  cancelUrl!: string;
-  status!: string;
-  nextBillAmount!: string;
-  nextBillDate!: string;
-  lastBillDate?: string;
-  cancellationEffectiveDate?: string;
-  usageData?: UsageData[];
-  currentUsageData?: UsageData;
-
   static tableName = 'subscriptions';
 
   static jsonSchema = {
@@ -87,7 +73,7 @@ class Subscription extends Base {
     return (
       this.status === 'deleted' &&
       Number(this.cancellationEffectiveDate) >
-      DateTime.now().startOf('day').toMillis()
+        DateTime.now().startOf('day').toMillis()
     );
   }
 
