@@ -1,7 +1,7 @@
-import Step from '../models/step';
-import Flow from '../models/flow';
-import Execution from '../models/execution';
-import globalVariable from '../helpers/global-variable';
+import Step from '../models/step.js';
+import Flow from '../models/flow.js';
+import Execution from '../models/execution.js';
+import globalVariable from '../helpers/global-variable.js';
 
 export const processTrigger = async (options) => {
   const { flowId, stepId, triggerItem, error, testRun } = options;

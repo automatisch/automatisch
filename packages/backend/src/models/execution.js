@@ -1,7 +1,7 @@
-import Base from './base';
-import Flow from './flow';
-import ExecutionStep from './execution-step';
-import Telemetry from '../helpers/telemetry';
+import Base from './base.js';
+import Flow from './flow.js';
+import ExecutionStep from './execution-step.js';
+import Telemetry from '../helpers/telemetry/index.js';
 
 class Execution extends Base {
   static tableName = 'executions';

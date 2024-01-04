@@ -1,7 +1,8 @@
-import { AES, enc } from 'crypto-js';
-import appConfig from '../config/app';
-import AppConfig from './app-config';
-import Base from './base';
+import AES from 'crypto-js/aes.js';
+import enc from 'crypto-js/enc-utf8.js';
+import appConfig from '../config/app.js';
+import AppConfig from './app-config.js';
+import Base from './base.js';
 
 class AppAuthClient extends Base {
   static tableName = 'app_auth_clients';

@@ -1,6 +1,6 @@
-import createHttpClient from './http-client';
-import EarlyExitError from '../errors/early-exit';
-import AlreadyProcessedError from '../errors/already-processed';
+import createHttpClient from './http-client/index.js';
+import EarlyExitError from '../errors/early-exit.js';
+import AlreadyProcessedError from '../errors/already-processed.js';
 
 const globalVariable = async (options) => {
   const {

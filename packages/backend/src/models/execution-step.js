@@ -1,8 +1,8 @@
-import appConfig from '../config/app';
-import Base from './base';
-import Execution from './execution';
-import Step from './step';
-import Telemetry from '../helpers/telemetry';
+import appConfig from '../config/app.js';
+import Base from './base.js';
+import Execution from './execution.js';
+import Step from './step.js';
+import Telemetry from '../helpers/telemetry/index.js';
 
 class ExecutionStep extends Base {
   static tableName = 'execution_steps';

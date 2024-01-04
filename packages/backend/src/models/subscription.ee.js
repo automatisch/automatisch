@@ -1,8 +1,8 @@
-import Base from './base';
-import User from './user';
-import UsageData from './usage-data.ee';
+import Base from './base.js';
+import User from './user.js';
+import UsageData from './usage-data.ee.js';
 import { DateTime } from 'luxon';
-import { getPlanById } from '../helpers/billing/plans.ee';
+import { getPlanById } from '../helpers/billing/plans.ee.js';
 
 class Subscription extends Base {
   static tableName = 'subscriptions';

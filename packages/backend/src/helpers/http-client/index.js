@@ -1,8 +1,6 @@
 import { URL } from 'node:url';
-export { AxiosInstance as IHttpClient } from 'axios';
-
-import HttpError from '../../errors/http';
-import axios from '../axios-with-proxy';
+import HttpError from '../../errors/http.js';
+import axios from '../axios-with-proxy.js';
 
 const removeBaseUrlForAbsoluteUrls = (requestConfig) => {
   try {

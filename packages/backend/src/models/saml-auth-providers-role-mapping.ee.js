@@ -1,5 +1,5 @@
-import Base from './base';
-import SamlAuthProvider from './saml-auth-provider.ee';
+import Base from './base.js';
+import SamlAuthProvider from './saml-auth-provider.ee.js';
 
 class SamlAuthProvidersRoleMapping extends Base {
   static tableName = 'saml_auth_providers_role_mappings';

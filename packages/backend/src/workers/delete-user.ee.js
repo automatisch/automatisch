@@ -1,12 +1,12 @@
 import { Worker } from 'bullmq';
 import process from 'node:process';
 
-import * as Sentry from '../helpers/sentry.ee';
-import redisConfig from '../config/redis';
-import logger from '../helpers/logger';
-import appConfig from '../config/app';
-import User from '../models/user';
-import ExecutionStep from '../models/execution-step';
+import * as Sentry from '../helpers/sentry.ee.js';
+import redisConfig from '../config/redis.js';
+import logger from '../helpers/logger.js';
+import appConfig from '../config/app.js';
+import User from '../models/user.js';
+import ExecutionStep from '../models/execution-step.js';
 
 export const worker = new Worker(
   'delete-user',

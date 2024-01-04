@@ -1,8 +1,12 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import { omit, cloneDeep } from 'lodash';
-import addAuthenticationSteps from './add-authentication-steps';
-import addReconnectionSteps from './add-reconnection-steps';
+import omit from 'lodash/omit.js';
+import cloneDeep from 'lodash/cloneDeep.js';
+import addAuthenticationSteps from './add-authentication-steps.js';
+import addReconnectionSteps from './add-reconnection-steps.js';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const apps = fs
   .readdirSync(path.resolve(__dirname, `../apps/`), { withFileTypes: true })

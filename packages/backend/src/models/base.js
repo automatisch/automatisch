@@ -1,7 +1,7 @@
 import { AjvValidator, Model, snakeCaseMappers } from 'objection';
 import addFormats from 'ajv-formats';
 
-import ExtendedQueryBuilder from './query-builder';
+import ExtendedQueryBuilder from './query-builder.js';
 
 class Base extends Model {
   static QueryBuilder = ExtendedQueryBuilder;

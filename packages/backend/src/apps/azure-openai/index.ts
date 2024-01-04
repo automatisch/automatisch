@@ -7,7 +7,8 @@ import actions from './actions';
 export default defineApp({
   name: 'Azure OpenAI',
   key: 'azure-openai',
-  baseUrl: 'https://azure.microsoft.com/en-us/products/ai-services/openai-service',
+  baseUrl:
+    'https://azure.microsoft.com/en-us/products/ai-services/openai-service',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/azure-openai/assets/favicon.svg',
   authDocUrl: 'https://automatisch.io/docs/apps/azure-openai/connection',

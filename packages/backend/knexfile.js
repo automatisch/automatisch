@@ -1,7 +1,10 @@
 import { knexSnakeCaseMappers } from 'objection';
-import appConfig from './src/config/app';
+import appConfig from './src/config/app.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const fileExtension = 'js';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const knexConfig = {
   client: 'pg',

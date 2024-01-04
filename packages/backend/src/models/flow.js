@@ -1,9 +1,9 @@
 import { ValidationError } from 'objection';
-import Base from './base';
-import Step from './step';
-import User from './user';
-import Execution from './execution';
-import Telemetry from '../helpers/telemetry';
+import Base from './base.js';
+import Step from './step.js';
+import User from './user.js';
+import Execution from './execution.js';
+import Telemetry from '../helpers/telemetry/index.js';
 
 class Flow extends Base {
   static tableName = 'flows';

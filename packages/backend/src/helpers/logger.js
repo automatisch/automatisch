@@ -1,5 +1,5 @@
 import * as winston from 'winston';
-import appConfig from '../config/app';
+import appConfig from '../config/app.js';
 
 const levels = {
   error: 0,

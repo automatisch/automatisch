@@ -1,8 +1,8 @@
 import { URL } from 'node:url';
-import appConfig from '../config/app';
-import Base from './base';
-import Identity from './identity.ee';
-import SamlAuthProvidersRoleMapping from './saml-auth-providers-role-mapping.ee';
+import appConfig from '../config/app.js';
+import Base from './base.js';
+import Identity from './identity.ee.js';
+import SamlAuthProvidersRoleMapping from './saml-auth-providers-role-mapping.ee.js';
 
 class SamlAuthProvider extends Base {
   static tableName = 'saml_auth_providers';

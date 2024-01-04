@@ -1,6 +1,6 @@
 import memoryCache from 'memory-cache';
-import appConfig from '../config/app';
-import axios from './axios-with-proxy';
+import appConfig from '../config/app.js';
+import axios from './axios-with-proxy.js';
 
 const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
 

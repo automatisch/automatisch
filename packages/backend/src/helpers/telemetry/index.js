@@ -1,7 +1,7 @@
 import Analytics from '@rudderstack/rudder-sdk-node';
-import organizationId from './organization-id';
-import instanceId from './instance-id';
-import appConfig from '../../config/app';
+import organizationId from './organization-id.js';
+import instanceId from './instance-id.js';
+import appConfig from '../../config/app.js';
 import os from 'os';
 
 const WRITE_KEY = '284Py4VgK2MsNYV7xlKzyrALx0v';

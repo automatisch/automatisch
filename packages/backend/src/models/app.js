@@ -1,7 +1,10 @@
 import fs from 'fs';
-import { join } from 'path';
-import appInfoConverter from '../helpers/app-info-converter';
-import getApp from '../helpers/get-app';
+import path, { join } from 'path';
+import { fileURLToPath } from 'url';
+import appInfoConverter from '../helpers/app-info-converter.js';
+import getApp from '../helpers/get-app.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class App {
   static folderPath = join(__dirname, '../apps');

@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 
-import appConfig from '../config/app';
+import appConfig from '../config/app.js';
 
 const isSentryEnabled = !!appConfig.sentryDsn;
 

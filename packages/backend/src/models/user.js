@@ -2,19 +2,19 @@ import bcrypt from 'bcrypt';
 import { DateTime } from 'luxon';
 import crypto from 'node:crypto';
 
-import appConfig from '../config/app';
-import { hasValidLicense } from '../helpers/license.ee';
-import userAbility from '../helpers/user-ability';
-import Base from './base';
-import Connection from './connection';
-import Execution from './execution';
-import Flow from './flow';
-import Identity from './identity.ee';
-import Permission from './permission';
-import Role from './role';
-import Step from './step';
-import Subscription from './subscription.ee';
-import UsageData from './usage-data.ee';
+import appConfig from '../config/app.js';
+import { hasValidLicense } from '../helpers/license.ee.js';
+import userAbility from '../helpers/user-ability.js';
+import Base from './base.js';
+import Connection from './connection.js';
+import Execution from './execution.js';
+import Flow from './flow.js';
+import Identity from './identity.ee.js';
+import Permission from './permission.js';
+import Role from './role.js';
+import Step from './step.js';
+import Subscription from './subscription.ee.js';
+import UsageData from './usage-data.ee.js';
 
 class User extends Base {
   static tableName = 'users';

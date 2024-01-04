@@ -1,13 +1,14 @@
-import { AES, enc } from 'crypto-js';
-import App from './app';
-import AppConfig from './app-config';
-import AppAuthClient from './app-auth-client';
-import Base from './base';
-import User from './user';
-import Step from './step';
-import appConfig from '../config/app';
-import Telemetry from '../helpers/telemetry';
-import globalVariable from '../helpers/global-variable';
+import AES from 'crypto-js/aes.js';
+import enc from 'crypto-js/enc-utf8.js';
+import App from './app.js';
+import AppConfig from './app-config.js';
+import AppAuthClient from './app-auth-client.js';
+import Base from './base.js';
+import User from './user.js';
+import Step from './step.js';
+import appConfig from '../config/app.js';
+import Telemetry from '../helpers/telemetry/index.js';
+import globalVariable from '../helpers/global-variable.js';
 
 class Connection extends Base {
   static tableName = 'connections';

@@ -1,12 +1,12 @@
 import { URL } from 'node:url';
 import get from 'lodash.get';
-import Base from './base';
-import App from './app';
-import Flow from './flow';
-import Connection from './connection';
-import ExecutionStep from './execution-step';
-import Telemetry from '../helpers/telemetry';
-import appConfig from '../config/app';
+import Base from './base.js';
+import App from './app.js';
+import Flow from './flow.js';
+import Connection from './connection.js';
+import ExecutionStep from './execution-step.js';
+import Telemetry from '../helpers/telemetry/index.js';
+import appConfig from '../config/app.js';
 
 class Step extends Base {
   static tableName = 'steps';

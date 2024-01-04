@@ -1,6 +1,6 @@
-import Base from './base';
-import Permission from './permission';
-import User from './user';
+import Base from './base.js';
+import Permission from './permission.js';
+import User from './user.js';
 
 class Role extends Base {
   static tableName = 'roles';

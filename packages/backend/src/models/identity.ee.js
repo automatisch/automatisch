@@ -1,6 +1,6 @@
-import Base from './base';
-import SamlAuthProvider from './saml-auth-provider.ee';
-import User from './user';
+import Base from './base.js';
+import SamlAuthProvider from './saml-auth-provider.ee.js';
+import User from './user.js';
 
 class Identity extends Base {
   static tableName = 'identities';

@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import appConfig from '../../config/app';
+import appConfig from '../../config/app.js';
 
 const organizationId = () => {
   const key = appConfig.encryptionKey;

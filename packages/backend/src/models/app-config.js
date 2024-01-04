@@ -1,6 +1,6 @@
-import App from './app';
-import Base from './base';
-import AppAuthClient from './app-auth-client';
+import App from './app.js';
+import Base from './base.js';
+import AppAuthClient from './app-auth-client.js';
 
 class AppConfig extends Base {
   static tableName = 'app_configs';
