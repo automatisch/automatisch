@@ -5,12 +5,7 @@ import AlreadyProcessedError from '../errors/already-processed';
 import HttpError from '../errors/http';
 import { logger } from '../helpers/logger';
 
-type ProcessFlowOptions = {
-  flowId: string;
-  testRun?: boolean;
-};
-
-export const processFlow = async (options: ProcessFlowOptions) => {
+export const processFlow = async (options) => {
   const { testRun, flowId } = options;
   const flow = await Flow.query().findById(flowId).throwIfNotFound();
   const triggerStep = await flow.getTriggerStep();

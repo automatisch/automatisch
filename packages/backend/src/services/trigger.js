@@ -1,18 +1,9 @@
-import { IJSONObject, ITriggerItem } from '@automatisch/types';
 import Step from '../models/step';
 import Flow from '../models/flow';
 import Execution from '../models/execution';
 import globalVariable from '../helpers/global-variable';
 
-type ProcessTriggerOptions = {
-  flowId: string;
-  stepId: string;
-  triggerItem?: ITriggerItem;
-  error?: IJSONObject;
-  testRun?: boolean;
-};
-
-export const processTrigger = async (options: ProcessTriggerOptions) => {
+export const processTrigger = async (options) => {
   const { flowId, stepId, triggerItem, error, testRun } = options;
 
   const step = await Step.query().findById(stepId).throwIfNotFound();
