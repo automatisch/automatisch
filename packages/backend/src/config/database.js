@@ -4,11 +4,10 @@ import process from 'process';
 import pg from 'pg';
 pg.types.setTypeParser(20, 'text', parseInt);
 import knex from 'knex';
-import type { Knex } from 'knex';
 import knexConfig from '../../knexfile';
 import logger from '../helpers/logger';
 
-export const client: Knex = knex(knexConfig);
+export const client = knex(knexConfig);
 
 const CONNECTION_REFUSED = 'ECONNREFUSED';
 
