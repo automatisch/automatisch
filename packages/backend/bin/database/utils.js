@@ -6,10 +6,9 @@ import Role from '../../src/models/role';
 import '../../src/config/orm';
 
 async function fetchAdminRole() {
-  const role = await Role
-    .query()
+  const role = await Role.query()
     .where({
-      key: 'admin'
+      key: 'admin',
     })
     .limit(1)
     .first();
@@ -41,7 +40,7 @@ export async function createUser(
       logger.info('No need to seed a user.');
     }
   } catch (err) {
-    if ((err as any).nativeError.code !== UNIQUE_VIOLATION_CODE) {
+    if (err.nativeError.code !== UNIQUE_VIOLATION_CODE) {
       throw err;
     }
 
@@ -68,7 +67,7 @@ export const createDatabase = async (database = appConfig.postgresDatabase) => {
     await client.query(`CREATE DATABASE ${database}`);
     logger.info(`Database: ${database} created!`);
   } catch (err) {
-    if ((err as any).code !== DUPLICATE_DB_CODE) {
+    if (err.code !== DUPLICATE_DB_CODE) {
       throw err;
     }
 
@@ -85,7 +84,7 @@ export const createDatabaseUser = async (user = appConfig.postgresUsername) => {
 
     return result;
   } catch (err) {
-    if ((err as any).code !== DUPLICATE_OBJECT_CODE) {
+    if (err.code !== DUPLICATE_OBJECT_CODE) {
       throw err;
     }
 
