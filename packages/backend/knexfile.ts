@@ -1,7 +1,7 @@
 import { knexSnakeCaseMappers } from 'objection';
 import appConfig from './src/config/app';
 
-const fileExtension = appConfig.isDev || appConfig.isTest ? 'ts' : 'js';
+const fileExtension = 'js';
 
 const knexConfig = {
   client: 'pg',
