@@ -1,11 +1,9 @@
-import { Response } from 'express';
-import { IJSONObject, IRequest } from '@automatisch/types';
 import crypto from 'crypto';
 import { serialize } from 'php-serialize';
 import Billing from '../../helpers/billing/index.ee';
 import appConfig from '../../config/app';
 
-export default async (request: IRequest, response: Response) => {
+export default async (request, response) => {
   if (!verifyWebhook(request)) {
     return response.sendStatus(401);
   }
@@ -23,14 +21,14 @@ export default async (request: IRequest, response: Response) => {
   return response.sendStatus(200);
 };
 
-const verifyWebhook = (request: IRequest) => {
+const verifyWebhook = (request) => {
   const signature = request.body.p_signature;
 
   const keys = Object.keys(request.body)
     .filter((key) => key !== 'p_signature')
     .sort();
 
-  const sorted: IJSONObject = {};
+  const sorted = {};
   keys.forEach((key) => {
     sorted[key] = request.body[key];
   });

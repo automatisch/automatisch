@@ -1,12 +1,10 @@
 import path from 'node:path';
-import { Response } from 'express';
-import { IRequest } from '@automatisch/types';
 
 import Connection from '../../models/connection';
 import logger from '../../helpers/logger';
 import handler from '../../helpers/webhook-handler';
 
-export default async (request: IRequest, response: Response) => {
+export default async (request, response) => {
   const computedRequestPayload = {
     headers: request.headers,
     body: request.body,
@@ -22,7 +20,7 @@ export default async (request: IRequest, response: Response) => {
     .findById(connectionId)
     .throwIfNotFound();
 
-  if (!await connection.verifyWebhook(request)) {
+  if (!(await connection.verifyWebhook(request))) {
     return response.sendStatus(401);
   }
 
