@@ -1,7 +1,6 @@
 import SamlAuthProvider from '../models/saml-auth-provider.ee';
 import User from '../models/user';
 import Identity from '../models/identity.ee';
-import SamlAuthProvidersRoleMapping from '../models/saml-auth-providers-role-mapping.ee';
 
 const getUser = (
   user: Record<string, unknown>,

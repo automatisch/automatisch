@@ -1,4 +1,3 @@
-import qs from 'qs';
 import defineAction from '../../../../helpers/define-action';
 
 export default defineAction({
@@ -19,7 +18,8 @@ export default defineAction({
       key: 'message',
       type: 'string' as const,
       required: true,
-      description: 'Message body to be sent, set to triggered if empty or not passed.',
+      description:
+        'Message body to be sent, set to triggered if empty or not passed.',
       variables: true,
     },
     {
@@ -67,22 +67,15 @@ export default defineAction({
       key: 'delay',
       type: 'string' as const,
       required: false,
-      description: 'Timestamp or duration for delayed delivery. For example, 30min or 9am.',
+      description:
+        'Timestamp or duration for delayed delivery. For example, 30min or 9am.',
       variables: true,
     },
   ],
 
   async run($) {
-    const {
-      topic,
-      message,
-      title,
-      email,
-      click,
-      attach,
-      filename,
-      delay
-    } = $.step.parameters;
+    const { topic, message, title, email, click, attach, filename, delay } =
+      $.step.parameters;
     const payload = {
       topic,
       message,
@@ -91,7 +84,7 @@ export default defineAction({
       click,
       attach,
       filename,
-      delay
+      delay,
     };
 
     const response = await $.http.post('/', payload);

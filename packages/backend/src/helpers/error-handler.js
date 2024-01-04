@@ -1,6 +1,7 @@
 import logger from './logger';
 
 // Do not remove `next` argument as the function signature will not fit for an error handler middleware
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler = (err, req, res, next) => {
   if (err.message === 'Not Found') {
     res.status(404).end();
