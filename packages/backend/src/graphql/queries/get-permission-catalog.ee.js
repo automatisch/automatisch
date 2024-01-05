@@ -1,4 +1,4 @@
-import permissionCatalog from '../../helpers/permission-catalog.ee';
+import permissionCatalog from '../../helpers/permission-catalog.ee.js';
 
 const getPermissionCatalog = async () => {
   return permissionCatalog;

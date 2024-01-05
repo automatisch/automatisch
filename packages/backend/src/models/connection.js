@@ -109,7 +109,7 @@ class Connection extends Base {
     if (!this.eligibleForDecryption()) return;
 
     this.formattedData = JSON.parse(
-      AES.decrypt(this.data, appConfig.encryptionKey).toString(enc.Utf8)
+      AES.decrypt(this.data, appConfig.encryptionKey).toString(enc)
     );
   }
 

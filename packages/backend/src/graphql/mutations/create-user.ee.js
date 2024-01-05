@@ -1,5 +1,5 @@
-import User from '../../models/user';
-import Role from '../../models/role';
+import User from '../../models/user.js';
+import Role from '../../models/role.js';
 
 const createUser = async (_parent, params, context) => {
   context.currentUser.can('create', 'User');

@@ -1,5 +1,5 @@
-import App from '../../models/app';
-import globalVariable from '../../helpers/global-variable';
+import App from '../../models/app.js';
+import globalVariable from '../../helpers/global-variable.js';
 
 const verifyConnection = async (_parent, params, context) => {
   context.currentUser.can('create', 'Connection');

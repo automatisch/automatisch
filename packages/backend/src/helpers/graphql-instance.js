@@ -1,16 +1,19 @@
-import { join } from 'node:path';
+import path, { join } from 'path';
+import { fileURLToPath } from 'url';
 import { graphqlHTTP } from 'express-graphql';
 import { loadSchemaSync } from '@graphql-tools/load';
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
 import { addResolversToSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
 
-import appConfig from '../config/app';
-import logger from './logger';
-import authentication from './authentication';
-import * as Sentry from './sentry.ee';
-import resolvers from '../graphql/resolvers';
-import HttpError from '../errors/http';
+import appConfig from '../config/app.js';
+import logger from './logger.js';
+import authentication from './authentication.js';
+import * as Sentry from './sentry.ee.js';
+import resolvers from '../graphql/resolvers.js';
+import HttpError from '../errors/http.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const schema = loadSchemaSync(join(__dirname, '../graphql/schema.graphql'), {
   loaders: [new GraphQLFileLoader()],
@@ -22,7 +25,10 @@ const schemaWithResolvers = addResolversToSchema({
 });
 
 const graphQLInstance = graphqlHTTP({
-  schema: applyMiddleware(schemaWithResolvers, authentication),
+  schema: applyMiddleware(
+    schemaWithResolvers,
+    authentication.generate(schemaWithResolvers)
+  ),
   graphiql: appConfig.isDev,
   customFormatErrorFn: (error) => {
     logger.error(error.path + ' : ' + error.message + '\n' + error.stack);

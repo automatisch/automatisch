@@ -1,5 +1,5 @@
-import paginate from '../../helpers/pagination';
-import Execution from '../../models/execution';
+import paginate from '../../helpers/pagination.js';
+import Execution from '../../models/execution.js';
 
 const getExecutionSteps = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Execution');

@@ -1,6 +1,6 @@
 import express from 'express';
 import { dirname, join } from 'path';
-import appConfig from '../config/app';
+import appConfig from '../config/app.js';
 
 const webUIHandler = async (app) => {
   if (appConfig.serveWebAppSeparately) return;

@@ -1,5 +1,5 @@
-import Role from '../../models/role';
-import SamlAuthProvider from '../../models/saml-auth-provider.ee';
+import Role from '../../models/role.js';
+import SamlAuthProvider from '../../models/saml-auth-provider.ee.js';
 
 const deleteRole = async (_parent, params, context) => {
   context.currentUser.can('delete', 'Role');

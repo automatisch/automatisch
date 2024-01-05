@@ -1,4 +1,4 @@
-import SamlAuthProvider from '../../models/saml-auth-provider.ee';
+import SamlAuthProvider from '../../models/saml-auth-provider.ee.js';
 
 const getSamlAuthProvider = async (_parent, params, context) => {
   context.currentUser.can('read', 'SamlAuthProvider');

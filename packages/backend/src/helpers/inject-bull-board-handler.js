@@ -1,5 +1,5 @@
 import basicAuth from 'express-basic-auth';
-import appConfig from '../config/app';
+import appConfig from '../config/app.js';
 
 const injectBullBoardHandler = async (app, serverAdapter) => {
   if (

@@ -1,6 +1,6 @@
-import App from '../../models/app';
-import Step from '../../models/step';
-import globalVariable from '../../helpers/global-variable';
+import App from '../../models/app.js';
+import Step from '../../models/step.js';
+import globalVariable from '../../helpers/global-variable.js';
 
 const getDynamicFields = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');

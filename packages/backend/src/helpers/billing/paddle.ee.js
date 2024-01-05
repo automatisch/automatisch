@@ -1,6 +1,6 @@
 // TODO: replace with axios-with-proxy when needed
 import axios from 'axios';
-import appConfig from '../../config/app';
+import appConfig from '../../config/app.js';
 import { DateTime } from 'luxon';
 
 const PADDLE_VENDOR_URL = appConfig.isDev

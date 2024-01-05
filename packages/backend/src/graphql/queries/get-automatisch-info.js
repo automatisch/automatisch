@@ -1,5 +1,5 @@
-import appConfig from '../../config/app';
-import { getLicense } from '../../helpers/license.ee';
+import appConfig from '../../config/app.js';
+import { getLicense } from '../../helpers/license.ee.js';
 
 const getAutomatischInfo = async () => {
   const license = await getLicense();

@@ -1,4 +1,4 @@
-import Base from './base';
+import Base from './base.js';
 
 class Config extends Base {
   static tableName = 'config';

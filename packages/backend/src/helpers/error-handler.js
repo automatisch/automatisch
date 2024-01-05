@@ -1,4 +1,4 @@
-import logger from './logger';
+import logger from './logger.js';
 
 // Do not remove `next` argument as the function signature will not fit for an error handler middleware
 const errorHandler = (err, req, res, next) => {

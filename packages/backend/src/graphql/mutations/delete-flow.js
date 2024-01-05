@@ -1,7 +1,7 @@
-import Flow from '../../models/flow';
-import ExecutionStep from '../../models/execution-step';
-import globalVariable from '../../helpers/global-variable';
-import logger from '../../helpers/logger';
+import Flow from '../../models/flow.js';
+import ExecutionStep from '../../models/execution-step.js';
+import globalVariable from '../../helpers/global-variable.js';
+import logger from '../../helpers/logger.js';
 
 const deleteFlow = async (_parent, params, context) => {
   const conditions = context.currentUser.can('delete', 'Flow');

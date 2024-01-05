@@ -1,4 +1,4 @@
-import appConfig from '../../config/app';
+import appConfig from '../../config/app.js';
 
 const getSubscriptionStatus = async (_parent, _params, context) => {
   if (!appConfig.isCloud) return;

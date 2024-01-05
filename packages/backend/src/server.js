@@ -1,7 +1,7 @@
-import app from './app';
-import appConfig from './config/app';
-import logger from './helpers/logger';
-import telemetry from './helpers/telemetry';
+import app from './app.js';
+import appConfig from './config/app.js';
+import logger from './helpers/logger.js';
+import telemetry from './helpers/telemetry/index.js';
 
 telemetry.setServiceType('main');
 

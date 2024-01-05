@@ -1,8 +1,8 @@
-import App from '../../models/app';
-import Step from '../../models/step';
-import ExecutionStep from '../../models/execution-step';
-import globalVariable from '../../helpers/global-variable';
-import computeParameters from '../../helpers/compute-parameters';
+import App from '../../models/app.js';
+import Step from '../../models/step.js';
+import ExecutionStep from '../../models/execution-step.js';
+import globalVariable from '../../helpers/global-variable.js';
+import computeParameters from '../../helpers/compute-parameters.js';
 
 const getDynamicData = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');

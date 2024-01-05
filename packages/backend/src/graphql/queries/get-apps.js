@@ -1,4 +1,4 @@
-import App from '../../models/app';
+import App from '../../models/app.js';
 
 const getApps = async (_parent, params) => {
   const apps = await App.findAll(params.name);

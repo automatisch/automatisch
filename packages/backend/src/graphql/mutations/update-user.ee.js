@@ -1,4 +1,4 @@
-import User from '../../models/user';
+import User from '../../models/user.js';
 
 const updateUser = async (_parent, params, context) => {
   context.currentUser.can('update', 'User');

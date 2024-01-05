@@ -1,5 +1,5 @@
-import User from '../../models/user';
-import Role from '../../models/role';
+import User from '../../models/user.js';
+import Role from '../../models/role.js';
 
 const registerUser = async (_parent, params) => {
   const { fullName, email, password } = params.input;

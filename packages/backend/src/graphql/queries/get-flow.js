@@ -1,4 +1,4 @@
-import Flow from '../../models/flow';
+import Flow from '../../models/flow.js';
 
 const getFlow = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Flow');

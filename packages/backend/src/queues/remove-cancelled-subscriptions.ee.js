@@ -1,7 +1,7 @@
 import process from 'process';
 import { Queue } from 'bullmq';
-import redisConfig from '../config/redis';
-import logger from '../helpers/logger';
+import redisConfig from '../config/redis.js';
+import logger from '../helpers/logger.js';
 
 const CONNECTION_REFUSED = 'ECONNREFUSED';
 

@@ -1,5 +1,5 @@
-import User from '../models/user';
-import Identity from '../models/identity.ee';
+import User from '../models/user.js';
+import Identity from '../models/identity.ee.js';
 
 const getUser = (user, providerConfig) => ({
   name: user[providerConfig.firstnameAttributeName],

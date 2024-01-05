@@ -2,10 +2,10 @@ import { URL } from 'node:url';
 import { MultiSamlStrategy } from '@node-saml/passport-saml';
 import passport from 'passport';
 
-import appConfig from '../config/app';
-import createAuthTokenByUserId from './create-auth-token-by-user-id';
-import SamlAuthProvider from '../models/saml-auth-provider.ee';
-import findOrCreateUserBySamlIdentity from './find-or-create-user-by-saml-identity.ee';
+import appConfig from '../config/app.js';
+import createAuthTokenByUserId from './create-auth-token-by-user-id.js';
+import SamlAuthProvider from '../models/saml-auth-provider.ee.js';
+import findOrCreateUserBySamlIdentity from './find-or-create-user-by-saml-identity.ee.js';
 
 export default function configurePassport(app) {
   app.use(

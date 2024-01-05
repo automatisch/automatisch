@@ -1,7 +1,7 @@
 import { raw } from 'objection';
 import { DateTime } from 'luxon';
-import Execution from '../../models/execution';
-import paginate from '../../helpers/pagination';
+import Execution from '../../models/execution.js';
+import paginate from '../../helpers/pagination.js';
 
 const getExecutions = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Execution');

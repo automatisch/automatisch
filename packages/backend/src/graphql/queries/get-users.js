@@ -1,5 +1,5 @@
-import paginate from '../../helpers/pagination';
-import User from '../../models/user';
+import paginate from '../../helpers/pagination.js';
+import User from '../../models/user.js';
 
 const getUsers = async (_parent, params, context) => {
   context.currentUser.can('read', 'User');

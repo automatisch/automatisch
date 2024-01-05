@@ -1,6 +1,6 @@
 import { ref } from 'objection';
-import ExecutionStep from '../../models/execution-step';
-import Step from '../../models/step';
+import ExecutionStep from '../../models/execution-step.js';
+import Step from '../../models/step.js';
 
 const getStepWithTestExecutions = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');

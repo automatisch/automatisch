@@ -1,6 +1,7 @@
-import axios from '../../helpers/axios-with-proxy';
+import axios from '../../helpers/axios-with-proxy.js';
 
-const NOTIFICATIONS_URL = 'https://notifications.automatisch.io/notifications.json';
+const NOTIFICATIONS_URL =
+  'https://notifications.automatisch.io/notifications.json';
 
 const getNotifications = async () => {
   try {

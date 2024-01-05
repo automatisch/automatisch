@@ -5,7 +5,7 @@
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --watch 'src/graphql/schema.graphql' --exit-child src/server.ts",
+    "dev": "nodemon --watch 'src/**/*.js' --exec 'node' src/server.js",
     "worker": "nodemon --watch 'src/**/*.js' --exec 'node' src/worker.js",
     "build": "tsc && yarn copy-statics",
     "build:watch": "nodemon --watch 'src/**/*.js' --watch 'bin/**/*.ts' --exec yarn build --ext ts",

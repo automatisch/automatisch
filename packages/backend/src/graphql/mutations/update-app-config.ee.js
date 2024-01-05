@@ -1,4 +1,4 @@
-import AppConfig from '../../models/app-config';
+import AppConfig from '../../models/app-config.js';
 
 const updateAppConfig = async (_parent, params, context) => {
   context.currentUser.can('update', 'App');

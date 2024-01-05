@@ -47,7 +47,7 @@ class AppAuthClient extends Base {
     if (!this.eligibleForDecryption()) return;
 
     this.formattedAuthDefaults = JSON.parse(
-      AES.decrypt(this.authDefaults, appConfig.encryptionKey).toString(enc.Utf8)
+      AES.decrypt(this.authDefaults, appConfig.encryptionKey).toString(enc)
     );
   }
 

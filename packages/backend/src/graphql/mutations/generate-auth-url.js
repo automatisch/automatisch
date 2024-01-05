@@ -1,5 +1,5 @@
-import globalVariable from '../../helpers/global-variable';
-import App from '../../models/app';
+import globalVariable from '../../helpers/global-variable.js';
+import App from '../../models/app.js';
 
 const generateAuthUrl = async (_parent, params, context) => {
   context.currentUser.can('create', 'Connection');

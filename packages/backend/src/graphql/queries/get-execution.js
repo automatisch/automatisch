@@ -1,4 +1,4 @@
-import Execution from '../../models/execution';
+import Execution from '../../models/execution.js';
 
 const getExecution = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Execution');
