@@ -13,7 +13,9 @@ const apps = fs
   .reduce((apps, dirent) => {
     if (!dirent.isDirectory()) return apps;
 
-    apps[dirent.name] = import(path.resolve(__dirname, '../apps', dirent.name));
+    apps[dirent.name] = import(
+      path.resolve(__dirname, '../apps', dirent.name, 'index.js')
+    );
 
     return apps;
   }, {});
