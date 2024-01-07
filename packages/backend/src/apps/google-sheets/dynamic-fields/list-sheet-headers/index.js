@@ -14,10 +14,7 @@ export default {
 
     const {
       data: { sheets },
-    } =
-      (await $.http.get) <
-      TSheetsResponse >
-      `/v4/spreadsheets/${$.step.parameters.spreadsheetId}`;
+    } = await $.http.get(`/v4/spreadsheets/${$.step.parameters.spreadsheetId}`);
 
     const selectedSheet = sheets.find(
       (sheet) => sheet.properties.sheetId === $.step.parameters.worksheetId
@@ -33,13 +30,12 @@ export default {
       majorDimension: 'ROWS',
     };
 
-    const { data } =
-      (await $.http.get) <
-      TSheetsValueResponse >
-      (`/v4/spreadsheets/${$.step.parameters.spreadsheetId}/values/${range}`,
+    const { data } = await $.http.get(
+      `/v4/spreadsheets/${$.step.parameters.spreadsheetId}/values/${range}`,
       {
         params,
-      });
+      }
+    );
 
     if (!data.values) {
       return;

@@ -10,7 +10,7 @@ export default {
     };
 
     do {
-      const { data } = (await $.http.get) < TResponse > requestPath;
+      const { data } = await $.http.get(requestPath);
 
       const smsCapableIncomingPhoneNumbers = data.incoming_phone_numbers
         .filter((incomingPhoneNumber) => {

@@ -10,7 +10,7 @@ export default {
     let pathname = `/2010-04-01/Accounts/${$.auth.data.accountSid}/IncomingPhoneNumbers.json`;
 
     do {
-      const response = (await $.http.get) < TResponseData > pathname;
+      const response = await $.http.get(pathname);
 
       for (const incomingPhoneNumber of response.data.incoming_phone_numbers) {
         if (incomingPhoneNumber.capabilities.sms === false) {

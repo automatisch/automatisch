@@ -7,8 +7,7 @@ export default {
       data: [],
     };
 
-    const { data } =
-      (await $.http.get) < Statuses > '?rest_route=/wp/v2/statuses';
+    const { data } = await $.http.get('?rest_route=/wp/v2/statuses');
 
     if (!data) return statuses;
 

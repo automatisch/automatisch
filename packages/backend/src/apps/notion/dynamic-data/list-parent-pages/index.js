@@ -15,8 +15,7 @@ export default {
     };
 
     do {
-      const response =
-        (await $.http.post) < ResponseData > ('/v1/search', payload);
+      const response = await $.http.post('/v1/search', payload);
 
       payload.start_cursor = response.data.next_cursor;
 

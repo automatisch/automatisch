@@ -1,4 +1,3 @@
-import qs from 'qs';
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({

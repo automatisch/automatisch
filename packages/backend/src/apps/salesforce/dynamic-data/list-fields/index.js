@@ -7,10 +7,9 @@ export default {
 
     if (!object) return { data: [] };
 
-    const response =
-      (await $.http.get) <
-      TResponse >
-      `/services/data/v56.0/sobjects/${object}/describe`;
+    const response = await $.http.get(
+      `/services/data/v56.0/sobjects/${object}/describe`
+    );
 
     const fields = response.data.fields.map((field) => {
       return {
