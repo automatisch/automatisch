@@ -18,8 +18,7 @@
     "typeRoots": [
       "node_modules/@types",
       "node_modules/@automatisch/types",
-      "./src/types",
-      "./src/apps"
+      "./src/types"
     ]
   },
   "include": ["src/**/*", "bin/**/*"]
