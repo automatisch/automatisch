@@ -1,3 +1,3 @@
-import { createUser } from './utils';
+import { createUser } from './utils.js';
 
 createUser();

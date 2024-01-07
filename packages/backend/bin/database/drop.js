@@ -1,3 +1,3 @@
-import { dropDatabase } from './utils';
+import { dropDatabase } from './utils.js';
 
 dropDatabase();

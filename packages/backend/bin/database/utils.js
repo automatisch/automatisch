@@ -1,9 +1,9 @@
-import appConfig from '../../src/config/app';
-import logger from '../../src/helpers/logger';
-import client from './client';
-import User from '../../src/models/user';
-import Role from '../../src/models/role';
-import '../../src/config/orm';
+import appConfig from '../../src/config/app.js';
+import logger from '../../src/helpers/logger.js';
+import client from './client.js';
+import User from '../../src/models/user.js';
+import Role from '../../src/models/role.js';
+import '../../src/config/orm.js';
 
 async function fetchAdminRole() {
   const role = await Role.query()

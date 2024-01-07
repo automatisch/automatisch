@@ -1,3 +1,3 @@
-import { createDatabaseAndUser } from './utils';
+import { createDatabaseAndUser } from './utils.js';
 
 createDatabaseAndUser();

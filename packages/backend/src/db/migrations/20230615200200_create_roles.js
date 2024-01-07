@@ -1,5 +1,5 @@
-import capitalize from 'lodash/capitalize';
-import lowerCase from 'lodash/lowerCase';
+import capitalize from 'lodash/capitalize.js';
+import lowerCase from 'lodash/lowerCase.js';
 
 export async function up(knex) {
   await knex.schema.createTable('roles', (table) => {

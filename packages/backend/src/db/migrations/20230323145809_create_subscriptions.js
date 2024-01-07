@@ -1,4 +1,4 @@
-import appConfig from '../../config/app';
+import appConfig from '../../config/app.js';
 
 export async function up(knex) {
   if (!appConfig.isCloud) return;
