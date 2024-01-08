@@ -8,6 +8,7 @@
     "dev": "nodemon --watch 'src/**/*.js' --exec 'node' src/server.js",
     "worker": "nodemon --watch 'src/**/*.js' --exec 'node' src/worker.js",
     "build": "tsc && yarn copy-statics",
+    "build": "yarn copy-statics",
     "build:watch": "nodemon --watch 'src/**/*.js' --watch 'bin/**/*.ts' --exec yarn build --ext ts",
     "start": "node dist/src/server.js",
     "pretest": "APP_ENV=test ts-node ./test/setup/prepare-test-env.ts",
