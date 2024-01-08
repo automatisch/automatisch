@@ -1,11 +1,15 @@
 import express from 'express';
 import { dirname, join } from 'path';
 import appConfig from '../config/app.js';
+import { fileURLToPath } from 'url';
 
 const webUIHandler = async (app) => {
   if (appConfig.serveWebAppSeparately) return;
 
-  const webAppPath = require.resolve('@automatisch/web');
+  const moduleURL = new URL('@automatisch/web/package.json', import.meta.url);
+  const modulePath = fileURLToPath(moduleURL);
+  const webAppPath = dirname(modulePath);
+
   const webBuildPath = join(dirname(webAppPath), 'build');
   const indexHtml = join(dirname(webAppPath), 'build', 'index.html');
 
