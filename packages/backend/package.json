@@ -7,8 +7,6 @@
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.js' --exec 'node' src/server.js",
     "worker": "nodemon --watch 'src/**/*.js' --exec 'node' src/worker.js",
-    "build": "tsc && yarn copy-statics",
-    "build": "yarn copy-statics",
     "build:watch": "nodemon --watch 'src/**/*.js' --watch 'bin/**/*.ts' --exec yarn build --ext ts",
     "start": "node dist/src/server.js",
     "pretest": "APP_ENV=test ts-node ./test/setup/prepare-test-env.ts",
@@ -19,10 +17,7 @@
     "db:drop": "ts-node ./bin/database/drop.js",
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
-    "db:migrate": "knex migrate:latest",
-    "copy-statics": "copyfiles src/**/*.{graphql,json,svg,hbs} dist",
-    "prepack": "yarn build",
-    "prebuild": "rm -rf ./dist"
+    "db:migrate": "knex migrate:latest"
   },
   "dependencies": {
     "@automatisch/web": "^0.10.0",
