@@ -10,16 +10,12 @@
     "noImplicitAny": false,
     "outDir": "dist",
     "paths": {
-      "*": ["../../node_modules/*", "node_modules/*", "src/types/*"]
+      "*": ["../../node_modules/*", "node_modules/*"]
     },
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "es2021",
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/@automatisch/types",
-      "./src/types"
-    ]
+    "typeRoots": ["node_modules/@types", "node_modules/@automatisch/types"]
   },
   "include": ["src/**/*", "bin/**/*"]
 }
