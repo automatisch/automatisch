@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { Command, Flags } from '@oclif/core';
 import * as dotenv from 'dotenv';
+import process from 'process';
 
 export default class StartWorker extends Command {
   static description = 'Run automatisch worker';
@@ -13,7 +14,7 @@ export default class StartWorker extends Command {
     'env-file': Flags.string(),
   };
 
-  async prepareEnvVars(): Promise<void> {
+  async prepareEnvVars() {
     const { flags } = await this.parse(StartWorker);
 
     if (flags['env-file']) {
@@ -37,11 +38,11 @@ export default class StartWorker extends Command {
     delete process.env.SERVE_WEB_APP_SEPARATELY;
   }
 
-  async runWorker(): Promise<void> {
+  async runWorker() {
     await import('@automatisch/backend/worker');
   }
 
-  async run(): Promise<void> {
+  async run() {
     await this.prepareEnvVars();
 
     await this.runWorker();

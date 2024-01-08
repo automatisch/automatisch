@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { Command, Flags } from '@oclif/core';
 import * as dotenv from 'dotenv';
+import process from 'process';
 
 export default class Start extends Command {
   static description = 'Run automatisch';
@@ -17,7 +18,7 @@ export default class Start extends Command {
     return process.env.APP_ENV === 'production';
   }
 
-  async prepareEnvVars(): Promise<void> {
+  async prepareEnvVars() {
     const { flags } = await this.parse(Start);
 
     if (flags['env-file']) {
@@ -41,7 +42,7 @@ export default class Start extends Command {
     delete process.env.SERVE_WEB_APP_SEPARATELY;
   }
 
-  async createDatabaseAndUser(): Promise<void> {
+  async createDatabaseAndUser() {
     const utils = await import('@automatisch/backend/database-utils');
 
     await utils.createDatabaseAndUser(
@@ -50,7 +51,7 @@ export default class Start extends Command {
     );
   }
 
-  async runMigrationsIfNeeded(): Promise<void> {
+  async runMigrationsIfNeeded() {
     const { logger } = await import('@automatisch/backend/logger');
     const database = await import('@automatisch/backend/database');
     const migrator = database.client.migrate;
@@ -69,17 +70,17 @@ export default class Start extends Command {
     }
   }
 
-  async seedUser(): Promise<void> {
+  async seedUser() {
     const utils = await import('@automatisch/backend/database-utils');
 
     await utils.createUser();
   }
 
-  async runApp(): Promise<void> {
+  async runApp() {
     await import('@automatisch/backend/server');
   }
 
-  async run(): Promise<void> {
+  async run() {
     await this.prepareEnvVars();
 
     if (!this.isProduction) {
