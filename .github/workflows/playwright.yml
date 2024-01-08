@@ -69,7 +69,7 @@ jobs:
           CI: false
       - name: Migrate database
         working-directory: ./packages/backend
-        run: yarn db:migrate --migrations-directory ./dist/src/db/migrations
+        run: yarn db:migrate --migrations-directory ./src/db/migrations
       - name: Seed user
         working-directory: ./packages/backend
         run: yarn db:seed:user &
