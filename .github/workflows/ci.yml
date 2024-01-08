@@ -44,6 +44,7 @@ jobs:
       - run: yarn start
         env:
           ENCRYPTION_KEY: sample_encryption_key
+          WEBHOOK_SECRET_KEY: sample_webhook_secret_key
       - run: echo "🍏 This job's status is ${{ job.status }}."
   build-web:
     runs-on: ubuntu-latest
