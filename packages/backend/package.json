@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.js' --exec 'node' src/server.js",
     "worker": "nodemon --watch 'src/**/*.js' --exec 'node' src/worker.js",
-    "start": "node dist/src/server.js",
+    "start": "node src/server.js",
     "pretest": "APP_ENV=test ts-node ./test/setup/prepare-test-env.ts",
     "test": "APP_ENV=test jest --verbose",
     "lint": "eslint . --ignore-path ../../.eslintignore",
