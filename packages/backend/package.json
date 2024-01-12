@@ -80,26 +80,15 @@
     }
   ],
   "homepage": "https://github.com/automatisch/automatisch#readme",
-  "main": "dist/src/app",
+  "main": "src/server",
   "directories": {
     "bin": "bin",
     "src": "src",
     "test": "__tests__"
   },
   "files": [
-    "dist",
     "bin",
-    "src",
-    "server.js",
-    "server.d.ts",
-    "worker.js",
-    "worker.d.ts",
-    "logger.js",
-    "logger.d.ts",
-    "database.js",
-    "database.d.ts",
-    "database-utils.js",
-    "database-utils.d.ts"
+    "src"
   ],
   "repository": {
     "type": "git",
