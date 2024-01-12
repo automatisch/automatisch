@@ -111,7 +111,6 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "nodemon": "^2.0.13",
-    "sinon": "^11.1.2",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "vitest": "^1.1.3"
