@@ -20,7 +20,6 @@
     "db:migrate": "knex migrate:latest"
   },
   "dependencies": {
-    "@automatisch/web": "^0.10.0",
     "@bull-board/express": "^3.10.1",
     "@casl/ability": "^6.5.0",
     "@graphql-tools/graphql-file-loader": "^7.3.4",
