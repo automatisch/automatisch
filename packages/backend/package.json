@@ -12,9 +12,9 @@
     "pretest": "APP_ENV=test node ./test/setup/prepare-test-env.js",
     "test": "APP_ENV=test vitest run",
     "lint": "eslint . --ignore-path ../../.eslintignore",
-    "db:create": "ts-node ./bin/database/create.js",
-    "db:seed:user": "ts-node ./bin/database/seed-user.js",
-    "db:drop": "ts-node ./bin/database/drop.js",
+    "db:create": "node ./bin/database/create.js",
+    "db:seed:user": "node ./bin/database/seed-user.js",
+    "db:drop": "node ./bin/database/drop.js",
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
     "db:migrate": "knex migrate:latest"
@@ -139,8 +139,6 @@
     "sinon": "^11.1.2",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.2.1",
-    "ts-node-dev": "^1.1.8",
     "vitest": "^1.1.3"
   },
   "publishConfig": {
