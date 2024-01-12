@@ -1,4 +1,4 @@
-import User from '../../models/user';
+import User from '../../models/user.js';
 
 const resetPassword = async (_parent, params) => {
   const { token, password } = params.input;

@@ -1,5 +1,5 @@
-import App from '../../models/app';
-import Flow from '../../models/flow';
+import App from '../../models/app.js';
+import Flow from '../../models/flow.js';
 
 const createStep = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');

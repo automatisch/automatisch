@@ -1,4 +1,4 @@
-import Billing from '../../helpers/billing/index.ee';
+import Billing from '../../helpers/billing/index.ee.js';
 
 const getInvoices = async (_parent, _params, context) => {
   const subscription = await context.currentUser.$relatedQuery(

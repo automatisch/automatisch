@@ -1,4 +1,4 @@
-import AppAuthClient from '../../models/app-auth-client';
+import AppAuthClient from '../../models/app-auth-client.js';
 
 const updateConnection = async (_parent, params, context) => {
   context.currentUser.can('create', 'Connection');

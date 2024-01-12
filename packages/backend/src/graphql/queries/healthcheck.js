@@ -1,4 +1,4 @@
-import appConfig from '../../config/app';
+import appConfig from '../../config/app.js';
 
 const healthcheck = () => {
   return {

@@ -1,10 +1,10 @@
-import appConfig from '../../config/app';
-import User from '../../models/user';
-import emailQueue from '../../queues/email';
+import appConfig from '../../config/app.js';
+import User from '../../models/user.js';
+import emailQueue from '../../queues/email.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '../../helpers/remove-job-configuration';
+} from '../../helpers/remove-job-configuration.js';
 
 const forgotPassword = async (_parent, params) => {
   const { email } = params.input;

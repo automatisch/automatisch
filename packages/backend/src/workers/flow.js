@@ -1,17 +1,17 @@
 import { Worker } from 'bullmq';
 import process from 'node:process';
 
-import * as Sentry from '../helpers/sentry.ee';
-import redisConfig from '../config/redis';
-import logger from '../helpers/logger';
-import flowQueue from '../queues/flow';
-import triggerQueue from '../queues/trigger';
-import { processFlow } from '../services/flow';
-import Flow from '../models/flow';
+import * as Sentry from '../helpers/sentry.ee.js';
+import redisConfig from '../config/redis.js';
+import logger from '../helpers/logger.js';
+import flowQueue from '../queues/flow.js';
+import triggerQueue from '../queues/trigger.js';
+import { processFlow } from '../services/flow.js';
+import Flow from '../models/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '../helpers/remove-job-configuration';
+} from '../helpers/remove-job-configuration.js';
 
 export const worker = new Worker(
   'flow',

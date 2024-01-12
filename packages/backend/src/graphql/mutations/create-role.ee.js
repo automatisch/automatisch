@@ -1,5 +1,5 @@
-import kebabCase from 'lodash/kebabCase';
-import Role from '../../models/role';
+import kebabCase from 'lodash/kebabCase.js';
+import Role from '../../models/role.js';
 
 const createRole = async (_parent, params, context) => {
   context.currentUser.can('create', 'Role');

@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { serialize } from 'php-serialize';
-import Billing from '../../helpers/billing/index.ee';
-import appConfig from '../../config/app';
+import Billing from '../../helpers/billing/index.ee.js';
+import appConfig from '../../config/app.js';
 
 export default async (request, response) => {
   if (!verifyWebhook(request)) {

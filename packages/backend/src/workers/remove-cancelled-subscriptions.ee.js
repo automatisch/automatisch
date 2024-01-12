@@ -1,10 +1,10 @@
 import { Worker } from 'bullmq';
 import process from 'node:process';
 import { DateTime } from 'luxon';
-import * as Sentry from '../helpers/sentry.ee';
-import redisConfig from '../config/redis';
-import logger from '../helpers/logger';
-import Subscription from '../models/subscription.ee';
+import * as Sentry from '../helpers/sentry.ee.js';
+import redisConfig from '../config/redis.js';
+import logger from '../helpers/logger.js';
+import Subscription from '../models/subscription.ee.js';
 
 export const worker = new Worker(
   'remove-cancelled-subscriptions',

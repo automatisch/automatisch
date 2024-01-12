@@ -1,5 +1,5 @@
-import Flow from '../../models/flow';
-import paginate from '../../helpers/pagination';
+import Flow from '../../models/flow.js';
+import paginate from '../../helpers/pagination.js';
 
 const getFlows = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Flow');

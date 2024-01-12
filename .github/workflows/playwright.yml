@@ -63,13 +63,13 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
       - name: Build Automatisch
-        run: yarn lerna run --scope=@*/{web,backend,cli} build
+        run: yarn lerna run --scope=@*/{web,cli} build
         env:
           # Keep this until we clean up warnings in build processes
           CI: false
       - name: Migrate database
         working-directory: ./packages/backend
-        run: yarn db:migrate --migrations-directory ./dist/src/db/migrations
+        run: yarn db:migrate
       - name: Seed user
         working-directory: ./packages/backend
         run: yarn db:seed:user &
@@ -96,7 +96,7 @@ jobs:
         run: yarn start &
         working-directory: ./packages/backend
       - name: Run Automatisch worker
-        run: node dist/src/worker.js &
+        run: yarn start:worker &
         working-directory: ./packages/backend
       - name: Setup upterm session
         if: false

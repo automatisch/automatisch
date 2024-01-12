@@ -1,8 +1,8 @@
 import path from 'node:path';
 
-import Connection from '../../models/connection';
-import logger from '../../helpers/logger';
-import handler from '../../helpers/webhook-handler';
+import Connection from '../../models/connection.js';
+import logger from '../../helpers/logger.js';
+import handler from '../../helpers/webhook-handler.js';
 
 export default async (request, response) => {
   const computedRequestPayload = {

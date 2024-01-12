@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "importHelpers": true,
     "lib": ["es2021"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "noImplicitAny": false,
     "outDir": "dist",
     "rootDir": "src",
     "skipLibCheck": true,

@@ -1,6 +1,6 @@
 import { Duration } from 'luxon';
-import User from '../../models/user';
-import deleteUserQueue from '../../queues/delete-user.ee';
+import User from '../../models/user.js';
+import deleteUserQueue from '../../queues/delete-user.ee.js';
 
 const deleteUser = async (_parent, params, context) => {
   context.currentUser.can('delete', 'User');

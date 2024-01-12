@@ -1,9 +1,9 @@
 import { Duration } from 'luxon';
-import deleteUserQueue from '../../queues/delete-user.ee';
-import flowQueue from '../../queues/flow';
-import Flow from '../../models/flow';
-import ExecutionStep from '../../models/execution-step';
-import appConfig from '../../config/app';
+import deleteUserQueue from '../../queues/delete-user.ee.js';
+import flowQueue from '../../queues/flow.js';
+import Flow from '../../models/flow.js';
+import ExecutionStep from '../../models/execution-step.js';
+import appConfig from '../../config/app.js';
 
 const deleteCurrentUser = async (_parent, params, context) => {
   const id = context.currentUser.id;

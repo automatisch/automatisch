@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import webhooksHandler from '../controllers/paddle/webhooks.ee';
+import webhooksHandler from '../controllers/paddle/webhooks.ee.js';
 
 const router = Router();
 

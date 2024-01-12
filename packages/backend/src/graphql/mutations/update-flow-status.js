@@ -1,10 +1,10 @@
-import Flow from '../../models/flow';
-import flowQueue from '../../queues/flow';
+import Flow from '../../models/flow.js';
+import flowQueue from '../../queues/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '../../helpers/remove-job-configuration';
-import globalVariable from '../../helpers/global-variable';
+} from '../../helpers/remove-job-configuration.js';
+import globalVariable from '../../helpers/global-variable.js';
 
 const JOB_NAME = 'flow';
 const EVERY_15_MINUTES_CRON = '*/15 * * * *';

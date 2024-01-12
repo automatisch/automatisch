@@ -1,4 +1,4 @@
-import AppAuthClient from '../../models/app-auth-client';
+import AppAuthClient from '../../models/app-auth-client.js';
 
 const getAppAuthClient = async (_parent, params, context) => {
   let canSeeAllClients = false;

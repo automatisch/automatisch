@@ -1,13 +1,13 @@
-import Step from '../models/step';
-import Flow from '../models/flow';
-import Execution from '../models/execution';
-import ExecutionStep from '../models/execution-step';
-import computeParameters from '../helpers/compute-parameters';
-import globalVariable from '../helpers/global-variable';
-import { logger } from '../helpers/logger';
-import HttpError from '../errors/http';
-import EarlyExitError from '../errors/early-exit';
-import AlreadyProcessedError from '../errors/already-processed';
+import Step from '../models/step.js';
+import Flow from '../models/flow.js';
+import Execution from '../models/execution.js';
+import ExecutionStep from '../models/execution-step.js';
+import computeParameters from '../helpers/compute-parameters.js';
+import globalVariable from '../helpers/global-variable.js';
+import { logger } from '../helpers/logger.js';
+import HttpError from '../errors/http.js';
+import EarlyExitError from '../errors/early-exit.js';
+import AlreadyProcessedError from '../errors/already-processed.js';
 
 export const processAction = async (options) => {
   const { flowId, stepId, executionId } = options;

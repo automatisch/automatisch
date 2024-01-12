@@ -1,4 +1,4 @@
-import Config from '../../models/config';
+import Config from '../../models/config.js';
 
 const updateConfig = async (_parent, params, context) => {
   context.currentUser.can('update', 'Config');

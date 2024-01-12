@@ -1,5 +1,5 @@
-import App from '../../models/app';
-import Step from '../../models/step';
+import App from '../../models/app.js';
+import Step from '../../models/step.js';
 
 const createFlow = async (_parent, params, context) => {
   context.currentUser.can('create', 'Flow');

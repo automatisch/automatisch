@@ -1,5 +1,5 @@
-import User from '../../models/user';
-import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
+import User from '../../models/user.js';
+import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id.js';
 
 const login = async (_parent, params) => {
   const user = await User.query().findOne({
