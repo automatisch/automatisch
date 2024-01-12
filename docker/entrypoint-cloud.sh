@@ -2,8 +2,10 @@
 
 set -e
 
+cd packages/backend
+
 if [ -n "$WORKER" ]; then
-  yarn automatisch start-worker
+  yarn start:worker
 else
-  yarn automatisch start
+  yarn start
 fi

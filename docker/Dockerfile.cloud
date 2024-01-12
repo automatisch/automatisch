@@ -1,17 +1,22 @@
 # syntax=docker/dockerfile:1
 FROM node:18-alpine
-WORKDIR /automatisch
 
 ENV PORT 3000
 
-RUN ls -lna
+RUN \
+  apk --no-cache add --virtual build-dependencies python3 build-base git
 
-# copy the app, note .dockerignore
-COPY . ./
+RUN git clone -b models-js https://github.com/automatisch/automatisch.git
 
-RUN yarn
-RUN yarn lerna bootstrap
-RUN yarn lerna run --scope=@*/{web,backend,cli} build
+WORKDIR /automatisch
+
+RUN yarn install
+
+RUN cd packages/web && yarn build
+
+RUN \
+  rm -rf /usr/local/share/.cache/ && \
+  apk del build-dependencies
 
 COPY ./docker/entrypoint-cloud.sh /entrypoint-cloud.sh
 
