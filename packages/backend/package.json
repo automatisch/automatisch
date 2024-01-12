@@ -98,7 +98,6 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
     "nodemon": "^2.0.13",
     "supertest": "^6.3.3",
     "vitest": "^1.1.3"
