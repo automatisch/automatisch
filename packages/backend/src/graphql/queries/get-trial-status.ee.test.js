@@ -41,7 +41,7 @@ describe('graphQL getTrialStatus query', () => {
       userToken = createAuthTokenByUserId(user.id);
     });
 
-    describe.only('and with cloud flag disabled', () => {
+    describe('and with cloud flag disabled', () => {
       beforeEach(async () => {
         vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
       });
