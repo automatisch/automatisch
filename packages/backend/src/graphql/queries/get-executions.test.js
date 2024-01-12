@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import appConfig from '../../config/app';

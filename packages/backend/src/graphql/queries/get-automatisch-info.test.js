@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import * as license from '../../helpers/license.ee';
@@ -22,10 +22,10 @@ describe('graphQL getAutomatischInfo query', () => {
 
   describe('and without valid license', () => {
     beforeEach(async () => {
-      jest.spyOn(license, 'getLicense').mockResolvedValue(false);
+      vi.spyOn(license, 'getLicense').mockResolvedValue(false);
 
-      jest.replaceProperty(appConfig, 'isCloud', false);
-      jest.replaceProperty(appConfig, 'isMation', false);
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+      vi.spyOn(appConfig, 'isMation', 'get').mockReturnValue(false);
     });
 
     it('should return empty license data', async () => {
@@ -62,12 +62,12 @@ describe('graphQL getAutomatischInfo query', () => {
         verified: true,
       };
 
-      jest.spyOn(license, 'getLicense').mockResolvedValue(mockedLicense);
+      vi.spyOn(license, 'getLicense').mockResolvedValue(mockedLicense);
     });
 
     describe('and with cloud flag enabled', () => {
       beforeEach(async () => {
-        jest.replaceProperty(appConfig, 'isCloud', true);
+        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
       });
 
       it('should return all license data', async () => {
@@ -97,7 +97,7 @@ describe('graphQL getAutomatischInfo query', () => {
 
     describe('and with cloud flag disabled', () => {
       beforeEach(async () => {
-        jest.replaceProperty(appConfig, 'isCloud', false);
+        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
       });
 
       it('should return all license data', async () => {
@@ -127,8 +127,8 @@ describe('graphQL getAutomatischInfo query', () => {
 
     describe('and with mation flag enabled', () => {
       beforeEach(async () => {
-        jest.replaceProperty(appConfig, 'isCloud', false);
-        jest.replaceProperty(appConfig, 'isMation', true);
+        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+        vi.spyOn(appConfig, 'isMation', 'get').mockReturnValue(true);
       });
 
       it('should return all license data', async () => {
@@ -158,8 +158,8 @@ describe('graphQL getAutomatischInfo query', () => {
 
     describe('and with mation flag disabled', () => {
       beforeEach(async () => {
-        jest.replaceProperty(appConfig, 'isCloud', false);
-        jest.replaceProperty(appConfig, 'isMation', false);
+        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+        vi.spyOn(appConfig, 'isMation', 'get').mockReturnValue(false);
       });
 
       it('should return all license data', async () => {

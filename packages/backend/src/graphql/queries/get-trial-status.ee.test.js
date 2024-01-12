@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import User from '../../models/user';
@@ -41,9 +41,9 @@ describe('graphQL getTrialStatus query', () => {
       userToken = createAuthTokenByUserId(user.id);
     });
 
-    describe('and with cloud flag disabled', () => {
+    describe.only('and with cloud flag disabled', () => {
       beforeEach(async () => {
-        jest.replaceProperty(appConfig, 'isCloud', false);
+        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
       });
 
       it('should return null', async () => {
@@ -63,15 +63,15 @@ describe('graphQL getTrialStatus query', () => {
 
     describe('and with cloud flag enabled', () => {
       beforeEach(async () => {
-        jest.replaceProperty(appConfig, 'isCloud', true);
+        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
       });
 
       describe('and not in trial and has active subscription', () => {
         beforeEach(async () => {
-          jest.spyOn(User.prototype, 'inTrial').mockResolvedValue(false);
-          jest
-            .spyOn(User.prototype, 'hasActiveSubscription')
-            .mockResolvedValue(true);
+          vi.spyOn(User.prototype, 'inTrial').mockResolvedValue(false);
+          vi.spyOn(User.prototype, 'hasActiveSubscription').mockResolvedValue(
+            true
+          );
         });
 
         it('should return null', async () => {
@@ -91,7 +91,7 @@ describe('graphQL getTrialStatus query', () => {
 
       describe('and in trial period', () => {
         beforeEach(async () => {
-          jest.spyOn(User.prototype, 'inTrial').mockResolvedValue(true);
+          vi.spyOn(User.prototype, 'inTrial').mockResolvedValue(true);
         });
 
         it('should return null', async () => {

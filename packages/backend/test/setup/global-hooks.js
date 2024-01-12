@@ -1,6 +1,6 @@
 import { Model } from 'objection';
-import { client as knex } from '../../src/config/database';
-import logger from '../../src/helpers/logger';
+import { client as knex } from '../../src/config/database.js';
+import logger from '../../src/helpers/logger.js';
 
 global.beforeAll(async () => {
   global.knex = null;
@@ -22,8 +22,8 @@ global.afterEach(async () => {
   await global.knex.rollback();
   Model.knex(knex);
 
-  jest.restoreAllMocks();
-  jest.clearAllMocks();
+  // jest.restoreAllMocks();
+  // jest.clearAllMocks();
 });
 
 global.afterAll(async () => {

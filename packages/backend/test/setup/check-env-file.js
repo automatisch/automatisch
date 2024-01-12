@@ -1,6 +1,8 @@
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const testEnvFile = path.resolve(__dirname, '../../.env.test');
 
 if (!fs.existsSync(testEnvFile)) {

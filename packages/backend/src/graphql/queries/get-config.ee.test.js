@@ -1,14 +1,11 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import { createConfig } from '../../../test/factories/config';
-import { IConfig } from '@automatisch/types';
 import * as license from '../../helpers/license.ee';
 
 describe('graphQL getConfig query', () => {
-  let configOne: IConfig,
-    configTwo: IConfig,
-    configThree: IConfig,
-    query: string;
+  let configOne, configTwo, configThree, query;
 
   beforeEach(async () => {
     configOne = await createConfig({ key: 'configOne' });
@@ -24,7 +21,7 @@ describe('graphQL getConfig query', () => {
 
   describe('and without valid license', () => {
     beforeEach(async () => {
-      jest.spyOn(license, 'hasValidLicense').mockResolvedValue(false);
+      vi.spyOn(license, 'hasValidLicense').mockResolvedValue(false);
     });
 
     describe('and correct permissions', () => {
@@ -43,7 +40,7 @@ describe('graphQL getConfig query', () => {
 
   describe('and with valid license', () => {
     beforeEach(async () => {
-      jest.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+      vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
     });
 
     describe('and without providing specific keys', () => {

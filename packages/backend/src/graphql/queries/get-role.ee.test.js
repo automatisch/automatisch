@@ -1,53 +1,74 @@
-// @ts-nocheck
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
+import Crypto from 'crypto';
 import { createRole } from '../../../test/factories/role';
 import { createPermission } from '../../../test/factories/permission';
 import { createUser } from '../../../test/factories/user';
 import * as license from '../../helpers/license.ee';
 
-describe('graphQL getRoles query', () => {
-  let currentUserRole,
-    roleOne,
-    roleSecond,
-    query,
+describe('graphQL getRole query', () => {
+  let validRole,
+    invalidRoleId,
+    queryWithValidRole,
+    queryWithInvalidRole,
     userWithPermissions,
     userWithoutPermissions,
     tokenWithPermissions,
     tokenWithoutPermissions,
-    invalidToken;
+    invalidToken,
+    permissionOne,
+    permissionTwo;
 
   beforeEach(async () => {
-    currentUserRole = await createRole({ name: 'Current user role' });
-    roleOne = await createRole({ name: 'Role one' });
-    roleSecond = await createRole({ name: 'Role second' });
+    validRole = await createRole();
+    invalidRoleId = Crypto.randomUUID();
 
-    query = `
+    queryWithValidRole = `
       query {
-        getRoles {
+        getRole(id: "${validRole.id}") {
           id
-          key
           name
+          key
           description
           isAdmin
+          permissions {
+            id
+            action
+            subject
+            conditions
+          }
         }
       }
     `;
 
-    await createPermission({
+    queryWithInvalidRole = `
+      query {
+        getRole(id: "${invalidRoleId}") {
+          id
+          name
+        }
+      }
+    `;
+
+    permissionOne = await createPermission({
       action: 'read',
       subject: 'Role',
-      roleId: currentUserRole.id,
+      roleId: validRole.id,
+    });
+
+    permissionTwo = await createPermission({
+      action: 'read',
+      subject: 'User',
+      roleId: validRole.id,
     });
 
     userWithPermissions = await createUser({
-      roleId: currentUserRole.id,
+      roleId: validRole.id,
     });
 
-    userWithoutPermissions = await createUser({
-      roleId: roleOne.id,
-    });
+    userWithoutPermissions = await createUser();
 
     tokenWithPermissions = createAuthTokenByUserId(userWithPermissions.id);
     tokenWithoutPermissions = createAuthTokenByUserId(
@@ -62,7 +83,7 @@ describe('graphQL getRoles query', () => {
       const response = await request(app)
         .post('/graphql')
         .set('Authorization', invalidToken)
-        .send({ query })
+        .send({ query: queryWithValidRole })
         .expect(200);
 
       expect(response.body.errors).toBeDefined();
@@ -73,7 +94,7 @@ describe('graphQL getRoles query', () => {
   describe('with authenticated user', () => {
     describe('and with valid license', () => {
       beforeEach(async () => {
-        jest.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+        vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
       });
 
       describe('and without permissions', () => {
@@ -81,7 +102,7 @@ describe('graphQL getRoles query', () => {
           const response = await request(app)
             .post('/graphql')
             .set('Authorization', tokenWithoutPermissions)
-            .send({ query })
+            .send({ query: queryWithValidRole })
             .expect(200);
 
           expect(response.body.errors).toBeDefined();
@@ -90,49 +111,58 @@ describe('graphQL getRoles query', () => {
       });
 
       describe('and correct permissions', () => {
-        it('should return roles data', async () => {
+        it('should return role data for a valid role id', async () => {
           const response = await request(app)
             .post('/graphql')
             .set('Authorization', tokenWithPermissions)
-            .send({ query })
+            .send({ query: queryWithValidRole })
             .expect(200);
 
           const expectedResponsePayload = {
             data: {
-              getRoles: [
-                {
-                  description: currentUserRole.description,
-                  id: currentUserRole.id,
-                  isAdmin: currentUserRole.key === 'admin',
-                  key: currentUserRole.key,
-                  name: currentUserRole.name,
-                },
-                {
-                  description: roleOne.description,
-                  id: roleOne.id,
-                  isAdmin: roleOne.key === 'admin',
-                  key: roleOne.key,
-                  name: roleOne.name,
-                },
-                {
-                  description: roleSecond.description,
-                  id: roleSecond.id,
-                  isAdmin: roleSecond.key === 'admin',
-                  key: roleSecond.key,
-                  name: roleSecond.name,
-                },
-              ],
+              getRole: {
+                description: validRole.description,
+                id: validRole.id,
+                isAdmin: validRole.key === 'admin',
+                key: validRole.key,
+                name: validRole.name,
+                permissions: [
+                  {
+                    action: permissionOne.action,
+                    conditions: permissionOne.conditions,
+                    id: permissionOne.id,
+                    subject: permissionOne.subject,
+                  },
+                  {
+                    action: permissionTwo.action,
+                    conditions: permissionTwo.conditions,
+                    id: permissionTwo.id,
+                    subject: permissionTwo.subject,
+                  },
+                ],
+              },
             },
           };
 
           expect(response.body).toEqual(expectedResponsePayload);
+        });
+
+        it('should return not found for invalid role id', async () => {
+          const response = await request(app)
+            .post('/graphql')
+            .set('Authorization', tokenWithPermissions)
+            .send({ query: queryWithInvalidRole })
+            .expect(200);
+
+          expect(response.body.errors).toBeDefined();
+          expect(response.body.errors[0].message).toEqual('NotFoundError');
         });
       });
     });
 
     describe('and without valid license', () => {
       beforeEach(async () => {
-        jest.spyOn(license, 'hasValidLicense').mockResolvedValue(false);
+        vi.spyOn(license, 'hasValidLicense').mockResolvedValue(false);
       });
 
       describe('and correct permissions', () => {
@@ -140,7 +170,7 @@ describe('graphQL getRoles query', () => {
           const response = await request(app)
             .post('/graphql')
             .set('Authorization', tokenWithPermissions)
-            .send({ query })
+            .send({ query: queryWithInvalidRole })
             .expect(200);
 
           expect(response.body.errors).toBeDefined();

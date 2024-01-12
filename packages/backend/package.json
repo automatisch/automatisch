@@ -9,8 +9,8 @@
     "worker": "nodemon --watch 'src/**/*.js' --exec 'node' src/worker.js",
     "start": "node src/server.js",
     "start:worker": "node src/worker.js",
-    "pretest": "APP_ENV=test ts-node ./test/setup/prepare-test-env.ts",
-    "test": "APP_ENV=test jest --verbose",
+    "pretest": "APP_ENV=test node ./test/setup/prepare-test-env.js",
+    "test": "APP_ENV=test vitest run",
     "lint": "eslint . --ignore-path ../../.eslintignore",
     "db:create": "ts-node ./bin/database/create.js",
     "db:seed:user": "ts-node ./bin/database/seed-user.js",
@@ -140,7 +140,8 @@
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.2.1",
-    "ts-node-dev": "^1.1.8"
+    "ts-node-dev": "^1.1.8",
+    "vitest": "^1.1.3"
   },
   "publishConfig": {
     "access": "public"

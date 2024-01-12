@@ -1,26 +1,37 @@
-// @ts-nocheck
+import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import createAuthTokenByUserId from '../../helpers/create-auth-token-by-user-id';
-import Crypto from 'crypto';
 import { createRole } from '../../../test/factories/role';
 import { createPermission } from '../../../test/factories/permission';
 import { createUser } from '../../../test/factories/user';
 
-describe('graphQL getUser query', () => {
-  describe('with unauthenticated user', () => {
-    it('should throw not authorized error', async () => {
-      const invalidUserId = '123123123';
-
-      const query = `
-        query {
-          getUser(id: "${invalidUserId}") {
+describe('graphQL getUsers query', () => {
+  const query = `
+    query {
+      getUsers(limit: 10, offset: 0) {
+        pageInfo {
+          currentPage
+          totalPages
+        }
+        totalCount
+        edges {
+          node {
             id
+            fullName
             email
+            role {
+              id
+              name
+            }
           }
         }
-      `;
+      }
+    }
+  `;
 
+  describe('with unauthenticated user', () => {
+    it('should throw not authorized error', async () => {
       const response = await request(app)
         .post('/graphql')
         .set('Authorization', 'invalid-token')
@@ -36,17 +47,6 @@ describe('graphQL getUser query', () => {
     describe('and without permissions', () => {
       it('should throw not authorized error', async () => {
         const userWithoutPermissions = await createUser();
-        const anotherUser = await createUser();
-
-        const query = `
-          query {
-            getUser(id: "${anotherUser.id}") {
-              id
-              email
-            }
-          }
-        `;
-
         const token = createAuthTokenByUserId(userWithoutPermissions.id);
 
         const response = await request(app)
@@ -60,7 +60,7 @@ describe('graphQL getUser query', () => {
       });
     });
 
-    describe('and correct permissions', () => {
+    describe('and with correct permissions', () => {
       let role, currentUser, anotherUser, token, requestObject;
 
       beforeEach(async () => {
@@ -77,10 +77,12 @@ describe('graphQL getUser query', () => {
 
         currentUser = await createUser({
           roleId: role.id,
+          fullName: 'Current User',
         });
 
         anotherUser = await createUser({
           roleId: role.id,
+          fullName: 'Another User',
         });
 
         token = createAuthTokenByUserId(currentUser.id);
@@ -89,35 +91,41 @@ describe('graphQL getUser query', () => {
           .set('Authorization', token);
       });
 
-      it('should return user data for a valid user id', async () => {
-        const query = `
-          query {
-            getUser(id: "${anotherUser.id}") {
-              id
-              email
-              fullName
-              email
-              createdAt
-              updatedAt
-              role {
-                id
-                name
-              }
-            }
-          }
-        `;
-
+      it('should return users data', async () => {
         const response = await requestObject.send({ query }).expect(200);
 
         const expectedResponsePayload = {
           data: {
-            getUser: {
-              createdAt: anotherUser.createdAt.getTime().toString(),
-              email: anotherUser.email,
-              fullName: anotherUser.fullName,
-              id: anotherUser.id,
-              role: { id: role.id, name: role.name },
-              updatedAt: anotherUser.updatedAt.getTime().toString(),
+            getUsers: {
+              edges: [
+                {
+                  node: {
+                    email: anotherUser.email,
+                    fullName: anotherUser.fullName,
+                    id: anotherUser.id,
+                    role: {
+                      id: role.id,
+                      name: role.name,
+                    },
+                  },
+                },
+                {
+                  node: {
+                    email: currentUser.email,
+                    fullName: currentUser.fullName,
+                    id: currentUser.id,
+                    role: {
+                      id: role.id,
+                      name: role.name,
+                    },
+                  },
+                },
+              ],
+              pageInfo: {
+                currentPage: 1,
+                totalPages: 1,
+              },
+              totalCount: 2,
             },
           },
         };
@@ -125,13 +133,22 @@ describe('graphQL getUser query', () => {
         expect(response.body).toEqual(expectedResponsePayload);
       });
 
-      it('should not return user password for a valid user id', async () => {
+      it('should not return users data with password', async () => {
         const query = `
           query {
-            getUser(id: "${anotherUser.id}") {
-              id
-              email
-              password
+            getUsers(limit: 10, offset: 0) {
+              pageInfo {
+                currentPage
+                totalPages
+              }
+              totalCount
+              edges {
+                node {
+                  id
+                  fullName
+                  password
+                }
+              }
             }
           }
         `;
@@ -142,32 +159,6 @@ describe('graphQL getUser query', () => {
         expect(response.body.errors[0].message).toEqual(
           'Cannot query field "password" on type "User".'
         );
-      });
-
-      it('should return not found for invalid user id', async () => {
-        const invalidUserId = Crypto.randomUUID();
-
-        const query = `
-          query {
-            getUser(id: "${invalidUserId}") {
-              id
-              email
-              fullName
-              email
-              createdAt
-              updatedAt
-              role {
-                id
-                name
-              }
-            }
-          }
-        `;
-
-        const response = await requestObject.send({ query }).expect(200);
-
-        expect(response.body.errors).toBeDefined();
-        expect(response.body.errors[0].message).toEqual('NotFoundError');
       });
     });
   });
