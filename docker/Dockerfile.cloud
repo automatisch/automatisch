@@ -12,7 +12,7 @@ WORKDIR /automatisch
 
 RUN yarn install
 
-RUN cd packages/web && yarn build
+RUN if [ "$WORKER" != "true" ]; then cd packages/web && yarn build; fi
 
 RUN \
   rm -rf /usr/local/share/.cache/ && \
