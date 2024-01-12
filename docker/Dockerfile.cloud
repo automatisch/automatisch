@@ -6,7 +6,7 @@ ENV PORT 3000
 RUN \
   apk --no-cache add --virtual build-dependencies python3 build-base git
 
-RUN git clone -b models-js https://github.com/automatisch/automatisch.git
+RUN git clone -b https://github.com/automatisch/automatisch.git
 
 WORKDIR /automatisch
 
