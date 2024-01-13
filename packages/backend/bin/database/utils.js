@@ -61,6 +61,7 @@ export const createDatabaseAndUser = async (
   await grantPrivileges(database, user);
 
   await client.end();
+  process.exit(0);
 };
 
 export const createDatabase = async (database = appConfig.postgresDatabase) => {
