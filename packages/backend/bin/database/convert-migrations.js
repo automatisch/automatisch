@@ -9,13 +9,18 @@ export const renameMigrationsAsJsFiles = async () => {
   }
 
   try {
-    await knex.raw(
-      `UPDATE knex_migrations SET name = REPLACE(name, '.ts', '.js') WHERE name LIKE '%.ts';`
-    );
+    const tableExists = await knex.schema.hasTable('knex_migrations');
 
-    logger.info(
-      `Migration file names with typescript renamed as JS file names!`
-    );
+    if (tableExists) {
+      await knex('knex_migrations')
+        .where('name', 'like', '%.ts')
+        .update({
+          name: knex.raw("REPLACE(name, '.ts', '.js')"),
+        });
+      logger.info(
+        `Migration file names with typescript renamed as JS file names!`
+      );
+    }
   } catch (err) {
     logger.error(err.message);
   }

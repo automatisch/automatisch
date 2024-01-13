@@ -4,6 +4,7 @@ import client from './client.js';
 import User from '../../src/models/user.js';
 import Role from '../../src/models/role.js';
 import '../../src/config/orm.js';
+import process from 'process';
 
 async function fetchAdminRole() {
   const role = await Role.query()
@@ -46,6 +47,8 @@ export async function createUser(
 
     logger.info(`User already exists: ${email}`);
   }
+
+  process.exit(0);
 }
 
 export const createDatabaseAndUser = async (
@@ -58,6 +61,7 @@ export const createDatabaseAndUser = async (
   await grantPrivileges(database, user);
 
   await client.end();
+  process.exit(0);
 };
 
 export const createDatabase = async (database = appConfig.postgresDatabase) => {
