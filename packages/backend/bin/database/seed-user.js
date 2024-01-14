@@ -1,3 +1,3 @@
 import { createUser } from './utils.js';
 
-createUser();
+await createUser();
