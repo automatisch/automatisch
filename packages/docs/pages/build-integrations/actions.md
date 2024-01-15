@@ -68,7 +68,7 @@ export default defineAction({
     {
       label: 'Image ID',
       key: 'imageId',
-      type: 'string' as const,
+      type: 'string',
       required: true,
       description: 'The ID of the cat image you want to mark as favorite.',
       variables: true,
@@ -104,7 +104,7 @@ export default defineAction({
     const imageId = $.step.parameters.imageId;
 
     const headers = {
-      'x-api-key': $.auth.data.apiKey as string,
+      'x-api-key': $.auth.data.apiKey,
     };
 
     const response = await $.http.post(

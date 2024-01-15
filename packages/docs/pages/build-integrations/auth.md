@@ -60,7 +60,7 @@ export default {
     {
       key: 'screenName',
       label: 'Screen Name',
-      type: 'string' as const,
+      type: 'string',
       required: true,
       readOnly: false,
       value: null,
@@ -72,7 +72,7 @@ export default {
     {
       key: 'apiKey',
       label: 'API Key',
-      type: 'string' as const,
+      type: 'string',
       required: true,
       readOnly: false,
       value: null,
@@ -118,7 +118,7 @@ export default {
 Let's create the `verify-credentials.js` file inside the `auth` folder.
 
 ```javascript
-const verifyCredentials = async ($: IGlobalVariable) => {
+const verifyCredentials = async ($) => {
   // TODO: Implement verification of the credentials
 };
 
@@ -130,7 +130,7 @@ We generally use the `users/me` endpoint or any other endpoint that we can valid
 Let's implement the authentication logic that we mentioned above in the `verify-credentials.js` file.
 
 ```javascript
-const verifyCredentials = async ($: IGlobalVariable) => {
+const verifyCredentials = async ($) => {
   await $.http.get('/v1/images/search');
 
   await $.auth.set({
@@ -172,7 +172,7 @@ Let's create the `is-still-verified.js` file inside the `auth` folder.
 ```javascript
 import verifyCredentials from './verify-credentials.js';
 
-const isStillVerified = async ($: IGlobalVariable) => {
+const isStillVerified = async ($) => {
   await verifyCredentials($);
   return true;
 };

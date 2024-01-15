@@ -103,18 +103,18 @@ export default defineTrigger({
     let response;
 
     const headers = {
-      'x-api-key': $.auth.data.apiKey as string,
+      'x-api-key': $.auth.data.apiKey,
     };
 
     do {
       let requestPath = `/v1/images/search?page=${page}&limit=10&order=DESC`;
       response = await $.http.get(requestPath, { headers });
 
-      response.data.forEach((image: IJSONObject) => {
+      response.data.forEach((image) => {
         const dataItem = {
           raw: image,
           meta: {
-            internalId: image.id as string
+            internalId: image.id
           },
         };
 
