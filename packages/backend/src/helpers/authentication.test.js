@@ -2,11 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { allow } from 'graphql-shield';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
-import {
-  isAuthenticated,
-  isAuthenticatedRule,
-  authenticationRules,
-} from './authentication.js';
+import { isAuthenticated, authenticationRules } from './authentication.js';
 
 vi.mock('jsonwebtoken');
 vi.mock('../models/user.js');
