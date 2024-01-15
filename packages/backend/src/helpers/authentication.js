@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import appConfig from '../config/app.js';
 import User from '../models/user.js';
 
-const isAuthenticated = rule()(async (_parent, _args, req) => {
+export const isAuthenticated = async (_parent, _args, req) => {
   const token = req.headers['authorization'];
 
   if (token == null) return false;
@@ -26,29 +26,32 @@ const isAuthenticated = rule()(async (_parent, _args, req) => {
   } catch (error) {
     return false;
   }
-});
+};
 
-const authentication = shield(
-  {
-    Query: {
-      '*': isAuthenticated,
-      getAutomatischInfo: allow,
-      getConfig: allow,
-      getNotifications: allow,
-      healthcheck: allow,
-      listSamlAuthProviders: allow,
-    },
-    Mutation: {
-      '*': isAuthenticated,
-      forgotPassword: allow,
-      login: allow,
-      registerUser: allow,
-      resetPassword: allow,
-    },
+const isAuthenticatedRule = rule()(isAuthenticated);
+
+export const authenticationRules = {
+  Query: {
+    '*': isAuthenticatedRule,
+    getAutomatischInfo: allow,
+    getConfig: allow,
+    getNotifications: allow,
+    healthcheck: allow,
+    listSamlAuthProviders: allow,
   },
-  {
-    allowExternalErrors: true,
-  }
-);
+  Mutation: {
+    '*': isAuthenticatedRule,
+    forgotPassword: allow,
+    login: allow,
+    registerUser: allow,
+    resetPassword: allow,
+  },
+};
+
+export const authenticationOptions = {
+  allowExternalErrors: true,
+};
+
+const authentication = shield(authenticationRules, authenticationOptions);
 
 export default authentication;
