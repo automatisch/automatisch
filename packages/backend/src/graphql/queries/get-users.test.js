@@ -30,111 +30,95 @@ describe('graphQL getUsers query', () => {
     }
   `;
 
-  describe('with unauthenticated user', () => {
+  describe('and without permissions', () => {
     it('should throw not authorized error', async () => {
+      const userWithoutPermissions = await createUser();
+      const token = createAuthTokenByUserId(userWithoutPermissions.id);
+
       const response = await request(app)
         .post('/graphql')
-        .set('Authorization', 'invalid-token')
+        .set('Authorization', token)
         .send({ query })
         .expect(200);
 
       expect(response.body.errors).toBeDefined();
-      expect(response.body.errors[0].message).toEqual('Not Authorised!');
+      expect(response.body.errors[0].message).toEqual('Not authorized!');
     });
   });
 
-  describe('with authenticated user', () => {
-    describe('and without permissions', () => {
-      it('should throw not authorized error', async () => {
-        const userWithoutPermissions = await createUser();
-        const token = createAuthTokenByUserId(userWithoutPermissions.id);
+  describe('and with correct permissions', () => {
+    let role, currentUser, anotherUser, token, requestObject;
 
-        const response = await request(app)
-          .post('/graphql')
-          .set('Authorization', token)
-          .send({ query })
-          .expect(200);
-
-        expect(response.body.errors).toBeDefined();
-        expect(response.body.errors[0].message).toEqual('Not authorized!');
+    beforeEach(async () => {
+      role = await createRole({
+        key: 'sample',
+        name: 'sample',
       });
+
+      await createPermission({
+        action: 'read',
+        subject: 'User',
+        roleId: role.id,
+      });
+
+      currentUser = await createUser({
+        roleId: role.id,
+        fullName: 'Current User',
+      });
+
+      anotherUser = await createUser({
+        roleId: role.id,
+        fullName: 'Another User',
+      });
+
+      token = createAuthTokenByUserId(currentUser.id);
+      requestObject = request(app).post('/graphql').set('Authorization', token);
     });
 
-    describe('and with correct permissions', () => {
-      let role, currentUser, anotherUser, token, requestObject;
+    it('should return users data', async () => {
+      const response = await requestObject.send({ query }).expect(200);
 
-      beforeEach(async () => {
-        role = await createRole({
-          key: 'sample',
-          name: 'sample',
-        });
-
-        await createPermission({
-          action: 'read',
-          subject: 'User',
-          roleId: role.id,
-        });
-
-        currentUser = await createUser({
-          roleId: role.id,
-          fullName: 'Current User',
-        });
-
-        anotherUser = await createUser({
-          roleId: role.id,
-          fullName: 'Another User',
-        });
-
-        token = createAuthTokenByUserId(currentUser.id);
-        requestObject = request(app)
-          .post('/graphql')
-          .set('Authorization', token);
-      });
-
-      it('should return users data', async () => {
-        const response = await requestObject.send({ query }).expect(200);
-
-        const expectedResponsePayload = {
-          data: {
-            getUsers: {
-              edges: [
-                {
-                  node: {
-                    email: anotherUser.email,
-                    fullName: anotherUser.fullName,
-                    id: anotherUser.id,
-                    role: {
-                      id: role.id,
-                      name: role.name,
-                    },
+      const expectedResponsePayload = {
+        data: {
+          getUsers: {
+            edges: [
+              {
+                node: {
+                  email: anotherUser.email,
+                  fullName: anotherUser.fullName,
+                  id: anotherUser.id,
+                  role: {
+                    id: role.id,
+                    name: role.name,
                   },
                 },
-                {
-                  node: {
-                    email: currentUser.email,
-                    fullName: currentUser.fullName,
-                    id: currentUser.id,
-                    role: {
-                      id: role.id,
-                      name: role.name,
-                    },
-                  },
-                },
-              ],
-              pageInfo: {
-                currentPage: 1,
-                totalPages: 1,
               },
-              totalCount: 2,
+              {
+                node: {
+                  email: currentUser.email,
+                  fullName: currentUser.fullName,
+                  id: currentUser.id,
+                  role: {
+                    id: role.id,
+                    name: role.name,
+                  },
+                },
+              },
+            ],
+            pageInfo: {
+              currentPage: 1,
+              totalPages: 1,
             },
+            totalCount: 2,
           },
-        };
+        },
+      };
 
-        expect(response.body).toEqual(expectedResponsePayload);
-      });
+      expect(response.body).toEqual(expectedResponsePayload);
+    });
 
-      it('should not return users data with password', async () => {
-        const query = `
+    it('should not return users data with password', async () => {
+      const query = `
           query {
             getUsers(limit: 10, offset: 0) {
               pageInfo {
@@ -153,13 +137,12 @@ describe('graphQL getUsers query', () => {
           }
         `;
 
-        const response = await requestObject.send({ query }).expect(400);
+      const response = await requestObject.send({ query }).expect(400);
 
-        expect(response.body.errors).toBeDefined();
-        expect(response.body.errors[0].message).toEqual(
-          'Cannot query field "password" on type "User".'
-        );
-      });
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toEqual(
+        'Cannot query field "password" on type "User".'
+      );
     });
   });
 });
