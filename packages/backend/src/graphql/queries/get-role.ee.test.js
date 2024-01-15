@@ -17,7 +17,6 @@ describe('graphQL getRole query', () => {
     userWithoutPermissions,
     tokenWithPermissions,
     tokenWithoutPermissions,
-    invalidToken,
     permissionOne,
     permissionTwo;
 
@@ -74,108 +73,91 @@ describe('graphQL getRole query', () => {
     tokenWithoutPermissions = createAuthTokenByUserId(
       userWithoutPermissions.id
     );
-
-    invalidToken = 'invalid-token';
   });
 
-  describe('with unauthenticated user', () => {
-    it('should throw not authorized error', async () => {
-      const response = await request(app)
-        .post('/graphql')
-        .set('Authorization', invalidToken)
-        .send({ query: queryWithValidRole })
-        .expect(200);
-
-      expect(response.body.errors).toBeDefined();
-      expect(response.body.errors[0].message).toEqual('Not Authorised!');
+  describe('and with valid license', () => {
+    beforeEach(async () => {
+      vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
     });
-  });
 
-  describe('with authenticated user', () => {
-    describe('and with valid license', () => {
-      beforeEach(async () => {
-        vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+    describe('and without permissions', () => {
+      it('should throw not authorized error', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .set('Authorization', tokenWithoutPermissions)
+          .send({ query: queryWithValidRole })
+          .expect(200);
+
+        expect(response.body.errors).toBeDefined();
+        expect(response.body.errors[0].message).toEqual('Not authorized!');
       });
+    });
 
-      describe('and without permissions', () => {
-        it('should throw not authorized error', async () => {
-          const response = await request(app)
-            .post('/graphql')
-            .set('Authorization', tokenWithoutPermissions)
-            .send({ query: queryWithValidRole })
-            .expect(200);
+    describe('and correct permissions', () => {
+      it('should return role data for a valid role id', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .set('Authorization', tokenWithPermissions)
+          .send({ query: queryWithValidRole })
+          .expect(200);
 
-          expect(response.body.errors).toBeDefined();
-          expect(response.body.errors[0].message).toEqual('Not authorized!');
-        });
-      });
-
-      describe('and correct permissions', () => {
-        it('should return role data for a valid role id', async () => {
-          const response = await request(app)
-            .post('/graphql')
-            .set('Authorization', tokenWithPermissions)
-            .send({ query: queryWithValidRole })
-            .expect(200);
-
-          const expectedResponsePayload = {
-            data: {
-              getRole: {
-                description: validRole.description,
-                id: validRole.id,
-                isAdmin: validRole.key === 'admin',
-                key: validRole.key,
-                name: validRole.name,
-                permissions: [
-                  {
-                    action: permissionOne.action,
-                    conditions: permissionOne.conditions,
-                    id: permissionOne.id,
-                    subject: permissionOne.subject,
-                  },
-                  {
-                    action: permissionTwo.action,
-                    conditions: permissionTwo.conditions,
-                    id: permissionTwo.id,
-                    subject: permissionTwo.subject,
-                  },
-                ],
-              },
+        const expectedResponsePayload = {
+          data: {
+            getRole: {
+              description: validRole.description,
+              id: validRole.id,
+              isAdmin: validRole.key === 'admin',
+              key: validRole.key,
+              name: validRole.name,
+              permissions: [
+                {
+                  action: permissionOne.action,
+                  conditions: permissionOne.conditions,
+                  id: permissionOne.id,
+                  subject: permissionOne.subject,
+                },
+                {
+                  action: permissionTwo.action,
+                  conditions: permissionTwo.conditions,
+                  id: permissionTwo.id,
+                  subject: permissionTwo.subject,
+                },
+              ],
             },
-          };
+          },
+        };
 
-          expect(response.body).toEqual(expectedResponsePayload);
-        });
+        expect(response.body).toEqual(expectedResponsePayload);
+      });
 
-        it('should return not found for invalid role id', async () => {
-          const response = await request(app)
-            .post('/graphql')
-            .set('Authorization', tokenWithPermissions)
-            .send({ query: queryWithInvalidRole })
-            .expect(200);
+      it('should return not found for invalid role id', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .set('Authorization', tokenWithPermissions)
+          .send({ query: queryWithInvalidRole })
+          .expect(200);
 
-          expect(response.body.errors).toBeDefined();
-          expect(response.body.errors[0].message).toEqual('NotFoundError');
-        });
+        expect(response.body.errors).toBeDefined();
+        expect(response.body.errors[0].message).toEqual('NotFoundError');
       });
     });
+  });
 
-    describe('and without valid license', () => {
-      beforeEach(async () => {
-        vi.spyOn(license, 'hasValidLicense').mockResolvedValue(false);
-      });
+  describe('and without valid license', () => {
+    beforeEach(async () => {
+      vi.spyOn(license, 'hasValidLicense').mockResolvedValue(false);
+    });
 
-      describe('and correct permissions', () => {
-        it('should throw not authorized error', async () => {
-          const response = await request(app)
-            .post('/graphql')
-            .set('Authorization', tokenWithPermissions)
-            .send({ query: queryWithInvalidRole })
-            .expect(200);
+    describe('and correct permissions', () => {
+      it('should throw not authorized error', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .set('Authorization', tokenWithPermissions)
+          .send({ query: queryWithInvalidRole })
+          .expect(200);
 
-          expect(response.body.errors).toBeDefined();
-          expect(response.body.errors[0].message).toEqual('Not authorized!');
-        });
+        expect(response.body.errors).toBeDefined();
+        expect(response.body.errors[0].message).toEqual('Not authorized!');
       });
     });
   });

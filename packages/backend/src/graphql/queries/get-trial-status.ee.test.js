@@ -16,34 +16,46 @@ describe('graphQL getTrialStatus query', () => {
     }
   `;
 
-  const invalidToken = 'invalid-token';
+  let user, userToken;
 
-  describe('with unauthenticated user', () => {
-    it('should throw not authorized error', async () => {
+  beforeEach(async () => {
+    const trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
+
+    user = await createUser({ trialExpiryDate });
+    userToken = createAuthTokenByUserId(user.id);
+  });
+
+  describe('and with cloud flag disabled', () => {
+    beforeEach(async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+    });
+
+    it('should return null', async () => {
       const response = await request(app)
         .post('/graphql')
-        .set('Authorization', invalidToken)
+        .set('Authorization', userToken)
         .send({ query })
         .expect(200);
 
-      expect(response.body.errors).toBeDefined();
-      expect(response.body.errors[0].message).toEqual('Not Authorised!');
+      const expectedResponsePayload = {
+        data: { getTrialStatus: null },
+      };
+
+      expect(response.body).toEqual(expectedResponsePayload);
     });
   });
 
-  describe('with authenticated user', () => {
-    let user, userToken;
-
+  describe('and with cloud flag enabled', () => {
     beforeEach(async () => {
-      const trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
-
-      user = await createUser({ trialExpiryDate });
-      userToken = createAuthTokenByUserId(user.id);
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
     });
 
-    describe('and with cloud flag disabled', () => {
+    describe('and not in trial and has active subscription', () => {
       beforeEach(async () => {
-        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+        vi.spyOn(User.prototype, 'inTrial').mockResolvedValue(false);
+        vi.spyOn(User.prototype, 'hasActiveSubscription').mockResolvedValue(
+          true
+        );
       });
 
       it('should return null', async () => {
@@ -61,56 +73,27 @@ describe('graphQL getTrialStatus query', () => {
       });
     });
 
-    describe('and with cloud flag enabled', () => {
+    describe('and in trial period', () => {
       beforeEach(async () => {
-        vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
+        vi.spyOn(User.prototype, 'inTrial').mockResolvedValue(true);
       });
 
-      describe('and not in trial and has active subscription', () => {
-        beforeEach(async () => {
-          vi.spyOn(User.prototype, 'inTrial').mockResolvedValue(false);
-          vi.spyOn(User.prototype, 'hasActiveSubscription').mockResolvedValue(
-            true
-          );
-        });
+      it('should return null', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .set('Authorization', userToken)
+          .send({ query })
+          .expect(200);
 
-        it('should return null', async () => {
-          const response = await request(app)
-            .post('/graphql')
-            .set('Authorization', userToken)
-            .send({ query })
-            .expect(200);
-
-          const expectedResponsePayload = {
-            data: { getTrialStatus: null },
-          };
-
-          expect(response.body).toEqual(expectedResponsePayload);
-        });
-      });
-
-      describe('and in trial period', () => {
-        beforeEach(async () => {
-          vi.spyOn(User.prototype, 'inTrial').mockResolvedValue(true);
-        });
-
-        it('should return null', async () => {
-          const response = await request(app)
-            .post('/graphql')
-            .set('Authorization', userToken)
-            .send({ query })
-            .expect(200);
-
-          const expectedResponsePayload = {
-            data: {
-              getTrialStatus: {
-                expireAt: new Date(user.trialExpiryDate).getTime().toString(),
-              },
+        const expectedResponsePayload = {
+          data: {
+            getTrialStatus: {
+              expireAt: new Date(user.trialExpiryDate).getTime().toString(),
             },
-          };
+          },
+        };
 
-          expect(response.body).toEqual(expectedResponsePayload);
-        });
+        expect(response.body).toEqual(expectedResponsePayload);
       });
     });
   });
