@@ -5,7 +5,6 @@
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@automatisch/types": "^0.10.0",
     "@casl/ability": "^6.5.0",
     "@casl/react": "^3.1.0",
     "@emotion/react": "^11.4.1",
