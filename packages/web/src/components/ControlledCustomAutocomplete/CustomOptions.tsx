@@ -3,7 +3,7 @@ import Popper from '@mui/material/Popper';
 import Tab from '@mui/material/Tab';
 import * as React from 'react';
 
-import type { IFieldDropdownOption } from '@automatisch/types';
+import type { IFieldDropdownOption } from 'types';
 import Suggestions from 'components/PowerInput/Suggestions';
 import TabPanel from 'components/TabPanel';
 

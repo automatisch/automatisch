@@ -7,7 +7,7 @@ import Chip from '@mui/material/Chip';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { DateTime } from 'luxon';
 
-import type { IFlow } from '@automatisch/types';
+import type { IFlow } from 'types';
 import FlowAppIcons from 'components/FlowAppIcons';
 import FlowContextMenu from 'components/FlowContextMenu';
 import useFormatMessage from 'hooks/useFormatMessage';

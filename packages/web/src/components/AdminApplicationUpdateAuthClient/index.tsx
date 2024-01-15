@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import type { IApp } from '@automatisch/types';
+import type { IApp } from 'types';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { UPDATE_APP_AUTH_CLIENT } from 'graphql/mutations/update-app-auth-client';

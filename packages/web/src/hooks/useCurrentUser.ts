@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { IUser } from '@automatisch/types';
+import { IUser } from 'types';
 
 import { GET_CURRENT_USER } from 'graphql/queries/get-current-user';
 

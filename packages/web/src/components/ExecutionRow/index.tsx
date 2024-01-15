@@ -5,7 +5,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import Chip from '@mui/material/Chip';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { DateTime } from 'luxon';
-import type { IExecution } from '@automatisch/types';
+import type { IExecution } from 'types';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';

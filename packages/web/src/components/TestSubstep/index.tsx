@@ -13,7 +13,7 @@ import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
 import JSONViewer from 'components/JSONViewer';
 import WebhookUrlInfo from 'components/WebhookUrlInfo';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
-import type { IStep, ISubstep } from '@automatisch/types';
+import type { IStep, ISubstep } from 'types';
 
 type TestSubstepProps = {
   substep: ISubstep;
@@ -62,7 +62,7 @@ function TestSubstep(props: TestSubstepProps): React.ReactElement {
     EXECUTE_FLOW,
     {
       refetchQueries: ['GetStepWithTestExecutions'],
-      context: { autoSnackbar: false }
+      context: { autoSnackbar: false },
     }
   );
   const response = data?.executeFlow?.data;

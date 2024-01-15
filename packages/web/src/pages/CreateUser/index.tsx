@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { IRole, IUser } from '@automatisch/types';
+import { IRole, IUser } from 'types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';

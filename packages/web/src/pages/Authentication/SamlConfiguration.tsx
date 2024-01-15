@@ -1,5 +1,5 @@
 import { QueryResult, useMutation } from '@apollo/client';
-import { IRole, TSamlAuthProvider } from '@automatisch/types';
+import { IRole, TSamlAuthProvider } from 'types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
@@ -94,8 +94,8 @@ function SamlConfiguration({
       enqueueSnackbar(formatMessage('authenticationForm.successfullySaved'), {
         variant: 'success',
         SnackbarProps: {
-          'data-test': 'snackbar-save-saml-provider-success'
-        }
+          'data-test': 'snackbar-save-saml-provider-success',
+        },
       });
     } catch (error) {
       throw new Error('Failed while saving!');

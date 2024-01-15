@@ -8,7 +8,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import type { IField, IFieldText, IFieldDropdown } from '@automatisch/types';
+import type { IField, IFieldText, IFieldDropdown } from 'types';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import InputCreator from 'components/InputCreator';
@@ -19,7 +19,7 @@ type TGroupItem = {
   operator: string;
   value: string;
   id: string;
-}
+};
 
 type TGroup = Record<'and', TGroupItem[]>;
 
@@ -31,7 +31,7 @@ const createGroupItem = (): TGroupItem => ({
 });
 
 const createGroup = (): TGroup => ({
-  and: [createGroupItem()]
+  and: [createGroupItem()],
 });
 
 const operators = [
@@ -69,7 +69,9 @@ const operators = [
   },
 ];
 
-const createStringArgument = (argumentOptions: Omit<IFieldText, 'type' | 'required' | 'variables'>): IField => {
+const createStringArgument = (
+  argumentOptions: Omit<IFieldText, 'type' | 'required' | 'variables'>
+): IField => {
   return {
     ...argumentOptions,
     type: 'string',
@@ -78,7 +80,9 @@ const createStringArgument = (argumentOptions: Omit<IFieldText, 'type' | 'requir
   };
 };
 
-const createDropdownArgument = (argumentOptions: Omit<IFieldDropdown, 'type' | 'required'>): IField => {
+const createDropdownArgument = (
+  argumentOptions: Omit<IFieldDropdown, 'type' | 'required'>
+): IField => {
   return {
     ...argumentOptions,
     required: true,
@@ -91,9 +95,7 @@ type FilterConditionsProps = {
 };
 
 function FilterConditions(props: FilterConditionsProps): React.ReactElement {
-  const {
-    stepId
-  } = props;
+  const { stepId } = props;
   const formatMessage = useFormatMessage();
   const { control, setValue, getValues } = useFormContext();
   const groups = useWatch({ control, name: 'parameters.or' });
@@ -110,7 +112,7 @@ function FilterConditions(props: FilterConditionsProps): React.ReactElement {
   const appendGroup = React.useCallback(() => {
     const values = getValues('parameters.or');
 
-    setValue('parameters.or', values.concat(createGroup()))
+    setValue('parameters.or', values.concat(createGroup()));
   }, []);
 
   const appendGroupItem = React.useCallback((index) => {
@@ -124,65 +126,107 @@ function FilterConditions(props: FilterConditionsProps): React.ReactElement {
     if (group.length === 1) {
       const groups: TGroup[] = getValues('parameters.or');
 
-      setValue('parameters.or', groups.filter((group, index) => index !== groupIndex));
+      setValue(
+        'parameters.or',
+        groups.filter((group, index) => index !== groupIndex)
+      );
     } else {
-      setValue(`parameters.or.${groupIndex}.and`, group.filter((groupItem, index) => index !== groupItemIndex));
+      setValue(
+        `parameters.or.${groupIndex}.and`,
+        group.filter((groupItem, index) => index !== groupItemIndex)
+      );
     }
   }, []);
 
   return (
     <React.Fragment>
-      <Stack sx={{ width: "100%" }} direction="column" spacing={2} mt={2}>
+      <Stack sx={{ width: '100%' }} direction="column" spacing={2} mt={2}>
         {groups?.map((group: TGroup, groupIndex: number) => (
           <>
             {groupIndex !== 0 && <Divider />}
 
             <Typography variant="subtitle2" gutterBottom>
-              {groupIndex === 0 && formatMessage('filterConditions.onlyContinueIf')}
-              {groupIndex !== 0 && formatMessage('filterConditions.orContinueIf')}
+              {groupIndex === 0 &&
+                formatMessage('filterConditions.onlyContinueIf')}
+              {groupIndex !== 0 &&
+                formatMessage('filterConditions.orContinueIf')}
             </Typography>
 
-            {group?.and?.map((groupItem: TGroupItem, groupItemIndex: number) => (
-              <Stack direction="row" spacing={2} key={`item-${groupItem.id}`}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 2 }} sx={{ display: 'flex', flex: 1 }}>
-                  <Box sx={{ display: 'flex', flex: '1 0 0px', maxWidth: ['100%', '33%'] }}>
-                    <InputCreator
-                      schema={createStringArgument({ key: `or.${groupIndex}.and.${groupItemIndex}.key`, label: 'Choose field' })}
-                      namePrefix="parameters"
-                      stepId={stepId}
-                      disabled={editorContext.readOnly}
-                    />
-                  </Box>
+            {group?.and?.map(
+              (groupItem: TGroupItem, groupItemIndex: number) => (
+                <Stack direction="row" spacing={2} key={`item-${groupItem.id}`}>
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={{ xs: 2 }}
+                    sx={{ display: 'flex', flex: 1 }}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flex: '1 0 0px',
+                        maxWidth: ['100%', '33%'],
+                      }}
+                    >
+                      <InputCreator
+                        schema={createStringArgument({
+                          key: `or.${groupIndex}.and.${groupItemIndex}.key`,
+                          label: 'Choose field',
+                        })}
+                        namePrefix="parameters"
+                        stepId={stepId}
+                        disabled={editorContext.readOnly}
+                      />
+                    </Box>
 
-                  <Box sx={{ display: 'flex', flex: '1 0 0px', maxWidth: ['100%', '33%'] }}>
-                    <InputCreator
-                      schema={createDropdownArgument({ key: `or.${groupIndex}.and.${groupItemIndex}.operator`, options: operators, label: 'Choose condition' })}
-                      namePrefix="parameters"
-                      stepId={stepId}
-                      disabled={editorContext.readOnly}
-                    />
-                  </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flex: '1 0 0px',
+                        maxWidth: ['100%', '33%'],
+                      }}
+                    >
+                      <InputCreator
+                        schema={createDropdownArgument({
+                          key: `or.${groupIndex}.and.${groupItemIndex}.operator`,
+                          options: operators,
+                          label: 'Choose condition',
+                        })}
+                        namePrefix="parameters"
+                        stepId={stepId}
+                        disabled={editorContext.readOnly}
+                      />
+                    </Box>
 
-                  <Box sx={{ display: 'flex', flex: '1 0 0px', maxWidth: ['100%', '33%'] }}>
-                    <InputCreator
-                      schema={createStringArgument({ key: `or.${groupIndex}.and.${groupItemIndex}.value`, label: 'Enter text' })}
-                      namePrefix="parameters"
-                      stepId={stepId}
-                      disabled={editorContext.readOnly}
-                    />
-                  </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flex: '1 0 0px',
+                        maxWidth: ['100%', '33%'],
+                      }}
+                    >
+                      <InputCreator
+                        schema={createStringArgument({
+                          key: `or.${groupIndex}.and.${groupItemIndex}.value`,
+                          label: 'Enter text',
+                        })}
+                        namePrefix="parameters"
+                        stepId={stepId}
+                        disabled={editorContext.readOnly}
+                      />
+                    </Box>
+                  </Stack>
+
+                  <IconButton
+                    size="small"
+                    edge="start"
+                    onClick={() => removeGroupItem(groupIndex, groupItemIndex)}
+                    sx={{ width: 61, height: 61 }}
+                  >
+                    <RemoveIcon />
+                  </IconButton>
                 </Stack>
-
-                <IconButton
-                  size="small"
-                  edge="start"
-                  onClick={() => removeGroupItem(groupIndex, groupItemIndex)}
-                  sx={{ width: 61, height: 61 }}
-                >
-                  <RemoveIcon />
-                </IconButton>
-              </Stack>
-            ))}
+              )
+            )}
 
             <Stack spacing={1} direction="row">
               <IconButton
@@ -194,14 +238,16 @@ function FilterConditions(props: FilterConditionsProps): React.ReactElement {
                 <AddIcon /> And
               </IconButton>
 
-              {(groups.length - 1) === groupIndex && <IconButton
-                size="small"
-                edge="start"
-                onClick={appendGroup}
-                sx={{ width: 61, height: 61 }}
-              >
-                <AddIcon /> Or
-              </IconButton>}
+              {groups.length - 1 === groupIndex && (
+                <IconButton
+                  size="small"
+                  edge="start"
+                  onClick={appendGroup}
+                  sx={{ width: 61, height: 61 }}
+                >
+                  <AddIcon /> Or
+                </IconButton>
+              )}
             </Stack>
           </>
         ))}

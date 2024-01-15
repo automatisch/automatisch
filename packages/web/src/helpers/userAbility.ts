@@ -1,5 +1,9 @@
-import { PureAbility, fieldPatternMatcher, mongoQueryMatcher } from '@casl/ability';
-import { IUser } from '@automatisch/types';
+import {
+  PureAbility,
+  fieldPatternMatcher,
+  mongoQueryMatcher,
+} from '@casl/ability';
+import { IUser } from 'types';
 
 // Must be kept in sync with `packages/backend/src/helpers/user-ability.ts`!
 export default function userAbility(user: IUser) {
@@ -9,7 +13,7 @@ export default function userAbility(user: IUser) {
   // We're not using mongo, but our fields, conditions match
   const options = {
     conditionsMatcher: mongoQueryMatcher,
-    fieldMatcher: fieldPatternMatcher
+    fieldMatcher: fieldPatternMatcher,
   };
 
   if (!role || !permissions) {

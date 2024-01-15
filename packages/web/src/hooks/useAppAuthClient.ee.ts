@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { AppAuthClient } from '@automatisch/types';
+import { AppAuthClient } from 'types';
 import * as React from 'react';
 
 import { GET_APP_AUTH_CLIENT } from 'graphql/queries/get-app-auth-client.ee';

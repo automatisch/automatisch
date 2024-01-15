@@ -1,4 +1,4 @@
-import { IJSONObject } from '@automatisch/types';
+import { IJSONObject } from 'types';
 import set from 'lodash/set';
 
 export default function nestObject<T = IJSONObject>(

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { JSONTree } from 'react-json-tree';
-import type { IJSONObject } from '@automatisch/types';
+import type { IJSONObject } from 'types';
 
 type JSONViewerProps = {
   data: IJSONObject;

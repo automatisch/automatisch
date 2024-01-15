@@ -11,7 +11,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { TBillingCardAction } from '@automatisch/types';
+import { TBillingCardAction } from 'types';
 import TrialOverAlert from 'components/TrialOverAlert/index.ee';
 import SubscriptionCancelledAlert from 'components/SubscriptionCancelledAlert/index.ee';
 import CheckoutCompletedAlert from 'components/CheckoutCompletedAlert/index.ee';

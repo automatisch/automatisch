@@ -11,7 +11,7 @@ import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { DateTime } from 'luxon';
 import * as React from 'react';
 
-import type { IConnection } from '@automatisch/types';
+import type { IConnection } from 'types';
 import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
@@ -83,8 +83,8 @@ function AppConnectionRow(props: AppConnectionRowProps): React.ReactElement {
         enqueueSnackbar(formatMessage('connection.deletedMessage'), {
           variant: 'success',
           SnackbarProps: {
-            'data-test': 'snackbar-delete-connection-success'
-          }
+            'data-test': 'snackbar-delete-connection-success',
+          },
         });
       } else if (action.type === 'test') {
         setVerificationVisible(true);

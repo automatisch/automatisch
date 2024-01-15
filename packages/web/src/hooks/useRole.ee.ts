@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { IRole } from '@automatisch/types';
+import { IRole } from 'types';
 
 import { GET_ROLE } from 'graphql/queries/get-role.ee';
 
