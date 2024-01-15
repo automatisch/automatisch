@@ -16,13 +16,13 @@ The build integrations section is best understood when read from beginning to en
 
 ## Add actions to the app.
 
-Open the `thecatapi/index.ts` file and add the highlighted lines for actions.
+Open the `thecatapi/index.js` file and add the highlighted lines for actions.
 
-```typescript{4,17}
-import defineApp from '../../helpers/define-app';
-import auth from './auth';
-import triggers from './triggers';
-import actions from './actions';
+```javascript{4,17}
+import defineApp from '../../helpers/define-app.js';
+import auth from './auth/index.js';
+import triggers from './triggers/index.js';
+import actions from './actions/index.js';
 
 export default defineApp({
   name: 'The cat API',
@@ -41,24 +41,24 @@ export default defineApp({
 
 ## Define actions
 
-Create the `actions/index.ts` file inside of the `thecatapi` folder.
+Create the `actions/index.js` file inside of the `thecatapi` folder.
 
-```typescript
-import markCatImageAsFavorite from './mark-cat-image-as-favorite';
+```javascript
+import markCatImageAsFavorite from './mark-cat-image-as-favorite/index.js';
 
 export default [markCatImageAsFavorite];
 ```
 
 :::tip
-If you add new actions, you need to add them to the actions/index.ts file and export all actions as an array.
+If you add new actions, you need to add them to the actions/index.js file and export all actions as an array.
 :::
 
 ## Add metadata
 
-Create the `actions/mark-cat-image-as-favorite/index.ts` file inside the `thecatapi` folder.
+Create the `actions/mark-cat-image-as-favorite/index.js` file inside the `thecatapi` folder.
 
-```typescript
-import defineAction from '../../../../helpers/define-action';
+```javascript
+import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
   name: 'Mark the cat image as favorite',
@@ -68,7 +68,7 @@ export default defineAction({
     {
       label: 'Image ID',
       key: 'imageId',
-      type: 'string' as const,
+      type: 'string',
       required: true,
       description: 'The ID of the cat image you want to mark as favorite.',
       variables: true,
@@ -91,10 +91,10 @@ Let's briefly explain what we defined here.
 
 ## Implement the action
 
-Open the `actions/mark-cat-image-as-favorite.ts` file and add the highlighted lines.
+Open the `actions/mark-cat-image-as-favorite.js` file and add the highlighted lines.
 
-```typescript{7-20}
-import defineAction from '../../../../helpers/define-action';
+```javascript{7-20}
+import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
   // ...
@@ -104,7 +104,7 @@ export default defineAction({
     const imageId = $.step.parameters.imageId;
 
     const headers = {
-      'x-api-key': $.auth.data.apiKey as string,
+      'x-api-key': $.auth.data.apiKey,
     };
 
     const response = await $.http.post(
