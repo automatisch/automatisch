@@ -48,7 +48,7 @@ export const authenticationRules = {
   },
 };
 
-export const authenticationOptions = {
+const authenticationOptions = {
   allowExternalErrors: true,
 };
 
