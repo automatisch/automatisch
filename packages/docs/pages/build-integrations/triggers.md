@@ -23,9 +23,9 @@ We used a polling-based HTTP trigger in our example but if you need to use a web
 Open the `thecatapi/index.js` file and add the highlighted lines for triggers.
 
 ```javascript{3,15}
-import defineApp from '../../helpers/define-app';
-import auth from './auth';
-import triggers from './triggers';
+import defineApp from '../../helpers/define-app.js';
+import auth from './auth/index.js';
+import triggers from './triggers/index.js';
 
 export default defineApp({
   name: 'The cat API',
@@ -46,7 +46,7 @@ export default defineApp({
 Create the `triggers/index.js` file inside of the `thecatapi` folder.
 
 ```javascript
-import searchCatImages from './search-cat-images';
+import searchCatImages from './search-cat-images/index.js';
 
 export default [searchCatImages];
 ```
@@ -60,7 +60,7 @@ If you add new triggers, you need to add them to the `triggers/index.js` file an
 Create the `triggers/search-cat-images/index.js` file inside of the `thecatapi` folder.
 
 ```javascript
-import defineTrigger from '../../../../helpers/define-trigger';
+import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
   name: 'Search cat images',
@@ -94,7 +94,7 @@ Let's briefly explain what we defined here.
 Implement the `run` function by adding highlighted lines.
 
 ```javascript{1,7-30}
-import defineTrigger from '../../../../helpers/define-trigger';
+import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
   // ...

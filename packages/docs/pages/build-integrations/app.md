@@ -37,7 +37,7 @@ touch index.js
 Then let's define the app inside of the `index.js` file as follows:
 
 ```javascript
-import defineApp from '../../helpers/define-app';
+import defineApp from '../../helpers/define-app.js';
 
 export default defineApp({
   name: 'The cat API',

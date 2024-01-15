@@ -27,8 +27,8 @@ You can find detailed documentation of the cat API [here](https://docs.thecatapi
 Open the `thecatapi/index.js` file and add the highlighted lines for authentication.
 
 ```javascript{2,13}
-import defineApp from '../../helpers/define-app';
-import auth from './auth';
+import defineApp from '../../helpers/define-app.js';
+import auth from './auth/index.js';
 
 export default defineApp({
   name: 'The cat API',
@@ -104,7 +104,7 @@ So until now, we integrated auth folder with the app definition and defined the 
 Start with adding the `verifyCredentials` method to the `auth/index.js` file.
 
 ```javascript{1,8}
-import verifyCredentials from './verify-credentials';
+import verifyCredentials from './verify-credentials.js';
 
 export default {
   fields: [
@@ -154,8 +154,8 @@ We have implemented the `verifyCredentials` method. Now we need to check whether
 Start with adding the `isStillVerified` method to the `auth/index.js` file.
 
 ```javascript{2,10}
-import verifyCredentials from './verify-credentials';
-import isStillVerified from './is-still-verified';
+import verifyCredentials from './verify-credentials.js';
+import isStillVerified from './is-still-verified.js';
 
 export default {
   fields: [
@@ -170,7 +170,7 @@ export default {
 Let's create the `is-still-verified.js` file inside the `auth` folder.
 
 ```javascript
-import verifyCredentials from './verify-credentials';
+import verifyCredentials from './verify-credentials.js';
 
 const isStillVerified = async ($: IGlobalVariable) => {
   await verifyCredentials($);

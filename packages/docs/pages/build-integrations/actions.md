@@ -19,10 +19,10 @@ The build integrations section is best understood when read from beginning to en
 Open the `thecatapi/index.js` file and add the highlighted lines for actions.
 
 ```javascript{4,17}
-import defineApp from '../../helpers/define-app';
-import auth from './auth';
-import triggers from './triggers';
-import actions from './actions';
+import defineApp from '../../helpers/define-app.js';
+import auth from './auth/index.js';
+import triggers from './triggers/index.js';
+import actions from './actions/index.js';
 
 export default defineApp({
   name: 'The cat API',
@@ -44,7 +44,7 @@ export default defineApp({
 Create the `actions/index.js` file inside of the `thecatapi` folder.
 
 ```javascript
-import markCatImageAsFavorite from './mark-cat-image-as-favorite';
+import markCatImageAsFavorite from './mark-cat-image-as-favorite/index.js';
 
 export default [markCatImageAsFavorite];
 ```
@@ -58,7 +58,7 @@ If you add new actions, you need to add them to the actions/index.js file and ex
 Create the `actions/mark-cat-image-as-favorite/index.js` file inside the `thecatapi` folder.
 
 ```javascript
-import defineAction from '../../../../helpers/define-action';
+import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
   name: 'Mark the cat image as favorite',
@@ -94,7 +94,7 @@ Let's briefly explain what we defined here.
 Open the `actions/mark-cat-image-as-favorite.js` file and add the highlighted lines.
 
 ```javascript{7-20}
-import defineAction from '../../../../helpers/define-action';
+import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
   // ...
