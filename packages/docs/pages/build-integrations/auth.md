@@ -118,8 +118,6 @@ export default {
 Let's create the `verify-credentials.ts` file inside the `auth` folder.
 
 ```typescript
-import { IGlobalVariable } from '@automatisch/types';
-
 const verifyCredentials = async ($: IGlobalVariable) => {
   // TODO: Implement verification of the credentials
 };
@@ -132,8 +130,6 @@ We generally use the `users/me` endpoint or any other endpoint that we can valid
 Let's implement the authentication logic that we mentioned above in the `verify-credentials.ts` file.
 
 ```typescript
-import { IGlobalVariable } from '@automatisch/types';
-
 const verifyCredentials = async ($: IGlobalVariable) => {
   await $.http.get('/v1/images/search');
 
@@ -174,7 +170,6 @@ export default {
 Let's create the `is-still-verified.ts` file inside the `auth` folder.
 
 ```typescript
-import { IGlobalVariable } from '@automatisch/types';
 import verifyCredentials from './verify-credentials';
 
 const isStillVerified = async ($: IGlobalVariable) => {

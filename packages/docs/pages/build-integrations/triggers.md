@@ -94,7 +94,6 @@ Let's briefly explain what we defined here.
 Implement the `run` function by adding highlighted lines.
 
 ```typescript{1,7-30}
-import { IJSONObject } from '@automatisch/types';
 import defineTrigger from '../../../../helpers/define-trigger';
 
 export default defineTrigger({
