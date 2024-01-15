@@ -1,5 +1,5 @@
 import React from 'react';
-import type { IField } from '@automatisch/types';
+import type { IField } from 'types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';

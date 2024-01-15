@@ -1,4 +1,4 @@
-import type { IStep } from '@automatisch/types';
+import type { IStep } from 'types';
 
 const joinBy = (delimiter = '.', ...args: string[]) =>
   args.filter(Boolean).join(delimiter);
@@ -10,7 +10,12 @@ type TProcessPayload = {
   parentLabel?: string;
 };
 
-const process = ({ data, parentKey, index, parentLabel = '' }: TProcessPayload): any[] => {
+const process = ({
+  data,
+  parentKey,
+  index,
+  parentLabel = '',
+}: TProcessPayload): any[] => {
   if (typeof data !== 'object') {
     return [
       {
@@ -24,27 +29,19 @@ const process = ({ data, parentKey, index, parentLabel = '' }: TProcessPayload):
   const entries = Object.entries(data);
 
   return entries.flatMap(([name, sampleValue]) => {
-    const label = joinBy(
-      '.',
-      parentLabel,
-      (index as number)?.toString(),
-      name
-    );
+    const label = joinBy('.', parentLabel, (index as number)?.toString(), name);
 
-    const value = joinBy(
-      '.',
-      parentKey,
-      (index as number)?.toString(),
-      name
-    );
+    const value = joinBy('.', parentKey, (index as number)?.toString(), name);
 
     if (Array.isArray(sampleValue)) {
-      return sampleValue.flatMap((item, index) => process({
-        data: item,
-        parentKey: value,
-        index,
-        parentLabel: label
-      }));
+      return sampleValue.flatMap((item, index) =>
+        process({
+          data: item,
+          parentKey: value,
+          index,
+          parentLabel: label,
+        })
+      );
     }
 
     if (typeof sampleValue === 'object' && sampleValue !== null) {
@@ -77,8 +74,9 @@ export const processStepWithExecutions = (steps: IStep[]): any[] => {
     .map((step: IStep, index: number) => ({
       id: step.id,
       // TODO: replace with step.name once introduced
-      name: `${index + 1}. ${(step.appKey || '').charAt(0)?.toUpperCase() + step.appKey?.slice(1)
-        }`,
+      name: `${index + 1}. ${
+        (step.appKey || '').charAt(0)?.toUpperCase() + step.appKey?.slice(1)
+      }`,
       output: process({
         data: step.executionSteps?.[0]?.dataOut || {},
         parentKey: `step.${step.id}`,

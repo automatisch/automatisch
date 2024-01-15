@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import type { IFlow, IStep } from '@automatisch/types';
+import type { IFlow, IStep } from 'types';
 
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import { CREATE_STEP } from 'graphql/mutations/create-step';

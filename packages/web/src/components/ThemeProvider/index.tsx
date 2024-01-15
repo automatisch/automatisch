@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 import * as React from 'react';
 
-import { IJSONObject } from '@automatisch/types';
+import { IJSONObject } from 'types';
 import useConfig from 'hooks/useConfig';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import { defaultTheme, mationTheme } from 'styles/theme';

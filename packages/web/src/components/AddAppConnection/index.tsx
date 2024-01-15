@@ -1,4 +1,4 @@
-import type { IApp, IField, IJSONObject } from '@automatisch/types';
+import type { IApp, IField, IJSONObject } from 'types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';

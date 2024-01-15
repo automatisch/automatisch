@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import type { IExecution } from '@automatisch/types';
+import type { IExecution } from 'types';
 
 import NoResultFound from 'components/NoResultFound';
 import ExecutionRow from 'components/ExecutionRow';

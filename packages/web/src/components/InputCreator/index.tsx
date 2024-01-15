@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MuiTextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
-import type { IField, IFieldDropdownOption } from '@automatisch/types';
+import type { IField, IFieldDropdownOption } from 'types';
 
 import useDynamicFields from 'hooks/useDynamicFields';
 import useDynamicData from 'hooks/useDynamicData';

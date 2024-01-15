@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { IPermissionCatalog } from '@automatisch/types';
+import { IPermissionCatalog } from 'types';
 import ControlledCheckbox from 'components/ControlledCheckbox';
 import useFormatMessage from 'hooks/useFormatMessage';
 
@@ -118,7 +118,9 @@ export default function PermissionSettings(props: PermissionSettingsProps) {
                         {action.subjects.includes(subject) && (
                           <ControlledCheckbox
                             name={`${fieldPrefix}.${action.key}.conditions.${condition.key}`}
-                            dataTest={`${condition.key}-${action.key.toLowerCase()}-checkbox`}
+                            dataTest={`${
+                              condition.key
+                            }-${action.key.toLowerCase()}-checkbox`}
                             defaultValue={defaultChecked}
                             disabled={
                               getValues(

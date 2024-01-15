@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { IStep } from '@automatisch/types';
+import type { IStep } from 'types';
 
 export const StepExecutionsContext = React.createContext<IStep[]>([]);
 

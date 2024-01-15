@@ -4,7 +4,7 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import type { IStep, ISubstep } from '@automatisch/types';
+import type { IStep, ISubstep } from 'types';
 
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
@@ -54,7 +54,7 @@ function FlowSubstep(props: FlowSubstepProps): React.ReactElement {
             pb: 3,
             flexDirection: 'column',
             alignItems: 'flex-start',
-            position: 'relative'
+            position: 'relative',
           }}
         >
           {!!args?.length && (

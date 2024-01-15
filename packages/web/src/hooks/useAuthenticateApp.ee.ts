@@ -1,4 +1,4 @@
-import { IApp } from '@automatisch/types';
+import { IApp } from 'types';
 import * as React from 'react';
 
 import { processStep } from 'helpers/authenticationSteps';
@@ -10,14 +10,18 @@ type UseAuthenticateAppParams = {
   appAuthClientId?: string;
   useShared?: boolean;
   connectionId?: string;
-}
+};
 
 type AuthenticatePayload = {
   fields?: Record<string, string>;
   appAuthClientId?: string;
-}
+};
 
-function getSteps(auth: IApp['auth'], hasConnection: boolean, useShared: boolean) {
+function getSteps(
+  auth: IApp['auth'],
+  hasConnection: boolean,
+  useShared: boolean
+) {
   if (hasConnection) {
     if (useShared) {
       return auth?.sharedReconnectionSteps;
@@ -34,26 +38,17 @@ function getSteps(auth: IApp['auth'], hasConnection: boolean, useShared: boolean
 }
 
 export default function useAuthenticateApp(payload: UseAuthenticateAppParams) {
-  const {
-    appKey,
-    appAuthClientId,
-    connectionId,
-    useShared = false,
-  } = payload;
+  const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
   const { app } = useApp(appKey);
-  const [
-    authenticationInProgress,
-    setAuthenticationInProgress
-  ] = React.useState(false);
+  const [authenticationInProgress, setAuthenticationInProgress] =
+    React.useState(false);
   const steps = getSteps(app?.auth, !!connectionId, useShared);
 
   const authenticate = React.useMemo(() => {
     if (!steps?.length) return;
 
     return async function authenticate(payload: AuthenticatePayload = {}) {
-      const {
-        fields,
-      } = payload;
+      const { fields } = payload;
       setAuthenticationInProgress(true);
 
       const response: Record<string, any> = {
@@ -62,7 +57,7 @@ export default function useAuthenticateApp(payload: UseAuthenticateAppParams) {
         connection: {
           id: connectionId,
         },
-        fields
+        fields,
       };
 
       let stepIndex = 0;
@@ -90,7 +85,7 @@ export default function useAuthenticateApp(payload: UseAuthenticateAppParams) {
 
         setAuthenticationInProgress(false);
       }
-    }
+    };
   }, [steps, appKey, appAuthClientId, connectionId]);
 
   return {

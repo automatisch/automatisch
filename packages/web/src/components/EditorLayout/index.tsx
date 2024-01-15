@@ -17,7 +17,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { UPDATE_FLOW_STATUS } from 'graphql/mutations/update-flow-status';
 import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
 import { GET_FLOW } from 'graphql/queries/get-flow';
-import type { IFlow } from '@automatisch/types';
+import type { IFlow } from 'types';
 import * as URLS from 'config/urls';
 
 export default function EditorLayout(): React.ReactElement {

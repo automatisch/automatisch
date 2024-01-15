@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import type { IApp } from '@automatisch/types';
+import type { IApp } from 'types';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { CREATE_APP_CONFIG } from 'graphql/mutations/create-app-config';

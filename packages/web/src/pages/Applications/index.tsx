@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
 import AddIcon from '@mui/icons-material/Add';
-import type { IApp } from '@automatisch/types';
+import type { IApp } from 'types';
 
 import Can from 'components/Can';
 import NoResultFound from 'components/NoResultFound';

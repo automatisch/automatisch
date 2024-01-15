@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import { useQuery } from '@apollo/client';
-import { IApp } from '@automatisch/types';
+import { IApp } from 'types';
 
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';

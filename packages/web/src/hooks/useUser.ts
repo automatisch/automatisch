@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { IUser } from '@automatisch/types';
+import { IUser } from 'types';
 
 import { GET_USER } from 'graphql/queries/get-user';
 
 type QueryResponse = {
   getUser: IUser;
-}
+};
 
 export default function useUser(userId?: string) {
   const [getUser, { data, loading }] = useLazyQuery<QueryResponse>(GET_USER);
@@ -15,14 +15,14 @@ export default function useUser(userId?: string) {
     if (userId) {
       getUser({
         variables: {
-          id: userId
-        }
+          id: userId,
+        },
       });
     }
   }, [userId]);
 
   return {
     user: data?.getUser,
-    loading
+    loading,
   };
 }
