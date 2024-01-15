@@ -16,7 +16,7 @@ The build integrations section is best understood when read from beginning to en
 
 ## Add actions to the app.
 
-Open the `thecatapi/index.ts` file and add the highlighted lines for actions.
+Open the `thecatapi/index.js` file and add the highlighted lines for actions.
 
 ```javascript{4,17}
 import defineApp from '../../helpers/define-app';
@@ -41,7 +41,7 @@ export default defineApp({
 
 ## Define actions
 
-Create the `actions/index.ts` file inside of the `thecatapi` folder.
+Create the `actions/index.js` file inside of the `thecatapi` folder.
 
 ```javascript
 import markCatImageAsFavorite from './mark-cat-image-as-favorite';
@@ -50,12 +50,12 @@ export default [markCatImageAsFavorite];
 ```
 
 :::tip
-If you add new actions, you need to add them to the actions/index.ts file and export all actions as an array.
+If you add new actions, you need to add them to the actions/index.js file and export all actions as an array.
 :::
 
 ## Add metadata
 
-Create the `actions/mark-cat-image-as-favorite/index.ts` file inside the `thecatapi` folder.
+Create the `actions/mark-cat-image-as-favorite/index.js` file inside the `thecatapi` folder.
 
 ```javascript
 import defineAction from '../../../../helpers/define-action';
@@ -91,7 +91,7 @@ Let's briefly explain what we defined here.
 
 ## Implement the action
 
-Open the `actions/mark-cat-image-as-favorite.ts` file and add the highlighted lines.
+Open the `actions/mark-cat-image-as-favorite.js` file and add the highlighted lines.
 
 ```javascript{7-20}
 import defineAction from '../../../../helpers/define-action';

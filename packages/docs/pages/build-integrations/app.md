@@ -27,14 +27,14 @@ cd packages/backend/src/apps
 mkdir thecatapi
 ```
 
-We need to create an `index.ts` file inside of the `thecatapi` folder.
+We need to create an `index.js` file inside of the `thecatapi` folder.
 
 ```bash
 cd thecatapi
-touch index.ts
+touch index.js
 ```
 
-Then let's define the app inside of the `index.ts` file as follows:
+Then let's define the app inside of the `index.js` file as follows:
 
 ```javascript
 import defineApp from '../../helpers/define-app';

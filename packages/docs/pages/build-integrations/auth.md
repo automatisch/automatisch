@@ -24,7 +24,7 @@ You can find detailed documentation of the cat API [here](https://docs.thecatapi
 
 ## Add auth to the app
 
-Open the `thecatapi/index.ts` file and add the highlighted lines for authentication.
+Open the `thecatapi/index.js` file and add the highlighted lines for authentication.
 
 ```javascript{2,13}
 import defineApp from '../../helpers/define-app';
@@ -45,14 +45,14 @@ export default defineApp({
 
 ## Define auth fields
 
-Let's create the `auth/index.ts` file inside of the `thecatapi` folder.
+Let's create the `auth/index.js` file inside of the `thecatapi` folder.
 
 ```bash
 mkdir auth
-touch auth/index.ts
+touch auth/index.js
 ```
 
-Then let's start with defining fields the auth inside of the `auth/index.ts` file as follows:
+Then let's start with defining fields the auth inside of the `auth/index.js` file as follows:
 
 ```javascript
 export default {
@@ -101,7 +101,7 @@ If the third-party service you use provides both an API key and OAuth for the au
 
 So until now, we integrated auth folder with the app definition and defined the auth fields. Now we need to verify the credentials that the user entered. We will do that by defining the `verifyCredentials` method.
 
-Start with adding the `verifyCredentials` method to the `auth/index.ts` file.
+Start with adding the `verifyCredentials` method to the `auth/index.js` file.
 
 ```javascript{1,8}
 import verifyCredentials from './verify-credentials';
@@ -115,7 +115,7 @@ export default {
 };
 ```
 
-Let's create the `verify-credentials.ts` file inside the `auth` folder.
+Let's create the `verify-credentials.js` file inside the `auth` folder.
 
 ```javascript
 const verifyCredentials = async ($: IGlobalVariable) => {
@@ -127,7 +127,7 @@ export default verifyCredentials;
 
 We generally use the `users/me` endpoint or any other endpoint that we can validate the API key or any other credentials that the user provides. For our example, we don't have a specific API endpoint to check whether the credentials are correct or not. So we will randomly pick one of the API endpoints, which will be the `GET /v1/images/search` endpoint. We will send a request to this endpoint with the API key. If the API key is correct, we will get a response from the API. If the API key is incorrect, we will get an error response from the API.
 
-Let's implement the authentication logic that we mentioned above in the `verify-credentials.ts` file.
+Let's implement the authentication logic that we mentioned above in the `verify-credentials.js` file.
 
 ```javascript
 const verifyCredentials = async ($: IGlobalVariable) => {
@@ -151,7 +151,7 @@ You must always provide a `screenName` field to auth data in the `verifyCredenti
 
 We have implemented the `verifyCredentials` method. Now we need to check whether the credentials are still valid or not for the test connection functionality in Automatisch. We will do that by defining the `isStillVerified` method.
 
-Start with adding the `isStillVerified` method to the `auth/index.ts` file.
+Start with adding the `isStillVerified` method to the `auth/index.js` file.
 
 ```javascript{2,10}
 import verifyCredentials from './verify-credentials';
@@ -167,7 +167,7 @@ export default {
 };
 ```
 
-Let's create the `is-still-verified.ts` file inside the `auth` folder.
+Let's create the `is-still-verified.js` file inside the `auth` folder.
 
 ```javascript
 import verifyCredentials from './verify-credentials';

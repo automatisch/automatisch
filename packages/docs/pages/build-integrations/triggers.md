@@ -20,7 +20,7 @@ We used a polling-based HTTP trigger in our example but if you need to use a web
 
 ## Add triggers to the app
 
-Open the `thecatapi/index.ts` file and add the highlighted lines for triggers.
+Open the `thecatapi/index.js` file and add the highlighted lines for triggers.
 
 ```javascript{3,15}
 import defineApp from '../../helpers/define-app';
@@ -43,7 +43,7 @@ export default defineApp({
 
 ## Define triggers
 
-Create the `triggers/index.ts` file inside of the `thecatapi` folder.
+Create the `triggers/index.js` file inside of the `thecatapi` folder.
 
 ```javascript
 import searchCatImages from './search-cat-images';
@@ -52,12 +52,12 @@ export default [searchCatImages];
 ```
 
 :::tip
-If you add new triggers, you need to add them to the `triggers/index.ts` file and export all triggers as an array. The order of triggers in this array will be reflected in the Automatisch user interface.
+If you add new triggers, you need to add them to the `triggers/index.js` file and export all triggers as an array. The order of triggers in this array will be reflected in the Automatisch user interface.
 :::
 
 ## Add metadata
 
-Create the `triggers/search-cat-images/index.ts` file inside of the `thecatapi` folder.
+Create the `triggers/search-cat-images/index.js` file inside of the `thecatapi` folder.
 
 ```javascript
 import defineTrigger from '../../../../helpers/define-trigger';

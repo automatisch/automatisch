@@ -35,13 +35,13 @@ Here, you can see the folder structure of an example app. We will briefly walk t
 ├── auth
 ├── common
 ├── dynamic-data
-├── index.ts
+├── index.js
 └── triggers
 ```
 
 ## App
 
-The `index.ts` file is the entry point of the app. It contains the definition of the app and the app's metadata. It also includes the list of triggers, actions, and data sources that the app provides. So, whatever you build inside the app, you need to associate it within the `index.ts` file.
+The `index.js` file is the entry point of the app. It contains the definition of the app and the app's metadata. It also includes the list of triggers, actions, and data sources that the app provides. So, whatever you build inside the app, you need to associate it within the `index.js` file.
 
 ## Auth
 
