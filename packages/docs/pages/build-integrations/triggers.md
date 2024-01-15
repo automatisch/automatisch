@@ -22,7 +22,7 @@ We used a polling-based HTTP trigger in our example but if you need to use a web
 
 Open the `thecatapi/index.ts` file and add the highlighted lines for triggers.
 
-```typescript{3,15}
+```javascript{3,15}
 import defineApp from '../../helpers/define-app';
 import auth from './auth';
 import triggers from './triggers';
@@ -45,7 +45,7 @@ export default defineApp({
 
 Create the `triggers/index.ts` file inside of the `thecatapi` folder.
 
-```typescript
+```javascript
 import searchCatImages from './search-cat-images';
 
 export default [searchCatImages];
@@ -59,7 +59,7 @@ If you add new triggers, you need to add them to the `triggers/index.ts` file an
 
 Create the `triggers/search-cat-images/index.ts` file inside of the `thecatapi` folder.
 
-```typescript
+```javascript
 import defineTrigger from '../../../../helpers/define-trigger';
 
 export default defineTrigger({
@@ -93,7 +93,7 @@ Let's briefly explain what we defined here.
 
 Implement the `run` function by adding highlighted lines.
 
-```typescript{1,7-30}
+```javascript{1,7-30}
 import defineTrigger from '../../../../helpers/define-trigger';
 
 export default defineTrigger({

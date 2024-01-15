@@ -20,7 +20,7 @@ The global variable is represented as `$` variable in the codebase, and it's a J
 
 ## $.auth.set
 
-```typescript
+```javascript
 await $.auth.set({
   key: 'value',
 });
@@ -30,7 +30,7 @@ It's used to set the authentication data, and you can use this method with multi
 
 ## $.auth.data
 
-```typescript
+```javascript
 $.auth.data; // { key: 'value' }
 ```
 
@@ -38,7 +38,7 @@ It's used to retrieve the authentication data that we set with `$.auth.set()`. T
 
 ## $.app.baseUrl
 
-```typescript
+```javascript
 $.app.baseUrl; // https://thecatapi.com
 ```
 
@@ -46,7 +46,7 @@ It's used to retrieve the base URL of the app that we defined previously. In our
 
 ## $.app.apiBaseUrl
 
-```typescript
+```javascript
 $.app.apiBaseUrl; // https://api.thecatapi.com
 ```
 
@@ -54,7 +54,7 @@ It's used to retrieve the API base URL of the app that we defined previously. In
 
 ## $.app.auth.fields
 
-```typescript
+```javascript
 $.app.auth.fields;
 ```
 
@@ -64,7 +64,7 @@ It's used to retrieve the fields that we defined in the `auth` section of the ap
 
 It's an HTTP client to be used for making HTTP requests. It's a wrapper around the [axios](https://axios-http.com) library. We use this property when we need to make HTTP requests to the third-party service. The `apiBaseUrl` field we set up in the app will be used as the base URL for the HTTP requests. For example, to search the cat images, we can use the following code:
 
-```typescript
+```javascript
 await $.http.get('/v1/images/search?order=DESC', {
   headers: {
     'x-api-key': $.auth.data.apiKey,
@@ -76,7 +76,7 @@ Keep in mind that the HTTP client handles the error with the status code that fa
 
 ## $.step.parameters
 
-```typescript
+```javascript
 $.step.parameters; // { key: 'value' }
 ```
 
@@ -84,7 +84,7 @@ It refers to the parameters that are set by users in the UI. We use this propert
 
 ## $.pushTriggerItem
 
-```typescript
+```javascript
 $.pushTriggerItem({
   raw: resourceData,
   meta: {
@@ -97,7 +97,7 @@ It's used to push trigger data to be processed by Automatisch. It must reflect t
 
 ## $.setActionItem
 
-```typescript
+```javascript
 $.setActionItem({
   raw: resourceData,
 });

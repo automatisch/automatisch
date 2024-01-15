@@ -26,7 +26,7 @@ You can find detailed documentation of the cat API [here](https://docs.thecatapi
 
 Open the `thecatapi/index.ts` file and add the highlighted lines for authentication.
 
-```typescript{2,13}
+```javascript{2,13}
 import defineApp from '../../helpers/define-app';
 import auth from './auth';
 
@@ -54,7 +54,7 @@ touch auth/index.ts
 
 Then let's start with defining fields the auth inside of the `auth/index.ts` file as follows:
 
-```typescript
+```javascript
 export default {
   fields: [
     {
@@ -103,7 +103,7 @@ So until now, we integrated auth folder with the app definition and defined the 
 
 Start with adding the `verifyCredentials` method to the `auth/index.ts` file.
 
-```typescript{1,8}
+```javascript{1,8}
 import verifyCredentials from './verify-credentials';
 
 export default {
@@ -117,7 +117,7 @@ export default {
 
 Let's create the `verify-credentials.ts` file inside the `auth` folder.
 
-```typescript
+```javascript
 const verifyCredentials = async ($: IGlobalVariable) => {
   // TODO: Implement verification of the credentials
 };
@@ -129,7 +129,7 @@ We generally use the `users/me` endpoint or any other endpoint that we can valid
 
 Let's implement the authentication logic that we mentioned above in the `verify-credentials.ts` file.
 
-```typescript
+```javascript
 const verifyCredentials = async ($: IGlobalVariable) => {
   await $.http.get('/v1/images/search');
 
@@ -153,7 +153,7 @@ We have implemented the `verifyCredentials` method. Now we need to check whether
 
 Start with adding the `isStillVerified` method to the `auth/index.ts` file.
 
-```typescript{2,10}
+```javascript{2,10}
 import verifyCredentials from './verify-credentials';
 import isStillVerified from './is-still-verified';
 
@@ -169,7 +169,7 @@ export default {
 
 Let's create the `is-still-verified.ts` file inside the `auth` folder.
 
-```typescript
+```javascript
 import verifyCredentials from './verify-credentials';
 
 const isStillVerified = async ($: IGlobalVariable) => {

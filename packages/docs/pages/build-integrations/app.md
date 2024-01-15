@@ -36,7 +36,7 @@ touch index.ts
 
 Then let's define the app inside of the `index.ts` file as follows:
 
-```typescript
+```javascript
 import defineApp from '../../helpers/define-app';
 
 export default defineApp({
