@@ -47,6 +47,7 @@ The following integrations are currently supported by Automatisch.
 - [Twilio](/apps/twilio/triggers)
 - [Twitter](/apps/twitter/triggers)
 - [Typeform](/apps/typeform/triggers)
+- [Vtiger CRM](/apps/vtiger-crm/triggers)
 - [Webhooks](/apps/webhooks/triggers)
 - [WordPress](/apps/wordpress/triggers)
 - [Xero](/apps/xero/triggers)
