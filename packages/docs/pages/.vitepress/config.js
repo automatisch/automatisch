@@ -174,6 +174,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Actions', link: '/apps/google-tasks/actions' },
             { text: 'Connection', link: '/apps/google-tasks/connection' },
           ],
         },
