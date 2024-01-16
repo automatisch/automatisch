@@ -2,6 +2,8 @@ import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
 import setBaseUrl from './common/set-base-url.js';
 import auth from './auth/index.js';
+import actions from './actions/index.js';
+import dynamicData from './dynamic-data/index.js';
 
 export default defineApp({
   name: 'Vtiger CRM',
@@ -14,4 +16,6 @@ export default defineApp({
   primaryColor: '39a86d',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
+  actions,
+  dynamicData,
 });
