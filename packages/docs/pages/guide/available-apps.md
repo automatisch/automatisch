@@ -6,6 +6,7 @@ The following integrations are currently supported by Automatisch.
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
 - [Discord](/apps/discord/actions)
+- [Disqus](/apps/disqus/triggers)
 - [Dropbox](/apps/dropbox/actions)
 - [Filter](/apps/filter/actions)
 - [Flickr](/apps/flickr/triggers)
