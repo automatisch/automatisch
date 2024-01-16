@@ -1,6 +1,8 @@
 ---
 favicon: /favicons/google-tasks.svg
 items:
+  - name: Create task
+    desc: Creates a new task.
   - name: Find task
     desc: Looking for an incomplete task.
   - name: Update task
