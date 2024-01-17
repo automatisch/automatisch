@@ -305,7 +305,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
@@ -473,6 +473,14 @@ export default defineConfig({
           items: [
             { text: 'Triggers', link: '/apps/xero/triggers' },
             { text: 'Connection', link: '/apps/xero/connection' },
+          ],
+        },
+        {
+          text: 'You Need A Budget',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/you-need-a-budget/connection' },
           ],
         },
         {
