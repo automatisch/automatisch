@@ -1,4 +1,5 @@
 import listCampaignSources from './list-campaign-sources/index.js';
+import listContactOptions from './list-contact-options/index.js';
 import listContacts from './list-contacts/index.js';
 import listLeadOptions from './list-lead-options/index.js';
 import listMilestones from './list-milestones/index.js';
@@ -13,6 +14,7 @@ import listTodoOptions from './list-todo-options/index.js';
 
 export default [
   listCampaignSources,
+  listContactOptions,
   listContacts,
   listLeadOptions,
   listMilestones,
