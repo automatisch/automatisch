@@ -5,6 +5,8 @@ items:
     desc: Create a new opportunity.
   - name: Create todo
     desc: Create a new todo.
+  - name: Create lead
+    desc: Create a new lead.
 ---
 
 <script setup>
