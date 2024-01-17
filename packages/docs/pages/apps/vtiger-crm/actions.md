@@ -1,6 +1,8 @@
 ---
 favicon: /favicons/vtiger-crm.svg
 items:
+  - name: Create contact
+    desc: Create a new contact.
   - name: Create opportunity
     desc: Create a new opportunity.
   - name: Create todo
