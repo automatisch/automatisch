@@ -7,6 +7,8 @@ items:
     desc: Triggers when a goal is completed.
   - name: Low account balance
     desc: Triggers when the balance of a Checking or Savings account falls below a specified amount within a given month.
+  - name: New transactions
+    desc: Triggers when a new transaction is created.
 ---
 
 <script setup>
