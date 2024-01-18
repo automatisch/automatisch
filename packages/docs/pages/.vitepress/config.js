@@ -480,6 +480,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/you-need-a-budget/triggers' },
             { text: 'Connection', link: '/apps/you-need-a-budget/connection' },
           ],
         },
