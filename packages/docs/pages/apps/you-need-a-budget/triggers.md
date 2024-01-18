@@ -1,6 +1,8 @@
 ---
 favicon: /favicons/you-need-a-budget.svg
 items:
+  - name: Category overspent
+    desc: Triggers when a category exceeds its budget, resulting in a negative balance.
   - name: Low account balance
     desc: Triggers when the balance of a Checking or Savings account falls below a specified amount within a given month.
 ---
