@@ -36,12 +36,16 @@ function AccountDropdownMenu(props) {
       open={open}
       onClose={onClose}
     >
-      <MenuItem component={Link} to={URLS.SETTINGS_DASHBOARD}>
+      <MenuItem component={Link} to={URLS.SETTINGS_DASHBOARD} onClick={onClose}>
         {formatMessage('accountDropdownMenu.settings')}
       </MenuItem>
 
       <Can I="read" a="User">
-        <MenuItem component={Link} to={URLS.ADMIN_SETTINGS_DASHBOARD}>
+        <MenuItem
+          component={Link}
+          to={URLS.ADMIN_SETTINGS_DASHBOARD}
+          onClick={onClose}
+        >
           {formatMessage('accountDropdownMenu.adminSettings')}
         </MenuItem>
       </Can>

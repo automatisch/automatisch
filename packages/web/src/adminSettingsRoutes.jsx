@@ -1,5 +1,5 @@
 import { Route, Navigate } from 'react-router-dom';
-import AdminSettingsLayout from 'components/AdminSettingsLayout';
+
 import Users from 'pages/Users';
 import EditUser from 'pages/EditUser';
 import CreateUser from 'pages/CreateUser';
@@ -19,9 +19,7 @@ export default (
       path={URLS.USERS}
       element={
         <Can I="read" a="User">
-          <AdminSettingsLayout>
-            <Users />
-          </AdminSettingsLayout>
+          <Users />
         </Can>
       }
     />
@@ -30,9 +28,7 @@ export default (
       path={URLS.CREATE_USER}
       element={
         <Can I="create" a="User">
-          <AdminSettingsLayout>
-            <CreateUser />
-          </AdminSettingsLayout>
+          <CreateUser />
         </Can>
       }
     />
@@ -41,9 +37,7 @@ export default (
       path={URLS.USER_PATTERN}
       element={
         <Can I="update" a="User">
-          <AdminSettingsLayout>
-            <EditUser />
-          </AdminSettingsLayout>
+          <EditUser />
         </Can>
       }
     />
@@ -52,9 +46,7 @@ export default (
       path={URLS.ROLES}
       element={
         <Can I="read" a="Role">
-          <AdminSettingsLayout>
-            <Roles />
-          </AdminSettingsLayout>
+          <Roles />
         </Can>
       }
     />
@@ -63,9 +55,7 @@ export default (
       path={URLS.CREATE_ROLE}
       element={
         <Can I="create" a="Role">
-          <AdminSettingsLayout>
-            <CreateRole />
-          </AdminSettingsLayout>
+          <CreateRole />
         </Can>
       }
     />
@@ -74,9 +64,7 @@ export default (
       path={URLS.ROLE_PATTERN}
       element={
         <Can I="update" a="Role">
-          <AdminSettingsLayout>
-            <EditRole />
-          </AdminSettingsLayout>
+          <EditRole />
         </Can>
       }
     />
@@ -85,9 +73,7 @@ export default (
       path={URLS.USER_INTERFACE}
       element={
         <Can I="update" a="Config">
-          <AdminSettingsLayout>
-            <UserInterface />
-          </AdminSettingsLayout>
+          <UserInterface />
         </Can>
       }
     />
@@ -98,9 +84,7 @@ export default (
         <Can I="read" a="SamlAuthProvider">
           <Can I="update" a="SamlAuthProvider">
             <Can I="create" a="SamlAuthProvider">
-              <AdminSettingsLayout>
-                <Authentication />
-              </AdminSettingsLayout>
+              <Authentication />
             </Can>
           </Can>
         </Can>
@@ -111,9 +95,7 @@ export default (
       path={URLS.ADMIN_APPS}
       element={
         <Can I="update" a="App">
-          <AdminSettingsLayout>
-            <AdminApplications />
-          </AdminSettingsLayout>
+          <AdminApplications />
         </Can>
       }
     />
@@ -122,9 +104,7 @@ export default (
       path={`${URLS.ADMIN_APP_PATTERN}/*`}
       element={
         <Can I="update" a="App">
-          <AdminSettingsLayout>
-            <AdminApplication />
-          </AdminSettingsLayout>
+          <AdminApplication />
         </Can>
       }
     />

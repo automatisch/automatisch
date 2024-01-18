@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LockIcon from '@mui/icons-material/LockPerson';
 import BrushIcon from '@mui/icons-material/Brush';
 import AppsIcon from '@mui/icons-material/Apps';
+import { Outlet } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
@@ -12,6 +13,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from 'react';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
+import Can from 'components/Can';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
@@ -68,7 +70,7 @@ function createDrawerLinks({
   return items;
 }
 
-function SettingsLayout({ children }) {
+function SettingsLayout() {
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const currentUserAbility = useCurrentUserAbility();
@@ -95,13 +97,12 @@ function SettingsLayout({ children }) {
     },
   ];
   return (
-    <>
+    <Can I="read" a="User">
       <AppBar
         drawerOpen={isDrawerOpen}
         onDrawerOpen={openDrawer}
         onDrawerClose={closeDrawer}
       />
-
       <Box sx={{ display: 'flex' }}>
         <Drawer
           links={drawerLinks}
@@ -110,19 +111,13 @@ function SettingsLayout({ children }) {
           onOpen={openDrawer}
           onClose={closeDrawer}
         />
-
         <Box sx={{ flex: 1 }}>
           <Toolbar />
-
-          {children}
+          <Outlet />
         </Box>
       </Box>
-    </>
+    </Can>
   );
 }
-
-SettingsLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default SettingsLayout;
