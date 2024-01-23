@@ -36,7 +36,10 @@ export default defineConfig({
           text: 'Airtable',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/airtable/connection' }],
+          items: [
+            { text: 'Actions', link: '/apps/airtable/actions' },
+            { text: 'Connection', link: '/apps/airtable/connection' },
+          ],
         },
         {
           text: 'Carbone',
