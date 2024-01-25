@@ -48,9 +48,8 @@ export default function PermissionSettings(props) {
   };
   return (
     <Dialog
-      open
+      open={open}
       onClose={cancel}
-      sx={{ display: open ? 'block' : 'none' }}
       data-test={`${subject}-role-conditions-modal`}
     >
       <DialogTitle>{formatMessage('permissionSettings.title')}</DialogTitle>
