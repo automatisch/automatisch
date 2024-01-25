@@ -8,6 +8,7 @@ import lowercase from './transformers/lowercase.js';
 import markdownToHtml from './transformers/markdown-to-html.js';
 import pluralize from './transformers/pluralize.js';
 import replace from './transformers/replace.js';
+import stringToBase64 from './transformers/string-to-base64.js';
 import trimWhitespace from './transformers/trim-whitespace.js';
 import useDefaultValue from './transformers/use-default-value.js';
 
@@ -20,6 +21,7 @@ const transformers = {
   markdownToHtml,
   pluralize,
   replace,
+  stringToBase64,
   trimWhitespace,
   useDefaultValue,
 };
@@ -45,6 +47,7 @@ export default defineAction({
         { label: 'Lowercase', value: 'lowercase' },
         { label: 'Pluralize', value: 'pluralize' },
         { label: 'Replace', value: 'replace' },
+        { label: 'String to Base64', value: 'stringToBase64' },
         { label: 'Trim Whitespace', value: 'trimWhitespace' },
         { label: 'Use Default Value', value: 'useDefaultValue' },
       ],

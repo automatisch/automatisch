@@ -6,6 +6,7 @@ import lowercase from './text/lowercase.js';
 import markdownToHtml from './text/markdown-to-html.js';
 import pluralize from './text/pluralize.js';
 import replace from './text/replace.js';
+import stringToBase64 from './text/string-to-base64.js';
 import trimWhitespace from './text/trim-whitespace.js';
 import useDefaultValue from './text/use-default-value.js';
 import performMathOperation from './numbers/perform-math-operation.js';
@@ -23,6 +24,7 @@ const options = {
   markdownToHtml,
   pluralize,
   replace,
+  stringToBase64,
   trimWhitespace,
   useDefaultValue,
   performMathOperation,
