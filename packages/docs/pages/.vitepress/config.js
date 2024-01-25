@@ -42,6 +42,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Appwrite',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/appwrite/connection' }],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
