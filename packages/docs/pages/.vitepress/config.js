@@ -201,7 +201,10 @@ export default defineConfig({
           text: 'MailerLite',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/mailerlite/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/mailerlite/triggers' },
+            { text: 'Connection', link: '/apps/mailerlite/connection' },
+          ],
         },
         {
           text: 'Mattermost',
