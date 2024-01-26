@@ -1,5 +1,6 @@
 import defineAction from '../../../../helpers/define-action.js';
 
+import base64ToString from './transformers/base64-to-string.js';
 import capitalize from './transformers/capitalize.js';
 import extractEmailAddress from './transformers/extract-email-address.js';
 import extractNumber from './transformers/extract-number.js';
@@ -13,6 +14,7 @@ import trimWhitespace from './transformers/trim-whitespace.js';
 import useDefaultValue from './transformers/use-default-value.js';
 
 const transformers = {
+  base64ToString,
   capitalize,
   extractEmailAddress,
   extractNumber,
@@ -39,6 +41,7 @@ export default defineAction({
       required: true,
       variables: true,
       options: [
+        { label: 'Base64 to String', value: 'base64ToString' },
         { label: 'Capitalize', value: 'capitalize' },
         { label: 'Convert HTML to Markdown', value: 'htmlToMarkdown' },
         { label: 'Convert Markdown to HTML', value: 'markdownToHtml' },

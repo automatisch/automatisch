@@ -1,3 +1,4 @@
+import base64ToString from './text/base64-to-string.js';
 import capitalize from './text/capitalize.js';
 import extractEmailAddress from './text/extract-email-address.js';
 import extractNumber from './text/extract-number.js';
@@ -16,6 +17,7 @@ import formatPhoneNumber from './numbers/format-phone-number.js';
 import formatDateTime from './date-time/format-date-time.js';
 
 const options = {
+  base64ToString,
   capitalize,
   extractEmailAddress,
   extractNumber,
