@@ -1,6 +1,9 @@
-import * as path from 'path';
-import * as fs from 'fs';
-import * as handlebars from 'handlebars';
+import path from 'path';
+import fs from 'fs';
+import handlebars from 'handlebars';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const compileEmail = (emailPath, replacements = {}) => {
   const filePath = path.join(__dirname, `../views/emails/${emailPath}.ee.hbs`);
