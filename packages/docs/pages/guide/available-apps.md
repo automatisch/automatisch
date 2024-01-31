@@ -20,6 +20,7 @@ The following integrations are currently supported by Automatisch.
 - [HTTP Request](/apps/http-request/actions)
 - [HubSpot](/apps/hubspot/actions)
 - [Invoice Ninja](/apps/invoice-ninja/triggers)
+- [Mailchimp](/apps/mailchimp/triggers)
 - [Mattermost](/apps/mattermost/actions)
 - [Miro](/apps/miro/actions)
 - [Notion](/apps/notion/triggers)
