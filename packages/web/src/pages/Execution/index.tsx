@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import AlertTitle from '@mui/material/AlertTitle';
 import Alert from '@mui/material/Alert';
-import type { IExecutionStep } from '@automatisch/types';
+import type { IExecutionStep } from 'types';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import ExecutionHeader from 'components/ExecutionHeader';

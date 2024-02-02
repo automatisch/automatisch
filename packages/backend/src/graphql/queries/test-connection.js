@@ -1,6 +1,6 @@
-import App from '../../models/app';
-import Connection from '../../models/connection';
-import globalVariable from '../../helpers/global-variable';
+import App from '../../models/app.js';
+import Connection from '../../models/connection.js';
+import globalVariable from '../../helpers/global-variable.js';
 
 const testConnection = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Connection');

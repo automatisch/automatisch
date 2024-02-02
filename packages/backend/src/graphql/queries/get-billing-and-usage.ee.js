@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import Billing from '../../helpers/billing/index.ee';
-import ExecutionStep from '../../models/execution-step';
+import Billing from '../../helpers/billing/index.ee.js';
+import ExecutionStep from '../../models/execution-step.js';
 
 const getBillingAndUsage = async (_parent, _params, context) => {
   const persistedSubscription = await context.currentUser.$relatedQuery(

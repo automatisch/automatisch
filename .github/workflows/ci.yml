@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'
           cache: 'yarn'
           cache-dependency-path: yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
@@ -24,7 +24,7 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn lint
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  build-backend:
+  start-backend-server:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -33,13 +33,36 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'
           cache: 'yarn'
           cache-dependency-path: yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - run: yarn --frozen-lockfile && yarn lerna bootstrap
-      - run: cd packages/backend && yarn build
+      - run: cd packages/backend && yarn start
+        env:
+          ENCRYPTION_KEY: sample_encryption_key
+          WEBHOOK_SECRET_KEY: sample_webhook_secret_key
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+  start-backend-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - run: yarn --frozen-lockfile && yarn lerna bootstrap
+      - run: cd packages/backend && yarn start:worker
+        env:
+          ENCRYPTION_KEY: sample_encryption_key
+          WEBHOOK_SECRET_KEY: sample_webhook_secret_key
       - run: echo "🍏 This job's status is ${{ job.status }}."
   build-web:
     runs-on: ubuntu-latest
@@ -50,7 +73,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'
           cache: 'yarn'
           cache-dependency-path: yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
@@ -59,22 +82,4 @@ jobs:
       - run: cd packages/web && yarn build
         env:
           CI: false
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-  build-cli:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-          cache: 'yarn'
-          cache-dependency-path: yarn.lock
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - run: yarn --frozen-lockfile && yarn lerna bootstrap
-      - run: cd packages/backend && yarn build
-      - run: cd packages/cli && yarn build
       - run: echo "🍏 This job's status is ${{ job.status }}."

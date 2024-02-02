@@ -1,4 +1,4 @@
-import { IRole, IPermission } from '@automatisch/types';
+import { IRole, IPermission } from 'types';
 
 type ComputeAction = {
   conditions: Record<string, boolean>;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import type { PopoverProps } from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
-import type { IConnection } from '@automatisch/types';
+import type { IConnection } from 'types';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';

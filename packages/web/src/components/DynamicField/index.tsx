@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 
-import { IFieldDynamic } from '@automatisch/types';
+import { IFieldDynamic } from 'types';
 import InputCreator from 'components/InputCreator';
 import { EditorContext } from 'contexts/Editor';
 

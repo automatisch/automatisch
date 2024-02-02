@@ -1,4 +1,4 @@
-import AppConfig from '../../models/app-config';
+import AppConfig from '../../models/app-config.js';
 
 const getAppAuthClients = async (_parent, params, context) => {
   let canSeeAllClients = false;

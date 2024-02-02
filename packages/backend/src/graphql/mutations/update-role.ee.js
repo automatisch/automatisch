@@ -1,6 +1,6 @@
-import Role from '../../models/role';
-import Permission from '../../models/permission';
-import permissionCatalog from '../../helpers/permission-catalog.ee';
+import Role from '../../models/role.js';
+import Permission from '../../models/permission.js';
+import permissionCatalog from '../../helpers/permission-catalog.ee.js';
 
 const updateRole = async (_parent, params, context) => {
   context.currentUser.can('update', 'Role');

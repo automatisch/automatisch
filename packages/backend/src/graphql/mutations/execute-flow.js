@@ -1,5 +1,5 @@
-import testRun from '../../services/test-run';
-import Step from '../../models/step';
+import testRun from '../../services/test-run.js';
+import Step from '../../models/step.js';
 
 const executeFlow = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');

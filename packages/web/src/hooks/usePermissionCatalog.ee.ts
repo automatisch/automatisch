@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { IPermissionCatalog } from '@automatisch/types';
+import { IPermissionCatalog } from 'types';
 
 import { GET_PERMISSION_CATALOG } from 'graphql/queries/get-permission-catalog.ee';
 

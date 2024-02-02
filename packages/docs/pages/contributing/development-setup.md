@@ -35,7 +35,7 @@ yarn db:create
 ```
 
 :::warning
-`yarn db:create` commands expect that you have the `postgres` superuser. If not, you can create a superuser called `postgres` manually or you can create the database manually by checking PostgreSQL-related default values from the [app config](https://github.com/automatisch/automatisch/blob/main/packages/backend/src/config/app.ts).
+`yarn db:create` commands expect that you have the `postgres` superuser. If not, you can create a superuser called `postgres` manually or you can create the database manually by checking PostgreSQL-related default values from the [app config](https://github.com/automatisch/automatisch/blob/main/packages/backend/src/config/app.js).
 :::
 
 Run the database migrations in the backend folder.

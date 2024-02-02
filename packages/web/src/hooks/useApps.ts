@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { IApp } from '@automatisch/types';
+import { IApp } from 'types';
 
 import { GET_APPS } from 'graphql/queries/get-apps';
 

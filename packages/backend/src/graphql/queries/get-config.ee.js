@@ -1,5 +1,5 @@
-import { hasValidLicense } from '../../helpers/license.ee';
-import Config from '../../models/config';
+import { hasValidLicense } from '../../helpers/license.ee.js';
+import Config from '../../models/config.js';
 
 const getConfig = async (_parent, params) => {
   if (!(await hasValidLicense())) return {};

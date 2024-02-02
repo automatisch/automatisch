@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import FormHelperText from '@mui/material/FormHelperText';
-import Autocomplete, { AutocompleteProps, createFilterOptions } from '@mui/material/Autocomplete';
+import Autocomplete, {
+  AutocompleteProps,
+  createFilterOptions,
+} from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
-import type { IFieldDropdownOption } from '@automatisch/types';
+import type { IFieldDropdownOption } from 'types';
 
 interface ControlledAutocompleteProps
   extends AutocompleteProps<IFieldDropdownOption, boolean, boolean, boolean> {
@@ -23,8 +26,8 @@ const filterOptions = createFilterOptions<IFieldDropdownOption>({
   stringify: ({ label, value }) => `
     ${label}
     ${value}
-  `
-})
+  `,
+});
 
 function ControlledAutocomplete(
   props: ControlledAutocompleteProps

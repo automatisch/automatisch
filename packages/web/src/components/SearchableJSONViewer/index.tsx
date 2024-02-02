@@ -3,7 +3,7 @@ import throttle from 'lodash/throttle';
 import isEmpty from 'lodash/isEmpty';
 import { Box, Typography } from '@mui/material';
 
-import { IJSONObject } from '@automatisch/types';
+import { IJSONObject } from 'types';
 import JSONViewer from 'components/JSONViewer';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';

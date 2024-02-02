@@ -1,4 +1,4 @@
-import appConfig from './app';
+import appConfig from './app.js';
 
 const redisConfig = {
   host: appConfig.redisHost,

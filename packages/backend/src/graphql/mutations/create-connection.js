@@ -1,5 +1,5 @@
-import App from '../../models/app';
-import AppConfig from '../../models/app-config';
+import App from '../../models/app.js';
+import AppConfig from '../../models/app-config.js';
 
 const createConnection = async (_parent, params, context) => {
   context.currentUser.can('create', 'Connection');

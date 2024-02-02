@@ -1,4 +1,4 @@
-import Role from '../../models/role';
+import Role from '../../models/role.js';
 
 const getRoles = async (_parent, params, context) => {
   context.currentUser.can('read', 'Role');

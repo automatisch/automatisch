@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { TSamlAuthProvider, TSamlAuthProviderRole } from '@automatisch/types';
+import { TSamlAuthProvider, TSamlAuthProviderRole } from 'types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
@@ -65,8 +65,8 @@ function RoleMappings({ provider, providerLoading }: RoleMappingsProps) {
         enqueueSnackbar(formatMessage('roleMappingsForm.successfullySaved'), {
           variant: 'success',
           SnackbarProps: {
-            'data-test': 'snackbar-update-role-mappings-success'
-          }
+            'data-test': 'snackbar-update-role-mappings-success',
+          },
         });
       }
     } catch (error) {

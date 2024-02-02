@@ -1,3 +1,3 @@
-import BaseError from './base';
+import BaseError from './base.js';
 
-export default class AlreadyProcessedError extends BaseError { }
+export default class AlreadyProcessedError extends BaseError {}

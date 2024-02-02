@@ -1,6 +1,6 @@
-import App from '../../models/app';
-import Flow from '../../models/flow';
-import Connection from '../../models/connection';
+import App from '../../models/app.js';
+import Flow from '../../models/flow.js';
+import Connection from '../../models/connection.js';
 
 const getConnectedApps = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Connection');

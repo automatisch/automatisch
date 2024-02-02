@@ -19,7 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
-import type { IApp } from '@automatisch/types';
+import type { IApp } from 'types';
 
 import * as URLS from 'config/urls';
 import AppIcon from 'components/AppIcon';

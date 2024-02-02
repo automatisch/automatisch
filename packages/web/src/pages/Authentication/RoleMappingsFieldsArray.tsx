@@ -1,5 +1,5 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { IRole } from '@automatisch/types';
+import { IRole } from 'types';
 import MuiTextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';

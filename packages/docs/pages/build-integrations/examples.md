@@ -18,35 +18,35 @@ The build integrations section is best understood when read from beginning to en
 
 ### 3-legged OAuth
 
-- [Discord](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/discord/auth/index.ts)
-- [Flickr](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/flickr/auth/index.ts)
-- [Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/auth/index.ts)
-- [Salesforce](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/salesforce/auth/index.ts)
-- [Slack](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/slack/auth/index.ts)
-- [Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/auth/index.ts)
+- [Discord](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/discord/auth/index.js)
+- [Flickr](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/flickr/auth/index.js)
+- [Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/auth/index.js)
+- [Salesforce](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/salesforce/auth/index.js)
+- [Slack](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/slack/auth/index.js)
+- [Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/auth/index.js)
 
 ### OAuth with the refresh token
 
-- [Salesforce](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/salesforce/auth/index.ts)
+- [Salesforce](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/salesforce/auth/index.js)
 
 ### API key
 
-- [DeepL](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/deepl/auth/index.ts)
-- [Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/auth/index.ts)
-- [SignalWire](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/signalwire/auth/index.ts)
-- [SMTP](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/smtp/auth/index.ts)
+- [DeepL](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/deepl/auth/index.js)
+- [Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/auth/index.js)
+- [SignalWire](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/signalwire/auth/index.js)
+- [SMTP](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/smtp/auth/index.js)
 
 ### Without authentication
 
-- [RSS](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/rss/index.ts)
-- [Scheduler](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/scheduler/index.ts)
+- [RSS](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/rss/index.js)
+- [Scheduler](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/scheduler/index.js)
 
 ## Triggers
 
 ### Polling-based triggers
 
-- [Search tweets - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/triggers/search-tweets/index.ts)
-- [New issues - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-issues/index.ts)
+- [Search tweets - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/triggers/search-tweets/index.js)
+- [New issues - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-issues/index.js)
 
 ### Webhook-based triggers
 
@@ -54,27 +54,27 @@ The build integrations section is best understood when read from beginning to en
 If you are developing a webhook-based trigger, you need to ensure that the webhook is publicly accessible. You can use [ngrok](https://ngrok.com) for this purpose and override the webhook URL by setting the **WEBHOOK_URL** environment variable.
 :::
 
-- [New entry - Typeform](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/typeform/triggers/new-entry/index.ts)
+- [New entry - Typeform](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/typeform/triggers/new-entry/index.js)
 
 ### Pagination with descending order
 
-- [Search tweets - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/triggers/search-tweets/index.ts)
-- [New issues - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-issues/index.ts)
-- [Receive SMS - Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/triggers/receive-sms/index.ts)
-- [Receive SMS - SignalWire](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/signalwire/triggers/receive-sms/index.ts)
-- [New photos - Flickr](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/flickr/triggers/new-photos/index.ts)
+- [Search tweets - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/triggers/search-tweets/index.js)
+- [New issues - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-issues/index.js)
+- [Receive SMS - Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/triggers/receive-sms/index.js)
+- [Receive SMS - SignalWire](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/signalwire/triggers/receive-sms/index.js)
+- [New photos - Flickr](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/flickr/triggers/new-photos/index.js)
 
 ### Pagination with ascending order
 
-- [New stargazers - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-stargazers/index.ts)
-- [New watchers - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-watchers/index.ts)
+- [New stargazers - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-stargazers/index.js)
+- [New watchers - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/triggers/new-watchers/index.js)
 
 ## Actions
 
-- [Send a message to channel - Slack](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/slack/actions/send-a-message-to-channel/index.ts)
-- [Send SMS - Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/actions/send-sms/index.ts)
-- [Send a message to channel - Discord](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/discord/actions/send-message-to-channel/index.ts)
-- [Create issue - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/actions/create-issue/index.ts)
-- [Send an email - SMTP](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/smtp/actions/send-email/index.ts)
-- [Create tweet - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/actions/create-tweet/index.ts)
-- [Translate text - DeepL](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/deepl/actions/translate-text/index.ts)
+- [Send a message to channel - Slack](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/slack/actions/send-a-message-to-channel/index.js)
+- [Send SMS - Twilio](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twilio/actions/send-sms/index.js)
+- [Send a message to channel - Discord](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/discord/actions/send-message-to-channel/index.js)
+- [Create issue - Github](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/github/actions/create-issue/index.js)
+- [Send an email - SMTP](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/smtp/actions/send-email/index.js)
+- [Create tweet - Twitter](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/twitter/actions/create-tweet/index.js)
+- [Translate text - DeepL](https://github.com/automatisch/automatisch/tree/main/packages/backend/src/apps/deepl/actions/translate-text/index.js)

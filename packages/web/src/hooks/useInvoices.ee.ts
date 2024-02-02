@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client';
-import { TInvoice } from '@automatisch/types';
+import { TInvoice } from 'types';
 
 import { GET_INVOICES } from 'graphql/queries/get-invoices.ee';
 
 type UseInvoicesReturn = {
-  invoices: TInvoice[],
+  invoices: TInvoice[];
   loading: boolean;
 };
 
@@ -13,6 +13,6 @@ export default function useInvoices(): UseInvoicesReturn {
 
   return {
     invoices: data?.getInvoices || [],
-    loading: loading
+    loading: loading,
   };
 }

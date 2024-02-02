@@ -1,5 +1,5 @@
-import appConfig from '../../config/app';
-import Billing from '../../helpers/billing/index.ee';
+import appConfig from '../../config/app.js';
+import Billing from '../../helpers/billing/index.ee.js';
 
 const getPaymentPlans = async () => {
   if (!appConfig.isCloud) return;

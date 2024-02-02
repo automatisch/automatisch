@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { TSamlAuthProviderRole } from '@automatisch/types';
+import { TSamlAuthProviderRole } from 'types';
 
 import { GET_SAML_AUTH_PROVIDER_ROLE_MAPPINGS } from 'graphql/queries/get-saml-auth-provider-role-mappings';
 

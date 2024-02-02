@@ -7,13 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
-import type {
-  IApp,
-  IStep,
-  ISubstep,
-  ITrigger,
-  IAction,
-} from '@automatisch/types';
+import type { IApp, IStep, ISubstep, ITrigger, IAction } from 'types';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import useApps from 'hooks/useApps';

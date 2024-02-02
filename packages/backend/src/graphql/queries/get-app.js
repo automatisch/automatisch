@@ -1,5 +1,5 @@
-import App from '../../models/app';
-import Connection from '../../models/connection';
+import App from '../../models/app.js';
+import Connection from '../../models/connection.js';
 
 const getApp = async (_parent, params, context) => {
   const conditions = context.currentUser.can('read', 'Connection');

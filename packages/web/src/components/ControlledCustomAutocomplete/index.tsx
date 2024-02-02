@@ -5,7 +5,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { AutocompleteProps } from '@mui/material/Autocomplete';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearIcon from '@mui/icons-material/Clear';
-import type { IFieldDropdownOption } from '@automatisch/types';
+import type { IFieldDropdownOption } from 'types';
 import { ActionButtonsWrapper } from './style';
 
 import ClickAwayListener from '@mui/base/ClickAwayListener';

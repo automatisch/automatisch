@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import * as React from 'react';
 
-import type { IApp, IConnection, IStep, ISubstep } from '@automatisch/types';
+import type { IApp, IConnection, IStep, ISubstep } from 'types';
 import AddAppConnection from 'components/AddAppConnection';
 import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';

@@ -14,13 +14,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import type { BaseSchema } from 'yup';
-import type {
-  IApp,
-  ITrigger,
-  IAction,
-  IStep,
-  ISubstep,
-} from '@automatisch/types';
+import type { IApp, ITrigger, IAction, IStep, ISubstep } from 'types';
 
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';

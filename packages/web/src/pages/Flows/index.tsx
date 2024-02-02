@@ -9,7 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import type { IFlow } from '@automatisch/types';
+import type { IFlow } from 'types';
 
 import Can from 'components/Can';
 import FlowRow from 'components/FlowRow';

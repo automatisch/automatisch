@@ -4,11 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
 import type { UseFormReturn } from 'react-hook-form';
 import isEqual from 'lodash/isEqual';
-import type {
-  IField,
-  IFieldDropdownSource,
-  IJSONObject,
-} from '@automatisch/types';
+import type { IField, IFieldDropdownSource, IJSONObject } from 'types';
 
 import { GET_DYNAMIC_DATA } from 'graphql/queries/get-dynamic-data';
 

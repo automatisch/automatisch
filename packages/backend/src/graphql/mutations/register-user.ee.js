@@ -1,7 +1,10 @@
-import User from '../../models/user';
-import Role from '../../models/role';
+import appConfig from '../../config/app.js';
+import User from '../../models/user.js';
+import Role from '../../models/role.js';
 
 const registerUser = async (_parent, params) => {
+  if (!appConfig.isCloud) return;
+
   const { fullName, email, password } = params.input;
 
   const existingUser = await User.query().findOne({

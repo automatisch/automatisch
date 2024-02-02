@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import { TSamlAuthProvider } from '@automatisch/types';
+import { TSamlAuthProvider } from 'types';
 import { LIST_SAML_AUTH_PROVIDERS } from 'graphql/queries/list-saml-auth-providers.ee';
 
 type UseSamlAuthProvidersReturn = {

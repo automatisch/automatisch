@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import { TPaymentPlan } from '@automatisch/types';
+import { TPaymentPlan } from 'types';
 import { GET_PAYMENT_PLANS } from 'graphql/queries/get-payment-plans.ee';
 
 type UsePaymentPlansReturn = {
@@ -13,6 +13,6 @@ export default function usePaymentPlans(): UsePaymentPlansReturn {
 
   return {
     plans: data?.getPaymentPlans || [],
-    loading
+    loading,
   };
 }

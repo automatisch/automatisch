@@ -1,12 +1,12 @@
 import { Worker } from 'bullmq';
 import process from 'node:process';
 
-import * as Sentry from '../helpers/sentry.ee';
-import redisConfig from '../config/redis';
-import logger from '../helpers/logger';
-import mailer from '../helpers/mailer.ee';
-import compileEmail from '../helpers/compile-email.ee';
-import appConfig from '../config/app';
+import * as Sentry from '../helpers/sentry.ee.js';
+import redisConfig from '../config/redis.js';
+import logger from '../helpers/logger.js';
+import mailer from '../helpers/mailer.ee.js';
+import compileEmail from '../helpers/compile-email.ee.js';
+import appConfig from '../config/app.js';
 
 const isCloudSandbox = () => {
   return appConfig.isCloud && !appConfig.isProd;

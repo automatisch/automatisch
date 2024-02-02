@@ -1,7 +1,7 @@
 import { Text, Descendant } from 'slate';
 import { withHistory } from 'slate-history';
 import { ReactEditor, withReact } from 'slate-react';
-import { IFieldDropdownOption } from '@automatisch/types';
+import { IFieldDropdownOption } from 'types';
 
 import type {
   CustomEditor,

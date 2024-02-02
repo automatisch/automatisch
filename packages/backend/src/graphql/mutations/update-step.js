@@ -1,6 +1,6 @@
-import App from '../../models/app';
-import Step from '../../models/step';
-import Connection from '../../models/connection';
+import App from '../../models/app.js';
+import Step from '../../models/step.js';
+import Connection from '../../models/connection.js';
 
 const updateStep = async (_parent, params, context) => {
   const { isCreator } = context.currentUser.can('update', 'Flow');

@@ -1,6 +1,6 @@
-import SamlAuthProvider from '../../models/saml-auth-provider.ee';
-import SamlAuthProvidersRoleMapping from '../../models/saml-auth-providers-role-mapping.ee';
-import isEmpty from 'lodash/isEmpty';
+import SamlAuthProvider from '../../models/saml-auth-provider.ee.js';
+import SamlAuthProvidersRoleMapping from '../../models/saml-auth-providers-role-mapping.ee.js';
+import isEmpty from 'lodash/isEmpty.js';
 
 const upsertSamlAuthProvidersRoleMappings = async (
   _parent,
