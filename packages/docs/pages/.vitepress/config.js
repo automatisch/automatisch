@@ -256,7 +256,10 @@ export default defineConfig({
           text: 'Jotform',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/jotform/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/jotform/triggers' },
+            { text: 'Connection', link: '/apps/jotform/connection' },
+          ],
         },
         {
           text: 'Mailchimp',
