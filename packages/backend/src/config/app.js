@@ -18,7 +18,7 @@ const port = process.env.PORT || '3000';
 const serveWebAppSeparately =
   process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
 
-let apiUrl = new URL(process.env.API_URL ? process.env.API_URL: `${protocol}://${host}:${port}`).toString();
+let apiUrl = new URL(process.env.API_URL || `${protocol}://${host}:${port}`).toString();
 apiUrl = apiUrl.substring(0, apiUrl.length - 1);
 
 // use apiUrl by default, which has less priority over the following cases
