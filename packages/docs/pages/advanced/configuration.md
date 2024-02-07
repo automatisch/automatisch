@@ -43,3 +43,4 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 | `BULLMQ_DASHBOARD_USERNAME`  | string  |                    | Username to login BullMQ Dashboard                                                  |
 | `BULLMQ_DASHBOARD_PASSWORD`  | string  |                    | Password to login BullMQ Dashboard                                                  |
 | `DISABLE_NOTIFICATIONS_PAGE` | boolean | `false`            | Enable/Disable notifications page                                                   |
+| `DISABLE_FAVICON`            | boolean | `false`            | Enable/Disable favicon                                                              |

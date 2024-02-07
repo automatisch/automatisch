@@ -89,6 +89,7 @@ const appConfig = {
   sentryDsn: process.env.SENTRY_DSN,
   CI: process.env.CI === 'true',
   disableNotificationsPage: process.env.DISABLE_NOTIFICATIONS_PAGE === 'true',
+  disableFavicon: process.env.DISABLE_FAVICON === 'true',
 };
 
 if (!appConfig.encryptionKey) {

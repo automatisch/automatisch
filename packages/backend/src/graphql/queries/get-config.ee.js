@@ -4,6 +4,7 @@ import Config from '../../models/config.js';
 
 const defaultConfig = {
   disableNotificationsPage: appConfig.disableNotificationsPage,
+  disableFavicon: appConfig.disableFavicon,
 };
 
 const getConfig = async (_parent, params) => {
