@@ -12,7 +12,7 @@ import * as URLS from 'config/urls';
 import useVersion from 'hooks/useVersion';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
-import useAutomatischInfo from 'hooks/useAutomatischInfo';
+import useConfig from 'hooks/useConfig';
 
 type PublicLayoutProps = {
   children: React.ReactNode;
@@ -40,17 +40,17 @@ const drawerLinks = [
 ];
 
 type GenerateDrawerBottomLinksOptions = {
-  isMation: boolean;
+  disableNotificationsPage: boolean;
   loading: boolean;
   notificationBadgeContent: number;
 };
 
 const generateDrawerBottomLinks = ({
-  isMation,
+  disableNotificationsPage,
   loading,
   notificationBadgeContent = 0,
 }: GenerateDrawerBottomLinksOptions) => {
-  if (loading || isMation) {
+  if (loading || disableNotificationsPage) {
     return [];
   }
 
@@ -68,7 +68,7 @@ export default function PublicLayout({
   children,
 }: PublicLayoutProps): React.ReactElement {
   const version = useVersion();
-  const { isMation, loading } = useAutomatischInfo();
+  const { config, loading } = useConfig(['disableNotificationsPage']);
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
@@ -79,7 +79,7 @@ export default function PublicLayout({
   const drawerBottomLinks = generateDrawerBottomLinks({
     notificationBadgeContent: version.newVersionCount,
     loading,
-    isMation,
+    disableNotificationsPage: config?.disableNotificationsPage as boolean,
   });
 
   return (
