@@ -15,6 +15,7 @@ import { SvgIconComponent } from '@mui/icons-material';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import * as URLS from 'config/urls';
+import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 
 type SettingsLayoutProps = {
@@ -86,19 +87,11 @@ function createDrawerLinks({
   return items;
 }
 
-const drawerBottomLinks = [
-  {
-    Icon: ArrowBackIosNewIcon,
-    primary: 'adminSettingsDrawer.goBack',
-    to: '/',
-    dataTest: 'go-back-drawer-link',
-  },
-];
-
 export default function SettingsLayout({
   children,
 }: SettingsLayoutProps): React.ReactElement {
   const theme = useTheme();
+  const formatMessage = useFormatMessage();
   const currentUserAbility = useCurrentUserAbility();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
@@ -115,6 +108,15 @@ export default function SettingsLayout({
       currentUserAbility.can('create', 'SamlAuthProvider'),
     canUpdateApp: currentUserAbility.can('update', 'App'),
   });
+
+  const drawerBottomLinks = [
+    {
+      Icon: ArrowBackIosNewIcon,
+      primary: formatMessage('adminSettingsDrawer.goBack'),
+      to: '/',
+      dataTest: 'go-back-drawer-link',
+    },
+  ];
 
   return (
     <>
