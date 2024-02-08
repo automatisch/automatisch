@@ -14,31 +14,33 @@ The default values for some environment variables might be different in our deve
 Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment variables. They are used to encrypt your credentials from third-party services and verify webhook requests. If you change them, your existing connections and flows will not continue to work.
 :::
 
-| Variable Name               | Type    | Default Value      | Description                                                                                          |
-| --------------------------- | ------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
-| `HOST`                      | string  | `localhost`        | HTTP Host                                                                                            |
-| `PROTOCOL`                  | string  | `http`             | HTTP Protocol                                                                                        |
-| `PORT`                      | string  | `3000`             | HTTP Port                                                                                            |
-| `APP_ENV`                   | string  | `production`       | Automatisch Environment                                                                              |
-| `WEB_APP_URL`               | string  |                    | Can be used to override connection URLs and CORS URL                                                 |
-| `WEBHOOK_URL`               | string  |                    | Can be used to override webhook URL                                                                  |
-| `LOG_LEVEL`                 | string  | `info`             | Can be used to configure log level such as `error`, `warn`, `info`, `http`, `debug`                  |
-| `POSTGRES_DATABASE`         | string  | `automatisch`      | Database Name                                                                                        |
-| `POSTGRES_SCHEMA`           | string  | `public`           | Database Schema                                                                                      |
-| `POSTGRES_PORT`             | number  | `5432`             | Database Port                                                                                        |
-| `POSTGRES_ENABLE_SSL`       | boolean | `false`            | Enable/Disable SSL for the database                                                                  |
-| `POSTGRES_HOST`             | string  | `postgres`         | Database Host                                                                                        |
-| `POSTGRES_USERNAME`         | string  | `automatisch_user` | Database User                                                                                        |
-| `POSTGRES_PASSWORD`         | string  |                    | Password of Database User                                                                            |
-| `ENCRYPTION_KEY`            | string  |                    | Encryption Key to store credentials                                                                  |
-| `WEBHOOK_SECRET_KEY`        | string  |                    | Webhook Secret Key to verify webhook requests                                                        |
-| `APP_SECRET_KEY`            | string  |                    | Secret Key to authenticate the user                                                                  |
-| `REDIS_HOST`                | string  | `redis`            | Redis Host                                                                                           |
-| `REDIS_PORT`                | number  | `6379`             | Redis Port                                                                                           |
-| `REDIS_USERNAME`            | string  |                    | Redis Username                                                                                       |
-| `REDIS_PASSWORD`            | string  |                    | Redis Password                                                                                       |
-| `REDIS_TLS`                 | boolean | `false`            | Redis TLS                                                                                            |
-| `TELEMETRY_ENABLED`         | boolean | `true`             | Enable/Disable Telemetry                                                                             |
-| `ENABLE_BULLMQ_DASHBOARD`   | boolean | `false`            | Enable BullMQ Dashboard                                                                              |
-| `BULLMQ_DASHBOARD_USERNAME` | string  |                    | Username to login BullMQ Dashboard                                                                   |
-| `BULLMQ_DASHBOARD_PASSWORD` | string  |                    | Password to login BullMQ Dashboard                                                                   |
+| Variable Name                | Type    | Default Value      | Description                                                                         |
+| ---------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------- |
+| `HOST`                       | string  | `localhost`        | HTTP Host                                                                           |
+| `PROTOCOL`                   | string  | `http`             | HTTP Protocol                                                                       |
+| `PORT`                       | string  | `3000`             | HTTP Port                                                                           |
+| `APP_ENV`                    | string  | `production`       | Automatisch Environment                                                             |
+| `WEB_APP_URL`                | string  |                    | Can be used to override connection URLs and CORS URL                                |
+| `WEBHOOK_URL`                | string  |                    | Can be used to override webhook URL                                                 |
+| `LOG_LEVEL`                  | string  | `info`             | Can be used to configure log level such as `error`, `warn`, `info`, `http`, `debug` |
+| `POSTGRES_DATABASE`          | string  | `automatisch`      | Database Name                                                                       |
+| `POSTGRES_SCHEMA`            | string  | `public`           | Database Schema                                                                     |
+| `POSTGRES_PORT`              | number  | `5432`             | Database Port                                                                       |
+| `POSTGRES_ENABLE_SSL`        | boolean | `false`            | Enable/Disable SSL for the database                                                 |
+| `POSTGRES_HOST`              | string  | `postgres`         | Database Host                                                                       |
+| `POSTGRES_USERNAME`          | string  | `automatisch_user` | Database User                                                                       |
+| `POSTGRES_PASSWORD`          | string  |                    | Password of Database User                                                           |
+| `ENCRYPTION_KEY`             | string  |                    | Encryption Key to store credentials                                                 |
+| `WEBHOOK_SECRET_KEY`         | string  |                    | Webhook Secret Key to verify webhook requests                                       |
+| `APP_SECRET_KEY`             | string  |                    | Secret Key to authenticate the user                                                 |
+| `REDIS_HOST`                 | string  | `redis`            | Redis Host                                                                          |
+| `REDIS_PORT`                 | number  | `6379`             | Redis Port                                                                          |
+| `REDIS_USERNAME`             | string  |                    | Redis Username                                                                      |
+| `REDIS_PASSWORD`             | string  |                    | Redis Password                                                                      |
+| `REDIS_TLS`                  | boolean | `false`            | Redis TLS                                                                           |
+| `TELEMETRY_ENABLED`          | boolean | `true`             | Enable/Disable Telemetry                                                            |
+| `ENABLE_BULLMQ_DASHBOARD`    | boolean | `false`            | Enable BullMQ Dashboard                                                             |
+| `BULLMQ_DASHBOARD_USERNAME`  | string  |                    | Username to login BullMQ Dashboard                                                  |
+| `BULLMQ_DASHBOARD_PASSWORD`  | string  |                    | Password to login BullMQ Dashboard                                                  |
+| `DISABLE_NOTIFICATIONS_PAGE` | boolean | `false`            | Enable/Disable notifications page                                                   |
+| `DISABLE_FAVICON`            | boolean | `false`            | Enable/Disable favicon                                                              |

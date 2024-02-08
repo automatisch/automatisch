@@ -15,6 +15,27 @@ const MetadataProvider = ({
     document.title = (config?.title as string) || 'Automatisch';
   }, [config?.title]);
 
+  React.useEffect(() => {
+    const existingFaviconElement = document.querySelector(
+      "link[rel~='icon']"
+    ) as HTMLLinkElement | null;
+
+    if (config?.disableFavicon === true) {
+      existingFaviconElement?.remove();
+    }
+
+    if (config?.disableFavicon === false) {
+      if (existingFaviconElement) {
+        existingFaviconElement.href = '/browser-tab.ico';
+      } else {
+        const newFaviconElement = document.createElement('link');
+        newFaviconElement.rel = 'icon';
+        document.head.appendChild(newFaviconElement);
+        newFaviconElement.href = '/browser-tab.ico';
+      }
+    }
+  }, [config?.disableFavicon]);
+
   return <>{children}</>;
 };
 
