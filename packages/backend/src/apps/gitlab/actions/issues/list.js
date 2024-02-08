@@ -12,8 +12,7 @@ export default defineAction({
       key: 'id',
       type: 'string',
       required: true,
-      description:
-        'The global ID or URL-encoded path of the project owned by the authenticated user.',
+      description: 'The global ID or path of the project.',
       variables: true,
     },
     {
