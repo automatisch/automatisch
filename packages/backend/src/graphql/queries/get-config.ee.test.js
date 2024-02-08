@@ -59,6 +59,8 @@ describe('graphQL getConfig query', () => {
               [configThree.key]: configThree.value.data,
               disableNotificationsPage: false,
               disableFavicon: false,
+              additionalDrawerLink: undefined,
+              additionalDrawerLinkText: undefined,
             },
           },
         };
@@ -87,6 +89,8 @@ describe('graphQL getConfig query', () => {
               [configTwo.key]: configTwo.value.data,
               disableNotificationsPage: false,
               disableFavicon: false,
+              additionalDrawerLink: undefined,
+              additionalDrawerLinkText: undefined,
             },
           },
         };
@@ -101,6 +105,12 @@ describe('graphQL getConfig query', () => {
           true
         );
         vi.spyOn(appConfig, 'disableFavicon', 'get').mockReturnValue(true);
+        vi.spyOn(appConfig, 'additionalDrawerLink', 'get').mockReturnValue(
+          'https://automatisch.io'
+        );
+        vi.spyOn(appConfig, 'additionalDrawerLinkText', 'get').mockReturnValue(
+          'Automatisch'
+        );
       });
 
       it('should return custom config', async () => {
@@ -117,6 +127,8 @@ describe('graphQL getConfig query', () => {
               [configThree.key]: configThree.value.data,
               disableNotificationsPage: true,
               disableFavicon: true,
+              additionalDrawerLink: 'https://automatisch.io',
+              additionalDrawerLinkText: 'Automatisch',
             },
           },
         };

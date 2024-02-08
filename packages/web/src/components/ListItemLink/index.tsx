@@ -9,6 +9,7 @@ type ListItemLinkProps = {
   icon: React.ReactNode;
   primary: string;
   to: string;
+  target?: '_blank';
   onClick?: (event: React.SyntheticEvent) => void;
   'data-test'?: string;
 };
@@ -16,14 +17,29 @@ type ListItemLinkProps = {
 export default function ListItemLink(
   props: ListItemLinkProps
 ): React.ReactElement {
-  const { icon, primary, to, onClick, 'data-test': dataTest } = props;
+  const { icon, primary, to, onClick, 'data-test': dataTest, target } = props;
   const selected = useMatch({ path: to, end: true });
 
   const CustomLink = React.useMemo(
     () =>
       React.forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(
         function InLineLink(linkProps, ref) {
-          return <Link ref={ref} to={to} {...linkProps} />;
+          try {
+            // challenge the link to check if it's absolute URL
+            new URL(to); // should throw an error if it's not an absolute URL
+
+            return (
+              <a
+                {...linkProps}
+                ref={ref}
+                href={to}
+                target={target}
+                rel="noopener noreferrer"
+              />
+            );
+          } catch {
+            return <Link ref={ref} {...linkProps} to={to} />;
+          }
         }
       ),
     [to]
@@ -37,6 +53,7 @@ export default function ListItemLink(
         selected={!!selected}
         onClick={onClick}
         data-test={dataTest}
+        target={target}
       >
         <ListItemIcon sx={{ minWidth: 52 }}>{icon}</ListItemIcon>
         <ListItemText

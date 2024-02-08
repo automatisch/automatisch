@@ -8,6 +8,8 @@ const getConfig = async (_parent, params) => {
   const defaultConfig = {
     disableNotificationsPage: appConfig.disableNotificationsPage,
     disableFavicon: appConfig.disableFavicon,
+    additionalDrawerLink: appConfig.additionalDrawerLink,
+    additionalDrawerLinkText: appConfig.additionalDrawerLinkText,
   };
 
   const configQuery = Config.query();
