@@ -15,7 +15,7 @@ const webUIHandler = async (app) => {
   app.use(express.static(webBuildPath));
 
   app.get('*', (_req, res) => {
-    res.set('Content-Security-Policy', 'frame-ancestors: none;');
+    res.set('Content-Security-Policy', 'frame-ancestors \'none\';');
     res.set('X-Frame-Options', 'DENY');
 
     res.sendFile(indexHtml);
