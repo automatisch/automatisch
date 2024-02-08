@@ -2,7 +2,7 @@ import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
   name: 'Create new Issue',
-  key: 'createIssue',
+  key: 'issueCreate',
   description: 'Creates a new project issue.',
   arguments: [
     {
@@ -131,16 +131,12 @@ export default defineAction({
   ],
 
   async run($) {
-    const { id, title, ...params } = $.step.parameters;
-    if (!id) throw new Error('A project must be set!');
-    if (!title) throw new Error('A title must be set!');
+    const { id, ...params } = $.step.parameters;
 
     const response = await $.http.post(
       `/api/v4/projects/${encodeURI(id)}/issues`,
       {
-        id,
-        title,
-        ...params,
+        params,
       }
     );
 
