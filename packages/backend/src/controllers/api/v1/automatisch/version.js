@@ -1,5 +1,6 @@
-import appConfig from '../../../../config/app';
+import appConfig from '../../../../config/app.js';
+import { renderObject } from '../../../../helpers/renderer.js';
 
 export default async (request, response) => {
-  response.json({ version: appConfig.version });
+  renderObject(response, { version: appConfig.version });
 };
