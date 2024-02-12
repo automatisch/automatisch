@@ -3,7 +3,7 @@ import graphQLInstance from '../helpers/graphql-instance.js';
 import webhooksRouter from './webhooks.js';
 import paddleRouter from './paddle.ee.js';
 import healthcheckRouter from './healthcheck.js';
-import automatischRouter from './automatisch.js';
+import automatischRouter from './api/v1/automatisch.js';
 
 const router = Router();
 
