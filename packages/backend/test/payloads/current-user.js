@@ -1,10 +1,11 @@
-const userPayload = (currentUser, role) => {
+const currentUserPayload = (currentUser, role) => {
   return {
     data: {
       createdAt: currentUser.createdAt.toISOString(),
       email: currentUser.email,
       fullName: currentUser.fullName,
       id: currentUser.id,
+      permissions: [],
       role: {
         createdAt: role.createdAt.toISOString(),
         description: null,
@@ -28,4 +29,4 @@ const userPayload = (currentUser, role) => {
   };
 };
 
-export default userPayload;
+export default currentUserPayload;
