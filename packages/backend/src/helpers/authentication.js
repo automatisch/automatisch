@@ -28,6 +28,14 @@ export const isAuthenticated = async (_parent, _args, req) => {
   }
 };
 
+export const authenticateUser = async (request, response, next) => {
+  if (await isAuthenticated(null, null, request)) {
+    next();
+  } else {
+    return response.status(401).end();
+  }
+};
+
 const isAuthenticatedRule = rule()(isAuthenticated);
 
 export const authenticationRules = {
