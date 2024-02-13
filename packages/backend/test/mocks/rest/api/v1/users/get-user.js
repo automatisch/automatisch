@@ -1,11 +1,10 @@
-const currentUserPayload = (currentUser, role) => {
+const getUserMock = (currentUser, role) => {
   return {
     data: {
       createdAt: currentUser.createdAt.toISOString(),
       email: currentUser.email,
       fullName: currentUser.fullName,
       id: currentUser.id,
-      permissions: [],
       role: {
         createdAt: role.createdAt.toISOString(),
         description: null,
@@ -29,4 +28,4 @@ const currentUserPayload = (currentUser, role) => {
   };
 };
 
-export default currentUserPayload;
+export default getUserMock;

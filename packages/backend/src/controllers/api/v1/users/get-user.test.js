@@ -4,7 +4,7 @@ import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id';
 import { createUser } from '../../../../../test/factories/user';
 import { createPermission } from '../../../../../test/factories/permission';
-import userPayload from '../../../../../test/payloads/user.js';
+import getUserMock from '../../../../../test/mocks/rest/api/v1/users/get-user';
 
 describe('GET /api/v1/users/:userId', () => {
   let currentUser, currentUserRole, anotherUser, anotherUserRole, token;
@@ -30,7 +30,7 @@ describe('GET /api/v1/users/:userId', () => {
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = userPayload(anotherUser, anotherUserRole);
+    const expectedPayload = getUserMock(anotherUser, anotherUserRole);
     expect(response.body).toEqual(expectedPayload);
   });
 });
