@@ -38,6 +38,10 @@ export default defineConfig({
           collapsed: true,
           items: [
             {
+              text: 'Triggers',
+              link: '/apps/airbrake/triggers',
+            },
+            {
               text: 'Connection',
               link: '/apps/airbrake/connection',
             },

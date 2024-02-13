@@ -2,6 +2,7 @@
 
 The following integrations are currently supported by Automatisch.
 
+- [Airbrake](/apps/airbrake/triggers)
 - [Airtable](/apps/airtable/actions)
 - [Anthropic](/apps/anthropic/actions)
 - [Appwrite](/apps/appwrite/triggers)

@@ -2,6 +2,8 @@ import defineApp from '../../helpers/define-app.js';
 import setBaseUrl from './common/set-base-url.js';
 import auth from './auth/index.js';
 import addAuthToken from './common/add-auth-token.js';
+import triggers from './triggers/index.js';
+import dynamicData from './dynamic-data/index.js';
 
 export default defineApp({
   name: 'Airbrake',
@@ -14,4 +16,6 @@ export default defineApp({
   primaryColor: 'f58c54',
   beforeRequest: [setBaseUrl, addAuthToken],
   auth,
+  triggers,
+  dynamicData,
 });
