@@ -1,3 +1,4 @@
+import Flow from '../../src/models/flow';
 import { createUser } from './user';
 
 export const createFlow = async (params = {}) => {
@@ -6,7 +7,7 @@ export const createFlow = async (params = {}) => {
   params.createdAt = params?.createdAt || new Date().toISOString();
   params.updatedAt = params?.updatedAt || new Date().toISOString();
 
-  const [flow] = await global.knex.table('flows').insert(params).returning('*');
+  const flow = await Flow.query().insert(params).returning('*');
 
   return flow;
 };

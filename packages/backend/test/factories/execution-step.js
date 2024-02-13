@@ -1,3 +1,4 @@
+import ExecutionStep from '../../src/models/execution-step';
 import { createExecution } from './execution';
 import { createStep } from './step';
 
@@ -8,8 +9,7 @@ export const createExecutionStep = async (params = {}) => {
   params.dataIn = params?.dataIn || { dataIn: 'dataIn' };
   params.dataOut = params?.dataOut || { dataOut: 'dataOut' };
 
-  const [executionStep] = await global.knex
-    .table('executionSteps')
+  const executionStep = await ExecutionStep.query()
     .insert(params)
     .returning('*');
 
