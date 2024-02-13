@@ -143,6 +143,17 @@ class User extends Base {
     },
   });
 
+  $formatJson(json) {
+    json = super.$formatJson(json);
+
+    delete json.password;
+    delete json.deletedAt;
+    delete json.resetPasswordToken;
+    delete json.resetPasswordTokenSentAt;
+
+    return json;
+  }
+
   login(password) {
     return bcrypt.compare(password, this.password);
   }
