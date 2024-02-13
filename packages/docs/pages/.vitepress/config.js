@@ -36,7 +36,10 @@ export default defineConfig({
           text: 'Airbrake',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/airbrake/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/airbrake/triggers' },
+            { text: 'Connection', link: '/apps/airbrake/connection' },
+          ],
         },
         {
           text: 'Carbone',
