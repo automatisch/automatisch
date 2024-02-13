@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id';
 import { createUser } from '../../../../../test/factories/user';
-import userPayload from '../../../../../test/payloads/user';
+import currentUserPayload from '../../../../../test/payloads/current-user.js';
 
 describe('GET /api/v1/users/me', () => {
   let role, currentUser, token;
@@ -20,7 +20,7 @@ describe('GET /api/v1/users/me', () => {
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = userPayload(currentUser, role);
+    const expectedPayload = currentUserPayload(currentUser, role);
     expect(response.body).toEqual(expectedPayload);
   });
 });
