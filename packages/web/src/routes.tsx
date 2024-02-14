@@ -1,5 +1,6 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Layout from 'components/Layout';
+import NoResultFound from 'components/NotFound';
 import PublicLayout from 'components/PublicLayout';
 import Applications from 'pages/Applications';
 import Application from 'pages/Application';
@@ -85,10 +86,7 @@ export default (
       }
     />
 
-    <Route
-      path={URLS.LOGIN_CALLBACK}
-      element={<LoginCallback />}
-    />
+    <Route path={URLS.LOGIN_CALLBACK} element={<LoginCallback />} />
 
     <Route
       path={URLS.SIGNUP}
@@ -132,12 +130,6 @@ export default (
 
     <Route path={URLS.ADMIN_SETTINGS}>{adminSettingsRoutes}</Route>
 
-    <Route
-      element={
-        <Layout>
-          <div>404</div>
-        </Layout>
-      }
-    />
+    <Route path="*" element={<NoResultFound />} />
   </Routes>
 );
