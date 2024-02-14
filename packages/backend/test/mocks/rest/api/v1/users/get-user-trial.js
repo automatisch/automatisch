@@ -2,7 +2,6 @@ const getUserTrialMock = async (currentUser) => {
   return {
     data: {
       inTrial: await currentUser.inTrial(),
-      hasActiveSubscription: await currentUser.hasActiveSubscription(),
       expireAt: currentUser.trialExpiryDate.toISOString(),
     },
     meta: {
