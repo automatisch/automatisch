@@ -3,6 +3,7 @@
 The following integrations are currently supported by Automatisch.
 
 - [Carbone](/apps/carbone/actions)
+- [ClickUp](/apps/clickup/triggers)
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
 - [Discord](/apps/discord/actions)
