@@ -18,9 +18,11 @@ import * as URLS from 'config/urls';
 import settingsRoutes from './settingsRoutes';
 import adminSettingsRoutes from './adminSettingsRoutes';
 import Notifications from 'pages/Notifications';
+import useConfig from 'hooks/useConfig';
 import useAuthentication from 'hooks/useAuthentication';
 
 function Routes() {
+  const { config } = useConfig();
   const { isAuthenticated } = useAuthentication();
 
   return (
@@ -119,14 +121,16 @@ function Routes() {
         }
       />
 
-      <Route
-        path={URLS.UPDATES}
-        element={
-          <Layout>
-            <Notifications />
-          </Layout>
-        }
-      />
+      {!config?.disableNotificationsPage && (
+        <Route
+          path={URLS.UPDATES}
+          element={
+            <Layout>
+              <Notifications />
+            </Layout>
+          }
+        />
+      )}
 
       <Route
         path="/"
