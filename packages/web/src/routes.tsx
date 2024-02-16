@@ -18,9 +18,11 @@ import settingsRoutes from './settingsRoutes';
 import adminSettingsRoutes from './adminSettingsRoutes';
 import Notifications from 'pages/Notifications';
 import useConfig from 'hooks/useConfig';
+import useAuthentication from 'hooks/useAuthentication';
 
 function Routes() {
   const { config } = useConfig();
+  const { isAuthenticated } = useAuthentication();
 
   return (
     <ReactRouterRoutes>
@@ -117,6 +119,7 @@ function Routes() {
           </PublicLayout>
         }
       />
+
       {!config?.disableNotificationsPage && (
         <Route
           path={URLS.UPDATES}
@@ -128,7 +131,12 @@ function Routes() {
         />
       )}
 
-      <Route path="/" element={<Navigate to={URLS.FLOWS} replace />} />
+      <Route
+        path="/"
+        element={
+          <Navigate to={isAuthenticated ? URLS.FLOWS : URLS.LOGIN} replace />
+        }
+      />
 
       <Route path={URLS.SETTINGS}>{settingsRoutes}</Route>
 
