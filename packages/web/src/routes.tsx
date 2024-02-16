@@ -1,5 +1,6 @@
 import { Route, Routes as ReactRouterRoutes, Navigate } from 'react-router-dom';
 import Layout from 'components/Layout';
+import NoResultFound from 'components/NotFound';
 import PublicLayout from 'components/PublicLayout';
 import Applications from 'pages/Applications';
 import Application from 'pages/Application';
@@ -138,13 +139,7 @@ function Routes() {
 
       <Route path={URLS.ADMIN_SETTINGS}>{adminSettingsRoutes}</Route>
 
-      <Route
-        element={
-          <Layout>
-            <div>404</div>
-          </Layout>
-        }
-      />
+      <Route path="*" element={<NoResultFound />} />
     </ReactRouterRoutes>
   );
 }

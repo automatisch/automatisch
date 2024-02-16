@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Stack from '@mui/material/Stack';
 import AppsIcon from '@mui/icons-material/Apps';
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
 import HistoryIcon from '@mui/icons-material/History';
@@ -139,7 +140,7 @@ export default function PublicLayout({
         onDrawerClose={closeDrawer}
       />
 
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', height: '100%' }}>
         <Drawer
           links={drawerLinks}
           bottomLinks={bottomLinks}
@@ -148,11 +149,10 @@ export default function PublicLayout({
           onClose={closeDrawer}
         />
 
-        <Box sx={{ flex: 1 }}>
+        <Stack flex={1}>
           <Toolbar />
-
           {children}
-        </Box>
+        </Stack>
       </Box>
     </>
   );
