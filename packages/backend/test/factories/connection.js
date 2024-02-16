@@ -1,5 +1,6 @@
 import appConfig from '../../src/config/app';
 import { AES } from 'crypto-js';
+import Connection from '../../src/models/connection';
 
 export const createConnection = async (params = {}) => {
   params.key = params?.key || 'deepl';
@@ -16,10 +17,7 @@ export const createConnection = async (params = {}) => {
     appConfig.encryptionKey
   ).toString();
 
-  const [connection] = await global.knex
-    .table('connections')
-    .insert(params)
-    .returning('*');
+  const connection = await Connection.query().insert(params).returning('*');
 
   return connection;
 };

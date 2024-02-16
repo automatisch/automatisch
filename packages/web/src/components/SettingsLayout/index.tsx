@@ -9,6 +9,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 
 import * as URLS from 'config/urls';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
+import useFormatMessage from 'hooks/useFormatMessage';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 
@@ -22,8 +23,8 @@ function createDrawerLinks({ isCloud }: { isCloud: boolean }) {
       Icon: AccountCircleIcon,
       primary: 'settingsDrawer.myProfile',
       to: URLS.SETTINGS_PROFILE,
-    }
-  ]
+    },
+  ];
 
   if (isCloud) {
     items.push({
@@ -36,25 +37,26 @@ function createDrawerLinks({ isCloud }: { isCloud: boolean }) {
   return items;
 }
 
-const drawerBottomLinks = [
-  {
-    Icon: ArrowBackIosNewIcon,
-    primary: 'settingsDrawer.goBack',
-    to: '/',
-  },
-];
-
 export default function SettingsLayout({
   children,
 }: SettingsLayoutProps): React.ReactElement {
   const { isCloud } = useAutomatischInfo();
   const theme = useTheme();
+  const formatMessage = useFormatMessage();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
 
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
   const drawerLinks = createDrawerLinks({ isCloud });
+
+  const drawerBottomLinks = [
+    {
+      Icon: ArrowBackIosNewIcon,
+      primary: formatMessage('settingsDrawer.goBack'),
+      to: '/',
+    },
+  ];
 
   return (
     <>

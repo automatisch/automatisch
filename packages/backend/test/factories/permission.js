@@ -1,3 +1,4 @@
+import Permission from '../../src/models/permission';
 import { createRole } from './role';
 
 export const createPermission = async (params = {}) => {
@@ -6,10 +7,7 @@ export const createPermission = async (params = {}) => {
   params.subject = params?.subject || 'User';
   params.conditions = params?.conditions || ['isCreator'];
 
-  const [permission] = await global.knex
-    .table('permissions')
-    .insert(params)
-    .returning('*');
+  const permission = await Permission.query().insert(params).returning('*');
 
   return permission;
 };

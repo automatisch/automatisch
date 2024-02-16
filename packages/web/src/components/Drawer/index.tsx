@@ -19,6 +19,7 @@ type DrawerLink = {
   Icon: React.ElementType;
   primary: string;
   to: string;
+  target?: '_blank';
   badgeContent?: React.ReactNode;
   dataTest?: string;
 };
@@ -69,7 +70,7 @@ export default function Drawer(props: DrawerProps): React.ReactElement {
 
       <List sx={{ py: 0, mt: 3 }}>
         {bottomLinks.map(
-          ({ Icon, badgeContent, primary, to, dataTest }, index) => (
+          ({ Icon, badgeContent, primary, to, dataTest, target }, index) => (
             <ListItemLink
               key={`${to}-${index}`}
               icon={
@@ -77,9 +78,10 @@ export default function Drawer(props: DrawerProps): React.ReactElement {
                   <Icon htmlColor={theme.palette.primary.main} />
                 </Badge>
               }
-              primary={formatMessage(primary)}
+              primary={primary}
               to={to}
               onClick={closeOnClick}
+              target={target}
               data-test={dataTest}
             />
           )

@@ -1,11 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { allow } from 'graphql-shield';
-import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
 import { isAuthenticated, authenticationRules } from './authentication.js';
-
-vi.mock('jsonwebtoken');
-vi.mock('../models/user.js');
+import { createUser } from '../../test/factories/user.js';
+import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
 
 describe('isAuthenticated', () => {
   it('should return false if no token is provided', async () => {
@@ -14,28 +11,25 @@ describe('isAuthenticated', () => {
   });
 
   it('should return false if token is invalid', async () => {
-    jwt.verify.mockImplementation(() => {
-      throw new Error('invalid token');
-    });
-
     const req = { headers: { authorization: 'invalidToken' } };
     expect(await isAuthenticated(null, null, req)).toBe(false);
   });
 
-  it('should return true if token is valid', async () => {
-    jwt.verify.mockReturnValue({ userId: '123' });
+  it('should return true if token is valid and there is a user', async () => {
+    const user = await createUser();
+    const token = createAuthTokenByUserId(user.id);
 
-    User.query.mockReturnValue({
-      findById: vi.fn().mockReturnValue({
-        leftJoinRelated: vi.fn().mockReturnThis(),
-        withGraphFetched: vi
-          .fn()
-          .mockResolvedValue({ id: '123', role: {}, permissions: {} }),
-      }),
-    });
-
-    const req = { headers: { authorization: 'validToken' } };
+    const req = { headers: { authorization: token } };
     expect(await isAuthenticated(null, null, req)).toBe(true);
+  });
+
+  it('should return false if token is valid and but there is no user', async () => {
+    const user = await createUser();
+    const token = createAuthTokenByUserId(user.id);
+    await user.$query().delete();
+
+    const req = { headers: { authorization: token } };
+    expect(await isAuthenticated(null, null, req)).toBe(false);
   });
 });
 

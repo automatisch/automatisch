@@ -1,3 +1,4 @@
+import Step from '../../src/models/step';
 import { createFlow } from './flow';
 
 export const createStep = async (params = {}) => {
@@ -16,7 +17,7 @@ export const createStep = async (params = {}) => {
   params.appKey =
     params?.appKey || (params.type === 'action' ? 'deepl' : 'webhook');
 
-  const [step] = await global.knex.table('steps').insert(params).returning('*');
+  const step = await Step.query().insert(params).returning('*');
 
   return step;
 };
