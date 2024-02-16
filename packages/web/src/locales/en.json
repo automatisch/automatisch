@@ -265,5 +265,7 @@
   "authClient.buttonSubmit": "Submit",
   "authClient.inputName": "Name",
   "authClient.inputActive": "Active",
-  "updateAuthClient.title": "Update auth client"
+  "updateAuthClient.title": "Update auth client",
+  "notFoundPage.title": "We can't seem to find a page you're looking for.",
+  "notFoundPage.button": "Back to home page"
 }
