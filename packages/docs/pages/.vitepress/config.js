@@ -198,6 +198,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Mailchimp',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/mailchimp/connection' }],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
@@ -305,7 +311,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
