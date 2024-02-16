@@ -7,6 +7,10 @@ const authorizationList = {
     action: 'read',
     subject: 'User',
   },
+  '/api/v1/admin/app-auth-clients/:appAuthClientId': {
+    action: 'read',
+    subject: 'App',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
