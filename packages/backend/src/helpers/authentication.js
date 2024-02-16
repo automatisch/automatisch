@@ -20,7 +20,8 @@ export const isAuthenticated = async (_parent, _args, req) => {
       .withGraphFetched({
         role: true,
         permissions: true,
-      });
+      })
+      .throwIfNotFound();
 
     return true;
   } catch (error) {
