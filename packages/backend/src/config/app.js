@@ -18,7 +18,9 @@ const port = process.env.PORT || '3000';
 const serveWebAppSeparately =
   process.env.SERVE_WEB_APP_SEPARATELY === 'true' ? true : false;
 
-let apiUrl = new URL(`${protocol}://${host}:${port}`).toString();
+let apiUrl = new URL(
+  process.env.API_URL || `${protocol}://${host}:${port}`
+).toString();
 apiUrl = apiUrl.substring(0, apiUrl.length - 1);
 
 // use apiUrl by default, which has less priority over the following cases
@@ -88,6 +90,10 @@ const appConfig = {
   licenseKey: process.env.LICENSE_KEY,
   sentryDsn: process.env.SENTRY_DSN,
   CI: process.env.CI === 'true',
+  disableNotificationsPage: process.env.DISABLE_NOTIFICATIONS_PAGE === 'true',
+  disableFavicon: process.env.DISABLE_FAVICON === 'true',
+  additionalDrawerLink: process.env.ADDITIONAL_DRAWER_LINK,
+  additionalDrawerLinkText: process.env.ADDITIONAL_DRAWER_LINK_TEXT,
 };
 
 if (!appConfig.encryptionKey) {

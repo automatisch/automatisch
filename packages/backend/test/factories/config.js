@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import Config from '../../src/models/config';
 
 export const createConfig = async (params = {}) => {
   const configData = {
@@ -6,10 +7,7 @@ export const createConfig = async (params = {}) => {
     value: params?.value || { data: 'sampleConfig' },
   };
 
-  const [config] = await global.knex
-    .table('config')
-    .insert(configData)
-    .returning('*');
+  const config = await Config.query().insert(configData).returning('*');
 
   return config;
 };

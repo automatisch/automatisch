@@ -2,6 +2,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import { createConfig } from '../../../test/factories/config';
+import appConfig from '../../config/app';
 import * as license from '../../helpers/license.ee';
 
 describe('graphQL getConfig query', () => {
@@ -56,6 +57,10 @@ describe('graphQL getConfig query', () => {
               [configOne.key]: configOne.value.data,
               [configTwo.key]: configTwo.value.data,
               [configThree.key]: configThree.value.data,
+              disableNotificationsPage: false,
+              disableFavicon: false,
+              additionalDrawerLink: undefined,
+              additionalDrawerLinkText: undefined,
             },
           },
         };
@@ -82,6 +87,48 @@ describe('graphQL getConfig query', () => {
             getConfig: {
               [configOne.key]: configOne.value.data,
               [configTwo.key]: configTwo.value.data,
+              disableNotificationsPage: false,
+              disableFavicon: false,
+              additionalDrawerLink: undefined,
+              additionalDrawerLinkText: undefined,
+            },
+          },
+        };
+
+        expect(response.body).toEqual(expectedResponsePayload);
+      });
+    });
+
+    describe('and with different defaults', () => {
+      beforeEach(async () => {
+        vi.spyOn(appConfig, 'disableNotificationsPage', 'get').mockReturnValue(
+          true
+        );
+        vi.spyOn(appConfig, 'disableFavicon', 'get').mockReturnValue(true);
+        vi.spyOn(appConfig, 'additionalDrawerLink', 'get').mockReturnValue(
+          'https://automatisch.io'
+        );
+        vi.spyOn(appConfig, 'additionalDrawerLinkText', 'get').mockReturnValue(
+          'Automatisch'
+        );
+      });
+
+      it('should return custom config', async () => {
+        const response = await request(app)
+          .post('/graphql')
+          .send({ query })
+          .expect(200);
+
+        const expectedResponsePayload = {
+          data: {
+            getConfig: {
+              [configOne.key]: configOne.value.data,
+              [configTwo.key]: configTwo.value.data,
+              [configThree.key]: configThree.value.data,
+              disableNotificationsPage: true,
+              disableFavicon: true,
+              additionalDrawerLink: 'https://automatisch.io',
+              additionalDrawerLinkText: 'Automatisch',
             },
           },
         };

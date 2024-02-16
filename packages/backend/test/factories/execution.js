@@ -1,3 +1,4 @@
+import Execution from '../../src/models/execution';
 import { createFlow } from './flow';
 
 export const createExecution = async (params = {}) => {
@@ -6,10 +7,7 @@ export const createExecution = async (params = {}) => {
   params.createdAt = params?.createdAt || new Date().toISOString();
   params.updatedAt = params?.updatedAt || new Date().toISOString();
 
-  const [execution] = await global.knex
-    .table('executions')
-    .insert(params)
-    .returning('*');
+  const execution = await Execution.query().insert(params).returning('*');
 
   return execution;
 };
