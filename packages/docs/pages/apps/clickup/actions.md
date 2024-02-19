@@ -7,6 +7,8 @@ items:
     desc: Creates a new list.
   - name: Create task
     desc: Creates a new task.
+  - name: Find task by id
+    desc: Finds a task using id.
 ---
 
 <script setup>
