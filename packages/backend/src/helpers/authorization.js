@@ -1,16 +1,17 @@
 const authorizationList = {
-  '/api/v1/users/:userId': {
+  'GET /api/v1/users/:userId': {
     action: 'read',
     subject: 'User',
   },
-  '/api/v1/users/': {
+  'GET /api/v1/users/': {
     action: 'read',
     subject: 'User',
   },
 };
 
 export const authorizeUser = async (request, response, next) => {
-  const currentRoute = request.baseUrl + request.route.path;
+  const currentRoute =
+    request.method + ' ' + request.baseUrl + request.route.path;
   const currentRouteRule = authorizationList[currentRoute];
 
   try {
