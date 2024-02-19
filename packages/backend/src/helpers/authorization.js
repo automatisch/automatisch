@@ -7,6 +7,10 @@ const authorizationList = {
     action: 'read',
     subject: 'User',
   },
+  '/api/v1/saml-auth-providers/': {
+    action: 'read',
+    subject: 'SamlAuthProvider',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
