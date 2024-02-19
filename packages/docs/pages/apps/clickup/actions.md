@@ -5,6 +5,8 @@ items:
     desc: Creates a new folder.
   - name: Create list
     desc: Creates a new list.
+  - name: Create task
+    desc: Creates a new task.
 ---
 
 <script setup>
