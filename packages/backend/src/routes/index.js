@@ -15,6 +15,6 @@ router.use('/paddle', paddleRouter);
 router.use('/healthcheck', healthcheckRouter);
 router.use('/api/v1/automatisch', automatischRouter);
 router.use('/api/v1/users', usersRouter);
-router.use('/api/v1/saml-auth-providers', samlAuthProvidersRouter);
+router.use('/api/v1/admin/saml-auth-providers', samlAuthProvidersRouter);
 
 export default router;
