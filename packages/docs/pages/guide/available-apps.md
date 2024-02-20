@@ -2,6 +2,7 @@
 
 The following integrations are currently supported by Automatisch.
 
+- [Bigin By Zoho CRM](/apps/bigin-by-zoho-crm/triggers)
 - [Carbone](/apps/carbone/actions)
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
