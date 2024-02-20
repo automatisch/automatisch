@@ -7,6 +7,8 @@ items:
     desc: Triggers when a new company is created.
   - name: New contacts
     desc: Triggers when a new contact is created.
+  - name: New tasks
+    desc: Triggers when a new task is created.
 ---
 
 <script setup>
