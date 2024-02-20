@@ -7,6 +7,7 @@ The following integrations are currently supported by Automatisch.
 - [Anthropic](/apps/anthropic/actions)
 - [Appwrite](/apps/appwrite/triggers)
 - [Better Stack](/apps/better-stack/actions)
+- [Bigin By Zoho CRM](/apps/bigin-by-zoho-crm/triggers)
 - [Brave Search](/apps/brave-search/actions)
 - [Carbone](/apps/carbone/actions)
 - [ClickUp](/apps/clickup/triggers)

@@ -88,6 +88,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/bigin-by-zoho-crm/triggers' },
             { text: 'Connection', link: '/apps/bigin-by-zoho-crm/connection' },
           ],
         },
