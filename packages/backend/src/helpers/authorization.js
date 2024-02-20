@@ -20,3 +20,13 @@ export const authorizeUser = async (request, response, next) => {
     return response.status(403).end();
   }
 };
+
+export const authorizeAdmin = async (request, response, next) => {
+  const role = await request.currentUser.$relatedQuery('role');
+
+  if (role?.isAdmin) {
+    next();
+  } else {
+    return response.status(403).end();
+  }
+};
