@@ -1,4 +1,4 @@
-import permissionSerializer from './permission';
+import permissionSerializer from './permission.js';
 
 const roleSerializer = (role) => {
   let roleData = {
