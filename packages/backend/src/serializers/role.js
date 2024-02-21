@@ -1,5 +1,7 @@
+import permissionSerializer from './permission';
+
 const roleSerializer = (role) => {
-  return {
+  let roleData = {
     id: role.id,
     name: role.name,
     key: role.key,
@@ -8,6 +10,14 @@ const roleSerializer = (role) => {
     updatedAt: role.updatedAt,
     isAdmin: role.isAdmin,
   };
+
+  if (role.permissions) {
+    roleData.permissions = role.permissions.map((permission) =>
+      permissionSerializer(permission)
+    );
+  }
+
+  return roleData;
 };
 
 export default roleSerializer;
