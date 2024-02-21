@@ -5,7 +5,7 @@ import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by
 import { createRole } from '../../../../../../test/factories/role.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createSamlAuthProvider } from '../../../../../../test/factories/saml-auth-provider.ee.js';
-import getSamlAuthProviderMock from '../../../../../../test/mocks/rest/api/v1/saml-auth-providers/get-saml-auth-provider.ee.js';
+import getSamlAuthProviderMock from '../../../../../../test/mocks/rest/api/v1/admin/saml-auth-providers/get-saml-auth-provider.ee.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
 describe('GET /api/v1/admin/saml-auth-provider/:samlAuthProviderId', () => {
