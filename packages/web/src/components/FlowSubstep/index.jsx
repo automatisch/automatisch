@@ -9,6 +9,7 @@ import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
+
 function FlowSubstep(props) {
   const {
     substep,
