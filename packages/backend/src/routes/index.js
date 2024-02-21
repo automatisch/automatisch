@@ -6,6 +6,7 @@ import healthcheckRouter from './healthcheck.js';
 import automatischRouter from './api/v1/automatisch.js';
 import usersRouter from './api/v1/users.js';
 import samlAuthProvidersRouter from './api/v1/admin/saml-auth-providers.ee.js';
+import rolesRouter from './api/v1/admin/roles.ee.js';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/healthcheck', healthcheckRouter);
 router.use('/api/v1/automatisch', automatischRouter);
 router.use('/api/v1/users', usersRouter);
 router.use('/api/v1/admin/saml-auth-providers', samlAuthProvidersRouter);
+router.use('/api/v1/admin/roles', rolesRouter);
 
 export default router;
