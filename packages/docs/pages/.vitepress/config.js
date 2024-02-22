@@ -253,6 +253,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'PDFMonkey',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/pdf-monkey/connection' }],
+        },
+        {
           text: 'Pipedrive',
           collapsible: true,
           collapsed: true,
@@ -305,7 +311,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
