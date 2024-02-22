@@ -441,22 +441,10 @@ export default defineConfig({
           ],
         },
         {
-          text: 'OpenRouter',
+          text: 'PDFMonkey',
           collapsible: true,
           collapsed: true,
-          items: [
-            { text: 'Actions', link: '/apps/openrouter/actions' },
-            { text: 'Connection', link: '/apps/openrouter/connection' },
-          ],
-        },
-        {
-          text: 'Perplexity',
-          collapsible: true,
-          collapsed: true,
-          items: [
-            { text: 'Actions', link: '/apps/perplexity/actions' },
-            { text: 'Connection', link: '/apps/perplexity/connection' },
-          ],
+          items: [{ text: 'Connection', link: '/apps/pdf-monkey/connection' }],
         },
         {
           text: 'Pipedrive',
