@@ -4,30 +4,29 @@ import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createRole } from '../../../../../../test/factories/role.js';
 import { createUser } from '../../../../../../test/factories/user.js';
-import { createSamlAuthProvider } from '../../../../../../test/factories/saml-auth-provider.ee.js';
-import getSamlAuthProviderMock from '../../../../../../test/mocks/rest/api/v1/admin/saml-auth-providers/get-saml-auth-provider.ee.js';
+import getRolesMock from '../../../../../../test/mocks/rest/api/v1/admin/roles/get-roles.ee.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/admin/saml-auth-provider/:samlAuthProviderId', () => {
-  let samlAuthProvider, currentUser, token;
+describe('GET /api/v1/admin/roles', () => {
+  let roleOne, roleTwo, currentUser, token;
 
   beforeEach(async () => {
-    const role = await createRole({ key: 'admin' });
-    currentUser = await createUser({ roleId: role.id });
-    samlAuthProvider = await createSamlAuthProvider();
+    roleOne = await createRole({ key: 'admin' });
+    roleTwo = await createRole({ key: 'user' });
+    currentUser = await createUser({ roleId: roleOne.id });
 
     token = createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return saml auth provider with specified id', async () => {
+  it('should return roles', async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
     const response = await request(app)
-      .get(`/api/v1/admin/saml-auth-providers/${samlAuthProvider.id}`)
+      .get('/api/v1/admin/roles')
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = await getSamlAuthProviderMock(samlAuthProvider);
+    const expectedPayload = await getRolesMock([roleOne, roleTwo]);
 
     expect(response.body).toEqual(expectedPayload);
   });

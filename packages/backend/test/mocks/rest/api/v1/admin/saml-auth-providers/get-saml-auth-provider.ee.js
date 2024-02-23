@@ -1,4 +1,4 @@
-const getSamlAuthProvidersMock = async (samlAuthProvider) => {
+const getSamlAuthProviderMock = async (samlAuthProvider) => {
   const data = {
     active: samlAuthProvider.active,
     certificate: samlAuthProvider.certificate,
@@ -26,4 +26,4 @@ const getSamlAuthProvidersMock = async (samlAuthProvider) => {
   };
 };
 
-export default getSamlAuthProvidersMock;
+export default getSamlAuthProviderMock;
