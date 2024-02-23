@@ -1,6 +1,7 @@
 const getUsersMock = async (users, roles) => {
   const data = users.map((user) => {
     const role = roles.find((r) => r.id === user.roleId);
+
     return {
       createdAt: user.createdAt.toISOString(),
       email: user.email,
@@ -16,8 +17,7 @@ const getUsersMock = async (users, roles) => {
             name: role.name,
             updatedAt: role.updatedAt.toISOString(),
           }
-        : null, // Fallback to null if role not found
-      roleId: user.roleId,
+        : null,
       trialExpiryDate: user.trialExpiryDate.toISOString(),
       updatedAt: user.updatedAt.toISOString(),
     };
