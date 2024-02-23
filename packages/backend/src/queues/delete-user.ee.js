@@ -15,11 +15,17 @@ process.on('SIGTERM', async () => {
   await deleteUserQueue.close();
 });
 
-deleteUserQueue.on('error', (err) => {
-  if (err.code === CONNECTION_REFUSED) {
-    logger.error('Make sure you have installed Redis and it is running.', err);
+deleteUserQueue.on('error', (error) => {
+  if (error.code === CONNECTION_REFUSED) {
+    logger.error(
+      'Make sure you have installed Redis and it is running.',
+      error
+    );
+
     process.exit();
   }
+
+  logger.error('Error happened in delete user queue!', error);
 });
 
 export default deleteUserQueue;

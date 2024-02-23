@@ -15,11 +15,17 @@ process.on('SIGTERM', async () => {
   await flowQueue.close();
 });
 
-flowQueue.on('error', (err) => {
-  if (err.code === CONNECTION_REFUSED) {
-    logger.error('Make sure you have installed Redis and it is running.', err);
+flowQueue.on('error', (error) => {
+  if (error.code === CONNECTION_REFUSED) {
+    logger.error(
+      'Make sure you have installed Redis and it is running.',
+      error
+    );
+
     process.exit();
   }
+
+  logger.error('Error happened in flow queue!', error);
 });
 
 export default flowQueue;
