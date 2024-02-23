@@ -9,6 +9,7 @@ import paymentRouter from './api/v1/payment.ee.js';
 import samlAuthProvidersRouter from './api/v1/admin/saml-auth-providers.ee.js';
 import rolesRouter from './api/v1/admin/roles.ee.js';
 import permissionsRouter from './api/v1/admin/permissions.ee.js';
+import adminUsersRouter from './api/v1/admin/users.ee.js';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/api/v1/payment', paymentRouter);
 router.use('/api/v1/admin/saml-auth-providers', samlAuthProvidersRouter);
 router.use('/api/v1/admin/roles', rolesRouter);
 router.use('/api/v1/admin/permissions', permissionsRouter);
+router.use('/api/v1/admin/users', adminUsersRouter);
 
 export default router;
