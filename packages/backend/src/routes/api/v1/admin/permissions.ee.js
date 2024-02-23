@@ -2,25 +2,16 @@ import { Router } from 'express';
 import { authenticateUser } from '../../../../helpers/authentication.js';
 import { authorizeAdmin } from '../../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
-import getRolesAction from '../../../../controllers/api/v1/admin/roles/get-roles.ee.js';
-import getRoleAction from '../../../../controllers/api/v1/admin/roles/get-role.ee.js';
+import getPermissionsCatalogAction from '../../../../controllers/api/v1/admin/permissions/get-permissions-catalog.ee.js';
 
 const router = Router();
 
 router.get(
-  '/',
+  '/catalog',
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  getRolesAction
-);
-
-router.get(
-  '/:roleId',
-  authenticateUser,
-  authorizeAdmin,
-  checkIsEnterprise,
-  getRoleAction
+  getPermissionsCatalogAction
 );
 
 export default router;
