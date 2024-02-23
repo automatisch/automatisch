@@ -14,7 +14,6 @@ const getUserMock = (currentUser, role) => {
         name: role.name,
         updatedAt: role.updatedAt.toISOString(),
       },
-      roleId: role.id,
       trialExpiryDate: currentUser.trialExpiryDate.toISOString(),
       updatedAt: currentUser.updatedAt.toISOString(),
     },

@@ -33,7 +33,6 @@ describe('userSerializer', () => {
       email: user.email,
       fullName: user.fullName,
       id: user.id,
-      roleId: user.roleId,
       updatedAt: user.updatedAt,
     };
 

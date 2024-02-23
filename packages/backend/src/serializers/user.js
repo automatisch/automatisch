@@ -9,7 +9,6 @@ const userSerializer = (user) => {
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
     fullName: user.fullName,
-    roleId: user.roleId,
   };
 
   if (user.role) {
