@@ -7,6 +7,7 @@ import automatischRouter from './api/v1/automatisch.js';
 import usersRouter from './api/v1/users.js';
 import samlAuthProvidersRouter from './api/v1/admin/saml-auth-providers.ee.js';
 import rolesRouter from './api/v1/admin/roles.ee.js';
+import permissionsRouter from './api/v1/admin/permissions.ee.js';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/api/v1/automatisch', automatischRouter);
 router.use('/api/v1/users', usersRouter);
 router.use('/api/v1/admin/saml-auth-providers', samlAuthProvidersRouter);
 router.use('/api/v1/admin/roles', rolesRouter);
+router.use('/api/v1/admin/permissions', permissionsRouter);
 
 export default router;
