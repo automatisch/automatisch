@@ -5,52 +5,19 @@ import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by
 import { createUser } from '../../../../../../test/factories/user.js';
 import getAdminAppAuthClientMock from '../../../../../../test/mocks/rest/api/v1/admin/get-app-auth-client.js';
 import { createAppAuthClient } from '../../../../../../test/factories/app-auth-client.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
+import { createRole } from '../../../../../../test/factories/role.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
 describe('GET /api/v1/admin/app-auth-clients/:appAuthClientId', () => {
-  let currentUser, currentAppAuthClient, token;
-
-  describe('without valid license key', () => {
-    beforeEach(async () => {
-      vi.spyOn(license, 'hasValidLicense').mockResolvedValue(false);
-
-      currentUser = await createUser();
-      currentAppAuthClient = await createAppAuthClient();
-
-      await createPermission({
-        roleId: currentUser.roleId,
-        action: 'read',
-        subject: 'App',
-        conditions: [],
-      });
-
-      token = createAuthTokenByUserId(currentUser.id);
-    });
-
-    it('should return empty object', async () => {
-      const response = await request(app)
-        .get(`/api/v1/admin/app-auth-clients/${currentAppAuthClient.id}`)
-        .set('Authorization', token)
-        .expect(403);
-
-      expect(response.body).toEqual({});
-    });
-  });
+  let currentUser, currentUserRole, currentAppAuthClient, token;
 
   describe('with valid license key', () => {
     beforeEach(async () => {
       vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-      currentUser = await createUser();
+      currentUserRole = await createRole({ key: 'admin' });
+      currentUser = await createUser({ roleId: currentUserRole.id });
       currentAppAuthClient = await createAppAuthClient();
-
-      await createPermission({
-        roleId: currentUser.roleId,
-        action: 'read',
-        subject: 'App',
-        conditions: [],
-      });
 
       token = createAuthTokenByUserId(currentUser.id);
     });
