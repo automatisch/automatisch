@@ -21,7 +21,7 @@ describe('GET /api/v1/app-auth-clients/:id', () => {
 
   it('should return specified app auth client info', async () => {
     const response = await request(app)
-      .get(`/api/v1/app-auth-clients/${currentAppAuthClient.id}?active=true`)
+      .get(`/api/v1/app-auth-clients/${currentAppAuthClient.id}`)
       .set('Authorization', token)
       .expect(200);
 
