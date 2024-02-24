@@ -2,7 +2,7 @@ import userSerializer from './user.js';
 import roleSerializer from './role.js';
 import permissionSerializer from './permission.js';
 import samlAuthProviderSerializer from './saml-auth-provider.ee.js';
-import appAuthClientSerializer from './appAuthClientSerializer.js';
+import appAuthClientSerializer from './app-auth-client.js';
 
 const serializers = {
   User: userSerializer,
