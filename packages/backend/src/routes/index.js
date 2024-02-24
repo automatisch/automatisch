@@ -23,7 +23,6 @@ router.use('/api/v1/automatisch', automatischRouter);
 router.use('/api/v1/users', usersRouter);
 router.use('/api/v1/payment', paymentRouter);
 router.use('/api/v1/app-auth-clients', appAuthClientsRouter);
-
 router.use('/api/v1/admin/saml-auth-providers', samlAuthProvidersRouter);
 router.use('/api/v1/admin/roles', rolesRouter);
 router.use('/api/v1/admin/permissions', permissionsRouter);
