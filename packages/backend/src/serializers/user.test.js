@@ -4,6 +4,8 @@ import appConfig from '../config/app';
 import { createUser } from '../../test/factories/user';
 import { createPermission } from '../../test/factories/permission';
 import userSerializer from './user';
+import roleSerializer from './role';
+import permissionSerializer from './permission';
 
 describe('userSerializer', () => {
   let user, role, permissionOne, permissionTwo;
@@ -43,7 +45,7 @@ describe('userSerializer', () => {
     user.role = role;
 
     const expectedPayload = {
-      role,
+      role: roleSerializer(role),
     };
 
     expect(userSerializer(user)).toMatchObject(expectedPayload);
@@ -53,7 +55,10 @@ describe('userSerializer', () => {
     user.permissions = [permissionOne, permissionTwo];
 
     const expectedPayload = {
-      permissions: [permissionOne, permissionTwo],
+      permissions: [
+        permissionSerializer(permissionOne),
+        permissionSerializer(permissionTwo),
+      ],
     };
 
     expect(userSerializer(user)).toMatchObject(expectedPayload);
