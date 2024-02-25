@@ -4,9 +4,6 @@ import paginateRest from '../../../../../helpers/pagination-rest.js';
 
 export default async (request, response) => {
   const usersQuery = User.query()
-    .leftJoinRelated({
-      role: true,
-    })
     .withGraphFetched({
       role: true,
     })
