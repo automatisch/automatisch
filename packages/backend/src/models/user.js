@@ -144,6 +144,11 @@ class User extends Base {
     },
   });
 
+  get authorizedFlows() {
+    const conditions = this.can('read', 'Flow');
+    return conditions.isCreator ? this.$relatedQuery('flows') : Flow.query();
+  }
+
   login(password) {
     return bcrypt.compare(password, this.password);
   }
