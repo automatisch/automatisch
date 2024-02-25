@@ -1,5 +1,5 @@
-import { renderObject } from '../../../../helpers/renderer.js';
-import User from '../../../../models/user.js';
+import { renderObject } from '../../../../../helpers/renderer.js';
+import User from '../../../../../models/user.js';
 
 export default async (request, response) => {
   const user = await User.query()
