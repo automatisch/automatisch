@@ -3,9 +3,6 @@ import User from '../../../../../models/user.js';
 
 export default async (request, response) => {
   const user = await User.query()
-    .leftJoinRelated({
-      role: true,
-    })
     .withGraphFetched({
       role: true,
     })
