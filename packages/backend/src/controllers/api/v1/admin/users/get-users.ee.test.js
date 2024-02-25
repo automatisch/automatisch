@@ -1,26 +1,17 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
-import app from '../../../../app';
-import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id';
-import { createRole } from '../../../../../test/factories/role';
-import { createPermission } from '../../../../../test/factories/permission';
-import { createUser } from '../../../../../test/factories/user';
-import getUsersMock from '../../../../../test/mocks/rest/api/v1/users/get-users';
+import app from '../../../../../app';
+import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id';
+import { createRole } from '../../../../../../test/factories/role';
+import { createUser } from '../../../../../../test/factories/user';
+import getUsersMock from '../../../../../../test/mocks/rest/api/v1/admin/users/get-users.js';
+import * as license from '../../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/users', () => {
+describe('GET /api/v1/admin/users', () => {
   let currentUser, currentUserRole, anotherUser, anotherUserRole, token;
 
   beforeEach(async () => {
-    currentUserRole = await createRole({
-      key: 'currentUser',
-      name: 'Current user role',
-    });
-
-    await createPermission({
-      action: 'read',
-      subject: 'User',
-      roleId: currentUserRole.id,
-    });
+    currentUserRole = await createRole({ key: 'admin' });
 
     currentUser = await createUser({
       roleId: currentUserRole.id,
@@ -41,8 +32,10 @@ describe('GET /api/v1/users', () => {
   });
 
   it('should return users data', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
     const response = await request(app)
-      .get('/api/v1/users')
+      .get('/api/v1/admin/users')
       .set('Authorization', token)
       .expect(200);
 
