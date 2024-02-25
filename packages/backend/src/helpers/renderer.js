@@ -13,10 +13,11 @@ const totalCount = (object) =>
 
 const renderObject = (response, object) => {
   let data = isPaginated(object) ? object.records : object;
+
   const type = isPaginated(object)
     ? object.records[0].constructor.name
     : Array.isArray(object)
-    ? object[0].constructor.name
+    ? object?.[0]?.constructor?.name || 'Object'
     : object.constructor.name;
 
   const serializer = serializers[type];
