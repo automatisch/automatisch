@@ -15,6 +15,7 @@ import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
+import Billing from '../helpers/billing/index.ee.js';
 
 class User extends Base {
   static tableName = 'users';
@@ -235,6 +236,20 @@ class User extends Base {
     const currentUsageData = await this.$relatedQuery('currentUsageData');
 
     return currentUsageData.consumedTaskCount < plan.quota;
+  }
+
+  async getInvoices() {
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    if (!subscription) {
+      return [];
+    }
+
+    const invoices = await Billing.paddleClient.getInvoices(
+      Number(subscription.paddleSubscriptionId)
+    );
+
+    return invoices;
   }
 
   async $beforeInsert(queryContext) {
