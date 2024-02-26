@@ -38,6 +38,7 @@
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
     "express": "~4.18.2",
+    "express-async-handler": "^1.2.0",
     "express-basic-auth": "^1.2.1",
     "express-graphql": "^0.12.0",
     "fast-xml-parser": "^4.0.11",
@@ -94,6 +95,7 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
+    "@typescript-eslint/utils": "^7.0.2",
     "nodemon": "^2.0.13",
     "supertest": "^6.3.3",
     "vitest": "^1.1.3"

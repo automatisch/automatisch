@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../helpers/authentication.js';
 import checkIsCloud from '../../../helpers/check-is-cloud.js';
 import getCurrentUserAction from '../../../controllers/api/v1/users/get-current-user.js';
@@ -7,14 +8,19 @@ import getInvoicesAction from '../../../controllers/api/v1/users/get-invoices.ee
 
 const router = Router();
 
-router.get('/me', authenticateUser, getCurrentUserAction);
-router.get('/invoices', authenticateUser, checkIsCloud, getInvoicesAction);
+router.get('/me', authenticateUser, asyncHandler(getCurrentUserAction));
+router.get(
+  '/invoices',
+  authenticateUser,
+  checkIsCloud,
+  asyncHandler(getInvoicesAction)
+);
 
 router.get(
   '/:userId/trial',
   authenticateUser,
   checkIsCloud,
-  getUserTrialAction
+  asyncHandler(getUserTrialAction)
 );
 
 export default router;
