@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../../helpers/authentication.js';
 import { authorizeAdmin } from '../../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
@@ -11,7 +12,7 @@ router.get(
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  getAdminAppAuthClientsAction
+  asyncHandler(getAdminAppAuthClientsAction)
 );
 
 export default router;
