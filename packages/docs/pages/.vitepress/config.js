@@ -73,6 +73,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/dropbox/triggers' },
             { text: 'Actions', link: '/apps/dropbox/actions' },
             { text: 'Connection', link: '/apps/dropbox/connection' },
           ],
@@ -305,7 +306,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {
