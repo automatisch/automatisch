@@ -5,6 +5,7 @@ import samlAuthProviderSerializer from './saml-auth-provider.ee.js';
 import appAuthClientSerializer from './app-auth-client.js';
 import flowSerializer from './flow.js';
 import stepSerializer from './step.js';
+import appSerializer from './app.js';
 
 const serializers = {
   User: userSerializer,
@@ -14,6 +15,7 @@ const serializers = {
   AppAuthClient: appAuthClientSerializer,
   Flow: flowSerializer,
   Step: stepSerializer,
+  App: appSerializer,
 };
 
 export default serializers;

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import App from '../../../../models/app';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id';
 import { createUser } from '../../../../../test/factories/user';
@@ -14,12 +15,14 @@ describe('GET /api/v1/apps/:appKey', () => {
   });
 
   it('should return the app info', async () => {
+    const exampleApp = await App.findOneByKey('github');
+
     const response = await request(app)
-      .get('/api/v1/apps/github')
+      .get(`/api/v1/apps/${exampleApp.key}`)
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = getAppMock('github');
+    const expectedPayload = getAppMock(exampleApp);
     expect(response.body).toEqual(expectedPayload);
   });
 
