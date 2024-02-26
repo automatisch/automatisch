@@ -33,13 +33,20 @@ describe('GET /api/v1/admin/app-auth-clients/:appAuthClientId', () => {
       expect(response.body).toEqual(expectedPayload);
     });
 
-    it('should return not found response for not existing app auth client ID', async () => {
-      const invalidAppAuthClientId = Crypto.randomUUID();
+    it('should return not found response for not existing app auth client UUID', async () => {
+      const notExistingAppAuthClientUUID = Crypto.randomUUID();
 
       await request(app)
-        .get(`/api/v1/admin/app-auth-clients/${invalidAppAuthClientId}`)
+        .get(`/api/v1/admin/app-auth-clients/${notExistingAppAuthClientUUID}`)
         .set('Authorization', token)
         .expect(404);
+    });
+
+    it('should return bad request response for invalid UUID', async () => {
+      await request(app)
+        .get('/api/v1/admin/app-auth-clients/invalidAppAuthClientUUID')
+        .set('Authorization', token)
+        .expect(400);
     });
   });
 });

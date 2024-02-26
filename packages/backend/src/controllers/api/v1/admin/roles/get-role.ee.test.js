@@ -37,14 +37,23 @@ describe('GET /api/v1/admin/roles/:roleId', () => {
     expect(response.body).toEqual(expectedPayload);
   });
 
-  it('should return not found response for not existing role ID', async () => {
+  it('should return not found response for not existing role UUID', async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-    const invalidRoleId = Crypto.randomUUID();
+    const notExistingRoleUUID = Crypto.randomUUID();
 
     await request(app)
-      .get(`/api/v1/admin/roles/${invalidRoleId}`)
+      .get(`/api/v1/admin/roles/${notExistingRoleUUID}`)
       .set('Authorization', token)
       .expect(404);
+  });
+
+  it('should return bad request response for invalid UUID', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
+    await request(app)
+      .get('/api/v1/admin/roles/invalidRoleUUID')
+      .set('Authorization', token)
+      .expect(400);
   });
 });

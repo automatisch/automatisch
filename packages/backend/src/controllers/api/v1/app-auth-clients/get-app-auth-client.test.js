@@ -31,11 +31,18 @@ describe('GET /api/v1/app-auth-clients/:id', () => {
   });
 
   it('should return not found response for not existing app auth client ID', async () => {
-    const invalidAppAuthClientId = Crypto.randomUUID();
+    const notExistingAppAuthClientUUID = Crypto.randomUUID();
 
     await request(app)
-      .get(`/api/v1/app-auth-clients/${invalidAppAuthClientId}`)
+      .get(`/api/v1/app-auth-clients/${notExistingAppAuthClientUUID}`)
       .set('Authorization', token)
       .expect(404);
+  });
+
+  it('should return bad request response for invalid UUID', async () => {
+    await request(app)
+      .get('/api/v1/app-auth-clients/invalidAppAuthClientUUID')
+      .set('Authorization', token)
+      .expect(400);
   });
 });

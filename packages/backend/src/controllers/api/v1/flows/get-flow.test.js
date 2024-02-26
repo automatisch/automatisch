@@ -70,7 +70,7 @@ describe('GET /api/v1/flows/:flowId', () => {
     expect(response.body).toEqual(expectedPayload);
   });
 
-  it('should return not found response for not existing flow id', async () => {
+  it('should return not found response for not existing flow UUID', async () => {
     await createPermission({
       action: 'read',
       subject: 'Flow',
@@ -78,11 +78,25 @@ describe('GET /api/v1/flows/:flowId', () => {
       conditions: [],
     });
 
-    const invalidFlowId = Crypto.randomUUID();
+    const notExistingFlowUUID = Crypto.randomUUID();
 
     await request(app)
-      .get(`/api/v1/flows/${invalidFlowId}`)
+      .get(`/api/v1/flows/${notExistingFlowUUID}`)
       .set('Authorization', token)
       .expect(404);
+  });
+
+  it('should return bad request response for invalid UUID', async () => {
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: [],
+    });
+
+    await request(app)
+      .get('/api/v1/flows/invalidFlowUUID')
+      .set('Authorization', token)
+      .expect(400);
   });
 });
