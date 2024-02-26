@@ -11,7 +11,7 @@ const isArray = (object) =>
 const totalCount = (object) =>
   isPaginated(object) ? object.totalCount : isArray(object) ? object.length : 1;
 
-const renderObject = (response, object) => {
+const renderObject = (response, object, options) => {
   let data = isPaginated(object) ? object.records : object;
 
   const type = isPaginated(object)
@@ -20,7 +20,9 @@ const renderObject = (response, object) => {
     ? object?.[0]?.constructor?.name || 'Object'
     : object.constructor.name;
 
-  const serializer = serializers[type];
+  const serializer = options?.serializer
+    ? serializers[options.serializer]
+    : serializers[type];
 
   if (serializer) {
     data = Array.isArray(data)
