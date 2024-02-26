@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import Crypto from 'crypto';
 import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createRole } from '../../../../../../test/factories/role.js';
@@ -30,5 +31,16 @@ describe('GET /api/v1/admin/saml-auth-provider/:samlAuthProviderId', () => {
     const expectedPayload = await getSamlAuthProviderMock(samlAuthProvider);
 
     expect(response.body).toEqual(expectedPayload);
+  });
+
+  it('should return not found response for not existing saml auth provider ID', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
+    const invalidSamlAuthProviderId = Crypto.randomUUID();
+
+    await request(app)
+      .get(`/api/v1/admin/saml-auth-providers/${invalidSamlAuthProviderId}`)
+      .set('Authorization', token)
+      .expect(404);
   });
 });

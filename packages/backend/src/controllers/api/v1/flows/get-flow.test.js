@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import Crypto from 'crypto';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id';
 import { createUser } from '../../../../../test/factories/user';
@@ -67,5 +68,21 @@ describe('GET /api/v1/flows/:flowId', () => {
     ]);
 
     expect(response.body).toEqual(expectedPayload);
+  });
+
+  it('should return not found response for not existing flow id', async () => {
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: [],
+    });
+
+    const invalidFlowId = Crypto.randomUUID();
+
+    await request(app)
+      .get(`/api/v1/flows/${invalidFlowId}`)
+      .set('Authorization', token)
+      .expect(404);
   });
 });

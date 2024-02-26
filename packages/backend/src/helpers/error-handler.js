@@ -1,5 +1,6 @@
 import logger from './logger.js';
-import { NotFoundError, DataError } from 'objection';
+import objection from 'objection';
+const { NotFoundError, DataError } = objection;
 
 // Do not remove `next` argument as the function signature will not fit for an error handler middleware
 // eslint-disable-next-line no-unused-vars

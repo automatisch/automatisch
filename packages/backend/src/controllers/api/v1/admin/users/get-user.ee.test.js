@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import Crypto from 'crypto';
 import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id';
 import { createUser } from '../../../../../../test/factories/user';
@@ -30,5 +31,16 @@ describe('GET /api/v1/admin/users/:userId', () => {
 
     const expectedPayload = getUserMock(anotherUser, anotherUserRole);
     expect(response.body).toEqual(expectedPayload);
+  });
+
+  it('should return not found response for not existing user ID', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
+    const invalidUserId = Crypto.randomUUID();
+
+    await request(app)
+      .get(`/api/v1/admin/users/${invalidUserId}`)
+      .set('Authorization', token)
+      .expect(404);
   });
 });
