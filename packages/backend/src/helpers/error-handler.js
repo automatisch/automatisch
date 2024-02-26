@@ -7,7 +7,7 @@ const errorHandler = (error, request, response, next) => {
     response.status(404).end();
   } else {
     logger.error(error.message + '\n' + error.stack);
-    response.status(error.statusCode || 500).send(error.message);
+    response.status(error.statusCode || 500);
   }
 };
 
