@@ -9,12 +9,23 @@ const errorHandler = (error, request, response, next) => {
     response.status(404).end();
   }
 
+  if (notFoundAppError(error)) {
+    response.status(404).end();
+  }
+
   if (error instanceof DataError) {
     response.status(400).end();
   }
 
   logger.error(error.message + '\n' + error.stack);
-  response.status(error.statusCode || 500);
+  response.status(error.statusCode || 500).end();
+};
+
+const notFoundAppError = (error) => {
+  return (
+    error.message.includes('An application with the') ||
+    error.message.includes("key couldn't be found.")
+  );
 };
 
 export default errorHandler;
