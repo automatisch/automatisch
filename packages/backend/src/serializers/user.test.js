@@ -31,11 +31,11 @@ describe('userSerializer', () => {
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
 
     const expectedPayload = {
-      createdAt: user.createdAt,
+      createdAt: user.createdAt.getTime(),
       email: user.email,
       fullName: user.fullName,
       id: user.id,
-      updatedAt: user.updatedAt,
+      updatedAt: user.updatedAt.getTime(),
     };
 
     expect(userSerializer(user)).toEqual(expectedPayload);
@@ -67,7 +67,7 @@ describe('userSerializer', () => {
   it('should return user data with trial expiry date', async () => {
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
 
-    await user.$query().patch({
+    await user.$query().patchAndFetch({
       trialExpiryDate: DateTime.now().plus({ days: 30 }).toISODate(),
     });
 
