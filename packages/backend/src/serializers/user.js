@@ -6,8 +6,8 @@ const userSerializer = (user) => {
   let userData = {
     id: user.id,
     email: user.email,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
+    createdAt: user.createdAt.getTime(),
+    updatedAt: user.updatedAt.getTime(),
     fullName: user.fullName,
   };
 

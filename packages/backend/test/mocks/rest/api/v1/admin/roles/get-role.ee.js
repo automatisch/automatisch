@@ -5,16 +5,16 @@ const getRoleMock = async (role, permissions) => {
     name: role.name,
     isAdmin: role.isAdmin,
     description: role.description,
-    createdAt: role.createdAt.toISOString(),
-    updatedAt: role.updatedAt.toISOString(),
+    createdAt: role.createdAt.getTime(),
+    updatedAt: role.updatedAt.getTime(),
     permissions: permissions.map((permission) => ({
       id: permission.id,
       action: permission.action,
       conditions: permission.conditions,
       roleId: permission.roleId,
       subject: permission.subject,
-      createdAt: permission.createdAt.toISOString(),
-      updatedAt: permission.updatedAt.toISOString(),
+      createdAt: permission.createdAt.getTime(),
+      updatedAt: permission.updatedAt.getTime(),
     })),
   };
 

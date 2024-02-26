@@ -3,23 +3,23 @@ const getUsersMock = async (users, roles) => {
     const role = roles.find((r) => r.id === user.roleId);
 
     return {
-      createdAt: user.createdAt.toISOString(),
+      createdAt: user.createdAt.getTime(),
       email: user.email,
       fullName: user.fullName,
       id: user.id,
       role: role
         ? {
-            createdAt: role.createdAt.toISOString(),
+            createdAt: role.createdAt.getTime(),
             description: role.description,
             id: role.id,
             isAdmin: role.isAdmin,
             key: role.key,
             name: role.name,
-            updatedAt: role.updatedAt.toISOString(),
+            updatedAt: role.updatedAt.getTime(),
           }
         : null,
       trialExpiryDate: user.trialExpiryDate.toISOString(),
-      updatedAt: user.updatedAt.toISOString(),
+      updatedAt: user.updatedAt.getTime(),
     };
   });
 

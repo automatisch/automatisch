@@ -6,8 +6,8 @@ const roleSerializer = (role) => {
     name: role.name,
     key: role.key,
     description: role.description,
-    createdAt: role.createdAt,
-    updatedAt: role.updatedAt,
+    createdAt: role.createdAt.getTime(),
+    updatedAt: role.updatedAt.getTime(),
     isAdmin: role.isAdmin,
   };
 

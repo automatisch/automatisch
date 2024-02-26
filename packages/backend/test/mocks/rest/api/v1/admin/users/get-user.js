@@ -1,21 +1,21 @@
 const getUserMock = (currentUser, role) => {
   return {
     data: {
-      createdAt: currentUser.createdAt.toISOString(),
+      createdAt: currentUser.createdAt.getTime(),
       email: currentUser.email,
       fullName: currentUser.fullName,
       id: currentUser.id,
       role: {
-        createdAt: role.createdAt.toISOString(),
+        createdAt: role.createdAt.getTime(),
         description: null,
         id: role.id,
         isAdmin: role.isAdmin,
         key: role.key,
         name: role.name,
-        updatedAt: role.updatedAt.toISOString(),
+        updatedAt: role.updatedAt.getTime(),
       },
       trialExpiryDate: currentUser.trialExpiryDate.toISOString(),
-      updatedAt: currentUser.updatedAt.toISOString(),
+      updatedAt: currentUser.updatedAt.getTime(),
     },
     meta: {
       count: 1,
