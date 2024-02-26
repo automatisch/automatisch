@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import Crypto from 'crypto';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../test/factories/user.js';
@@ -27,5 +28,21 @@ describe('GET /api/v1/app-auth-clients/:id', () => {
 
     const expectedPayload = getAppAuthClientMock(currentAppAuthClient);
     expect(response.body).toEqual(expectedPayload);
+  });
+
+  it('should return not found response for not existing app auth client ID', async () => {
+    const notExistingAppAuthClientUUID = Crypto.randomUUID();
+
+    await request(app)
+      .get(`/api/v1/app-auth-clients/${notExistingAppAuthClientUUID}`)
+      .set('Authorization', token)
+      .expect(404);
+  });
+
+  it('should return bad request response for invalid UUID', async () => {
+    await request(app)
+      .get('/api/v1/app-auth-clients/invalidAppAuthClientUUID')
+      .set('Authorization', token)
+      .expect(400);
   });
 });
