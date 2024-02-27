@@ -10,7 +10,7 @@ class Datastore extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string', minLength: 1 },
-      value: { type: 'string', minLength: 1 },
+      value: { type: 'string' },
       scope: {
         type: 'string',
         enum: ['flow'],
