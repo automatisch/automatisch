@@ -6,6 +6,7 @@ import appAuthClientSerializer from './app-auth-client.js';
 import flowSerializer from './flow.js';
 import stepSerializer from './step.js';
 import appSerializer from './app.js';
+import authSerializer from './auth.js';
 
 const serializers = {
   User: userSerializer,
@@ -16,6 +17,7 @@ const serializers = {
   Flow: flowSerializer,
   Step: stepSerializer,
   App: appSerializer,
+  Auth: authSerializer,
 };
 
 export default serializers;
