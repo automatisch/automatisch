@@ -3,7 +3,7 @@ import App from '../models/app';
 import appSerializer from './app';
 
 describe('appSerializer', () => {
-  it('should return permission data', async () => {
+  it('should return app data', async () => {
     const app = await App.findOneByKey('deepl');
 
     const expectedPayload = {
