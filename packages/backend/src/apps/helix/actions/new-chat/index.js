@@ -32,7 +32,7 @@ export default defineAction({
 
     let attempts = 0;
 
-    while (attempts < 50) {
+    while (attempts < 10) {
       const response = await $.http.get(`/api/v1/sessions/${sessionId}`);
 
       const message =
@@ -46,6 +46,7 @@ export default defineAction({
         return;
       }
 
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       attempts++;
     }
 
