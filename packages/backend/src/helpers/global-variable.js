@@ -1,6 +1,7 @@
 import createHttpClient from './http-client/index.js';
 import EarlyExitError from '../errors/early-exit.js';
 import AlreadyProcessedError from '../errors/already-processed.js';
+import Datastore from '../models/datastore.js';
 
 const globalVariable = async (options) => {
   const {
@@ -87,6 +88,43 @@ const globalVariable = async (options) => {
     },
     setActionItem: (actionItem) => {
       $.actionOutput.data = actionItem;
+    },
+    datastore: {
+      get: async ({ key }) => {
+        const datastore = await Datastore.query().findOne({
+          key,
+          scope: 'flow',
+          scope_id: $.flow.id,
+        });
+
+        return {
+          key: datastore.key,
+          value: datastore.value,
+          [datastore.key]: datastore.value,
+        };
+      },
+      set: async ({ key, value }) => {
+        let datastore = await Datastore.query()
+          .where({ key, scope: 'flow', scope_id: $.flow.id })
+          .first();
+
+        if (datastore) {
+          await datastore.$query().patchAndFetch({ value: value });
+        } else {
+          datastore = await Datastore.query().insert({
+            key,
+            value,
+            scope: 'flow',
+            scopeId: $.flow.id,
+          });
+        }
+
+        return {
+          key: datastore.key,
+          value: datastore.value,
+          [datastore.key]: datastore.value,
+        };
+      },
     },
   };
 
