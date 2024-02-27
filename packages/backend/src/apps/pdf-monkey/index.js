@@ -1,6 +1,8 @@
 import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
 import auth from './auth/index.js';
+import triggers from './triggers/index.js';
+import dynamicData from './dynamic-data/index.js';
 
 export default defineApp({
   name: 'PDFMonkey',
@@ -13,4 +15,6 @@ export default defineApp({
   primaryColor: '376794',
   beforeRequest: [addAuthHeader],
   auth,
+  triggers,
+  dynamicData,
 });

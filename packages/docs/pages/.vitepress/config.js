@@ -256,7 +256,10 @@ export default defineConfig({
           text: 'PDFMonkey',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/pdf-monkey/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/pdf-monkey/triggers' },
+            { text: 'Connection', link: '/apps/pdf-monkey/connection' },
+          ],
         },
         {
           text: 'Pipedrive',
