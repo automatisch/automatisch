@@ -42,6 +42,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Datastore',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/datastore/actions' },
+            { text: 'Connection', link: '/apps/datastore/connection' },
+          ],
+        },
+        {
           text: 'DeepL',
           collapsible: true,
           collapsed: true,
@@ -305,7 +314,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Actions', link: '/apps/removebg/actions' },
-            { text: 'Connection', link: '/apps/removebg/connection' }
+            { text: 'Connection', link: '/apps/removebg/connection' },
           ],
         },
         {

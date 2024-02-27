@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Set value',
   key: 'setValue',
-  description: 'Set value to the persistent datastore',
+  description: 'Set value to the persistent datastore.',
   arguments: [
     {
       label: 'Key',
