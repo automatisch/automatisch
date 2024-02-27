@@ -30,9 +30,9 @@ export default defineAction({
 
     const sessionId = sessionResponse.data.id;
 
-    let chatGenerated = false;
+    let attempts = 0;
 
-    while (!chatGenerated) {
+    while (attempts < 50) {
       const response = await $.http.get(`/api/v1/sessions/${sessionId}`);
 
       const message =
@@ -43,8 +43,12 @@ export default defineAction({
           raw: message,
         });
 
-        chatGenerated = true;
+        return;
       }
+
+      attempts++;
     }
+
+    throw new Error('Failed to start a new chat session for Helix API!');
   },
 });
