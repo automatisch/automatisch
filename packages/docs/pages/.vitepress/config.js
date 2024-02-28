@@ -258,6 +258,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/pdf-monkey/triggers' },
+            { text: 'Actions', link: '/apps/pdf-monkey/actions' },
             { text: 'Connection', link: '/apps/pdf-monkey/connection' },
           ],
         },
