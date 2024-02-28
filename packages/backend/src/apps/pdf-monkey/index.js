@@ -3,6 +3,8 @@ import addAuthHeader from './common/add-auth-header.js';
 import auth from './auth/index.js';
 import triggers from './triggers/index.js';
 import dynamicData from './dynamic-data/index.js';
+import actions from './actions/index.js';
+import dynamicFields from './dynamic-fields/index.js';
 
 export default defineApp({
   name: 'PDFMonkey',
@@ -17,4 +19,6 @@ export default defineApp({
   auth,
   triggers,
   dynamicData,
+  actions,
+  dynamicFields,
 });
