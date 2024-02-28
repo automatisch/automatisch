@@ -39,6 +39,13 @@ class App {
     return appInfoConverter(rawAppData);
   }
 
+  static async findAuthByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData.auth;
+  }
+
   static async checkAppAndAction(appKey, actionKey) {
     const app = await this.findOneByKey(appKey);
 
