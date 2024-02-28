@@ -1,4 +1,3 @@
-import FormData from 'form-data';
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
@@ -17,39 +16,21 @@ export default defineAction({
   ],
 
   async run($) {
-    const formData = new FormData();
-    formData.append('input', $.step.parameters.input);
-    formData.append('mode', 'inference');
-    formData.append('type', 'text');
-
-    const sessionResponse = await $.http.post('/api/v1/sessions', formData, {
-      headers: {
-        ...formData.getHeaders(),
-      },
+    const response = await $.http.post('/api/v1/sessions/chat', {
+      session_id: '',
+      messages: [
+        {
+          role: 'user',
+          content: {
+            content_type: 'text',
+            parts: [$.step.parameters.input],
+          },
+        },
+      ],
     });
 
-    const sessionId = sessionResponse.data.id;
-
-    let attempts = 0;
-
-    while (attempts < 10) {
-      const response = await $.http.get(`/api/v1/sessions/${sessionId}`);
-
-      const message =
-        response.data.interactions[response.data.interactions.length - 1];
-
-      if (message.creator === 'system' && message.state === 'complete') {
-        $.setActionItem({
-          raw: message,
-        });
-
-        return;
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      attempts++;
-    }
-
-    throw new Error('Failed to start a new chat session for Helix API!');
+    $.setActionItem({
+      raw: response.data,
+    });
   },
 });
