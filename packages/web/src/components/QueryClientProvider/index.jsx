@@ -9,6 +9,7 @@ import useAuthentication from 'hooks/useAuthentication.js';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: 1000,
       refetchOnWindowFocus: false,
       // provides a convenient default while it should be overridden for other HTTP methods
       queryFn: async ({ queryKey, signal }) => {
