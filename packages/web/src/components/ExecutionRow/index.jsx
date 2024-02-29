@@ -9,9 +9,12 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import FlowAppIcons from 'components/FlowAppIcons';
 import { Apps, CardContent, ArrowContainer, Title, Typography } from './style';
-export default function ExecutionRow(props) {
+import { ExecutionPropType } from 'propTypes/propTypes';
+
+function ExecutionRow(props) {
   const formatMessage = useFormatMessage();
   const { execution } = props;
+
   const { flow } = execution;
   const createdAt = DateTime.fromMillis(parseInt(execution.createdAt, 10));
   const relativeCreatedAt = createdAt.toRelative();
@@ -66,3 +69,9 @@ export default function ExecutionRow(props) {
     </Link>
   );
 }
+
+ExecutionRow.propTypes = {
+  execution: ExecutionPropType.isRequired,
+};
+
+export default ExecutionRow;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { DateTime } from 'luxon';
 import Stack from '@mui/material/Stack';
@@ -5,6 +6,8 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { ExecutionPropType } from 'propTypes/propTypes';
+
 function ExecutionName(props) {
   return (
     <Typography variant="h3" gutterBottom>
@@ -12,6 +15,11 @@ function ExecutionName(props) {
     </Typography>
   );
 }
+
+ExecutionName.propTypes = {
+  name: PropTypes.string.isRequired,
+};
+
 function ExecutionId(props) {
   const formatMessage = useFormatMessage();
   const id = (
@@ -27,6 +35,11 @@ function ExecutionId(props) {
     </Box>
   );
 }
+
+ExecutionId.propTypes = {
+  id: PropTypes.string.isRequired,
+};
+
 function ExecutionDate(props) {
   const createdAt = DateTime.fromMillis(parseInt(props.createdAt, 10));
   const relativeCreatedAt = createdAt.toRelative();
@@ -40,7 +53,13 @@ function ExecutionDate(props) {
     </Tooltip>
   );
 }
-export default function ExecutionHeader(props) {
+
+ExecutionDate.propTypes = {
+  createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
+    .isRequired,
+};
+
+function ExecutionHeader(props) {
   const { execution } = props;
   if (!execution) return <React.Fragment />;
   return (
@@ -59,3 +78,9 @@ export default function ExecutionHeader(props) {
     </Stack>
   );
 }
+
+ExecutionHeader.propTypes = {
+  execution: ExecutionPropType,
+};
+
+export default ExecutionHeader;

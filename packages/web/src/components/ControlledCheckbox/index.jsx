@@ -1,7 +1,9 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Controller, useFormContext } from 'react-hook-form';
 import Checkbox from '@mui/material/Checkbox';
-export default function ControlledCheckbox(props) {
+
+function ControlledCheckbox(props) {
   const { control } = useFormContext();
   const {
     required,
@@ -52,3 +54,15 @@ export default function ControlledCheckbox(props) {
     />
   );
 }
+
+ControlledCheckbox.propTypes = {
+  name: PropTypes.string.isRequired,
+  defaultValue: PropTypes.bool,
+  dataTest: PropTypes.string,
+  required: PropTypes.bool,
+  disabled: PropTypes.bool,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+};
+
+export default ControlledCheckbox;

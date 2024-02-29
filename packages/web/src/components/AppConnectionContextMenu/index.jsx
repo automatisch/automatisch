@@ -1,10 +1,14 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
-export default function ContextMenu(props) {
+import { ConnectionPropType } from 'propTypes/propTypes';
+
+function ContextMenu(props) {
   const {
     appKey,
     connection,
@@ -61,3 +65,17 @@ export default function ContextMenu(props) {
     </Menu>
   );
 }
+
+ContextMenu.propTypes = {
+  appKey: PropTypes.string.isRequired,
+  connection: ConnectionPropType.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onMenuItemClick: PropTypes.func.isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
+  disableReconnection: PropTypes.bool.isRequired,
+};
+
+export default ContextMenu;

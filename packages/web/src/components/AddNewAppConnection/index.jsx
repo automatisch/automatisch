@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { useLazyQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import debounce from 'lodash/debounce';
@@ -23,13 +24,14 @@ import * as URLS from 'config/urls';
 import AppIcon from 'components/AppIcon';
 import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 function createConnectionOrFlow(appKey, supportsConnections = false) {
   if (!supportsConnections) {
     return URLS.CREATE_FLOW_WITH_APP(appKey);
   }
   return URLS.APP_ADD_CONNECTION(appKey);
 }
-export default function AddNewAppConnection(props) {
+function AddNewAppConnection(props) {
   const { onClose } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
@@ -136,3 +138,9 @@ export default function AddNewAppConnection(props) {
     </Dialog>
   );
 }
+
+AddNewAppConnection.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
+
+export default AddNewAppConnection;

@@ -1,11 +1,15 @@
+import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
 import { useMutation } from '@apollo/client';
+
+import { AppPropType } from 'propTypes/propTypes';
 import { CREATE_APP_CONFIG } from 'graphql/mutations/create-app-config';
 import { CREATE_APP_AUTH_CLIENT } from 'graphql/mutations/create-app-auth-client';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
-export default function AdminApplicationCreateAuthClient(props) {
+
+function AdminApplicationCreateAuthClient(props) {
   const { appKey, application, onClose } = props;
   const { auth } = application;
   const formatMessage = useFormatMessage();
@@ -87,3 +91,11 @@ export default function AdminApplicationCreateAuthClient(props) {
     />
   );
 }
+
+AdminApplicationCreateAuthClient.propTypes = {
+  appKey: PropTypes.string.isRequired,
+  application: AppPropType.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+export default AdminApplicationCreateAuthClient;

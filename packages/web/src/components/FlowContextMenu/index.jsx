@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,7 +10,8 @@ import * as URLS from 'config/urls';
 import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
 import { DUPLICATE_FLOW } from 'graphql/mutations/duplicate-flow';
 import useFormatMessage from 'hooks/useFormatMessage';
-export default function ContextMenu(props) {
+
+function ContextMenu(props) {
   const { flowId, onClose, anchorEl } = props;
   const enqueueSnackbar = useEnqueueSnackbar();
   const [deleteFlow] = useMutation(DELETE_FLOW);
@@ -80,3 +82,14 @@ export default function ContextMenu(props) {
     </Menu>
   );
 }
+
+ContextMenu.propTypes = {
+  flowId: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]).isRequired,
+};
+
+export default ContextMenu;

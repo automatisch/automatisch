@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Controller as RHFController, useFormContext } from 'react-hook-form';
+
 function Controller(props) {
   const { control } = useFormContext();
   const {
@@ -20,4 +22,13 @@ function Controller(props) {
     />
   );
 }
+
+Controller.propTypes = {
+  defaultValue: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  shouldUnregister: PropTypes.bool,
+  children: PropTypes.element.isRequired,
+};
+
 export default Controller;

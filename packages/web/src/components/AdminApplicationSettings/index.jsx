@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -11,6 +12,7 @@ import { UPDATE_APP_CONFIG } from 'graphql/mutations/update-app-config';
 import Form from 'components/Form';
 import { Switch } from './style';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+
 function AdminApplicationSettings(props) {
   const { appConfig, loading } = useAppConfig(props.appKey);
   const [createAppConfig, { loading: loadingCreateAppConfig }] = useMutation(
@@ -109,4 +111,9 @@ function AdminApplicationSettings(props) {
     ></Form>
   );
 }
+
+AdminApplicationSettings.propTypes = {
+  appKey: PropTypes.string.isRequired,
+};
+
 export default AdminApplicationSettings;

@@ -1,11 +1,13 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import AppConnectionRow from 'components/AppConnectionRow';
 import NoResultFound from 'components/NoResultFound';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
-export default function AppConnections(props) {
+
+function AppConnections(props) {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
   const { data } = useQuery(GET_APP_CONNECTIONS, {
@@ -22,6 +24,7 @@ export default function AppConnections(props) {
       />
     );
   }
+
   return (
     <>
       {appConnections.map((appConnection) => (
@@ -30,3 +33,9 @@ export default function AppConnections(props) {
     </>
   );
 }
+
+AppConnections.propTypes = {
+  appKey: PropTypes.string.isRequired,
+};
+
+export default AppConnections;

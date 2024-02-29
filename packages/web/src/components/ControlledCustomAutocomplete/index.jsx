@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { IconButton } from '@mui/material';
@@ -28,6 +29,7 @@ import {
 import CustomOptions from './CustomOptions';
 import { processStepWithExecutions } from 'components/PowerInput/data';
 import { StepExecutionsContext } from 'contexts/StepExecutions';
+
 function ControlledCustomAutocomplete(props) {
   const {
     defaultValue = '',
@@ -257,4 +259,23 @@ function ControlledCustomAutocomplete(props) {
     </Slate>
   );
 }
+
+ControlledCustomAutocomplete.propTypes = {
+  options: PropTypes.array,
+  loading: PropTypes.bool.isRequired,
+  showOptionValue: PropTypes.bool,
+  dependsOn: PropTypes.arrayOf(PropTypes.string),
+  defaultValue: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  required: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  description: PropTypes.string,
+  docUrl: PropTypes.string,
+  clickToCopy: PropTypes.bool,
+  disabled: PropTypes.bool,
+  shouldUnregister: PropTypes.bool,
+};
+
 export default ControlledCustomAutocomplete;

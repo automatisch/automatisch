@@ -1,7 +1,9 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import AppIcon from 'components/AppIcon';
 import IntermediateStepCount from 'components/IntermediateStepCount';
-export default function FlowAppIcons(props) {
+
+function FlowAppIcons(props) {
   const { steps } = props;
   const stepsCount = steps.length;
   const firstStep = steps[0];
@@ -31,3 +33,13 @@ export default function FlowAppIcons(props) {
     </>
   );
 }
+
+FlowAppIcons.propTypes = {
+  steps: PropTypes.arrayOf(
+    PropTypes.shape({
+      iconUrl: PropTypes.string,
+    }),
+  ).isRequired,
+};
+
+export default FlowAppIcons;

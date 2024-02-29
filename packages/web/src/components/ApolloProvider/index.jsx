@@ -3,6 +3,7 @@ import * as React from 'react';
 import { mutateAndGetClient } from 'graphql/client';
 import useAuthentication from 'hooks/useAuthentication';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+
 const ApolloProvider = (props) => {
   const enqueueSnackbar = useEnqueueSnackbar();
   const authentication = useAuthentication();
@@ -25,4 +26,5 @@ const ApolloProvider = (props) => {
   }, [onError, authentication]);
   return <BaseApolloProvider client={client} {...props} />;
 };
+
 export default ApolloProvider;

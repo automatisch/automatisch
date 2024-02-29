@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import throttle from 'lodash/throttle';
@@ -7,12 +8,16 @@ import { Typography } from '@mui/material';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { SearchInputWrapper } from './style';
+import { FieldDropdownOptionPropType } from 'propTypes/propTypes';
+
 const SHORT_LIST_LENGTH = 4;
 const LIST_ITEM_HEIGHT = 64;
+
 const computeListHeight = (currentLength) => {
   const numberOfRenderedItems = Math.min(SHORT_LIST_LENGTH, currentLength);
   return LIST_ITEM_HEIGHT * numberOfRenderedItems;
 };
+
 const renderItemFactory =
   ({ onOptionClick }) =>
   (props) => {
@@ -44,6 +49,7 @@ const renderItemFactory =
       </ListItemButton>
     );
   };
+
 const Options = (props) => {
   const formatMessage = useFormatMessage();
   const { data, onOptionClick } = props;
@@ -108,4 +114,10 @@ const Options = (props) => {
     </>
   );
 };
+
+Options.propTypes = {
+  data: PropTypes.arrayOf(FieldDropdownOptionPropType).isRequired,
+  onOptionClick: PropTypes.func.isRequired,
+};
+
 export default Options;

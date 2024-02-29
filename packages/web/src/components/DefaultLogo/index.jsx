@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import MationLogo from 'components/MationLogo';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
 
-export default function DefaultLogo() {
+const DefaultLogo = () => {
   const { data: automatischInfo, isPending } = useAutomatischInfo();
   const isMation = automatischInfo?.data.isMation;
 
@@ -16,4 +16,6 @@ export default function DefaultLogo() {
       <FormattedMessage id="brandText" />
     </Typography>
   );
-}
+};
+
+export default DefaultLogo;

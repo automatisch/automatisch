@@ -1,8 +1,10 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Controller, useFormContext } from 'react-hook-form';
 import { MuiColorInput } from 'mui-color-input';
 import ColorButton from './ColorButton';
-export default function ColorInput(props) {
+
+function ColorInput(props) {
   const { control } = useFormContext();
   const {
     required,
@@ -32,3 +34,12 @@ export default function ColorInput(props) {
     />
   );
 }
+
+ColorInput.propTypes = {
+  shouldUnregister: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  required: PropTypes.bool,
+};
+
+export default ColorInput;

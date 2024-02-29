@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
@@ -6,6 +7,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { AppPropType } from 'propTypes/propTypes';
 import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
 import InputCreator from 'components/InputCreator';
 import * as URLS from 'config/urls';
@@ -13,7 +16,8 @@ import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { generateExternalLink } from 'helpers/translationValues';
 import { Form } from './style';
-export default function AddAppConnection(props) {
+
+function AddAppConnection(props) {
   const { application, connectionId, onClose } = props;
   const { name, authDocUrl, key, auth } = application;
   const navigate = useNavigate();
@@ -137,3 +141,11 @@ export default function AddAppConnection(props) {
     </Dialog>
   );
 }
+
+AddAppConnection.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  application: AppPropType.isRequired,
+  connectionId: PropTypes.string,
+};
+
+export default AddAppConnection;

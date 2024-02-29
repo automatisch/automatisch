@@ -1,9 +1,11 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
 import { IconButton } from './style';
-export default function ConditionalIconButton(props) {
+
+function ConditionalIconButton(props) {
   const { icon, ...buttonProps } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -24,3 +26,9 @@ export default function ConditionalIconButton(props) {
   }
   return <Button {...buttonProps} />;
 }
+
+ConditionalIconButton.propTypes = {
+  icon: PropTypes.node.isRequired,
+};
+
+export default ConditionalIconButton;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { DateTime } from 'luxon';
 import Stack from '@mui/material/Stack';
@@ -21,6 +22,8 @@ import {
   Metadata,
   Wrapper,
 } from './style';
+import { ExecutionStepPropType, StepPropType } from 'propTypes/propTypes';
+
 function ExecutionStepId(props) {
   const formatMessage = useFormatMessage();
   const id = (
@@ -36,6 +39,11 @@ function ExecutionStepId(props) {
     </Box>
   );
 }
+
+ExecutionStepId.propTypes = {
+  id: PropTypes.string.isRequired,
+};
+
 function ExecutionStepDate(props) {
   const formatMessage = useFormatMessage();
   const createdAt = DateTime.fromMillis(parseInt(props.createdAt, 10));
@@ -52,9 +60,15 @@ function ExecutionStepDate(props) {
     </Tooltip>
   );
 }
+
+ExecutionStepDate.propTypes = {
+  createdAt: PropTypes.string.isRequired,
+};
+
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
-export default function ExecutionStep(props) {
+
+function ExecutionStep(props) {
   const { executionStep } = props;
   const [activeTabIndex, setActiveTabIndex] = React.useState(0);
   const step = executionStep.step;
@@ -136,3 +150,12 @@ export default function ExecutionStep(props) {
     </Wrapper>
   );
 }
+
+ExecutionStep.propTypes = {
+  collapsed: PropTypes.bool,
+  step: StepPropType.isRequired,
+  index: PropTypes.number,
+  executionStep: ExecutionStepPropType.isRequired,
+};
+
+export default ExecutionStep;

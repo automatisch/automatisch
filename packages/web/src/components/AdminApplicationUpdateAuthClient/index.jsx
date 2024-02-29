@@ -1,13 +1,15 @@
+import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
+import { AppPropType } from 'propTypes/propTypes';
 import { UPDATE_APP_AUTH_CLIENT } from 'graphql/mutations/update-app-auth-client';
 import useFormatMessage from 'hooks/useFormatMessage';
 import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
 import useAdminAppAuthClient from 'hooks/useAdminAppAuthClient.ee';
 
-export default function AdminApplicationUpdateAuthClient(props) {
+function AdminApplicationUpdateAuthClient(props) {
   const { application, onClose } = props;
   const { auth } = application;
   const formatMessage = useFormatMessage();
@@ -87,3 +89,10 @@ export default function AdminApplicationUpdateAuthClient(props) {
     />
   );
 }
+
+AdminApplicationUpdateAuthClient.propTypes = {
+  application: AppPropType.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+export default AdminApplicationUpdateAuthClient;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -13,8 +14,10 @@ import Logo from 'components/Logo/index';
 import TrialStatusBadge from 'components/TrialStatusBadge/index.ee';
 import * as URLS from 'config/urls';
 import { Link } from './style';
+
 const accountMenuId = 'account-menu';
-export default function AppBar(props) {
+
+function AppBar(props) {
   const { drawerOpen, onDrawerOpen, onDrawerClose, maxWidth = false } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -73,3 +76,15 @@ export default function AppBar(props) {
     </MuiAppBar>
   );
 }
+
+AppBar.propTypes = {
+  drawerOpen: PropTypes.bool.isRequired,
+  onDrawerOpen: PropTypes.func.isRequired,
+  onDrawerClose: PropTypes.func.isRequired,
+  maxWidth: PropTypes.oneOfType([
+    PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', false]),
+    PropTypes.string,
+  ]),
+};
+
+export default AppBar;

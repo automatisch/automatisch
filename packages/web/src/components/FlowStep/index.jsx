@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useLazyQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
@@ -33,8 +34,11 @@ import {
   Wrapper,
 } from './style';
 import isEmpty from 'helpers/isEmpty';
+import { StepPropType } from 'propTypes/propTypes';
+
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
+
 function generateValidationSchema(substeps) {
   const fieldValidations = substeps?.reduce(
     (allValidations, { arguments: args }) => {
@@ -91,7 +95,8 @@ function generateValidationSchema(substeps) {
   });
   return yupResolver(validationSchema);
 }
-export default function FlowStep(props) {
+
+function FlowStep(props) {
   const { collapsed, onChange, onContinue } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
@@ -309,3 +314,15 @@ export default function FlowStep(props) {
     </Wrapper>
   );
 }
+
+FlowStep.propTypes = {
+  collapsed: PropTypes.bool,
+  step: StepPropType.isRequired,
+  index: PropTypes.number,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  onContinue: PropTypes.func,
+};
+
+export default FlowStep;

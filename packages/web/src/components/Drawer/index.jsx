@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -8,10 +9,12 @@ import Badge from '@mui/material/Badge';
 import ListItemLink from 'components/ListItemLink';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { Drawer as BaseDrawer } from './style';
+
 const iOS =
   typeof navigator !== 'undefined' &&
   /iPad|iPhone|iPod/.test(navigator.userAgent);
-export default function Drawer(props) {
+
+function Drawer(props) {
   const { links = [], bottomLinks = [], ...drawerProps } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -70,3 +73,20 @@ export default function Drawer(props) {
     </BaseDrawer>
   );
 }
+
+const DrawerLinkPropTypes = PropTypes.shape({
+  Icon: PropTypes.elementType.isRequired,
+  primary: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+  target: PropTypes.oneOf(['_blank']),
+  badgeContent: PropTypes.node,
+  dataTest: PropTypes.string,
+});
+
+Drawer.propTypes = {
+  links: PropTypes.arrayOf(DrawerLinkPropTypes).isRequired,
+  bottomLinks: PropTypes.arrayOf(DrawerLinkPropTypes),
+  onClose: PropTypes.func.isRequired,
+};
+
+export default Drawer;

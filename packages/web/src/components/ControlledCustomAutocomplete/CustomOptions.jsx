@@ -1,11 +1,14 @@
+import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Tab from '@mui/material/Tab';
 import * as React from 'react';
 import Suggestions from 'components/PowerInput/Suggestions';
 import TabPanel from 'components/TabPanel';
+import { FieldDropdownOptionPropType } from 'propTypes/propTypes';
 import Options from './Options';
 import { Tabs } from './style';
+
 const CustomOptions = (props) => {
   const {
     open,
@@ -69,4 +72,23 @@ const CustomOptions = (props) => {
     </Popper>
   );
 };
+
+CustomOptions.propTypes = {
+  open: PropTypes.bool.isRequired,
+  anchorEl: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      output: PropTypes.arrayOf(PropTypes.object).isRequired,
+    }),
+  ).isRequired,
+  options: PropTypes.arrayOf(FieldDropdownOptionPropType).isRequired,
+  onSuggestionClick: PropTypes.func.isRequired,
+  onOptionClick: PropTypes.func.isRequired,
+  onTabChange: PropTypes.func.isRequired,
+  label: PropTypes.string,
+  initialTabIndex: PropTypes.oneOf([0, 1]),
+};
+
 export default CustomOptions;

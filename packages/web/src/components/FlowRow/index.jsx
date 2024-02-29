@@ -11,6 +11,8 @@ import FlowContextMenu from 'components/FlowContextMenu';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
 import { Apps, CardContent, ContextMenu, Title, Typography } from './style';
+import { FlowPropType } from 'propTypes/propTypes';
+
 function getFlowStatusTranslationKey(status) {
   if (status === 'published') {
     return 'flow.published';
@@ -19,6 +21,7 @@ function getFlowStatusTranslationKey(status) {
   }
   return 'flow.draft';
 }
+
 function getFlowStatusColor(status) {
   if (status === 'published') {
     return 'success';
@@ -27,7 +30,8 @@ function getFlowStatusColor(status) {
   }
   return 'info';
 }
-export default function FlowRow(props) {
+
+function FlowRow(props) {
   const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -113,3 +117,9 @@ export default function FlowRow(props) {
     </>
   );
 }
+
+FlowRow.propTypes = {
+  flow: FlowPropType.isRequired,
+};
+
+export default FlowRow;

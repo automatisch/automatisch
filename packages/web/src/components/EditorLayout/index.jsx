@@ -17,6 +17,7 @@ import { UPDATE_FLOW_STATUS } from 'graphql/mutations/update-flow-status';
 import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import * as URLS from 'config/urls';
+
 export default function EditorLayout() {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();

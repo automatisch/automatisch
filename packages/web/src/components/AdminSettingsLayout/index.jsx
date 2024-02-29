@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -14,6 +15,7 @@ import Drawer from 'components/Drawer';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+
 function createDrawerLinks({
   canReadRole,
   canReadUser,
@@ -65,7 +67,8 @@ function createDrawerLinks({
   ].filter(Boolean);
   return items;
 }
-export default function SettingsLayout({ children }) {
+
+function SettingsLayout({ children }) {
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const currentUserAbility = useCurrentUserAbility();
@@ -83,7 +86,6 @@ export default function SettingsLayout({ children }) {
       currentUserAbility.can('create', 'SamlAuthProvider'),
     canUpdateApp: currentUserAbility.can('update', 'App'),
   });
-  const a = 123;
   const drawerBottomLinks = [
     {
       Icon: ArrowBackIosNewIcon,
@@ -118,3 +120,9 @@ export default function SettingsLayout({ children }) {
     </>
   );
 }
+
+SettingsLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default SettingsLayout;

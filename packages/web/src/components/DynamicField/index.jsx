@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -9,6 +10,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import InputCreator from 'components/InputCreator';
 import { EditorContext } from 'contexts/Editor';
+import { FieldsPropType } from 'propTypes/propTypes';
+
 function DynamicField(props) {
   const { label, description, fields, name, defaultValue, stepId } = props;
   const { control, setValue, getValues } = useFormContext();
@@ -107,4 +110,23 @@ function DynamicField(props) {
     </React.Fragment>
   );
 }
+
+DynamicField.propTypes = {
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  defaultValue: PropTypes.arrayOf(PropTypes.object),
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  required: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  description: PropTypes.string,
+  docUrl: PropTypes.string,
+  clickToCopy: PropTypes.bool,
+  disabled: PropTypes.bool,
+  fields: FieldsPropType.isRequired,
+  shouldUnregister: PropTypes.bool,
+  stepId: PropTypes.string,
+};
+
 export default DynamicField;

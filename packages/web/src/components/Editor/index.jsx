@@ -7,6 +7,8 @@ import { GET_FLOW } from 'graphql/queries/get-flow';
 import { CREATE_STEP } from 'graphql/mutations/create-step';
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
 import FlowStep from 'components/FlowStep';
+import { FlowPropType } from 'propTypes/propTypes';
+
 function updateHandlerFactory(flowId, previousStepId) {
   return function createStepUpdateHandler(cache, mutationResult) {
     const { data } = mutationResult;
@@ -28,7 +30,8 @@ function updateHandlerFactory(flowId, previousStepId) {
     });
   };
 }
-export default function Editor(props) {
+
+function Editor(props) {
   const [updateStep] = useMutation(UPDATE_STEP);
   const [createStep, { loading: creationInProgress }] = useMutation(
     CREATE_STEP,
@@ -118,3 +121,9 @@ export default function Editor(props) {
     </Box>
   );
 }
+
+Editor.propTypes = {
+  flow: FlowPropType.isRequired,
+};
+
+export default Editor;

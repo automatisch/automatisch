@@ -1,10 +1,13 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import FormHelperText from '@mui/material/FormHelperText';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
+
 const getOption = (options, value) =>
   options.find((option) => option.value === value) || null;
+
 // Enables filtering by value in autocomplete dropdown
 const filterOptions = createFilterOptions({
   stringify: ({ label, value }) => `
@@ -12,6 +15,7 @@ const filterOptions = createFilterOptions({
     ${value}
   `,
 });
+
 function ControlledAutocomplete(props) {
   const { control, watch, setValue, resetField } = useFormContext();
   const {
@@ -113,4 +117,18 @@ function ControlledAutocomplete(props) {
     />
   );
 }
+
+ControlledAutocomplete.propTypes = {
+  shouldUnregister: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  showOptionValue: PropTypes.bool,
+  description: PropTypes.string,
+  dependsOn: PropTypes.arrayOf(PropTypes.string),
+  defaultValue: PropTypes.any,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  options: PropTypes.array,
+};
+
 export default ControlledAutocomplete;

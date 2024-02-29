@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -11,6 +12,8 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useApps from 'hooks/useApps';
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
+import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
+
 const optionGenerator = (app) => ({
   label: app.name,
   value: app.key,
@@ -222,4 +225,15 @@ function ChooseAppAndEventSubstep(props) {
     </React.Fragment>
   );
 }
+
+ChooseAppAndEventSubstep.propTypes = {
+  substep: SubstepPropType.isRequired,
+  expanded: PropTypes.bool,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
+  step: StepPropType.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 export default ChooseAppAndEventSubstep;
