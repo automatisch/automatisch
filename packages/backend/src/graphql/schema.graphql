@@ -40,7 +40,6 @@ type Query {
     key: String!
     parameters: JSONObject
   ): [SubstepArgument]
-  getAutomatischInfo: GetAutomatischInfo
   getBillingAndUsage: GetBillingAndUsage
   getCurrentUser: User
   getConfig(keys: [String]): JSONObject
@@ -642,12 +641,6 @@ type ExecutionStepConnection {
 
 type AppHealth {
   version: String
-}
-
-type GetAutomatischInfo {
-  isCloud: Boolean
-  isMation: Boolean
-  license: License
 }
 
 type License {

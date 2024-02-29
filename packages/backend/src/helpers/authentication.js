@@ -42,7 +42,6 @@ const isAuthenticatedRule = rule()(isAuthenticated);
 export const authenticationRules = {
   Query: {
     '*': isAuthenticatedRule,
-    getAutomatischInfo: allow,
     getConfig: allow,
     getNotifications: allow,
     healthcheck: allow,
