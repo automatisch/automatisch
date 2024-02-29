@@ -1,27 +1,34 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import useNotifications from 'hooks/useNotifications';
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Container from 'components/Container';
 import NotificationCard from 'components/NotificationCard';
 import PageTitle from 'components/PageTitle';
-import useFormatMessage from 'hooks/useFormatMessage';
-import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import * as URLS from 'config/urls';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
+import useFormatMessage from 'hooks/useFormatMessage';
+import useNotifications from 'hooks/useNotifications';
+
 export default function Updates() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const { notifications } = useNotifications();
-  const { isMation, loading } = useAutomatischInfo();
+  const { data: automatischInfo, isPending } = useAutomatischInfo();
+  const isMation = automatischInfo?.data.isMation;
+
   React.useEffect(
     function redirectToHomepageInMation() {
-      if (!loading && isMation) {
+      if (!navigate) return;
+
+      if (!isPending && isMation) {
         navigate(URLS.DASHBOARD);
       }
     },
-    [loading, isMation],
+    [isPending, isMation, navigate],
   );
+
   return (
     <Box sx={{ py: 3 }}>
       <Container>

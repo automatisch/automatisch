@@ -29,7 +29,8 @@ function createDrawerLinks({ isCloud }) {
   return items;
 }
 export default function SettingsLayout({ children }) {
-  const { isCloud } = useAutomatischInfo();
+  const { data: automatischInfo } = useAutomatischInfo();
+  const isCloud = automatischInfo?.data.isCloud;
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
