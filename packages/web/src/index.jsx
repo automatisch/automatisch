@@ -5,7 +5,6 @@ import ApolloProvider from 'components/ApolloProvider';
 import SnackbarProvider from 'components/SnackbarProvider';
 import MetadataProvider from 'components/MetadataProvider';
 import { AuthenticationProvider } from 'contexts/Authentication';
-import { AutomatischInfoProvider } from 'contexts/AutomatischInfo';
 import QueryClientProvider from 'components/QueryClientProvider';
 import Router from 'components/Router';
 import LiveChat from 'components/LiveChat/index.ee';
@@ -21,17 +20,15 @@ root.render(
       <AuthenticationProvider>
         <QueryClientProvider>
           <ApolloProvider>
-            <AutomatischInfoProvider>
-              <IntlProvider>
-                <ThemeProvider>
-                  <MetadataProvider>
-                    {routes}
+            <IntlProvider>
+              <ThemeProvider>
+                <MetadataProvider>
+                  {routes}
 
-                    <LiveChat />
-                  </MetadataProvider>
-                </ThemeProvider>
-              </IntlProvider>
-            </AutomatischInfoProvider>
+                  <LiveChat />
+                </MetadataProvider>
+              </ThemeProvider>
+            </IntlProvider>
           </ApolloProvider>
         </QueryClientProvider>
       </AuthenticationProvider>
