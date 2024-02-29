@@ -6,6 +6,7 @@ import SnackbarProvider from 'components/SnackbarProvider';
 import MetadataProvider from 'components/MetadataProvider';
 import { AuthenticationProvider } from 'contexts/Authentication';
 import { AutomatischInfoProvider } from 'contexts/AutomatischInfo';
+import QueryClientProvider from 'components/QueryClientProvider';
 import Router from 'components/Router';
 import LiveChat from 'components/LiveChat/index.ee';
 import routes from 'routes';
@@ -18,19 +19,21 @@ root.render(
   <Router>
     <SnackbarProvider>
       <AuthenticationProvider>
-        <ApolloProvider>
-          <AutomatischInfoProvider>
-            <IntlProvider>
-              <ThemeProvider>
-                <MetadataProvider>
-                  {routes}
+        <QueryClientProvider>
+          <ApolloProvider>
+            <AutomatischInfoProvider>
+              <IntlProvider>
+                <ThemeProvider>
+                  <MetadataProvider>
+                    {routes}
 
-                  <LiveChat />
-                </MetadataProvider>
-              </ThemeProvider>
-            </IntlProvider>
-          </AutomatischInfoProvider>
-        </ApolloProvider>
+                    <LiveChat />
+                  </MetadataProvider>
+                </ThemeProvider>
+              </IntlProvider>
+            </AutomatischInfoProvider>
+          </ApolloProvider>
+        </QueryClientProvider>
       </AuthenticationProvider>
     </SnackbarProvider>
   </Router>,
