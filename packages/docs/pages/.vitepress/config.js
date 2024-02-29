@@ -33,6 +33,14 @@ export default defineConfig({
     sidebar: {
       '/apps/': [
         {
+          text: 'Bigin By Zoho CRM',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/bigin-by-zoho-crm/connection' },
+          ],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
