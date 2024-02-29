@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
@@ -7,7 +8,8 @@ import Can from 'components/Can';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import { DELETE_ROLE } from 'graphql/mutations/delete-role.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
-export default function DeleteRoleButton(props) {
+
+function DeleteRoleButton(props) {
   const { disabled, roleId } = props;
   const [showConfirmation, setShowConfirmation] = React.useState(false);
   const [deleteRole] = useMutation(DELETE_ROLE, {
@@ -52,9 +54,16 @@ export default function DeleteRoleButton(props) {
         onClose={() => setShowConfirmation(false)}
         onConfirm={handleConfirm}
         cancelButtonChildren={formatMessage('deleteRoleButton.cancel')}
-        confirmButtionChildren={formatMessage('deleteRoleButton.confirm')}
+        confirmButtonChildren={formatMessage('deleteRoleButton.confirm')}
         data-test="delete-role-modal"
       />
     </>
   );
 }
+
+DeleteRoleButton.propTypes = {
+  disabled: PropTypes.bool,
+  roleId: PropTypes.string.isRequired,
+};
+
+export default DeleteRoleButton;

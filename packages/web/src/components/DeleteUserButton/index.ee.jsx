@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
@@ -6,7 +7,8 @@ import * as React from 'react';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import { DELETE_USER } from 'graphql/mutations/delete-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
-export default function DeleteUserButton(props) {
+
+function DeleteUserButton(props) {
   const { userId } = props;
   const [showConfirmation, setShowConfirmation] = React.useState(false);
   const [deleteUser] = useMutation(DELETE_USER, {
@@ -46,9 +48,15 @@ export default function DeleteUserButton(props) {
         onClose={() => setShowConfirmation(false)}
         onConfirm={handleConfirm}
         cancelButtonChildren={formatMessage('deleteUserButton.cancel')}
-        confirmButtionChildren={formatMessage('deleteUserButton.confirm')}
+        confirmButtonChildren={formatMessage('deleteUserButton.confirm')}
         data-test="delete-user-modal"
       />
     </>
   );
 }
+
+DeleteUserButton.propTypes = {
+  userId: PropTypes.string.isRequired,
+};
+
+export default DeleteUserButton;

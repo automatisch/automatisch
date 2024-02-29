@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
@@ -8,7 +9,8 @@ import { DELETE_CURRENT_USER } from 'graphql/mutations/delete-current-user.ee';
 import useAuthentication from 'hooks/useAuthentication';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
-export default function DeleteAccountDialog(props) {
+
+function DeleteAccountDialog(props) {
   const [deleteCurrentUser] = useMutation(DELETE_CURRENT_USER);
   const formatMessage = useFormatMessage();
   const currentUser = useCurrentUser();
@@ -27,7 +29,13 @@ export default function DeleteAccountDialog(props) {
       onClose={props.onClose}
       onConfirm={handleConfirm}
       cancelButtonChildren={formatMessage('deleteAccountDialog.cancel')}
-      confirmButtionChildren={formatMessage('deleteAccountDialog.confirm')}
+      confirmButtonChildren={formatMessage('deleteAccountDialog.confirm')}
     />
   );
 }
+
+DeleteAccountDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
+
+export default DeleteAccountDialog;

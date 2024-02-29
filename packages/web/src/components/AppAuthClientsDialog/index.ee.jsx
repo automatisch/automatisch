@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import List from '@mui/material/List';
@@ -7,7 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import * as React from 'react';
 import useAppAuthClients from 'hooks/useAppAuthClients.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
-export default function AppAuthClientsDialog(props) {
+
+function AppAuthClientsDialog(props) {
   const { appKey, onClientClick, onClose } = props;
   const { appAuthClients } = useAppAuthClients({ appKey, active: true });
   const formatMessage = useFormatMessage();
@@ -37,3 +39,11 @@ export default function AppAuthClientsDialog(props) {
     </Dialog>
   );
 }
+
+AppAuthClientsDialog.propTypes = {
+  appKey: PropTypes.string.isRequired,
+  onClientClick: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+export default AppAuthClientsDialog;

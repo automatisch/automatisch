@@ -1,5 +1,6 @@
 import useConfig from 'hooks/useConfig';
 import { LogoImage } from './style.ee';
+
 const CustomLogo = () => {
   const { config, loading } = useConfig(['logo.svgData']);
   if (loading || !config?.['logo.svgData']) return null;
@@ -11,4 +12,5 @@ const CustomLogo = () => {
     />
   );
 };
+
 export default CustomLogo;

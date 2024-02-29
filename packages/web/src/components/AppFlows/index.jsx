@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import { Link, useSearchParams } from 'react-router-dom';
 import { GET_FLOWS } from 'graphql/queries/get-flows';
@@ -12,7 +13,7 @@ const getLimitAndOffset = (page) => ({
   limit: FLOW_PER_PAGE,
   offset: (page - 1) * FLOW_PER_PAGE,
 });
-export default function AppFlows(props) {
+function AppFlows(props) {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,3 +63,9 @@ export default function AppFlows(props) {
     </>
   );
 }
+
+AppFlows.propTypes = {
+  appKey: PropTypes.string.isRequired,
+};
+
+export default AppFlows;

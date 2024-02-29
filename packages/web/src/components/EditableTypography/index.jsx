@@ -1,8 +1,11 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, TextField } from './style';
+
 const noop = () => null;
+
 function EditableTypography(props) {
   const { children, onConfirm = noop, sx, ...typographyProps } = props;
   const [editing, setEditing] = React.useState(false);
@@ -55,4 +58,11 @@ function EditableTypography(props) {
     </Box>
   );
 }
+
+EditableTypography.propTypes = {
+  children: PropTypes.string.isRequired,
+  onConfirm: PropTypes.func,
+  sx: PropTypes.object,
+};
+
 export default EditableTypography;

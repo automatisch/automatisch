@@ -14,7 +14,9 @@ import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { ConnectionPropType } from 'propTypes/propTypes';
 import { CardContent, Typography } from './style';
+
 const countTranslation = (value) => (
   <>
     <Typography variant="body1">{value}</Typography>
@@ -166,4 +168,9 @@ function AppConnectionRow(props) {
     </>
   );
 }
+
+AppConnectionRow.propTypes = {
+  connection: ConnectionPropType.isRequired,
+};
+
 export default AppConnectionRow;

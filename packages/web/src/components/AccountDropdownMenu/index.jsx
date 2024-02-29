@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
@@ -51,4 +52,12 @@ function AccountDropdownMenu(props) {
     </Menu>
   );
 }
+
+AccountDropdownMenu.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  anchorEl: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+  id: PropTypes.string.isRequired,
+};
+
 export default AccountDropdownMenu;

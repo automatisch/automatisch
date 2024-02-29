@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
@@ -14,14 +15,23 @@ import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import {
+  AppPropType,
+  StepPropType,
+  SubstepPropType,
+} from 'propTypes/propTypes';
+
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
+
 const optionGenerator = (connection) => ({
   label: connection?.formattedData?.screenName ?? 'Unnamed',
   value: connection?.id,
 });
+
 const getOption = (options, connectionId) =>
   options.find((connection) => connection.value === connectionId) || null;
+
 function ChooseConnectionSubstep(props) {
   const {
     substep,
@@ -237,4 +247,16 @@ function ChooseConnectionSubstep(props) {
     </React.Fragment>
   );
 }
+
+ChooseConnectionSubstep.propTypes = {
+  application: AppPropType.isRequired,
+  substep: SubstepPropType.isRequired,
+  expanded: PropTypes.bool,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  step: StepPropType.isRequired,
+};
+
 export default ChooseConnectionSubstep;

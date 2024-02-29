@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
@@ -11,6 +12,7 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAppAuthClients from 'hooks/useAppAuthClients.ee';
 import NoResultFound from 'components/NoResultFound';
+
 function AdminApplicationAuthClients(props) {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
@@ -72,4 +74,9 @@ function AdminApplicationAuthClients(props) {
     </div>
   );
 }
+
+AdminApplicationAuthClients.propTypes = {
+  appKey: PropTypes.string.isRequired,
+};
+
 export default AdminApplicationAuthClients;

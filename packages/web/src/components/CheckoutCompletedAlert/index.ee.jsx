@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 export default function CheckoutCompletedAlert() {
   const formatMessage = useFormatMessage();
   const location = useLocation();

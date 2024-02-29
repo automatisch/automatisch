@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
@@ -6,12 +7,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
+import { ApolloError } from '@apollo/client';
+
+import { FieldPropType } from 'propTypes/propTypes';
 import useFormatMessage from 'hooks/useFormatMessage';
 import InputCreator from 'components/InputCreator';
 import Switch from 'components/Switch';
 import TextField from 'components/TextField';
 import { Form } from './style';
-export default function AdminApplicationAuthClientDialog(props) {
+
+function AdminApplicationAuthClientDialog(props) {
   const {
     error,
     onClose,
@@ -80,3 +85,17 @@ export default function AdminApplicationAuthClientDialog(props) {
     </Dialog>
   );
 }
+
+AdminApplicationAuthClientDialog.propTypes = {
+  error: PropTypes.instanceOf(ApolloError),
+  onClose: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+  submitHandler: PropTypes.func.isRequired,
+  authFields: PropTypes.arrayOf(FieldPropType),
+  submitting: PropTypes.bool.isRequired,
+  defaultValues: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
+};
+
+export default AdminApplicationAuthClientDialog;

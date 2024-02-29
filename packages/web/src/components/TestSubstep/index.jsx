@@ -91,8 +91,8 @@ function TestSubstep(props) {
               severity="error"
               sx={{ mb: 2, fontWeight: 500, width: '100%' }}
             >
-              {serializeErrors(error.graphQLErrors).map((error) => (
-                <div>{error.message}</div>
+              {serializeErrors(error.graphQLErrors).map((error, i) => (
+                <div key={i}>{error.message}</div>
               ))}
             </Alert>
           )}
