@@ -100,6 +100,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Actions', link: '/apps/firebase/actions' },
             { text: 'Triggers', link: '/apps/firebase/triggers' },
             { text: 'Connection', link: '/apps/firebase/connection' },
           ],
