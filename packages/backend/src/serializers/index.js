@@ -7,6 +7,7 @@ import flowSerializer from './flow.js';
 import stepSerializer from './step.js';
 import appSerializer from './app.js';
 import authSerializer from './auth.js';
+import triggerSerializer from './trigger.js';
 
 const serializers = {
   User: userSerializer,
@@ -18,6 +19,7 @@ const serializers = {
   Step: stepSerializer,
   App: appSerializer,
   Auth: authSerializer,
+  Trigger: triggerSerializer,
 };
 
 export default serializers;
