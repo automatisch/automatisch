@@ -62,8 +62,9 @@ jobs:
         run: yarn && yarn lerna bootstrap
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
-      - name: Build Automatisch
-        run: yarn lerna run --scope=@*/{web,cli} build
+      - name: Build Automatisch web
+        working-directory: ./packages/web
+        run: yarn build
         env:
           # Keep this until we clean up warnings in build processes
           CI: false
