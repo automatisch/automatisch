@@ -48,7 +48,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "prepack": "REACT_APP_GRAPHQL_URL=/graphql yarn build"
+    "prepack": "REACT_APP_GRAPHQL_URL=/graphql REACT_APP_REST_API_URL=/api yarn build"
   },
   "files": [
     "/build"
