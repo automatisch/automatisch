@@ -8,6 +8,7 @@ The following integrations are currently supported by Automatisch.
 - [Discord](/apps/discord/actions)
 - [Dropbox](/apps/dropbox/actions)
 - [Filter](/apps/filter/actions)
+- [Firebase](/apps/firebase/triggers)
 - [Flickr](/apps/flickr/triggers)
 - [Formatter](/apps/formatter/actions)
 - [Ghost](/apps/ghost/triggers)
