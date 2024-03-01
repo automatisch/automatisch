@@ -16,6 +16,7 @@ The following integrations are currently supported by Automatisch.
 - [Disqus](/apps/disqus/triggers)
 - [Dropbox](/apps/dropbox/actions)
 - [Filter](/apps/filter/actions)
+- [Firebase](/apps/firebase/triggers)
 - [Flickr](/apps/flickr/triggers)
 - [Formatter](/apps/formatter/actions)
 - [FreeScout](/apps/freescout/triggers)
