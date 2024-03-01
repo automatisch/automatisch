@@ -43,7 +43,14 @@ class App {
     const rawAppData = await getApp(key, stripFuncs);
     const appData = appInfoConverter(rawAppData);
 
-    return appData.auth;
+    return appData?.auth || {};
+  }
+
+  static async findTriggersByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.triggers || [];
   }
 
   static async checkAppAndAction(appKey, actionKey) {
