@@ -6,6 +6,7 @@ import getAppsAction from '../../../controllers/api/v1/apps/get-apps.js';
 import getAuthAction from '../../../controllers/api/v1/apps/get-auth.js';
 import getTriggersAction from '../../../controllers/api/v1/apps/get-triggers.js';
 import getTriggerSubstepsAction from '../../../controllers/api/v1/apps/get-trigger-substeps.js';
+import getActionsAction from '../../../controllers/api/v1/apps/get-actions.js';
 
 const router = Router();
 
@@ -23,6 +24,12 @@ router.get(
   '/:appKey/triggers/:triggerKey/substeps',
   authenticateUser,
   asyncHandler(getTriggerSubstepsAction)
+);
+
+router.get(
+  '/:appKey/actions',
+  authenticateUser,
+  asyncHandler(getActionsAction)
 );
 
 export default router;
