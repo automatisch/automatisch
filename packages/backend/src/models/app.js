@@ -64,6 +64,13 @@ class App {
     return trigger?.substeps || [];
   }
 
+  static async findActionsByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.actions || [];
+  }
+
   static async checkAppAndAction(appKey, actionKey) {
     const app = await this.findOneByKey(appKey);
 
