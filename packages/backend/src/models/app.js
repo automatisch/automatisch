@@ -71,6 +71,15 @@ class App {
     return appData?.actions || [];
   }
 
+  static async findActionSubsteps(appKey, actionKey, stripFuncs = false) {
+    const rawAppData = await getApp(appKey, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    const action = appData?.actions?.find((action) => action.key === actionKey);
+
+    return action?.substeps || [];
+  }
+
   static async checkAppAndAction(appKey, actionKey) {
     const app = await this.findOneByKey(appKey);
 
