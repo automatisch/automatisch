@@ -8,6 +8,7 @@ import stepSerializer from './step.js';
 import appSerializer from './app.js';
 import authSerializer from './auth.js';
 import triggerSerializer from './trigger.js';
+import actionSerializer from './action.js';
 
 const serializers = {
   User: userSerializer,
@@ -20,6 +21,7 @@ const serializers = {
   App: appSerializer,
   Auth: authSerializer,
   Trigger: triggerSerializer,
+  Action: actionSerializer,
 };
 
 export default serializers;
