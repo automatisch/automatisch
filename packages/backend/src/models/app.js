@@ -53,6 +53,17 @@ class App {
     return appData?.triggers || [];
   }
 
+  static async findTriggerSubsteps(appKey, triggerKey, stripFuncs = false) {
+    const rawAppData = await getApp(appKey, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    const trigger = appData?.triggers?.find(
+      (trigger) => trigger.key === triggerKey
+    );
+
+    return trigger?.substeps || [];
+  }
+
   static async checkAppAndAction(appKey, actionKey) {
     const app = await this.findOneByKey(appKey);
 

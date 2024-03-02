@@ -28,7 +28,7 @@ describe('GET /api/v1/apps/:appKey/auth', () => {
 
   it('should return not found response for invalid app key', async () => {
     await request(app)
-      .get('/api/v1/apps/invalid-app-key')
+      .get('/api/v1/apps/invalid-app-key/auth')
       .set('Authorization', token)
       .expect(404);
   });
