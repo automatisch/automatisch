@@ -9,6 +9,7 @@ import appSerializer from './app.js';
 import authSerializer from './auth.js';
 import triggerSerializer from './trigger.js';
 import actionSerializer from './action.js';
+import executionSerializer from './execution.js';
 
 const serializers = {
   User: userSerializer,
@@ -22,6 +23,7 @@ const serializers = {
   Auth: authSerializer,
   Trigger: triggerSerializer,
   Action: actionSerializer,
+  Execution: executionSerializer,
 };
 
 export default serializers;

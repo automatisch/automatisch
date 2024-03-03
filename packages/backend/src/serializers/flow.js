@@ -8,7 +8,7 @@ const flowSerializer = (flow) => {
     status: flow.status,
   };
 
-  if (flow.steps) {
+  if (flow.steps?.length > 0) {
     flowData.steps = flow.steps.map((step) => stepSerializer(step));
   }
 
