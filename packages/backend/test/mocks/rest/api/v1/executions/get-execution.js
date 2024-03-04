@@ -1,4 +1,4 @@
-const getExecutionMock = async (execution, flow) => {
+const getExecutionMock = async (execution, flow, steps) => {
   const data = {
     id: execution.id,
     testRun: execution.testRun,
@@ -9,6 +9,17 @@ const getExecutionMock = async (execution, flow) => {
       name: flow.name,
       active: flow.active,
       status: flow.active ? 'published' : 'draft',
+      steps: steps.map((step) => ({
+        id: step.id,
+        type: step.type,
+        key: step.key,
+        appKey: step.appKey,
+        iconUrl: step.iconUrl,
+        webhookUrl: step.webhookUrl,
+        status: step.status,
+        position: step.position,
+        parameters: step.parameters,
+      })),
     },
   };
 
