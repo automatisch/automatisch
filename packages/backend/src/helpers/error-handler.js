@@ -1,5 +1,6 @@
 import logger from './logger.js';
 import objection from 'objection';
+import * as Sentry from './sentry.ee.js';
 const { NotFoundError, DataError } = objection;
 
 // Do not remove `next` argument as the function signature will not fit for an error handler middleware
@@ -17,8 +18,21 @@ const errorHandler = (error, request, response, next) => {
     response.status(400).end();
   }
 
-  logger.error(error.message + '\n' + error.stack);
-  response.status(error.statusCode || 500).end();
+  const statusCode = error.statusCode || 500;
+
+  logger.error(request.method + ' ' + request.url + ' ' + statusCode);
+  logger.error(error.stack);
+
+  Sentry.captureException(error, {
+    tags: { rest: true },
+    extra: {
+      url: request?.url,
+      method: request?.method,
+      params: request?.params,
+    },
+  });
+
+  response.status(statusCode).end();
 };
 
 const notFoundAppError = (error) => {
