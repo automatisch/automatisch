@@ -5,6 +5,7 @@ import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id';
 import { createUser } from '../../../../../test/factories/user';
 import { createFlow } from '../../../../../test/factories/flow.js';
+import { createStep } from '../../../../../test/factories/step.js';
 import { createExecution } from '../../../../../test/factories/execution.js';
 import { createPermission } from '../../../../../test/factories/permission';
 import getExecutionMock from '../../../../../test/mocks/rest/api/v1/executions/get-execution';
@@ -22,6 +23,16 @@ describe('GET /api/v1/executions/:executionId', () => {
   it('should return the execution data of current user', async () => {
     const currentUserFlow = await createFlow({
       userId: currentUser.id,
+    });
+
+    const stepOne = await createStep({
+      flowId: currentUserFlow.id,
+      type: 'trigger',
+    });
+
+    const stepTwo = await createStep({
+      flowId: currentUserFlow.id,
+      type: 'action',
     });
 
     const currentUserExecution = await createExecution({
@@ -42,7 +53,8 @@ describe('GET /api/v1/executions/:executionId', () => {
 
     const expectedPayload = await getExecutionMock(
       currentUserExecution,
-      currentUserFlow
+      currentUserFlow,
+      [stepOne, stepTwo]
     );
 
     expect(response.body).toEqual(expectedPayload);
@@ -53,6 +65,16 @@ describe('GET /api/v1/executions/:executionId', () => {
 
     const anotherUserFlow = await createFlow({
       userId: anotherUser.id,
+    });
+
+    const stepOne = await createStep({
+      flowId: anotherUserFlow.id,
+      type: 'trigger',
+    });
+
+    const stepTwo = await createStep({
+      flowId: anotherUserFlow.id,
+      type: 'action',
     });
 
     const anotherUserExecution = await createExecution({
@@ -73,7 +95,8 @@ describe('GET /api/v1/executions/:executionId', () => {
 
     const expectedPayload = await getExecutionMock(
       anotherUserExecution,
-      anotherUserFlow
+      anotherUserFlow,
+      [stepOne, stepTwo]
     );
 
     expect(response.body).toEqual(expectedPayload);
