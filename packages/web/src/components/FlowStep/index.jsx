@@ -14,6 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
@@ -83,6 +84,7 @@ function generateValidationSchema(substeps) {
           }
         }
       }
+
       return {
         ...allValidations,
         ...substepArgumentValidations,
@@ -90,9 +92,11 @@ function generateValidationSchema(substeps) {
     },
     {},
   );
+
   const validationSchema = yup.object({
     parameters: yup.object(fieldValidations),
   });
+
   return yupResolver(validationSchema);
 }
 
@@ -106,16 +110,19 @@ function FlowStep(props) {
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState(0);
-  const { apps } = useApps({
+
+  const { data: apps } = useApps({
     onlyWithTriggers: isTrigger,
     onlyWithActions: isAction,
   });
+
   const [
     getStepWithTestExecutions,
     { data: stepWithTestExecutionsData, called: stepWithTestExecutionsCalled },
   ] = useLazyQuery(GET_STEP_WITH_TEST_EXECUTIONS, {
     fetchPolicy: 'network-only',
   });
+
   React.useEffect(() => {
     if (!stepWithTestExecutionsCalled && !collapsed && !isTrigger) {
       getStepWithTestExecutions({
@@ -131,26 +138,33 @@ function FlowStep(props) {
     step.id,
     isTrigger,
   ]);
-  const app = apps?.find((currentApp) => currentApp.key === step.appKey);
+
+  const app = apps?.data?.find((currentApp) => currentApp.key === step.appKey);
   const actionsOrTriggers = (isTrigger ? app?.triggers : app?.actions) || [];
   const actionOrTrigger = actionsOrTriggers?.find(
     ({ key }) => key === step.key,
   );
+
   const substeps = actionOrTrigger?.substeps || [];
+
   const handleChange = React.useCallback(({ step }) => {
     onChange(step);
   }, []);
+
   const expandNextStep = React.useCallback(() => {
     setCurrentSubstep((currentSubstep) => (currentSubstep ?? 0) + 1);
   }, []);
+
   const handleSubmit = (val) => {
     handleChange({ step: val });
   };
+
   const stepValidationSchema = React.useMemo(
     () => generateValidationSchema(substeps),
     [substeps],
   );
-  if (!apps) {
+
+  if (!apps?.data) {
     return (
       <CircularProgress
         data-test="step-circular-loader"
@@ -158,22 +172,29 @@ function FlowStep(props) {
       />
     );
   }
+
   const onContextMenuClose = (event) => {
     event.stopPropagation();
     setAnchorEl(null);
   };
+
   const onContextMenuClick = (event) => {
     event.stopPropagation();
     setAnchorEl(contextButtonRef.current);
   };
+
   const onOpen = () => collapsed && props.onOpen?.();
+
   const onClose = () => props.onClose?.();
+
   const toggleSubstep = (substepIndex) =>
     setCurrentSubstep((value) =>
       value !== substepIndex ? substepIndex : null,
     );
+
   const validationStatusIcon =
     step.status === 'completed' ? validIcon : errorIcon;
+
   return (
     <Wrapper
       elevation={collapsed ? 1 : 4}
