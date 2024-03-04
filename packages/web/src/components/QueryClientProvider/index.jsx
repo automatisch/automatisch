@@ -33,11 +33,11 @@ export default function AutomatischQueryClientProvider({ children }) {
 
       if (token) {
         api.defaults.headers.Authorization = token;
-
-        initialize();
       } else {
         delete api.defaults.headers.Authorization;
       }
+
+      initialize();
     },
     [initialize, token],
   );
