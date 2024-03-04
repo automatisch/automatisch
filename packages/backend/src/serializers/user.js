@@ -15,7 +15,7 @@ const userSerializer = (user) => {
     userData.role = roleSerializer(user.role);
   }
 
-  if (user.permissions) {
+  if (user.permissions?.length > 0) {
     userData.permissions = user.permissions.map((permission) =>
       permissionSerializer(permission)
     );
