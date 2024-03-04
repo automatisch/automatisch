@@ -11,7 +11,7 @@ const roleSerializer = (role) => {
     isAdmin: role.isAdmin,
   };
 
-  if (role.permissions) {
+  if (role.permissions?.length > 0) {
     roleData.permissions = role.permissions.map((permission) =>
       permissionSerializer(permission)
     );
