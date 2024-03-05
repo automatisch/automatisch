@@ -14,6 +14,7 @@ import useApps from 'hooks/useApps';
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
+import useTriggers from 'hooks/useTriggers';
 
 const optionGenerator = (app) => ({
   label: app.name,
@@ -49,18 +50,22 @@ function ChooseAppAndEventSubstep(props) {
     onlyWithActions: isAction,
   });
 
-  const app = apps?.data?.find((currentApp) => currentApp.key === step.appKey);
+  const app = apps?.data?.find(
+    (currentApp) => currentApp?.key === step?.appKey,
+  );
+
+  const { data: triggers } = useTriggers(app?.key);
 
   const appOptions = React.useMemo(
     () => apps?.data?.map((app) => optionGenerator(app)) || [],
     [apps?.data],
   );
 
-  const actionsOrTriggers = (isTrigger ? app?.triggers : app?.actions) || [];
+  const actionsOrTriggers = (isTrigger ? triggers?.data : app?.actions) || [];
 
   const actionOrTriggerOptions = React.useMemo(
     () => actionsOrTriggers.map((trigger) => eventOptionGenerator(trigger)),
-    [app?.key],
+    [app?.key, actionsOrTriggers],
   );
 
   const selectedActionOrTrigger = actionsOrTriggers.find(
