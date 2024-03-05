@@ -1,7 +1,9 @@
 import * as React from 'react';
+
 import { processStep } from 'helpers/authenticationSteps';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import useApp from './useApp';
+
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
     if (useShared) {
@@ -9,19 +11,24 @@ function getSteps(auth, hasConnection, useShared) {
     }
     return auth?.reconnectionSteps;
   }
+
   if (useShared) {
     return auth?.sharedAuthenticationSteps;
   }
+
   return auth?.authenticationSteps;
 }
+
 export default function useAuthenticateApp(payload) {
   const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
-  const { app } = useApp(appKey);
+  const { data: app } = useApp(appKey);
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
-  const steps = getSteps(app?.auth, !!connectionId, useShared);
+  const steps = getSteps(app?.data?.auth, !!connectionId, useShared);
+
   const authenticate = React.useMemo(() => {
     if (!steps?.length) return;
+
     return async function authenticate(payload = {}) {
       const { fields } = payload;
       setAuthenticationInProgress(true);
@@ -34,9 +41,11 @@ export default function useAuthenticateApp(payload) {
         fields,
       };
       let stepIndex = 0;
+
       while (stepIndex < steps?.length) {
         const step = steps[stepIndex];
         const variables = computeAuthStepVariables(step.arguments, response);
+
         try {
           const stepResponse = await processStep(step, variables);
           response[step.name] = stepResponse;
@@ -46,6 +55,7 @@ export default function useAuthenticateApp(payload) {
           throw err;
         }
         stepIndex++;
+
         if (stepIndex === steps.length) {
           return response;
         }
@@ -53,6 +63,7 @@ export default function useAuthenticateApp(payload) {
       }
     };
   }, [steps, appKey, appAuthClientId, connectionId]);
+
   return {
     authenticate,
     inProgress: authenticationInProgress,
