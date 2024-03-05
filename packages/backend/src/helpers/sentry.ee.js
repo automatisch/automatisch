@@ -3,10 +3,13 @@ import * as Tracing from '@sentry/tracing';
 
 import appConfig from '../config/app.js';
 
-const isSentryEnabled = !!appConfig.sentryDsn;
+const isSentryEnabled = () => {
+  if (appConfig.isDev || appConfig.isTest) return false;
+  return !!appConfig.sentryDsn;
+};
 
 export function init(app) {
-  if (!isSentryEnabled) return;
+  if (!isSentryEnabled()) return;
 
   return Sentry.init({
     enabled: !!appConfig.sentryDsn,
@@ -21,19 +24,19 @@ export function init(app) {
 }
 
 export function attachRequestHandler(app) {
-  if (!isSentryEnabled) return;
+  if (!isSentryEnabled()) return;
 
   app.use(Sentry.Handlers.requestHandler());
 }
 
 export function attachTracingHandler(app) {
-  if (!isSentryEnabled) return;
+  if (!isSentryEnabled()) return;
 
   app.use(Sentry.Handlers.tracingHandler());
 }
 
 export function attachErrorHandler(app) {
-  if (!isSentryEnabled) return;
+  if (!isSentryEnabled()) return;
 
   app.use(
     Sentry.Handlers.errorHandler({
@@ -46,7 +49,7 @@ export function attachErrorHandler(app) {
 }
 
 export function captureException(exception, captureContext) {
-  if (!isSentryEnabled) return;
+  if (!isSentryEnabled()) return;
 
   return Sentry.captureException(exception, captureContext);
 }
