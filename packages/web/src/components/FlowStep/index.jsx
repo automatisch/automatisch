@@ -37,6 +37,7 @@ import {
 import isEmpty from 'helpers/isEmpty';
 import { StepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
+import useActions from 'hooks/useActions';
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -144,9 +145,9 @@ function FlowStep(props) {
 
   const { data: triggers } = useTriggers(app?.key);
 
-  console.log('triggers:', triggers);
+  const { data: actions } = useActions(app?.key);
 
-  const actionsOrTriggers = (isTrigger ? triggers?.data : app?.actions) || [];
+  const actionsOrTriggers = (isTrigger ? triggers?.data : actions?.data) || [];
 
   const actionOrTrigger = actionsOrTriggers?.find(
     ({ key }) => key === step.key,
