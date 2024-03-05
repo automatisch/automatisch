@@ -38,6 +38,8 @@ import isEmpty from 'helpers/isEmpty';
 import { StepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
 import useActions from 'hooks/useActions';
+import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
+import useActionSubsteps from 'hooks/useActionsSubsteps';
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -153,7 +155,24 @@ function FlowStep(props) {
     ({ key }) => key === step.key,
   );
 
-  const substeps = actionOrTrigger?.substeps || [];
+  const { data: triggerSubsteps } = useTriggerSubsteps(
+    app?.key,
+    actionOrTrigger?.key,
+  );
+
+  const triggerSubstepsData = triggerSubsteps?.data || [];
+
+  const { data: actionSubsteps } = useActionSubsteps(
+    app?.key,
+    actionOrTrigger?.key,
+  );
+
+  const actionSubstepsData = actionSubsteps?.data || [];
+
+  const substeps =
+    triggerSubstepsData.length > 0
+      ? triggerSubstepsData
+      : actionSubstepsData || [];
 
   const handleChange = React.useCallback(({ step }) => {
     onChange(step);
