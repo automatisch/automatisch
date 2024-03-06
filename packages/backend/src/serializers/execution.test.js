@@ -26,6 +26,20 @@ describe('executionSerializer', () => {
     expect(executionSerializer(execution)).toEqual(expectedPayload);
   });
 
+  it('should return the execution data with status', async () => {
+    execution.status = 'success';
+
+    const expectedPayload = {
+      id: execution.id,
+      testRun: execution.testRun,
+      createdAt: execution.createdAt.getTime(),
+      updatedAt: execution.updatedAt.getTime(),
+      status: 'success',
+    };
+
+    expect(executionSerializer(execution)).toEqual(expectedPayload);
+  });
+
   it('should return the execution data with the flow', async () => {
     execution.flow = flow;
 
