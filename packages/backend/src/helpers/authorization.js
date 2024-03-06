@@ -15,6 +15,10 @@ const authorizationList = {
     action: 'read',
     subject: 'Execution',
   },
+  'GET /api/v1/executions/': {
+    action: 'read',
+    subject: 'Execution',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
