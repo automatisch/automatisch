@@ -8,6 +8,10 @@ const executionSerializer = (execution) => {
     updatedAt: execution.updatedAt.getTime(),
   };
 
+  if (execution.status) {
+    executionData.status = execution.status;
+  }
+
   if (execution.flow) {
     executionData.flow = flowSerializer(execution.flow);
   }
