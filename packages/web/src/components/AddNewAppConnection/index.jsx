@@ -20,11 +20,10 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 
-import api from 'helpers/api';
 import * as URLS from 'config/urls';
 import AppIcon from 'components/AppIcon';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { useMutation } from '@tanstack/react-query';
+import useLazyApps from 'hooks/useLazyApps';
 
 function createConnectionOrFlow(appKey, supportsConnections = false) {
   if (!supportsConnections) {
@@ -40,27 +39,34 @@ function AddNewAppConnection(props) {
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
+  const abortControllerRef = React.useRef(null);
 
-  const { data: apps, mutate } = useMutation({
-    mutationFn: async ({ payload, signal }) => {
-      const { data } = await api.get('/v1/apps', {
-        params: { name: appName },
-      });
-
-      return data;
-    },
+  const { data: apps, mutate } = useLazyApps({
+    appName,
     onSuccess: () => {
       setIsLoading(false);
     },
+    abortControllerRef,
   });
 
   const fetchData = React.useMemo(() => debounce(mutate, 300), [mutate]);
 
   React.useEffect(() => {
     setIsLoading(true);
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     fetchData(appName);
 
-    return () => fetchData.cancel();
+    return () => {
+      fetchData.cancel();
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, [fetchData, appName]);
 
   return (
