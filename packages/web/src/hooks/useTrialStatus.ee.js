@@ -59,7 +59,7 @@ export default function useTrialStatus() {
     },
     [checkoutCompleted, hasTrial, stopPolling],
   );
-  if (loading || !data.getTrialStatus) return null;
+  if (loading || !data?.getTrialStatus) return null;
   const expireAt = DateTime.fromMillis(
     Number(data.getTrialStatus.expireAt),
   ).startOf('day');
