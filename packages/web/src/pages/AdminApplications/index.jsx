@@ -2,24 +2,36 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@tanstack/react-query';
+
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import SearchInput from 'components/SearchInput';
 import AppRow from 'components/AppRow';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { GET_APPS } from 'graphql/queries/get-apps';
+import api from 'helpers/api';
+
 function AdminApplications() {
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState(null);
-  const { data, loading: appsLoading } = useQuery(GET_APPS, {
-    variables: { name: appName },
+
+  const { data: apps, isLoading: appsLoading } = useQuery({
+    queryKey: ['apps', appName],
+    queryFn: async ({ payload, signal }) => {
+      const { data } = await api.get('/v1/apps', {
+        params: { name: appName },
+        signal,
+      });
+
+      return data;
+    },
   });
-  const apps = data?.getApps;
+
   const onSearchChange = React.useCallback((event) => {
     setAppName(event.target.value);
   }, []);
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -44,7 +56,7 @@ function AdminApplications() {
         )}
 
         {!appsLoading &&
-          apps?.map((app) => (
+          apps?.data?.map((app) => (
             <Grid item xs={12} key={app.name}>
               <AppRow application={app} url={URLS.ADMIN_APP(app.key)} />
             </Grid>

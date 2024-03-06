@@ -1,9 +1,4 @@
 type Query {
-  getApps(
-    name: String
-    onlyWithTriggers: Boolean
-    onlyWithActions: Boolean
-  ): [App]
   getApp(key: String!): App
   getAppConfig(key: String!): AppConfig
   getAppAuthClient(id: String!): AppAuthClient
