@@ -18,8 +18,8 @@ async function fetchAdminRole() {
 }
 
 export async function createUser(
-  email = 'user@automatisch.io',
-  password = 'sample'
+  email = appConfig.seedUserEmail,
+  password = appConfig.seedUserPassword
 ) {
   const UNIQUE_VIOLATION_CODE = '23505';
 

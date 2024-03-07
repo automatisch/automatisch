@@ -94,6 +94,8 @@ const appConfig = {
   disableFavicon: process.env.DISABLE_FAVICON === 'true',
   additionalDrawerLink: process.env.ADDITIONAL_DRAWER_LINK,
   additionalDrawerLinkText: process.env.ADDITIONAL_DRAWER_LINK_TEXT,
+  seedUserEmail: process.env.SEED_USER_EMAIL || 'user@automatisch.io',
+  seedUserPassword: process.env.SEED_USER_PASSWORD || 'sample',
 };
 
 if (!appConfig.encryptionKey) {
