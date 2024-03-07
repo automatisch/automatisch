@@ -6,6 +6,7 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import * as React from 'react';
+
 import AddAppConnection from 'components/AddAppConnection';
 import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
@@ -46,18 +47,22 @@ function ChooseConnectionSubstep(props) {
   const { connection, appKey } = step;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
-  const { authenticate } = useAuthenticateApp({
-    appKey: application.key,
-    useShared: true,
-  });
   const [showAddConnectionDialog, setShowAddConnectionDialog] =
     React.useState(false);
   const [showAddSharedConnectionDialog, setShowAddSharedConnectionDialog] =
     React.useState(false);
+
+  const { authenticate } = useAuthenticateApp({
+    appKey: application.key,
+    useShared: true,
+  });
+
   const { data, loading, refetch } = useQuery(GET_APP_CONNECTIONS, {
     variables: { key: appKey },
   });
-  const { appConfig } = useAppConfig(application.key);
+
+  const { data: appConfig } = useAppConfig(application.key);
+
   // TODO: show detailed error when connection test/verification fails
   const [
     testConnection,
@@ -67,6 +72,7 @@ function ChooseConnectionSubstep(props) {
       id: connection?.id,
     },
   });
+
   React.useEffect(() => {
     if (connection?.id) {
       testConnection({
@@ -77,32 +83,38 @@ function ChooseConnectionSubstep(props) {
     }
     // intentionally no dependencies for initial test
   }, []);
+
   const connectionOptions = React.useMemo(() => {
     const appWithConnections = data?.getApp;
     const options =
       appWithConnections?.connections?.map((connection) =>
         optionGenerator(connection),
       ) || [];
-    if (!appConfig || appConfig.canCustomConnect) {
+
+    if (!appConfig?.data || appConfig?.data?.canCustomConnect) {
       options.push({
         label: formatMessage('chooseConnectionSubstep.addNewConnection'),
         value: ADD_CONNECTION_VALUE,
       });
     }
-    if (appConfig?.canConnect) {
+
+    if (appConfig?.data?.canConnect) {
       options.push({
         label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
         value: ADD_SHARED_CONNECTION_VALUE,
       });
     }
+
     return options;
-  }, [data, formatMessage, appConfig]);
+  }, [data, formatMessage, appConfig?.data]);
+
   const handleClientClick = async (appAuthClientId) => {
     try {
       const response = await authenticate?.({
         appAuthClientId,
       });
       const connectionId = response?.createConnection.id;
+
       if (connectionId) {
         await refetch();
         onChange({
@@ -120,11 +132,14 @@ function ChooseConnectionSubstep(props) {
       setShowAddSharedConnectionDialog(false);
     }
   };
+
   const { name } = substep;
+
   const handleAddConnectionClose = React.useCallback(
     async (response) => {
       setShowAddConnectionDialog(false);
       const connectionId = response?.createConnection.id;
+
       if (connectionId) {
         await refetch();
         onChange({
@@ -146,14 +161,17 @@ function ChooseConnectionSubstep(props) {
         const typedSelectedOption = selectedOption;
         const option = typedSelectedOption;
         const connectionId = option?.value;
+
         if (connectionId === ADD_CONNECTION_VALUE) {
           setShowAddConnectionDialog(true);
           return;
         }
+
         if (connectionId === ADD_SHARED_CONNECTION_VALUE) {
           setShowAddSharedConnectionDialog(true);
           return;
         }
+
         if (connectionId !== step.connection?.id) {
           onChange({
             step: {
@@ -168,6 +186,7 @@ function ChooseConnectionSubstep(props) {
     },
     [step, onChange],
   );
+
   React.useEffect(() => {
     if (step.connection?.id) {
       retestConnection({
@@ -175,6 +194,7 @@ function ChooseConnectionSubstep(props) {
       });
     }
   }, [step.connection?.id, retestConnection]);
+
   const onToggle = expanded ? onCollapse : onExpand;
 
   return (

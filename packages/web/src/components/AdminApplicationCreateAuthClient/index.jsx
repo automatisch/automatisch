@@ -14,7 +14,9 @@ function AdminApplicationCreateAuthClient(props) {
   const { appKey, onClose } = props;
   const { data: auth } = useAppAuth(appKey);
   const formatMessage = useFormatMessage();
-  const { appConfig, loading: loadingAppConfig } = useAppConfig(appKey);
+
+  const { data: appConfig, isLoading: isAppConfigLoading } =
+    useAppConfig(appKey);
 
   const [
     createAppConfig,
@@ -33,7 +35,7 @@ function AdminApplicationCreateAuthClient(props) {
   });
 
   const submitHandler = async (values) => {
-    let appConfigId = appConfig?.id;
+    let appConfigId = appConfig?.data?.id;
 
     if (!appConfigId) {
       const { data: appConfigData } = await createAppConfig({
@@ -51,6 +53,7 @@ function AdminApplicationCreateAuthClient(props) {
     }
 
     const { name, active, ...formattedAuthDefaults } = values;
+
     await createAppAuthClient({
       variables: {
         input: {
@@ -97,7 +100,7 @@ function AdminApplicationCreateAuthClient(props) {
       onClose={onClose}
       error={createAppConfigError || createAppAuthClientError}
       title={formatMessage('createAuthClient.title')}
-      loading={loadingAppConfig}
+      loading={isAppConfigLoading}
       submitHandler={submitHandler}
       authFields={auth?.data?.fields}
       submitting={loadingCreateAppConfig || loadingCreateAppAuthClient}

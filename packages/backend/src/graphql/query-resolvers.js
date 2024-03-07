@@ -1,7 +1,6 @@
 import getApp from './queries/get-app.js';
 import getAppAuthClient from './queries/get-app-auth-client.ee.js';
 import getAppAuthClients from './queries/get-app-auth-clients.ee.js';
-import getAppConfig from './queries/get-app-config.ee.js';
 import getBillingAndUsage from './queries/get-billing-and-usage.ee.js';
 import getConfig from './queries/get-config.ee.js';
 import getConnectedApps from './queries/get-connected-apps.js';
@@ -35,7 +34,6 @@ const queryResolvers = {
   getApp,
   getAppAuthClient,
   getAppAuthClients,
-  getAppConfig,
   getBillingAndUsage,
   getConfig,
   getConnectedApps,

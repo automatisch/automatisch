@@ -66,13 +66,14 @@ export default function Application() {
 
   const connectionOptions = React.useMemo(() => {
     const shouldHaveCustomConnection =
-      appConfig?.canConnect && appConfig?.canCustomConnect;
+      appConfig?.data?.canConnect && appConfig?.data?.canCustomConnect;
+
     const options = [
       {
         label: formatMessage('app.addConnection'),
         key: 'addConnection',
         'data-test': 'add-connection-button',
-        to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.canConnect),
+        to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.data?.canConnect),
       },
     ];
 
@@ -86,7 +87,7 @@ export default function Application() {
     }
 
     return options;
-  }, [appKey, appConfig]);
+  }, [appKey, appConfig?.data]);
 
   if (loading) return null;
 
@@ -135,9 +136,9 @@ export default function Application() {
                   element={
                     <SplitButton
                       disabled={
-                        appConfig &&
-                        !appConfig?.canConnect &&
-                        !appConfig?.canCustomConnect
+                        appConfig?.data &&
+                        !appConfig?.data?.canConnect &&
+                        !appConfig?.data?.canCustomConnect
                       }
                       options={connectionOptions}
                     />
