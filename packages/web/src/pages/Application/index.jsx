@@ -28,12 +28,12 @@ import AddAppConnection from 'components/AddAppConnection';
 import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
-import api from 'helpers/api';
-import { useQuery } from '@tanstack/react-query';
+import useApp from 'hooks/useApp';
 
 const ReconnectConnection = (props) => {
   const { application, onClose } = props;
   const { connectionId } = useParams();
+
   return (
     <AddAppConnection
       onClose={onClose}
@@ -56,18 +56,7 @@ export default function Application() {
   const { appKey } = useParams();
   const navigate = useNavigate();
 
-  const { data, loading } = useQuery({
-    queryKey: ['app', appKey],
-    queryFn: async ({ payload, signal }) => {
-      const { data } = await api.get(`/v1/apps/${appKey}`, {
-        signal,
-      });
-
-      return data;
-    },
-    enabled: !!appKey,
-  });
-
+  const { data, loading } = useApp(appKey);
   const app = data?.data || {};
 
   const { appConfig } = useAppConfig(appKey);

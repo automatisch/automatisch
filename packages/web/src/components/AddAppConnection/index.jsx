@@ -16,10 +16,12 @@ import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { generateExternalLink } from 'helpers/translationValues';
 import { Form } from './style';
+import useAppAuth from 'hooks/useAppAuth';
 
 function AddAppConnection(props) {
   const { application, connectionId, onClose } = props;
-  const { name, authDocUrl, key, auth } = application;
+  const { name, authDocUrl, key } = application;
+  const { data: auth } = useAppAuth(key);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const formatMessage = useFormatMessage();
@@ -34,31 +36,40 @@ function AddAppConnection(props) {
     appAuthClientId,
     useShared: !!appAuthClientId,
   });
+
   React.useEffect(function relayProviderData() {
     if (window.opener) {
       window.opener.postMessage({
         source: 'automatisch',
         payload: { search: window.location.search, hash: window.location.hash },
       });
+
       window.close();
     }
   }, []);
+
   React.useEffect(
     function initiateSharedAuthenticationForGivenAuthClient() {
       if (!appAuthClientId) return;
+
       if (!authenticate) return;
+
       const asyncAuthenticate = async () => {
         await authenticate();
         navigate(URLS.APP_CONNECTIONS(key));
       };
+
       asyncAuthenticate();
     },
     [appAuthClientId, authenticate],
   );
+
   const handleClientClick = (appAuthClientId) =>
     navigate(URLS.APP_ADD_CONNECTION_WITH_AUTH_CLIENT_ID(key, appAuthClientId));
+
   const handleAuthClientsDialogClose = () =>
     navigate(URLS.APP_CONNECTIONS(key));
+
   const submitHandler = React.useCallback(
     async (data) => {
       if (!authenticate) return;
@@ -78,6 +89,7 @@ function AddAppConnection(props) {
     },
     [authenticate],
   );
+
   if (useShared)
     return (
       <AppAuthClientsDialog
@@ -86,7 +98,9 @@ function AddAppConnection(props) {
         onClientClick={handleClientClick}
       />
     );
+
   if (appAuthClientId) return <React.Fragment />;
+
   return (
     <Dialog open={true} onClose={onClose} data-test="add-app-connection-dialog">
       <DialogTitle>
@@ -121,7 +135,7 @@ function AddAppConnection(props) {
       <DialogContent>
         <DialogContentText tabIndex={-1} component="div">
           <Form onSubmit={submitHandler}>
-            {auth?.fields?.map((field) => (
+            {auth?.data?.fields?.map((field) => (
               <InputCreator key={field.key} schema={field} />
             ))}
 

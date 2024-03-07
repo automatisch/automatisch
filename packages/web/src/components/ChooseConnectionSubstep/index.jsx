@@ -176,6 +176,7 @@ function ChooseConnectionSubstep(props) {
     }
   }, [step.connection?.id, retestConnection]);
   const onToggle = expanded ? onCollapse : onExpand;
+
   return (
     <React.Fragment>
       <FlowSubstepTitle

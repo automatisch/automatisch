@@ -2,7 +2,6 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
-import { useQuery } from '@tanstack/react-query';
 
 import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
@@ -10,23 +9,13 @@ import SearchInput from 'components/SearchInput';
 import AppRow from 'components/AppRow';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
-import api from 'helpers/api';
+import useApps from 'hooks/useApps';
 
 function AdminApplications() {
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState(null);
 
-  const { data: apps, isLoading: appsLoading } = useQuery({
-    queryKey: ['apps', appName],
-    queryFn: async ({ payload, signal }) => {
-      const { data } = await api.get('/v1/apps', {
-        params: { name: appName },
-        signal,
-      });
-
-      return data;
-    },
-  });
+  const { data: apps, isLoading: isAppsLoading } = useApps(appName);
 
   const onSearchChange = React.useCallback((event) => {
     setAppName(event.target.value);
@@ -48,14 +37,14 @@ function AdminApplications() {
           <Divider sx={{ mt: [2, 0], mb: 2 }} />
         </Grid>
 
-        {appsLoading && (
+        {isAppsLoading && (
           <CircularProgress
             data-test="apps-loader"
             sx={{ display: 'block', margin: '20px auto' }}
           />
         )}
 
-        {!appsLoading &&
+        {!isAppsLoading &&
           apps?.data?.map((app) => (
             <Grid item xs={12} key={app.name}>
               <AppRow application={app} url={URLS.ADMIN_APP(app.key)} />

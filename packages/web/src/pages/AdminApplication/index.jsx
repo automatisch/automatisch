@@ -24,8 +24,7 @@ import AdminApplicationSettings from 'components/AdminApplicationSettings';
 import AdminApplicationAuthClients from 'components/AdminApplicationAuthClients';
 import AdminApplicationCreateAuthClient from 'components/AdminApplicationCreateAuthClient';
 import AdminApplicationUpdateAuthClient from 'components/AdminApplicationUpdateAuthClient';
-import { useQuery } from '@tanstack/react-query';
-import api from 'helpers/api';
+import useApp from 'hooks/useApp';
 
 export default function AdminApplication() {
   const theme = useTheme();
@@ -46,17 +45,7 @@ export default function AdminApplication() {
   });
   const { appKey } = useParams();
 
-  const { data, loading } = useQuery({
-    queryKey: ['app', appKey],
-    queryFn: async ({ payload, signal }) => {
-      const { data } = await api.get(`/v1/apps/${appKey}`, {
-        signal,
-      });
-
-      return data;
-    },
-    enabled: !!appKey,
-  });
+  const { data, loading } = useApp(appKey);
 
   const app = data?.data || {};
 

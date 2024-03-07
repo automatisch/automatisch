@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { processStep } from 'helpers/authenticationSteps';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
-import useApp from './useApp';
+import useAppAuth from './useAppAuth';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -21,10 +21,10 @@ function getSteps(auth, hasConnection, useShared) {
 
 export default function useAuthenticateApp(payload) {
   const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
-  const { data: app } = useApp(appKey);
+  const { data: auth } = useAppAuth(appKey);
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
-  const steps = getSteps(app?.data?.auth, !!connectionId, useShared);
+  const steps = getSteps(auth?.data, !!connectionId, useShared);
 
   const authenticate = React.useMemo(() => {
     if (!steps?.length) return;
