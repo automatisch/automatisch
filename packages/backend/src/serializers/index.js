@@ -12,6 +12,7 @@ import triggerSerializer from './trigger.js';
 import actionSerializer from './action.js';
 import executionSerializer from './execution.js';
 import executionStepSerializer from './execution-step.js';
+import subscriptionSerializer from './subscription.ee.js';
 
 const serializers = {
   User: userSerializer,
@@ -28,6 +29,7 @@ const serializers = {
   Action: actionSerializer,
   Execution: executionSerializer,
   ExecutionStep: executionStepSerializer,
+  Subscription: subscriptionSerializer,
 };
 
 export default serializers;
