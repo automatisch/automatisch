@@ -3,6 +3,7 @@ import paginateRest from '../../../../helpers/pagination-rest.js';
 
 export default async (request, response) => {
   const executionsQuery = request.currentUser.authorizedExecutions
+    .clone()
     .withSoftDeleted()
     .orderBy('created_at', 'desc')
     .withGraphFetched({
