@@ -15,6 +15,10 @@ const authorizationList = {
     action: 'read',
     subject: 'Flow',
   },
+  'GET /api/v1/apps/:appKey/flows': {
+    action: 'read',
+    subject: 'Flow',
+  },
   'GET /api/v1/executions/:executionId': {
     action: 'read',
     subject: 'Execution',
