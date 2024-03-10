@@ -15,7 +15,7 @@ const renderObject = (response, object, options) => {
   let data = isPaginated(object) ? object.records : object;
 
   const type = isPaginated(object)
-    ? object.records[0].constructor.name
+    ? object.records[0]?.constructor?.name || 'Object'
     : Array.isArray(object)
     ? object?.[0]?.constructor?.name || 'Object'
     : object.constructor.name;
