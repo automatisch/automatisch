@@ -8,15 +8,17 @@ import { UPDATE_APP_AUTH_CLIENT } from 'graphql/mutations/update-app-auth-client
 import useFormatMessage from 'hooks/useFormatMessage';
 import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
 import useAdminAppAuthClient from 'hooks/useAdminAppAuthClient.ee';
+import useAppAuth from 'hooks/useAppAuth';
 
 function AdminApplicationUpdateAuthClient(props) {
   const { application, onClose } = props;
-  const { auth } = application;
   const formatMessage = useFormatMessage();
   const { clientId } = useParams();
 
   const { data: adminAppAuthClient, isLoading: isAdminAuthClientLoading } =
     useAdminAppAuthClient(clientId);
+
+  const { data: auth } = useAppAuth(application.key);
 
   const [updateAppAuthClient, { loading: loadingUpdateAppAuthClient, error }] =
     useMutation(UPDATE_APP_AUTH_CLIENT, {
@@ -24,7 +26,7 @@ function AdminApplicationUpdateAuthClient(props) {
       context: { autoSnackbar: false },
     });
 
-  const authFields = auth?.fields?.map((field) => ({
+  const authFields = auth?.data?.fields?.map((field) => ({
     ...field,
     required: false,
   }));
