@@ -2,17 +2,17 @@ import { useQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useAdminAppAuthClient(id) {
+export default function useAppAuth(appKey) {
   const query = useQuery({
-    queryKey: ['adminAppAuthClient', id],
+    queryKey: ['appAuth', appKey],
     queryFn: async ({ payload, signal }) => {
-      const { data } = await api.get(`/v1/admin/app-auth-clients/${id}`, {
+      const { data } = await api.get(`/v1/apps/${appKey}/auth`, {
         signal,
       });
 
       return data;
     },
-    enabled: !!id,
+    enabled: !!appKey,
   });
 
   return query;

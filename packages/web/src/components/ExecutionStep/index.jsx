@@ -9,6 +9,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
+
 import TabPanel from 'components/TabPanel';
 import SearchableJSONViewer from 'components/SearchableJSONViewer';
 import AppIcon from 'components/AppIcon';
@@ -26,11 +27,13 @@ import { ExecutionStepPropType, StepPropType } from 'propTypes/propTypes';
 
 function ExecutionStepId(props) {
   const formatMessage = useFormatMessage();
+
   const id = (
     <Typography variant="caption" component="span">
       {props.id}
     </Typography>
   );
+
   return (
     <Box sx={{ display: 'flex' }} gridArea="id">
       <Typography variant="caption" fontWeight="bold">
@@ -48,6 +51,7 @@ function ExecutionStepDate(props) {
   const formatMessage = useFormatMessage();
   const createdAt = DateTime.fromMillis(parseInt(props.createdAt, 10));
   const relativeCreatedAt = createdAt.toRelative();
+
   return (
     <Tooltip
       title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}
@@ -75,15 +79,27 @@ function ExecutionStep(props) {
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
-  const { apps } = useApps({
-    onlyWithTriggers: isTrigger,
-    onlyWithActions: isAction,
-  });
-  const app = apps?.find((currentApp) => currentApp.key === step.appKey);
-  if (!apps) return null;
+  const useAppsOptions = {};
+
+  if (isTrigger) {
+    useAppsOptions.onlyWithTriggers = true;
+  }
+
+  if (isAction) {
+    useAppsOptions.onlyWithActions = true;
+  }
+
+  const { data: apps } = useApps(useAppsOptions);
+
+  const app = apps?.data?.find((currentApp) => currentApp.key === step.appKey);
+
+  if (!apps?.data) return null;
+
   const validationStatusIcon =
     executionStep.status === 'success' ? validIcon : errorIcon;
+
   const hasError = !!executionStep.errorDetails;
+
   return (
     <Wrapper elevation={1} data-test="execution-step">
       <Header>

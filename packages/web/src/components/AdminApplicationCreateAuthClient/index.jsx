@@ -8,12 +8,14 @@ import { CREATE_APP_AUTH_CLIENT } from 'graphql/mutations/create-app-auth-client
 import useAppConfig from 'hooks/useAppConfig.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
+import useAppAuth from 'hooks/useAppAuth';
 
 function AdminApplicationCreateAuthClient(props) {
-  const { appKey, application, onClose } = props;
-  const { auth } = application;
+  const { appKey, onClose } = props;
+  const { data: auth } = useAppAuth(appKey);
   const formatMessage = useFormatMessage();
   const { appConfig, loading: loadingAppConfig } = useAppConfig(appKey);
+
   const [
     createAppConfig,
     { loading: loadingCreateAppConfig, error: createAppConfigError },
@@ -21,6 +23,7 @@ function AdminApplicationCreateAuthClient(props) {
     refetchQueries: ['GetAppConfig'],
     context: { autoSnackbar: false },
   });
+
   const [
     createAppAuthClient,
     { loading: loadingCreateAppAuthClient, error: createAppAuthClientError },
@@ -28,8 +31,10 @@ function AdminApplicationCreateAuthClient(props) {
     refetchQueries: ['GetAppAuthClients'],
     context: { autoSnackbar: false },
   });
+
   const submitHandler = async (values) => {
     let appConfigId = appConfig?.id;
+
     if (!appConfigId) {
       const { data: appConfigData } = await createAppConfig({
         variables: {
@@ -41,8 +46,10 @@ function AdminApplicationCreateAuthClient(props) {
           },
         },
       });
+
       appConfigId = appConfigData.createAppConfig.id;
     }
+
     const { name, active, ...formattedAuthDefaults } = values;
     await createAppAuthClient({
       variables: {
@@ -54,22 +61,28 @@ function AdminApplicationCreateAuthClient(props) {
         },
       },
     });
+
     onClose();
   };
+
   const getAuthFieldsDefaultValues = useCallback(() => {
-    if (!auth?.fields) {
+    if (!auth?.data?.fields) {
       return {};
     }
+
     const defaultValues = {};
-    auth.fields.forEach((field) => {
+
+    auth.data.fields.forEach((field) => {
       if (field.value || field.type !== 'string') {
         defaultValues[field.key] = field.value;
       } else if (field.type === 'string') {
         defaultValues[field.key] = '';
       }
     });
+
     return defaultValues;
-  }, [auth?.fields]);
+  }, [auth?.data?.fields]);
+
   const defaultValues = useMemo(
     () => ({
       name: '',
@@ -78,6 +91,7 @@ function AdminApplicationCreateAuthClient(props) {
     }),
     [getAuthFieldsDefaultValues],
   );
+
   return (
     <AdminApplicationAuthClientDialog
       onClose={onClose}
@@ -85,7 +99,7 @@ function AdminApplicationCreateAuthClient(props) {
       title={formatMessage('createAuthClient.title')}
       loading={loadingAppConfig}
       submitHandler={submitHandler}
-      authFields={auth?.fields}
+      authFields={auth?.data?.fields}
       submitting={loadingCreateAppConfig || loadingCreateAppAuthClient}
       defaultValues={defaultValues}
     />

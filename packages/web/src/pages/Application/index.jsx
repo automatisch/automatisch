@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
 import {
   Link,
   Route,
@@ -17,9 +16,9 @@ import Grid from '@mui/material/Grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddIcon from '@mui/icons-material/Add';
+
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAppConfig from 'hooks/useAppConfig.ee';
-import { GET_APP } from 'graphql/queries/get-app';
 import * as URLS from 'config/urls';
 import SplitButton from 'components/SplitButton';
 import ConditionalIconButton from 'components/ConditionalIconButton';
@@ -29,9 +28,12 @@ import AddAppConnection from 'components/AddAppConnection';
 import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
+import useApp from 'hooks/useApp';
+
 const ReconnectConnection = (props) => {
   const { application, onClose } = props;
   const { connectionId } = useParams();
+
   return (
     <AddAppConnection
       onClose={onClose}
@@ -40,6 +42,7 @@ const ReconnectConnection = (props) => {
     />
   );
 };
+
 export default function Application() {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -52,11 +55,15 @@ export default function Application() {
   const [searchParams] = useSearchParams();
   const { appKey } = useParams();
   const navigate = useNavigate();
-  const { data, loading } = useQuery(GET_APP, { variables: { key: appKey } });
+
+  const { data, loading } = useApp(appKey);
+  const app = data?.data || {};
+
   const { appConfig } = useAppConfig(appKey);
   const connectionId = searchParams.get('connectionId') || undefined;
+
   const goToApplicationPage = () => navigate('connections');
-  const app = data?.getApp || {};
+
   const connectionOptions = React.useMemo(() => {
     const shouldHaveCustomConnection =
       appConfig?.canConnect && appConfig?.canCustomConnect;
@@ -68,6 +75,7 @@ export default function Application() {
         to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.canConnect),
       },
     ];
+
     if (shouldHaveCustomConnection) {
       options.push({
         label: formatMessage('app.addCustomConnection'),
@@ -76,9 +84,12 @@ export default function Application() {
         to: URLS.APP_ADD_CONNECTION(appKey),
       });
     }
+
     return options;
   }, [appKey, appConfig]);
+
   if (loading) return null;
+
   return (
     <>
       <Box sx={{ py: 3 }}>

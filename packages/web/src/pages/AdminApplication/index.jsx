@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
 import {
   Link,
   Route,
@@ -15,8 +14,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+
 import useFormatMessage from 'hooks/useFormatMessage';
-import { GET_APP } from 'graphql/queries/get-app';
 import * as URLS from 'config/urls';
 import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
@@ -25,6 +24,8 @@ import AdminApplicationSettings from 'components/AdminApplicationSettings';
 import AdminApplicationAuthClients from 'components/AdminApplicationAuthClients';
 import AdminApplicationCreateAuthClient from 'components/AdminApplicationCreateAuthClient';
 import AdminApplicationUpdateAuthClient from 'components/AdminApplicationUpdateAuthClient';
+import useApp from 'hooks/useApp';
+
 export default function AdminApplication() {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -43,10 +44,15 @@ export default function AdminApplication() {
     end: false,
   });
   const { appKey } = useParams();
-  const { data, loading } = useQuery(GET_APP, { variables: { key: appKey } });
-  const app = data?.getApp || {};
+
+  const { data, loading } = useApp(appKey);
+
+  const app = data?.data || {};
+
   const goToAuthClientsPage = () => navigate('auth-clients');
+
   if (loading) return null;
+
   return (
     <>
       <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
