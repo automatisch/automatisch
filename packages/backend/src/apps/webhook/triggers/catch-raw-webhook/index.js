@@ -8,7 +8,7 @@ export default defineTrigger({
   type: 'webhook',
   showWebhookUrl: true,
   description:
-    'Triggers in a synchronous way when the webhook receives a request.',
+    'Triggers (immediately if configured) when the webhook receives a request.',
   arguments: [
     {
       label: 'Wait until flow is done',
