@@ -8,7 +8,6 @@ import getCurrentUser from './queries/get-current-user.js';
 import getDynamicData from './queries/get-dynamic-data.js';
 import getDynamicFields from './queries/get-dynamic-fields.js';
 import getExecution from './queries/get-execution.js';
-import getExecutionSteps from './queries/get-execution-steps.js';
 import getExecutions from './queries/get-executions.js';
 import getFlow from './queries/get-flow.js';
 import getFlows from './queries/get-flows.js';
@@ -42,7 +41,6 @@ const queryResolvers = {
   getDynamicFields,
   getExecution,
   getExecutions,
-  getExecutionSteps,
   getFlow,
   getFlows,
   getInvoices,
