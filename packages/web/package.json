@@ -83,8 +83,10 @@
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.20.1",
     "@tanstack/react-query-devtools": "^5.24.1",
+    "eslint": "^8.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^3.2.5"
   },
   "eslintConfig": {
