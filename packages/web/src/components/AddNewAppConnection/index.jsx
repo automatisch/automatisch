@@ -39,14 +39,12 @@ function AddNewAppConnection(props) {
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
-  const abortControllerRef = React.useRef(null);
 
   const { data: apps, mutate } = useLazyApps({
     appName,
     onSuccess: () => {
       setIsLoading(false);
     },
-    abortControllerRef,
   });
 
   const fetchData = React.useMemo(() => debounce(mutate, 300), [mutate]);
@@ -54,18 +52,10 @@ function AddNewAppConnection(props) {
   React.useEffect(() => {
     setIsLoading(true);
 
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    abortControllerRef.current = new AbortController();
-
     fetchData(appName);
 
     return () => {
       fetchData.cancel();
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
     };
   }, [fetchData, appName]);
 

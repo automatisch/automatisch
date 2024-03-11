@@ -79,11 +79,17 @@ function ExecutionStep(props) {
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
+  const useAppsOptions = {};
 
-  const { data: apps } = useApps({
-    onlyWithTriggers: isTrigger,
-    onlyWithActions: isAction,
-  });
+  if (isTrigger) {
+    useAppsOptions.onlyWithTriggers = true;
+  }
+
+  if (isAction) {
+    useAppsOptions.onlyWithActions = true;
+  }
+
+  const { data: apps } = useApps(useAppsOptions);
 
   const app = apps?.data?.find((currentApp) => currentApp.key === step.appKey);
 

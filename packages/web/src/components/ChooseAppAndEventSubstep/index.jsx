@@ -45,11 +45,17 @@ function ChooseAppAndEventSubstep(props) {
   const editorContext = React.useContext(EditorContext);
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
+  const useAppsOptions = {};
 
-  const { data: apps } = useApps({
-    onlyWithTriggers: isTrigger,
-    onlyWithActions: isAction,
-  });
+  if (isTrigger) {
+    useAppsOptions.onlyWithTriggers = true;
+  }
+
+  if (isAction) {
+    useAppsOptions.onlyWithActions = true;
+  }
+
+  const { data: apps } = useApps(useAppsOptions);
 
   const app = apps?.data?.find(
     (currentApp) => currentApp?.key === step?.appKey,
@@ -68,7 +74,7 @@ function ChooseAppAndEventSubstep(props) {
 
   const actionOrTriggerOptions = React.useMemo(
     () => actionsOrTriggers.map((trigger) => eventOptionGenerator(trigger)),
-    [app?.key, actionsOrTriggers],
+    [actionsOrTriggers],
   );
 
   const selectedActionOrTrigger = actionsOrTriggers.find(

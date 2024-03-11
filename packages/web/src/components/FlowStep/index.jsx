@@ -39,7 +39,7 @@ import { StepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
 import useActions from 'hooks/useActions';
 import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
-import useActionSubsteps from 'hooks/useActionsSubsteps';
+import useActionSubsteps from 'hooks/useActionSubsteps';
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -114,11 +114,17 @@ function FlowStep(props) {
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState(0);
+  const useAppsOptions = {};
 
-  const { data: apps } = useApps({
-    onlyWithTriggers: isTrigger,
-    onlyWithActions: isAction,
-  });
+  if (isTrigger) {
+    useAppsOptions.onlyWithTriggers = true;
+  }
+
+  if (isAction) {
+    useAppsOptions.onlyWithActions = true;
+  }
+
+  const { data: apps } = useApps(useAppsOptions);
 
   const [
     getStepWithTestExecutions,
