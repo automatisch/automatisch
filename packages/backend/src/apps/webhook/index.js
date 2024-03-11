@@ -1,4 +1,5 @@
 import defineApp from '../../helpers/define-app.js';
+import actions from './actions/index.js';
 import triggers from './triggers/index.js';
 
 export default defineApp({
@@ -10,5 +11,6 @@ export default defineApp({
   baseUrl: '',
   apiBaseUrl: '',
   primaryColor: '0059F7',
+  actions,
   triggers,
 });
