@@ -7,7 +7,6 @@ import getConnectedApps from './queries/get-connected-apps.js';
 import getCurrentUser from './queries/get-current-user.js';
 import getDynamicData from './queries/get-dynamic-data.js';
 import getDynamicFields from './queries/get-dynamic-fields.js';
-import getExecution from './queries/get-execution.js';
 import getExecutions from './queries/get-executions.js';
 import getFlow from './queries/get-flow.js';
 import getFlows from './queries/get-flows.js';
@@ -39,7 +38,6 @@ const queryResolvers = {
   getCurrentUser,
   getDynamicData,
   getDynamicFields,
-  getExecution,
   getExecutions,
   getFlow,
   getFlows,

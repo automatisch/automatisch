@@ -55,8 +55,11 @@ function ExecutionDate(props) {
 }
 
 ExecutionDate.propTypes = {
-  createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
-    .isRequired,
+  createdAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date),
+  ]).isRequired,
 };
 
 function ExecutionHeader(props) {

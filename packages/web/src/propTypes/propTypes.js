@@ -279,10 +279,12 @@ export const ExecutionPropType = PropTypes.shape({
   executionSteps: PropTypes.arrayOf(ExecutionStepPropType),
   updatedAt: PropTypes.oneOfType([
     PropTypes.string,
+    PropTypes.number,
     PropTypes.instanceOf(Date),
   ]),
   createdAt: PropTypes.oneOfType([
     PropTypes.string,
+    PropTypes.number,
     PropTypes.instanceOf(Date),
   ]),
 });
