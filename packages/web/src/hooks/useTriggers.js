@@ -12,6 +12,7 @@ export default function useTriggers(appKey) {
 
       return data;
     },
+    enabled: !!appKey,
   });
 
   return query;
