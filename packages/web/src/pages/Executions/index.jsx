@@ -1,39 +1,33 @@
 import * as React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
+
 import NoResultFound from 'components/NoResultFound';
 import ExecutionRow from 'components/ExecutionRow';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { GET_EXECUTIONS } from 'graphql/queries/get-executions';
-const EXECUTION_PER_PAGE = 10;
-const getLimitAndOffset = (page) => ({
-  limit: EXECUTION_PER_PAGE,
-  offset: (page - 1) * EXECUTION_PER_PAGE,
-});
+import useExecutions from 'hooks/useExecutions';
+
 export default function Executions() {
   const formatMessage = useFormatMessage();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
-  const { data, refetch, loading } = useQuery(GET_EXECUTIONS, {
-    variables: getLimitAndOffset(page),
-    fetchPolicy: 'cache-and-network',
-    pollInterval: 5000,
-  });
-  const getExecutions = data?.getExecutions || {};
-  const { pageInfo, edges } = getExecutions;
-  React.useEffect(() => {
-    refetch(getLimitAndOffset(page));
-  }, [refetch, page]);
-  const executions = edges?.map(({ node }) => node);
+
+  const { data, isLoading: isExecutionsLoading } = useExecutions(
+    { page: page },
+    { refetchInterval: 5000 },
+  );
+
+  const { data: executions, meta: pageInfo } = data || {};
+
   const hasExecutions = executions?.length;
+
   return (
     <Box sx={{ py: 3 }}>
       <Container>
@@ -52,18 +46,18 @@ export default function Executions() {
 
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
 
-        {loading && (
+        {isExecutionsLoading && (
           <CircularProgress
             data-test="executions-loader"
             sx={{ display: 'block', margin: '20px auto' }}
           />
         )}
 
-        {!loading && !hasExecutions && (
+        {!isExecutionsLoading && !hasExecutions && (
           <NoResultFound text={formatMessage('executions.noExecutions')} />
         )}
 
-        {!loading &&
+        {!isExecutionsLoading &&
           executions?.map((execution) => (
             <ExecutionRow key={execution.id} execution={execution} />
           ))}

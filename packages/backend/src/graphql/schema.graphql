@@ -13,11 +13,6 @@ type Query {
     name: String
   ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
-  getExecutions(
-    limit: Int!
-    offset: Int!
-    filters: ExecutionFiltersInput
-  ): ExecutionConnection
   getDynamicData(
     stepId: String!
     key: String!
@@ -299,15 +294,6 @@ type Flow {
   createdAt: String
   updatedAt: String
   status: FlowStatus
-}
-
-type Execution {
-  id: String
-  testRun: Boolean
-  createdAt: String
-  updatedAt: String
-  status: String
-  flow: Flow
 }
 
 type SamlAuthProvider {
@@ -609,17 +595,8 @@ type PageInfo {
   totalPages: Int!
 }
 
-type ExecutionEdge {
-  node: Execution
-}
-
 type ExecutionStepEdge {
   node: ExecutionStep
-}
-
-type ExecutionConnection {
-  edges: [ExecutionEdge]
-  pageInfo: PageInfo
 }
 
 type ExecutionStepConnection {
@@ -779,17 +756,6 @@ type Notification {
   createdAt: String
   documentationUrl: String
   description: String
-}
-
-input ExecutionCreatedAtFilterInput {
-  from: String
-  to: String
-}
-
-input ExecutionFiltersInput {
-  flowId: String
-  createdAt: ExecutionCreatedAtFilterInput
-  status: String
 }
 
 schema {
