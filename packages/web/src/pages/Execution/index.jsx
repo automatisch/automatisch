@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -10,16 +9,14 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import ExecutionHeader from 'components/ExecutionHeader';
 import ExecutionStep from 'components/ExecutionStep';
 import Container from 'components/Container';
-import { GET_EXECUTION } from 'graphql/queries/get-execution';
 import useExecutionSteps from 'hooks/useExecutionSteps';
+import useExecution from 'hooks/useExecution';
 
 export default function Execution() {
   const { executionId } = useParams();
   const formatMessage = useFormatMessage();
 
-  const { data: execution } = useQuery(GET_EXECUTION, {
-    variables: { executionId },
-  });
+  const { data: execution } = useExecution({ executionId });
 
   const {
     data,
@@ -40,7 +37,7 @@ export default function Execution() {
 
   return (
     <Container sx={{ py: 3 }}>
-      <ExecutionHeader execution={execution?.getExecution} />
+      <ExecutionHeader execution={execution?.data} />
 
       <Grid container item sx={{ mt: 2, mb: [2, 5] }} rowGap={3}>
         {!isExecutionStepsLoading && !data?.pages?.[0].data.length && (
