@@ -15,6 +15,8 @@ export const PaddleProvider = (props) => {
   const isCloud = useCloud();
   const navigate = useNavigate();
   const { data } = usePaddleInfo();
+  const sandbox = data?.data?.sandbox;
+  const vendorId = data?.data?.vendorId;
 
   const [loaded, setLoaded] = React.useState(false);
 
@@ -75,18 +77,18 @@ export const PaddleProvider = (props) => {
 
   React.useEffect(
     function initPaddleScript() {
-      if (!loaded || !data?.data?.vendorId) return;
+      if (!loaded || !vendorId) return;
 
-      if (data?.data?.sandbox) {
+      if (sandbox) {
         window.Paddle.Environment.set('sandbox');
       }
 
       window.Paddle.Setup({
-        vendor: data?.data?.vendorId,
+        vendor: vendorId,
         eventCallback: paddleEventHandler,
       });
     },
-    [loaded, data?.data?.sandbox, data?.data?.vendorId, paddleEventHandler],
+    [loaded, sandbox, vendorId, paddleEventHandler],
   );
 
   return (

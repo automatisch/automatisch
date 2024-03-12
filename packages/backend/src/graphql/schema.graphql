@@ -32,7 +32,6 @@ type Query {
   getCurrentUser: User
   getConfig(keys: [String]): JSONObject
   getInvoices: [Invoice]
-  getPaymentPlans: [PaymentPlan]
   getPermissionCatalog: PermissionCatalog
   getRole(id: String!): Role
   getRoles: [Role]
@@ -688,13 +687,6 @@ type Invoice {
   currency: String
   payout_date: String
   receipt_url: String
-}
-
-type PaymentPlan {
-  name: String
-  limit: String
-  price: String
-  productId: String
 }
 
 type ListSamlAuthProvider {

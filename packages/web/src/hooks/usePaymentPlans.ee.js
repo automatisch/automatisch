@@ -1,9 +1,18 @@
-import { useQuery } from '@apollo/client';
-import { GET_PAYMENT_PLANS } from 'graphql/queries/get-payment-plans.ee';
+import { useQuery } from '@tanstack/react-query';
+
+import api from 'helpers/api';
+
 export default function usePaymentPlans() {
-  const { data, loading } = useQuery(GET_PAYMENT_PLANS);
-  return {
-    plans: data?.getPaymentPlans || [],
-    loading,
-  };
+  const query = useQuery({
+    queryKey: ['paymentPlans'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get('/v1/payment/plans', {
+        signal,
+      });
+
+      return data;
+    },
+  });
+
+  return query;
 }
