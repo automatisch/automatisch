@@ -32,7 +32,6 @@ type Query {
   getCurrentUser: User
   getConfig(keys: [String]): JSONObject
   getInvoices: [Invoice]
-  getPaddleInfo: GetPaddleInfo
   getPaymentPlans: [PaymentPlan]
   getPermissionCatalog: PermissionCatalog
   getRole(id: String!): Role
@@ -681,11 +680,6 @@ type Subscription {
 
 type Usage {
   task: Int
-}
-
-type GetPaddleInfo {
-  sandbox: Boolean
-  vendorId: Int
 }
 
 type Invoice {

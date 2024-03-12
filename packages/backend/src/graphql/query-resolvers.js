@@ -12,7 +12,6 @@ import getFlow from './queries/get-flow.js';
 import getFlows from './queries/get-flows.js';
 import getInvoices from './queries/get-invoices.ee.js';
 import getNotifications from './queries/get-notifications.js';
-import getPaddleInfo from './queries/get-paddle-info.ee.js';
 import getPaymentPlans from './queries/get-payment-plans.ee.js';
 import getPermissionCatalog from './queries/get-permission-catalog.ee.js';
 import getRole from './queries/get-role.ee.js';
@@ -43,7 +42,6 @@ const queryResolvers = {
   getFlows,
   getInvoices,
   getNotifications,
-  getPaddleInfo,
   getPaymentPlans,
   getPermissionCatalog,
   getRole,

@@ -1,21 +1,27 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import * as URLS from 'config/urls';
 import useCloud from 'hooks/useCloud';
 import usePaddleInfo from 'hooks/usePaddleInfo.ee';
 import apolloClient from 'graphql/client';
+
 export const PaddleContext = React.createContext({
   loaded: false,
 });
+
 export const PaddleProvider = (props) => {
   const { children } = props;
   const isCloud = useCloud();
   const navigate = useNavigate();
-  const { sandbox, vendorId } = usePaddleInfo();
+  const { data } = usePaddleInfo();
+
   const [loaded, setLoaded] = React.useState(false);
+
   const paddleEventHandler = React.useCallback(
     async (payload) => {
       const { event, eventData } = payload;
+
       if (event === 'Checkout.Close') {
         const completed = eventData.checkout?.completed;
         if (completed) {
@@ -24,6 +30,7 @@ export const PaddleProvider = (props) => {
           await apolloClient.refetchQueries({
             include: ['GetTrialStatus', 'GetBillingAndUsage'],
           });
+
           navigate(URLS.SETTINGS_BILLING_AND_USAGE, {
             state: { checkoutCompleted: true },
           });
@@ -32,15 +39,18 @@ export const PaddleProvider = (props) => {
     },
     [navigate],
   );
+
   const value = React.useMemo(() => {
     return {
       loaded,
     };
   }, [loaded]);
+
   React.useEffect(
     function loadPaddleScript() {
       if (!isCloud) return;
       const isInjected = document.getElementById('paddle-js');
+
       if (isInjected) {
         setLoaded(true);
         return;
@@ -51,28 +61,34 @@ export const PaddleProvider = (props) => {
       g.defer = true;
       g.async = true;
       g.id = 'paddle-js';
+
       if (s.parentNode) {
         s.parentNode.insertBefore(g, s);
       }
+
       g.onload = function () {
         setLoaded(true);
       };
     },
     [isCloud],
   );
+
   React.useEffect(
     function initPaddleScript() {
-      if (!loaded || !vendorId) return;
-      if (sandbox) {
+      if (!loaded || !data?.data?.vendorId) return;
+
+      if (data?.data?.sandbox) {
         window.Paddle.Environment.set('sandbox');
       }
+
       window.Paddle.Setup({
-        vendor: vendorId,
+        vendor: data?.data?.vendorId,
         eventCallback: paddleEventHandler,
       });
     },
-    [loaded, sandbox, vendorId, paddleEventHandler],
+    [loaded, data?.data?.sandbox, data?.data?.vendorId, paddleEventHandler],
   );
+
   return (
     <PaddleContext.Provider value={value}>{children}</PaddleContext.Provider>
   );
