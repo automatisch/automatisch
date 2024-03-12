@@ -66,7 +66,7 @@ function ExecutionStepDate(props) {
 }
 
 ExecutionStepDate.propTypes = {
-  createdAt: PropTypes.string.isRequired,
+  createdAt: PropTypes.number.isRequired,
 };
 
 const validIcon = <CheckCircleIcon color="success" />;

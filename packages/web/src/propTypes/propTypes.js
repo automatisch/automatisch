@@ -225,8 +225,8 @@ export const ExecutionStepPropType = PropTypes.shape({
   dataOut: PropTypes.object,
   errorDetails: PropTypes.object,
   status: PropTypes.string,
-  createdAt: PropTypes.string,
-  updatedAt: PropTypes.string,
+  createdAt: PropTypes.number,
+  updatedAt: PropTypes.number,
 });
 
 export const FlowPropType = PropTypes.shape({

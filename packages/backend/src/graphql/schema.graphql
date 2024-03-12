@@ -19,11 +19,6 @@ type Query {
     offset: Int!
     filters: ExecutionFiltersInput
   ): ExecutionConnection
-  getExecutionSteps(
-    executionId: String!
-    limit: Int!
-    offset: Int!
-  ): ExecutionStepConnection
   getDynamicData(
     stepId: String!
     key: String!
