@@ -17,6 +17,7 @@ import { UPDATE_FLOW_STATUS } from 'graphql/mutations/update-flow-status';
 import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
 import { GET_FLOW } from 'graphql/queries/get-flow';
 import * as URLS from 'config/urls';
+import { TopBar } from './style';
 
 export default function EditorLayout() {
   const { flowId } = useParams();
@@ -67,60 +68,60 @@ export default function EditorLayout() {
   );
   return (
     <>
-      <Stack direction="column" height="100%">
-        <Stack
-          direction="row"
-          bgcolor="white"
-          justifyContent="space-between"
-          alignItems="center"
-          boxShadow={1}
-          py={1}
-          px={1}
-        >
-          <Box display="flex" flex={1} alignItems="center">
-            <Tooltip
-              placement="right"
-              title={formatMessage('flowEditor.goBack')}
-              disableInteractive
-            >
-              <IconButton
-                size="small"
-                component={Link}
-                to={URLS.FLOWS}
-                data-test="editor-go-back-button"
-              >
-                <ArrowBackIosNewIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-
-            {!loading && (
-              <EditableTypography
-                variant="body1"
-                onConfirm={onFlowNameUpdate}
-                noWrap
-                sx={{ display: 'flex', flex: 1, maxWidth: '50vw', ml: 2 }}
-              >
-                {flow?.name}
-              </EditableTypography>
-            )}
-          </Box>
-
-          <Box pr={1}>
-            <Button
-              variant="contained"
+      <TopBar
+        direction="row"
+        bgcolor="white"
+        justifyContent="space-between"
+        alignItems="center"
+        boxShadow={1}
+        py={1}
+        px={1}
+        className="mui-fixed"
+      >
+        <Box display="flex" flex={1} alignItems="center">
+          <Tooltip
+            placement="right"
+            title={formatMessage('flowEditor.goBack')}
+            disableInteractive
+          >
+            <IconButton
               size="small"
-              onClick={() => onFlowStatusUpdate(!flow.active)}
-              data-test={
-                flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'
-              }
+              component={Link}
+              to={URLS.FLOWS}
+              data-test="editor-go-back-button"
             >
-              {flow?.active
-                ? formatMessage('flowEditor.unpublish')
-                : formatMessage('flowEditor.publish')}
-            </Button>
-          </Box>
-        </Stack>
+              <ArrowBackIosNewIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
 
+          {!loading && (
+            <EditableTypography
+              variant="body1"
+              onConfirm={onFlowNameUpdate}
+              noWrap
+              sx={{ display: 'flex', flex: 1, maxWidth: '50vw', ml: 2 }}
+            >
+              {flow?.name}
+            </EditableTypography>
+          )}
+        </Box>
+
+        <Box pr={1}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => onFlowStatusUpdate(!flow.active)}
+            data-test={
+              flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'
+            }
+          >
+            {flow?.active
+              ? formatMessage('flowEditor.unpublish')
+              : formatMessage('flowEditor.publish')}
+          </Button>
+        </Box>
+      </TopBar>
+      <Stack direction="column" height="100%">
         <Container maxWidth="md">
           <EditorProvider value={{ readOnly: !!flow?.active }}>
             {!flow && !loading && 'not found'}
