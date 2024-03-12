@@ -1,16 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useExecutionSteps(executionId, page) {
-  const query = useQuery({
-    queryKey: ['executionSteps', executionId, page],
-    queryFn: async ({ payload, signal }) => {
+export default function useExecutionSteps({ executionId }) {
+  const query = useInfiniteQuery({
+    queryKey: ['executionSteps', executionId],
+    queryFn: async ({ pageParam = 1, signal }) => {
       const { data } = await api.get(
         `/v1/executions/${executionId}/execution-steps`,
         {
           params: {
-            page: page,
+            page: pageParam,
           },
           signal,
         },
@@ -18,6 +18,11 @@ export default function useExecutionSteps(executionId, page) {
 
       return data;
     },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage?.meta?.currentPage < lastPage?.meta?.totalPages
+        ? lastPage?.meta?.currentPage + 1
+        : null,
   });
 
   return query;

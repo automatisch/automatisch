@@ -21,19 +21,29 @@ export default function Execution() {
     variables: { executionId },
   });
 
-  const { data, isLoading: isExecutionLoading } = useExecutionSteps(
-    executionId,
-    1,
-  );
+  const {
+    data,
+    isLoading: isExecutionStepsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useExecutionSteps({
+    executionId: executionId,
+  });
 
-  const executionSteps = data?.data;
+  React.useEffect(() => {
+    if (!isFetching && !isFetchingNextPage && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]);
 
   return (
     <Container sx={{ py: 3 }}>
       <ExecutionHeader execution={execution?.getExecution} />
 
       <Grid container item sx={{ mt: 2, mb: [2, 5] }} rowGap={3}>
-        {!isExecutionLoading && !executionSteps?.length && (
+        {!isExecutionStepsLoading && !data?.pages?.[0].data.length && (
           <Alert severity="warning" sx={{ flex: 1 }}>
             <AlertTitle sx={{ fontWeight: 700 }}>
               {formatMessage('execution.noDataTitle')}
@@ -45,12 +55,16 @@ export default function Execution() {
           </Alert>
         )}
 
-        {executionSteps?.map((executionStep) => (
-          <ExecutionStep
-            key={executionStep.id}
-            executionStep={executionStep}
-            step={executionStep.step}
-          />
+        {data?.pages?.map((group, i) => (
+          <React.Fragment key={i}>
+            {group?.data?.map((executionStep) => (
+              <ExecutionStep
+                key={executionStep.id}
+                executionStep={executionStep}
+                step={executionStep.step}
+              />
+            ))}
+          </React.Fragment>
         ))}
       </Grid>
     </Container>
