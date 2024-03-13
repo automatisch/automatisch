@@ -14,16 +14,19 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import LockIcon from '@mui/icons-material/Lock';
+
 import usePaymentPlans from 'hooks/usePaymentPlans.ee';
 import useCurrentUser from 'hooks/useCurrentUser';
 import usePaddle from 'hooks/usePaddle.ee';
+
 export default function UpgradeFreeTrial() {
-  const { plans, loading } = usePaymentPlans();
+  const { data: plans, isLoading: isPaymentPlansLoading } = usePaymentPlans();
   const currentUser = useCurrentUser();
   const { loaded: paddleLoaded } = usePaddle();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const selectedPlan = plans?.[selectedIndex];
+  const selectedPlan = plans?.data?.[selectedIndex];
   const updateSelection = (index) => setSelectedIndex(index);
+
   const handleCheckout = React.useCallback(() => {
     window.Paddle.Checkout?.open({
       product: selectedPlan.productId,
@@ -34,7 +37,9 @@ export default function UpgradeFreeTrial() {
       }),
     });
   }, [selectedPlan, currentUser]);
-  if (loading || !plans.length) return null;
+
+  if (isPaymentPlansLoading || !plans?.data?.length) return null;
+
   return (
     <React.Fragment>
       <Card sx={{ mb: 3, p: 2 }}>
@@ -82,7 +87,7 @@ export default function UpgradeFreeTrial() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {plans.map((plan, index) => (
+                  {plans?.data?.map((plan, index) => (
                     <TableRow
                       key={plan.productId}
                       onClick={() => updateSelection(index)}

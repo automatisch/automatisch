@@ -27,8 +27,6 @@ type Query {
   getCurrentUser: User
   getConfig(keys: [String]): JSONObject
   getInvoices: [Invoice]
-  getPaddleInfo: GetPaddleInfo
-  getPaymentPlans: [PaymentPlan]
   getPermissionCatalog: PermissionCatalog
   getRole(id: String!): Role
   getRoles: [Role]
@@ -660,24 +658,12 @@ type Usage {
   task: Int
 }
 
-type GetPaddleInfo {
-  sandbox: Boolean
-  vendorId: Int
-}
-
 type Invoice {
   id: Int
   amount: Float
   currency: String
   payout_date: String
   receipt_url: String
-}
-
-type PaymentPlan {
-  name: String
-  limit: String
-  price: String
-  productId: String
 }
 
 type ListSamlAuthProvider {
