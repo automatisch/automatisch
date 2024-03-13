@@ -9,7 +9,6 @@ import getDynamicData from './queries/get-dynamic-data.js';
 import getDynamicFields from './queries/get-dynamic-fields.js';
 import getFlow from './queries/get-flow.js';
 import getFlows from './queries/get-flows.js';
-import getInvoices from './queries/get-invoices.ee.js';
 import getNotifications from './queries/get-notifications.js';
 import getPermissionCatalog from './queries/get-permission-catalog.ee.js';
 import getRole from './queries/get-role.ee.js';
@@ -37,7 +36,6 @@ const queryResolvers = {
   getDynamicFields,
   getFlow,
   getFlows,
-  getInvoices,
   getNotifications,
   getPermissionCatalog,
   getRole,

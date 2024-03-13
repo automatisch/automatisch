@@ -1,9 +1,18 @@
-import { useQuery } from '@apollo/client';
-import { GET_INVOICES } from 'graphql/queries/get-invoices.ee';
+import { useQuery } from '@tanstack/react-query';
+
+import api from 'helpers/api';
+
 export default function useInvoices() {
-  const { data, loading } = useQuery(GET_INVOICES);
-  return {
-    invoices: data?.getInvoices || [],
-    loading: loading,
-  };
+  const query = useQuery({
+    queryKey: ['invoices'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get('/v1/users/invoices', {
+        signal,
+      });
+
+      return data;
+    },
+  });
+
+  return query;
 }
