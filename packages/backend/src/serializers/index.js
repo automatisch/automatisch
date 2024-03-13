@@ -6,6 +6,7 @@ import appAuthClientSerializer from './app-auth-client.js';
 import appConfigSerializer from './app-config.js';
 import flowSerializer from './flow.js';
 import stepSerializer from './step.js';
+import connectionSerializer from './connection.js';
 import appSerializer from './app.js';
 import authSerializer from './auth.js';
 import triggerSerializer from './trigger.js';
@@ -23,6 +24,7 @@ const serializers = {
   AppConfig: appConfigSerializer,
   Flow: flowSerializer,
   Step: stepSerializer,
+  Connection: connectionSerializer,
   App: appSerializer,
   Auth: authSerializer,
   Trigger: triggerSerializer,
