@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+
 import { Chip } from './style.ee';
 import * as URLS from 'config/urls';
-import useTrialStatus from 'hooks/useTrialStatus.ee';
+import useUserTrial from 'hooks/useUserTrial.ee';
+
 export default function TrialStatusBadge() {
-  const data = useTrialStatus();
+  const data = useUserTrial();
+
   if (!data) return <React.Fragment />;
+
   const { message, status } = data;
+
   return (
     <Chip
       component={Link}
