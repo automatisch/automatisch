@@ -33,7 +33,6 @@ type Query {
   getNotifications: [Notification]
   getSamlAuthProvider: SamlAuthProvider
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
-  getSubscriptionStatus: GetSubscriptionStatus
   getTrialStatus: GetTrialStatus
   getUser(id: String!): User
   getUsers(limit: Int!, offset: Int!): UserConnection
@@ -610,10 +609,6 @@ type License {
 
 type GetTrialStatus {
   expireAt: String
-}
-
-type GetSubscriptionStatus {
-  cancellationEffectiveDate: String
 }
 
 type GetBillingAndUsage {
