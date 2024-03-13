@@ -1,10 +1,12 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Logo from 'components/Logo';
 import Container from 'components/Container';
-export default function Layout({ children }) {
+
+function Layout({ children }) {
   return (
     <>
       <AppBar>
@@ -15,11 +17,23 @@ export default function Layout({ children }) {
         </Container>
       </AppBar>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          minHeight: '100vh',
+        }}
+      >
         <Toolbar />
-
         {children}
       </Box>
     </>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default Layout;
