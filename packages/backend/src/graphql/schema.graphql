@@ -24,7 +24,6 @@ type Query {
     parameters: JSONObject
   ): [SubstepArgument]
   getBillingAndUsage: GetBillingAndUsage
-  getCurrentUser: User
   getConfig(keys: [String]): JSONObject
   getInvoices: [Invoice]
   getPermissionCatalog: PermissionCatalog

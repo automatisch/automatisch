@@ -40,7 +40,8 @@ function ProfileSettings() {
   const [showDeleteAccountConfirmation, setShowDeleteAccountConfirmation] =
     React.useState(false);
   const enqueueSnackbar = useEnqueueSnackbar();
-  const { data: currentUser } = useCurrentUser();
+  const { data } = useCurrentUser();
+  const currentUser = data?.data;
   const formatMessage = useFormatMessage();
   const [updateCurrentUser] = useMutation(UPDATE_CURRENT_USER);
 
@@ -62,7 +63,7 @@ function ProfileSettings() {
       optimisticResponse: {
         updateCurrentUser: {
           __typename: 'User',
-          id: currentUser?.data?.id,
+          id: currentUser?.id,
           fullName,
           email,
         },
@@ -87,7 +88,7 @@ function ProfileSettings() {
         <Grid item xs={12} justifyContent="flex-end">
           <StyledForm
             defaultValues={{
-              ...currentUser?.data,
+              ...currentUser,
               password: '',
               confirmPassword: '',
             }}

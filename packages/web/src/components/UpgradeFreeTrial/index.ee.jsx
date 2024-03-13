@@ -21,7 +21,8 @@ import usePaddle from 'hooks/usePaddle.ee';
 
 export default function UpgradeFreeTrial() {
   const { data: plans, isLoading: isPaymentPlansLoading } = usePaymentPlans();
-  const { data: currentUser } = useCurrentUser();
+  const { data } = useCurrentUser();
+  const currentUser = data?.data;
   const { loaded: paddleLoaded } = usePaddle();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const selectedPlan = plans?.data?.[selectedIndex];
@@ -30,13 +31,13 @@ export default function UpgradeFreeTrial() {
   const handleCheckout = React.useCallback(() => {
     window.Paddle.Checkout?.open({
       product: selectedPlan.productId,
-      email: currentUser?.data?.email,
+      email: currentUser?.email,
       passthrough: JSON.stringify({
-        id: currentUser?.data?.id,
-        email: currentUser?.data?.email,
+        id: currentUser?.id,
+        email: currentUser?.email,
       }),
     });
-  }, [selectedPlan, currentUser?.data]);
+  }, [selectedPlan, currentUser]);
 
   if (isPaymentPlansLoading || !plans?.data?.length) return null;
 

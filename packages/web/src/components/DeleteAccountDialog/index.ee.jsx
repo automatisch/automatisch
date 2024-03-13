@@ -14,7 +14,8 @@ import useCurrentUser from 'hooks/useCurrentUser';
 function DeleteAccountDialog(props) {
   const [deleteCurrentUser] = useMutation(DELETE_CURRENT_USER);
   const formatMessage = useFormatMessage();
-  const { data: currentUser } = useCurrentUser();
+  const { data } = useCurrentUser();
+  const currentUser = data?.data;
 
   const authentication = useAuthentication();
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function DeleteAccountDialog(props) {
     authentication.updateToken('');
     await apolloClient.clearStore();
     navigate(URLS.LOGIN);
-  }, [deleteCurrentUser, currentUser?.data]);
+  }, [deleteCurrentUser, currentUser]);
 
   return (
     <ConfirmationDialog

@@ -7,7 +7,8 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 const Chatwoot = ({ ready }) => {
   const theme = useTheme();
-  const { data: currentUser } = useCurrentUser();
+  const { data } = useCurrentUser();
+  const currentUser = data?.data;
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
 
   React.useEffect(function initiateChatwoot() {
@@ -24,17 +25,17 @@ const Chatwoot = ({ ready }) => {
 
   React.useEffect(
     function initiateUser() {
-      if (!currentUser?.data?.id || !ready) return;
-      window.$chatwoot.setUser(currentUser.data?.id, {
-        email: currentUser?.data?.email,
-        name: currentUser?.data?.fullName,
+      if (!currentUser?.id || !ready) return;
+      window.$chatwoot.setUser(currentUser.id, {
+        email: currentUser.email,
+        name: currentUser.fullName,
       });
 
       if (!matchSmallScreens) {
         window.$chatwoot.toggleBubbleVisibility('show');
       }
     },
-    [currentUser?.data, ready, matchSmallScreens],
+    [currentUser, ready, matchSmallScreens],
   );
   React.useLayoutEffect(
     function hideChatwoot() {
