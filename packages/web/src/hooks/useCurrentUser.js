@@ -1,6 +1,18 @@
-import { useQuery } from '@apollo/client';
-import { GET_CURRENT_USER } from 'graphql/queries/get-current-user';
+import { useQuery } from '@tanstack/react-query';
+
+import api from 'helpers/api';
+
 export default function useCurrentUser() {
-  const { data } = useQuery(GET_CURRENT_USER);
-  return data?.getCurrentUser;
+  const query = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get(`/v1/users/me`, {
+        signal,
+      });
+
+      return data;
+    },
+  });
+
+  return query;
 }

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+
 import * as URLS from 'config/urls';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import apolloClient from 'graphql/client';
@@ -13,15 +14,18 @@ import useCurrentUser from 'hooks/useCurrentUser';
 function DeleteAccountDialog(props) {
   const [deleteCurrentUser] = useMutation(DELETE_CURRENT_USER);
   const formatMessage = useFormatMessage();
-  const currentUser = useCurrentUser();
+  const { data: currentUser } = useCurrentUser();
+
   const authentication = useAuthentication();
   const navigate = useNavigate();
+
   const handleConfirm = React.useCallback(async () => {
     await deleteCurrentUser();
     authentication.updateToken('');
     await apolloClient.clearStore();
     navigate(URLS.LOGIN);
-  }, [deleteCurrentUser, currentUser]);
+  }, [deleteCurrentUser, currentUser?.data]);
+
   return (
     <ConfirmationDialog
       title={formatMessage('deleteAccountDialog.title')}
