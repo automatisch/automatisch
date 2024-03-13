@@ -37,7 +37,6 @@ type Query {
   getTrialStatus: GetTrialStatus
   getUser(id: String!): User
   getUsers(limit: Int!, offset: Int!): UserConnection
-  healthcheck: AppHealth
   listSamlAuthProviders: [ListSamlAuthProvider]
 }
 
@@ -600,10 +599,6 @@ type ExecutionStepEdge {
 type ExecutionStepConnection {
   edges: [ExecutionStepEdge]
   pageInfo: PageInfo
-}
-
-type AppHealth {
-  version: String
 }
 
 type License {

@@ -21,7 +21,6 @@ import getSubscriptionStatus from './queries/get-subscription-status.ee.js';
 import getTrialStatus from './queries/get-trial-status.ee.js';
 import getUser from './queries/get-user.js';
 import getUsers from './queries/get-users.js';
-import healthcheck from './queries/healthcheck.js';
 import listSamlAuthProviders from './queries/list-saml-auth-providers.ee.js';
 import testConnection from './queries/test-connection.js';
 
@@ -49,7 +48,6 @@ const queryResolvers = {
   getTrialStatus,
   getUser,
   getUsers,
-  healthcheck,
   listSamlAuthProviders,
   testConnection,
 };
