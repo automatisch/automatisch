@@ -6,5 +6,7 @@ export default async (request, response) => {
     .findById(request.params.samlAuthProviderId)
     .throwIfNotFound();
 
-  renderObject(response, samlAuthProvider);
+  renderObject(response, samlAuthProvider, {
+    serializer: 'AdminSamlAuthProvider',
+  });
 };
