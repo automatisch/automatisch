@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { SnackbarProvider as BaseSnackbarProvider } from 'notistack';
+import { css } from '@emotion/css';
+
 const SnackbarProvider = (props) => {
+  const classes = {
+    zIndexOverwrite: css({
+      zIndex: 2200000000,
+    }),
+  };
   return (
     <BaseSnackbarProvider
       {...props}
@@ -9,6 +16,7 @@ const SnackbarProvider = (props) => {
         horizontal: 'right',
       }}
       dense
+      classes={{ containerRoot: classes.zIndexOverwrite }}
     />
   );
 };

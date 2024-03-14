@@ -159,6 +159,10 @@ export const defaultTheme = createTheme({
       },
     },
   },
+  zIndex: {
+    // z-index must be bigger than chatbot's icon
+    snackbar: 2200000000,
+  },
   components: {
     MuiAppBar: {
       styleOverrides: {
