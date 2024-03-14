@@ -30,7 +30,6 @@ type Query {
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
   getTrialStatus: GetTrialStatus
   getUsers(limit: Int!, offset: Int!): UserConnection
-  listSamlAuthProviders: [ListSamlAuthProvider]
 }
 
 type Mutation {
@@ -640,13 +639,6 @@ type Subscription {
 
 type Usage {
   task: Int
-}
-
-type ListSamlAuthProvider {
-  id: String
-  name: String
-  issuer: String
-  loginUrl: String
 }
 
 type Permission {

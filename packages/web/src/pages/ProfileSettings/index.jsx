@@ -63,7 +63,7 @@ function ProfileSettings() {
       optimisticResponse: {
         updateCurrentUser: {
           __typename: 'User',
-          id: currentUser?.id,
+          id: currentUser.id,
           fullName,
           email,
         },

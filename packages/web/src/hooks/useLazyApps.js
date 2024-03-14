@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import api from 'helpers/api';
 import React from 'react';
 
-export default function useLazyApps({ appName } = {}, { onSuccess }) {
+export default function useLazyApps({ appName } = {}, { onSuccess } = {}) {
   const abortControllerRef = React.useRef(new AbortController());
 
   React.useEffect(() => {

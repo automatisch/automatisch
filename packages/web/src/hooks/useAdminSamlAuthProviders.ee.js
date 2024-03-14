@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useSamlAuthProviders() {
+export default function useAdminSamlAuthProviders() {
   const query = useQuery({
-    queryKey: ['samlAuthProviders'],
+    queryKey: ['adminSamlAuthProviders'],
     queryFn: async ({ signal }) => {
-      const { data } = await api.get('/v1/saml-auth-providers', {
+      const { data } = await api.get('/v1/admin/saml-auth-providers', {
         signal,
       });
 

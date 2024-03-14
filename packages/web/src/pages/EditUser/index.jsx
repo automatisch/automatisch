@@ -30,7 +30,7 @@ export default function EditUser() {
   const { userId } = useParams();
   const { data: userData, loading: isUserLoading } = useUser({ userId });
   const user = userData?.data;
-  const { data, loading: isRolesLoading } = useRoles();
+  const { data, isLoading: isRolesLoading } = useRoles();
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();

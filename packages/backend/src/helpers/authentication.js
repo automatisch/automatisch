@@ -44,7 +44,6 @@ export const authenticationRules = {
     '*': isAuthenticatedRule,
     getConfig: allow,
     getNotifications: allow,
-    listSamlAuthProviders: allow,
   },
   Mutation: {
     '*': isAuthenticatedRule,
