@@ -4,24 +4,32 @@ import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import { Divider, Typography } from '@mui/material';
+
 import useRoles from 'hooks/useRoles.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import TextField from 'components/TextField';
-import { Divider, Typography } from '@mui/material';
+
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
+
 function RoleMappingsFieldArray() {
   const formatMessage = useFormatMessage();
   const { control } = useFormContext();
-  const { roles, loading: rolesLoading } = useRoles();
+  const { data, isLoading: isRolesLoading } = useRoles();
+  const roles = data?.data;
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'roleMappings',
   });
+
   const handleAppendMapping = () => append({ roleId: '', remoteRoleName: '' });
+
   const handleRemoveMapping = (index) => () => remove(index);
+
   return (
     <>
       {fields.length === 0 && (
@@ -60,7 +68,7 @@ function RoleMappingsFieldArray() {
                     label={formatMessage('roleMappingsForm.role')}
                   />
                 )}
-                loading={rolesLoading}
+                loading={isRolesLoading}
                 required
               />
             </Stack>

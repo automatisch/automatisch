@@ -1,11 +1,17 @@
-import { useQuery } from '@apollo/client';
-import { GET_ROLES } from 'graphql/queries/get-roles.ee';
+import { useQuery } from '@tanstack/react-query';
+import api from 'helpers/api';
+
 export default function useRoles() {
-  const { data, loading } = useQuery(GET_ROLES, {
-    context: { autoSnackbar: false },
+  const query = useQuery({
+    queryKey: ['roles'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get('/v1/admin/roles', {
+        signal,
+      });
+
+      return data;
+    },
   });
-  return {
-    roles: data?.getRoles || [],
-    loading,
-  };
+
+  return query;
 }
