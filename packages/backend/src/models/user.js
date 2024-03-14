@@ -255,6 +255,31 @@ class User extends Base {
     return currentUsageData.consumedTaskCount < plan.quota;
   }
 
+  async getPlanAndUsage() {
+    const usageData = await this.$relatedQuery(
+      'currentUsageData'
+    ).throwIfNotFound();
+
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    const currentPlan = Billing.paddlePlans.find(
+      (plan) => plan.productId === subscription?.paddlePlanId
+    );
+
+    const planAndUsage = {
+      usage: {
+        task: usageData.consumedTaskCount,
+      },
+      plan: {
+        id: subscription?.paddlePlanId || null,
+        name: subscription ? currentPlan.name : 'Free Trial',
+        limit: currentPlan?.limit || null,
+      },
+    };
+
+    return planAndUsage;
+  }
+
   async getInvoices() {
     const subscription = await this.$relatedQuery('currentSubscription');
 

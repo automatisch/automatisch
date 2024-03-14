@@ -6,6 +6,7 @@ import getCurrentUserAction from '../../../controllers/api/v1/users/get-current-
 import getUserTrialAction from '../../../controllers/api/v1/users/get-user-trial.ee.js';
 import getInvoicesAction from '../../../controllers/api/v1/users/get-invoices.ee.js';
 import getSubscriptionAction from '../../../controllers/api/v1/users/get-subscription.ee.js';
+import getPlanAndUsageAction from '../../../controllers/api/v1/users/get-plan-and-usage.ee.js';
 
 const router = Router();
 
@@ -29,6 +30,13 @@ router.get(
   authenticateUser,
   checkIsCloud,
   asyncHandler(getSubscriptionAction)
+);
+
+router.get(
+  '/:userId/plan-and-usage',
+  authenticateUser,
+  checkIsCloud,
+  asyncHandler(getPlanAndUsageAction)
 );
 
 export default router;
