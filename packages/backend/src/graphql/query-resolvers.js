@@ -13,7 +13,6 @@ import getInvoices from './queries/get-invoices.ee.js';
 import getNotifications from './queries/get-notifications.js';
 import getPermissionCatalog from './queries/get-permission-catalog.ee.js';
 import getRole from './queries/get-role.ee.js';
-import getRoles from './queries/get-roles.ee.js';
 import getSamlAuthProviderRoleMappings from './queries/get-saml-auth-provider-role-mappings.ee.js';
 import getSamlAuthProvider from './queries/get-saml-auth-provider.ee.js';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions.js';
@@ -40,7 +39,6 @@ const queryResolvers = {
   getNotifications,
   getPermissionCatalog,
   getRole,
-  getRoles,
   getSamlAuthProvider,
   getSamlAuthProviderRoleMappings,
   getStepWithTestExecutions,
