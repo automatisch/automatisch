@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useActionSubsteps(appKey, actionKey) {
+export default function useActionSubsteps({ appKey, actionKey }) {
   const query = useQuery({
     queryKey: ['actionSubsteps', appKey, actionKey],
     queryFn: async ({ signal }) => {

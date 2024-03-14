@@ -40,12 +40,14 @@ function AddNewAppConnection(props) {
   const [appName, setAppName] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const { data: apps, mutate } = useLazyApps({
-    appName,
-    onSuccess: () => {
-      setIsLoading(false);
+  const { data: apps, mutate } = useLazyApps(
+    { appName },
+    {
+      onSuccess: () => {
+        setIsLoading(false);
+      },
     },
-  });
+  );
 
   const fetchData = React.useMemo(() => debounce(mutate, 300), [mutate]);
 

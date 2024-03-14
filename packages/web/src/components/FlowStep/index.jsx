@@ -161,17 +161,17 @@ function FlowStep(props) {
     ({ key }) => key === step.key,
   );
 
-  const { data: triggerSubsteps } = useTriggerSubsteps(
-    app?.key,
-    actionOrTrigger?.key,
-  );
+  const { data: triggerSubsteps } = useTriggerSubsteps({
+    appKey: app?.key,
+    triggerKey: actionOrTrigger?.key,
+  });
 
   const triggerSubstepsData = triggerSubsteps?.data || [];
 
-  const { data: actionSubsteps } = useActionSubsteps(
-    app?.key,
-    actionOrTrigger?.key,
-  );
+  const { data: actionSubsteps } = useActionSubsteps({
+    appKey: app?.key,
+    actionKey: actionOrTrigger?.key,
+  });
 
   const actionSubstepsData = actionSubsteps?.data || [];
 
