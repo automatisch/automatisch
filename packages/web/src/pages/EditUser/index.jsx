@@ -28,7 +28,8 @@ export default function EditUser() {
   const formatMessage = useFormatMessage();
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
-  const { user, loading: userLoading } = useUser(userId);
+  const { data: userData, loading: isUserLoading } = useUser({ userId });
+  const user = userData?.data;
   const { data, loading: isRolesLoading } = useRoles();
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
@@ -73,7 +74,7 @@ export default function EditUser() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          {userLoading && (
+          {isUserLoading && (
             <Stack direction="column" gap={2}>
               <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={55} />
@@ -82,7 +83,7 @@ export default function EditUser() {
             </Stack>
           )}
 
-          {!userLoading && (
+          {!isUserLoading && (
             <Form defaultValues={user} onSubmit={handleUserUpdate}>
               <Stack direction="column" gap={2}>
                 <TextField

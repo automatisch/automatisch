@@ -29,7 +29,6 @@ type Query {
   getNotifications: [Notification]
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
   getTrialStatus: GetTrialStatus
-  getUser(id: String!): User
   getUsers(limit: Int!, offset: Int!): UserConnection
   listSamlAuthProviders: [ListSamlAuthProvider]
 }

@@ -1,19 +1,17 @@
-import * as React from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { GET_USER } from 'graphql/queries/get-user';
-export default function useUser(userId) {
-  const [getUser, { data, loading }] = useLazyQuery(GET_USER);
-  React.useEffect(() => {
-    if (userId) {
-      getUser({
-        variables: {
-          id: userId,
-        },
+import { useQuery } from '@tanstack/react-query';
+import api from 'helpers/api';
+
+export default function useUser({ userId }) {
+  const query = useQuery({
+    queryKey: ['user', userId],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get(`/v1/admin/users/${userId}`, {
+        signal,
       });
-    }
-  }, [userId]);
-  return {
-    user: data?.getUser,
-    loading,
-  };
+      return data;
+    },
+    enabled: !!userId,
+  });
+
+  return query;
 }
