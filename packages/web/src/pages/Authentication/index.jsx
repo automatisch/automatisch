@@ -6,12 +6,14 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useSamlAuthProvider from 'hooks/useSamlAuthProvider';
 import SamlConfiguration from './SamlConfiguration';
 import RoleMappings from './RoleMappings';
-import useSamlAuthProviders from 'hooks/useSamlAuthProviders.ee';
+import useAdminSamlAuthProviders from 'hooks/useAdminSamlAuthProviders.ee';
 function AuthenticationPage() {
   const formatMessage = useFormatMessage();
-  const { providers } = useSamlAuthProviders();
-  const samlAuthProviderId = providers[0]?.id;
-  const { data, loading: isProviderLoading } = useSamlAuthProvider({
+
+  const { data: adminSamlAuthProviders } = useAdminSamlAuthProviders();
+  const samlAuthProviderId = adminSamlAuthProviders?.data?.[0].id;
+
+  const { data, isLoading: isProviderLoading } = useSamlAuthProvider({
     samlAuthProviderId,
   });
   const provider = data?.data;
