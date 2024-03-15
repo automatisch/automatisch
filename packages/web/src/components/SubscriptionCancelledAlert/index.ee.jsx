@@ -1,10 +1,14 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-import useSubscriptionStatus from 'hooks/useSubscriptionStatus.ee';
+
+import useSubscription from 'hooks/useSubscription.ee';
+
 export default function SubscriptionCancelledAlert() {
-  const subscriptionStatus = useSubscriptionStatus();
-  if (!subscriptionStatus) return <React.Fragment />;
+  const subscription = useSubscription();
+
+  if (!subscription) return <React.Fragment />;
+
   return (
     <Alert
       severity="warning"
@@ -14,7 +18,7 @@ export default function SubscriptionCancelledAlert() {
       }}
     >
       <Typography variant="subtitle2" sx={{ lineHeight: 1.5 }}>
-        {subscriptionStatus.message}
+        {subscription.message}
       </Typography>
     </Alert>
   );
