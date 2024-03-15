@@ -26,7 +26,6 @@ type Query {
   getBillingAndUsage: GetBillingAndUsage
   getCurrentUser: User
   getConfig(keys: [String]): JSONObject
-  getInvoices: [Invoice]
   getPermissionCatalog: PermissionCatalog
   getNotifications: [Notification]
   getSamlAuthProvider: SamlAuthProvider
@@ -649,14 +648,6 @@ type Subscription {
 
 type Usage {
   task: Int
-}
-
-type Invoice {
-  id: Int
-  amount: Float
-  currency: String
-  payout_date: String
-  receipt_url: String
 }
 
 type ListSamlAuthProvider {

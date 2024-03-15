@@ -7,12 +7,17 @@ import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+
 import useInvoices from 'hooks/useInvoices.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 export default function Invoices() {
   const formatMessage = useFormatMessage();
-  const { invoices, loading } = useInvoices();
-  if (loading || invoices.length === 0) return <React.Fragment />;
+  const { data, isLoading: isInvoicesLoading } = useInvoices();
+  const invoices = data?.data;
+
+  if (isInvoicesLoading || invoices?.length === 0) return <React.Fragment />;
+
   return (
     <React.Fragment>
       <Card sx={{ mb: 3, p: 2 }}>
@@ -47,7 +52,7 @@ export default function Invoices() {
 
           <Divider sx={{ mt: 2 }} />
 
-          {invoices.map((invoice, invoiceIndex) => (
+          {invoices?.map((invoice, invoiceIndex) => (
             <React.Fragment key={invoice.id}>
               {invoiceIndex !== 0 && <Divider sx={{ mt: 2 }} />}
 
