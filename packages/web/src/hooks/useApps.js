@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import api from 'helpers/api';
 
 export default function useApps(variables) {
-  const trueOnlyVariables = Object.fromEntries(
-    Object.entries(variables).filter(([_, value]) => value === true),
-  );
+  const trueOnlyVariables =
+    variables &&
+    Object.fromEntries(
+      Object.entries(variables).filter(([_, value]) => value === true),
+    );
 
   const query = useQuery({
     queryKey: ['apps', trueOnlyVariables],
