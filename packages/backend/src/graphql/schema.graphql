@@ -25,7 +25,6 @@ type Query {
   ): [SubstepArgument]
   getBillingAndUsage: GetBillingAndUsage
   getConfig(keys: [String]): JSONObject
-  getPermissionCatalog: PermissionCatalog
   getNotifications: [Notification]
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
   getUsers(limit: Int!, offset: Int!): UserConnection
@@ -641,12 +640,6 @@ type Permission {
   action: String
   subject: String
   conditions: [String]
-}
-
-type PermissionCatalog {
-  actions: [Action]
-  subjects: [Subject]
-  conditions: [Condition]
 }
 
 type Action {
