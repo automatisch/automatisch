@@ -5,7 +5,7 @@ import api from 'helpers/api';
 export default function useApp(appKey) {
   const query = useQuery({
     queryKey: ['app', appKey],
-    queryFn: async ({ payload, signal }) => {
+    queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/apps/${appKey}`, {
         signal,
       });
