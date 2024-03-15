@@ -1,20 +1,18 @@
-import { useQuery } from '@apollo/client';
-import { GET_USERS } from 'graphql/queries/get-users';
-const getLimitAndOffset = (page, rowsPerPage) => ({
-  limit: rowsPerPage,
-  offset: page * rowsPerPage,
-});
-export default function useUsers(page, rowsPerPage) {
-  const { data, loading } = useQuery(GET_USERS, {
-    variables: getLimitAndOffset(page, rowsPerPage),
+import { useQuery } from '@tanstack/react-query';
+import api from 'helpers/api';
+
+export default function useUsers(page) {
+  
+  const query = useQuery({
+    queryKey: ['users', page],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get(`/v1/admin/users`, {
+        signal,
+        params: { page },
+      });
+      return data;
+    },
   });
-  const users = data?.getUsers.edges.map(({ node }) => node) || [];
-  const pageInfo = data?.getUsers.pageInfo;
-  const totalCount = data?.getUsers.totalCount;
-  return {
-    users,
-    pageInfo,
-    totalCount,
-    loading,
-  };
+
+  return query;
 }

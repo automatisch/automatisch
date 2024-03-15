@@ -10,7 +10,6 @@ import getFlow from './queries/get-flow.js';
 import getFlows from './queries/get-flows.js';
 import getNotifications from './queries/get-notifications.js';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions.js';
-import getUsers from './queries/get-users.js';
 import testConnection from './queries/test-connection.js';
 
 const queryResolvers = {
@@ -26,7 +25,6 @@ const queryResolvers = {
   getFlows,
   getNotifications,
   getStepWithTestExecutions,
-  getUsers,
   testConnection,
 };
 

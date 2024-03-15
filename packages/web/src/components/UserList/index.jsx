@@ -19,18 +19,18 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
 import TablePaginationActions from './TablePaginationActions';
 import { TablePagination } from './style';
+
 export default function UserList() {
   const formatMessage = useFormatMessage();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { users, pageInfo, totalCount, loading } = useUsers(page, rowsPerPage);
+  const { data: usersData, isLoading } = useUsers(page + 1);
+  const users = usersData?.data;
+  const { count } = usersData?.meta || {};
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -68,14 +68,14 @@ export default function UserList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {loading && (
+            {isLoading && (
               <ListLoader
                 data-test="users-list-loader"
                 rowsNumber={3}
                 columnsNumber={2}
               />
             )}
-            {!loading &&
+            {!isLoading &&
               users.map((user) => (
                 <TableRow
                   key={user.id}
@@ -120,18 +120,16 @@ export default function UserList() {
                 </TableRow>
               ))}
           </TableBody>
-          {totalCount && (
+          {!isLoading && typeof count === 'number' && (
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  data-total-count={totalCount}
-                  data-rows-per-page={rowsPerPage}
-                  rowsPerPageOptions={[10, 25, 50, 100]}
+                  data-total-count={count}
+                  rowsPerPageOptions={[]}
                   page={page}
-                  count={totalCount}
+                  count={count}
                   onPageChange={handleChangePage}
-                  rowsPerPage={rowsPerPage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  rowsPerPage={10}
                   ActionsComponent={TablePaginationActions}
                 />
               </TableRow>
