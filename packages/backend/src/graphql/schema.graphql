@@ -28,7 +28,6 @@ type Query {
   getPermissionCatalog: PermissionCatalog
   getNotifications: [Notification]
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
-  getTrialStatus: GetTrialStatus
   getUsers(limit: Int!, offset: Int!): UserConnection
   listSamlAuthProviders: [ListSamlAuthProvider]
 }
@@ -599,10 +598,6 @@ type License {
   name: String
   expireAt: String
   verified: Boolean
-}
-
-type GetTrialStatus {
-  expireAt: String
 }
 
 type GetBillingAndUsage {

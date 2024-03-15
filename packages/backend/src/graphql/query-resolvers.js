@@ -12,7 +12,6 @@ import getNotifications from './queries/get-notifications.js';
 import getPermissionCatalog from './queries/get-permission-catalog.ee.js';
 import getSamlAuthProviderRoleMappings from './queries/get-saml-auth-provider-role-mappings.ee.js';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions.js';
-import getTrialStatus from './queries/get-trial-status.ee.js';
 import getUsers from './queries/get-users.js';
 import listSamlAuthProviders from './queries/list-saml-auth-providers.ee.js';
 import testConnection from './queries/test-connection.js';
@@ -32,7 +31,6 @@ const queryResolvers = {
   getPermissionCatalog,
   getSamlAuthProviderRoleMappings,
   getStepWithTestExecutions,
-  getTrialStatus,
   getUsers,
   listSamlAuthProviders,
   testConnection,

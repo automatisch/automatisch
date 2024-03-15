@@ -1,17 +1,21 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
 import { useLocation } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import { GET_TRIAL_STATUS } from 'graphql/queries/get-trial-status.ee';
+
 import useFormatMessage from './useFormatMessage';
+import api from 'helpers/api';
+import { useQuery } from '@tanstack/react-query';
+
 function getDiffInDays(date) {
   const today = DateTime.now().startOf('day');
   const diffInDays = date.diff(today, 'days').days;
   const roundedDiffInDays = Math.round(diffInDays);
+
   return roundedDiffInDays;
 }
 function getFeedbackPayload(date) {
   const diffInDays = getDiffInDays(date);
+
   if (diffInDays <= -1) {
     return {
       translationEntryId: 'trialBadge.over',
@@ -35,36 +39,53 @@ function getFeedbackPayload(date) {
     };
   }
 }
-export default function useTrialStatus() {
+export default function useUserTrial() {
   const formatMessage = useFormatMessage();
   const location = useLocation();
   const state = location.state;
   const checkoutCompleted = state?.checkoutCompleted;
-  const { data, loading, startPolling, stopPolling } =
-    useQuery(GET_TRIAL_STATUS);
-  const hasTrial = !!data?.getTrialStatus?.expireAt;
+  const [isPolling, setIsPolling] = React.useState(false);
+
+  const { data, isLoading: isUserTrialLoading } = useQuery({
+    queryKey: ['userTrial'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get('/v1/users/me/trial', {
+        signal,
+      });
+
+      return data;
+    },
+    refetchInterval: isPolling ? 1000 : false,
+  });
+  const userTrial = data?.data;
+
+  const hasTrial = userTrial?.inTrial;
+
   React.useEffect(
     function pollDataUntilTrialEnds() {
       if (checkoutCompleted && hasTrial) {
-        startPolling(1000);
+        setIsPolling(true);
       }
     },
-    [checkoutCompleted, hasTrial, startPolling],
+    [checkoutCompleted, hasTrial, setIsPolling],
   );
+
   React.useEffect(
     function stopPollingWhenTrialEnds() {
       if (checkoutCompleted && !hasTrial) {
-        stopPolling();
+        setIsPolling(false);
       }
     },
-    [checkoutCompleted, hasTrial, stopPolling],
+    [checkoutCompleted, hasTrial, setIsPolling],
   );
-  if (loading || !data?.getTrialStatus) return null;
-  const expireAt = DateTime.fromMillis(
-    Number(data.getTrialStatus.expireAt),
-  ).startOf('day');
+
+  if (isUserTrialLoading || !userTrial) return null;
+
+  const expireAt = DateTime.fromISO(userTrial?.expireAt).startOf('day');
+
   const { translationEntryId, translationEntryValues, status, over } =
     getFeedbackPayload(expireAt);
+
   return {
     message: formatMessage(translationEntryId, translationEntryValues),
     expireAt,
