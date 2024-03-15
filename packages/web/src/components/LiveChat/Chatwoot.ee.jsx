@@ -1,22 +1,28 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
 import appConfig from 'config/app';
 import useCurrentUser from 'hooks/useCurrentUser';
+
 const Chatwoot = ({ ready }) => {
   const theme = useTheme();
-  const currentUser = useCurrentUser();
+  const { data } = useCurrentUser();
+  const currentUser = data?.data;
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
+
   React.useEffect(function initiateChatwoot() {
     window.chatwootSDK.run({
       websiteToken: 'EFyq5MTsvS7XwUrwSH36VskT',
       baseUrl: appConfig.chatwootBaseUrl,
     });
+
     return function removeChatwoot() {
       window.$chatwoot.reset();
       window.$chatwoot.toggleBubbleVisibility('hide');
     };
   }, []);
+
   React.useEffect(
     function initiateUser() {
       if (!currentUser?.id || !ready) return;
@@ -24,6 +30,7 @@ const Chatwoot = ({ ready }) => {
         email: currentUser.email,
         name: currentUser.fullName,
       });
+
       if (!matchSmallScreens) {
         window.$chatwoot.toggleBubbleVisibility('show');
       }
@@ -40,6 +47,7 @@ const Chatwoot = ({ ready }) => {
     },
     [matchSmallScreens],
   );
+
   return <React.Fragment />;
 };
 export default Chatwoot;
