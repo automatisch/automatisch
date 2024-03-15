@@ -36,7 +36,8 @@ import useActions from 'hooks/useActions';
 import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
 import useActionSubsteps from 'hooks/useActionSubsteps';
 import useStepWithTestExecutions from 'hooks/useStepWithTestExecutions';
-import { generateValidationSchema } from './validation';
+import { validationSchemaResolver } from './validation';
+import { isEqual } from 'lodash';
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -51,6 +52,10 @@ function FlowStep(props) {
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState(0);
+  const [formResolverContext, setFormResolverContext] = React.useState({
+    substeps: [],
+    additionalFields: {},
+  });
   const useAppsOptions = {};
 
   if (isTrigger) {
@@ -105,6 +110,12 @@ function FlowStep(props) {
       ? triggerSubstepsData
       : actionSubstepsData || [];
 
+  React.useEffect(() => {
+    if (!isEqual(substeps, formResolverContext.substeps)) {
+      setFormResolverContext({ substeps, additionalFields: {} });
+    }
+  }, [substeps]);
+
   const handleChange = React.useCallback(({ step }) => {
     onChange(step);
   }, []);
@@ -116,11 +127,6 @@ function FlowStep(props) {
   const handleSubmit = (val) => {
     handleChange({ step: val });
   };
-
-  const stepValidationSchema = React.useMemo(
-    () => generateValidationSchema(substeps),
-    [substeps],
-  );
 
   if (!apps?.data) {
     return (
@@ -149,6 +155,15 @@ function FlowStep(props) {
     setCurrentSubstep((value) =>
       value !== substepIndex ? substepIndex : null,
     );
+
+  const addAdditionalFieldsValidation = (additionalFields) => {
+    if (additionalFields) {
+      setFormResolverContext((prev) => ({
+        ...prev,
+        additionalFields: { ...prev.additionalFields, ...additionalFields },
+      }));
+    }
+  };
 
   const validationStatusIcon =
     step.status === 'completed' ? validIcon : errorIcon;
@@ -203,7 +218,8 @@ function FlowStep(props) {
               <Form
                 defaultValues={step}
                 onSubmit={handleSubmit}
-                resolver={stepValidationSchema}
+                resolver={validationSchemaResolver}
+                context={formResolverContext}
               >
                 <ChooseAppAndEventSubstep
                   expanded={currentSubstep === 0}
@@ -267,6 +283,9 @@ function FlowStep(props) {
                             onSubmit={expandNextStep}
                             onChange={handleChange}
                             step={step}
+                            addAdditionalFieldsValidation={
+                              addAdditionalFieldsValidation
+                            }
                           />
                         )}
                     </React.Fragment>

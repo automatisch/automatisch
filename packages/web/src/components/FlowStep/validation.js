@@ -41,74 +41,80 @@ function addDependsOnValidation({ schema, dependsOn, key, args }) {
   return schema;
 }
 
-export function generateValidationSchema(substeps) {
-  const fieldValidations = substeps?.reduce(
-    (allValidations, { arguments: args }) => {
-      if (!args || !Array.isArray(args)) return allValidations;
+export function validationSchemaResolver(data, context, options) {
+  const { substeps = [], additionalFields = {} } = context;
 
-      const substepArgumentValidations = {};
+  const fieldValidations = [
+    ...substeps,
+    {
+      arguments: Object.values(additionalFields)
+        .filter((field) => !!field)
+        .flat(),
+    },
+  ].reduce((allValidations, { arguments: args }) => {
+    if (!args || !Array.isArray(args)) return allValidations;
 
-      for (const arg of args) {
-        const { key, required } = arg;
+    const substepArgumentValidations = {};
 
-        // base validation for the field if not exists
-        if (!substepArgumentValidations[key]) {
-          substepArgumentValidations[key] = yup.mixed();
-        }
+    for (const arg of args) {
+      const { key, required } = arg;
 
-        if (arg.type === 'dynamic') {
-          const fieldsSchema = {};
+      // base validation for the field if not exists
+      if (!substepArgumentValidations[key]) {
+        substepArgumentValidations[key] = yup.mixed();
+      }
 
-          for (const field of arg.fields) {
-            fieldsSchema[field.key] = yup.mixed();
+      if (arg.type === 'dynamic') {
+        const fieldsSchema = {};
 
-            fieldsSchema[field.key] = addRequiredValidation({
-              required: field.required,
-              schema: fieldsSchema[field.key],
-              key: field.key,
-            });
+        for (const field of arg.fields) {
+          fieldsSchema[field.key] = yup.mixed();
 
-            fieldsSchema[field.key] = addDependsOnValidation({
-              schema: fieldsSchema[field.key],
-              dependsOn: field.dependsOn,
-              key: field.key,
-              args,
-            });
-          }
-
-          substepArgumentValidations[key] = yup
-            .array()
-            .of(yup.object(fieldsSchema));
-        } else if (
-          typeof substepArgumentValidations[key] === 'object' &&
-          (arg.type === 'string' || arg.type === 'dropdown')
-        ) {
-          substepArgumentValidations[key] = addRequiredValidation({
-            required,
-            schema: substepArgumentValidations[key],
-            key,
+          fieldsSchema[field.key] = addRequiredValidation({
+            required: field.required,
+            schema: fieldsSchema[field.key],
+            key: field.key,
           });
 
-          substepArgumentValidations[key] = addDependsOnValidation({
-            schema: substepArgumentValidations[key],
-            dependsOn: arg.dependsOn,
-            key,
+          fieldsSchema[field.key] = addDependsOnValidation({
+            schema: fieldsSchema[field.key],
+            dependsOn: field.dependsOn,
+            key: field.key,
             args,
           });
         }
-      }
 
-      return {
-        ...allValidations,
-        ...substepArgumentValidations,
-      };
-    },
-    {},
-  );
+        substepArgumentValidations[key] = yup
+          .array()
+          .of(yup.object(fieldsSchema));
+      } else if (
+        typeof substepArgumentValidations[key] === 'object' &&
+        (arg.type === 'string' || arg.type === 'dropdown')
+      ) {
+        substepArgumentValidations[key] = addRequiredValidation({
+          required,
+          schema: substepArgumentValidations[key],
+          key,
+        });
+
+        substepArgumentValidations[key] = addDependsOnValidation({
+          schema: substepArgumentValidations[key],
+          dependsOn: arg.dependsOn,
+          key,
+          args,
+        });
+      }
+    }
+
+    return {
+      ...allValidations,
+      ...substepArgumentValidations,
+    };
+  }, {});
 
   const validationSchema = yup.object({
     parameters: yup.object(fieldValidations),
   });
 
-  return yupResolver(validationSchema);
+  return yupResolver(validationSchema)(data, context, options);
 }

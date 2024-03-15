@@ -21,7 +21,9 @@ const CustomOptions = (props) => {
     label,
     initialTabIndex,
   } = props;
+
   const [activeTabIndex, setActiveTabIndex] = React.useState(undefined);
+
   React.useEffect(
     function applyInitialActiveTabIndex() {
       setActiveTabIndex((currentActiveTabIndex) => {
@@ -33,6 +35,7 @@ const CustomOptions = (props) => {
     },
     [initialTabIndex],
   );
+
   return (
     <Popper
       open={open}
@@ -76,7 +79,10 @@ const CustomOptions = (props) => {
 
 CustomOptions.propTypes = {
   open: PropTypes.bool.isRequired,
-  anchorEl: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
