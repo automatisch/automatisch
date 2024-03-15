@@ -1,4 +1,4 @@
-import Step from '../../models/flow.js';
+import Step from '../../models/step.js';
 
 const deleteStep = async (_parent, params, context) => {
   const conditions = context.currentUser.can('update', 'Flow');
