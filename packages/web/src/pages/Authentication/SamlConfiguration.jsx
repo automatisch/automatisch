@@ -31,7 +31,7 @@ function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
 
-function SamlConfiguration({ provider, providerLoading, refetchProvider }) {
+function SamlConfiguration({ provider, providerLoading }) {
   const formatMessage = useFormatMessage();
   const { data, loading: isRolesLoading } = useRoles();
   const roles = data?.data;
@@ -73,10 +73,6 @@ function SamlConfiguration({ provider, providerLoading, refetchProvider }) {
           },
         },
       });
-
-      if (!provider?.id) {
-        await refetchProvider();
-      }
 
       enqueueSnackbar(formatMessage('authenticationForm.successfullySaved'), {
         variant: 'success',
