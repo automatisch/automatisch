@@ -1,19 +1,19 @@
-import * as React from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { GET_ROLE } from 'graphql/queries/get-role.ee';
-export default function useRole(roleId) {
-  const [getRole, { data, loading }] = useLazyQuery(GET_ROLE);
-  React.useEffect(() => {
-    if (roleId) {
-      getRole({
-        variables: {
-          id: roleId,
-        },
+import { useQuery } from '@tanstack/react-query';
+
+import api from 'helpers/api';
+
+export default function useRole({ roleId }) {
+  const query = useQuery({
+    queryKey: ['role', roleId],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get(`/v1/admin/roles/${roleId}`, {
+        signal,
       });
-    }
-  }, [roleId]);
-  return {
-    role: data?.getRole,
-    loading,
-  };
+
+      return data;
+    },
+    enabled: !!roleId,
+  });
+
+  return query;
 }
