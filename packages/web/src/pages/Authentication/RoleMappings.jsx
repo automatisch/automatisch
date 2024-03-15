@@ -5,29 +5,39 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { useMemo } from 'react';
+
 import Form from 'components/Form';
 import { UPSERT_SAML_AUTH_PROVIDERS_ROLE_MAPPINGS } from 'graphql/mutations/upsert-saml-auth-providers-role-mappings';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useSamlAuthProviderRoleMappings from 'hooks/useSamlAuthProviderRoleMappings';
+import useAdminSamlAuthProviderRoleMappings from 'hooks/useAdminSamlAuthProviderRoleMappings';
 import RoleMappingsFieldArray from './RoleMappingsFieldsArray';
+
 function generateFormRoleMappings(roleMappings) {
-  if (roleMappings.length === 0) {
+  if (roleMappings?.length === 0) {
     return [{ roleId: '', remoteRoleName: '' }];
   }
-  return roleMappings.map(({ roleId, remoteRoleName }) => ({
+
+  return roleMappings?.map(({ roleId, remoteRoleName }) => ({
     roleId,
     remoteRoleName,
   }));
 }
+
 function RoleMappings({ provider, providerLoading }) {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
-  const { roleMappings, loading: roleMappingsLoading } =
-    useSamlAuthProviderRoleMappings(provider?.id);
+
+  const { data, isLoading: isAdminSamlAuthProviderRoleMappingsLoading } =
+    useAdminSamlAuthProviderRoleMappings({
+      adminSamlAuthProviderId: provider?.id,
+    });
+  const roleMappings = data?.data;
+
   const [
     upsertSamlAuthProvidersRoleMappings,
     { loading: upsertRoleMappingsLoading },
   ] = useMutation(UPSERT_SAML_AUTH_PROVIDERS_ROLE_MAPPINGS);
+
   const handleRoleMappingsUpdate = async (values) => {
     try {
       if (provider?.id) {
@@ -44,6 +54,7 @@ function RoleMappings({ provider, providerLoading }) {
             },
           },
         });
+
         enqueueSnackbar(formatMessage('roleMappingsForm.successfullySaved'), {
           variant: 'success',
           SnackbarProps: {
@@ -55,15 +66,22 @@ function RoleMappings({ provider, providerLoading }) {
       throw new Error('Failed while saving!');
     }
   };
+
   const defaultValues = useMemo(
     () => ({
       roleMappings: generateFormRoleMappings(roleMappings),
     }),
     [roleMappings],
   );
-  if (providerLoading || !provider?.id || roleMappingsLoading) {
+
+  if (
+    providerLoading ||
+    !provider?.id ||
+    isAdminSamlAuthProviderRoleMappingsLoading
+  ) {
     return null;
   }
+
   return (
     <>
       <Divider sx={{ pt: 2 }} />
