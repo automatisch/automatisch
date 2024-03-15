@@ -28,7 +28,6 @@ type Query {
   getConfig(keys: [String]): JSONObject
   getInvoices: [Invoice]
   getPermissionCatalog: PermissionCatalog
-  getRole(id: String!): Role
   getNotifications: [Notification]
   getSamlAuthProvider: SamlAuthProvider
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]

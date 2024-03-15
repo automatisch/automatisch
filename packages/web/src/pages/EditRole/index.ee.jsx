@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
@@ -19,13 +20,16 @@ import {
 } from 'helpers/computePermissions.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRole from 'hooks/useRole.ee';
+
 export default function EditRole() {
   const formatMessage = useFormatMessage();
   const [updateRole, { loading }] = useMutation(UPDATE_ROLE);
   const navigate = useNavigate();
   const { roleId } = useParams();
-  const { role, loading: roleLoading } = useRole(roleId);
+  const { data, loading: isRoleLoading } = useRole({ roleId });
+  const role = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
+
   const handleRoleUpdate = async (roleData) => {
     try {
       const newPermissions = getPermissions(roleData.computedPermissions);
@@ -39,18 +43,22 @@ export default function EditRole() {
           },
         },
       });
+
       enqueueSnackbar(formatMessage('editRole.successfullyUpdated'), {
         variant: 'success',
         SnackbarProps: {
           'data-test': 'snackbar-edit-role-success',
         },
       });
+
       navigate(URLS.ROLES);
     } catch (error) {
       throw new Error('Failed while updating!');
     }
   };
+
   const roleWithComputedPermissions = getRoleWithComputedPermissions(role);
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -66,13 +74,13 @@ export default function EditRole() {
             onSubmit={handleRoleUpdate}
           >
             <Stack direction="column" gap={2}>
-              {roleLoading && (
+              {isRoleLoading && (
                 <>
                   <Skeleton variant="rounded" height={55} />
                   <Skeleton variant="rounded" height={55} />
                 </>
               )}
-              {!roleLoading && role && (
+              {!isRoleLoading && role && (
                 <>
                   <TextField
                     disabled={role.isAdmin}
@@ -104,7 +112,7 @@ export default function EditRole() {
                 color="primary"
                 sx={{ boxShadow: 2 }}
                 loading={loading}
-                disabled={role?.isAdmin || roleLoading}
+                disabled={role?.isAdmin || isRoleLoading}
                 data-test="update-button"
               >
                 {formatMessage('editRole.submit')}
