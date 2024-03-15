@@ -7,6 +7,7 @@ import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import Can from 'components/Can';
 import Container from 'components/Container';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
@@ -18,17 +19,21 @@ import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
 import useUser from 'hooks/useUser';
+
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
+
 export default function EditUser() {
   const formatMessage = useFormatMessage();
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
   const { user, loading: userLoading } = useUser(userId);
-  const { roles, loading: rolesLoading } = useRoles();
+  const { data, loading: isRolesLoading } = useRoles();
+  const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
+
   const handleUserUpdate = async (userDataToUpdate) => {
     try {
       await updateUser({
@@ -43,6 +48,7 @@ export default function EditUser() {
           },
         },
       });
+
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',
         SnackbarProps: {
@@ -50,11 +56,13 @@ export default function EditUser() {
           persist: true,
         },
       });
+
       navigate(URLS.USERS);
     } catch (error) {
       throw new Error('Failed while updating!');
     }
   };
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -106,7 +114,7 @@ export default function EditUser() {
                         label={formatMessage('userForm.role')}
                       />
                     )}
-                    loading={rolesLoading}
+                    loading={isRolesLoading}
                   />
                 </Can>
 

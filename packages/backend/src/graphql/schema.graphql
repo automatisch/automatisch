@@ -29,7 +29,6 @@ type Query {
   getInvoices: [Invoice]
   getPermissionCatalog: PermissionCatalog
   getRole(id: String!): Role
-  getRoles: [Role]
   getNotifications: [Notification]
   getSamlAuthProvider: SamlAuthProvider
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
