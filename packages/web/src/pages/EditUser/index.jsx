@@ -28,7 +28,7 @@ export default function EditUser() {
   const formatMessage = useFormatMessage();
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
-  const { data: userData, loading: isUserLoading } = useUser({ userId });
+  const { data: userData, isLoading: isUserLoading } = useUser({ userId });
   const user = userData?.data;
   const { data, isLoading: isRolesLoading } = useRoles();
   const roles = data?.data;
