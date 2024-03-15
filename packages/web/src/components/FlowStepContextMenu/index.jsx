@@ -12,6 +12,7 @@ function FlowStepContextMenu(props) {
     refetchQueries: ['GetFlow', 'GetStepWithTestExecutions'],
   });
   const formatMessage = useFormatMessage();
+
   const deleteActionHandler = React.useCallback(
     async (event) => {
       event.stopPropagation();
@@ -19,6 +20,7 @@ function FlowStepContextMenu(props) {
     },
     [stepId],
   );
+
   return (
     <Menu
       open={true}
@@ -38,7 +40,10 @@ function FlowStepContextMenu(props) {
 FlowStepContextMenu.propTypes = {
   stepId: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  anchorEl: PropTypes.element.isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]).isRequired,
   deletable: PropTypes.bool.isRequired,
 };
 

@@ -8,8 +8,10 @@ import TextField from 'components/TextField';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import ControlledCustomAutocomplete from 'components/ControlledCustomAutocomplete';
 import DynamicField from 'components/DynamicField';
+
 const optionGenerator = (options) =>
   options?.map(({ name, value }) => ({ label: name, value: value }));
+
 export default function InputCreator(props) {
   const {
     onChange,
@@ -20,7 +22,9 @@ export default function InputCreator(props) {
     disabled,
     showOptionValue,
     shouldUnregister,
+    addAdditionalFieldsValidation,
   } = props;
+
   const {
     key: name,
     label,
@@ -30,10 +34,16 @@ export default function InputCreator(props) {
     description,
     type,
   } = schema;
+
   const { data, loading } = useDynamicData(stepId, schema);
   const { data: additionalFields, loading: additionalFieldsLoading } =
     useDynamicFields(stepId, schema);
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
+
+  React.useEffect(() => {
+    addAdditionalFieldsValidation?.({ [name]: additionalFields });
+  }, [additionalFields]);
+
   if (type === 'dynamic') {
     return (
       <DynamicField
@@ -50,6 +60,7 @@ export default function InputCreator(props) {
       />
     );
   }
+
   if (type === 'dropdown') {
     const preparedOptions = schema.options || optionGenerator(data);
     return (
@@ -63,7 +74,9 @@ export default function InputCreator(props) {
             disablePortal
             disableClearable={required}
             options={preparedOptions}
-            renderInput={(params) => <MuiTextField {...params} label={label} required={required}/>}
+            renderInput={(params) => (
+              <MuiTextField {...params} label={label} required={required} />
+            )}
             defaultValue={value}
             description={description}
             loading={loading}

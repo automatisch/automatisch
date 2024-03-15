@@ -8,6 +8,7 @@ import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
+
 function FlowSubstep(props) {
   const {
     substep,
@@ -16,12 +17,15 @@ function FlowSubstep(props) {
     onCollapse,
     onSubmit,
     step,
+    addAdditionalFieldsValidation,
   } = props;
+
   const { name, arguments: args } = substep;
   const editorContext = React.useContext(EditorContext);
   const formContext = useFormContext();
   const validationStatus = formContext.formState.isValid;
   const onToggle = expanded ? onCollapse : onExpand;
+
   return (
     <React.Fragment>
       <FlowSubstepTitle
@@ -50,6 +54,7 @@ function FlowSubstep(props) {
                   stepId={step.id}
                   disabled={editorContext.readOnly}
                   showOptionValue={true}
+                  addAdditionalFieldsValidation={addAdditionalFieldsValidation}
                 />
               ))}
             </Stack>
