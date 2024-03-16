@@ -5,8 +5,8 @@ const permissionSerializer = (permission) => {
     action: permission.action,
     subject: permission.subject,
     conditions: permission.conditions,
-    createdAt: permission.createdAt,
-    updatedAt: permission.updatedAt,
+    createdAt: permission.createdAt.getTime(),
+    updatedAt: permission.updatedAt.getTime(),
   };
 };
 

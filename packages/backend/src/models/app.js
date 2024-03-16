@@ -39,6 +39,47 @@ class App {
     return appInfoConverter(rawAppData);
   }
 
+  static async findAuthByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.auth || {};
+  }
+
+  static async findTriggersByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.triggers || [];
+  }
+
+  static async findTriggerSubsteps(appKey, triggerKey, stripFuncs = false) {
+    const rawAppData = await getApp(appKey, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    const trigger = appData?.triggers?.find(
+      (trigger) => trigger.key === triggerKey
+    );
+
+    return trigger?.substeps || [];
+  }
+
+  static async findActionsByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.actions || [];
+  }
+
+  static async findActionSubsteps(appKey, actionKey, stripFuncs = false) {
+    const rawAppData = await getApp(appKey, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    const action = appData?.actions?.find((action) => action.key === actionKey);
+
+    return action?.substeps || [];
+  }
+
   static async checkAppAndAction(appKey, actionKey) {
     const app = await this.findOneByKey(appKey);
 

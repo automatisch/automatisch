@@ -31,7 +31,7 @@ export class AdminRolesPage extends AuthenticatedPage {
     await this.roleDrawerLink.click();
     await this.isMounted();
     await this.rolesLoader.waitFor({
-      state: 'detached'
+      state: 'detached',
     });
   }
 
@@ -43,9 +43,7 @@ export class AdminRolesPage extends AuthenticatedPage {
       state: 'detached',
     });
     return this.roleRow.filter({
-      has: this.page.getByTestId('role-name').filter({
-        hasText: name,
-      }),
+      has: this.page.getByTestId('role-name').getByText(name, { exact: true }),
     });
   }
 

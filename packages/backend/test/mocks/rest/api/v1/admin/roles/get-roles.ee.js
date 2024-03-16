@@ -6,8 +6,8 @@ const getRolesMock = async (roles) => {
       name: role.name,
       isAdmin: role.isAdmin,
       description: role.description,
-      createdAt: role.createdAt.toISOString(),
-      updatedAt: role.updatedAt.toISOString(),
+      createdAt: role.createdAt.getTime(),
+      updatedAt: role.updatedAt.getTime(),
     };
   });
 

@@ -15,6 +15,7 @@ import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
+import Billing from '../helpers/billing/index.ee.js';
 
 class User extends Base {
   static tableName = 'users';
@@ -143,6 +144,23 @@ class User extends Base {
     },
   });
 
+  get authorizedFlows() {
+    const conditions = this.can('read', 'Flow');
+    return conditions.isCreator ? this.$relatedQuery('flows') : Flow.query();
+  }
+
+  get authorizedSteps() {
+    const conditions = this.can('read', 'Flow');
+    return conditions.isCreator ? this.$relatedQuery('steps') : Step.query();
+  }
+
+  get authorizedExecutions() {
+    const conditions = this.can('read', 'Execution');
+    return conditions.isCreator
+      ? this.$relatedQuery('executions')
+      : Execution.query();
+  }
+
   login(password) {
     return bcrypt.compare(password, this.password);
   }
@@ -235,6 +253,45 @@ class User extends Base {
     const currentUsageData = await this.$relatedQuery('currentUsageData');
 
     return currentUsageData.consumedTaskCount < plan.quota;
+  }
+
+  async getPlanAndUsage() {
+    const usageData = await this.$relatedQuery(
+      'currentUsageData'
+    ).throwIfNotFound();
+
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    const currentPlan = Billing.paddlePlans.find(
+      (plan) => plan.productId === subscription?.paddlePlanId
+    );
+
+    const planAndUsage = {
+      usage: {
+        task: usageData.consumedTaskCount,
+      },
+      plan: {
+        id: subscription?.paddlePlanId || null,
+        name: subscription ? currentPlan.name : 'Free Trial',
+        limit: currentPlan?.limit || null,
+      },
+    };
+
+    return planAndUsage;
+  }
+
+  async getInvoices() {
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    if (!subscription) {
+      return [];
+    }
+
+    const invoices = await Billing.paddleClient.getInvoices(
+      Number(subscription.paddleSubscriptionId)
+    );
+
+    return invoices;
   }
 
   async $beforeInsert(queryContext) {

@@ -6,8 +6,8 @@ const userSerializer = (user) => {
   let userData = {
     id: user.id,
     email: user.email,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
+    createdAt: user.createdAt.getTime(),
+    updatedAt: user.updatedAt.getTime(),
     fullName: user.fullName,
   };
 
@@ -15,7 +15,7 @@ const userSerializer = (user) => {
     userData.role = roleSerializer(user.role);
   }
 
-  if (user.permissions) {
+  if (user.permissions?.length > 0) {
     userData.permissions = user.permissions.map((permission) =>
       permissionSerializer(permission)
     );

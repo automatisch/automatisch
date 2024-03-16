@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import Crypto from 'crypto';
 import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createRole } from '../../../../../../test/factories/role.js';
@@ -30,5 +31,27 @@ describe('GET /api/v1/admin/saml-auth-provider/:samlAuthProviderId', () => {
     const expectedPayload = await getSamlAuthProviderMock(samlAuthProvider);
 
     expect(response.body).toEqual(expectedPayload);
+  });
+
+  it('should return not found response for not existing saml auth provider UUID', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
+    const notExistingSamlAuthProviderUUID = Crypto.randomUUID();
+
+    await request(app)
+      .get(
+        `/api/v1/admin/saml-auth-providers/${notExistingSamlAuthProviderUUID}`
+      )
+      .set('Authorization', token)
+      .expect(404);
+  });
+
+  it('should return bad request response for invalid UUID', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
+    await request(app)
+      .get('/api/v1/admin/saml-auth-providers/invalidSamlAuthProviderUUID')
+      .set('Authorization', token)
+      .expect(400);
   });
 });

@@ -197,7 +197,7 @@ test.describe('Role management page', () => {
         await adminCreateUserPage.passwordInput.fill('sample');
         await adminCreateUserPage.roleInput.click();
         await adminCreateUserPage.page
-          .getByRole('option', { name: 'Delete Role' })
+          .getByRole('option', { name: 'Delete Role', exact: true })
           .click();
         await adminCreateUserPage.createButton.click();
         await adminUsersPage.snackbar.waitFor({

@@ -7,6 +7,38 @@ const authorizationList = {
     action: 'read',
     subject: 'User',
   },
+  'GET /api/v1/flows/:flowId': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/flows/': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/steps/:stepId/connection': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/connections/:connectionId/flows': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/apps/:appKey/flows': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/executions/:executionId': {
+    action: 'read',
+    subject: 'Execution',
+  },
+  'GET /api/v1/executions/': {
+    action: 'read',
+    subject: 'Execution',
+  },
+  'GET /api/v1/executions/:executionId/execution-steps': {
+    action: 'read',
+    subject: 'Execution',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {

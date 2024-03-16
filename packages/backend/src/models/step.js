@@ -103,6 +103,10 @@ class Step extends Base {
       return `/webhooks/connections/${this.connectionId}`;
     }
 
+    if (this.parameters.workSynchronously) {
+      return `/webhooks/flows/${this.flowId}/sync`;
+    }
+
     return `/webhooks/flows/${this.flowId}`;
   }
 

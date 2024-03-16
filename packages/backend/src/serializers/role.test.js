@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createRole } from '../../test/factories/role';
 import roleSerializer from './role';
+import permissionSerializer from './permission';
 import { createPermission } from '../../test/factories/permission';
 
 describe('roleSerializer', () => {
@@ -28,8 +29,8 @@ describe('roleSerializer', () => {
       name: role.name,
       key: role.key,
       description: role.description,
-      createdAt: role.createdAt,
-      updatedAt: role.updatedAt,
+      createdAt: role.createdAt.getTime(),
+      updatedAt: role.updatedAt.getTime(),
       isAdmin: role.isAdmin,
     };
 
@@ -40,7 +41,10 @@ describe('roleSerializer', () => {
     role.permissions = [permissionOne, permissionTwo];
 
     const expectedPayload = {
-      permissions: [permissionOne, permissionTwo],
+      permissions: [
+        permissionSerializer(permissionOne),
+        permissionSerializer(permissionTwo),
+      ],
     };
 
     expect(roleSerializer(role)).toMatchObject(expectedPayload);

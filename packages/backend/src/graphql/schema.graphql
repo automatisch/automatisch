@@ -1,11 +1,5 @@
 type Query {
-  getApps(
-    name: String
-    onlyWithTriggers: Boolean
-    onlyWithActions: Boolean
-  ): [App]
   getApp(key: String!): App
-  getAppConfig(key: String!): AppConfig
   getAppAuthClient(id: String!): AppAuthClient
   getAppAuthClients(appKey: String!, active: Boolean): [AppAuthClient]
   getConnectedApps(name: String): [App]
@@ -19,17 +13,6 @@ type Query {
     name: String
   ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
-  getExecution(executionId: String!): Execution
-  getExecutions(
-    limit: Int!
-    offset: Int!
-    filters: ExecutionFiltersInput
-  ): ExecutionConnection
-  getExecutionSteps(
-    executionId: String!
-    limit: Int!
-    offset: Int!
-  ): ExecutionStepConnection
   getDynamicData(
     stepId: String!
     key: String!
@@ -40,25 +23,11 @@ type Query {
     key: String!
     parameters: JSONObject
   ): [SubstepArgument]
-  getAutomatischInfo: GetAutomatischInfo
   getBillingAndUsage: GetBillingAndUsage
-  getCurrentUser: User
   getConfig(keys: [String]): JSONObject
-  getInvoices: [Invoice]
-  getPaddleInfo: GetPaddleInfo
-  getPaymentPlans: [PaymentPlan]
-  getPermissionCatalog: PermissionCatalog
-  getRole(id: String!): Role
-  getRoles: [Role]
   getNotifications: [Notification]
-  getSamlAuthProvider: SamlAuthProvider
   getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
-  getSubscriptionStatus: GetSubscriptionStatus
-  getTrialStatus: GetTrialStatus
-  getUser(id: String!): User
   getUsers(limit: Int!, offset: Int!): UserConnection
-  healthcheck: AppHealth
-  listSamlAuthProviders: [ListSamlAuthProvider]
 }
 
 type Mutation {
@@ -312,15 +281,6 @@ type Flow {
   createdAt: String
   updatedAt: String
   status: FlowStatus
-}
-
-type Execution {
-  id: String
-  testRun: Boolean
-  createdAt: String
-  updatedAt: String
-  status: String
-  flow: Flow
 }
 
 type SamlAuthProvider {
@@ -622,17 +582,8 @@ type PageInfo {
   totalPages: Int!
 }
 
-type ExecutionEdge {
-  node: Execution
-}
-
 type ExecutionStepEdge {
   node: ExecutionStep
-}
-
-type ExecutionConnection {
-  edges: [ExecutionEdge]
-  pageInfo: PageInfo
 }
 
 type ExecutionStepConnection {
@@ -640,29 +591,11 @@ type ExecutionStepConnection {
   pageInfo: PageInfo
 }
 
-type AppHealth {
-  version: String
-}
-
-type GetAutomatischInfo {
-  isCloud: Boolean
-  isMation: Boolean
-  license: License
-}
-
 type License {
   id: String
   name: String
   expireAt: String
   verified: Boolean
-}
-
-type GetTrialStatus {
-  expireAt: String
-}
-
-type GetSubscriptionStatus {
-  cancellationEffectiveDate: String
 }
 
 type GetBillingAndUsage {
@@ -702,44 +635,11 @@ type Usage {
   task: Int
 }
 
-type GetPaddleInfo {
-  sandbox: Boolean
-  vendorId: Int
-}
-
-type Invoice {
-  id: Int
-  amount: Float
-  currency: String
-  payout_date: String
-  receipt_url: String
-}
-
-type PaymentPlan {
-  name: String
-  limit: String
-  price: String
-  productId: String
-}
-
-type ListSamlAuthProvider {
-  id: String
-  name: String
-  issuer: String
-  loginUrl: String
-}
-
 type Permission {
   id: String
   action: String
   subject: String
   conditions: [String]
-}
-
-type PermissionCatalog {
-  actions: [Action]
-  subjects: [Subject]
-  conditions: [Condition]
 }
 
 type Action {
@@ -798,17 +698,6 @@ type Notification {
   createdAt: String
   documentationUrl: String
   description: String
-}
-
-input ExecutionCreatedAtFilterInput {
-  from: String
-  to: String
-}
-
-input ExecutionFiltersInput {
-  flowId: String
-  createdAt: ExecutionCreatedAtFilterInput
-  status: String
 }
 
 schema {

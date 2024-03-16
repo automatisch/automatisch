@@ -1,4 +1,3 @@
-import FormData from 'form-data';
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
@@ -7,44 +6,50 @@ export default defineAction({
   description: 'Create a new chat session for Helix AI.',
   arguments: [
     {
+      label: 'Session ID',
+      key: 'sessionId',
+      type: 'string',
+      required: false,
+      description:
+        'ID of the chat session to continue. Leave empty to start a new chat.',
+      variables: true,
+    },
+    {
+      label: 'System Prompt',
+      key: 'systemPrompt',
+      type: 'string',
+      required: false,
+      description:
+        'Optional system prompt to start the chat with. It will be used only for new chat sessions.',
+      variables: true,
+    },
+    {
       label: 'Input',
       key: 'input',
       type: 'string',
       required: true,
-      description: 'Prompt to start the chat with.',
+      description: 'User input to start the chat with.',
       variables: true,
     },
   ],
 
   async run($) {
-    const formData = new FormData();
-    formData.append('input', $.step.parameters.input);
-    formData.append('mode', 'inference');
-    formData.append('type', 'text');
-
-    const sessionResponse = await $.http.post('/api/v1/sessions', formData, {
-      headers: {
-        ...formData.getHeaders(),
-      },
+    const response = await $.http.post('/api/v1/sessions/chat', {
+      session_id: $.step.parameters.sessionId,
+      system: $.step.parameters.systemPrompt,
+      messages: [
+        {
+          role: 'user',
+          content: {
+            content_type: 'text',
+            parts: [$.step.parameters.input],
+          },
+        },
+      ],
     });
 
-    const sessionId = sessionResponse.data.id;
-
-    let chatGenerated = false;
-
-    while (!chatGenerated) {
-      const response = await $.http.get(`/api/v1/sessions/${sessionId}`);
-
-      const message =
-        response.data.interactions[response.data.interactions.length - 1];
-
-      if (message.creator === 'system' && message.state === 'complete') {
-        $.setActionItem({
-          raw: message,
-        });
-
-        chatGenerated = true;
-      }
-    }
+    $.setActionItem({
+      raw: response.data,
+    });
   },
 });

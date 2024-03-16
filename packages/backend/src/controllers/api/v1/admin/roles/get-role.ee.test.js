@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import Crypto from 'crypto';
 import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createRole } from '../../../../../../test/factories/role.js';
@@ -20,7 +21,7 @@ describe('GET /api/v1/admin/roles/:roleId', () => {
     token = createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return roles', async () => {
+  it('should return role', async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
     const response = await request(app)
@@ -34,5 +35,25 @@ describe('GET /api/v1/admin/roles/:roleId', () => {
     ]);
 
     expect(response.body).toEqual(expectedPayload);
+  });
+
+  it('should return not found response for not existing role UUID', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
+    const notExistingRoleUUID = Crypto.randomUUID();
+
+    await request(app)
+      .get(`/api/v1/admin/roles/${notExistingRoleUUID}`)
+      .set('Authorization', token)
+      .expect(404);
+  });
+
+  it('should return bad request response for invalid UUID', async () => {
+    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
+    await request(app)
+      .get('/api/v1/admin/roles/invalidRoleUUID')
+      .set('Authorization', token)
+      .expect(400);
   });
 });

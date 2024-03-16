@@ -6,7 +6,6 @@
     "start": "lerna run --stream --parallel --scope=@*/{web,backend} dev",
     "start:web": "lerna run --stream --scope=@*/web dev",
     "start:backend": "lerna run --stream --scope=@*/backend dev",
-    "lint": "lerna run --no-bail --stream --parallel --scope=@*/{web,backend} lint",
     "build:docs": "cd ./packages/docs && yarn install && yarn build"
   },
   "workspaces": {
@@ -21,8 +20,6 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.9.1",
-    "@typescript-eslint/parser": "^5.9.1",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
