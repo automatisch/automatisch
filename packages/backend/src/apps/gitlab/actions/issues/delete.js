@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Issue: Delete an Issue',
+  name: 'Issue: Delete a project Issue',
   key: 'issueDelete',
   description: 'Deletes an issue. Only for administrators and project owners.',
   arguments: [

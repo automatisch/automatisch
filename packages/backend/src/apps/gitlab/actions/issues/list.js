@@ -3,7 +3,7 @@ import paginateAll from '../../common/paginate-all.js';
 import { cleanOptionalFields } from '../lib.js';
 
 export default defineAction({
-  name: 'Issue: List/Find Project Issues',
+  name: 'Issue: List/find project Issues',
   key: 'issueList',
   description: 'Creates a new project issue.',
   arguments: [
