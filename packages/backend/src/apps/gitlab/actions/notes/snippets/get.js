@@ -1,7 +1,7 @@
 import defineAction from '../../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Get Single Snippet Note',
+  name: 'Snippet: Get Single Snippet Note',
   key: 'snippetNoteGet',
   description: 'Returns a single note for a given snippet.',
   arguments: [

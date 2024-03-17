@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Get Single Project Issue',
+  name: 'Issue: Get Single Project Issue',
   key: 'singleProjectIssueGet',
   description: 'Get a single project issue.',
   arguments: [

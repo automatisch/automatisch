@@ -1,7 +1,7 @@
 import defineAction from '../../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Update an Issue Note',
+  name: 'Issue: Update an Issue Note',
   key: 'issueNoteUpdate',
   description: 'Modify existing note of an issue.',
   arguments: [

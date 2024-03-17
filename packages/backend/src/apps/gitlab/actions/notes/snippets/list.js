@@ -2,7 +2,7 @@ import defineAction from '../../../../../helpers/define-action.js';
 import paginateAll from '../../../common/paginate-all.js';
 
 export default defineAction({
-  name: 'List Snippet Notes',
+  name: 'Snippet: List Snippet Notes',
   key: 'snippetNotesList',
   description: 'Gets a list of all notes for a single snippet.',
   arguments: [

@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'List Issue Relations',
+  name: 'Issue: List Issue Relations',
   key: 'issueLinksList',
   description:
     "Get a list of a given issue's linked issues, sorted by the relationship creation datetime (ascending). Issues are filtered according to the user authorizations.",

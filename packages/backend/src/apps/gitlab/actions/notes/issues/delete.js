@@ -1,7 +1,7 @@
 import defineAction from '../../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Delete an Issue Note',
+  name: 'Issue: Delete an Issue Note',
   key: 'issueNoteDelete',
   description: 'Deletes an existing note of an issue.',
   arguments: [

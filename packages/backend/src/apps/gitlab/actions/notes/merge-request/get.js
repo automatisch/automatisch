@@ -1,7 +1,7 @@
 import defineAction from '../../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Get Single Merge Request Note',
+  name: 'Merge Request: Get Single Merge Request Note',
   key: 'mergeRequestNoteGet',
   description: 'Returns a single note for a given merge request.',
   arguments: [

@@ -2,7 +2,7 @@ import defineAction from '../../../../helpers/define-action.js';
 import { cleanOptionalFields } from '../lib.js';
 
 export default defineAction({
-  name: 'Update an Issue',
+  name: 'Issue: Update an Issue',
   key: 'issueUpdate',
   description:
     'Updates an existing project issue. This request is also used to close or reopen an issue (with state_event).',
