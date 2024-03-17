@@ -33,6 +33,12 @@ export default defineConfig({
     sidebar: {
       '/apps/': [
         {
+          text: 'Airtable',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/airtable/connection' }],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
