@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Issue: Create an new Issue Relation',
+  name: 'Issue: Create a new Issue Relation',
   key: 'issueLinkCreate',
   description:
     'Creates a two-way relation between two issues. The user must be allowed to update both issues to succeed.',

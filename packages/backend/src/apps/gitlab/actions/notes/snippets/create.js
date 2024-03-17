@@ -1,7 +1,7 @@
 import defineAction from '../../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Snippet: Create New Snippet Note',
+  name: 'Snippet: Create a new Snippet Note',
   key: 'snippetNoteCreate',
   description: 'Creates a new note for a single snippet.',
   arguments: [
