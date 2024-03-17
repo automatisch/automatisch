@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Create new Issue',
+  name: 'Issue: Create new Issue',
   key: 'issueCreate',
   description: 'Creates a new project issue.',
   arguments: [

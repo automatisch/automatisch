@@ -2,7 +2,7 @@ import defineAction from '../../../../../helpers/define-action.js';
 import paginateAll from '../../../common/paginate-all.js';
 
 export default defineAction({
-  name: 'List Merge Request Notes',
+  name: 'Merge Request: List Merge Request Notes',
   key: 'mergeRequestNotesList',
   description: 'Gets a list of all notes for a single merge request.',
   arguments: [

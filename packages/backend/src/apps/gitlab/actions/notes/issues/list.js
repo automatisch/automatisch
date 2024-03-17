@@ -2,7 +2,7 @@ import defineAction from '../../../../../helpers/define-action.js';
 import paginateAll from '../../../common/paginate-all.js';
 
 export default defineAction({
-  name: 'List Issue Notes',
+  name: 'Issue: List Issue Notes',
   key: 'issueNotesList',
   description: 'Gets a list of all notes for a single issue.',
   arguments: [

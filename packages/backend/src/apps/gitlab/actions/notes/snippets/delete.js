@@ -1,7 +1,7 @@
 import defineAction from '../../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Delete Snippet Note',
+  name: 'Snippet: Delete Snippet Note',
   key: 'snippetNoteDelete',
   description: 'Deletes an existing note of a snippet.',
   arguments: [

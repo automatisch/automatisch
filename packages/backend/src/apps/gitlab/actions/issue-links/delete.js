@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Delete an Issue Relation',
+  name: 'Issue: Delete an Issue Relation',
   key: 'issueLinksDelete',
   description: 'Deletes an issue link, thus removes the two-way relationship.',
   arguments: [
