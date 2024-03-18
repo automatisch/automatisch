@@ -26,7 +26,6 @@ type Query {
   getBillingAndUsage: GetBillingAndUsage
   getConfig(keys: [String]): JSONObject
   getNotifications: [Notification]
-  getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
   getUsers(limit: Int!, offset: Int!): UserConnection
 }
 
