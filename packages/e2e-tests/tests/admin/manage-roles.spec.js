@@ -5,8 +5,7 @@ test.describe('Role management page', () => {
   test('Admin role is not deletable', async ({ adminRolesPage }) => {
     await adminRolesPage.navigateTo();
     const adminRow = await adminRolesPage.getRoleRowByName('Admin');
-    const rowCount = await adminRow.count();
-    await expect(rowCount).toBe(1);
+    await expect(adminRow).toHaveCount(1);
     const data = await adminRolesPage.getRowData(adminRow);
     await expect(data.role).toBe('Admin');
     await expect(data.canEdit).toBe(true);
@@ -42,8 +41,7 @@ test.describe('Role management page', () => {
         const roleRow = await adminRolesPage.getRoleRowByName(
           'Create Edit Test'
         );
-        const rowCount = await roleRow.count();
-        await expect(rowCount).toBe(1);
+        await expect(roleRow).toHaveCount(1);
         const roleData = await adminRolesPage.getRowData(roleRow);
         await expect(roleData.role).toBe('Create Edit Test');
         await expect(roleData.description).toBe('Test description');
@@ -76,8 +74,7 @@ test.describe('Role management page', () => {
         const roleRow = await adminRolesPage.getRoleRowByName(
           'Create Update Test'
         );
-        const rowCount = await roleRow.count();
-        await expect(rowCount).toBe(1);
+        await expect(roleRow).toHaveCount(1);
         const roleData = await adminRolesPage.getRowData(roleRow);
         await expect(roleData.role).toBe('Create Update Test');
         await expect(roleData.description).toBe('Update test description');
@@ -105,8 +102,7 @@ test.describe('Role management page', () => {
       await deleteModal.modal.waitFor({
         state: 'detached',
       });
-      const rowCount = await roleRow.count();
-      await expect(rowCount).toBe(0);
+      await expect(roleRow).toHaveCount(0);
     });
   });
 
@@ -468,7 +464,6 @@ test('Accessibility of role management page', async ({
     await deleteModal.modal.waitFor({
       state: 'detached',
     });
-    const rowCount = await roleRow.count();
-    await expect(rowCount).toBe(0);
+    await expect(roleRow).toHaveCount(0);
   });
 });
