@@ -3,7 +3,7 @@ import * as React from 'react';
 import api from 'helpers/api';
 import { useMutation } from '@tanstack/react-query';
 
-export default function useFlows({ flowName, page }, { onSuccess }) {
+export default function useLazyFlows({ flowName, page }, { onSuccess }) {
   const abortControllerRef = React.useRef(new AbortController());
 
   React.useEffect(() => {
