@@ -11,7 +11,7 @@ function AuthenticationPage() {
   const formatMessage = useFormatMessage();
 
   const { data: adminSamlAuthProviders } = useAdminSamlAuthProviders();
-  const samlAuthProviderId = adminSamlAuthProviders?.data?.[0].id;
+  const samlAuthProviderId = adminSamlAuthProviders?.data?.[0]?.id;
 
   const { data, isLoading: isProviderLoading } = useSamlAuthProvider({
     samlAuthProviderId,
