@@ -60,6 +60,7 @@ test.describe('User management page', () => {
           
           let userRow = await adminUsersPage.getUserRowByEmail(user.email);
           await adminUsersPage.clickEditUser(userRow);
+          await adminEditUserPage.waitForLoad(user.fullName);
           const newUserInfo = adminEditUserPage.generateUser();
           await adminEditUserPage.fullNameInput.fill(newUserInfo.fullName);
           await adminEditUserPage.updateButton.click();
@@ -269,7 +270,7 @@ test.describe('User management page', () => {
           await adminUsersPage.findUserPageWithEmail(user2.email);
           let userRow = await adminUsersPage.getUserRowByEmail(user2.email);
           await adminUsersPage.clickEditUser(userRow);
-          
+          await adminEditUserPage.waitForLoad(user2.fullName);
           await adminEditUserPage.emailInput.fill(user1.email);
           const editPageUrl = page.url();
           await adminEditUserPage.updateButton.click();
