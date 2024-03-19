@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useLazyQuery } from '@apollo/client';
 import debounce from 'lodash/debounce';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -9,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
+
 import Can from 'components/Can';
 import FlowRow from 'components/FlowRow';
 import NoResultFound from 'components/NoResultFound';
@@ -17,45 +17,37 @@ import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { GET_FLOWS } from 'graphql/queries/get-flows';
 import * as URLS from 'config/urls';
-const FLOW_PER_PAGE = 10;
-const getLimitAndOffset = (page) => ({
-  limit: FLOW_PER_PAGE,
-  offset: (page - 1) * FLOW_PER_PAGE,
-});
+import useLazyFlows from 'hooks/useLazyFlows';
+
 export default function Flows() {
   const formatMessage = useFormatMessage();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const [flowName, setFlowName] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [getFlows, { data }] = useLazyQuery(GET_FLOWS, {
-    onCompleted: () => {
-      setLoading(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const { data, mutate } = useLazyFlows(
+    { flowName, page },
+    {
+      onSuccess: () => {
+        setIsLoading(false);
+      },
     },
-  });
-  const fetchData = React.useMemo(
-    () =>
-      debounce(
-        (name) =>
-          getFlows({
-            variables: {
-              ...getLimitAndOffset(page),
-              name,
-            },
-          }),
-        300,
-      ),
-    [page, getFlows],
   );
-  React.useEffect(
-    function fetchFlowsOnSearch() {
-      setLoading(true);
-      fetchData(flowName);
-    },
-    [fetchData, flowName],
-  );
+
+  const fetchData = React.useMemo(() => debounce(mutate, 300), [mutate]);
+
+  React.useEffect(() => {
+    setIsLoading(true);
+
+    fetchData({ flowName, page });
+
+    return () => {
+      fetchData.cancel();
+    };
+  }, [fetchData, flowName, page]);
+
   React.useEffect(
     function resetPageOnSearch() {
       // reset search params which only consists of `page`
@@ -63,17 +55,15 @@ export default function Flows() {
     },
     [flowName],
   );
-  React.useEffect(function cancelDebounceOnUnmount() {
-    return () => {
-      fetchData.cancel();
-    };
-  }, []);
-  const { pageInfo, edges } = data?.getFlows || {};
-  const flows = edges?.map(({ node }) => node);
+
+  const flows = data?.data || [];
+  const pageInfo = data?.meta;
   const hasFlows = flows?.length;
+
   const onSearchChange = React.useCallback((event) => {
     setFlowName(event.target.value);
   }, []);
+
   return (
     <Box sx={{ py: 3 }}>
       <Container>
@@ -116,18 +106,18 @@ export default function Flows() {
         </Grid>
 
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
-        {loading && (
+        {isLoading && (
           <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
         )}
-        {!loading &&
+        {!isLoading &&
           flows?.map((flow) => <FlowRow key={flow.id} flow={flow} />)}
-        {!loading && !hasFlows && (
+        {!isLoading && !hasFlows && (
           <NoResultFound
             text={formatMessage('flows.noFlows')}
             to={URLS.CREATE_FLOW}
           />
         )}
-        {!loading && pageInfo && pageInfo.totalPages > 1 && (
+        {!isLoading && pageInfo && pageInfo.totalPages > 1 && (
           <Pagination
             sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
             page={pageInfo?.currentPage}

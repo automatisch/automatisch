@@ -4,11 +4,14 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { GET_FLOWS } from 'graphql/queries/get-flows';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
+
 import * as URLS from 'config/urls';
 import AppFlowRow from 'components/FlowRow';
 import NoResultFound from 'components/NoResultFound';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 const FLOW_PER_PAGE = 10;
+
 const getLimitAndOffset = (page) => ({
   limit: FLOW_PER_PAGE,
   offset: (page - 1) * FLOW_PER_PAGE,
@@ -19,6 +22,7 @@ function AppFlows(props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const connectionId = searchParams.get('connectionId') || undefined;
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
+
   const { data } = useQuery(GET_FLOWS, {
     variables: {
       appKey,
@@ -26,10 +30,12 @@ function AppFlows(props) {
       ...getLimitAndOffset(page),
     },
   });
+
   const getFlows = data?.getFlows || {};
   const { pageInfo, edges } = getFlows;
   const flows = edges?.map(({ node }) => node);
   const hasFlows = flows?.length;
+
   if (!hasFlows) {
     return (
       <NoResultFound
@@ -39,6 +45,7 @@ function AppFlows(props) {
       />
     );
   }
+
   return (
     <>
       {flows?.map((appFlow) => (
