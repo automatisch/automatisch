@@ -5,6 +5,8 @@ items:
     desc: Get value from the persistent datastore.
   - name: Set value
     desc: Set value to the persistent datastore.
+  - name: Update value
+    desc: Update value in the persistent datastore.
 ---
 
 <script setup>
