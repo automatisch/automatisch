@@ -13,7 +13,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { context } = github;
             const { pull_request } = context.payload;
 
             const label = 'documentation-change';
