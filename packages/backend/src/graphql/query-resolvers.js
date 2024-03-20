@@ -9,7 +9,6 @@ import getDynamicFields from './queries/get-dynamic-fields.js';
 import getFlow from './queries/get-flow.js';
 import getNotifications from './queries/get-notifications.js';
 import getStepWithTestExecutions from './queries/get-step-with-test-executions.js';
-import getUsers from './queries/get-users.js';
 import testConnection from './queries/test-connection.js';
 
 const queryResolvers = {
@@ -24,7 +23,6 @@ const queryResolvers = {
   getFlow,
   getNotifications,
   getStepWithTestExecutions,
-  getUsers,
   testConnection,
 };
 

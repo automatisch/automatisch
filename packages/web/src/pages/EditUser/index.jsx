@@ -7,6 +7,7 @@ import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import Can from 'components/Can';
 import Container from 'components/Container';
@@ -18,7 +19,7 @@ import * as URLS from 'config/urls';
 import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
-import useUser from 'hooks/useUser';
+import useAdminUser from 'hooks/useAdminUser';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -28,12 +29,13 @@ export default function EditUser() {
   const formatMessage = useFormatMessage();
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
-  const { data: userData, isLoading: isUserLoading } = useUser({ userId });
+  const { data: userData, isLoading: isUserLoading } = useAdminUser({ userId });
   const user = userData?.data;
   const { data, isLoading: isRolesLoading } = useRoles();
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleUserUpdate = async (userDataToUpdate) => {
     try {
@@ -49,6 +51,8 @@ export default function EditUser() {
           },
         },
       });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'user', userId] });
 
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',

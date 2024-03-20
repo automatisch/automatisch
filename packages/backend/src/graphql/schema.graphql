@@ -19,7 +19,6 @@ type Query {
   getBillingAndUsage: GetBillingAndUsage
   getConfig(keys: [String]): JSONObject
   getNotifications: [Notification]
-  getUsers(limit: Int!, offset: Int!): UserConnection
 }
 
 type Mutation {
@@ -286,16 +285,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-type UserConnection {
-  edges: [UserEdge]
-  pageInfo: PageInfo
-  totalCount: Int
-}
-
-type UserEdge {
-  node: User
 }
 
 input CreateConnectionInput {
