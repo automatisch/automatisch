@@ -14,7 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import TableFooter from '@mui/material/TableFooter';
 import DeleteUserButton from 'components/DeleteUserButton/index.ee';
 import ListLoader from 'components/ListLoader';
-import useUsers from 'hooks/useUsers';
+import useAdminUsers from 'hooks/useAdminUsers';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
 import TablePaginationActions from './TablePaginationActions';
@@ -23,7 +23,7 @@ import { TablePagination } from './style';
 export default function UserList() {
   const formatMessage = useFormatMessage();
   const [page, setPage] = React.useState(0);
-  const { data: usersData, isLoading } = useUsers(page + 1);
+  const { data: usersData, isLoading } = useAdminUsers(page + 1);
   const users = usersData?.data;
   const { count } = usersData?.meta || {};
 

@@ -1,17 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import api from 'helpers/api';
 
-export default function useUsers(page) {
-  
+export default function useAdminUser({ userId }) {
   const query = useQuery({
-    queryKey: ['users', page],
+    queryKey: ['admin', 'user', userId],
     queryFn: async ({ signal }) => {
-      const { data } = await api.get(`/v1/admin/users`, {
+      const { data } = await api.get(`/v1/admin/users/${userId}`, {
         signal,
-        params: { page },
       });
       return data;
     },
+    enabled: !!userId,
   });
 
   return query;

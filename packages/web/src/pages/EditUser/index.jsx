@@ -18,7 +18,7 @@ import * as URLS from 'config/urls';
 import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
-import useUser from 'hooks/useUser';
+import useAdminUser from 'hooks/useAdminUser';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -28,7 +28,7 @@ export default function EditUser() {
   const formatMessage = useFormatMessage();
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
-  const { data: userData, isLoading: isUserLoading } = useUser({ userId });
+  const { data: userData, isLoading: isUserLoading } = useAdminUser({ userId });
   const user = userData?.data;
   const { data, isLoading: isRolesLoading } = useRoles();
   const roles = data?.data;
