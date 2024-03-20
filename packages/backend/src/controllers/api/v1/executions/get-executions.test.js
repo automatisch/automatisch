@@ -42,8 +42,11 @@ describe('GET /api/v1/executions', () => {
 
     const currentUserExecutionTwo = await createExecution({
       flowId: currentUserFlow.id,
-      deletedAt: new Date().toISOString(),
     });
+
+    await currentUserExecutionTwo
+      .$query()
+      .patchAndFetch({ deletedAt: new Date().toISOString() });
 
     await createPermission({
       action: 'read',
@@ -87,8 +90,11 @@ describe('GET /api/v1/executions', () => {
 
     const anotherUserExecutionTwo = await createExecution({
       flowId: anotherUserFlow.id,
-      deletedAt: new Date().toISOString(),
     });
+
+    await anotherUserExecutionTwo
+      .$query()
+      .patchAndFetch({ deletedAt: new Date().toISOString() });
 
     await createPermission({
       action: 'read',
