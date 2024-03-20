@@ -7,7 +7,7 @@ export const createFlow = async (params = {}) => {
   params.createdAt = params?.createdAt || new Date().toISOString();
   params.updatedAt = params?.updatedAt || new Date().toISOString();
 
-  const flow = await Flow.query().insert(params).returning('*');
+  const flow = await Flow.query().insertAndFetch(params);
 
   return flow;
 };

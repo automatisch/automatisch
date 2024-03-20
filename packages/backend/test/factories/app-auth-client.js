@@ -17,9 +17,7 @@ export const createAppAuthClient = async (params = {}) => {
   params.formattedAuthDefaults =
     params?.formattedAuthDefaults || formattedAuthDefaults;
 
-  const appAuthClient = await AppAuthClient.query()
-    .insert(params)
-    .returning('*');
+  const appAuthClient = await AppAuthClient.query().insertAndFetch(params);
 
   return appAuthClient;
 };
