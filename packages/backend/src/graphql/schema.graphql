@@ -5,13 +5,6 @@ type Query {
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
-  getFlows(
-    limit: Int!
-    offset: Int!
-    appKey: String
-    connectionId: String
-    name: String
-  ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
   getDynamicData(
     stepId: String!
@@ -255,15 +248,6 @@ type Field {
   docUrl: String
   clickToCopy: Boolean
   options: [SubstepArgumentOption]
-}
-
-type FlowConnection {
-  edges: [FlowEdge]
-  pageInfo: PageInfo
-}
-
-type FlowEdge {
-  node: Flow
 }
 
 enum FlowStatus {
