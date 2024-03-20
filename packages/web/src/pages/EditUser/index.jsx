@@ -7,6 +7,7 @@ import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import Can from 'components/Can';
 import Container from 'components/Container';
@@ -34,6 +35,7 @@ export default function EditUser() {
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleUserUpdate = async (userDataToUpdate) => {
     try {
@@ -49,6 +51,8 @@ export default function EditUser() {
           },
         },
       });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'user', userId] });
 
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',
