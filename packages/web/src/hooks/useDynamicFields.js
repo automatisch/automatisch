@@ -4,7 +4,10 @@ import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
 import isEqual from 'lodash/isEqual';
 import { GET_DYNAMIC_FIELDS } from 'graphql/queries/get-dynamic-fields';
+
 const variableRegExp = /({.*?})/;
+
+
 // TODO: extract this function to a separate file
 function computeArguments(args, getValues) {
   const initialValue = {};
@@ -22,6 +25,7 @@ function computeArguments(args, getValues) {
     return result;
   }, initialValue);
 }
+
 /**
  * Fetch the dynamic fields for the given step.
  * This hook must be within a react-hook-form context.
@@ -35,6 +39,7 @@ function useDynamicFields(stepId, schema) {
     useLazyQuery(GET_DYNAMIC_FIELDS);
   const { getValues } = useFormContext();
   const formValues = getValues();
+
   /**
    * Return `null` when even a field is missing value.
    *
@@ -64,6 +69,7 @@ function useDynamicFields(stepId, schema) {
      * `getValues` is for convenience as it supports paths for fields like `getValues('foo.bar.baz')`.
      */
   }, [schema, formValues, getValues]);
+
   React.useEffect(() => {
     if (
       schema.type === 'dropdown' &&
@@ -79,10 +85,12 @@ function useDynamicFields(stepId, schema) {
       });
     }
   }, [getDynamicFields, stepId, schema, computedVariables]);
+
   return {
     called,
     data: data?.getDynamicFields,
     loading,
   };
 }
+
 export default useDynamicFields;
