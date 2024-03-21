@@ -75,9 +75,20 @@ export default async (flowId, request, response) => {
       });
 
       if (actionStep.key === 'respondWith' && !response.headersSent) {
+        const { headers, statusCode, body } = actionExecutionStep.dataOut;
+
+        // we set the custom response headers
+        if (headers) {
+          for (const [key, value] of Object.entries(headers)) {
+            if (key) {
+              response.set(key, value);
+            }
+          }
+        }
+
         // we send the response only if it's not sent yet. This allows us to early respond from the flow.
-        response.status(actionExecutionStep.dataOut.statusCode);
-        response.send(actionExecutionStep.dataOut.body);
+        response.status(statusCode);
+        response.send(body);
       }
     }
   }
