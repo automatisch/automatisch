@@ -26,6 +26,4 @@ export default async (request, response) => {
   }
 
   await handlerSync(flowId, request, response);
-
-  response.sendStatus(204);
 };

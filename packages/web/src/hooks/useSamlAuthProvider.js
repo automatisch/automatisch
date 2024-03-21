@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useSamlAuthProvider({ samlAuthProviderId }) {
+export default function useSamlAuthProvider({ samlAuthProviderId } = {}) {
   const query = useQuery({
     queryKey: ['samlAuthProvider', samlAuthProviderId],
     queryFn: async ({ signal }) => {

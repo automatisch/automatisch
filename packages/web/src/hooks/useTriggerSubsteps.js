@@ -15,7 +15,7 @@ export default function useTriggerSubsteps({ appKey, triggerKey }) {
 
       return data;
     },
-    enabled: !!appKey,
+    enabled: !!appKey && !!triggerKey,
   });
 
   return query;

@@ -6,6 +6,7 @@ import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import Can from 'components/Can';
 import Container from 'components/Container';
@@ -29,6 +30,7 @@ export default function CreateUser() {
   const { data, loading: isRolesLoading } = useRoles();
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
+  const queryClient = useQueryClient();
 
   const handleUserCreation = async (userData) => {
     try {
@@ -44,7 +46,7 @@ export default function CreateUser() {
           },
         },
       });
-
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
       enqueueSnackbar(formatMessage('createUser.successfullyCreated'), {
         variant: 'success',
         persist: true,

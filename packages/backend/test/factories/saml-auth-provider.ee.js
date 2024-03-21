@@ -25,9 +25,9 @@ export const createSamlAuthProvider = async (params = {}) => {
   params.defaultRoleId = params?.defaultRoleId || (await createRole()).id;
   params.active = params?.active || true;
 
-  const samlAuthProvider = await SamlAuthProvider.query()
-    .insert(params)
-    .returning('*');
+  const samlAuthProvider = await SamlAuthProvider.query().insertAndFetch(
+    params
+  );
 
   return samlAuthProvider;
 };
