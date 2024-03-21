@@ -15,7 +15,7 @@ export const createSubscription = async (params = {}) => {
   params.nextBillDate =
     params?.nextBillDate || DateTime.now().plus({ days: 30 }).toISODate();
 
-  const subscription = await Subscription.query().insert(params).returning('*');
+  const subscription = await Subscription.query().insertAndFetch(params);
 
   return subscription;
 };

@@ -7,7 +7,7 @@ export const createPermission = async (params = {}) => {
   params.subject = params?.subject || 'User';
   params.conditions = params?.conditions || ['isCreator'];
 
-  const permission = await Permission.query().insert(params).returning('*');
+  const permission = await Permission.query().insertAndFetch(params);
 
   return permission;
 };

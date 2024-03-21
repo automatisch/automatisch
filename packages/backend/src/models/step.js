@@ -165,7 +165,7 @@ class Step extends Base {
     if (!isTrigger || !appKey || !key) return null;
 
     const app = await App.findOneByKey(appKey);
-    const command = app.triggers.find((trigger) => trigger.key === key);
+    const command = app.triggers?.find((trigger) => trigger.key === key);
 
     return command;
   }
@@ -175,7 +175,7 @@ class Step extends Base {
     if (!isAction || !appKey || !key) return null;
 
     const app = await App.findOneByKey(appKey);
-    const command = app.actions.find((action) => action.key === key);
+    const command = app.actions?.find((action) => action.key === key);
 
     return command;
   }

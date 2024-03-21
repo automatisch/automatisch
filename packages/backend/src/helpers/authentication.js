@@ -43,7 +43,6 @@ export const authenticationRules = {
   Query: {
     '*': isAuthenticatedRule,
     getConfig: allow,
-    getNotifications: allow,
   },
   Mutation: {
     '*': isAuthenticatedRule,

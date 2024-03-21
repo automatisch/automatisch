@@ -37,6 +37,7 @@ export class LoginPage extends BasePage {
     password = LoginPage.defaultPassword
   ) {
     await this.page.goto(this.path);
+    await this.emailTextField.waitFor({ state: 'visible' });
     await this.emailTextField.fill(email);
     await this.passwordTextField.fill(password);
 

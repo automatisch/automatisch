@@ -9,9 +9,7 @@ export const createExecutionStep = async (params = {}) => {
   params.dataIn = params?.dataIn || { dataIn: 'dataIn' };
   params.dataOut = params?.dataOut || { dataOut: 'dataOut' };
 
-  const executionStep = await ExecutionStep.query()
-    .insert(params)
-    .returning('*');
+  const executionStep = await ExecutionStep.query().insertAndFetch(params);
 
   return executionStep;
 };

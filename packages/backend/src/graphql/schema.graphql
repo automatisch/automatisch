@@ -5,13 +5,6 @@ type Query {
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
-  getFlows(
-    limit: Int!
-    offset: Int!
-    appKey: String
-    connectionId: String
-    name: String
-  ): FlowConnection
   getStepWithTestExecutions(stepId: String!): [Step]
   getDynamicData(
     stepId: String!
@@ -25,9 +18,6 @@ type Query {
   ): [SubstepArgument]
   getBillingAndUsage: GetBillingAndUsage
   getConfig(keys: [String]): JSONObject
-  getNotifications: [Notification]
-  getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
-  getUsers(limit: Int!, offset: Int!): UserConnection
 }
 
 type Mutation {
@@ -258,15 +248,6 @@ type Field {
   options: [SubstepArgumentOption]
 }
 
-type FlowConnection {
-  edges: [FlowEdge]
-  pageInfo: PageInfo
-}
-
-type FlowEdge {
-  node: Flow
-}
-
 enum FlowStatus {
   paused
   published
@@ -303,16 +284,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-type UserConnection {
-  edges: [UserEdge]
-  pageInfo: PageInfo
-  totalCount: Int
-}
-
-type UserEdge {
-  node: User
 }
 
 input CreateConnectionInput {
@@ -691,13 +662,6 @@ input UpdateAppAuthClientInput {
   name: String
   formattedAuthDefaults: JSONObject
   active: Boolean
-}
-
-type Notification {
-  name: String
-  createdAt: String
-  documentationUrl: String
-  description: String
 }
 
 schema {

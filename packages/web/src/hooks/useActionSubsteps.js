@@ -15,7 +15,7 @@ export default function useActionSubsteps({ appKey, actionKey }) {
 
       return data;
     },
-    enabled: !!appKey,
+    enabled: !!appKey && !!actionKey,
   });
 
   return query;
