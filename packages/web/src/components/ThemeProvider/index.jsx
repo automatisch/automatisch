@@ -6,7 +6,7 @@ import set from 'lodash/set';
 import * as React from 'react';
 
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
-import useConfig from 'hooks/useConfig';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import { defaultTheme, mationTheme } from 'styles/theme';
 
 const customizeTheme = (theme, config) => {
@@ -28,7 +28,8 @@ const ThemeProvider = ({ children, ...props }) => {
   const { data: automatischInfo, isPending: isAutomatischInfoPending } =
     useAutomatischInfo();
   const isMation = automatischInfo?.data.isMation;
-  const { config, loading: configLoading } = useConfig();
+  const { data: configData, isLoading: configLoading } = useAutomatischConfig();
+  const config = configData?.data;
 
   const customTheme = React.useMemo(() => {
     const installationTheme = isMation ? mationTheme : defaultTheme;
@@ -51,4 +52,5 @@ const ThemeProvider = ({ children, ...props }) => {
     </BaseThemeProvider>
   );
 };
+
 export default ThemeProvider;

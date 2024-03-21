@@ -1,15 +1,22 @@
 import * as React from 'react';
-import useConfig from 'hooks/useConfig';
+
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
+
 const MetadataProvider = ({ children }) => {
-  const { config } = useConfig();
+  const { data: configData } = useAutomatischConfig();
+  const config = configData?.data;
+
   React.useEffect(() => {
     document.title = config?.title || 'Automatisch';
   }, [config?.title]);
+
   React.useEffect(() => {
     const existingFaviconElement = document.querySelector("link[rel~='icon']");
+
     if (config?.disableFavicon === true) {
       existingFaviconElement?.remove();
     }
+
     if (config?.disableFavicon === false) {
       if (existingFaviconElement) {
         existingFaviconElement.href = '/browser-tab.ico';
@@ -20,7 +27,10 @@ const MetadataProvider = ({ children }) => {
         newFaviconElement.href = '/browser-tab.ico';
       }
     }
+    
   }, [config?.disableFavicon]);
+
   return <>{children}</>;
 };
+
 export default MetadataProvider;
