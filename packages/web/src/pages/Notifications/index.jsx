@@ -9,14 +9,15 @@ import PageTitle from 'components/PageTitle';
 import * as URLS from 'config/urls';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useNotifications from 'hooks/useNotifications';
+import useAutomatischNotifications from 'hooks/useAutomatischNotifications';
 
 export default function Updates() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const { notifications } = useNotifications();
+  const { data: notificationsData } = useAutomatischNotifications();
   const { data: automatischInfo, isPending } = useAutomatischInfo();
   const isMation = automatischInfo?.data.isMation;
+  const notifications = notificationsData?.data || [];
 
   React.useEffect(
     function redirectToHomepageInMation() {

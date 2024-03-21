@@ -18,7 +18,6 @@ type Query {
   ): [SubstepArgument]
   getBillingAndUsage: GetBillingAndUsage
   getConfig(keys: [String]): JSONObject
-  getNotifications: [Notification]
 }
 
 type Mutation {
@@ -663,13 +662,6 @@ input UpdateAppAuthClientInput {
   name: String
   formattedAuthDefaults: JSONObject
   active: Boolean
-}
-
-type Notification {
-  name: String
-  createdAt: String
-  documentationUrl: String
-  description: String
 }
 
 schema {

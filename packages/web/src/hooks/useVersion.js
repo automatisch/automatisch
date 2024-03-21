@@ -1,11 +1,11 @@
 import { compare } from 'compare-versions';
 import { useQuery } from '@tanstack/react-query';
 
-import useNotifications from 'hooks/useNotifications';
+import useAutomatischNotifications from 'hooks/useAutomatischNotifications';
 import api from 'helpers/api';
 
 export default function useVersion() {
-  const { notifications } = useNotifications();
+  const { data: notificationsData } = useAutomatischNotifications();
   const { data } = useQuery({
     queryKey: ['automatischVersion'],
     queryFn: async ({ signal }) => {
@@ -17,6 +17,7 @@ export default function useVersion() {
     },
   });
   const version = data?.data?.version;
+  const notifications = notificationsData?.data || [];
 
   const newVersionCount = notifications.reduce((count, notification) => {
     if (!version) return 0;
