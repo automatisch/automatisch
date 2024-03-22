@@ -18,7 +18,7 @@ import adminSamlAuthProvidersRouter from './api/v1/admin/saml-auth-providers.ee.
 import rolesRouter from './api/v1/admin/roles.ee.js';
 import permissionsRouter from './api/v1/admin/permissions.ee.js';
 import adminUsersRouter from './api/v1/admin/users.ee.js';
-import adminAppAuthClientsRouter from './api/v1/admin/app-auth-clients.js';
+import adminAppAuthClientsRouter from './api/v1/admin/app-auth-clients.ee.js';
 
 const router = Router();
 
