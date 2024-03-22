@@ -17,7 +17,6 @@ type Query {
     parameters: JSONObject
   ): [SubstepArgument]
   getBillingAndUsage: GetBillingAndUsage
-  getConfig(keys: [String]): JSONObject
 }
 
 type Mutation {

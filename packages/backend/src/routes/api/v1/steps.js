@@ -4,6 +4,7 @@ import { authenticateUser } from '../../../helpers/authentication.js';
 import { authorizeUser } from '../../../helpers/authorization.js';
 import getConnectionAction from '../../../controllers/api/v1/steps/get-connection.js';
 import getPreviousStepsAction from '../../../controllers/api/v1/steps/get-previous-steps.js';
+import createDynamicFieldsAction from '../../../controllers/api/v1/steps/create-dynamic-fields.js';
 
 const router = Router();
 
@@ -19,6 +20,13 @@ router.get(
   authenticateUser,
   authorizeUser,
   asyncHandler(getPreviousStepsAction)
+);
+
+router.post(
+  '/:stepId/dynamic-fields',
+  authenticateUser,
+  authorizeUser,
+  asyncHandler(createDynamicFieldsAction)
 );
 
 export default router;

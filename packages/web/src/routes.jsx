@@ -1,4 +1,5 @@
 import { Route, Routes as ReactRouterRoutes, Navigate } from 'react-router-dom';
+
 import Layout from 'components/Layout';
 import NoResultFound from 'components/NotFound';
 import PublicLayout from 'components/PublicLayout';
@@ -19,11 +20,14 @@ import * as URLS from 'config/urls';
 import settingsRoutes from './settingsRoutes';
 import adminSettingsRoutes from './adminSettingsRoutes';
 import Notifications from 'pages/Notifications';
-import useConfig from 'hooks/useConfig';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAuthentication from 'hooks/useAuthentication';
+
 function Routes() {
-  const { config } = useConfig();
+  const { data: configData } = useAutomatischConfig();
   const { isAuthenticated } = useAuthentication();
+  const config = configData?.data;
+
   return (
     <ReactRouterRoutes>
       <Route
@@ -147,4 +151,5 @@ function Routes() {
     </ReactRouterRoutes>
   );
 }
+
 export default <Routes />;

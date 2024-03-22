@@ -7,6 +7,7 @@ import Connection from './connection.js';
 import ExecutionStep from './execution-step.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import appConfig from '../config/app.js';
+import globalVariable from '../helpers/global-variable.js';
 
 class Step extends Base {
   static tableName = 'steps';
@@ -194,6 +195,26 @@ class Step extends Base {
     ).arguments;
 
     return existingArguments;
+  }
+
+  async createDynamicFields(dynamicFieldsKey, parameters) {
+    const connection = await this.$relatedQuery('connection');
+    const flow = await this.$relatedQuery('flow');
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection, app, flow, step: this });
+
+    const command = app.dynamicFields.find(
+      (data) => data.key === dynamicFieldsKey
+    );
+
+    for (const parameterKey in parameters) {
+      const parameterValue = parameters[parameterKey];
+      $.step.parameters[parameterKey] = parameterValue;
+    }
+
+    const dynamicFields = (await command.run($)) || [];
+
+    return dynamicFields;
   }
 
   async updateWebhookUrl() {

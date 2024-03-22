@@ -42,7 +42,6 @@ const isAuthenticatedRule = rule()(isAuthenticated);
 export const authenticationRules = {
   Query: {
     '*': isAuthenticatedRule,
-    getConfig: allow,
   },
   Mutation: {
     '*': isAuthenticatedRule,

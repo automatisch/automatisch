@@ -1,10 +1,14 @@
-import useConfig from 'hooks/useConfig';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import { LogoImage } from './style.ee';
 
 const CustomLogo = () => {
-  const { config, loading } = useConfig(['logo.svgData']);
-  if (loading || !config?.['logo.svgData']) return null;
+  const { data: configData, isLoading } = useAutomatischConfig();
+  const config = configData?.data;
+
+  if (isLoading || !config?.['logo.svgData']) return null;
+
   const logoSvgData = config['logo.svgData'];
+
   return (
     <LogoImage
       data-test="custom-logo"

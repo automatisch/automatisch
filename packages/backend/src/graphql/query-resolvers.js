@@ -2,7 +2,6 @@ import getApp from './queries/get-app.js';
 import getAppAuthClient from './queries/get-app-auth-client.ee.js';
 import getAppAuthClients from './queries/get-app-auth-clients.ee.js';
 import getBillingAndUsage from './queries/get-billing-and-usage.ee.js';
-import getConfig from './queries/get-config.ee.js';
 import getConnectedApps from './queries/get-connected-apps.js';
 import getDynamicData from './queries/get-dynamic-data.js';
 import getDynamicFields from './queries/get-dynamic-fields.js';
@@ -15,7 +14,6 @@ const queryResolvers = {
   getAppAuthClient,
   getAppAuthClients,
   getBillingAndUsage,
-  getConfig,
   getConnectedApps,
   getDynamicData,
   getDynamicFields,
