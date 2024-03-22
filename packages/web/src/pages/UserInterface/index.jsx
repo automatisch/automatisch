@@ -3,43 +3,44 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import merge from 'lodash/merge';
 import * as React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+
 import ColorInput from 'components/ColorInput';
 import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
 import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
-import { GET_CONFIG } from 'graphql/queries/get-config.ee';
 import nestObject from 'helpers/nestObject';
-import useConfig from 'hooks/useConfig';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import {
   primaryDarkColor,
   primaryLightColor,
   primaryMainColor,
 } from 'styles/theme';
+
 const getPrimaryMainColor = (color) => color || primaryMainColor;
 const getPrimaryDarkColor = (color) => color || primaryDarkColor;
 const getPrimaryLightColor = (color) => color || primaryLightColor;
+
 const defaultValues = {
   title: 'Automatisch',
   'palette.primary.main': primaryMainColor,
   'palette.primary.dark': primaryDarkColor,
   'palette.primary.light': primaryLightColor,
 };
+
 export default function UserInterface() {
   const formatMessage = useFormatMessage();
   const [updateConfig, { loading }] = useMutation(UPDATE_CONFIG);
-  const { config, loading: configLoading } = useConfig([
-    'title',
-    'palette.primary.main',
-    'palette.primary.light',
-    'palette.primary.dark',
-    'logo.svgData',
-  ]);
+  const { data: configData, isLoading: configLoading } = useAutomatischConfig();
+  const config = configData?.data;
+  const queryClient = useQueryClient();
+
   const enqueueSnackbar = useEnqueueSnackbar();
   const configWithDefaults = merge({}, defaultValues, nestObject(config));
   const handleUserInterfaceUpdate = async (uiData) => {
@@ -64,37 +65,9 @@ export default function UserInterface() {
         optimisticResponse: {
           updateConfig: input,
         },
-        update: async function (cache, { data: { updateConfig } }) {
-          const newConfigWithDefaults = merge({}, defaultValues, updateConfig);
-          cache.writeQuery({
-            query: GET_CONFIG,
-            data: {
-              getConfig: newConfigWithDefaults,
-            },
-          });
-          cache.writeQuery({
-            query: GET_CONFIG,
-            data: {
-              getConfig: newConfigWithDefaults,
-            },
-            variables: {
-              keys: ['logo.svgData'],
-            },
-          });
-          cache.writeQuery({
-            query: GET_CONFIG,
-            data: {
-              getConfig: newConfigWithDefaults,
-            },
-            variables: {
-              keys: [
-                'title',
-                'palette.primary.main',
-                'palette.primary.light',
-                'palette.primary.dark',
-                'logo.svgData',
-              ],
-            },
+        update: async function () {
+          queryClient.invalidateQueries({
+            queryKey: ['automatisch', 'config'],
           });
         },
       });

@@ -15,7 +15,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useVersion from 'hooks/useVersion';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
-import useConfig from 'hooks/useConfig';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
 
 const drawerLinks = [
   {
@@ -77,11 +77,9 @@ const generateDrawerBottomLinks = async ({
 
 export default function PublicLayout({ children }) {
   const version = useVersion();
-  const { config, loading } = useConfig([
-    'disableNotificationsPage',
-    'additionalDrawerLink',
-    'additionalDrawerLinkText',
-  ]);
+  const { data: configData, isLoading } = useAutomatischConfig();
+  const config = configData?.data;
+
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const [bottomLinks, setBottomLinks] = React.useState([]);
@@ -102,10 +100,10 @@ export default function PublicLayout({ children }) {
       setBottomLinks(newBottomLinks);
     }
 
-    if (loading) return;
+    if (isLoading) return;
 
     perform();
-  }, [config, loading, version.newVersionCount]);
+  }, [config, isLoading, version.newVersionCount]);
 
   return (
     <>
