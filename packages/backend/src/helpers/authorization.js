@@ -23,6 +23,10 @@ const authorizationList = {
     action: 'update',
     subject: 'Flow',
   },
+  'POST /api/v1/steps/:stepId/dynamic-fields': {
+    action: 'update',
+    subject: 'Flow',
+  },
   'GET /api/v1/connections/:connectionId/flows': {
     action: 'read',
     subject: 'Flow',
