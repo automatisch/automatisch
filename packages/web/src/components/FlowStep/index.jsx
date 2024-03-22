@@ -105,7 +105,7 @@ function generateValidationSchema(substeps) {
 }
 
 function FlowStep(props) {
-  const { collapsed, onChange, onContinue } = props;
+  const { collapsed, onChange, onContinue, flowId } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
   const step = props.step;
@@ -328,6 +328,7 @@ function FlowStep(props) {
                               : false
                           }
                           step={step}
+                          flowId={flowId}
                         />
                       )}
 
@@ -363,6 +364,7 @@ function FlowStep(props) {
           deletable={!isTrigger}
           onClose={onContextMenuClose}
           anchorEl={anchorEl}
+          flowId={flowId}
         />
       )}
     </Wrapper>

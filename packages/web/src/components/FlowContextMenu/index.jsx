@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+
 import Can from 'components/Can';
 import * as URLS from 'config/urls';
 import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
@@ -12,25 +13,28 @@ import { DUPLICATE_FLOW } from 'graphql/mutations/duplicate-flow';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 function ContextMenu(props) {
-  const { flowId, onClose, anchorEl } = props;
+  const { flowId, onClose, anchorEl, onDuplicateFlow, onDeleteFlow } = props;
   const enqueueSnackbar = useEnqueueSnackbar();
   const [deleteFlow] = useMutation(DELETE_FLOW);
-  const [duplicateFlow] = useMutation(DUPLICATE_FLOW, {
-    refetchQueries: ['GetFlows'],
-  });
+  const [duplicateFlow] = useMutation(DUPLICATE_FLOW);
   const formatMessage = useFormatMessage();
+
   const onFlowDuplicate = React.useCallback(async () => {
     await duplicateFlow({
       variables: { input: { id: flowId } },
     });
+
     enqueueSnackbar(formatMessage('flow.successfullyDuplicated'), {
       variant: 'success',
       SnackbarProps: {
         'data-test': 'snackbar-duplicate-flow-success',
       },
     });
+
+    onDuplicateFlow?.();
     onClose();
-  }, [flowId, onClose, duplicateFlow]);
+  }, [flowId, onClose, duplicateFlow, onDuplicateFlow]);
+
   const onFlowDelete = React.useCallback(async () => {
     await deleteFlow({
       variables: { input: { id: flowId } },
@@ -44,11 +48,15 @@ function ContextMenu(props) {
         });
       },
     });
+
     enqueueSnackbar(formatMessage('flow.successfullyDeleted'), {
       variant: 'success',
     });
+
+    onDeleteFlow?.();
     onClose();
-  }, [flowId, onClose, deleteFlow]);
+  }, [flowId, onClose, deleteFlow, onDeleteFlow]);
+
   return (
     <Menu
       open={true}
@@ -90,6 +98,8 @@ ContextMenu.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]).isRequired,
+  onDeleteFlow: PropTypes.func,
+  onDuplicateFlow: PropTypes.func,
 };
 
 export default ContextMenu;

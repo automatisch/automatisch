@@ -6,6 +6,8 @@ import CardActionArea from '@mui/material/CardActionArea';
 import Chip from '@mui/material/Chip';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { DateTime } from 'luxon';
+import PropTypes from 'prop-types';
+
 import FlowAppIcons from 'components/FlowAppIcons';
 import FlowContextMenu from 'components/FlowContextMenu';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -35,7 +37,7 @@ function FlowRow(props) {
   const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { flow } = props;
+  const { flow, onDuplicateFlow, onDeleteFlow } = props;
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -112,6 +114,8 @@ function FlowRow(props) {
           flowId={flow.id}
           onClose={handleClose}
           anchorEl={anchorEl}
+          onDeleteFlow={onDeleteFlow}
+          onDuplicateFlow={onDuplicateFlow}
         />
       )}
     </>
@@ -120,6 +124,8 @@ function FlowRow(props) {
 
 FlowRow.propTypes = {
   flow: FlowPropType.isRequired,
+  onDeleteFlow: PropTypes.func,
+  onDuplicateFlow: PropTypes.func,
 };
 
 export default FlowRow;
