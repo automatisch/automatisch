@@ -5,32 +5,38 @@ import MenuItem from '@mui/material/MenuItem';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+
 import Can from 'components/Can';
 import * as URLS from 'config/urls';
 import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
 import { DUPLICATE_FLOW } from 'graphql/mutations/duplicate-flow';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { useQueryClient } from '@tanstack/react-query';
 
 function ContextMenu(props) {
-  const { flowId, onClose, anchorEl } = props;
+  const { flowId, onClose, anchorEl, mutate } = props;
   const enqueueSnackbar = useEnqueueSnackbar();
   const [deleteFlow] = useMutation(DELETE_FLOW);
-  const [duplicateFlow] = useMutation(DUPLICATE_FLOW, {
-    refetchQueries: ['GetFlows'],
-  });
+  const [duplicateFlow] = useMutation(DUPLICATE_FLOW);
   const formatMessage = useFormatMessage();
+  const queryClient = useQueryClient();
+
   const onFlowDuplicate = React.useCallback(async () => {
     await duplicateFlow({
       variables: { input: { id: flowId } },
     });
+
     enqueueSnackbar(formatMessage('flow.successfullyDuplicated'), {
       variant: 'success',
       SnackbarProps: {
         'data-test': 'snackbar-duplicate-flow-success',
       },
     });
+
+    mutate();
     onClose();
-  }, [flowId, onClose, duplicateFlow]);
+  }, [flowId, onClose, duplicateFlow, queryClient]);
+
   const onFlowDelete = React.useCallback(async () => {
     await deleteFlow({
       variables: { input: { id: flowId } },
@@ -44,11 +50,15 @@ function ContextMenu(props) {
         });
       },
     });
+
     enqueueSnackbar(formatMessage('flow.successfullyDeleted'), {
       variant: 'success',
     });
+
+    mutate();
     onClose();
   }, [flowId, onClose, deleteFlow]);
+
   return (
     <Menu
       open={true}

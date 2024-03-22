@@ -35,7 +35,7 @@ function FlowRow(props) {
   const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { flow } = props;
+  const { flow, mutate } = props;
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -112,6 +112,7 @@ function FlowRow(props) {
           flowId={flow.id}
           onClose={handleClose}
           anchorEl={anchorEl}
+          mutate={mutate}
         />
       )}
     </>
