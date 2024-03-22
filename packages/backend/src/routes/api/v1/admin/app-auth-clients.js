@@ -3,16 +3,25 @@ import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../../helpers/authentication.js';
 import { authorizeAdmin } from '../../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
-import getAdminAppAuthClientsAction from '../../../../controllers/api/v1/admin/app-auth-clients/get-app-auth-client.js';
+import getAdminAppAuthClientsAction from '../../../../controllers/api/v1/admin/app-auth-clients/get-app-auth-clients.js';
+import getAdminAppAuthClientAction from '../../../../controllers/api/v1/admin/app-auth-clients/get-app-auth-client.js';
 
 const router = Router();
+
+router.get(
+  '/',
+  authenticateUser,
+  authorizeAdmin,
+  checkIsEnterprise,
+  asyncHandler(getAdminAppAuthClientsAction)
+);
 
 router.get(
   '/:appAuthClientId',
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  asyncHandler(getAdminAppAuthClientsAction)
+  asyncHandler(getAdminAppAuthClientAction)
 );
 
 export default router;
