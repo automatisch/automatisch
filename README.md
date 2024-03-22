@@ -37,6 +37,12 @@ You can use `user@automatisch.io` email address and `sample` password to login t
 
 For other installation types, you can check the [installation](https://automatisch.io/docs/guide/installation) guide.
 
+## Self Host
+
+[![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploy.png)](https://repocloud.io/details/?app_id=251)
+
+[![Deploy on Elastio](https://pub-da36157c854648669813f3f76c526c2b.r2.dev/deploy-on-elestio-black.png)](https://elest.io/open-source/automatisch)
+
 ## Community Links
 
 - [Discord](https://discord.gg/dJSah9CVrC)
