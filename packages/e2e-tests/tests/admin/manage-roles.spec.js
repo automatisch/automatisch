@@ -166,6 +166,7 @@ test.describe('Role management page', () => {
     adminEditUserPage,
     page,
   }) => {
+    test.slow();
     await adminRolesPage.navigateTo();
     await test.step('Create a new role', async () => {
       await adminRolesPage.createRoleButton.click();

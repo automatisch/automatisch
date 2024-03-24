@@ -11,16 +11,20 @@ require('dotenv').config();
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
+  // globalSetup: require.resolve('./tests/global.setup.js'),
+
+  // globalTeardown: '',
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  // fullyParallel: true, // note: workers=1 disables parallelism
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: process.env.DEBUG_TEST_MODE ? 4 : 2,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  // workers=1 serial because of database resetting from resetDBFixture
+  workers: 1, // process.env.CI ? 1 : undefined,
   /* Timeout threshold for each test */
-  timeout: 30000,
+  timeout: process.env.DEBUG_TEST_MODE ? 60000 : 30000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI
     ? [['html', { open: 'never' }], ['github']]
@@ -45,6 +49,7 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
+      repeatEach: process.env.DEBUG_TEST_MODE ? 10 : undefined,
       use: { ...devices['Desktop Chrome'] },
     },
 

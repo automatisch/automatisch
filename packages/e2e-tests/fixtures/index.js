@@ -6,9 +6,18 @@ const { FlowEditorPage } = require('./flow-editor-page');
 const { UserInterfacePage } = require('./user-interface-page');
 const { LoginPage } = require('./login-page');
 const { adminFixtures } = require('./admin');
+const {
+  initEmulationSpeed,
+  initRandomResponseTimes,
+  resetTestDatabase,
+} = require('../utils');
 
 exports.test = test.extend({
-  page: async ({ page }, use) => {
+  page: async ({ page, context }, use) => {
+    if (process.env.DEBUG_TEST_MODE) {
+      await initEmulationSpeed(page, context);
+      await initRandomResponseTimes(page);
+    }
     const loginPage = new LoginPage(page);
     await loginPage.login();
 
@@ -17,6 +26,13 @@ exports.test = test.extend({
 
     await use(page);
   },
+  resetTestDatabase: [
+    async ({}, use) => {
+      await resetTestDatabase();
+      await use();
+    },
+    { auto: true, timeout: 20000 },
+  ],
   applicationsPage: async ({ page }, use) => {
     await use(new ApplicationsPage(page));
   },
@@ -32,7 +48,7 @@ exports.test = test.extend({
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));
   },
-  ...adminFixtures
+  ...adminFixtures,
 });
 
 exports.publicTest = test.extend({
