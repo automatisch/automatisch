@@ -90,7 +90,7 @@ export default defineAction({
 
   async run($) {
     const method = $.step.parameters.method;
-    const data = $.step.parameters.data;
+    const data = $.step.parameters.data || null;
     const url = $.step.parameters.url;
     const headers = $.step.parameters.headers;
 
@@ -108,14 +108,17 @@ export default defineAction({
       return result;
     }, {});
 
-    let contentType = headersObject['content-type'];
+    let expectedResponseContentType = headersObject.accept;
 
     // in case HEAD request is not supported by the URL
     try {
       const metadataResponse = await $.http.head(url, {
         headers: headersObject,
       });
-      contentType = metadataResponse.headers['content-type'];
+
+      if (!expectedResponseContentType) {
+        expectedResponseContentType = metadataResponse.headers['content-type'];
+      }
 
       throwIfFileSizeExceedsLimit(metadataResponse.headers['content-length']);
       // eslint-disable-next-line no-empty
@@ -128,7 +131,7 @@ export default defineAction({
       headers: headersObject,
     };
 
-    if (!isPossiblyTextBased(contentType)) {
+    if (!isPossiblyTextBased(expectedResponseContentType)) {
       requestData.responseType = 'arraybuffer';
     }
 
@@ -138,7 +141,7 @@ export default defineAction({
 
     let responseData = response.data;
 
-    if (!isPossiblyTextBased(contentType)) {
+    if (!isPossiblyTextBased(expectedResponseContentType)) {
       responseData = Buffer.from(responseData).toString('base64');
     }
 
