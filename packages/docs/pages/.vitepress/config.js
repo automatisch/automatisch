@@ -82,6 +82,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/dropbox/triggers' },
             { text: 'Actions', link: '/apps/dropbox/actions' },
             { text: 'Connection', link: '/apps/dropbox/connection' },
           ],
