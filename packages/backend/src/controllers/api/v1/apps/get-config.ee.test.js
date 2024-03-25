@@ -3,11 +3,11 @@ import request from 'supertest';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../test/factories/user.js';
-import getAppConfigMock from '../../../../../test/mocks/rest/api/v1/app-configs/get-app-config.js';
+import getAppConfigMock from '../../../../../test/mocks/rest/api/v1/apps/get-config.js';
 import { createAppConfig } from '../../../../../test/factories/app-config.js';
 import * as license from '../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/app-configs/:appKey', () => {
+describe('GET /api/v1/apps/:appKey/config', () => {
   let currentUser, appConfig, token;
 
   beforeEach(async () => {
@@ -27,7 +27,7 @@ describe('GET /api/v1/app-configs/:appKey', () => {
 
   it('should return specified app config info', async () => {
     const response = await request(app)
-      .get(`/api/v1/app-configs/${appConfig.key}`)
+      .get(`/api/v1/apps/${appConfig.key}/config`)
       .set('Authorization', token)
       .expect(200);
 
@@ -37,7 +37,7 @@ describe('GET /api/v1/app-configs/:appKey', () => {
 
   it('should return not found response for not existing app key', async () => {
     await request(app)
-      .get('/api/v1/app-configs/not-existing-app-key')
+      .get('/api/v1/apps/not-existing-app-key/config')
       .set('Authorization', token)
       .expect(404);
   });
