@@ -1,27 +1,35 @@
 import * as React from 'react';
-import { useLazyQuery } from '@apollo/client';
 import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
 import isEqual from 'lodash/isEqual';
-import { GET_DYNAMIC_FIELDS } from 'graphql/queries/get-dynamic-fields';
+import { useQuery } from '@tanstack/react-query';
+
+import api from 'helpers/api';
+
 const variableRegExp = /({.*?})/;
 // TODO: extract this function to a separate file
 function computeArguments(args, getValues) {
   const initialValue = {};
+
   return args.reduce((result, { name, value }) => {
     const isVariable = variableRegExp.test(value);
+
     if (isVariable) {
       const sanitizedFieldPath = value.replace(/{|}/g, '');
       const computedValue = getValues(sanitizedFieldPath);
+
       if (computedValue === undefined || computedValue === '')
         throw new Error(`The ${sanitizedFieldPath} field is required.`);
+
       set(result, name, computedValue);
       return result;
     }
+
     set(result, name, value);
     return result;
   }, initialValue);
 }
+
 /**
  * Fetch the dynamic fields for the given step.
  * This hook must be within a react-hook-form context.
@@ -31,10 +39,9 @@ function computeArguments(args, getValues) {
  */
 function useDynamicFields(stepId, schema) {
   const lastComputedVariables = React.useRef({});
-  const [getDynamicFields, { called, data, loading }] =
-    useLazyQuery(GET_DYNAMIC_FIELDS);
   const { getValues } = useFormContext();
   const formValues = getValues();
+
   /**
    * Return `null` when even a field is missing value.
    *
@@ -58,31 +65,28 @@ function useDynamicFields(stepId, schema) {
         return null;
       }
     }
+
     return null;
     /**
      * `formValues` is to trigger recomputation when form is updated.
      * `getValues` is for convenience as it supports paths for fields like `getValues('foo.bar.baz')`.
      */
   }, [schema, formValues, getValues]);
-  React.useEffect(() => {
-    if (
-      schema.type === 'dropdown' &&
-      stepId &&
-      schema.additionalFields &&
-      computedVariables
-    ) {
-      getDynamicFields({
-        variables: {
-          stepId,
-          ...computedVariables,
-        },
+
+  const query = useQuery({
+    queryKey: ['dynamicFields', stepId, computedVariables],
+    queryFn: async () => {
+      const { data } = await api.post(`/v1/steps/${stepId}/dynamic-fields`, {
+        dynamicFieldsKey: computedVariables.key,
+        parameters: computedVariables.parameters,
       });
-    }
-  }, [getDynamicFields, stepId, schema, computedVariables]);
-  return {
-    called,
-    data: data?.getDynamicFields,
-    loading,
-  };
+
+      return data;
+    },
+    enabled: !!stepId && !!computedVariables,
+  });
+
+  return query;
 }
+
 export default useDynamicFields;

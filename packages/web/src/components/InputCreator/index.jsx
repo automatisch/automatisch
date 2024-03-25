@@ -1,6 +1,7 @@
 import * as React from 'react';
 import MuiTextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
+
 import useDynamicFields from 'hooks/useDynamicFields';
 import useDynamicData from 'hooks/useDynamicData';
 import PowerInput from 'components/PowerInput';
@@ -8,8 +9,10 @@ import TextField from 'components/TextField';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import ControlledCustomAutocomplete from 'components/ControlledCustomAutocomplete';
 import DynamicField from 'components/DynamicField';
+
 const optionGenerator = (options) =>
   options?.map(({ name, value }) => ({ label: name, value: value }));
+
 export default function InputCreator(props) {
   const {
     onChange,
@@ -31,9 +34,12 @@ export default function InputCreator(props) {
     type,
   } = schema;
   const { data, loading } = useDynamicData(stepId, schema);
-  const { data: additionalFields, loading: additionalFieldsLoading } =
+  const { data: additionalFieldsData, isLoading: isDynamicFieldsLoading } =
     useDynamicFields(stepId, schema);
+  const additionalFields = additionalFieldsData?.data;
+
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
+
   if (type === 'dynamic') {
     return (
       <DynamicField
@@ -50,8 +56,10 @@ export default function InputCreator(props) {
       />
     );
   }
+
   if (type === 'dropdown') {
     const preparedOptions = schema.options || optionGenerator(data);
+
     return (
       <React.Fragment>
         {!schema.variables && (
@@ -63,7 +71,9 @@ export default function InputCreator(props) {
             disablePortal
             disableClearable={required}
             options={preparedOptions}
-            renderInput={(params) => <MuiTextField {...params} label={label} required={required}/>}
+            renderInput={(params) => (
+              <MuiTextField {...params} label={label} required={required} />
+            )}
             defaultValue={value}
             description={description}
             loading={loading}
@@ -93,7 +103,7 @@ export default function InputCreator(props) {
           />
         )}
 
-        {additionalFieldsLoading && !additionalFields?.length && (
+        {isDynamicFieldsLoading && !additionalFields?.length && (
           <div>
             <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
           </div>
@@ -113,6 +123,7 @@ export default function InputCreator(props) {
       </React.Fragment>
     );
   }
+
   if (type === 'string') {
     if (schema.variables) {
       return (
@@ -127,7 +138,7 @@ export default function InputCreator(props) {
             shouldUnregister={shouldUnregister}
           />
 
-          {additionalFieldsLoading && !additionalFields?.length && (
+          {isDynamicFieldsLoading && !additionalFields?.length && (
             <div>
               <CircularProgress
                 sx={{ display: 'block', margin: '20px auto' }}
@@ -149,6 +160,7 @@ export default function InputCreator(props) {
         </React.Fragment>
       );
     }
+
     return (
       <React.Fragment>
         <TextField
@@ -168,7 +180,7 @@ export default function InputCreator(props) {
           shouldUnregister={shouldUnregister}
         />
 
-        {additionalFieldsLoading && !additionalFields?.length && (
+        {isDynamicFieldsLoading && !additionalFields?.length && (
           <div>
             <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
           </div>
