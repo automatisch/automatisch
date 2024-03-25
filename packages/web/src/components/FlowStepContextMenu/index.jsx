@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+
 import { DELETE_STEP } from 'graphql/mutations/delete-step';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,10 +13,7 @@ function FlowStepContextMenu(props) {
   const { stepId, onClose, anchorEl, deletable, flowId } = props;
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
-
-  const [deleteStep] = useMutation(DELETE_STEP, {
-    refetchQueries: ['GetStepWithTestExecutions'],
-  });
+  const [deleteStep] = useMutation(DELETE_STEP);
 
   const deleteActionHandler = React.useCallback(
     async (event) => {
