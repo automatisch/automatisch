@@ -5,7 +5,6 @@ type Query {
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
-  getStepWithTestExecutions(stepId: String!): [Step]
   getDynamicData(
     stepId: String!
     key: String!
