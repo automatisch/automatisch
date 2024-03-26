@@ -110,7 +110,9 @@ export default function Flows() {
           <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
         )}
         {!isLoading &&
-          flows?.map((flow) => <FlowRow key={flow.id} flow={flow} />)}
+          flows?.map((flow) => (
+            <FlowRow key={flow.id} flow={flow} mutate={mutate} />
+          ))}
         {!isLoading && !hasFlows && (
           <NoResultFound
             text={formatMessage('flows.noFlows')}

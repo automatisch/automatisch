@@ -4,7 +4,6 @@ type Query {
   getAppAuthClients(appKey: String!, active: Boolean): [AppAuthClient]
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
-  getFlow(id: String!): Flow
   getStepWithTestExecutions(stepId: String!): [Step]
   getDynamicData(
     stepId: String!
