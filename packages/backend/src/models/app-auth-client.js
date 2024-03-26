@@ -9,10 +9,11 @@ class AppAuthClient extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['name', 'appConfigId', 'formattedAuthDefaults'],
+    required: ['name', 'appKey', 'appConfigId', 'formattedAuthDefaults'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
+      appKey: { type: 'string' },
       appConfigId: { type: 'string', format: 'uuid' },
       active: { type: 'boolean' },
       authDefaults: { type: ['string', 'null'] },
