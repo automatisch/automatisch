@@ -1,7 +1,6 @@
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 import appConfig from '../config/app.js';
-import AppConfig from './app-config.js';
 import Base from './base.js';
 
 class AppAuthClient extends Base {
@@ -9,12 +8,11 @@ class AppAuthClient extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['name', 'appKey', 'appConfigId', 'formattedAuthDefaults'],
+    required: ['name', 'appKey', 'formattedAuthDefaults'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
       appKey: { type: 'string' },
-      appConfigId: { type: 'string', format: 'uuid' },
       active: { type: 'boolean' },
       authDefaults: { type: ['string', 'null'] },
       formattedAuthDefaults: { type: 'object' },
@@ -22,17 +20,6 @@ class AppAuthClient extends Base {
       updatedAt: { type: 'string' },
     },
   };
-
-  static relationMappings = () => ({
-    appConfig: {
-      relation: Base.BelongsToOneRelation,
-      modelClass: AppConfig,
-      join: {
-        from: 'app_auth_clients.app_config_id',
-        to: 'app_configs.id',
-      },
-    },
-  });
 
   encryptData() {
     if (!this.eligibleForEncryption()) return;
