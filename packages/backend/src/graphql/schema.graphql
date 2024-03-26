@@ -11,11 +11,6 @@ type Query {
     key: String!
     parameters: JSONObject
   ): JSONObject
-  getDynamicFields(
-    stepId: String!
-    key: String!
-    parameters: JSONObject
-  ): [SubstepArgument]
   getBillingAndUsage: GetBillingAndUsage
 }
 

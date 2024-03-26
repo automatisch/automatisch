@@ -79,7 +79,7 @@ export default function useUserTrial() {
     [checkoutCompleted, hasTrial, setIsPolling],
   );
 
-  if (isUserTrialLoading || !userTrial) return null;
+  if (isUserTrialLoading || !hasTrial) return null;
 
   const expireAt = DateTime.fromISO(userTrial?.expireAt).startOf('day');
 
