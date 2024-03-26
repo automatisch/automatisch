@@ -7,6 +7,7 @@ import getAppAction from '../../../controllers/api/v1/apps/get-app.js';
 import getAppsAction from '../../../controllers/api/v1/apps/get-apps.js';
 import getAuthAction from '../../../controllers/api/v1/apps/get-auth.js';
 import getConfigAction from '../../../controllers/api/v1/apps/get-config.ee.js';
+import getAuthClientsAction from '../../../controllers/api/v1/apps/get-auth-clients.ee.js';
 import getTriggersAction from '../../../controllers/api/v1/apps/get-triggers.js';
 import getTriggerSubstepsAction from '../../../controllers/api/v1/apps/get-trigger-substeps.js';
 import getActionsAction from '../../../controllers/api/v1/apps/get-actions.js';
@@ -24,6 +25,13 @@ router.get(
   authenticateUser,
   checkIsEnterprise,
   asyncHandler(getConfigAction)
+);
+
+router.get(
+  '/:appKey/auth-clients',
+  authenticateUser,
+  checkIsEnterprise,
+  asyncHandler(getAuthClientsAction)
 );
 
 router.get(
