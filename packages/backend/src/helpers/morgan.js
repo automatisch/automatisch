@@ -9,7 +9,7 @@ const stream = {
 const registerGraphQLToken = () => {
   morgan.token('graphql-query', (req) => {
     if (req.body.query) {
-      return `GraphQL ${req.body.query}`;
+      return `\n GraphQL ${req.body.query}`;
     }
   });
 };
@@ -17,7 +17,7 @@ const registerGraphQLToken = () => {
 registerGraphQLToken();
 
 const morganMiddleware = morgan(
-  ':method :url :status :res[content-length] - :response-time ms\n:graphql-query',
+  ':method :url :status :res[content-length] - :response-time ms :graphql-query',
   { stream }
 );
 
