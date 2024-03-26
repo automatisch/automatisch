@@ -44,4 +44,22 @@ const renderObject = (response, object, options) => {
   return response.json(computedPayload);
 };
 
-export { renderObject };
+const renderError = (response, errors, status, type) => {
+  const errorStatus = status || 422;
+  const errorType = type || 'ValidationError';
+
+  const payload = {
+    errors: errors.reduce((acc, error) => {
+      const key = Object.keys(error)[0];
+      acc[key] = error[key];
+      return acc;
+    }, {}),
+    meta: {
+      type: errorType,
+    },
+  };
+
+  return response.status(errorStatus).send(payload);
+};
+
+export { renderObject, renderError };
