@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 import appConfig from '../config/app.js';
 import { hasValidLicense } from '../helpers/license.ee.js';
 import userAbility from '../helpers/user-ability.js';
+import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
 import Base from './base.js';
 import Connection from './connection.js';
 import Execution from './execution.js';
@@ -159,6 +160,17 @@ class User extends Base {
     return conditions.isCreator
       ? this.$relatedQuery('executions')
       : Execution.query();
+  }
+
+  static async authenticate(email, password) {
+    const user = await User.query().findOne({
+      email: email?.toLowerCase() || null,
+    });
+
+    if (user && (await user.login(password))) {
+      const token = createAuthTokenByUserId(user.id);
+      return token;
+    }
   }
 
   login(password) {
