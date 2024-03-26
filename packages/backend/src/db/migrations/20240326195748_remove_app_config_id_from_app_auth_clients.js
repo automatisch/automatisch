@@ -6,10 +6,6 @@ export async function up(knex) {
 
 export async function down(knex) {
   await knex.schema.table('app_auth_clients', (table) => {
-    table
-      .uuid('app_config_id')
-      .notNullable()
-      .references('id')
-      .inTable('app_configs');
+    table.uuid('app_config_id').references('id').inTable('app_configs');
   });
 }
