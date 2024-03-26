@@ -3,11 +3,11 @@ import request from 'supertest';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../test/factories/user.js';
-import getAppAuthClientsMock from '../../../../../test/mocks/rest/api/v1/app-auth-clients/get-app-auth-clients.js';
+import getAuthClientsMock from '../../../../../test/mocks/rest/api/v1/apps/get-auth-clients.js';
 import { createAppAuthClient } from '../../../../../test/factories/app-auth-client.js';
 import * as license from '../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/app-auth-clients', () => {
+describe('GET /api/v1/app/:appKey/auth-clients', () => {
   let currentUser, token;
 
   beforeEach(async () => {
@@ -19,15 +19,20 @@ describe('GET /api/v1/app-auth-clients', () => {
   });
 
   it('should return specified app auth client info', async () => {
-    const appAuthClientOne = await createAppAuthClient();
-    const appAuthClientTwo = await createAppAuthClient();
+    const appAuthClientOne = await createAppAuthClient({
+      appKey: 'deepl',
+    });
+
+    const appAuthClientTwo = await createAppAuthClient({
+      appKey: 'deepl',
+    });
 
     const response = await request(app)
-      .get('/api/v1/app-auth-clients')
+      .get('/api/v1/apps/deepl/auth-clients')
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = getAppAuthClientsMock([
+    const expectedPayload = getAuthClientsMock([
       appAuthClientTwo,
       appAuthClientOne,
     ]);
