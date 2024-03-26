@@ -4,25 +4,27 @@ import Crypto from 'crypto';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../test/factories/user.js';
-import getAppAuthClientMock from '../../../../../test/mocks/rest/api/v1/app-auth-clients/get-app-auth-client.js';
+import getAppAuthClientMock from '../../../../../test/mocks/rest/api/v1/apps/get-auth-client.js';
 import { createAppAuthClient } from '../../../../../test/factories/app-auth-client.js';
 import * as license from '../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/app-auth-clients/:id', () => {
+describe('GET /api/v1/apps/:appKey/auth-clients/:appAuthClientId', () => {
   let currentUser, currentAppAuthClient, token;
 
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
     currentUser = await createUser();
-    currentAppAuthClient = await createAppAuthClient();
+    currentAppAuthClient = await createAppAuthClient({
+      appKey: 'deepl',
+    });
 
     token = createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return specified app auth client info', async () => {
+  it('should return specified app auth client', async () => {
     const response = await request(app)
-      .get(`/api/v1/app-auth-clients/${currentAppAuthClient.id}`)
+      .get(`/api/v1/apps/deepl/auth-clients/${currentAppAuthClient.id}`)
       .set('Authorization', token)
       .expect(200);
 
@@ -34,14 +36,14 @@ describe('GET /api/v1/app-auth-clients/:id', () => {
     const notExistingAppAuthClientUUID = Crypto.randomUUID();
 
     await request(app)
-      .get(`/api/v1/app-auth-clients/${notExistingAppAuthClientUUID}`)
+      .get(`/api/v1/apps/deepl/auth-clients/${notExistingAppAuthClientUUID}`)
       .set('Authorization', token)
       .expect(404);
   });
 
   it('should return bad request response for invalid UUID', async () => {
     await request(app)
-      .get('/api/v1/app-auth-clients/invalidAppAuthClientUUID')
+      .get('/api/v1/apps/deepl/auth-clients/invalidAppAuthClientUUID')
       .set('Authorization', token)
       .expect(400);
   });
