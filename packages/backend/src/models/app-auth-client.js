@@ -62,7 +62,7 @@ class AppAuthClient extends Base {
 
   async assignCanConnectForAppConfig() {
     const appConfig = await AppConfig.query().findOne({ key: this.appKey });
-    await appConfig?.assignCanConnect();
+    await appConfig?.$query()?.patch({});
   }
 
   async $afterInsert(queryContext) {
