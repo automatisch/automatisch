@@ -1,6 +1,7 @@
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 import appConfig from '../config/app.js';
+import AppConfig from './app-config.js';
 import Base from './base.js';
 
 class AppAuthClient extends Base {
@@ -57,6 +58,21 @@ class AppAuthClient extends Base {
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     this.encryptData();
+  }
+
+  async assignCanConnectForAppConfig() {
+    const appConfig = await AppConfig.query().findOne({ key: this.appKey });
+    await appConfig?.assignCanConnect();
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+    await this.assignCanConnectForAppConfig();
+  }
+
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
+    await this.assignCanConnectForAppConfig();
   }
 
   async $afterFind() {
