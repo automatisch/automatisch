@@ -16,6 +16,7 @@ class AppConfig extends Base {
       shared: { type: 'boolean', default: false },
       disabled: { type: 'boolean', default: false },
       canConnect: { type: 'boolean', default: false },
+      canCustomConnect: { type: 'boolean', default: false },
     },
   };
 
@@ -48,14 +49,21 @@ class AppConfig extends Base {
     this.canConnect = canConnect;
   }
 
+  async assignCanCustomConnect() {
+    const canCustomConnect = !this.disabled && this.allowCustomConnection;
+    this.canCustomConnect = canCustomConnect;
+  }
+
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
     await this.assignCanConnect();
+    await this.assignCanCustomConnect();
   }
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     await this.assignCanConnect();
+    await this.assignCanCustomConnect();
   }
 }
 
