@@ -4,7 +4,7 @@ import Crypto from 'crypto';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../test/factories/user.js';
-import getAppAuthClientMock from '../../../../../test/mocks/rest/api/v1/admin/apps/get-auth-client.js';
+import getAppAuthClientMock from '../../../../../test/mocks/rest/api/v1/apps/get-auth-client.js';
 import { createAppAuthClient } from '../../../../../test/factories/app-auth-client.js';
 import * as license from '../../../../helpers/license.ee.js';
 
