@@ -1,7 +1,6 @@
 const getAdminAppAuthClientsMock = (appAuthClients) => {
   return {
     data: appAuthClients.map((appAuthClient) => ({
-      appConfigId: appAuthClient.appConfigId,
       name: appAuthClient.name,
       id: appAuthClient.id,
       active: appAuthClient.active,
