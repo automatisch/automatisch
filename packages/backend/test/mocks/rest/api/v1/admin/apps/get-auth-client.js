@@ -1,9 +1,9 @@
-const getAdminAppAuthClientMock = (appAuthClient) => {
+const getAppAuthClientMock = (appAuthClient) => {
   return {
     data: {
-      appConfigId: appAuthClient.appConfigId,
       name: appAuthClient.name,
       id: appAuthClient.id,
+      appConfigId: appAuthClient.appConfigId,
       active: appAuthClient.active,
     },
     meta: {
@@ -16,4 +16,4 @@ const getAdminAppAuthClientMock = (appAuthClient) => {
   };
 };
 
-export default getAdminAppAuthClientMock;
+export default getAppAuthClientMock;

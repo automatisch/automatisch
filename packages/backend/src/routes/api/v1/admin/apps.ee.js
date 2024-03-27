@@ -4,7 +4,7 @@ import { authenticateUser } from '../../../../helpers/authentication.js';
 import { authorizeAdmin } from '../../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
 import getAuthClientsAction from '../../../../controllers/api/v1/admin/apps/get-auth-clients.ee.js';
-import getRoleAction from '../../../../controllers/api/v1/admin/roles/get-role.ee.js';
+import getAuthClientAction from '../../../../controllers/api/v1/admin/apps/get-auth-client.ee.js';
 
 const router = Router();
 
@@ -21,7 +21,7 @@ router.get(
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  asyncHandler(getRoleAction)
+  asyncHandler(getAuthClientAction)
 );
 
 export default router;
