@@ -31,6 +31,7 @@
     "accounting": "^0.4.1",
     "ajv-formats": "^2.1.1",
     "axios": "1.6.0",
+    "basic-ftp": "^5.0.5",
     "bcrypt": "^5.0.1",
     "bullmq": "^3.0.0",
     "cors": "^2.8.5",

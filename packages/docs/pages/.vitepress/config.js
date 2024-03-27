@@ -114,6 +114,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'FTP',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/ftp/connection' }],
+        },
+        {
           text: 'Ghost',
           collapsible: true,
           collapsed: true,
