@@ -75,11 +75,15 @@ function useDynamicFields(stepId, schema) {
 
   const query = useQuery({
     queryKey: ['dynamicFields', stepId, computedVariables],
-    queryFn: async () => {
-      const { data } = await api.post(`/v1/steps/${stepId}/dynamic-fields`, {
-        dynamicFieldsKey: computedVariables.key,
-        parameters: computedVariables.parameters,
-      });
+    queryFn: async ({ signal }) => {
+      const { data } = await api.post(
+        `/v1/steps/${stepId}/dynamic-fields`,
+        {
+          dynamicFieldsKey: computedVariables.key,
+          parameters: computedVariables.parameters,
+        },
+        { signal },
+      );
 
       return data;
     },
