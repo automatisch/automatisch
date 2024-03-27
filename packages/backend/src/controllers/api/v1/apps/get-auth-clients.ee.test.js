@@ -7,7 +7,7 @@ import getAuthClientsMock from '../../../../../test/mocks/rest/api/v1/apps/get-a
 import { createAppAuthClient } from '../../../../../test/factories/app-auth-client.js';
 import * as license from '../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/app/:appKey/auth-clients', () => {
+describe('GET /api/v1/apps/:appKey/auth-clients', () => {
   let currentUser, token;
 
   beforeEach(async () => {
