@@ -1,10 +1,8 @@
-import * as React from 'react';
-import { useLocation } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { useQuery } from '@tanstack/react-query';
 
 import useFormatMessage from './useFormatMessage';
 import api from 'helpers/api';
-import { useQuery } from '@tanstack/react-query';
 
 function getDiffInDays(date) {
   const today = DateTime.now().startOf('day');
@@ -13,6 +11,7 @@ function getDiffInDays(date) {
 
   return roundedDiffInDays;
 }
+
 function getFeedbackPayload(date) {
   const diffInDays = getDiffInDays(date);
 
@@ -41,12 +40,8 @@ function getFeedbackPayload(date) {
 }
 export default function useUserTrial() {
   const formatMessage = useFormatMessage();
-  const location = useLocation();
-  const state = location.state;
-  const checkoutCompleted = state?.checkoutCompleted;
-  const [isPolling, setIsPolling] = React.useState(false);
 
-  const { data, isLoading: isUserTrialLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['userTrial'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get('/v1/users/me/trial', {
@@ -55,31 +50,11 @@ export default function useUserTrial() {
 
       return data;
     },
-    refetchInterval: isPolling ? 1000 : false,
   });
+
   const userTrial = data?.data;
 
   const hasTrial = userTrial?.inTrial;
-
-  React.useEffect(
-    function pollDataUntilTrialEnds() {
-      if (checkoutCompleted && hasTrial) {
-        setIsPolling(true);
-      }
-    },
-    [checkoutCompleted, hasTrial, setIsPolling],
-  );
-
-  React.useEffect(
-    function stopPollingWhenTrialEnds() {
-      if (checkoutCompleted && !hasTrial) {
-        setIsPolling(false);
-      }
-    },
-    [checkoutCompleted, hasTrial, setIsPolling],
-  );
-
-  if (isUserTrialLoading || !hasTrial) return null;
 
   const expireAt = DateTime.fromISO(userTrial?.expireAt).startOf('day');
 
@@ -91,5 +66,6 @@ export default function useUserTrial() {
     expireAt,
     over,
     status,
+    hasTrial,
   };
 }
