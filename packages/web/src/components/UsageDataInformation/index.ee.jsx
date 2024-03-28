@@ -10,15 +10,20 @@ import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+
 import TrialOverAlert from 'components/TrialOverAlert/index.ee';
 import SubscriptionCancelledAlert from 'components/SubscriptionCancelledAlert/index.ee';
 import CheckoutCompletedAlert from 'components/CheckoutCompletedAlert/index.ee';
 import * as URLS from 'config/urls';
 import useBillingAndUsageData from 'hooks/useBillingAndUsageData.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import usePlanAndUsage from 'hooks/usePlanAndUsage';
+
 const capitalize = (str) => str[0].toUpperCase() + str.slice(1, str.length);
+
 function BillingCard(props) {
   const { name, title = '', action } = props;
+
   return (
     <Card
       sx={{
@@ -45,10 +50,14 @@ function BillingCard(props) {
     </Card>
   );
 }
+
 function Action(props) {
   const { action } = props;
+
   if (!action) return <React.Fragment />;
+
   const { text, type } = action;
+
   if (type === 'link') {
     if (action.src.startsWith('http')) {
       return (
@@ -64,6 +73,7 @@ function Action(props) {
       );
     }
   }
+
   if (type === 'text') {
     return (
       <Typography variant="subtitle2" pb={1}>
@@ -71,11 +81,15 @@ function Action(props) {
       </Typography>
     );
   }
+
   return <React.Fragment />;
 }
 export default function UsageDataInformation() {
   const formatMessage = useFormatMessage();
   const billingAndUsageData = useBillingAndUsageData();
+  const { data } = usePlanAndUsage();
+  const planAndUsage = data?.data;
+
   return (
     <React.Fragment>
       <Stack sx={{ width: '100%', mb: 2 }} spacing={2}>
@@ -171,7 +185,7 @@ export default function UsageDataInformation() {
                 variant="subtitle2"
                 sx={{ color: 'text.secondary', mt: 2, fontWeight: 500 }}
               >
-                {billingAndUsageData?.usage.task}
+                {planAndUsage?.usage.task}
               </Typography>
             </Box>
 
