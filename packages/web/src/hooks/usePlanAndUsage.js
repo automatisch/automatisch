@@ -1,21 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
-import useCurrentUser from './useCurrentUser';
 
-export default function usePlanAndUsage() {
-  const { data } = useCurrentUser();
-  const currentUserId = data?.data?.id;
-
+export default function usePlanAndUsage(userId) {
   const query = useQuery({
-    queryKey: ['planAndUsage', currentUserId],
+    queryKey: ['planAndUsage', userId],
     queryFn: async ({ signal }) => {
-      const { data } = await api.get(
-        `/v1/users/${currentUserId}/plan-and-usage`,
-        {
-          signal,
-        },
-      );
+      const { data } = await api.get(`/v1/users/${userId}/plan-and-usage`, {
+        signal,
+      });
 
       return data;
     },

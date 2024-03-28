@@ -18,11 +18,15 @@ import * as URLS from 'config/urls';
 import useBillingAndUsageData from 'hooks/useBillingAndUsageData.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import usePlanAndUsage from 'hooks/usePlanAndUsage';
+import useSubscription from 'hooks/useSubscription.ee';
+import useUserTrial from 'hooks/useUserTrial.ee';
+import { useQueryClient } from '@tanstack/react-query';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 const capitalize = (str) => str[0].toUpperCase() + str.slice(1, str.length);
 
 function BillingCard(props) {
-  const { name, title = '', action } = props;
+  const { name, title = '', action, text } = props;
 
   return (
     <Card
@@ -45,50 +49,94 @@ function BillingCard(props) {
       </CardContent>
 
       <CardActions>
-        <Action action={action} />
+        <Action action={action} text={text} />
       </CardActions>
     </Card>
   );
 }
 
 function Action(props) {
-  const { action } = props;
+  const { action, text } = props;
 
   if (!action) return <React.Fragment />;
 
-  const { text, type } = action;
-
-  if (type === 'link') {
-    if (action.src.startsWith('http')) {
-      return (
-        <Button size="small" href={action.src} target="_blank">
-          {text}
-        </Button>
-      );
-    } else {
-      return (
-        <Button size="small" component={Link} to={action.src}>
-          {text}
-        </Button>
-      );
-    }
-  }
-
-  if (type === 'text') {
+  if (action.startsWith('http')) {
     return (
-      <Typography variant="subtitle2" pb={1}>
+      <Button size="small" href={action.src} target="_blank">
         {text}
-      </Typography>
+      </Button>
+    );
+  } else if (action.startsWith('/')) {
+    return (
+      <Button size="small" component={Link} to={action.src}>
+        {text}
+      </Button>
     );
   }
 
-  return <React.Fragment />;
+  return (
+    <Typography variant="subtitle2" pb={1}>
+      {text}
+    </Typography>
+  );
 }
+
 export default function UsageDataInformation() {
   const formatMessage = useFormatMessage();
   const billingAndUsageData = useBillingAndUsageData();
+  const queryClient = useQueryClient();
   const { data } = usePlanAndUsage();
   const planAndUsage = data?.data;
+  const { data: currentUser } = useCurrentUser();
+  const currentUserId = currentUser?.data?.id;
+  const trial = useUserTrial();
+  const subscriptionData = useSubscription();
+  const subscription = subscriptionData?.data;
+  let billingInfo;
+
+  React.useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['planAndUsage', currentUserId],
+    });
+  }, [subscription, queryClient, currentUserId]);
+
+  if (trial.hasTrial) {
+    billingInfo = {
+      monthlyQuota: {
+        title: formatMessage('usageDataInformation.freeTrial'),
+        action: '/settings/billing/upgrade',
+        text: 'Upgrade plan',
+      },
+      nextBillAmount: {
+        title: '---',
+        action: null,
+        text: null,
+      },
+      nextBillDate: {
+        title: '---',
+        action: null,
+        text: null,
+      },
+    };
+  } else {
+    billingInfo = {
+      monthlyQuota: {
+        title: planAndUsage?.plan?.limit,
+        action: subscription?.cancelUrl,
+        text: formatMessage('usageDataInformation.cancelPlan'),
+      },
+      nextBillAmount: {
+        title: `€${subscription?.nextBillAmount}`,
+        action: subscription?.updateUrl,
+        text: formatMessage('usageDataInformation.updatePaymentMethod'),
+      },
+      nextBillDate: {
+        title: subscription?.nextBillDate,
+        action: formatMessage('usageDataInformation.monthlyPayment'),
+        text: formatMessage('usageDataInformation.monthlyPayment'),
+      },
+    };
+  }
 
   return (
     <React.Fragment>
@@ -106,11 +154,8 @@ export default function UsageDataInformation() {
               {formatMessage('usageDataInformation.subscriptionPlan')}
             </Typography>
 
-            {billingAndUsageData?.subscription?.status && (
-              <Chip
-                label={capitalize(billingAndUsageData?.subscription?.status)}
-                color="success"
-              />
+            {subscription?.status && (
+              <Chip label={capitalize(subscription?.status)} color="success" />
             )}
           </Box>
 
@@ -127,26 +172,27 @@ export default function UsageDataInformation() {
             <Grid item xs={12} md={4}>
               <BillingCard
                 name={formatMessage('usageDataInformation.monthlyQuota')}
-                title={billingAndUsageData?.subscription?.monthlyQuota.title}
-                action={billingAndUsageData?.subscription?.monthlyQuota.action}
+                title={billingInfo.monthlyQuota.title}
+                action={billingInfo.monthlyQuota.action}
+                text={billingInfo.monthlyQuota.text}
               />
             </Grid>
 
             <Grid item xs={12} md={4}>
               <BillingCard
                 name={formatMessage('usageDataInformation.nextBillAmount')}
-                title={billingAndUsageData?.subscription?.nextBillAmount.title}
-                action={
-                  billingAndUsageData?.subscription?.nextBillAmount.action
-                }
+                title={billingInfo.nextBillAmount.title}
+                action={billingInfo.nextBillAmount.action}
+                text={billingInfo.nextBillAmount.text}
               />
             </Grid>
 
             <Grid item xs={12} md={4}>
               <BillingCard
                 name={formatMessage('usageDataInformation.nextBillDate')}
-                title={billingAndUsageData?.subscription?.nextBillDate.title}
-                action={billingAndUsageData?.subscription?.nextBillDate.action}
+                title={billingInfo.nextBillDate.title}
+                action={billingInfo.nextBillDate.action}
+                text={billingInfo.nextBillDate.text}
               />
             </Grid>
           </Grid>
@@ -193,7 +239,7 @@ export default function UsageDataInformation() {
           </Box>
 
           {/* free plan has `null` status so that we can show the upgrade button */}
-          {billingAndUsageData?.subscription?.status === null && (
+          {subscription?.status === null && (
             <Button
               component={Link}
               to={URLS.SETTINGS_PLAN_UPGRADE}
