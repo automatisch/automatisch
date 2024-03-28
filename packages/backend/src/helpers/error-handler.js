@@ -37,7 +37,7 @@ const errorHandler = (error, request, response, next) => {
 
 const notFoundAppError = (error) => {
   return (
-    error.message.includes('An application with the') ||
+    error.message.includes('An application with the') &&
     error.message.includes("key couldn't be found.")
   );
 };
