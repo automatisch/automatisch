@@ -155,6 +155,13 @@ class User extends Base {
     return conditions.isCreator ? this.$relatedQuery('steps') : Step.query();
   }
 
+  get authorizedConnections() {
+    const conditions = this.can('read', 'Connection');
+    return conditions.isCreator
+      ? this.$relatedQuery('connections')
+      : Connection.query();
+  }
+
   get authorizedExecutions() {
     const conditions = this.can('read', 'Execution');
     return conditions.isCreator
