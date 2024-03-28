@@ -24,7 +24,7 @@ export default function useSubscription() {
   const checkoutCompleted = state?.checkoutCompleted;
   const [isPolling, setIsPolling] = React.useState(false);
 
-  const { data, isLoading: isSubscriptionLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['subscription'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/users/me/subscription`, {
@@ -38,31 +38,16 @@ export default function useSubscription() {
 
   const subscription = data?.data;
 
-  const hasSubscription = !!subscription?.status;
+  const hasSubscription = subscription?.status === 'active';
 
   React.useEffect(
     function pollDataUntilSubscriptionIsCreated() {
-      if (checkoutCompleted && !hasSubscription) {
-        setIsPolling(true);
+      if (checkoutCompleted) {
+        setIsPolling(!hasSubscription);
       }
     },
     [checkoutCompleted, hasSubscription],
   );
-
-  React.useEffect(
-    function stopPollingWhenSubscriptionIsCreated() {
-      if (checkoutCompleted && hasSubscription) {
-        setIsPolling(false);
-      }
-    },
-    [checkoutCompleted, hasSubscription],
-  );
-
-  const cancellationEffectiveDate = subscription?.cancellationEffectiveDate;
-
-  const hasCancelled = !!cancellationEffectiveDate;
-
-  if (isSubscriptionLoading || !hasCancelled) return null;
 
   return {
     data: transform(subscription),

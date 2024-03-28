@@ -102,7 +102,7 @@ export default function UsageDataInformation() {
     billingInfo = {
       monthlyQuota: {
         title: formatMessage('usageDataInformation.freeTrial'),
-        action: '/settings/billing/upgrade',
+        action: URLS.SETTINGS_PLAN_UPGRADE,
         text: 'Upgrade plan',
       },
       nextBillAmount: {
