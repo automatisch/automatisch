@@ -165,6 +165,7 @@
   "usageDataInformation.yourUsageDescription": "Last 30 days total usage",
   "usageDataInformation.yourUsageTasks": "Tasks",
   "usageDataInformation.upgrade": "Upgrade",
+  "usageDataInformation.freeTrial": "Free trial",
   "usageDataInformation.cancelPlan": "Cancel plan",
   "usageDataInformation.updatePaymentMethod": "Update payment method",
   "usageDataInformation.monthlyPayment": "(monthly payment)",

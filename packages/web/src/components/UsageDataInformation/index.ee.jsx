@@ -15,7 +15,6 @@ import TrialOverAlert from 'components/TrialOverAlert/index.ee';
 import SubscriptionCancelledAlert from 'components/SubscriptionCancelledAlert/index.ee';
 import CheckoutCompletedAlert from 'components/CheckoutCompletedAlert/index.ee';
 import * as URLS from 'config/urls';
-import useBillingAndUsageData from 'hooks/useBillingAndUsageData.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import usePlanAndUsage from 'hooks/usePlanAndUsage';
 import useSubscription from 'hooks/useSubscription.ee';
@@ -62,13 +61,13 @@ function Action(props) {
 
   if (action.startsWith('http')) {
     return (
-      <Button size="small" href={action.src} target="_blank">
+      <Button size="small" href={action} target="_blank">
         {text}
       </Button>
     );
   } else if (action.startsWith('/')) {
     return (
-      <Button size="small" component={Link} to={action.src}>
+      <Button size="small" component={Link} to={action}>
         {text}
       </Button>
     );
@@ -83,7 +82,6 @@ function Action(props) {
 
 export default function UsageDataInformation() {
   const formatMessage = useFormatMessage();
-  const billingAndUsageData = useBillingAndUsageData();
   const queryClient = useQueryClient();
   const { data } = usePlanAndUsage();
   const planAndUsage = data?.data;
@@ -239,7 +237,7 @@ export default function UsageDataInformation() {
           </Box>
 
           {/* free plan has `null` status so that we can show the upgrade button */}
-          {subscription?.status === null && (
+          {subscription?.status === undefined && (
             <Button
               component={Link}
               to={URLS.SETTINGS_PLAN_UPGRADE}

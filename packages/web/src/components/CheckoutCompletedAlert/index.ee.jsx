@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useSubscription from 'hooks/useSubscription.ee';
 
 export default function CheckoutCompletedAlert() {
   const formatMessage = useFormatMessage();
-  const location = useLocation();
-  const state = location.state;
-  const checkoutCompleted = state?.checkoutCompleted;
-  if (!checkoutCompleted) return <React.Fragment />;
+  const subscription = useSubscription();
+
+  if (subscription?.data?.status !== 'active') return <React.Fragment />;
+
   return (
     <Alert
       severity="success"
