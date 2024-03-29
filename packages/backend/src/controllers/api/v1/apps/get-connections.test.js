@@ -85,16 +85,16 @@ describe('GET /api/v1/apps/:appKey/connections', () => {
     expect(response.body).toEqual(expectedPayload);
   });
 
-  it('should return not found response for invalid app key', async () => {
+  it('should return not found response for invalid connection UUID', async () => {
     await createPermission({
-      action: 'read',
+      action: 'update',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
     });
 
     await request(app)
-      .get('/api/v1/apps/invalid-app-key/connections')
+      .get('/api/v1/connections/invalid-connection-id/connections')
       .set('Authorization', token)
       .expect(404);
   });
