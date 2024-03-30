@@ -99,7 +99,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description:
-        'Return issues created on or after the given time. Expected in ISO 8601 format (`2011-11-03T09:00:00Z`).',
+        'Return issues created on or after the given time. Expected in ISO 8601 format (`2011-10-03T05:18:00Z`).',
       variables: true,
     },
     {
@@ -108,7 +108,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description:
-        'Return issues created on or before the given time. Expected in ISO 8601 format (`2011-11-03T09:00:00Z`).',
+        'Return issues created on or before the given time. Expected in ISO 8601 format (`2011-10-03T05:18:00Z`).',
       variables: true,
     },
     {
@@ -222,7 +222,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description:
-        'Return issues updated on or after the given time. Expected in ISO 8601 format (`2011-11-03T09:00:00Z`).',
+        'Return issues updated on or after the given time. Expected in ISO 8601 format (`2011-10-03T05:18:00Z`).',
       variables: true,
     },
     {
@@ -231,7 +231,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description:
-        'Return issues updated on or before the given time. Expected in ISO 8601 format (`2011-11-03T09:00:00Z`).',
+        'Return issues updated on or before the given time. Expected in ISO 8601 format (`2011-10-03T05:18:00Z`).',
       variables: true,
     },
     {

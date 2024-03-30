@@ -47,7 +47,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description:
-        'Date time string, ISO 8601 formatted. It must be after 1970-01-01. Example: `2011-11-03T09:00:00Z` (requires administrator or project/group owner rights)',
+        'Date time string, ISO 8601 formatted. It must be after 1970-01-01. Example: `2011-10-03T05:18:00Z` (requires administrator or project/group owner rights)',
       variables: true,
     },
   ],

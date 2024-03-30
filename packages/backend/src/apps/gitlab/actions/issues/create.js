@@ -66,7 +66,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description:
-        'The due date. Date time string in the format `YYYY-MM-DD`, for example `2016-03-11`.',
+        'The due date. Date time string in the format `YYYY-MM-DD`, for example `2011-10-03`.',
       variables: true,
     },
     {
