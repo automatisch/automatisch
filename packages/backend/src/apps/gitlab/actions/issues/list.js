@@ -5,7 +5,7 @@ import { cleanOptionalFields } from '../lib.js';
 export default defineAction({
   name: 'Issue: List/find project Issues',
   key: 'issueList',
-  description: 'Creates a new project issue.',
+  description: 'List or find project issues.',
   arguments: [
     {
       label: 'Project ID',
