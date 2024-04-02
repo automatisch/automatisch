@@ -2,7 +2,7 @@ import axios from 'axios';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { HttpProxyAgent } from 'http-proxy-agent';
 
-const config = {};
+const config = axios.defaults;
 const httpProxyUrl = process.env.http_proxy;
 const httpsProxyUrl = process.env.https_proxy;
 const supportsProxy = httpProxyUrl || httpsProxyUrl;
