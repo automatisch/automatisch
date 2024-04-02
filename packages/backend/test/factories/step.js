@@ -19,6 +19,8 @@ export const createStep = async (params = {}) => {
   params.appKey =
     params?.appKey || (params.type === 'action' ? 'deepl' : 'webhook');
 
+  params.parameters = params?.parameters || {};
+
   const step = await Step.query().insertAndFetch(params);
 
   return step;
