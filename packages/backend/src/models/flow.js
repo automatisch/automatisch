@@ -160,7 +160,7 @@ class Flow extends Base {
   }
 
   async isPaused() {
-    const user = await this.$relatedQuery('user');
+    const user = await this.$relatedQuery('user').withSoftDeleted();
     const allowedToRunFlows = await user.isAllowedToRunFlows();
     return allowedToRunFlows ? false : true;
   }
