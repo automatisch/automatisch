@@ -25,27 +25,9 @@ const queryClient = new QueryClient({
 });
 
 export default function AutomatischQueryClientProvider({ children }) {
-  const { token, initialize } = useAuthentication();
-
-  React.useEffect(
-    function updateTokenInHttpClient() {
-      if (!initialize) return;
-
-      if (token) {
-        api.defaults.headers.Authorization = token;
-      } else {
-        delete api.defaults.headers.Authorization;
-      }
-
-      initialize();
-    },
-    [initialize, token],
-  );
-
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
