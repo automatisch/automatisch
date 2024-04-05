@@ -15,7 +15,7 @@ function AccountDropdownMenu(props) {
   const navigate = useNavigate();
   const { open, onClose, anchorEl, id } = props;
   const logout = async () => {
-    authentication.updateToken('');
+    authentication.removeToken();
     await apolloClient.clearStore();
     onClose();
     navigate(URLS.LOGIN);

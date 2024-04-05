@@ -24,7 +24,6 @@ root.render(
               <ThemeProvider>
                 <MetadataProvider>
                   {routes}
-
                   <LiveChat />
                 </MetadataProvider>
               </ThemeProvider>
