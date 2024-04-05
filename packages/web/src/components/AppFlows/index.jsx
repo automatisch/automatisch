@@ -47,7 +47,7 @@ function AppFlows(props) {
   return (
     <>
       {flows?.map((appFlow) => (
-        <AppFlowRow key={appFlow.id} flow={appFlow} />
+        <AppFlowRow key={appFlow.id} flow={appFlow} appKey={appKey} />
       ))}
 
       {pageInfo && pageInfo.totalPages > 1 && (
