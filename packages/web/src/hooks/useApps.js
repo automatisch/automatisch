@@ -6,7 +6,9 @@ export default function useApps(variables) {
   const trueOnlyVariables =
     variables &&
     Object.fromEntries(
-      Object.entries(variables).filter(([_, value]) => value === true),
+      Object.entries(variables).filter(
+        ([key, value]) => value === true || key === 'name',
+      ),
     );
 
   const query = useQuery({
