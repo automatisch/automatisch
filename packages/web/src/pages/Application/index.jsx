@@ -59,7 +59,7 @@ export default function Application() {
   const { data, loading } = useApp(appKey);
   const app = data?.data || {};
 
-  const { appConfig } = useAppConfig(appKey);
+  const { data: appConfig } = useAppConfig(appKey);
   const connectionId = searchParams.get('connectionId') || undefined;
 
   const goToApplicationPage = () => navigate('connections');
