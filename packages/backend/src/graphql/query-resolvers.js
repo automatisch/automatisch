@@ -1,4 +1,3 @@
-import getApp from './queries/get-app.js';
 import getAppAuthClient from './queries/get-app-auth-client.ee.js';
 import getBillingAndUsage from './queries/get-billing-and-usage.ee.js';
 import getConnectedApps from './queries/get-connected-apps.js';
@@ -7,7 +6,6 @@ import getStepWithTestExecutions from './queries/get-step-with-test-executions.j
 import testConnection from './queries/test-connection.js';
 
 const queryResolvers = {
-  getApp,
   getAppAuthClient,
   getBillingAndUsage,
   getConnectedApps,

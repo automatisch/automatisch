@@ -1,20 +1,19 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/client';
-import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
+
 import AppConnectionRow from 'components/AppConnectionRow';
 import NoResultFound from 'components/NoResultFound';
 import useFormatMessage from 'hooks/useFormatMessage';
 import * as URLS from 'config/urls';
+import useAppConnections from 'hooks/useAppConnections';
 
 function AppConnections(props) {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
-  const { data } = useQuery(GET_APP_CONNECTIONS, {
-    variables: { key: appKey },
-  });
-  const appConnections = data?.getApp?.connections || [];
+  const { data } = useAppConnections(appKey);
+  const appConnections = data?.data || [];
   const hasConnections = appConnections?.length;
+
   if (!hasConnections) {
     return (
       <NoResultFound
