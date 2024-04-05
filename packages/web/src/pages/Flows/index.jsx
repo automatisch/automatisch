@@ -30,7 +30,7 @@ export default function Flows() {
   const { data, mutate } = useLazyFlows(
     { flowName, page },
     {
-      onSuccess: () => {
+      onSettled: () => {
         setIsLoading(false);
       },
     },
