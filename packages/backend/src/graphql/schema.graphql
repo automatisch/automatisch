@@ -1,7 +1,6 @@
 type Query {
   getApp(key: String!): App
   getAppAuthClient(id: String!): AppAuthClient
-  getAppAuthClients(appKey: String!, active: Boolean): [AppAuthClient]
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
   getFlow(id: String!): Flow
