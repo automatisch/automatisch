@@ -7,6 +7,7 @@ import { hasValidLicense } from '../helpers/license.ee.js';
 import userAbility from '../helpers/user-ability.js';
 import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
 import Base from './base.js';
+import App from './app.js';
 import Connection from './connection.js';
 import Execution from './execution.js';
 import Flow from './flow.js';
@@ -311,6 +312,56 @@ class User extends Base {
     );
 
     return invoices;
+  }
+
+  async getApps(name) {
+    const connections = await this.authorizedConnections
+      .clone()
+      .select('connections.key')
+      .where({ draft: false })
+      .count('connections.id as count')
+      .groupBy('connections.key');
+
+    const flows = await this.authorizedFlows
+      .clone()
+      .withGraphJoined('steps')
+      .orderBy('created_at', 'desc');
+
+    const duplicatedUsedApps = flows
+      .map((flow) => flow.steps.map((step) => step.appKey))
+      .flat()
+      .filter(Boolean);
+
+    const connectionKeys = connections.map((connection) => connection.key);
+    const usedApps = [...new Set([...duplicatedUsedApps, ...connectionKeys])];
+
+    let apps = await App.findAll(name);
+
+    apps = apps
+      .filter((app) => {
+        return usedApps.includes(app.key);
+      })
+      .map((app) => {
+        const connection = connections.find(
+          (connection) => connection.key === app.key
+        );
+
+        app.connectionCount = connection?.count || 0;
+        app.flowCount = 0;
+
+        flows.forEach((flow) => {
+          const usedFlow = flow.steps.find((step) => step.appKey === app.key);
+
+          if (usedFlow) {
+            app.flowCount += 1;
+          }
+        });
+
+        return app;
+      })
+      .sort((appA, appB) => appA.name.localeCompare(appB.name));
+
+    return apps;
   }
 
   async $beforeInsert(queryContext) {
