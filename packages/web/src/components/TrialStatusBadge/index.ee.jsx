@@ -8,7 +8,7 @@ import useUserTrial from 'hooks/useUserTrial.ee';
 export default function TrialStatusBadge() {
   const data = useUserTrial();
 
-  if (!data) return <React.Fragment />;
+  if (!data.hasTrial) return <React.Fragment />;
 
   const { message, status } = data;
 

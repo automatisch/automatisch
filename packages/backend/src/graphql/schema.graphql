@@ -8,7 +8,6 @@ type Query {
     key: String!
     parameters: JSONObject
   ): JSONObject
-  getBillingAndUsage: GetBillingAndUsage
 }
 
 type Mutation {
@@ -558,43 +557,6 @@ type License {
   name: String
   expireAt: String
   verified: Boolean
-}
-
-type GetBillingAndUsage {
-  subscription: Subscription
-  usage: Usage
-}
-
-type MonthlyQuota {
-  title: String
-  action: BillingCardAction
-}
-
-type NextBillAmount {
-  title: String
-  action: BillingCardAction
-}
-
-type NextBillDate {
-  title: String
-  action: BillingCardAction
-}
-
-type BillingCardAction {
-  type: String
-  text: String
-  src: String
-}
-
-type Subscription {
-  status: String
-  monthlyQuota: MonthlyQuota
-  nextBillAmount: NextBillAmount
-  nextBillDate: NextBillDate
-}
-
-type Usage {
-  task: Int
 }
 
 type Permission {

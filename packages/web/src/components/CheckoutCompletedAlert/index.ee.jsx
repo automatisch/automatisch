@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
+
 import useFormatMessage from 'hooks/useFormatMessage';
 
 export default function CheckoutCompletedAlert() {
@@ -9,7 +10,9 @@ export default function CheckoutCompletedAlert() {
   const location = useLocation();
   const state = location.state;
   const checkoutCompleted = state?.checkoutCompleted;
+
   if (!checkoutCompleted) return <React.Fragment />;
+
   return (
     <Alert
       severity="success"
