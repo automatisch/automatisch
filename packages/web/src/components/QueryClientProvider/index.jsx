@@ -4,12 +4,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import api from 'helpers/api.js';
-import useAuthentication from 'hooks/useAuthentication.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000,
+      retryOnMount: false,
       refetchOnWindowFocus: false,
       // provides a convenient default while it should be overridden for other HTTP methods
       queryFn: async ({ queryKey, signal }) => {
