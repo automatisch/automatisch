@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
@@ -6,7 +7,6 @@ import CardActionArea from '@mui/material/CardActionArea';
 import Chip from '@mui/material/Chip';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { DateTime } from 'luxon';
-import PropTypes from 'prop-types';
 
 import FlowAppIcons from 'components/FlowAppIcons';
 import FlowContextMenu from 'components/FlowContextMenu';
@@ -37,7 +37,7 @@ function FlowRow(props) {
   const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { flow, onDuplicateFlow, onDeleteFlow } = props;
+  const { flow, onDuplicateFlow, onDeleteFlow, appKey } = props;
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -116,6 +116,7 @@ function FlowRow(props) {
           anchorEl={anchorEl}
           onDeleteFlow={onDeleteFlow}
           onDuplicateFlow={onDuplicateFlow}
+          appKey={appKey}
         />
       )}
     </>
@@ -126,6 +127,7 @@ FlowRow.propTypes = {
   flow: FlowPropType.isRequired,
   onDeleteFlow: PropTypes.func,
   onDuplicateFlow: PropTypes.func,
+  appKey: PropTypes.string.isRequired,
 };
 
 export default FlowRow;

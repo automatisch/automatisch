@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useQueryClient } from '@tanstack/react-query';
+
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -13,17 +15,20 @@ import { DUPLICATE_FLOW } from 'graphql/mutations/duplicate-flow';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 function ContextMenu(props) {
-  const { flowId, onClose, anchorEl, onDuplicateFlow, onDeleteFlow } = props;
+  const { flowId, onClose, anchorEl, onDuplicateFlow, onDeleteFlow, appKey } =
+    props;
   const enqueueSnackbar = useEnqueueSnackbar();
-  const [deleteFlow] = useMutation(DELETE_FLOW);
-  const [duplicateFlow] = useMutation(DUPLICATE_FLOW);
   const formatMessage = useFormatMessage();
+  const queryClient = useQueryClient();
+  const [duplicateFlow] = useMutation(DUPLICATE_FLOW);
+  const [deleteFlow] = useMutation(DELETE_FLOW);
 
   const onFlowDuplicate = React.useCallback(async () => {
     await duplicateFlow({
       variables: { input: { id: flowId } },
     });
 
+    await queryClient.invalidateQueries({ queryKey: ['appFlows', appKey] });
     enqueueSnackbar(formatMessage('flow.successfullyDuplicated'), {
       variant: 'success',
       SnackbarProps: {
@@ -33,7 +38,7 @@ function ContextMenu(props) {
 
     onDuplicateFlow?.();
     onClose();
-  }, [flowId, onClose, duplicateFlow, onDuplicateFlow]);
+  }, [flowId, onClose, duplicateFlow, queryClient, onDuplicateFlow]);
 
   const onFlowDelete = React.useCallback(async () => {
     await deleteFlow({
@@ -49,13 +54,14 @@ function ContextMenu(props) {
       },
     });
 
+    await queryClient.invalidateQueries({ queryKey: ['appFlows', appKey] });
     enqueueSnackbar(formatMessage('flow.successfullyDeleted'), {
       variant: 'success',
     });
 
     onDeleteFlow?.();
     onClose();
-  }, [flowId, onClose, deleteFlow, onDeleteFlow]);
+  }, [flowId, onClose, deleteFlow, queryClient, onDeleteFlow]);
 
   return (
     <Menu
@@ -100,6 +106,7 @@ ContextMenu.propTypes = {
   ]).isRequired,
   onDeleteFlow: PropTypes.func,
   onDuplicateFlow: PropTypes.func,
+  appKey: PropTypes.string.isRequired,
 };
 
 export default ContextMenu;
