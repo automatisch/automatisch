@@ -21,6 +21,8 @@ import {
   StepPropType,
   SubstepPropType,
 } from 'propTypes/propTypes';
+import useStepConnection from 'hooks/useStepConnection';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -44,13 +46,14 @@ function ChooseConnectionSubstep(props) {
     onChange,
     application,
   } = props;
-  const { connection, appKey } = step;
+  const { appKey } = step;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
   const [showAddConnectionDialog, setShowAddConnectionDialog] =
     React.useState(false);
   const [showAddSharedConnectionDialog, setShowAddSharedConnectionDialog] =
     React.useState(false);
+  const queryClient = useQueryClient();
 
   const { authenticate } = useAuthenticateApp({
     appKey: application.key,
@@ -63,21 +66,24 @@ function ChooseConnectionSubstep(props) {
 
   const { data: appConfig } = useAppConfig(application.key);
 
+  const { data: stepConnectionData } = useStepConnection(step.id);
+  const stepConnection = stepConnectionData?.data;
+
   // TODO: show detailed error when connection test/verification fails
   const [
     testConnection,
     { loading: testResultLoading, refetch: retestConnection },
   ] = useLazyQuery(TEST_CONNECTION, {
     variables: {
-      id: connection?.id,
+      id: stepConnection?.id,
     },
   });
 
   React.useEffect(() => {
-    if (connection?.id) {
+    if (stepConnection?.id) {
       testConnection({
         variables: {
-          id: connection.id,
+          id: stepConnection.id,
         },
       });
     }
@@ -154,8 +160,9 @@ function ChooseConnectionSubstep(props) {
     },
     [onChange, refetch, step],
   );
+
   const handleChange = React.useCallback(
-    (event, selectedOption) => {
+    async (event, selectedOption) => {
       if (typeof selectedOption === 'object') {
         // TODO: try to simplify type casting below.
         const typedSelectedOption = selectedOption;
@@ -172,7 +179,7 @@ function ChooseConnectionSubstep(props) {
           return;
         }
 
-        if (connectionId !== step.connection?.id) {
+        if (connectionId !== stepConnection?.id) {
           onChange({
             step: {
               ...step,
@@ -181,19 +188,23 @@ function ChooseConnectionSubstep(props) {
               },
             },
           });
+
+          await queryClient.invalidateQueries({
+            queryKey: ['stepConnection', step.id],
+          });
         }
       }
     },
-    [step, onChange],
+    [step, onChange, queryClient],
   );
 
   React.useEffect(() => {
-    if (step.connection?.id) {
+    if (stepConnection?.id) {
       retestConnection({
-        id: step.connection.id,
+        id: stepConnection?.id,
       });
     }
-  }, [step.connection?.id, retestConnection]);
+  }, [stepConnection?.id, retestConnection]);
 
   const onToggle = expanded ? onCollapse : onExpand;
 
@@ -203,7 +214,7 @@ function ChooseConnectionSubstep(props) {
         expanded={expanded}
         onClick={onToggle}
         title={name}
-        valid={testResultLoading ? null : connection?.verified}
+        valid={testResultLoading ? null : stepConnection?.verified}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem
@@ -229,7 +240,7 @@ function ChooseConnectionSubstep(props) {
                 required
               />
             )}
-            value={getOption(connectionOptions, connection?.id)}
+            value={getOption(connectionOptions, stepConnection?.id)}
             onChange={handleChange}
             loading={loading}
             data-test="choose-connection-autocomplete"
@@ -242,7 +253,7 @@ function ChooseConnectionSubstep(props) {
             sx={{ mt: 2 }}
             disabled={
               testResultLoading ||
-              !connection?.verified ||
+              !stepConnection?.verified ||
               editorContext.readOnly
             }
             data-test="flow-substep-continue-button"

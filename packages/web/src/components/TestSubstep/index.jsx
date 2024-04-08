@@ -6,12 +6,15 @@ import ListItem from '@mui/material/ListItem';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import LoadingButton from '@mui/lab/LoadingButton';
+
 import { EditorContext } from 'contexts/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
 import JSONViewer from 'components/JSONViewer';
 import WebhookUrlInfo from 'components/WebhookUrlInfo';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
+import { useQueryClient } from '@tanstack/react-query';
+
 function serializeErrors(graphQLErrors) {
   return graphQLErrors?.map((error) => {
     try {
@@ -28,6 +31,7 @@ function serializeErrors(graphQLErrors) {
     }
   });
 }
+
 function TestSubstep(props) {
   const {
     substep,
@@ -38,6 +42,7 @@ function TestSubstep(props) {
     onContinue,
     step,
     showWebhookUrl = false,
+    flowId,
   } = props;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
@@ -52,6 +57,8 @@ function TestSubstep(props) {
   const isCompleted = !error && called && !loading;
   const hasNoOutput = !response && isCompleted;
   const { name } = substep;
+  const queryClient = useQueryClient();
+
   React.useEffect(
     function resetTestDataOnSubstepToggle() {
       if (!expanded) {
@@ -60,20 +67,28 @@ function TestSubstep(props) {
     },
     [expanded, reset],
   );
-  const handleSubmit = React.useCallback(() => {
+
+  const handleSubmit = React.useCallback(async () => {
     if (isCompleted) {
       onContinue?.();
       return;
     }
-    executeFlow({
+
+    await executeFlow({
       variables: {
         input: {
           stepId: step.id,
         },
       },
     });
-  }, [onSubmit, onContinue, isCompleted, step.id]);
+
+    await queryClient.invalidateQueries({
+      queryKey: ['flow', flowId],
+    });
+  }, [onSubmit, onContinue, isCompleted, step.id, queryClient, flowId]);
+
   const onToggle = expanded ? onCollapse : onExpand;
+
   return (
     <React.Fragment>
       <FlowSubstepTitle expanded={expanded} onClick={onToggle} title={name} />
