@@ -10,16 +10,18 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useAppAuthClients from 'hooks/useAppAuthClients.ee';
+import useAdminAppAuthClients from 'hooks/useAdminAppAuthClients';
 import NoResultFound from 'components/NoResultFound';
 
 function AdminApplicationAuthClients(props) {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
-  const { appAuthClients, loading } = useAppAuthClients({ appKey });
-  if (loading)
+  const { data: appAuthClients, isLoading } = useAdminAppAuthClients(appKey);
+
+  if (isLoading)
     return <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />;
-  if (!appAuthClients?.length) {
+
+  if (!appAuthClients?.data.length) {
     return (
       <NoResultFound
         to={URLS.ADMIN_APP_AUTH_CLIENTS_CREATE(appKey)}
@@ -27,7 +29,8 @@ function AdminApplicationAuthClients(props) {
       />
     );
   }
-  const sortedAuthClients = appAuthClients.slice().sort((a, b) => {
+
+  const sortedAuthClients = appAuthClients.data.slice().sort((a, b) => {
     if (a.id < b.id) {
       return -1;
     }
@@ -36,6 +39,7 @@ function AdminApplicationAuthClients(props) {
     }
     return 0;
   });
+
   return (
     <div>
       {sortedAuthClients.map((client) => (
