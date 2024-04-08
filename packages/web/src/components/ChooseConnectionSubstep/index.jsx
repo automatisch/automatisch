@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -12,7 +12,6 @@ import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import { EditorContext } from 'contexts/Editor';
-import { GET_APP_CONNECTIONS } from 'graphql/queries/get-app-connections';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -23,6 +22,7 @@ import {
 } from 'propTypes/propTypes';
 import useStepConnection from 'hooks/useStepConnection';
 import { useQueryClient } from '@tanstack/react-query';
+import useAppConnections from 'hooks/useAppConnections';
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -60,9 +60,11 @@ function ChooseConnectionSubstep(props) {
     useShared: true,
   });
 
-  const { data, loading, refetch } = useQuery(GET_APP_CONNECTIONS, {
-    variables: { key: appKey },
-  });
+  const {
+    data,
+    isLoading: isAppConnectionsLoading,
+    refetch,
+  } = useAppConnections(appKey);
 
   const { data: appConfig } = useAppConfig(application.key);
 
@@ -91,11 +93,10 @@ function ChooseConnectionSubstep(props) {
   }, []);
 
   const connectionOptions = React.useMemo(() => {
-    const appWithConnections = data?.getApp;
+    const appWithConnections = data?.data;
     const options =
-      appWithConnections?.connections?.map((connection) =>
-        optionGenerator(connection),
-      ) || [];
+      appWithConnections?.map((connection) => optionGenerator(connection)) ||
+      [];
 
     if (!appConfig?.data || appConfig?.data?.canCustomConnect) {
       options.push({
@@ -242,7 +243,7 @@ function ChooseConnectionSubstep(props) {
             )}
             value={getOption(connectionOptions, stepConnection?.id)}
             onChange={handleChange}
-            loading={loading}
+            loading={isAppConnectionsLoading}
             data-test="choose-connection-autocomplete"
           />
 

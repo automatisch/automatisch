@@ -1,5 +1,4 @@
 type Query {
-  getApp(key: String!): App
   getAppAuthClient(id: String!): AppAuthClient
   getConnectedApps(name: String): [App]
   testConnection(id: String!): Connection
