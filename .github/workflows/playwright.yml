@@ -59,8 +59,10 @@ jobs:
         with:
           node-version: 18
       - name: Install dependencies
-        run: yarn && yarn lerna bootstrap
+        working-directory: ./packages/e2e-tests
+        run: yarn install
       - name: Install Playwright Browsers
+        working-directory: ./packages/e2e-tests
         run: yarn playwright install --with-deps
       - name: Build Automatisch web
         working-directory: ./packages/web
