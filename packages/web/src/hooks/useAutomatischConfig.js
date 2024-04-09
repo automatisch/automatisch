@@ -8,6 +8,7 @@ export default function useAutomatischConfig() {
       const { data } = await api.get(`/v1/automatisch/config`, {
         signal,
       });
+
       return data;
     },
   });
