@@ -10,7 +10,6 @@
   "workspaces": {
     "packages": [
       "packages/backend",
-      "packages/e2e-tests",
       "packages/web"
     ],
     "nohoist": [
