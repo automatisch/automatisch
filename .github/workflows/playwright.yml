@@ -58,12 +58,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies
+      - name: Install e2e dependencies
         working-directory: ./packages/e2e-tests
         run: yarn install
       - name: Install Playwright Browsers
         working-directory: ./packages/e2e-tests
         run: yarn playwright install --with-deps
+      - name: Install web dependencies
+        run: yarn install
       - name: Build Automatisch web
         working-directory: ./packages/web
         run: yarn build
