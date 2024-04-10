@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useLazyQuery } from '@apollo/client';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -12,7 +11,6 @@ import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import { EditorContext } from 'contexts/Editor';
-import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import {
@@ -23,6 +21,7 @@ import {
 import useStepConnection from 'hooks/useStepConnection';
 import { useQueryClient } from '@tanstack/react-query';
 import useAppConnections from 'hooks/useAppConnections';
+import useTestConnection from 'hooks/useTestConnection';
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -72,14 +71,10 @@ function ChooseConnectionSubstep(props) {
   const stepConnection = stepConnectionData?.data;
 
   // TODO: show detailed error when connection test/verification fails
-  const [
-    testConnection,
-    { loading: testResultLoading, refetch: retestConnection },
-  ] = useLazyQuery(TEST_CONNECTION, {
-    variables: {
-      id: stepConnection?.id,
-    },
-  });
+  const { mutate: testConnection, isPending: isTestConnectionPending } =
+    useTestConnection({
+      connectionId: stepConnection?.id,
+    });
 
   React.useEffect(() => {
     if (stepConnection?.id) {
@@ -201,11 +196,11 @@ function ChooseConnectionSubstep(props) {
 
   React.useEffect(() => {
     if (stepConnection?.id) {
-      retestConnection({
+      testConnection({
         id: stepConnection?.id,
       });
     }
-  }, [stepConnection?.id, retestConnection]);
+  }, [stepConnection?.id, testConnection]);
 
   const onToggle = expanded ? onCollapse : onExpand;
 
@@ -215,7 +210,7 @@ function ChooseConnectionSubstep(props) {
         expanded={expanded}
         onClick={onToggle}
         title={name}
-        valid={testResultLoading ? null : stepConnection?.verified}
+        valid={isTestConnectionPending ? null : stepConnection?.verified}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <ListItem
@@ -253,7 +248,7 @@ function ChooseConnectionSubstep(props) {
             onClick={onSubmit}
             sx={{ mt: 2 }}
             disabled={
-              testResultLoading ||
+              isTestConnectionPending ||
               !stepConnection?.verified ||
               editorContext.readOnly
             }
