@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import Skeleton from '@mui/material/Skeleton';
@@ -14,11 +14,11 @@ import { DateTime } from 'luxon';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
-import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { ConnectionPropType } from 'propTypes/propTypes';
 import { CardContent, Typography } from './style';
 import useConnectionFlows from 'hooks/useConnectionFlows';
+import useTestConnection from 'hooks/useTestConnection';
 
 const countTranslation = (value) => (
   <>
@@ -36,18 +36,17 @@ function AppConnectionRow(props) {
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const [testConnection, { called: testCalled, loading: testLoading }] =
-    useLazyQuery(TEST_CONNECTION, {
-      fetchPolicy: 'network-only',
-      onCompleted: () => {
-        setTimeout(() => setVerificationVisible(false), 3000);
-      },
-      onError: () => {
-        setTimeout(() => setVerificationVisible(false), 3000);
-      },
-    });
-
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
+
+  const { mutate: testConnection, isPending: isTestConnectionPending } =
+    useTestConnection(
+      { connectionId: id },
+      {
+        onSettled: () => {
+          setTimeout(() => setVerificationVisible(false), 3000);
+        },
+      },
+    );
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -113,7 +112,7 @@ function AppConnectionRow(props) {
 
             <Box>
               <Stack direction="row" alignItems="center" spacing={1}>
-                {verificationVisible && testCalled && testLoading && (
+                {verificationVisible && isTestConnectionPending && (
                   <>
                     <CircularProgress size={16} />
                     <Typography variant="caption">
@@ -122,8 +121,7 @@ function AppConnectionRow(props) {
                   </>
                 )}
                 {verificationVisible &&
-                  testCalled &&
-                  !testLoading &&
+                  !isTestConnectionPending &&
                   verified && (
                     <>
                       <CheckCircleIcon fontSize="small" color="success" />
@@ -133,8 +131,7 @@ function AppConnectionRow(props) {
                     </>
                   )}
                 {verificationVisible &&
-                  testCalled &&
-                  !testLoading &&
+                  !isTestConnectionPending &&
                   !verified && (
                     <>
                       <ErrorIcon fontSize="small" color="error" />
