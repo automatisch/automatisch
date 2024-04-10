@@ -153,10 +153,12 @@ function AppConnectionRow(props) {
                 sx={{ display: ['none', 'inline-block'] }}
               >
                 {formatMessage('connection.flowCount', {
-                  count: isConnectionFlowsLoading ? (
-                    <Skeleton variant="rounded" width={20} height={20} />
-                  ) : (
-                    countTranslation(flowCount)
+                  count: countTranslation(
+                    isConnectionFlowsLoading ? (
+                      <Skeleton variant="text" width={15} />
+                    ) : (
+                      flowCount
+                    ),
                   ),
                 })}
               </Typography>
