@@ -1,11 +1,6 @@
 type Query {
   getAppAuthClient(id: String!): AppAuthClient
   getConnectedApps(name: String): [App]
-  getDynamicData(
-    stepId: String!
-    key: String!
-    parameters: JSONObject
-  ): JSONObject
 }
 
 type Mutation {
