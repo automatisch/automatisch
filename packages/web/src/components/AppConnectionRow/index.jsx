@@ -1,21 +1,24 @@
+import * as React from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
+import Skeleton from '@mui/material/Skeleton';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { DateTime } from 'luxon';
-import * as React from 'react';
+
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import { TEST_CONNECTION } from 'graphql/queries/test-connection';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { ConnectionPropType } from 'propTypes/propTypes';
 import { CardContent, Typography } from './style';
+import useConnectionFlows from 'hooks/useConnectionFlows';
 
 const countTranslation = (value) => (
   <>
@@ -23,9 +26,16 @@ const countTranslation = (value) => (
     <br />
   </>
 );
+
 function AppConnectionRow(props) {
+  const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
+  const { id, key, formattedData, verified, createdAt, reconnectable } =
+    props.connection;
   const [verificationVisible, setVerificationVisible] = React.useState(false);
+  const contextButtonRef = React.useRef(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const [testConnection, { called: testCalled, loading: testLoading }] =
     useLazyQuery(TEST_CONNECTION, {
       fetchPolicy: 'network-only',
@@ -36,23 +46,20 @@ function AppConnectionRow(props) {
         setTimeout(() => setVerificationVisible(false), 3000);
       },
     });
+
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
-  const formatMessage = useFormatMessage();
-  const {
-    id,
-    key,
-    formattedData,
-    verified,
-    createdAt,
-    flowCount,
-    reconnectable,
-  } = props.connection;
-  const contextButtonRef = React.useRef(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const { data, isLoading: isConnectionFlowsLoading } = useConnectionFlows({
+    connectionId: id,
+  });
+  const flowCount = data?.meta?.count;
+
   const onContextMenuClick = () => setAnchorEl(contextButtonRef.current);
+
   const onContextMenuAction = React.useCallback(
     async (event, action) => {
       if (action.type === 'delete') {
@@ -68,6 +75,7 @@ function AppConnectionRow(props) {
             });
           },
         });
+
         enqueueSnackbar(formatMessage('connection.deletedMessage'), {
           variant: 'success',
           SnackbarProps: {
@@ -81,9 +89,11 @@ function AppConnectionRow(props) {
     },
     [deleteConnection, id, testConnection, formatMessage, enqueueSnackbar],
   );
+
   const relativeCreatedAt = DateTime.fromMillis(
     parseInt(createdAt, 10),
   ).toRelative();
+
   return (
     <>
       <Card sx={{ my: 2 }} data-test="app-connection-row">
@@ -143,7 +153,11 @@ function AppConnectionRow(props) {
                 sx={{ display: ['none', 'inline-block'] }}
               >
                 {formatMessage('connection.flowCount', {
-                  count: countTranslation(flowCount),
+                  count: isConnectionFlowsLoading ? (
+                    <Skeleton variant="rounded" width={20} height={20} />
+                  ) : (
+                    countTranslation(flowCount)
+                  ),
                 })}
               </Typography>
             </Box>

@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useConnectionFlows(
   { connectionId, page },
-  { enabled },
+  { enabled } = {},
 ) {
   const query = useQuery({
     queryKey: ['connectionFlows', connectionId, page],
