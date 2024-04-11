@@ -40,9 +40,6 @@ export const authenticateUser = async (request, response, next) => {
 const isAuthenticatedRule = rule()(isAuthenticated);
 
 export const authenticationRules = {
-  Query: {
-    '*': isAuthenticatedRule,
-  },
   Mutation: {
     '*': isAuthenticatedRule,
     forgotPassword: allow,
