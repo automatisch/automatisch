@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useStepWithTestExecutions(stepId) {
   const query = useQuery({
-    queryKey: ['stepWithTestExecutions', stepId],
+    queryKey: ['steps', stepId, 'previousSteps'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/steps/${stepId}/previous-steps`, {
         signal,

@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useTriggerSubsteps({ appKey, triggerKey }) {
   const query = useQuery({
-    queryKey: ['triggerSubsteps', appKey, triggerKey],
+    queryKey: ['apps', appKey, 'triggers', triggerKey, 'substeps'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(
         `/v1/apps/${appKey}/triggers/${triggerKey}/substeps`,

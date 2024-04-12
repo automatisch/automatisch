@@ -82,7 +82,7 @@ function TestSubstep(props) {
     });
 
     await queryClient.invalidateQueries({
-      queryKey: ['flow', flowId],
+      queryKey: ['flows', flowId],
     });
   }, [onSubmit, onContinue, isCompleted, queryClient, flowId]);
 

@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useFlow(flowId) {
   const query = useQuery({
-    queryKey: ['flow', flowId],
+    queryKey: ['flows', flowId],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/flows/${flowId}`, {
         signal,

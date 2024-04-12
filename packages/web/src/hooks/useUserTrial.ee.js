@@ -42,7 +42,7 @@ export default function useUserTrial() {
   const formatMessage = useFormatMessage();
 
   const { data } = useQuery({
-    queryKey: ['userTrial'],
+    queryKey: ['users', 'me', 'trial'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get('/v1/users/me/trial', {
         signal,

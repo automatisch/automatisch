@@ -186,7 +186,7 @@ function ChooseConnectionSubstep(props) {
           });
 
           await queryClient.invalidateQueries({
-            queryKey: ['stepConnection', step.id],
+            queryKey: ['steps', step.id, 'connection'],
           });
         }
       }

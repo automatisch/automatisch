@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useRole({ roleId }) {
   const query = useQuery({
-    queryKey: ['role', roleId],
+    queryKey: ['admin', 'roles', roleId],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/admin/roles/${roleId}`, {
         signal,

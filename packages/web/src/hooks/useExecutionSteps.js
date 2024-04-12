@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useExecutionSteps({ executionId }) {
   const query = useInfiniteQuery({
-    queryKey: ['executionSteps', executionId],
+    queryKey: ['executions', executionId, 'executionSteps'],
     queryFn: async ({ pageParam = 1, signal }) => {
       const { data } = await api.get(
         `/v1/executions/${executionId}/execution-steps`,

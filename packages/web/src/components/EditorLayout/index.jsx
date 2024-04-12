@@ -48,7 +48,7 @@ export default function EditorLayout() {
         },
       });
 
-      await queryClient.invalidateQueries({ queryKey: ['flow', flowId] });
+      await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
     },
     [flowId, queryClient],
   );
@@ -71,7 +71,7 @@ export default function EditorLayout() {
         },
       });
 
-      await queryClient.invalidateQueries({ queryKey: ['flow', flowId] });
+      await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
     },
     [flowId, queryClient],
   );

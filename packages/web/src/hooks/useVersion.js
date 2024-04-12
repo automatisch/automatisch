@@ -7,7 +7,7 @@ import api from 'helpers/api';
 export default function useVersion() {
   const { data: notificationsData } = useAutomatischNotifications();
   const { data } = useQuery({
-    queryKey: ['automatischVersion'],
+    queryKey: ['automatisch', 'version'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get('/v1/automatisch/version', {
         signal,

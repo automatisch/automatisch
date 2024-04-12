@@ -25,7 +25,7 @@ export default function useSubscription() {
   const [isPolling, setIsPolling] = React.useState(false);
 
   const { data } = useQuery({
-    queryKey: ['subscription'],
+    queryKey: ['users', 'me', 'subscription'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/users/me/subscription`, {
         signal,

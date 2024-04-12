@@ -74,7 +74,7 @@ function useDynamicFields(stepId, schema) {
   }, [schema, formValues, getValues]);
 
   const query = useQuery({
-    queryKey: ['dynamicFields', stepId, computedVariables],
+    queryKey: ['steps', stepId, 'dynamicFields', computedVariables],
     queryFn: async ({ signal }) => {
       const { data } = await api.post(
         `/v1/steps/${stepId}/dynamic-fields`,
