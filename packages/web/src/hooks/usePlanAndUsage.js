@@ -12,6 +12,7 @@ export default function usePlanAndUsage(userId) {
 
       return data;
     },
+    enabled: !!userId,
   });
 
   return query;

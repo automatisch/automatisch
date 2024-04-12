@@ -83,10 +83,10 @@ function Action(props) {
 export default function UsageDataInformation() {
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
-  const { data } = usePlanAndUsage();
-  const planAndUsage = data?.data;
   const { data: currentUser } = useCurrentUser();
   const currentUserId = currentUser?.data?.id;
+  const { data } = usePlanAndUsage(currentUserId);
+  const planAndUsage = data?.data;
   const trial = useUserTrial();
   const subscriptionData = useSubscription();
   const subscription = subscriptionData?.data;
