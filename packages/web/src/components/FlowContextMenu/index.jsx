@@ -28,7 +28,9 @@ function ContextMenu(props) {
       variables: { input: { id: flowId } },
     });
 
-    await queryClient.invalidateQueries({ queryKey: ['appFlows', appKey] });
+    await queryClient.invalidateQueries({
+      queryKey: ['apps', appKey, 'flows'],
+    });
     enqueueSnackbar(formatMessage('flow.successfullyDuplicated'), {
       variant: 'success',
       SnackbarProps: {
@@ -54,7 +56,9 @@ function ContextMenu(props) {
       },
     });
 
-    await queryClient.invalidateQueries({ queryKey: ['appFlows', appKey] });
+    await queryClient.invalidateQueries({
+      queryKey: ['apps', appKey, 'flows'],
+    });
     enqueueSnackbar(formatMessage('flow.successfullyDeleted'), {
       variant: 'success',
     });

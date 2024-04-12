@@ -39,9 +39,9 @@ function Editor(props) {
 
       await updateStep({ variables: { input: mutationInput } });
       await queryClient.invalidateQueries({
-        queryKey: ['stepConnection', step.id],
+        queryKey: ['steps', step.id, 'connection'],
       });
-      await queryClient.invalidateQueries({ queryKey: ['flow', flow.id] });
+      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
     },
     [updateStep, flow.id, queryClient],
   );
@@ -63,7 +63,7 @@ function Editor(props) {
 
       const createdStepId = createdStep.data.createStep.id;
       setCurrentStepId(createdStepId);
-      await queryClient.invalidateQueries({ queryKey: ['flow', flow.id] });
+      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
     },
     [createStep, flow.id, queryClient],
   );

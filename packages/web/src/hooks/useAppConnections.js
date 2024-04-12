@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useAppConnections(appKey) {
   const query = useQuery({
-    queryKey: ['appConnections', appKey],
+    queryKey: ['apps', appKey, 'connections'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/apps/${appKey}/connections`, {
         signal,

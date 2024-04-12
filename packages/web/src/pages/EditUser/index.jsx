@@ -52,7 +52,6 @@ export default function EditUser() {
         },
       });
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'user', userId] });
 
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',

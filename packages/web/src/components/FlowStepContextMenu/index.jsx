@@ -19,7 +19,7 @@ function FlowStepContextMenu(props) {
     async (event) => {
       event.stopPropagation();
       await deleteStep({ variables: { input: { id: stepId } } });
-      await queryClient.invalidateQueries({ queryKey: ['flow', flowId] });
+      await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
     },
     [stepId, queryClient],
   );

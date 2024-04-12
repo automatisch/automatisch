@@ -7,7 +7,7 @@ export default function useConnectionFlows(
   { enabled } = {},
 ) {
   const query = useQuery({
-    queryKey: ['connectionFlows', connectionId, page],
+    queryKey: ['connections', connectionId, 'flows', { page }],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/connections/${connectionId}/flows`, {
         params: {

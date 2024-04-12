@@ -3,7 +3,7 @@ import api from 'helpers/api';
 
 export default function useAdminUser({ userId }) {
   const query = useQuery({
-    queryKey: ['admin', 'user', userId],
+    queryKey: ['admin', 'users', userId],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/admin/users/${userId}`, {
         signal,

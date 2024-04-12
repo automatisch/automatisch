@@ -31,11 +31,11 @@ export const PaddleProvider = (props) => {
           // Paddle has side effects in the background,
           // so we need to refetch the relevant queries
           await queryClient.refetchQueries({
-            queryKey: ['userTrial'],
+            queryKey: ['users', 'me', 'trial'],
           });
 
           await queryClient.refetchQueries({
-            queryKey: ['subscription'],
+            queryKey: ['users', 'me', 'subscription'],
           });
 
           navigate(URLS.SETTINGS_BILLING_AND_USAGE, {

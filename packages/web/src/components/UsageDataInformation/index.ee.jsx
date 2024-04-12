@@ -94,7 +94,7 @@ export default function UsageDataInformation() {
 
   React.useEffect(() => {
     queryClient.invalidateQueries({
-      queryKey: ['planAndUsage', currentUserId],
+      queryKey: ['users', currentUserId, 'planAndUsage'],
     });
   }, [subscription, queryClient, currentUserId]);
 
