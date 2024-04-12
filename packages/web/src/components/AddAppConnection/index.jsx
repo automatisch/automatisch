@@ -17,6 +17,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { generateExternalLink } from 'helpers/translationValues';
 import { Form } from './style';
 import useAppAuth from 'hooks/useAppAuth';
+import { useQueryClient } from '@tanstack/react-query';
 
 function AddAppConnection(props) {
   const { application, connectionId, onClose } = props;
@@ -36,6 +37,7 @@ function AddAppConnection(props) {
     appAuthClientId,
     useShared: !!appAuthClientId,
   });
+  const queryClient = useQueryClient();
 
   React.useEffect(function relayProviderData() {
     if (window.opener) {
@@ -77,6 +79,10 @@ function AddAppConnection(props) {
       try {
         const response = await authenticate({
           fields: data,
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: ['apps', key, 'connections'],
         });
         onClose(response);
       } catch (err) {
