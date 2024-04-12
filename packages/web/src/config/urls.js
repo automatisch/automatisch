@@ -17,13 +17,13 @@ export const APP_ADD_CONNECTION = (appKey, shared = false) =>
   `/app/${appKey}/connections/add?shared=${shared}`;
 export const APP_ADD_CONNECTION_WITH_AUTH_CLIENT_ID = (
   appKey,
-  appAuthClientId
+  appAuthClientId,
 ) => `/app/${appKey}/connections/add?appAuthClientId=${appAuthClientId}`;
 export const APP_ADD_CONNECTION_PATTERN = '/app/:appKey/connections/add';
 export const APP_RECONNECT_CONNECTION = (
   appKey,
   connectionId,
-  appAuthClientId
+  appAuthClientId,
 ) => {
   const path = `/app/${appKey}/connections/${connectionId}/reconnect`;
   if (appAuthClientId) {

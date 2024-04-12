@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { ConnectionPropType } from 'propTypes/propTypes';
+import { useQueryClient } from '@tanstack/react-query';
 
 function ContextMenu(props) {
   const {
@@ -18,15 +19,24 @@ function ContextMenu(props) {
     disableReconnection,
   } = props;
   const formatMessage = useFormatMessage();
+  const queryClient = useQueryClient();
+
   const createActionHandler = React.useCallback(
     (action) => {
-      return function clickHandler(event) {
+      return async function clickHandler(event) {
         onMenuItemClick(event, action);
+
+        if (['test', 'reconnect', 'delete'].includes(action.type)) {
+          await queryClient.invalidateQueries({
+            queryKey: ['apps', appKey, 'connections'],
+          });
+        }
         onClose();
       };
     },
-    [onMenuItemClick, onClose],
+    [onMenuItemClick, onClose, queryClient],
   );
+
   return (
     <Menu
       open={true}
