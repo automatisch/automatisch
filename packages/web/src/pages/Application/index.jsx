@@ -19,6 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAppConfig from 'hooks/useAppConfig.ee';
+import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import * as URLS from 'config/urls';
 import SplitButton from 'components/SplitButton';
 import ConditionalIconButton from 'components/ConditionalIconButton';
@@ -61,6 +62,8 @@ export default function Application() {
 
   const { data: appConfig } = useAppConfig(appKey);
   const connectionId = searchParams.get('connectionId') || undefined;
+
+  const currentUserAbility = useCurrentUserAbility();
 
   const goToApplicationPage = () => navigate('connections');
 
@@ -125,6 +128,7 @@ export default function Application() {
                       )}
                       fullWidth
                       icon={<AddIcon />}
+                      disabled={!currentUserAbility.can('create', 'Flow')}
                     >
                       {formatMessage('app.createFlow')}
                     </ConditionalIconButton>
