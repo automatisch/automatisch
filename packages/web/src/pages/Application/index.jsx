@@ -77,6 +77,7 @@ export default function Application() {
         key: 'addConnection',
         'data-test': 'add-connection-button',
         to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.data?.canConnect),
+        disabled: !currentUserAbility.can('create', 'Connection'),
       },
     ];
 
@@ -86,11 +87,12 @@ export default function Application() {
         key: 'addCustomConnection',
         'data-test': 'add-custom-connection-button',
         to: URLS.APP_ADD_CONNECTION(appKey),
+        disabled: !currentUserAbility.can('create', 'Connection'),
       });
     }
 
     return options;
-  }, [appKey, appConfig?.data]);
+  }, [appKey, appConfig?.data, currentUserAbility]);
 
   if (loading) return null;
 
@@ -140,9 +142,10 @@ export default function Application() {
                   element={
                     <SplitButton
                       disabled={
-                        appConfig?.data &&
-                        !appConfig?.data?.canConnect &&
-                        !appConfig?.data?.canCustomConnect
+                        (appConfig?.data &&
+                          !appConfig?.data?.canConnect &&
+                          !appConfig?.data?.canCustomConnect) ||
+                        connectionOptions.every(({ disabled }) => disabled)
                       }
                       options={connectionOptions}
                     />
