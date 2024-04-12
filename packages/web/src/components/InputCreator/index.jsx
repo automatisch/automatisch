@@ -178,6 +178,7 @@ export default function InputCreator(props) {
           helperText={description}
           clickToCopy={schema.clickToCopy}
           shouldUnregister={shouldUnregister}
+          disabled={disabled}
         />
 
         {isDynamicFieldsLoading && !additionalFields?.length && (
