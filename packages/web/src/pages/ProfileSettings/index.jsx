@@ -72,7 +72,7 @@ function ProfileSettings() {
       },
     });
 
-    await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+    await queryClient.invalidateQueries({ queryKey: ['users', 'me'] });
 
     enqueueSnackbar(formatMessage('profileSettings.updatedProfile'), {
       variant: 'success',
