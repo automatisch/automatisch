@@ -346,6 +346,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'SFTP',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/sftp/connection' }],
+        },
+        {
           text: 'SignalWire',
           collapsible: true,
           collapsed: true,
