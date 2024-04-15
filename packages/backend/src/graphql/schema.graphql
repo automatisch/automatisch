@@ -1,7 +1,6 @@
 type Query {
-  getConnectedApps(name: String): [App]
+  placeholderQuery(name: String): Boolean
 }
-
 type Mutation {
   createAppConfig(input: CreateAppConfigInput): AppConfig
   createAppAuthClient(input: CreateAppAuthClientInput): AppAuthClient

@@ -42,19 +42,21 @@ describe('authentication rules', () => {
 
   const { queries, mutations } = getQueryAndMutationNames(authenticationRules);
 
-  describe('for queries', () => {
-    queries.forEach((query) => {
-      it(`should apply correct rule for query: ${query}`, () => {
-        const ruleApplied = authenticationRules.Query[query];
+  if (queries.length) {
+    describe('for queries', () => {
+      queries.forEach((query) => {
+        it(`should apply correct rule for query: ${query}`, () => {
+          const ruleApplied = authenticationRules.Query[query];
 
-        if (query === '*') {
-          expect(ruleApplied.func).toBe(isAuthenticated);
-        } else {
-          expect(ruleApplied).toEqual(allow);
-        }
+          if (query === '*') {
+            expect(ruleApplied.func).toBe(isAuthenticated);
+          } else {
+            expect(ruleApplied).toEqual(allow);
+          }
+        });
       });
     });
-  });
+  }
 
   describe('for mutations', () => {
     mutations.forEach((mutation) => {
