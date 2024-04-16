@@ -241,6 +241,7 @@ export const FlowPropType = PropTypes.shape({
     PropTypes.instanceOf(Date),
   ]),
   updatedAt: PropTypes.oneOfType([
+    PropTypes.number,
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),
