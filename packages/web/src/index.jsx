@@ -7,7 +7,6 @@ import MetadataProvider from 'components/MetadataProvider';
 import { AuthenticationProvider } from 'contexts/Authentication';
 import QueryClientProvider from 'components/QueryClientProvider';
 import Router from 'components/Router';
-import LiveChat from 'components/LiveChat/index.ee';
 import routes from 'routes';
 import reportWebVitals from './reportWebVitals';
 
@@ -22,10 +21,7 @@ root.render(
           <ApolloProvider>
             <IntlProvider>
               <ThemeProvider>
-                <MetadataProvider>
-                  {routes}
-                  <LiveChat />
-                </MetadataProvider>
+                <MetadataProvider>{routes}</MetadataProvider>
               </ThemeProvider>
             </IntlProvider>
           </ApolloProvider>
