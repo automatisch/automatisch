@@ -169,6 +169,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Google Gemini',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/google-gemini/actions' },
+            { text: 'Connection', link: '/apps/google-gemini/connection' },
+          ],
+        },
+        {
           text: 'Google Sheets',
           collapsible: true,
           collapsed: true,
