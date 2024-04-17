@@ -25,7 +25,6 @@ function DeleteUserButton(props) {
     try {
       await deleteUser();
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'user', userId] });
       setShowConfirmation(false);
       enqueueSnackbar(formatMessage('deleteUserButton.successfullyDeleted'), {
         variant: 'success',

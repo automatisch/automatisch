@@ -18,6 +18,7 @@ import TextField from 'components/TextField';
 import { UPDATE_CURRENT_USER } from 'graphql/mutations/update-current-user';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { useQueryClient } from '@tanstack/react-query';
 
 const validationSchema = yup
   .object({
@@ -44,6 +45,7 @@ function ProfileSettings() {
   const currentUser = data?.data;
   const formatMessage = useFormatMessage();
   const [updateCurrentUser] = useMutation(UPDATE_CURRENT_USER);
+  const queryClient = useQueryClient();
 
   const handleProfileSettingsUpdate = async (data) => {
     const { fullName, password, email } = data;
@@ -69,6 +71,8 @@ function ProfileSettings() {
         },
       },
     });
+
+    await queryClient.invalidateQueries({ queryKey: ['users', 'me'] });
 
     enqueueSnackbar(formatMessage('profileSettings.updatedProfile'), {
       variant: 'success',

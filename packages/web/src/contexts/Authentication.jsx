@@ -1,31 +1,34 @@
 import * as React from 'react';
-import { getItem, setItem } from 'helpers/storage';
+import { getItem, removeItem, setItem } from 'helpers/storage';
+import api from 'helpers/api.js';
 
 export const AuthenticationContext = React.createContext({
   token: null,
-  updateToken: () => void 0,
+  updateToken: () => {},
+  removeToken: () => {},
   isAuthenticated: false,
-  initialize: () => void 0,
 });
 
 export const AuthenticationProvider = (props) => {
   const { children } = props;
-  const [isInitialized, setInitialized] = React.useState(false);
   const [token, setToken] = React.useState(() => getItem('token'));
 
   const value = React.useMemo(() => {
     return {
       token,
       updateToken: (newToken) => {
+        api.defaults.headers.Authorization = newToken;
         setToken(newToken);
         setItem('token', newToken);
       },
-      isAuthenticated: Boolean(token) && isInitialized,
-      initialize: () => {
-        setInitialized(true);
+      removeToken: () => {
+        delete api.defaults.headers.Authorization;
+        setToken(null);
+        removeItem('token');
       },
+      isAuthenticated: Boolean(token),
     };
-  }, [token, isInitialized]);
+  }, [token]);
 
   return (
     <AuthenticationContext.Provider value={value}>

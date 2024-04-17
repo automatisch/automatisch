@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useCurrentUser() {
   const query = useQuery({
-    queryKey: ['currentUser'],
+    queryKey: ['users', 'me'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/users/me`, {
         signal,

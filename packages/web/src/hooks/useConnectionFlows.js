@@ -4,10 +4,10 @@ import api from 'helpers/api';
 
 export default function useConnectionFlows(
   { connectionId, page },
-  { enabled },
+  { enabled } = {},
 ) {
   const query = useQuery({
-    queryKey: ['connectionFlows', connectionId, page],
+    queryKey: ['connections', connectionId, 'flows', { page }],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/connections/${connectionId}/flows`, {
         params: {

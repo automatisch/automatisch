@@ -3,13 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import api from 'helpers/api';
 
 export default function useAdminSamlAuthProviderRoleMappings({
-  adminSamlAuthProviderId,
+  adminSamlAuthProviderId: providerId,
 }) {
   const query = useQuery({
-    queryKey: ['adminSamlAuthProviderRoleMappings', adminSamlAuthProviderId],
+    queryKey: ['admin', 'samlAuthProviders', providerId, 'roleMappings'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(
-        `/v1/admin/saml-auth-providers/${adminSamlAuthProviderId}/role-mappings`,
+        `/v1/admin/saml-auth-providers/${providerId}/role-mappings`,
         {
           signal,
         },
@@ -17,7 +17,7 @@ export default function useAdminSamlAuthProviderRoleMappings({
 
       return data;
     },
-    enabled: !!adminSamlAuthProviderId,
+    enabled: !!providerId,
   });
 
   return query;

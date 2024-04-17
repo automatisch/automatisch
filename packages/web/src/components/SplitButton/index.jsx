@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -9,21 +10,26 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+
 export default function SplitButton(props) {
   const { options, disabled, defaultActionIndex = 0 } = props;
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+
   const multiOptions = options.length > 1;
   const selectedOption = options[defaultActionIndex];
+
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
     setOpen(false);
   };
+
   return (
     <React.Fragment>
       <ButtonGroup
@@ -42,6 +48,7 @@ export default function SplitButton(props) {
             borderRadius: 0,
             borderRight: '1px solid #bdbdbd',
           }}
+          disabled={selectedOption.disabled}
         >
           {selectedOption.label}
         </Button>
@@ -80,6 +87,7 @@ export default function SplitButton(props) {
                         selected={index === defaultActionIndex}
                         component={Link}
                         to={option.to}
+                        disabled={option.disabled}
                       >
                         {option.label}
                       </MenuItem>
@@ -94,3 +102,17 @@ export default function SplitButton(props) {
     </React.Fragment>
   );
 }
+
+SplitButton.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      key: PropTypes.string.isRequired,
+      'data-test': PropTypes.string.isRequired,
+      to: PropTypes.string.isRequired,
+      disabled: PropTypes.bool.isRequired,
+    }).isRequired,
+  ).isRequired,
+  disabled: PropTypes.bool,
+  defaultActionIndex: PropTypes.number,
+};

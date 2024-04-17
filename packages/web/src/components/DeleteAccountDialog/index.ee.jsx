@@ -22,7 +22,7 @@ function DeleteAccountDialog(props) {
 
   const handleConfirm = React.useCallback(async () => {
     await deleteCurrentUser();
-    authentication.updateToken('');
+    authentication.removeToken();
     await apolloClient.clearStore();
     navigate(URLS.LOGIN);
   }, [deleteCurrentUser, currentUser]);

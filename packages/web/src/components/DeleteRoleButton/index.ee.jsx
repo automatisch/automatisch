@@ -25,7 +25,7 @@ function DeleteRoleButton(props) {
   const handleConfirm = React.useCallback(async () => {
     try {
       await deleteRole();
-      queryClient.invalidateQueries({ queryKey: ['roles'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'roles'] });
       setShowConfirmation(false);
       enqueueSnackbar(formatMessage('deleteRoleButton.successfullyDeleted'), {
         variant: 'success',

@@ -27,6 +27,8 @@ describe('flowSerializer', () => {
       name: flow.name,
       active: flow.active,
       status: flow.status,
+      createdAt: flow.createdAt.getTime(),
+      updatedAt: flow.updatedAt.getTime(),
     };
 
     expect(flowSerializer(flow)).toEqual(expectedPayload);

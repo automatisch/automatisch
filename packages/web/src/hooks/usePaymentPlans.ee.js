@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function usePaymentPlans() {
   const query = useQuery({
-    queryKey: ['paymentPlans'],
+    queryKey: ['payment', 'plans'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get('/v1/payment/plans', {
         signal,

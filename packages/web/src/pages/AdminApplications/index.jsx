@@ -13,9 +13,11 @@ import useApps from 'hooks/useApps';
 
 function AdminApplications() {
   const formatMessage = useFormatMessage();
-  const [appName, setAppName] = React.useState(null);
+  const [appName, setAppName] = React.useState('');
 
-  const { data: apps, isLoading: isAppsLoading } = useApps(appName);
+  const { data: apps, isLoading: isAppsLoading } = useApps({
+    name: appName,
+  });
 
   const onSearchChange = React.useCallback((event) => {
     setAppName(event.target.value);

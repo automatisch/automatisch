@@ -64,32 +64,17 @@ export default defineAction({
       value: '1',
       description:
         'The ID of the stage this deal will be added to. If omitted, the deal will be placed in the first stage of the default pipeline.',
-      options: [
-        {
-          label: 'Qualified (Pipeline)',
-          value: 1,
-        },
-        {
-          label: 'Contact Made (Pipeline)',
-          value: 2,
-        },
-        {
-          label: 'Prospect Qualified (Pipeline)',
-          value: 3,
-        },
-        {
-          label: 'Needs Defined (Pipeline)',
-          value: 4,
-        },
-        {
-          label: 'Proposal Made (Pipeline)',
-          value: 5,
-        },
-        {
-          label: 'Negotiations Started (Pipeline)',
-          value: 6,
-        },
-      ],
+      variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listStages',
+          },
+        ],
+      },
     },
     {
       label: 'Owner',

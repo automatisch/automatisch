@@ -19,6 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAppConfig from 'hooks/useAppConfig.ee';
+import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import * as URLS from 'config/urls';
 import SplitButton from 'components/SplitButton';
 import ConditionalIconButton from 'components/ConditionalIconButton';
@@ -59,8 +60,10 @@ export default function Application() {
   const { data, loading } = useApp(appKey);
   const app = data?.data || {};
 
-  const { appConfig } = useAppConfig(appKey);
+  const { data: appConfig } = useAppConfig(appKey);
   const connectionId = searchParams.get('connectionId') || undefined;
+
+  const currentUserAbility = useCurrentUserAbility();
 
   const goToApplicationPage = () => navigate('connections');
 
@@ -74,6 +77,7 @@ export default function Application() {
         key: 'addConnection',
         'data-test': 'add-connection-button',
         to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.data?.canConnect),
+        disabled: !currentUserAbility.can('create', 'Connection'),
       },
     ];
 
@@ -83,11 +87,12 @@ export default function Application() {
         key: 'addCustomConnection',
         'data-test': 'add-custom-connection-button',
         to: URLS.APP_ADD_CONNECTION(appKey),
+        disabled: !currentUserAbility.can('create', 'Connection'),
       });
     }
 
     return options;
-  }, [appKey, appConfig?.data]);
+  }, [appKey, appConfig?.data, currentUserAbility]);
 
   if (loading) return null;
 
@@ -125,6 +130,7 @@ export default function Application() {
                       )}
                       fullWidth
                       icon={<AddIcon />}
+                      disabled={!currentUserAbility.can('create', 'Flow')}
                     >
                       {formatMessage('app.createFlow')}
                     </ConditionalIconButton>
@@ -136,9 +142,10 @@ export default function Application() {
                   element={
                     <SplitButton
                       disabled={
-                        appConfig?.data &&
-                        !appConfig?.data?.canConnect &&
-                        !appConfig?.data?.canCustomConnect
+                        (appConfig?.data &&
+                          !appConfig?.data?.canConnect &&
+                          !appConfig?.data?.canCustomConnect) ||
+                        connectionOptions.every(({ disabled }) => disabled)
                       }
                       options={connectionOptions}
                     />

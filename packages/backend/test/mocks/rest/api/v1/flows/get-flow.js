@@ -4,6 +4,8 @@ const getFlowMock = async (flow, steps) => {
     id: flow.id,
     name: flow.name,
     status: flow.active ? 'published' : 'draft',
+    createdAt: flow.createdAt.getTime(),
+    updatedAt: flow.updatedAt.getTime(),
     steps: steps.map((step) => ({
       appKey: step.appKey,
       iconUrl: step.iconUrl,

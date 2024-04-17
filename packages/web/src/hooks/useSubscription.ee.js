@@ -1,14 +1,31 @@
 import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import * as React from 'react';
 
-import useFormatMessage from './useFormatMessage';
 import api from 'helpers/api';
 
-export default function useSubscription() {
-  const formatMessage = useFormatMessage();
+function transform(subscription) {
+  const nextBillDate = subscription?.nextBillDate;
+  const nextBillDateTitleDateObject = DateTime.fromISO(nextBillDate);
+  const formattedNextBillDateTitle = nextBillDateTitleDateObject.isValid
+    ? nextBillDateTitleDateObject.toFormat('LLL dd, yyyy')
+    : nextBillDate;
 
-  const { data, isLoading: isSubscriptionLoading } = useQuery({
-    queryKey: ['subscription'],
+  return {
+    ...subscription,
+    nextBillDate: formattedNextBillDateTitle,
+  };
+}
+
+export default function useSubscription() {
+  const location = useLocation();
+  const state = location.state;
+  const checkoutCompleted = state?.checkoutCompleted;
+  const [isPolling, setIsPolling] = React.useState(false);
+
+  const { data } = useQuery({
+    queryKey: ['users', 'me', 'subscription'],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/users/me/subscription`, {
         signal,
@@ -16,23 +33,23 @@ export default function useSubscription() {
 
       return data;
     },
+    refetchInterval: isPolling ? 1000 : false,
   });
+
   const subscription = data?.data;
 
-  const cancellationEffectiveDate = subscription?.cancellationEffectiveDate;
+  const hasSubscription = subscription?.status === 'active';
 
-  const hasCancelled = !!cancellationEffectiveDate;
-
-  if (isSubscriptionLoading || !hasCancelled) return null;
-
-  const cancellationEffectiveDateObject = DateTime.fromISO(
-    cancellationEffectiveDate,
+  React.useEffect(
+    function pollDataUntilSubscriptionIsCreated() {
+      if (checkoutCompleted) {
+        setIsPolling(!hasSubscription);
+      }
+    },
+    [checkoutCompleted, hasSubscription],
   );
 
   return {
-    message: formatMessage('subscriptionCancelledAlert.text', {
-      date: cancellationEffectiveDateObject.toFormat('DDD'),
-    }),
-    cancellationEffectiveDate: cancellationEffectiveDateObject,
+    data: transform(subscription),
   };
 }

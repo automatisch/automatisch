@@ -210,7 +210,7 @@ export const ConnectionPropType = PropTypes.shape({
   count: PropTypes.number,
   flowCount: PropTypes.number,
   appData: AppPropType,
-  createdAt: PropTypes.string,
+  createdAt: PropTypes.number,
   reconnectable: PropTypes.bool,
   appAuthClientId: PropTypes.string,
 });
@@ -236,10 +236,12 @@ export const FlowPropType = PropTypes.shape({
   active: PropTypes.bool,
   status: PropTypes.oneOf(['paused', 'published', 'draft']),
   createdAt: PropTypes.oneOfType([
+    PropTypes.number,
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),
   updatedAt: PropTypes.oneOfType([
+    PropTypes.number,
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),

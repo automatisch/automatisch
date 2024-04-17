@@ -8,6 +8,7 @@ import ExecutionStep from './execution-step.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import appConfig from '../config/app.js';
 import globalVariable from '../helpers/global-variable.js';
+import computeParameters from '../helpers/compute-parameters.js';
 
 class Step extends Base {
   static tableName = 'steps';
@@ -215,6 +216,39 @@ class Step extends Base {
     const dynamicFields = (await command.run($)) || [];
 
     return dynamicFields;
+  }
+
+  async createDynamicData(dynamicDataKey, parameters) {
+    const connection = await this.$relatedQuery('connection');
+    const flow = await this.$relatedQuery('flow');
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection, app, flow, step: this });
+
+    const command = app.dynamicData.find((data) => data.key === dynamicDataKey);
+
+    for (const parameterKey in parameters) {
+      const parameterValue = parameters[parameterKey];
+      $.step.parameters[parameterKey] = parameterValue;
+    }
+
+    const lastExecution = await flow.$relatedQuery('lastExecution');
+    const lastExecutionId = lastExecution?.id;
+
+    const priorExecutionSteps = lastExecutionId
+      ? await ExecutionStep.query().where({
+          execution_id: lastExecutionId,
+        })
+      : [];
+
+    const computedParameters = computeParameters(
+      $.step.parameters,
+      priorExecutionSteps
+    );
+
+    $.step.parameters = computedParameters;
+    const dynamicData = (await command.run($)).data;
+
+    return dynamicData;
   }
 
   async updateWebhookUrl() {

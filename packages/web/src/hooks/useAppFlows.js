@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useAppFlows({ appKey, page }, { enabled }) {
   const query = useQuery({
-    queryKey: ['appFlows', appKey, page],
+    queryKey: ['apps', appKey, 'flows', { page }],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/apps/${appKey}/flows`, {
         params: {

@@ -27,16 +27,19 @@ export default function Flows() {
   const [flowName, setFlowName] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const { data, mutate } = useLazyFlows(
+  const { data, mutate: fetchFlows } = useLazyFlows(
     { flowName, page },
     {
-      onSuccess: () => {
+      onSettled: () => {
         setIsLoading(false);
       },
     },
   );
 
-  const fetchData = React.useMemo(() => debounce(mutate, 300), [mutate]);
+  const fetchData = React.useMemo(
+    () => debounce(fetchFlows, 300),
+    [fetchFlows],
+  );
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -110,7 +113,14 @@ export default function Flows() {
           <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
         )}
         {!isLoading &&
-          flows?.map((flow) => <FlowRow key={flow.id} flow={flow} />)}
+          flows?.map((flow) => (
+            <FlowRow
+              key={flow.id}
+              flow={flow}
+              onDuplicateFlow={fetchFlows}
+              onDeleteFlow={fetchFlows}
+            />
+          ))}
         {!isLoading && !hasFlows && (
           <NoResultFound
             text={formatMessage('flows.noFlows')}

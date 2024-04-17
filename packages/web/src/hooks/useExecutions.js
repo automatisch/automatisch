@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useExecutions({ page }, { refetchInterval } = {}) {
   const query = useQuery({
-    queryKey: ['executions', page],
+    queryKey: ['executions', { page }],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(`/v1/executions`, {
         params: {
