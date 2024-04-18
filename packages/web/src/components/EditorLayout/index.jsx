@@ -20,6 +20,9 @@ import * as URLS from 'config/urls';
 import { TopBar } from './style';
 import useFlow from 'hooks/useFlow';
 import { useQueryClient } from '@tanstack/react-query';
+import EditorNew from 'components/EditorNew/EditorNew';
+
+const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
 
 export default function EditorLayout() {
   const { flowId } = useParams();
@@ -136,7 +139,12 @@ export default function EditorLayout() {
           <EditorProvider value={{ readOnly: !!flow?.active }}>
             {!flow && !isFlowLoading && 'not found'}
 
-            {flow && <Editor flow={flow} />}
+            {flow &&
+              (useNewFlowEditor ? (
+                <EditorNew flow={flow} />
+              ) : (
+                <Editor flow={flow} />
+              ))}
           </EditorProvider>
         </Container>
       </Stack>
