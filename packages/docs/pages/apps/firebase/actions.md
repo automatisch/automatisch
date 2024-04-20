@@ -7,6 +7,8 @@ items:
     desc: Creates a child object within your Firebase Realtime Database.
   - name: Find Cloud Firestore document
     desc: Finds a document within a collection.
+  - name: Find Firebase Realtime Database Record
+    desc: Finds a child object in Firebase Realtime Database.
 ---
 
 <script setup>
