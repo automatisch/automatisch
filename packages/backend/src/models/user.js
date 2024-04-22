@@ -185,7 +185,7 @@ class User extends Base {
     });
 
     if (user && (await user.login(password))) {
-      const token = createAuthTokenByUserId(user.id);
+      const token = await createAuthTokenByUserId(user.id);
       return token;
     }
   }

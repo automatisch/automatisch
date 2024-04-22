@@ -22,7 +22,7 @@ describe('GET /api/v1/apps/:appKey/config', () => {
       disabled: false,
     });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return specified app config info', async () => {

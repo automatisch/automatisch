@@ -14,7 +14,7 @@ describe('POST /api/v1/connections/:connectionId/test', () => {
     currentUser = await createUser();
     currentUserRole = await currentUser.$relatedQuery('role');
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should update the connection as not verified for current user', async () => {

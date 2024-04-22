@@ -11,7 +11,7 @@ describe('GET /api/v1/apps/:appKey/actions', () => {
 
   beforeEach(async () => {
     currentUser = await createUser();
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return the app actions', async () => {

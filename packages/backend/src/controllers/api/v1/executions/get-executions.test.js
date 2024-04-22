@@ -18,7 +18,7 @@ describe('GET /api/v1/executions', () => {
 
     anotherUser = await createUser();
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return the executions of current user', async () => {

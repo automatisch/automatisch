@@ -28,7 +28,7 @@ describe('GET /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mapping
       remoteRoleName: 'User',
     });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return role mappings', async () => {

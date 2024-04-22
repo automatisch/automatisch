@@ -18,7 +18,7 @@ describe('GET /api/v1/admin/saml-auth-providers', () => {
     samlAuthProviderOne = await createSamlAuthProvider();
     samlAuthProviderTwo = await createSamlAuthProvider();
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return saml auth providers', async () => {

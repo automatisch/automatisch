@@ -14,7 +14,7 @@ describe('GET /api/v1/users/:userId/trial', () => {
   beforeEach(async () => {
     const trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
     user = await createUser({ trialExpiryDate });
-    token = createAuthTokenByUserId(user.id);
+    token = await createAuthTokenByUserId(user.id);
 
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
   });

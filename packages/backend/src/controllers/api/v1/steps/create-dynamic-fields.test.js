@@ -16,7 +16,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-fields', () => {
     currentUser = await createUser();
     currentUserRole = await currentUser.$relatedQuery('role');
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return dynamically created fields of the current users step', async () => {

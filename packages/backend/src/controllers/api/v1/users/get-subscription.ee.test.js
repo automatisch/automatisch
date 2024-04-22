@@ -22,7 +22,7 @@ describe('GET /api/v1/users/:userId/subscription', () => {
 
     subscription = await createSubscription({ userId: currentUser.id });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return subscription info of the current user', async () => {
@@ -41,7 +41,7 @@ describe('GET /api/v1/users/:userId/subscription', () => {
       roleId: role.id,
     });
 
-    const token = createAuthTokenByUserId(userWithoutSubscription.id);
+    const token = await createAuthTokenByUserId(userWithoutSubscription.id);
 
     await request(app)
       .get(`/api/v1/users/${userWithoutSubscription.id}/subscription`)

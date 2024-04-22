@@ -17,7 +17,7 @@ describe('GET /api/v1/admin/apps/:appKey/auth-clients', () => {
     adminRole = await createRole({ key: 'admin' });
     currentUser = await createUser({ roleId: adminRole.id });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return specified app auth client info', async () => {

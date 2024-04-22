@@ -12,7 +12,7 @@ describe('GET /api/v1/payment/paddle-info', () => {
 
   beforeEach(async () => {
     user = await createUser();
-    token = createAuthTokenByUserId(user.id);
+    token = await createAuthTokenByUserId(user.id);
 
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
     vi.spyOn(billing.paddleInfo, 'vendorId', 'get').mockReturnValue(
