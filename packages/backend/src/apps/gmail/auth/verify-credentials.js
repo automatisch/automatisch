@@ -36,6 +36,7 @@ const verifyCredentials = async ($) => {
     refreshToken: data.refresh_token,
     resourceName: currentUser.resourceName,
     screenName: `${displayName} - ${email}`,
+    userId: email,
   });
 };
 
