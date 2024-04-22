@@ -8,6 +8,7 @@ import userAbility from '../helpers/user-ability.js';
 import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
 import Base from './base.js';
 import App from './app.js';
+import AccessToken from './access-token.js';
 import Connection from './connection.js';
 import Execution from './execution.js';
 import Flow from './flow.js';
@@ -42,6 +43,14 @@ class User extends Base {
   };
 
   static relationMappings = () => ({
+    accessTokens: {
+      relation: Base.HasManyRelation,
+      modelClass: AccessToken,
+      join: {
+        from: 'users.id',
+        to: 'access_tokens.user_id',
+      },
+    },
     connections: {
       relation: Base.HasManyRelation,
       modelClass: Connection,
