@@ -8,7 +8,7 @@ export default defineApp({
   name: 'Flickr',
   key: 'flickr',
   iconUrl: '{BASE_URL}/apps/flickr/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/flickr/connection',
+  authDocUrl: '{DOCS_URL}/apps/flickr/connection',
   docUrl: 'https://automatisch.io/docs/flickr',
   primaryColor: '000000',
   supportsConnections: true,

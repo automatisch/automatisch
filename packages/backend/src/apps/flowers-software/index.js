@@ -7,7 +7,7 @@ export default defineApp({
   name: 'Flowers Software',
   key: 'flowers-software',
   iconUrl: '{BASE_URL}/apps/flowers-software/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/flowers-software/connection',
+  authDocUrl: '{DOCS_URL}/apps/flowers-software/connection',
   supportsConnections: true,
   baseUrl: 'https://flowers-software.com',
   apiBaseUrl: 'https://webapp.flowers-software.com/api',

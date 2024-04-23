@@ -7,7 +7,7 @@ export default defineApp({
   name: 'Carbone',
   key: 'carbone',
   iconUrl: '{BASE_URL}/apps/carbone/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/carbone/connection',
+  authDocUrl: '{DOCS_URL}/apps/carbone/connection',
   supportsConnections: true,
   baseUrl: 'https://carbone.io',
   apiBaseUrl: 'https://api.carbone.io',

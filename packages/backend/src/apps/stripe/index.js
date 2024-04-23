@@ -7,7 +7,7 @@ export default defineApp({
   name: 'Stripe',
   key: 'stripe',
   iconUrl: '{BASE_URL}/apps/stripe/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/stripe/connection',
+  authDocUrl: '{DOCS_URL}/apps/stripe/connection',
   supportsConnections: true,
   baseUrl: 'https://stripe.com',
   apiBaseUrl: 'https://api.stripe.com',

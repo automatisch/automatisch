@@ -11,7 +11,7 @@ export default defineApp({
   baseUrl: 'https://zendesk.com/',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/zendesk/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/zendesk/connection',
+  authDocUrl: '{DOCS_URL}/apps/zendesk/connection',
   primaryColor: '17494d',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

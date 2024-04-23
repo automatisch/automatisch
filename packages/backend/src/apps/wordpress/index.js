@@ -9,7 +9,7 @@ export default defineApp({
   name: 'WordPress',
   key: 'wordpress',
   iconUrl: '{BASE_URL}/apps/wordpress/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/wordpress/connection',
+  authDocUrl: '{DOCS_URL}/apps/wordpress/connection',
   supportsConnections: true,
   baseUrl: 'https://wordpress.com',
   apiBaseUrl: '',

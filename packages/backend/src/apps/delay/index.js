@@ -5,7 +5,7 @@ export default defineApp({
   name: 'Delay',
   key: 'delay',
   iconUrl: '{BASE_URL}/apps/delay/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/delay/connection',
+  authDocUrl: '{DOCS_URL}/apps/delay/connection',
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',
