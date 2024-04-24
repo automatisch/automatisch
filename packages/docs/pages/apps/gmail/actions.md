@@ -1,6 +1,8 @@
 ---
 favicon: /favicons/gmail.svg
 items:
+  - name: Reply to email
+    desc: Respond to an email.
   - name: Send email
     desc: Send a new email message.
 ---
