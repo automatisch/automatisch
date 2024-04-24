@@ -18,7 +18,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-data', () => {
     currentUser = await createUser();
     currentUserRole = await currentUser.$relatedQuery('role');
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   describe('should return dynamically created data', () => {

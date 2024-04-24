@@ -17,7 +17,7 @@ describe('isAuthenticated', () => {
 
   it('should return true if token is valid and there is a user', async () => {
     const user = await createUser();
-    const token = createAuthTokenByUserId(user.id);
+    const token = await createAuthTokenByUserId(user.id);
 
     const req = { headers: { authorization: token } };
     expect(await isAuthenticated(null, null, req)).toBe(true);
@@ -25,7 +25,7 @@ describe('isAuthenticated', () => {
 
   it('should return false if token is valid and but there is no user', async () => {
     const user = await createUser();
-    const token = createAuthTokenByUserId(user.id);
+    const token = await createAuthTokenByUserId(user.id);
     await user.$query().delete();
 
     const req = { headers: { authorization: token } };

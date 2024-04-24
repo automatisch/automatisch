@@ -14,7 +14,7 @@ describe('GET /api/v1/admin/permissions/catalog', () => {
     role = await createRole({ key: 'admin' });
     currentUser = await createUser({ roleId: role.id });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return roles', async () => {

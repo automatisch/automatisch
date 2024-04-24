@@ -28,7 +28,7 @@ describe('GET /api/v1/admin/users', () => {
       fullName: 'Another User',
     });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return users data', async () => {

@@ -17,7 +17,7 @@ describe('GET /api/v1/users/:userId/apps', () => {
     currentUserRole = await createRole();
     currentUser = await createUser({ roleId: currentUserRole.id });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return all apps of the current user', async () => {

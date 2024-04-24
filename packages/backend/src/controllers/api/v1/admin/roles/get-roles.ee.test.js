@@ -15,7 +15,7 @@ describe('GET /api/v1/admin/roles', () => {
     roleTwo = await createRole({ key: 'user' });
     currentUser = await createUser({ roleId: roleOne.id });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return roles', async () => {

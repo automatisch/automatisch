@@ -22,7 +22,7 @@ describe('GET /api/v1/admin/apps/:appKey/auth-clients/:appAuthClientId', () => {
       appKey: 'deepl',
     });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return specified app auth client', async () => {
