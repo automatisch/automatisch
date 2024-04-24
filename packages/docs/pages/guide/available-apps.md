@@ -22,6 +22,7 @@ The following integrations are currently supported by Automatisch.
 - [HubSpot](/apps/hubspot/actions)
 - [Invoice Ninja](/apps/invoice-ninja/triggers)
 - [Mattermost](/apps/mattermost/actions)
+- [Microsoft Outlook](/apps/microsoft-outlook/triggers)
 - [Miro](/apps/miro/actions)
 - [Notion](/apps/notion/triggers)
 - [Ntfy](/apps/ntfy/actions)

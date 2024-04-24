@@ -216,6 +216,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Microsoft Outlook',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {text: 'Triggers', link: '/apps/microsoft-outlook/triggers'},
+            {text: 'Actions', link: '/apps/microsoft-outlook/actions'},
+            {text: 'Connection', link: '/apps/microsoft-outlook/connection'},
+          ],
+        },
+        {
           text: 'Miro',
           collapsible: true,
           collapsed: true,
