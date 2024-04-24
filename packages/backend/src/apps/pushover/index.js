@@ -9,7 +9,7 @@ export default defineApp({
   baseUrl: 'https://pushover.net',
   apiBaseUrl: 'https://api.pushover.net',
   iconUrl: '{BASE_URL}/apps/pushover/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/pushover/connection',
+  authDocUrl: '{DOCS_URL}/apps/pushover/connection',
   primaryColor: '249DF1',
   supportsConnections: true,
   auth,

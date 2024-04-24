@@ -20,7 +20,7 @@ describe('GET /api/v1/executions/:executionId/execution-steps', () => {
 
     anotherUser = await createUser();
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return the execution steps of current user execution', async () => {

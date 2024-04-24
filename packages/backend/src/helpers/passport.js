@@ -76,8 +76,8 @@ export default function configurePassport(app) {
       failureRedirect: '/',
       failureFlash: true,
     }),
-    (req, res) => {
-      const token = createAuthTokenByUserId(req.currentUser.id);
+    async (req, res) => {
+      const token = await createAuthTokenByUserId(req.currentUser.id);
 
       const redirectUrl = new URL(
         `/login/callback?token=${token}`,

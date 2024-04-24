@@ -17,7 +17,7 @@ describe('GET /api/v1/admin/saml-auth-provider/:samlAuthProviderId', () => {
     currentUser = await createUser({ roleId: role.id });
     samlAuthProvider = await createSamlAuthProvider();
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return saml auth provider with specified id', async () => {

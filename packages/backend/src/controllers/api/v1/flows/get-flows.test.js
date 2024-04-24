@@ -15,7 +15,7 @@ describe('GET /api/v1/flows', () => {
     currentUser = await createUser();
     currentUserRole = await currentUser.$relatedQuery('role');
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return the flows data of current user', async () => {

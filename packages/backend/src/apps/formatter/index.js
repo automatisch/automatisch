@@ -6,7 +6,7 @@ export default defineApp({
   name: 'Formatter',
   key: 'formatter',
   iconUrl: '{BASE_URL}/apps/formatter/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/formatter/connection',
+  authDocUrl: '{DOCS_URL}/apps/formatter/connection',
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',

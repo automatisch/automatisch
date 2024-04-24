@@ -38,6 +38,9 @@ if (process.env.WEB_APP_URL) {
 let webhookUrl = new URL(process.env.WEBHOOK_URL || apiUrl).toString();
 webhookUrl = webhookUrl.substring(0, webhookUrl.length - 1);
 
+const publicDocsUrl = 'https://automatisch.io/docs';
+const docsUrl = process.env.DOCS_URL || publicDocsUrl;
+
 const appEnv = process.env.APP_ENV || 'development';
 
 const appConfig = {
@@ -73,6 +76,7 @@ const appConfig = {
   baseUrl: apiUrl,
   webAppUrl,
   webhookUrl,
+  docsUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
   requestBodySizeLimit: '1mb',
   smtpHost: process.env.SMTP_HOST,

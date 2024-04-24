@@ -14,7 +14,7 @@ describe('GET /api/v1/apps/:appKey/connections', () => {
     currentUser = await createUser();
     currentUserRole = await currentUser.$relatedQuery('role');
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return the connections data of specified app for current user', async () => {

@@ -5,7 +5,7 @@ export default defineApp({
   name: 'Datastore',
   key: 'datastore',
   iconUrl: '{BASE_URL}/apps/datastore/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/datastore/connection',
+  authDocUrl: '{DOCS_URL}/apps/datastore/connection',
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',

@@ -6,6 +6,11 @@ const appInfoConverter = (rawAppData) => {
     appConfig.baseUrl
   );
 
+  rawAppData.authDocUrl = rawAppData.authDocUrl.replace(
+    '{DOCS_URL}',
+    appConfig.docsUrl
+  );
+
   if (rawAppData.auth?.fields) {
     rawAppData.auth.fields = rawAppData.auth.fields.map((field) => {
       if (field.type === 'string' && typeof field.value === 'string') {

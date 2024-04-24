@@ -25,7 +25,7 @@ describe('GET /api/v1/users/me', () => {
       roleId: role.id,
     });
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return current user info', async () => {
