@@ -21,8 +21,7 @@ function Layout({ children }) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: '100%',
-          minHeight: '100vh',
+          flex: 1,
         }}
       >
         <Toolbar />

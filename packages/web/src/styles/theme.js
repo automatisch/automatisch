@@ -226,6 +226,8 @@ export const defaultTheme = createTheme({
         },
         '#root': {
           minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
         },
       },
     },

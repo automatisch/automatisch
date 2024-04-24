@@ -7,6 +7,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useAuthentication from 'hooks/useAuthentication';
 import Layout from 'components/Layout';
 import PublicLayout from 'components/PublicLayout';
+
 export default function NoResultFound() {
   const formatMessage = useFormatMessage();
   const { isAuthenticated } = useAuthentication();
@@ -32,6 +33,7 @@ export default function NoResultFound() {
       </Link>
     </Stack>
   );
+
   return isAuthenticated ? (
     <Layout>{pageContent}</Layout>
   ) : (
