@@ -12,7 +12,7 @@ export default defineApp({
   baseUrl: 'https://docs.google.com/spreadsheets',
   apiBaseUrl: 'https://sheets.googleapis.com',
   iconUrl: '{BASE_URL}/apps/google-sheets/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/google-sheets/connection',
+  authDocUrl: '{DOCS_URL}/apps/google-sheets/connection',
   primaryColor: '0F9D58',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

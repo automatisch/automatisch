@@ -6,7 +6,7 @@ export default defineApp({
   name: 'PostgreSQL',
   key: 'postgresql',
   iconUrl: '{BASE_URL}/apps/postgresql/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/postgresql/connection',
+  authDocUrl: '{DOCS_URL}/apps/postgresql/connection',
   supportsConnections: true,
   baseUrl: '',
   apiBaseUrl: '',

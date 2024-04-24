@@ -6,7 +6,7 @@ export default defineApp({
   key: 'scheduler',
   iconUrl: '{BASE_URL}/apps/scheduler/assets/favicon.svg',
   docUrl: 'https://automatisch.io/docs/scheduler',
-  authDocUrl: 'https://automatisch.io/docs/apps/scheduler/connection',
+  authDocUrl: '{DOCS_URL}/apps/scheduler/connection',
   baseUrl: '',
   apiBaseUrl: '',
   primaryColor: '0059F7',

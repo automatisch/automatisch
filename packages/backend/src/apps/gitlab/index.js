@@ -11,7 +11,7 @@ export default defineApp({
   baseUrl: 'https://gitlab.com',
   apiBaseUrl: 'https://gitlab.com',
   iconUrl: '{BASE_URL}/apps/gitlab/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/gitlab/connection',
+  authDocUrl: '{DOCS_URL}/apps/gitlab/connection',
   primaryColor: 'FC6D26',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],

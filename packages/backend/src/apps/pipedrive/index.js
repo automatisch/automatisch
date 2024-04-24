@@ -12,7 +12,7 @@ export default defineApp({
   baseUrl: '',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/pipedrive/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/pipedrive/connection',
+  authDocUrl: '{DOCS_URL}/apps/pipedrive/connection',
   primaryColor: 'FFFFFF',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],

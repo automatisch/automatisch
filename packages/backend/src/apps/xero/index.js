@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://go.xero.com',
   apiBaseUrl: 'https://api.xero.com',
   iconUrl: '{BASE_URL}/apps/xero/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/xero/connection',
+  authDocUrl: '{DOCS_URL}/apps/xero/connection',
   primaryColor: '13B5EA',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

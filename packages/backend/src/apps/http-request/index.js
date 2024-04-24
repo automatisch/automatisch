@@ -5,7 +5,7 @@ export default defineApp({
   name: 'HTTP Request',
   key: 'http-request',
   iconUrl: '{BASE_URL}/apps/http-request/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/http-request/connection',
+  authDocUrl: '{DOCS_URL}/apps/http-request/connection',
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',
