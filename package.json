@@ -5,12 +5,12 @@
   "scripts": {
     "start": "lerna run --stream --parallel --scope=@*/{web,backend} dev",
     "start:web": "lerna run --stream --scope=@*/web dev",
-    "start:backend": "lerna run --stream --scope=@*/backend dev",
-    "build:docs": "cd ./packages/docs && yarn install && yarn build"
+    "start:backend": "lerna run --stream --scope=@*/backend dev"
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/backend",
+      "packages/web"
     ],
     "nohoist": [
       "**/babel-loader",
