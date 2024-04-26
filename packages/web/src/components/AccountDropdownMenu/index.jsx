@@ -20,7 +20,7 @@ function AccountDropdownMenu(props) {
   const { open, onClose, anchorEl, id } = props;
 
   const logout = async () => {
-    revokeAccessTokenMutation.mutate();
+    await revokeAccessTokenMutation.mutateAsync();
 
     authentication.removeToken();
     await apolloClient.clearStore();
