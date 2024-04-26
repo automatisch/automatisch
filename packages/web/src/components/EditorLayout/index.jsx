@@ -8,6 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Snackbar from '@mui/material/Snackbar';
+import { ReactFlowProvider } from 'reactflow';
 
 import { EditorProvider } from 'contexts/Editor';
 import EditableTypography from 'components/EditableTypography';
@@ -134,20 +135,28 @@ export default function EditorLayout() {
           </Button>
         </Box>
       </TopBar>
-      <Stack direction="column" height="100%">
-        <Container maxWidth="md">
-          <EditorProvider value={{ readOnly: !!flow?.active }}>
-            {!flow && !isFlowLoading && 'not found'}
 
-            {flow &&
-              (useNewFlowEditor ? (
-                <EditorNew flow={flow} />
-              ) : (
-                <Editor flow={flow} />
-              ))}
-          </EditorProvider>
-        </Container>
-      </Stack>
+      {useNewFlowEditor ? (
+        <Stack direction="column" height="100%" flexGrow={1}>
+          <Stack direction="column" flexGrow={1}>
+            <EditorProvider value={{ readOnly: !!flow?.active }}>
+              <ReactFlowProvider>
+                {!flow && !isFlowLoading && 'not found'}
+                {flow && <EditorNew flow={flow} />}
+              </ReactFlowProvider>
+            </EditorProvider>
+          </Stack>
+        </Stack>
+      ) : (
+        <Stack direction="column" height="100%">
+          <Container maxWidth="md">
+            <EditorProvider value={{ readOnly: !!flow?.active }}>
+              {!flow && !isFlowLoading && 'not found'}
+              {flow && <Editor flow={flow} />}
+            </EditorProvider>
+          </Container>
+        </Stack>
+      )}
 
       <Snackbar
         data-test="flow-cannot-edit-info-snackbar"
