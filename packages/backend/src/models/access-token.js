@@ -27,6 +27,10 @@ class AccessToken extends Base {
       },
     },
   });
+
+  async revoke() {
+    return await this.$query().patch({ revokedAt: new Date().toISOString() });
+  }
 }
 
 export default AccessToken;
