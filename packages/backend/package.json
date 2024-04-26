@@ -95,6 +95,7 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
+    "node-gyp": "^10.1.0",
     "nodemon": "^2.0.13",
     "supertest": "^6.3.3",
     "vitest": "^1.1.3"
