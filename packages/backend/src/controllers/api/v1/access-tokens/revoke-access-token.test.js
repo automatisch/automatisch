@@ -7,6 +7,7 @@ import AccessToken from '../../../../models/access-token.js';
 
 describe('DELETE /api/v1/access-tokens/:token', () => {
   let token;
+
   beforeEach(async () => {
     const currentUser = await createUser({
       email: 'user@automatisch.io',
