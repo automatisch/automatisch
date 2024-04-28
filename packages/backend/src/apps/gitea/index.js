@@ -2,8 +2,11 @@ import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
 import auth from './auth/index.js';
 import setBaseUrl from './common/set-base-url.js';
+<<<<<<< HEAD
 import triggers from './triggers/index.js';
 import dynamicData from './dynamic-data/index.js';
+=======
+>>>>>>> 589d3447 (feat(gitea): add gitea integration)
 
 export default defineApp({
   name: 'Gitea',
@@ -16,6 +19,9 @@ export default defineApp({
   primaryColor: '609926',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
+<<<<<<< HEAD
   triggers,
   dynamicData,
+=======
+>>>>>>> 589d3447 (feat(gitea): add gitea integration)
 });

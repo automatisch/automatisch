@@ -199,10 +199,14 @@ export default defineConfig({
           text: 'Gitea',
           collapsible: true,
           collapsed: true,
+<<<<<<< HEAD
           items: [
             { text: 'Triggers', link: '/apps/gitea/triggers' },
             { text: 'Connection', link: '/apps/gitea/connection' },
           ],
+=======
+          items: [{ text: 'Connection', link: '/apps/gitea/connection' }],
+>>>>>>> 589d3447 (feat(gitea): add gitea integration)
         },
         {
           text: 'GitHub',
