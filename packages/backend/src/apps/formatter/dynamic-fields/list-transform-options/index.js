@@ -6,6 +6,7 @@ import htmlToMarkdown from './text/html-to-markdown.js';
 import lowercase from './text/lowercase.js';
 import markdownToHtml from './text/markdown-to-html.js';
 import pluralize from './text/pluralize.js';
+import replaceWithRegEx from './text/replace-with-regex.js';
 import replace from './text/replace.js';
 import stringToBase64 from './text/string-to-base64.js';
 import trimWhitespace from './text/trim-whitespace.js';
@@ -25,6 +26,7 @@ const options = {
   lowercase,
   markdownToHtml,
   pluralize,
+  replaceWithRegEx,
   replace,
   stringToBase64,
   trimWhitespace,

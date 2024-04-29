@@ -8,6 +8,7 @@ import htmlToMarkdown from './transformers/html-to-markdown.js';
 import lowercase from './transformers/lowercase.js';
 import markdownToHtml from './transformers/markdown-to-html.js';
 import pluralize from './transformers/pluralize.js';
+import replaceWithRegEx from './transformers/replace-with-regex.js';
 import replace from './transformers/replace.js';
 import stringToBase64 from './transformers/string-to-base64.js';
 import trimWhitespace from './transformers/trim-whitespace.js';
@@ -22,6 +23,7 @@ const transformers = {
   lowercase,
   markdownToHtml,
   pluralize,
+  replaceWithRegEx,
   replace,
   stringToBase64,
   trimWhitespace,
@@ -49,6 +51,7 @@ export default defineAction({
         { label: 'Extract Number', value: 'extractNumber' },
         { label: 'Lowercase', value: 'lowercase' },
         { label: 'Pluralize', value: 'pluralize' },
+        { label: 'Replace with RegEx', value: 'replaceWithRegEx' },
         { label: 'Replace', value: 'replace' },
         { label: 'String to Base64', value: 'stringToBase64' },
         { label: 'Trim Whitespace', value: 'trimWhitespace' },
