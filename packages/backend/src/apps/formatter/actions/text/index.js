@@ -2,6 +2,7 @@ import defineAction from '../../../../helpers/define-action.js';
 
 import base64ToString from './transformers/base64-to-string.js';
 import capitalize from './transformers/capitalize.js';
+import encodeUriComponent from './transformers/encode-uri-component.js';
 import extractEmailAddress from './transformers/extract-email-address.js';
 import extractNumber from './transformers/extract-number.js';
 import htmlToMarkdown from './transformers/html-to-markdown.js';
@@ -17,6 +18,7 @@ import useDefaultValue from './transformers/use-default-value.js';
 const transformers = {
   base64ToString,
   capitalize,
+  encodeUriComponent,
   extractEmailAddress,
   extractNumber,
   htmlToMarkdown,
@@ -45,6 +47,10 @@ export default defineAction({
       options: [
         { label: 'Base64 to String', value: 'base64ToString' },
         { label: 'Capitalize', value: 'capitalize' },
+        {
+          label: 'Encode URI Component',
+          value: 'encodeUriComponent',
+        },
         { label: 'Convert HTML to Markdown', value: 'htmlToMarkdown' },
         { label: 'Convert Markdown to HTML', value: 'markdownToHtml' },
         { label: 'Extract Email Address', value: 'extractEmailAddress' },

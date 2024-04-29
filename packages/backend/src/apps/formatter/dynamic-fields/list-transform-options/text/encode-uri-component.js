@@ -1,12 +1,12 @@
-const encodeUri = [
+const encodeUriComponent = [
   {
     label: 'Input',
     key: 'input',
     type: 'string',
     required: true,
-    description: 'URI to encode',
+    description: 'URI Component to encode',
     variables: true,
   },
 ];
 
-export default encodeUri;
+export default encodeUriComponent;
