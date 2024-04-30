@@ -8,6 +8,7 @@ export default {
     };
     const repoOwner = $.auth.data.repoOwner;
     const repo = $.step.parameters.repo;
+    const showLabelId = $.step.parameters.showLabelId === 'true';
 
     const params = {
       page: 1,
@@ -27,8 +28,9 @@ export default {
 
       if (data?.length) {
         for (const label of data) {
+          const value = showLabelId ? label.id : label.name;
           labels.data.push({
-            value: label.name,
+            value,
             name: label.name,
           });
         }
