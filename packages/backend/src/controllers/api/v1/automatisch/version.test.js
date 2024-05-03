@@ -10,7 +10,7 @@ describe('GET /api/v1/automatisch/version', () => {
 
     const expectedPayload = {
       data: {
-        version: '0.10.0',
+        version: '0.11.0',
       },
       meta: {
         count: 1,
