@@ -1,6 +1,7 @@
 import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
 import auth from './auth/index.js';
+import triggers from './triggers/index.js';
 
 export default defineApp({
   name: 'Monday',
@@ -13,4 +14,5 @@ export default defineApp({
   primaryColor: 'F62B54',
   beforeRequest: [addAuthHeader],
   auth,
+  triggers,
 });
