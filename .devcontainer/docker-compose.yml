@@ -36,7 +36,6 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:21.1
     restart: always
-    container_name: keycloak
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
