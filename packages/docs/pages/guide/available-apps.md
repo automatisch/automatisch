@@ -17,6 +17,7 @@ The following integrations are currently supported by Automatisch.
 - [Google Drive](/apps/google-drive/triggers)
 - [Google Forms](/apps/google-forms/triggers)
 - [Google Sheets](/apps/google-sheets/triggers)
+- [Google Tasks](/apps/google-tasks/actions)
 - [HTTP Request](/apps/http-request/actions)
 - [HubSpot](/apps/hubspot/actions)
 - [Invoice Ninja](/apps/invoice-ninja/triggers)
