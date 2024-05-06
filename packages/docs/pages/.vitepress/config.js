@@ -78,6 +78,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Disqus',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/disqus/triggers' },
+            { text: 'Connection', link: '/apps/disqus/connection' },
+          ],
+        },
+        {
           text: 'Dropbox',
           collapsible: true,
           collapsed: true,
