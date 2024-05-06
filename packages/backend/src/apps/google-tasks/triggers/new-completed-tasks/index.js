@@ -48,7 +48,7 @@ export default defineTrigger({
             $.pushTriggerItem({
               raw: task,
               meta: {
-                internalId: task.etag,
+                internalId: task.id,
               },
             });
           }

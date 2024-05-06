@@ -21,7 +21,7 @@ export default defineTrigger({
           $.pushTriggerItem({
             raw: taskList,
             meta: {
-              internalId: taskList.etag,
+              internalId: taskList.id,
             },
           });
         }
