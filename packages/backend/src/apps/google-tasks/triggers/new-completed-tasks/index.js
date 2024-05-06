@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
   name: 'New completed tasks',
-  key: 'newTasks',
+  key: 'newCompletedTasks',
   pollInterval: 15,
   description: 'Triggers when a task is finished within a specified task list.',
   arguments: [
