@@ -8,7 +8,7 @@ global.beforeAll(async () => {
   logger.silent = true;
 
   // Remove default roles and permissions before running the test suite
-  await knex.raw('TRUNCATE TABLE roles, permissions CASCADE');
+  await knex.raw('TRUNCATE TABLE config, roles, permissions CASCADE');
 });
 
 global.beforeEach(async () => {
