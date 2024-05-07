@@ -373,6 +373,19 @@ class User extends Base {
     return apps;
   }
 
+  static async createAdminUser({ email, password, fullName }) {
+    const adminRole = await Role.findAdmin();
+
+    const adminUser = await this.query().insert({
+      email,
+      password,
+      fullName,
+      roleId: adminRole.id
+    });
+
+    return adminUser;
+  }
+
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
 
