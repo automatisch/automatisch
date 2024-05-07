@@ -10,7 +10,7 @@ export default defineApp({
   name: 'Vtiger CRM',
   key: 'vtiger-crm',
   iconUrl: '{BASE_URL}/apps/vtiger-crm/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/vtiger-crm/connection',
+  authDocUrl: '{DOCS_URL}/apps/vtiger-crm/connection',
   supportsConnections: true,
   baseUrl: '',
   apiBaseUrl: '',
