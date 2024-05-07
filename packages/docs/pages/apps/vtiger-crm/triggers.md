@@ -9,6 +9,8 @@ items:
     desc: Triggers when a new invoice is created.
   - name: New leads
     desc: Triggers when a new lead is created.
+  - name: New opportunities
+    desc: Triggers when a new opportunity is created.
 ---
 
 <script setup>
