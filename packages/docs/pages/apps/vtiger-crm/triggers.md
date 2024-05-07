@@ -11,6 +11,8 @@ items:
     desc: Triggers when a new lead is created.
   - name: New opportunities
     desc: Triggers when a new opportunity is created.
+  - name: New todos
+    desc: Triggers when a new todo is created.
 ---
 
 <script setup>
