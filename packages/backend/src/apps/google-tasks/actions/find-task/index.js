@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Find task',
   key: 'findTask',
-  description: 'Looking for an incomplete task.',
+  description: 'Looking for a specific task.',
   arguments: [
     {
       label: 'Task List',
@@ -37,7 +37,14 @@ export default defineAction({
     const taskListId = $.step.parameters.taskListId;
     const title = $.step.parameters.title;
 
-    const { data } = await $.http.get(`/tasks/v1/lists/${taskListId}/tasks`);
+    const params = {
+      showCompleted: true,
+      showHidden: true,
+    };
+
+    const { data } = await $.http.get(`/tasks/v1/lists/${taskListId}/tasks`, {
+      params,
+    });
 
     const filteredTask = data.items?.filter((task) =>
       task.title.includes(title)
