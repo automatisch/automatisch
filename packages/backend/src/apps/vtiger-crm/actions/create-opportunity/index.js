@@ -11,8 +11,8 @@ export default defineAction({
     const {
       dealName,
       amount,
-      organizationName,
-      contactName,
+      organizationId,
+      contactId,
       expectedCloseDate,
       pipeline,
       salesStage,
@@ -21,19 +21,19 @@ export default defineAction({
       nextStep,
       type,
       probability,
-      campaignSource,
+      campaignSourceId,
       weightedRevenue,
       adjustedAmount,
       lostReason,
-      recordCurrency,
+      recordCurrencyId,
       description,
     } = $.step.parameters;
 
     const elementData = {
       potentialname: dealName,
       amount,
-      related_to: organizationName,
-      contact_id: contactName,
+      related_to: organizationId,
+      contact_id: contactId,
       closingdate: expectedCloseDate,
       pipeline,
       sales_stage: salesStage,
@@ -42,11 +42,11 @@ export default defineAction({
       nextstep: nextStep,
       opportunity_type: type,
       probability: probability,
-      campaignid: campaignSource,
+      campaignid: campaignSourceId,
       forecast_amount: weightedRevenue,
       adjusted_amount: adjustedAmount,
       lost_reason: lostReason,
-      record_currency_id: recordCurrency,
+      record_currency_id: recordCurrencyId,
       description,
     };
 

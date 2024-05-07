@@ -79,8 +79,8 @@ export const fields = [
     variables: true,
   },
   {
-    label: 'Organization Name',
-    key: 'organizationName',
+    label: 'Organization',
+    key: 'organizationId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -215,8 +215,8 @@ export const fields = [
     variables: true,
   },
   {
-    label: 'SLA Name',
-    key: 'slaName',
+    label: 'SLA',
+    key: 'slaId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -300,7 +300,7 @@ export const fields = [
   },
   {
     label: 'Record Currency',
-    key: 'recordCurrency',
+    key: 'recordCurrencyId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -402,7 +402,7 @@ export const fields = [
   },
   {
     label: 'Source Campaign',
-    key: 'sourceCampaign',
+    key: 'sourceCampaignId',
     type: 'dropdown',
     required: false,
     description: '',
