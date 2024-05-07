@@ -81,7 +81,7 @@ export const fields = [
     label: 'Contact Name',
     key: 'contactName',
     type: 'dropdown',
-    required: false,
+    required: true,
     description: '',
     variables: true,
     source: {
