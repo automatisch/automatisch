@@ -21,7 +21,7 @@ export default defineTrigger({
     const balanceBelowAmount = $.step.parameters.balanceBelowAmount;
     const formattedBalance = balanceBelowAmount * 1000;
 
-    const response = await $.http.get('/budgets/last-used/accounts');
+    const response = await $.http.get('/budgets/default/accounts');
 
     if (response.data?.data?.accounts?.length) {
       for (const account of response.data.data.accounts) {
