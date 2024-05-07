@@ -21,6 +21,14 @@ export async function createUser(
   email = 'user@automatisch.io',
   password = 'sample'
 ) {
+  if (appConfig.disableSeedUser) {
+    logger.info('Seed user is disabled.');
+
+    process.exit(0);
+
+    return;
+  }
+
   const UNIQUE_VIOLATION_CODE = '23505';
 
   const role = await fetchAdminRole();

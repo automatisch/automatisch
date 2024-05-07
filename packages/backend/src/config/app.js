@@ -98,6 +98,7 @@ const appConfig = {
   disableFavicon: process.env.DISABLE_FAVICON === 'true',
   additionalDrawerLink: process.env.ADDITIONAL_DRAWER_LINK,
   additionalDrawerLinkText: process.env.ADDITIONAL_DRAWER_LINK_TEXT,
+  disableSeedUser: process.env.DISABLE_SEED_USER === 'true',
 };
 
 if (!appConfig.encryptionKey) {
