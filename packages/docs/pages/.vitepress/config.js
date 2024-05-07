@@ -452,7 +452,10 @@ export default defineConfig({
           text: 'Vtiger CRM',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/vtiger-crm/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/vtiger-crm/triggers' },
+            { text: 'Connection', link: '/apps/vtiger-crm/connection' },
+          ],
         },
         {
           text: 'Webhooks',
