@@ -16,8 +16,8 @@ export const fields = [
     variables: true,
   },
   {
-    label: 'Organization Name',
-    key: 'organizationName',
+    label: 'Organization',
+    key: 'organizationId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -34,8 +34,8 @@ export const fields = [
     },
   },
   {
-    label: 'Contact Name',
-    key: 'contactName',
+    label: 'Contact',
+    key: 'contactId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -161,7 +161,7 @@ export const fields = [
   },
   {
     label: 'Campaign Source',
-    key: 'campaignSource',
+    key: 'campaignSourceId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -217,7 +217,7 @@ export const fields = [
   },
   {
     label: 'Record Currency',
-    key: 'recordCurrency',
+    key: 'recordCurrencyId',
     type: 'dropdown',
     required: false,
     description: '',

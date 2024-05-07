@@ -200,7 +200,7 @@ export const fields = [
   },
   {
     label: 'Record Currency',
-    key: 'recordCurrency',
+    key: 'recordCurrencyId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -284,7 +284,7 @@ export const fields = [
   },
   {
     label: 'Source Campaign',
-    key: 'sourceCampaign',
+    key: 'sourceCampaignId',
     type: 'dropdown',
     required: false,
     description: '',

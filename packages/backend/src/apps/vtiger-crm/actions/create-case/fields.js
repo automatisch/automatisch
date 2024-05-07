@@ -9,7 +9,7 @@ export const fields = [
   },
   {
     label: 'Record Currency',
-    key: 'recordCurrency',
+    key: 'recordCurrencyId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -78,8 +78,8 @@ export const fields = [
     },
   },
   {
-    label: 'Contact Name',
-    key: 'contactName',
+    label: 'Contact',
+    key: 'contactId',
     type: 'dropdown',
     required: true,
     description: '',
@@ -96,8 +96,8 @@ export const fields = [
     },
   },
   {
-    label: 'Organization Name',
-    key: 'organizationName',
+    label: 'Organization',
+    key: 'organizationId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -115,7 +115,7 @@ export const fields = [
   },
   {
     label: 'Group',
-    key: 'group',
+    key: 'groupId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -140,8 +140,8 @@ export const fields = [
     variables: true,
   },
   {
-    label: 'Product Name',
-    key: 'productName',
+    label: 'Product',
+    key: 'productId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -262,8 +262,8 @@ export const fields = [
     variables: true,
   },
   {
-    label: 'Service Contracts',
-    key: 'serviceContracts',
+    label: 'Service Contract',
+    key: 'serviceContractId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -281,7 +281,7 @@ export const fields = [
   },
   {
     label: 'Asset',
-    key: 'asset',
+    key: 'assetId',
     type: 'dropdown',
     required: false,
     description: '',
@@ -298,8 +298,8 @@ export const fields = [
     },
   },
   {
-    label: 'SLA Name',
-    key: 'slaName',
+    label: 'SLA',
+    key: 'slaId',
     type: 'dropdown',
     required: false,
     description: '',
