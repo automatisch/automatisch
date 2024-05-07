@@ -11,21 +11,20 @@ export default defineTrigger({
     const limit = 100;
     let hasMore = true;
 
-    const params = {
-      operation: 'query',
-      sessionName: $.auth.data.sessionName,
-      query: `SELECT * FROM Cases ORDER BY createdtime DESC LIMIT ${offset}, ${limit};`,
-    };
-
     do {
+      const params = {
+        operation: 'query',
+        sessionName: $.auth.data.sessionName,
+        query: `SELECT * FROM Cases ORDER BY createdtime DESC LIMIT ${offset}, ${limit};`,
+      };
+
       const { data } = await $.http.get('/webservice.php', {
         params,
       });
       offset = limit + offset;
 
-      if (!data?.result?.length) {
+      if (!data.result?.length || data.result.length < limit) {
         hasMore = false;
-        return;
       }
 
       for (const item of data.result) {
