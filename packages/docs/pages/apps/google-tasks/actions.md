@@ -6,7 +6,7 @@ items:
   - name: Create task list
     desc: Creates a new task list.
   - name: Find task
-    desc: Looking for an incomplete task.
+    desc: Looking for a specific task.
   - name: Update task
     desc: Updates an existing task.
 ---
