@@ -29,11 +29,12 @@ export default defineTrigger({
 
   async run($) {
     const forumId = $.step.parameters.forumId;
+    const isFlaggedFilter = 5;
 
     const params = new URLSearchParams({
-      limit: '100',
+      limit: 100,
       forum: forumId,
-      filters: [5], // Is_Flagged
+      filters: [isFlaggedFilter],
     });
 
     let more;
