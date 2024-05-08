@@ -4,8 +4,8 @@ services:
     env: docker
     dockerfilePath: ./docker/Dockerfile
     dockerContext: ./docker
-    repo: https://github.com/automatisch/automatisch
-    autoDeploy: false
+    repo: https://github.com/Jakyei/automatisch
+    autoDeploy: true
     envVars:
       - key: HOST
         fromService:
@@ -100,7 +100,7 @@ envVarGroups:
   - name: common-env-vars
     envVars:
       - key: APP_ENV
-        value: production
+        value: development
       - key: PROTOCOL
         value: https
       - key: PORT
