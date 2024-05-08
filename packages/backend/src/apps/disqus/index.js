@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://disqus.com',
   apiBaseUrl: 'https://disqus.com/api',
   iconUrl: '{BASE_URL}/apps/disqus/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/disqus/connection',
+  authDocUrl: '{DOCS_URL}/apps/disqus/connection',
   primaryColor: '2E9FFF',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
