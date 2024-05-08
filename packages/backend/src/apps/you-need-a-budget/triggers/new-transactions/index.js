@@ -7,7 +7,7 @@ export default defineTrigger({
   description: 'Triggers when a new transaction is created.',
 
   async run($) {
-    const response = await $.http.get('/budgets/last-used/transactions');
+    const response = await $.http.get('/budgets/default/transactions');
     const transactions = response.data.data?.transactions;
 
     if (transactions?.length) {

@@ -10,7 +10,7 @@ export default defineTrigger({
   async run($) {
     const categoryWithNegativeBalance = [];
 
-    const response = await $.http.get('/budgets/last-used/categories');
+    const response = await $.http.get('/budgets/default/categories');
     const categoryGroups = response.data.data.category_groups;
 
     categoryGroups.forEach((group) => {
