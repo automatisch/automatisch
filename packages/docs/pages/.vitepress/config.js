@@ -345,6 +345,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Actions', link: '/apps/monday/actions' },
             { text: 'Triggers', link: '/apps/monday/triggers' },
             { text: 'Connection', link: '/apps/monday/connection' },
           ],
