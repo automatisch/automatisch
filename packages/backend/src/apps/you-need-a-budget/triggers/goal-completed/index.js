@@ -1,28 +1,27 @@
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
-  name: 'Category overspent',
-  key: 'categoryOverspent',
+  name: 'Goal completed',
+  key: 'goalCompleted',
   pollInterval: 15,
-  description:
-    'Triggers when a category exceeds its budget, resulting in a negative balance.',
+  description: 'Triggers when a goal is completed.',
 
   async run($) {
-    const categoryWithNegativeBalance = [];
+    const goalCompletedCategories = [];
 
     const response = await $.http.get('/budgets/default/categories');
     const categoryGroups = response.data.data.category_groups;
 
     categoryGroups.forEach((group) => {
       group.categories.forEach((category) => {
-        if (category.balance < 0) {
-          categoryWithNegativeBalance.push(category);
+        if (category.goal_percentage_complete === 100) {
+          goalCompletedCategories.push(category);
         }
       });
     });
 
-    if (categoryWithNegativeBalance?.length) {
-      for (const category of categoryWithNegativeBalance) {
+    if (goalCompletedCategories?.length) {
+      for (const category of goalCompletedCategories) {
         $.pushTriggerItem({
           raw: category,
           meta: {
