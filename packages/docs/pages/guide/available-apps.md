@@ -54,5 +54,6 @@ The following integrations are currently supported by Automatisch.
 - [Webhooks](/apps/webhooks/triggers)
 - [WordPress](/apps/wordpress/triggers)
 - [Xero](/apps/xero/triggers)
+- [You Need A Budget](/apps/you-need-a-budget/triggers)
 - [Youtube](/apps/youtube/triggers)
 - [Zendesk](/apps/zendesk/actions)

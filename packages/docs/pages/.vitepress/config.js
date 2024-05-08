@@ -514,6 +514,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'You Need A Budget',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/you-need-a-budget/triggers' },
+            { text: 'Connection', link: '/apps/you-need-a-budget/connection' },
+          ],
+        },
+        {
           text: 'Youtube',
           collapsible: true,
           collapsed: true,
