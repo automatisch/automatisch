@@ -9,7 +9,7 @@ export default defineApp({
   baseUrl: 'https://app.ynab.com',
   apiBaseUrl: 'https://api.ynab.com/v1',
   iconUrl: '{BASE_URL}/apps/you-need-a-budget/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/you-need-a-budget/connection',
+  authDocUrl: '{DOCS_URL}/apps/you-need-a-budget/connection',
   primaryColor: '19223C',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
