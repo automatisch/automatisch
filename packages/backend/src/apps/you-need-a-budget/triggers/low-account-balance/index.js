@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
@@ -18,6 +19,7 @@ export default defineTrigger({
   ],
 
   async run($) {
+    const monthYear = DateTime.now().toFormat('MM-yyyy');
     const balanceBelowAmount = $.step.parameters.balanceBelowAmount;
     const formattedBalance = balanceBelowAmount * 1000;
 
@@ -29,7 +31,7 @@ export default defineTrigger({
           $.pushTriggerItem({
             raw: account,
             meta: {
-              internalId: account.id,
+              internalId: `${account.id}-${monthYear}`,
             },
           });
         }
