@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
@@ -7,6 +8,7 @@ export default defineTrigger({
   description: 'Triggers when a goal is completed.',
 
   async run($) {
+    const monthYear = DateTime.now().toFormat('MM-yyyy');
     const goalCompletedCategories = [];
 
     const response = await $.http.get('/budgets/default/categories');
@@ -20,15 +22,13 @@ export default defineTrigger({
       });
     });
 
-    if (goalCompletedCategories?.length) {
-      for (const category of goalCompletedCategories) {
-        $.pushTriggerItem({
-          raw: category,
-          meta: {
-            internalId: category.id,
-          },
-        });
-      }
+    for (const category of goalCompletedCategories) {
+      $.pushTriggerItem({
+        raw: category,
+        meta: {
+        internalId: `${category.id}-${monthYear}`,
+        },
+      });
     }
   },
 });
