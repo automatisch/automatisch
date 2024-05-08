@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
@@ -8,6 +9,7 @@ export default defineTrigger({
     'Triggers when a category exceeds its budget, resulting in a negative balance.',
 
   async run($) {
+    const monthYear = DateTime.now().toFormat('MM-yyyy');
     const categoryWithNegativeBalance = [];
 
     const response = await $.http.get('/budgets/default/categories');
@@ -21,15 +23,13 @@ export default defineTrigger({
       });
     });
 
-    if (categoryWithNegativeBalance?.length) {
-      for (const category of categoryWithNegativeBalance) {
-        $.pushTriggerItem({
-          raw: category,
-          meta: {
-            internalId: category.id,
-          },
-        });
-      }
+    for (const category of categoryWithNegativeBalance) {
+      $.pushTriggerItem({
+        raw: category,
+        meta: {
+          internalId: `${category.id}-${monthYear}`,
+        },
+      });
     }
   },
 });
