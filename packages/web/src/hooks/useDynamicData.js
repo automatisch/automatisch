@@ -87,10 +87,11 @@ function useDynamicData(stepId, schema) {
       schema.source &&
       computedVariables
     ) {
-      const { key, ...rest } = computedVariables;
+      const { key, parameters } = computedVariables;
+
       getDynamicData({
         dynamicDataKey: key,
-        parameters: rest,
+        parameters,
       });
     }
   }, [getDynamicData, stepId, schema, computedVariables]);
