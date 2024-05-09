@@ -1,3 +1,5 @@
-import addTemplate from './add-template/index.js';
+import addTemplate from './template-add/index.js';
+import generateDocument from './document-generate/index.js';
+import downloadDocument from './document-download/index.js';
 
-export default [addTemplate];
+export default [generateDocument,downloadDocument,addTemplate];

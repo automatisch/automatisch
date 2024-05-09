@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://carbone.io',
   apiBaseUrl: 'https://api.carbone.io',
-  primaryColor: '6f42c1',
+  primaryColor: 'a544c5',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

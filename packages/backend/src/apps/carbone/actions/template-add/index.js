@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Add Template',
+  name: 'Add a Template',
   key: 'addTemplate',
   description:
     'Creates an attachment of a specified object by given parent ID.',
