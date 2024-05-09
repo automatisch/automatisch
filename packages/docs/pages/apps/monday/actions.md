@@ -3,6 +3,8 @@ favicon: /favicons/monday.svg
 items:
   - name: Create board
     desc: Creates a new board.
+  - name: Create item
+    desc: Creates a new item in a board.
 ---
 
 <script setup>
