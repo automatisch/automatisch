@@ -13,7 +13,7 @@ function SsoProviders() {
     useSamlAuthProviders();
   const providers = data?.data;
 
-  if (!isSamlAuthProvidersLoading && providers?.length === 0) return null;
+  if (!isSamlAuthProvidersLoading && !providers?.length) return null;
 
   return (
     <>
