@@ -2,6 +2,7 @@ import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
 import auth from './auth/index.js';
 import setBaseUrl from './common/set-base-url.js';
+import actions from './actions/index.js';
 
 export default defineApp({
   name: 'Changedetection',
@@ -14,4 +15,5 @@ export default defineApp({
   primaryColor: '3056d3',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
+  actions,
 });
