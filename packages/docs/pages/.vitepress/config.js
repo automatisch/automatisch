@@ -42,6 +42,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Changedetection',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/changedetection/connection' },
+          ],
+        },
+        {
           text: 'Datastore',
           collapsible: true,
           collapsed: true,
