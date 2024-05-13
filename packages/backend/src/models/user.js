@@ -10,6 +10,7 @@ import Base from './base.js';
 import App from './app.js';
 import AccessToken from './access-token.js';
 import Connection from './connection.js';
+import Config from './config.js';
 import Execution from './execution.js';
 import Flow from './flow.js';
 import Identity from './identity.ee.js';
@@ -382,6 +383,8 @@ class User extends Base {
       fullName,
       roleId: adminRole.id
     });
+
+    await Config.markInstallationCompleted();
 
     return adminUser;
   }
