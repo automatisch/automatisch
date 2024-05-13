@@ -10,6 +10,7 @@ import Base from './base.js';
 import App from './app.js';
 import AccessToken from './access-token.js';
 import Connection from './connection.js';
+import Config from './config.js';
 import Execution from './execution.js';
 import Flow from './flow.js';
 import Identity from './identity.ee.js';
@@ -371,6 +372,21 @@ class User extends Base {
       .sort((appA, appB) => appA.name.localeCompare(appB.name));
 
     return apps;
+  }
+
+  static async createAdmin({ email, password, fullName }) {
+    const adminRole = await Role.findAdmin();
+
+    const adminUser = await this.query().insert({
+      email,
+      password,
+      fullName,
+      roleId: adminRole.id
+    });
+
+    await Config.markInstallationCompleted();
+
+    return adminUser;
   }
 
   async $beforeInsert(queryContext) {

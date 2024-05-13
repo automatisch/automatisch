@@ -11,3 +11,7 @@ export const createConfig = async (params = {}) => {
 
   return config;
 };
+
+export const createInstallationCompletedConfig = async () => {
+  return await createConfig({ key: 'installation.completed', value: { data: true } });
+}
