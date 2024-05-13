@@ -46,6 +46,8 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/changedetection/triggers' },
+            { text: 'Actions', link: '/apps/changedetection/actions' },
             { text: 'Connection', link: '/apps/changedetection/connection' },
           ],
         },
