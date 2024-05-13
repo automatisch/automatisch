@@ -2,6 +2,7 @@ import appConfig from '../../src/config/app.js';
 import logger from '../../src/helpers/logger.js';
 import client from './client.js';
 import User from '../../src/models/user.js';
+import Config from '../../src/models/config.js';
 import Role from '../../src/models/role.js';
 import '../../src/config/orm.js';
 import process from 'process';
@@ -45,6 +46,8 @@ export async function createUser(
     if (userCount === 0) {
       const user = await User.query().insertAndFetch(userParams);
       logger.info(`User has been saved: ${user.email}`);
+
+      await Config.markInstallationCompleted();
     } else {
       logger.info('No need to seed a user.');
     }

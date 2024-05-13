@@ -4,6 +4,7 @@ import app from '../../../../../app.js';
 import Config from '../../../../../models/config.js';
 import User from '../../../../../models/user.js';
 import { createRole } from '../../../../../../test/factories/role';
+import { createUser } from '../../../../../../test/factories/user';
 import { createInstallationCompletedConfig } from '../../../../../../test/factories/config';
 
 describe('POST /api/v1/installation/users', () => {
@@ -17,7 +18,7 @@ describe('POST /api/v1/installation/users', () => {
   });
 
   describe('for incomplete installations', () => {
-    it('should respond with HTTP 204 with correct payload', async () => {
+    it('should respond with HTTP 204 with correct payload when no user', async () => {
       expect(await Config.isInstallationCompleted()).toBe(false);
 
       await request(app)
@@ -33,6 +34,27 @@ describe('POST /api/v1/installation/users', () => {
 
       expect(user.roleId).toBe(adminRole.id);
       expect(await Config.isInstallationCompleted()).toBe(true);
+    });
+
+    it('should respond with HTTP 403 with correct payload when one user exists at least', async () => {
+      expect(await Config.isInstallationCompleted()).toBe(false);
+
+      await createUser();
+
+      const usersCountBefore = await User.query().resultSize();
+
+      await request(app)
+        .post('/api/v1/installation/users')
+        .send({
+          email: 'user@automatisch.io',
+          password: 'password',
+          fullName: 'Initial admin'
+        })
+        .expect(403);
+
+      const usersCountAfter = await User.query().resultSize();
+
+      expect(usersCountBefore).toEqual(usersCountAfter);
     });
   });
 
