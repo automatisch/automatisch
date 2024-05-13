@@ -373,7 +373,7 @@ class User extends Base {
     return apps;
   }
 
-  static async createAdminUser({ email, password, fullName }) {
+  static async createAdmin({ email, password, fullName }) {
     const adminRole = await Role.findAdmin();
 
     const adminUser = await this.query().insert({
