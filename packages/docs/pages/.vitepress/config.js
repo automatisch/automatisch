@@ -102,6 +102,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Changedetection',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/changedetection/connection' },
+          ],
+        },
+        {
           text: 'ClickUp',
           collapsible: true,
           collapsed: true,
