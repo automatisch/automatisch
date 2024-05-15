@@ -7,13 +7,23 @@ export default {
       data: [],
     };
 
-    const { data } = await $.http.get('/v1/databases');
+    const params = {
+      queries: [
+        JSON.stringify({
+          method: 'orderAsc',
+          atttribute: 'name'
+        }),
+        JSON.stringify({
+          method: 'limit',
+          values: [100]
+        }),
+      ],
+    };
+
+    const { data } = await $.http.get('/v1/databases', { params });
 
     if (data?.databases) {
-      const sortedDatabases = data.databases.sort((a, b) =>
-        a.$createdAt - b.$createdAt ? 1 : -1
-      );
-      for (const database of sortedDatabases) {
+      for (const database of data.databases) {
         databases.data.push({
           value: database.$id,
           name: database.name,

@@ -12,15 +12,26 @@ export default {
       return collections;
     }
 
+    const params = {
+      queries: [
+        JSON.stringify({
+          method: 'orderAsc',
+          atttribute: 'name'
+        }),
+        JSON.stringify({
+          method: 'limit',
+          values: [100]
+        }),
+      ],
+    };
+
     const { data } = await $.http.get(
-      `/v1/databases/${databaseId}/collections`
+      `/v1/databases/${databaseId}/collections`,
+      { params }
     );
 
     if (data?.collections) {
-      const sortedCollections = data.collections.sort((a, b) =>
-        a.$createdAt - b.$createdAt ? 1 : -1
-      );
-      for (const collection of sortedCollections) {
+      for (const collection of data.collections) {
         collections.data.push({
           value: collection.$id,
           name: collection.name,
