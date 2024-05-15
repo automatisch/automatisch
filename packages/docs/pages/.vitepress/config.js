@@ -26,12 +26,21 @@ export default defineConfig({
       },
       {
         text: 'Apps',
-        link: '/apps/carbone/connection',
+        link: '/apps/airtable/connection',
         activeMatch: '/apps/',
       },
     ],
     sidebar: {
       '/apps/': [
+        {
+          text: 'Airtable',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/airtable/actions' },
+            { text: 'Connection', link: '/apps/airtable/connection' },
+          ],
+        },
         {
           text: 'Carbone',
           collapsible: true,
