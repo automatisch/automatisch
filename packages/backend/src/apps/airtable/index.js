@@ -11,7 +11,7 @@ export default defineApp({
   baseUrl: 'https://airtable.com',
   apiBaseUrl: 'https://api.airtable.com',
   iconUrl: '{BASE_URL}/apps/airtable/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/airtable/connection',
+  authDocUrl: '{DOCS_URL}/apps/airtable/connection',
   primaryColor: 'FFBF00',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
