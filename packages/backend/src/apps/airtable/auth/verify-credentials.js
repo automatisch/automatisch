@@ -41,9 +41,6 @@ const verifyCredentials = async ($) => {
   });
 
   const currentUser = await getCurrentUser($);
-  const screenName = [currentUser.email, currentUser.id]
-    .filter(Boolean)
-    .join(' @ ');
 
   await $.auth.set({
     clientId: $.auth.data.clientId,
@@ -52,7 +49,7 @@ const verifyCredentials = async ($) => {
     expiresIn: data.expires_in,
     refreshExpiresIn: data.refresh_expires_in,
     refreshToken: data.refresh_token,
-    screenName,
+    screenName: currentUser.email,
   });
 };
 
