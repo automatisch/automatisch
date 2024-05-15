@@ -2,6 +2,7 @@
 
 The following integrations are currently supported by Automatisch.
 
+- [Airtable](/apps/airtable/actions)
 - [Carbone](/apps/carbone/actions)
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
