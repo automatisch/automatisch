@@ -52,25 +52,52 @@ export default defineTrigger({
   async run($) {
     const { databaseId, collectionId } = $.step.parameters;
 
-    const { data } = await $.http.get(
-      `/v1/databases/${databaseId}/collections/${collectionId}/documents`
-    );
+    const limit = 1;
+    let lastDocumentId = undefined;
+    let offset = 0;
+    let documentCount = 0;
 
-    if (!data?.documents?.length) {
-      return;
-    }
+    do {
+      const params = {
+        queries: [
+          JSON.stringify({
+            method: 'orderDesc',
+            atttribute: '$createdAt'
+          }),
+          JSON.stringify({
+            method: 'limit',
+            values: [limit]
+          }),
+          // An invalid cursor shouldn't be sent.
+          lastDocumentId && JSON.stringify({
+            method: 'cursorAfter',
+            values: [lastDocumentId]
+          })
+        ].filter(Boolean),
+      };
 
-    const sortedDocuments = data.documents.sort((a, b) =>
-      a.$createdAt - b.$createdAt ? 1 : -1
-    );
+      const { data } = await $.http.get(
+        `/v1/databases/${databaseId}/collections/${collectionId}/documents`,
+        { params },
+      );
 
-    for (const document of sortedDocuments) {
-      $.pushTriggerItem({
-        raw: document,
-        meta: {
-          internalId: document.$id,
-        },
-      });
-    }
+      const documents = data?.documents;
+      documentCount = documents?.length;
+      offset = offset + limit;
+      lastDocumentId = documents[documentCount - 1]?.$id;
+
+      if (!documentCount) {
+        return;
+      }
+
+      for (const document of documents) {
+        $.pushTriggerItem({
+          raw: document,
+          meta: {
+            internalId: document.$id,
+          },
+        });
+      }
+    } while (documentCount === limit);
   },
 });
