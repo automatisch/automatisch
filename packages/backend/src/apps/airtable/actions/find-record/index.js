@@ -109,7 +109,7 @@ export default defineAction({
       label: 'Limit to View',
       key: 'limitToView',
       type: 'dropdown',
-      required: true,
+      required: false,
       dependsOn: ['parameters.baseId', 'parameters.tableId'],
       description:
         'You have the choice to restrict the search to a particular view ID if desired.',
