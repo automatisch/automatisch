@@ -62,23 +62,24 @@ export default defineTrigger({
         queries: [
           JSON.stringify({
             method: 'orderDesc',
-            atttribute: '$createdAt'
+            attribute: '$createdAt',
           }),
           JSON.stringify({
             method: 'limit',
-            values: [limit]
+            values: [limit],
           }),
           // An invalid cursor shouldn't be sent.
-          lastDocumentId && JSON.stringify({
-            method: 'cursorAfter',
-            values: [lastDocumentId]
-          })
+          lastDocumentId &&
+            JSON.stringify({
+              method: 'cursorAfter',
+              values: [lastDocumentId],
+            }),
         ].filter(Boolean),
       };
 
       const { data } = await $.http.get(
         `/v1/databases/${databaseId}/collections/${collectionId}/documents`,
-        { params },
+        { params }
       );
 
       const documents = data?.documents;
