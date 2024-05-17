@@ -11,11 +11,11 @@ export default {
       queries: [
         JSON.stringify({
           method: 'orderAsc',
-          atttribute: 'name'
+          attribute: 'name',
         }),
         JSON.stringify({
           method: 'limit',
-          values: [100]
+          values: [100],
         }),
       ],
     };
