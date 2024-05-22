@@ -5,12 +5,22 @@ import { FlowPropType } from 'propTypes/propTypes';
 import ReactFlow, { useNodesState, useEdgesState, addEdge } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Stack } from '@mui/material';
-
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
-import FlowStep from './FlowStep/FlowStep';
-import { useAutoLayout } from './useAutoLayout';
 
-const nodeTypes = { flowStep: FlowStep };
+import { useAutoLayout } from './useAutoLayout';
+import FlowStepNode from './FlowStepNode/FlowStepNode';
+import Edge from './Edge/Edge';
+import InvisibleNode from './InvisibleNode/InvisibleNode';
+
+const nodeTypes = { flowStep: FlowStepNode, invisible: InvisibleNode };
+
+const edgeTypes = {
+  addNodeEdge: Edge,
+};
+
+const INVISIBLE_NODE_ID = 'invisible-node';
+
+const generateEdgeId = (sourceId, targetId) => `${sourceId}-${targetId}`;
 
 const EditorNew = ({ flow }) => {
   const [triggerStep] = flow.steps;
@@ -64,53 +74,138 @@ const EditorNew = ({ flow }) => {
     [flow.id, updateStep, queryClient],
   );
 
+  const generateEdges = useCallback((flow, prevEdges) => {
+    const newEdges =
+      flow.steps
+        .map((step, i) => {
+          const sourceId = step.id;
+          const targetId = flow.steps[i + 1]?.id;
+          const edge = prevEdges?.find(
+            (edge) => edge.id === generateEdgeId(sourceId, targetId),
+          );
+          if (targetId) {
+            return {
+              id: generateEdgeId(sourceId, targetId),
+              source: sourceId,
+              target: targetId,
+              type: 'addNodeEdge',
+              data: {
+                flowId: flow.id,
+                flowActive: flow.active,
+                setCurrentStepId,
+                layouted: !!edge,
+              },
+            };
+          }
+        })
+        .filter((edge) => !!edge) || [];
+
+    const lastStep = flow.steps[flow.steps.length - 1];
+
+    return lastStep
+      ? [
+          ...newEdges,
+          {
+            id: generateEdgeId(lastStep.id, INVISIBLE_NODE_ID),
+            source: lastStep.id,
+            target: INVISIBLE_NODE_ID,
+            type: 'addNodeEdge',
+            data: {
+              flowId: flow.id,
+              flowActive: flow.active,
+              setCurrentStepId,
+              layouted: false,
+            },
+          },
+        ]
+      : newEdges;
+  }, []);
+
+  const generateNodes = useCallback(
+    (flow, prevNodes) => {
+      const newNodes = flow.steps.map((step, index) => {
+        const node = prevNodes?.find(({ id }) => id === step.id);
+        return {
+          id: step.id,
+          type: 'flowStep',
+          position: {
+            x: node ? node.position.x : 0,
+            y: node ? node.position.y : 0,
+          },
+          data: {
+            step,
+            index: index,
+            flowId: flow.id,
+            collapsed: currentStepId !== step.id,
+            openNextStep: openNextStep(flow.steps[index + 1]),
+            onOpen: () => setCurrentStepId(step.id),
+            onClose: () => setCurrentStepId(null),
+            onChange: onStepChange,
+            layouted: !!node,
+          },
+        };
+      });
+
+      const prevInvisibleNode = nodes.find((node) => node.type === 'invisible');
+
+      return [
+        ...newNodes,
+        {
+          id: INVISIBLE_NODE_ID,
+          type: 'invisible',
+          position: {
+            x: prevInvisibleNode ? prevInvisibleNode.position.x : 0,
+            y: prevInvisibleNode ? prevInvisibleNode.position.y : 0,
+          },
+        },
+      ];
+    },
+    [currentStepId, nodes, onStepChange, openNextStep],
+  );
+
+  const updateNodesData = useCallback(
+    (steps) => {
+      setNodes((nodes) =>
+        nodes.map((node) => {
+          const step = steps.find((step) => step.id === node.id);
+          if (step) {
+            return { ...node, data: { ...node.data, step: { ...step } } };
+          }
+          return node;
+        }),
+      );
+    },
+    [setNodes],
+  );
+
   useEffect(() => {
     setNodes(
-      nodes.map((node) => ({
-        ...node,
-        data: { ...node.data, collapsed: currentStepId !== node.data.step.id },
-      })),
+      nodes.map((node) => {
+        if (node.type === 'flowStep') {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              collapsed: currentStepId !== node.data.step.id,
+            },
+          };
+        }
+        return node;
+      }),
     );
   }, [currentStepId]);
 
   useEffect(() => {
-    const getInitialNodes = () => {
-      return flow?.steps?.map((step, index) => ({
-        id: step.id,
-        position: { x: 0, y: 0 },
-        data: {
-          step,
-          index: index,
-          flowId: flow.id,
-          collapsed: currentStepId !== step.id,
-          openNextStep: openNextStep(flow?.steps[index + 1]),
-          onOpen: () => setCurrentStepId(step.id),
-          onClose: () => setCurrentStepId(null),
-          onChange: onStepChange,
-        },
-        type: 'flowStep',
-      }));
-    };
+    if (flow.steps.length + 1 !== nodes.length) {
+      const newNodes = generateNodes(flow, nodes);
+      const newEdges = generateEdges(flow, edges);
 
-    const getInitialEdges = () => {
-      return flow?.steps?.map((step, i) => {
-        const sourceId = step.id;
-        const targetId = flow.steps[i + 1]?.id;
-        return {
-          id: i,
-          source: sourceId,
-          target: targetId,
-          animated: false,
-        };
-      });
-    };
-
-    const nodes = getInitialNodes();
-    const edges = getInitialEdges();
-
-    setNodes(nodes);
-    setEdges(edges);
-  }, []);
+      setNodes(newNodes);
+      setEdges(newEdges);
+    } else {
+      updateNodesData(flow.steps);
+    }
+  }, [flow]);
 
   return (
     <Stack
@@ -129,6 +224,7 @@ const EditorNew = ({ flow }) => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         panOnScroll
         panOnScrollMode="vertical"
         panOnDrag={false}
@@ -136,7 +232,7 @@ const EditorNew = ({ flow }) => {
         zoomOnPinch={false}
         zoomOnDoubleClick={false}
         panActivationKeyCode={null}
-              ></ReactFlow>
+      />
     </Stack>
   );
 };
