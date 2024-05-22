@@ -60,6 +60,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Bluesky',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/bluesky/connection' }],
+        },
+        {
           text: 'Brave Search',
           collapsible: true,
           collapsed: true,
