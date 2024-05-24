@@ -22,6 +22,7 @@
     "db:migrate": "node ./bin/database/convert-migrations.js && knex migrate:latest"
   },
   "dependencies": {
+    "@atproto/api": "^0.12.13",
     "@bull-board/express": "^3.10.1",
     "@casl/ability": "^6.5.0",
     "@faker-js/faker": "^9.2.0",
