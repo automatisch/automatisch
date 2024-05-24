@@ -1,11 +1,10 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id';
 import { createRole } from '../../../../../../test/factories/role';
 import { createUser } from '../../../../../../test/factories/user';
 import getUsersMock from '../../../../../../test/mocks/rest/api/v1/admin/users/get-users.js';
-import * as license from '../../../../../helpers/license.ee.js';
 
 describe('GET /api/v1/admin/users', () => {
   let currentUser, currentUserRole, anotherUser, anotherUserRole, token;
@@ -32,8 +31,6 @@ describe('GET /api/v1/admin/users', () => {
   });
 
   it('should return users data', async () => {
-    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
-
     const response = await request(app)
       .get('/api/v1/admin/users')
       .set('Authorization', token)

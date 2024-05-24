@@ -2,11 +2,14 @@
 
 The following integrations are currently supported by Automatisch.
 
+- [Airtable](/apps/airtable/actions)
+- [Appwrite](/apps/appwrite/triggers)
 - [Carbone](/apps/carbone/actions)
 - [Datastore](/apps/datastore/actions)
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
 - [Discord](/apps/discord/actions)
+- [Disqus](/apps/disqus/triggers)
 - [Dropbox](/apps/dropbox/actions)
 - [Filter](/apps/filter/actions)
 - [Flickr](/apps/flickr/triggers)
@@ -18,6 +21,7 @@ The following integrations are currently supported by Automatisch.
 - [Google Drive](/apps/google-drive/triggers)
 - [Google Forms](/apps/google-forms/triggers)
 - [Google Sheets](/apps/google-sheets/triggers)
+- [Google Tasks](/apps/google-tasks/actions)
 - [HTTP Request](/apps/http-request/actions)
 - [HubSpot](/apps/hubspot/actions)
 - [Invoice Ninja](/apps/invoice-ninja/triggers)
@@ -49,8 +53,10 @@ The following integrations are currently supported by Automatisch.
 - [Twilio](/apps/twilio/triggers)
 - [Twitter](/apps/twitter/triggers)
 - [Typeform](/apps/typeform/triggers)
+- [Vtiger CRM](/apps/vtiger-crm/triggers)
 - [Webhooks](/apps/webhooks/triggers)
 - [WordPress](/apps/wordpress/triggers)
 - [Xero](/apps/xero/triggers)
+- [You Need A Budget](/apps/you-need-a-budget/triggers)
 - [Youtube](/apps/youtube/triggers)
 - [Zendesk](/apps/zendesk/actions)

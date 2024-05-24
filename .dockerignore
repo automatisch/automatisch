@@ -4,5 +4,9 @@
 **/.devcontainer
 **/.github
 **/.vscode
+**/.env
+**/.env.test
+**/.env.production
+**/yarn-error.log
 packages/docs
 packages/e2e-test

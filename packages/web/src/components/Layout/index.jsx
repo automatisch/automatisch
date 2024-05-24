@@ -113,7 +113,12 @@ export default function PublicLayout({ children }) {
         onDrawerClose={closeDrawer}
       />
 
-      <Box sx={{ display: 'flex', height: '100%' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flex: 1,
+        }}
+      >
         <Drawer
           links={drawerLinks}
           bottomLinks={bottomLinks}

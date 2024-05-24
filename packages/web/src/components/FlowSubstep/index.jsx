@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
 import Collapse from '@mui/material/Collapse';
@@ -8,6 +9,8 @@ import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
+import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
+
 function FlowSubstep(props) {
   const {
     substep,
@@ -22,6 +25,7 @@ function FlowSubstep(props) {
   const formContext = useFormContext();
   const validationStatus = formContext.formState.isValid;
   const onToggle = expanded ? onCollapse : onExpand;
+
   return (
     <React.Fragment>
       <FlowSubstepTitle
@@ -73,4 +77,14 @@ function FlowSubstep(props) {
     </React.Fragment>
   );
 }
+
+FlowSubstep.propTypes = {
+  substep: SubstepPropType.isRequired,
+  expanded: PropTypes.bool,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  step: StepPropType.isRequired,
+};
+
 export default FlowSubstep;

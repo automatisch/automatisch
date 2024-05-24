@@ -7,9 +7,11 @@ import { FORGOT_PASSWORD } from 'graphql/mutations/forgot-password.ee';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 export default function ForgotPasswordForm() {
   const formatMessage = useFormatMessage();
   const [forgotPassword, { data, loading }] = useMutation(FORGOT_PASSWORD);
+
   const handleSubmit = async (values) => {
     await forgotPassword({
       variables: {
@@ -17,6 +19,7 @@ export default function ForgotPasswordForm() {
       },
     });
   };
+
   return (
     <Paper sx={{ px: 2, py: 4 }}>
       <Typography
