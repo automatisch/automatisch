@@ -10,19 +10,8 @@ function InvisibleNode() {
       className="nodrag"
       sx={{ visibility: 'hidden' }}
     >
-      <Handle
-        type="target"
-        position={Position.Top}
-        isConnectable={false}
-        style={{ visibility: 'hidden' }}
-      />
+      <Handle type="target" position={Position.Top} isConnectable={false} />
       Invisible node
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        isConnectable={false}
-        style={{ visibility: 'hidden' }}
-      />
     </Box>
   );
 }

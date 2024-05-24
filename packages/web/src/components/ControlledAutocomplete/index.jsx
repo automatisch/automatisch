@@ -32,9 +32,11 @@ function ControlledAutocomplete(props) {
     ...autocompleteProps
   } = props;
   let dependsOnValues = [];
+
   if (dependsOn?.length) {
     dependsOnValues = watch(dependsOn);
   }
+
   React.useEffect(() => {
     const hasDependencies = dependsOnValues.length;
     const allDepsSatisfied = dependsOnValues.every(Boolean);
@@ -44,6 +46,7 @@ function ControlledAutocomplete(props) {
       resetField(name);
     }
   }, dependsOnValues);
+
   return (
     <Controller
       rules={{ required }}

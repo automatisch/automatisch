@@ -8,9 +8,11 @@ import { Stack } from '@mui/material';
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
 
 import { useAutoLayout } from './useAutoLayout';
+import { useScrollBoundries } from './useScrollBoundries';
 import FlowStepNode from './FlowStepNode/FlowStepNode';
 import Edge from './Edge/Edge';
 import InvisibleNode from './InvisibleNode/InvisibleNode';
+import { EditorWrapper } from './style';
 
 const nodeTypes = { flowStep: FlowStepNode, invisible: InvisibleNode };
 
@@ -32,6 +34,7 @@ const EditorNew = ({ flow }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   useAutoLayout();
+  useScrollBoundries();
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -125,6 +128,7 @@ const EditorNew = ({ flow }) => {
     (flow, prevNodes) => {
       const newNodes = flow.steps.map((step, index) => {
         const node = prevNodes?.find(({ id }) => id === step.id);
+        const collapsed = currentStepId !== step.id;
         return {
           id: step.id,
           type: 'flowStep',
@@ -132,11 +136,12 @@ const EditorNew = ({ flow }) => {
             x: node ? node.position.x : 0,
             y: node ? node.position.y : 0,
           },
+          zIndex: collapsed ? 0 : 1,
           data: {
             step,
             index: index,
             flowId: flow.id,
-            collapsed: currentStepId !== step.id,
+            collapsed,
             openNextStep: openNextStep(flow.steps[index + 1]),
             onOpen: () => setCurrentStepId(step.id),
             onClose: () => setCurrentStepId(null),
@@ -178,15 +183,31 @@ const EditorNew = ({ flow }) => {
     [setNodes],
   );
 
+  const updateEdgesData = useCallback(
+    (flow) => {
+      setEdges((edges) =>
+        edges.map((edge) => {
+          return {
+            ...edge,
+            data: { ...edge.data, flowId: flow.id, flowActive: flow.active },
+          };
+        }),
+      );
+    },
+    [setEdges],
+  );
+
   useEffect(() => {
     setNodes(
       nodes.map((node) => {
         if (node.type === 'flowStep') {
+          const collapsed = currentStepId !== node.data.step.id;
           return {
             ...node,
+            zIndex: collapsed ? 0 : 1,
             data: {
               ...node.data,
-              collapsed: currentStepId !== node.data.step.id,
+              collapsed,
             },
           };
         }
@@ -204,19 +225,12 @@ const EditorNew = ({ flow }) => {
       setEdges(newEdges);
     } else {
       updateNodesData(flow.steps);
+      updateEdgesData(flow);
     }
   }, [flow]);
 
   return (
-    <Stack
-      direction="column"
-      sx={{
-        flexGrow: 1,
-        '& > div': {
-          flexGrow: 1,
-        },
-      }}
-    >
+    <EditorWrapper direction="column">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -233,7 +247,7 @@ const EditorNew = ({ flow }) => {
         zoomOnDoubleClick={false}
         panActivationKeyCode={null}
       />
-    </Stack>
+    </EditorWrapper>
   );
 };
 

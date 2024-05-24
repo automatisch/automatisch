@@ -9,8 +9,6 @@ const getLayoutedElements = (nodes, edges) => {
   graph.setGraph({
     rankdir: 'TB',
     marginy: 60,
-    marginx: 60,
-    universalSep: true,
     ranksep: 64,
   });
   edges.forEach((edge) => graph.setEdge(edge.source, edge.target));
