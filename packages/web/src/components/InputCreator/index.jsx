@@ -80,6 +80,7 @@ export default function InputCreator(props) {
             disabled={disabled}
             showOptionValue={showOptionValue}
             shouldUnregister={shouldUnregister}
+            componentsProps={{ popper: { className: 'nowheel' } }}
           />
         )}
 

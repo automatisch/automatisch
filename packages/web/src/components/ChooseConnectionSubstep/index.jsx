@@ -240,6 +240,7 @@ function ChooseConnectionSubstep(props) {
             onChange={handleChange}
             loading={isAppConnectionsLoading}
             data-test="choose-connection-autocomplete"
+            componentsProps={{ popper: { className: 'nowheel' } }}
           />
 
           <Button

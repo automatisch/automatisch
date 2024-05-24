@@ -17,6 +17,7 @@ import { StepExecutionsContext } from 'contexts/StepExecutions';
 import Popper from './Popper';
 import { processStepWithExecutions } from './data';
 import { ChildrenWrapper, FakeInput, InputLabelWrapper } from './style';
+
 const PowerInput = (props) => {
   const { control } = useFormContext();
   const {
@@ -31,33 +32,41 @@ const PowerInput = (props) => {
   } = props;
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef(null);
+
   const renderElement = React.useCallback(
     (props) => <Element {...props} />,
     [],
   );
+
   const [editor] = React.useState(() => customizeEditor(createEditor()));
+
   const [showVariableSuggestions, setShowVariableSuggestions] =
     React.useState(false);
+
   const disappearSuggestionsOnShift = (event) => {
     if (event.code === 'Tab') {
       setShowVariableSuggestions(false);
     }
   };
+
   const stepsWithVariables = React.useMemo(() => {
     return processStepWithExecutions(priorStepsWithExecutions);
   }, [priorStepsWithExecutions]);
+
   const handleBlur = React.useCallback(
     (value) => {
       onBlur?.(value);
     },
     [onBlur],
   );
+
   const handleVariableSuggestionClick = React.useCallback(
     (variable) => {
       insertVariable(editor, variable, stepsWithVariables);
     },
     [stepsWithVariables],
   );
+
   return (
     <Controller
       rules={{ required }}
@@ -127,6 +136,7 @@ const PowerInput = (props) => {
                 anchorEl={editorRef.current}
                 data={stepsWithVariables}
                 onSuggestionClick={handleVariableSuggestionClick}
+                className="nowheel"
               />
 
               <FormHelperText variant="outlined">{description}</FormHelperText>
