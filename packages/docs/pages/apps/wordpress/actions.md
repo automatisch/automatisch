@@ -7,6 +7,8 @@ items:
     desc: Creates a new user.
   - name: Find post
     desc: Finds a post.
+  - name: Find user
+    desc: Finds a user.
   - name: Update post
     desc: Updates a post.
 ---
