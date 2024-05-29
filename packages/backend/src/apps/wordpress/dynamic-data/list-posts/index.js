@@ -11,6 +11,7 @@ export default {
       page: 1,
       per_page: 100,
       order: 'desc',
+      status: ['publish', 'future', 'draft', 'pending', 'private'],
     };
 
     let totalPages = 1;
@@ -26,7 +27,7 @@ export default {
         for (const post of data) {
           posts.data.push({
             value: post.id,
-            name: post.title.rendered,
+            name: `${post.title.rendered} (${post.status})`,
           });
         }
       }
