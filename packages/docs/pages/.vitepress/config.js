@@ -244,6 +244,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'LibreTranslate',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/libretranslate/connection' },
+          ],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
