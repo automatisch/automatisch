@@ -28,9 +28,12 @@ function ContextMenu(props) {
       variables: { input: { id: flowId } },
     });
 
-    await queryClient.invalidateQueries({
-      queryKey: ['apps', appKey, 'flows'],
-    });
+    if (appKey) {
+      await queryClient.invalidateQueries({
+        queryKey: ['apps', appKey, 'flows'],
+      });
+    }
+
     enqueueSnackbar(formatMessage('flow.successfullyDuplicated'), {
       variant: 'success',
       SnackbarProps: {
@@ -56,9 +59,12 @@ function ContextMenu(props) {
       },
     });
 
-    await queryClient.invalidateQueries({
-      queryKey: ['apps', appKey, 'flows'],
-    });
+    if (appKey) {
+      await queryClient.invalidateQueries({
+        queryKey: ['apps', appKey, 'flows'],
+      });
+    }
+
     enqueueSnackbar(formatMessage('flow.successfullyDeleted'), {
       variant: 'success',
     });
@@ -110,7 +116,7 @@ ContextMenu.propTypes = {
   ]).isRequired,
   onDeleteFlow: PropTypes.func,
   onDuplicateFlow: PropTypes.func,
-  appKey: PropTypes.string.isRequired,
+  appKey: PropTypes.string,
 };
 
 export default ContextMenu;
