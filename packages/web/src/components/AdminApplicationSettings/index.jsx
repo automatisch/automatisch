@@ -36,7 +36,7 @@ function AdminApplicationSettings(props) {
 
   const handleSubmit = async (values) => {
     try {
-      if (!appConfig.data) {
+      if (!appConfig?.data) {
         await createAppConfig({
           variables: {
             input: { key: props.appKey, ...values },
@@ -69,6 +69,7 @@ function AdminApplicationSettings(props) {
     }),
     [appConfig?.data],
   );
+
   return (
     <Form
       defaultValues={defaultValues}
