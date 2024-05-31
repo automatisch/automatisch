@@ -372,6 +372,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'LibreTranslate',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/libretranslate/connection' },
+          ],
+        },
+        {
           text: 'Mailchimp',
           collapsible: true,
           collapsed: true,
