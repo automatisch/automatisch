@@ -38,6 +38,7 @@ The following integrations are currently supported by Automatisch.
 - [HubSpot](/apps/hubspot/actions)
 - [Invoice Ninja](/apps/invoice-ninja/triggers)
 - [Jotform](/apps/jotform/triggers)
+- [LibreTranslate](/apps/libretranslate/actions)
 - [Mailchimp](/apps/mailchimp/triggers)
 - [MailerLite](/apps/mailerlite/triggers)
 - [Mattermost](/apps/mattermost/actions)

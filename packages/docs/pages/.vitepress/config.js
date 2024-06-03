@@ -376,6 +376,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Actions', link: '/apps/libretranslate/actions' },
             { text: 'Connection', link: '/apps/libretranslate/connection' },
           ],
         },
