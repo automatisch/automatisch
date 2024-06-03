@@ -3,7 +3,7 @@ services:
     name: automatisch-main
     env: docker
     dockerfilePath: ./docker/Dockerfile
-    dockerContext: ./docker
+    dockerContext: .
     repo: https://github.com/automatisch/automatisch
     autoDeploy: false
     envVars:
@@ -47,7 +47,7 @@ services:
     name: automatisch-worker
     env: docker
     dockerfilePath: ./docker/Dockerfile
-    dockerContext: ./docker
+    dockerContext: .
     repo: https://github.com/automatisch/automatisch
     autoDeploy: false
     envVars:
