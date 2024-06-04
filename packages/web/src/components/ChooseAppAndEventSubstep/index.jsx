@@ -165,6 +165,7 @@ function ChooseAppAndEventSubstep(props) {
             value={getOption(appOptions, step.appKey) || null}
             onChange={onAppChange}
             data-test="choose-app-autocomplete"
+            componentsProps={{ popper: { className: 'nowheel' } }}
           />
 
           {step.appKey && (
@@ -227,6 +228,7 @@ function ChooseAppAndEventSubstep(props) {
                 value={getOption(actionOrTriggerOptions, step.key) || null}
                 onChange={onEventChange}
                 data-test="choose-event-autocomplete"
+                componentsProps={{ popper: { className: 'nowheel' } }}
               />
             </Box>
           )}

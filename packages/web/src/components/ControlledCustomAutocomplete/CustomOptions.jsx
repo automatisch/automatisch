@@ -47,6 +47,7 @@ const CustomOptions = (props) => {
           },
         },
       ]}
+      className="nowheel"
     >
       <Paper elevation={5} sx={{ width: '100%' }}>
         <Tabs
