@@ -71,11 +71,77 @@ export default defineAction({
         'Timestamp or duration for delayed delivery. For example, 30min or 9am.',
       variables: true,
     },
+    {
+      label: 'Priority',
+      key: 'priority',
+      type: 'dropdown',
+      required: false,
+      description: '',
+      value: 3,
+      variables: true,
+      options: [
+        { label: 'Max Priority', value: 5 },
+        { label: 'High Priority', value: 4 },
+        { label: 'Default Priority', value: 3 },
+        { label: 'Low Priority', value: 2 },
+        { label: 'Min Priority', value: 1 },
+      ],
+    },
+    {
+      label: 'Tags',
+      key: 'tags',
+      type: 'dynamic',
+      required: false,
+      description: '',
+      fields: [
+        {
+          label: 'Tag',
+          key: 'tag',
+          type: 'dropdown',
+          required: false,
+          description: '',
+          variables: true,
+          options: [
+            { label: '👍', value: '+1' },
+            { label: '🥳', value: 'partying_face' },
+            { label: '🎉', value: 'tada' },
+            { label: '✔', value: 'heavy_check_mark' },
+            { label: '📢', value: 'loudspeaker' },
+            { label: '👎', value: '-1' },
+            { label: '⚠', value: 'warning' },
+            { label: '🚨', value: 'rotating_light' },
+            { label: '🚩', value: 'triangular_flag_on_post' },
+            { label: '💀', value: 'skull' },
+            { label: '🤦‍♂️', value: 'facepalm' },
+            { label: '⛔️', value: 'no_entry' },
+            { label: '🚫', value: 'no_entry_sign' },
+            { label: '💿', value: 'cd' },
+            { label: '💻', value: 'computer' },
+          ],
+        },
+      ],
+    },
   ],
 
   async run($) {
-    const { topic, message, title, email, click, attach, filename, delay } =
-      $.step.parameters;
+    const {
+      topic,
+      message,
+      title,
+      email,
+      click,
+      attach,
+      filename,
+      delay,
+      priority,
+      tags,
+    } = $.step.parameters;
+
+    const allTags = tags
+      .map((tag) => tag.tag)
+      .filter(Boolean)
+      .join(',');
+
     const payload = {
       topic,
       message,
@@ -87,7 +153,12 @@ export default defineAction({
       delay,
     };
 
-    const response = await $.http.post('/', payload);
+    const response = await $.http.post('/', payload, {
+      headers: {
+        'X-Priority': priority,
+        'X-Tags': allTags,
+      },
+    });
 
     $.setActionItem({
       raw: response.data,
