@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { FlowPropType } from 'propTypes/propTypes';
 import ReactFlow, { useNodesState, useEdgesState, addEdge } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Stack } from '@mui/material';
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
 
 import { useAutoLayout } from './useAutoLayout';
@@ -246,6 +245,7 @@ const EditorNew = ({ flow }) => {
         zoomOnPinch={false}
         zoomOnDoubleClick={false}
         panActivationKeyCode={null}
+        proOptions={{ hideAttribution: true }}
       />
     </EditorWrapper>
   );
