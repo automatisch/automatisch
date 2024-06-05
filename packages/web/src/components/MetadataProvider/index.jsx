@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 
@@ -27,10 +28,13 @@ const MetadataProvider = ({ children }) => {
         newFaviconElement.href = '/browser-tab.ico';
       }
     }
-    
   }, [config?.disableFavicon]);
 
   return <>{children}</>;
+};
+
+MetadataProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default MetadataProvider;

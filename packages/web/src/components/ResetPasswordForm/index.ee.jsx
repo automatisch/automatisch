@@ -12,6 +12,7 @@ import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
 import { RESET_PASSWORD } from 'graphql/mutations/reset-password.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 const validationSchema = yup.object().shape({
   password: yup.string().required('resetPasswordForm.mandatoryInput'),
   confirmPassword: yup
@@ -19,6 +20,7 @@ const validationSchema = yup.object().shape({
     .required('resetPasswordForm.mandatoryInput')
     .oneOf([yup.ref('password')], 'resetPasswordForm.passwordsMustMatch'),
 });
+
 export default function ResetPasswordForm() {
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
@@ -26,6 +28,7 @@ export default function ResetPasswordForm() {
   const [searchParams] = useSearchParams();
   const [resetPassword, { data, loading }] = useMutation(RESET_PASSWORD);
   const token = searchParams.get('token');
+
   const handleSubmit = async (values) => {
     await resetPassword({
       variables: {
@@ -43,6 +46,7 @@ export default function ResetPasswordForm() {
     });
     navigate(URLS.LOGIN);
   };
+
   return (
     <Paper sx={{ px: 2, py: 4 }}>
       <Typography

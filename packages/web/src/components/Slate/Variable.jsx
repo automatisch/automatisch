@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
 import Chip from '@mui/material/Chip';
 import { useSelected, useFocused } from 'slate-react';
-export default function Variable({ attributes, children, element, disabled }) {
+
+function Variable({ attributes, children, element, disabled }) {
   const selected = useSelected();
   const focused = useFocused();
   const label = (
@@ -24,3 +26,15 @@ export default function Variable({ attributes, children, element, disabled }) {
     />
   );
 }
+
+Variable.propTypes = {
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+  element: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    sampleValue: PropTypes.string.isRequired,
+  }),
+  disabled: PropTypes.bool,
+};
+
+export default Variable;

@@ -1,39 +1,45 @@
 import { Text } from 'slate';
 import { withHistory } from 'slate-history';
 import { ReactEditor, withReact } from 'slate-react';
+
 function isCustomText(value) {
   const isText = Text.isText(value);
   const hasValueProperty = 'value' in value;
   if (isText && hasValueProperty) return true;
   return false;
 }
+
 function getStepPosition(id, stepsWithVariables) {
   const stepIndex = stepsWithVariables.findIndex((stepWithVariables) => {
     return stepWithVariables.id === id;
   });
   return stepIndex + 1;
 }
+
 function getVariableName(variable) {
   return variable.replace(/{{|}}/g, '');
 }
+
 function getVariableStepId(variable) {
   const nameWithoutCurlies = getVariableName(variable);
   const stepId = nameWithoutCurlies.match(stepIdRegExp)?.[1] || '';
   return stepId;
 }
+
 function getVariableSampleValue(variable, stepsWithVariables) {
   const variableStepId = getVariableStepId(variable);
   const stepWithVariables = stepsWithVariables.find(
-    ({ id }) => id === variableStepId
+    ({ id }) => id === variableStepId,
   );
   if (!stepWithVariables) return null;
   const variableName = getVariableName(variable);
   const variableData = stepWithVariables.output.find(
-    ({ value }) => variableName === value
+    ({ value }) => variableName === value,
   );
   if (!variableData) return null;
   return variableData.sampleValue;
 }
+
 function getVariableDetails(variable, stepsWithVariables) {
   const variableName = getVariableName(variable);
   const stepId = getVariableStepId(variableName);
@@ -45,12 +51,15 @@ function getVariableDetails(variable, stepsWithVariables) {
     label,
   };
 }
+
 const variableRegExp = /({{.*?}})/;
 const stepIdRegExp = /^step.([\da-zA-Z-]*)/;
+
 export const deserialize = (value, options, stepsWithVariables) => {
   const selectedNativeOption = options?.find(
-    (option) => value === option.value
+    (option) => value === option.value,
   );
+
   if (selectedNativeOption) {
     return [
       {
@@ -60,6 +69,7 @@ export const deserialize = (value, options, stepsWithVariables) => {
       },
     ];
   }
+
   if (value === null || value === undefined || value === '')
     return [
       {
@@ -67,6 +77,7 @@ export const deserialize = (value, options, stepsWithVariables) => {
         children: [{ text: '' }],
       },
     ];
+
   return value
     .toString()
     .split('\n')
@@ -79,7 +90,7 @@ export const deserialize = (value, options, stepsWithVariables) => {
             if (node.match(variableRegExp)) {
               const variableDetails = getVariableDetails(
                 node,
-                stepsWithVariables
+                stepsWithVariables,
               );
               return {
                 type: 'variable',
@@ -101,6 +112,7 @@ export const deserialize = (value, options, stepsWithVariables) => {
       };
     });
 };
+
 export const serialize = (value) => {
   const serializedNodes = value.map((node) => serializeNode(node));
   const hasSingleNode = value.length === 1;
@@ -114,6 +126,7 @@ export const serialize = (value) => {
   const serializedValue = serializedNodes.join('\n');
   return serializedValue;
 };
+
 const serializeNode = (node) => {
   if (isCustomText(node)) {
     return node.value;
@@ -134,6 +147,7 @@ const serializeNode = (node) => {
   }
   return node.children.map((n) => serializeNode(n)).join('');
 };
+
 export const withVariables = (editor) => {
   const { isInline, isVoid } = editor;
   editor.isInline = (element) => {
@@ -144,10 +158,11 @@ export const withVariables = (editor) => {
   };
   return editor;
 };
+
 export const insertVariable = (editor, variableData, stepsWithVariables) => {
   const variableDetails = getVariableDetails(
     `{{${variableData.value}}}`,
-    stepsWithVariables
+    stepsWithVariables,
   );
   const variable = {
     type: 'variable',
@@ -159,10 +174,12 @@ export const insertVariable = (editor, variableData, stepsWithVariables) => {
   editor.insertNodes(variable, { select: false });
   focusEditor(editor);
 };
+
 export const focusEditor = (editor) => {
   ReactEditor.focus(editor);
   editor.move();
 };
+
 export const resetEditor = (editor, options) => {
   const focus = options?.focus || false;
   editor.removeNodes({
@@ -177,6 +194,7 @@ export const resetEditor = (editor, options) => {
     focusEditor(editor);
   }
 };
+
 export const overrideEditorValue = (editor, options) => {
   const { option, focus } = options;
   const variable = {
@@ -201,6 +219,7 @@ export const overrideEditorValue = (editor, options) => {
     }
   });
 };
+
 export const createTextNode = (text) => ({
   type: 'paragraph',
   children: [
@@ -209,6 +228,7 @@ export const createTextNode = (text) => ({
     },
   ],
 });
+
 export const customizeEditor = (editor) => {
   return withVariables(withReact(withHistory(editor)));
 };

@@ -18,36 +18,47 @@ const computeListHeight = (currentLength) => {
   return LIST_ITEM_HEIGHT * numberOfRenderedItems;
 };
 
+const Item = (props) => {
+  const { index, style, data, onOptionClick } = props;
+  const suboption = data[index];
+  return (
+    <ListItemButton
+      sx={{ pl: 4 }}
+      divider
+      onClick={(event) => onOptionClick(event, suboption)}
+      data-test="power-input-suggestion-item"
+      key={index}
+      style={style}
+    >
+      <ListItemText
+        primary={suboption.label}
+        primaryTypographyProps={{
+          variant: 'subtitle1',
+          title: 'Property name',
+          sx: { fontWeight: 700 },
+        }}
+        secondary={suboption.value}
+        secondaryTypographyProps={{
+          variant: 'subtitle2',
+          title: 'Sample value',
+          noWrap: true,
+        }}
+      />
+    </ListItemButton>
+  );
+};
+
+Item.propTypes = {
+  index: PropTypes.number.isRequired,
+  style: PropTypes.object,
+  data: PropTypes.array.isRequired,
+  onOptionClick: PropTypes.func.isRequired,
+};
+
 const renderItemFactory =
   ({ onOptionClick }) =>
   (props) => {
-    const { index, style, data } = props;
-    const suboption = data[index];
-    return (
-      <ListItemButton
-        sx={{ pl: 4 }}
-        divider
-        onClick={(event) => onOptionClick(event, suboption)}
-        data-test="power-input-suggestion-item"
-        key={index}
-        style={style}
-      >
-        <ListItemText
-          primary={suboption.label}
-          primaryTypographyProps={{
-            variant: 'subtitle1',
-            title: 'Property name',
-            sx: { fontWeight: 700 },
-          }}
-          secondary={suboption.value}
-          secondaryTypographyProps={{
-            variant: 'subtitle2',
-            title: 'Sample value',
-            noWrap: true,
-          }}
-        />
-      </ListItemButton>
-    );
+    <Item onOptionClick={onOptionClick} {...props} />;
   };
 
 const Options = (props) => {

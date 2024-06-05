@@ -1,5 +1,6 @@
 const joinBy = (delimiter = '.', ...args) =>
   args.filter(Boolean).join(delimiter);
+
 const process = ({ data, parentKey, index, parentLabel = '' }) => {
   if (typeof data !== 'object') {
     return [
@@ -10,10 +11,13 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
       },
     ];
   }
+
   const entries = Object.entries(data);
+
   return entries.flatMap(([name, sampleValue]) => {
     const label = joinBy('.', parentLabel, index?.toString(), name);
     const value = joinBy('.', parentKey, index?.toString(), name);
+
     if (Array.isArray(sampleValue)) {
       return sampleValue.flatMap((item, index) =>
         process({
@@ -21,9 +25,10 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
           parentKey: value,
           index,
           parentLabel: label,
-        })
+        }),
       );
     }
+
     if (typeof sampleValue === 'object' && sampleValue !== null) {
       return process({
         data: sampleValue,
@@ -40,8 +45,10 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
     ];
   });
 };
+
 export const processStepWithExecutions = (steps) => {
   if (!steps) return [];
+
   return steps
     .filter((step) => {
       const hasExecutionSteps = !!step.executionSteps?.length;

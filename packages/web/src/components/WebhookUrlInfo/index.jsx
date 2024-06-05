@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@mui/material/Typography';
@@ -5,6 +6,7 @@ import { generateExternalLink } from '../../helpers/translationValues';
 import { WEBHOOK_DOCS } from '../../config/urls';
 import TextField from '../TextField';
 import { Alert } from './style';
+
 function WebhookUrlInfo(props) {
   const { webhookUrl, ...alertProps } = props;
   return (
@@ -33,4 +35,8 @@ function WebhookUrlInfo(props) {
     </Alert>
   );
 }
+
+WebhookUrlInfo.propTypes = {
+  webhookUrl: PropTypes.string.isRequired,
+};
 export default WebhookUrlInfo;

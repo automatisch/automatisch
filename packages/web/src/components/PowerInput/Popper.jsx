@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
 import MuiPopper from '@mui/material/Popper';
 import Tab from '@mui/material/Tab';
@@ -5,8 +6,10 @@ import * as React from 'react';
 import Suggestions from 'components/PowerInput/Suggestions';
 import TabPanel from 'components/TabPanel';
 import { Tabs } from './style';
+
 const Popper = (props) => {
   const { open, anchorEl, data, onSuggestionClick } = props;
+
   return (
     <MuiPopper
       open={open}
@@ -34,4 +37,15 @@ const Popper = (props) => {
     </MuiPopper>
   );
 };
+
+Popper.propTypes = {
+  open: PropTypes.bool.isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
+  data: PropTypes.array.isRequired,
+  onSuggestionClick: PropTypes.func,
+};
+
 export default Popper;

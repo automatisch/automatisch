@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -5,6 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import SearchIcon from '@mui/icons-material/Search';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 export default function SearchInput({ onChange }) {
   const formatMessage = useFormatMessage();
   return (
@@ -29,3 +31,7 @@ export default function SearchInput({ onChange }) {
     </FormControl>
   );
 }
+
+SearchInput.propTypes = {
+  onChange: PropTypes.func,
+};

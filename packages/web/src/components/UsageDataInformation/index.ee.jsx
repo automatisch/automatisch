@@ -10,6 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 
 import TrialOverAlert from 'components/TrialOverAlert/index.ee';
 import SubscriptionCancelledAlert from 'components/SubscriptionCancelledAlert/index.ee';
@@ -54,6 +55,13 @@ function BillingCard(props) {
   );
 }
 
+BillingCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  action: PropTypes.string,
+  text: PropTypes.string,
+};
+
 function Action(props) {
   const { action, text } = props;
 
@@ -79,6 +87,11 @@ function Action(props) {
     </Typography>
   );
 }
+
+Action.propTypes = {
+  action: PropTypes.string,
+  text: PropTypes.string,
+};
 
 export default function UsageDataInformation() {
   const formatMessage = useFormatMessage();

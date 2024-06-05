@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MuiSwitch from '@mui/material/Switch';
-export default function Switch(props) {
+
+function Switch(props) {
   const { control } = useFormContext();
   const inputRef = React.useRef(null);
   const {
@@ -18,6 +20,7 @@ export default function Switch(props) {
     className,
     ...switchProps
   } = props;
+
   return (
     <Controller
       rules={{ required }}
@@ -63,3 +66,18 @@ export default function Switch(props) {
     />
   );
 }
+
+Switch.propTypes = {
+  required: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  defaultChecked: PropTypes.bool,
+  disabled: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  shouldUnregister: PropTypes.bool,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  FormControlLabelProps: PropTypes.object,
+  className: PropTypes.string,
+};
+
+export default Switch;

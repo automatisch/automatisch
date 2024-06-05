@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
@@ -147,4 +148,21 @@ const PowerInput = (props) => {
     />
   );
 };
+
+PowerInput.propTypes = {
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  defaultValue: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  required: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  description: PropTypes.string,
+  docUrl: PropTypes.string,
+  clickToCopy: PropTypes.bool,
+  disabled: PropTypes.bool,
+  shouldUnregister: PropTypes.bool,
+};
+
 export default PowerInput;

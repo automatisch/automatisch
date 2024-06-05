@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as BaseThemeProvider } from '@mui/material/styles';
 import clone from 'lodash/clone';
@@ -24,6 +25,7 @@ const customizeTheme = (theme, config) => {
 
   return shallowDefaultTheme;
 };
+
 const ThemeProvider = ({ children, ...props }) => {
   const { data: automatischInfo, isPending: isAutomatischInfoPending } =
     useAutomatischInfo();
@@ -51,6 +53,10 @@ const ThemeProvider = ({ children, ...props }) => {
       {children}
     </BaseThemeProvider>
   );
+};
+
+ThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default ThemeProvider;

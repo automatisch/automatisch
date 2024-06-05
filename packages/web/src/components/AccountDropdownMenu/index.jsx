@@ -68,7 +68,10 @@ function AccountDropdownMenu(props) {
 AccountDropdownMenu.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  anchorEl: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
   id: PropTypes.string.isRequired,
 };
 

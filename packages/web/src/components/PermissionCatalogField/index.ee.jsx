@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -110,4 +111,10 @@ const PermissionCatalogField = ({
     </TableContainer>
   );
 };
+PermissionCatalogField.propTypes = {
+  name: PropTypes.string,
+  disabled: PropTypes.bool,
+  defaultChecked: PropTypes.bool,
+};
+
 export default PermissionCatalogField;

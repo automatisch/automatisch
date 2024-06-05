@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -15,7 +16,8 @@ import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
 import ControlledCheckbox from 'components/ControlledCheckbox';
 import useFormatMessage from 'hooks/useFormatMessage';
-export default function PermissionSettings(props) {
+
+function PermissionSettings(props) {
   const {
     onClose,
     open = false,
@@ -27,6 +29,7 @@ export default function PermissionSettings(props) {
   } = props;
   const formatMessage = useFormatMessage();
   const { getValues, resetField } = useFormContext();
+
   const cancel = () => {
     for (const action of actions) {
       for (const condition of conditions) {
@@ -36,6 +39,7 @@ export default function PermissionSettings(props) {
     }
     onClose();
   };
+
   const apply = () => {
     for (const action of actions) {
       for (const condition of conditions) {
@@ -46,6 +50,7 @@ export default function PermissionSettings(props) {
     }
     onClose();
   };
+
   return (
     <Dialog
       open={open}
@@ -133,3 +138,26 @@ export default function PermissionSettings(props) {
     </Dialog>
   );
 }
+
+PermissionSettings.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  fieldPrefix: PropTypes.string.isRequired,
+  subject: PropTypes.string.isRequired,
+  open: PropTypes.bool,
+  defaultChecked: PropTypes.bool,
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      key: PropTypes.string,
+      subjects: PropTypes.arrayOf(PropTypes.string),
+    }),
+  ).isRequired,
+  conditions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      key: PropTypes.string,
+    }),
+  ).isRequired,
+};
+
+export default PermissionSettings;

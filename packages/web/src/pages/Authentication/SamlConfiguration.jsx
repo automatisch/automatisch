@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
@@ -192,4 +193,22 @@ function SamlConfiguration({ provider, providerLoading }) {
     </Form>
   );
 }
+
+SamlConfiguration.propTypes = {
+  provider: PropTypes.shape({
+    active: PropTypes.bool,
+    name: PropTypes.string,
+    certificate: PropTypes.string,
+    signatureAlgorithm: PropTypes.oneOf(['sha1', 'sha256', 'sha512']),
+    issuer: PropTypes.string,
+    entryPoint: PropTypes.string,
+    firstnameAttributeName: PropTypes.string,
+    surnameAttributeName: PropTypes.string,
+    emailAttributeName: PropTypes.string,
+    roleAttributeName: PropTypes.string,
+    defaultRoleId: PropTypes.string,
+  }),
+  providerLoading: PropTypes.bool,
+};
+
 export default SamlConfiguration;
