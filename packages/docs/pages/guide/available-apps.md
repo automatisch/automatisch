@@ -4,6 +4,7 @@ The following integrations are currently supported by Automatisch.
 
 - [Airtable](/apps/airtable/actions)
 - [Appwrite](/apps/appwrite/triggers)
+- [Asana](/apps/asana/triggers)
 - [Carbone](/apps/carbone/actions)
 - [Datastore](/apps/datastore/actions)
 - [DeepL](/apps/deepl/actions)
