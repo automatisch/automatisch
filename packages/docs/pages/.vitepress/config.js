@@ -244,6 +244,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Mailchimp',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/mailchimp/connection' }],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
