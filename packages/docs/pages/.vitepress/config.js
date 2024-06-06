@@ -244,6 +244,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Jotform',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/jotform/connection' }],
+        },
+        {
           text: 'Mattermost',
           collapsible: true,
           collapsed: true,
