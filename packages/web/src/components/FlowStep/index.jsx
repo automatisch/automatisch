@@ -360,7 +360,6 @@ function FlowStep(props) {
 FlowStep.propTypes = {
   collapsed: PropTypes.bool,
   step: StepPropType.isRequired,
-  index: PropTypes.number,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   onChange: PropTypes.func.isRequired,
