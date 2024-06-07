@@ -78,7 +78,11 @@ export default defineConfig({
           text: 'Asana',
           collapsible: true,
           collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/asana/connection' }],
+          items: [
+            { text: 'Triggers', link: '/apps/asana/triggers' },
+            { text: 'Actions', link: '/apps/asana/actions' },
+            { text: 'Connection', link: '/apps/asana/connection' },
+          ],
         },
         {
           text: 'Better Stack',
