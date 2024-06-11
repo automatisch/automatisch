@@ -7,6 +7,7 @@ export default {
       data: [],
     };
     const organizationId = $.step.parameters.organizationId;
+    const unpublished = $.step.parameters.unpublished === 'true';
 
     if (!organizationId) {
       return events;
@@ -16,6 +17,10 @@ export default {
       continuation: undefined,
       order_by: 'created_desc',
     };
+
+    if (unpublished) {
+      params.status = 'draft';
+    }
 
     do {
       const { data } = await $.http.get(
