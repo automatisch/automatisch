@@ -3,6 +3,7 @@ import addAuthHeader from './common/add-auth-header.js';
 import auth from './auth/index.js';
 import dynamicData from './dynamic-data/index.js';
 import triggers from './triggers/index.js';
+import actions from './actions/index.js';
 
 export default defineApp({
   name: 'Eventbrite',
@@ -17,4 +18,5 @@ export default defineApp({
   auth,
   dynamicData,
   triggers,
+  actions,
 });
