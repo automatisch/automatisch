@@ -7,6 +7,8 @@ items:
     desc: Triggers when an attendee orders a ticket for an event.
   - name: New events
     desc: Triggers when a new event is published and live within an organization.
+  - name: Updated Attendee
+    desc: Triggers when attendee data is updated.
 ---
 
 <script setup>
