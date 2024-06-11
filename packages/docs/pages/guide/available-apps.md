@@ -11,6 +11,7 @@ The following integrations are currently supported by Automatisch.
 - [Discord](/apps/discord/actions)
 - [Disqus](/apps/disqus/triggers)
 - [Dropbox](/apps/dropbox/actions)
+- [Eventbrite](/apps/eventbrite/triggers)
 - [Filter](/apps/filter/actions)
 - [Flickr](/apps/flickr/triggers)
 - [Formatter](/apps/formatter/actions)
