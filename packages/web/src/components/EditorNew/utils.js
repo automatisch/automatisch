@@ -31,7 +31,7 @@ export const generateInitialNodes = (flow) => {
       zIndex: collapsed ? 0 : 1,
       data: {
         collapsed,
-        layouted: false,
+        laidOut: false,
       },
     };
   });
@@ -61,7 +61,7 @@ export const generateInitialEdges = (flow) => {
           target: targetId,
           type: 'addNodeEdge',
           data: {
-            layouted: false,
+            laidOut: false,
           },
         };
       }
@@ -80,7 +80,7 @@ export const generateInitialEdges = (flow) => {
           target: INVISIBLE_NODE_ID,
           type: 'addNodeEdge',
           data: {
-            layouted: false,
+            laidOut: false,
           },
         },
       ]

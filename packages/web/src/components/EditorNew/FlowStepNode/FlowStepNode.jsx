@@ -7,15 +7,9 @@ import { NodeWrapper, NodeInnerWrapper } from './style.js';
 import { useContext } from 'react';
 import { NodesContext } from '../EditorNew.jsx';
 
-function FlowStepNode({ data: { collapsed, layouted }, id }) {
-  const {
-    openNextStep,
-    onStepOpen,
-    onStepClose,
-    onStepChange,
-    flowId,
-    steps,
-  } = useContext(NodesContext);
+function FlowStepNode({ data: { collapsed, laidOut }, id }) {
+  const { openNextStep, onStepOpen, onStepClose, onStepChange, flowId, steps } =
+    useContext(NodesContext);
 
   const step = steps.find(({ id: stepId }) => stepId === id);
 
@@ -23,7 +17,7 @@ function FlowStepNode({ data: { collapsed, layouted }, id }) {
     <NodeWrapper
       className="nodrag"
       sx={{
-        visibility: layouted ? 'visible' : 'hidden',
+        visibility: laidOut ? 'visible' : 'hidden',
       }}
     >
       <NodeInnerWrapper>
@@ -59,7 +53,7 @@ FlowStepNode.propTypes = {
   id: PropTypes.string,
   data: PropTypes.shape({
     collapsed: PropTypes.bool.isRequired,
-    layouted: PropTypes.bool.isRequired,
+    laidOut: PropTypes.bool.isRequired,
   }).isRequired,
 };
 

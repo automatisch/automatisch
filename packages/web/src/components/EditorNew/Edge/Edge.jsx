@@ -12,7 +12,7 @@ export default function Edge({
   targetX,
   targetY,
   source,
-  data: { layouted },
+  data: { laidOut },
 }) {
   const { stepCreationInProgress, flowActive, onAddStep } =
     useContext(EdgesContext);
@@ -34,7 +34,7 @@ export default function Edge({
             position: 'absolute',
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             pointerEvents: 'all',
-            visibility: layouted ? 'visible' : 'hidden',
+            visibility: laidOut ? 'visible' : 'hidden',
           }}
           disabled={stepCreationInProgress || flowActive}
         >
@@ -52,6 +52,6 @@ Edge.propTypes = {
   targetY: PropTypes.number.isRequired,
   source: PropTypes.string.isRequired,
   data: PropTypes.shape({
-    layouted: PropTypes.bool,
+    laidOut: PropTypes.bool,
   }).isRequired,
 };

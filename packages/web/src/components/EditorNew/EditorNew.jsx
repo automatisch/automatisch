@@ -8,7 +8,7 @@ import { UPDATE_STEP } from 'graphql/mutations/update-step';
 import { CREATE_STEP } from 'graphql/mutations/create-step';
 
 import { useAutoLayout } from './useAutoLayout';
-import { useScrollBoundries } from './useScrollBoundries';
+import { useScrollBoundaries } from './useScrollBoundaries';
 import FlowStepNode from './FlowStepNode/FlowStepNode';
 import Edge from './Edge/Edge';
 import InvisibleNode from './InvisibleNode/InvisibleNode';
@@ -47,7 +47,7 @@ const EditorNew = ({ flow }) => {
   );
 
   useAutoLayout();
-  useScrollBoundries();
+  useScrollBoundaries();
 
   const createdStepIdRef = useRef(null);
 
@@ -157,7 +157,7 @@ const EditorNew = ({ flow }) => {
               zIndex: 1,
               data: {
                 collapsed: false,
-                layouted: false,
+                laidOut: false,
               },
             };
           }
@@ -192,7 +192,7 @@ const EditorNew = ({ flow }) => {
                 target: targetId,
                 type: 'addNodeEdge',
                 data: {
-                  layouted: edge ? edge?.data.layouted : false,
+                  laidOut: edge ? edge?.data.laidOut : false,
                 },
               };
             }
@@ -212,10 +212,10 @@ const EditorNew = ({ flow }) => {
                 target: INVISIBLE_NODE_ID,
                 type: 'addNodeEdge',
                 data: {
-                  layouted:
+                  laidOut:
                     lastEdge?.id ===
                     generateEdgeId(lastStep.id, INVISIBLE_NODE_ID)
-                      ? lastEdge?.data.layouted
+                      ? lastEdge?.data.laidOut
                       : false,
                 },
               },
