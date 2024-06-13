@@ -68,7 +68,7 @@ function DynamicField(props) {
           >
             {fields.map((fieldSchema, fieldSchemaIndex) => (
               <Box
-                sx={{ display: 'flex', flex: '1 0 0px' }}
+                sx={{ display: 'flex', flex: '1 0 0px', minWidth: 0, '& > *': { minWidth: 0 } }}
                 key={`field-${field.__id}-${fieldSchemaIndex}`}
               >
                 <InputCreator
