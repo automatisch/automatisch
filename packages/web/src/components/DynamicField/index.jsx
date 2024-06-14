@@ -68,7 +68,6 @@ function DynamicField(props) {
               display: 'flex',
               flex: 1,
               minWidth: 0,
-              '& > *': { minWidth: 0 },
             }}
           >
             {fields.map((fieldSchema, fieldSchemaIndex) => (
@@ -76,6 +75,7 @@ function DynamicField(props) {
                 sx={{
                   display: 'flex',
                   flex: '1 0 0px',
+                  minWidth: 0,
                 }}
                 key={`field-${field.__id}-${fieldSchemaIndex}`}
               >
