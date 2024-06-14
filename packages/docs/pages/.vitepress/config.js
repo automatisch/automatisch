@@ -442,6 +442,8 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/surveymonkey/triggers' },
+            { text: 'Actions', link: '/apps/surveymonkey/actions' },
             { text: 'Connection', link: '/apps/surveymonkey/connection' },
           ],
         },
