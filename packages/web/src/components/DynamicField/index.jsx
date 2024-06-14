@@ -64,11 +64,19 @@ function DynamicField(props) {
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 2 }}
-            sx={{ display: 'flex', flex: 1 }}
+            sx={{
+              display: 'flex',
+              flex: 1,
+              minWidth: 0,
+              '& > *': { minWidth: 0 },
+            }}
           >
             {fields.map((fieldSchema, fieldSchemaIndex) => (
               <Box
-                sx={{ display: 'flex', flex: '1 0 0px', minWidth: 0, '& > *': { minWidth: 0 } }}
+                sx={{
+                  display: 'flex',
+                  flex: '1 0 0px',
+                }}
                 key={`field-${field.__id}-${fieldSchemaIndex}`}
               >
                 <InputCreator
