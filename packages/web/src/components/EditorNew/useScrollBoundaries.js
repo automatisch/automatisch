@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useViewport, useReactFlow } from 'reactflow';
 
-export const useScrollBoundries = () => {
+export const useScrollBoundaries = () => {
   const { setViewport } = useReactFlow();
   const { x, y, zoom } = useViewport();
 

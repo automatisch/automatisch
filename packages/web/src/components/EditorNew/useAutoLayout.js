@@ -4,7 +4,7 @@ import { usePrevious } from 'hooks/usePrevious';
 import { isEqual } from 'lodash';
 import { useNodesInitialized, useNodes, useReactFlow } from 'reactflow';
 
-const getLayoutedElements = (nodes, edges) => {
+const getLaidOutElements = (nodes, edges) => {
   const graph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
   graph.setGraph({
     rankdir: 'TB',
@@ -36,18 +36,18 @@ export const useAutoLayout = () => {
 
   const onLayout = useCallback(
     (nodes, edges) => {
-      const layoutedElements = getLayoutedElements(nodes, edges);
+      const laidOutElements = getLaidOutElements(nodes, edges);
 
       setNodes([
-        ...layoutedElements.nodes.map((node) => ({
+        ...laidOutElements.nodes.map((node) => ({
           ...node,
-          data: { ...node.data, layouted: true },
+          data: { ...node.data, laidOut: true },
         })),
       ]);
       setEdges([
-        ...layoutedElements.edges.map((edge) => ({
+        ...laidOutElements.edges.map((edge) => ({
           ...edge,
-          data: { ...edge.data, layouted: true },
+          data: { ...edge.data, laidOut: true },
         })),
       ]);
     },
