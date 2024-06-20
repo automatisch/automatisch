@@ -5,6 +5,7 @@ import PaginationItem from '@mui/material/PaginationItem';
 
 import * as URLS from 'config/urls';
 import AppFlowRow from 'components/FlowRow';
+import Can from 'components/Can';
 import NoResultFound from 'components/NoResultFound';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useConnectionFlows from 'hooks/useConnectionFlows';
@@ -36,11 +37,20 @@ function AppFlows(props) {
 
   if (!hasFlows) {
     return (
-      <NoResultFound
-        to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(appKey, connectionId)}
-        text={formatMessage('app.noFlows')}
-        data-test="flows-no-results"
-      />
+      <Can I="create" a="Flow" passThrough>
+        {(allowed) => (
+          <NoResultFound
+            text={formatMessage('app.noFlows')}
+            data-test="flows-no-results"
+            {...(allowed && {
+              to: URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
+                appKey,
+                connectionId
+              ),
+            })}
+          />
+        )}
+      </Can>
     );
   }
 

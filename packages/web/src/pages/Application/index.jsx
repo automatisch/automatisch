@@ -30,6 +30,7 @@ import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useApp from 'hooks/useApp';
+import Can from 'components/Can';
 
 const ReconnectConnection = (props) => {
   const { application, onClose } = props;
@@ -92,7 +93,7 @@ export default function Application() {
     }
 
     return options;
-  }, [appKey, appConfig?.data, currentUserAbility]);
+  }, [appKey, appConfig?.data, currentUserAbility, formatMessage]);
 
   if (loading) return null;
 
@@ -118,37 +119,46 @@ export default function Application() {
                 <Route
                   path={`${URLS.FLOWS}/*`}
                   element={
-                    <ConditionalIconButton
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      component={Link}
-                      to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
-                        appKey,
-                        connectionId,
+                    <Can I="create" a="Flow" passThrough>
+                      {(allowed) => (
+                        <ConditionalIconButton
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          component={Link}
+                          to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
+                            appKey,
+                            connectionId,
+                          )}
+                          fullWidth
+                          icon={<AddIcon />}
+                          disabled={!allowed}
+                        >
+                          {formatMessage('app.createFlow')}
+                        </ConditionalIconButton>
                       )}
-                      fullWidth
-                      icon={<AddIcon />}
-                      disabled={!currentUserAbility.can('create', 'Flow')}
-                    >
-                      {formatMessage('app.createFlow')}
-                    </ConditionalIconButton>
+                    </Can>
                   }
                 />
 
                 <Route
                   path={`${URLS.CONNECTIONS}/*`}
                   element={
-                    <SplitButton
-                      disabled={
-                        (appConfig?.data &&
-                          !appConfig?.data?.canConnect &&
-                          !appConfig?.data?.canCustomConnect) ||
-                        connectionOptions.every(({ disabled }) => disabled)
-                      }
-                      options={connectionOptions}
-                    />
+                    <Can I="create" a="Connection" passThrough>
+                      {(allowed) => (
+                        <SplitButton
+                          disabled={
+                            !allowed ||
+                            (appConfig?.data &&
+                              !appConfig?.data?.canConnect &&
+                              !appConfig?.data?.canCustomConnect) ||
+                            connectionOptions.every(({ disabled }) => disabled)
+                          }
+                          options={connectionOptions}
+                        />
+                      )}
+                    </Can>
                   }
                 />
               </Routes>
@@ -169,17 +179,20 @@ export default function Application() {
                     label={formatMessage('app.connections')}
                     to={URLS.APP_CONNECTIONS(appKey)}
                     value={URLS.APP_CONNECTIONS_PATTERN}
-                    disabled={!app.supportsConnections}
+                    disabled={
+                      !currentUserAbility.can('read', 'Connection') ||
+                      !app.supportsConnections
+                    }
                     component={Link}
                     data-test="connections-tab"
                   />
-
                   <Tab
                     label={formatMessage('app.flows')}
                     to={URLS.APP_FLOWS(appKey)}
                     value={URLS.APP_FLOWS_PATTERN}
                     component={Link}
                     data-test="flows-tab"
+                    disabled={!currentUserAbility.can('read', 'Flow')}
                   />
                 </Tabs>
               </Box>
@@ -187,14 +200,20 @@ export default function Application() {
               <Routes>
                 <Route
                   path={`${URLS.FLOWS}/*`}
-                  element={<AppFlows appKey={appKey} />}
+                  element={
+                    <Can I="read" a="Flow">
+                      <AppFlows appKey={appKey} />
+                    </Can>
+                  }
                 />
-
                 <Route
                   path={`${URLS.CONNECTIONS}/*`}
-                  element={<AppConnections appKey={appKey} />}
+                  element={
+                    <Can I="read" a="Connection">
+                      <AppConnections appKey={appKey} />
+                    </Can>
+                  }
                 />
-
                 <Route
                   path="/"
                   element={
@@ -218,17 +237,24 @@ export default function Application() {
         <Route
           path="/connections/add"
           element={
-            <AddAppConnection onClose={goToApplicationPage} application={app} />
+            <Can I="create" a="Connection">
+              <AddAppConnection
+                onClose={goToApplicationPage}
+                application={app}
+              />
+            </Can>
           }
         />
 
         <Route
           path="/connections/:connectionId/reconnect"
           element={
-            <ReconnectConnection
-              application={app}
-              onClose={goToApplicationPage}
-            />
+            <Can I="create" a="Connection">
+              <ReconnectConnection
+                application={app}
+                onClose={goToApplicationPage}
+              />
+            </Can>
           }
         />
       </Routes>
