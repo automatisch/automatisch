@@ -6,13 +6,18 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useSamlAuthProvider from 'hooks/useSamlAuthProvider';
 import SamlConfiguration from './SamlConfiguration';
 import RoleMappings from './RoleMappings';
+import useAdminSamlAuthProviders from 'hooks/useAdminSamlAuthProviders.ee';
 function AuthenticationPage() {
   const formatMessage = useFormatMessage();
-  const {
-    provider,
-    loading: providerLoading,
-    refetch: refetchProvider,
-  } = useSamlAuthProvider();
+
+  const { data: adminSamlAuthProviders } = useAdminSamlAuthProviders();
+  const samlAuthProviderId = adminSamlAuthProviders?.data?.[0]?.id;
+
+  const { data, isLoading: isProviderLoading } = useSamlAuthProvider({
+    samlAuthProviderId,
+  });
+  const provider = data?.data;
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -23,12 +28,11 @@ function AuthenticationPage() {
           <Stack spacing={5}>
             <SamlConfiguration
               provider={provider}
-              providerLoading={providerLoading}
-              refetchProvider={refetchProvider}
+              providerLoading={isProviderLoading}
             />
             <RoleMappings
               provider={provider}
-              providerLoading={providerLoading}
+              providerLoading={isProviderLoading}
             />
           </Stack>
         </Grid>

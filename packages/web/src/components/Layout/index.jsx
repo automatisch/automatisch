@@ -9,12 +9,14 @@ import SwapCallsIcon from '@mui/icons-material/SwapCalls';
 import HistoryIcon from '@mui/icons-material/History';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
+
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useVersion from 'hooks/useVersion';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
-import useConfig from 'hooks/useConfig';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
+
 const drawerLinks = [
   {
     Icon: SwapCallsIcon,
@@ -35,6 +37,7 @@ const drawerLinks = [
     dataTest: 'executions-page-drawer-link',
   },
 ];
+
 const generateDrawerBottomLinks = async ({
   disableNotificationsPage,
   notificationBadgeContent = 0,
@@ -48,30 +51,35 @@ const generateDrawerBottomLinks = async ({
     to: URLS.UPDATES,
     badgeContent: notificationBadgeContent,
   };
+
   const hasAdditionalDrawerLink =
     additionalDrawerLink && additionalDrawerLinkText;
+
   const additionalDrawerLinkObject = {
     Icon: ArrowBackIosNew,
     primary: additionalDrawerLinkText || '',
     to: additionalDrawerLink || '',
     target: '_blank',
   };
+
   const links = [];
+
   if (!disableNotificationsPage) {
     links.push(notificationsPageLinkObject);
   }
+
   if (hasAdditionalDrawerLink) {
     links.push(additionalDrawerLinkObject);
   }
+
   return links;
 };
+
 export default function PublicLayout({ children }) {
   const version = useVersion();
-  const { config, loading } = useConfig([
-    'disableNotificationsPage',
-    'additionalDrawerLink',
-    'additionalDrawerLinkText',
-  ]);
+  const { data: configData, isLoading } = useAutomatischConfig();
+  const config = configData?.data;
+
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const [bottomLinks, setBottomLinks] = React.useState([]);
@@ -79,6 +87,7 @@ export default function PublicLayout({ children }) {
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
+
   React.useEffect(() => {
     async function perform() {
       const newBottomLinks = await generateDrawerBottomLinks({
@@ -90,9 +99,12 @@ export default function PublicLayout({ children }) {
       });
       setBottomLinks(newBottomLinks);
     }
-    if (loading) return;
+
+    if (isLoading) return;
+
     perform();
-  }, [config, loading, version.newVersionCount]);
+  }, [config, isLoading, version.newVersionCount]);
+
   return (
     <>
       <AppBar
@@ -101,7 +113,12 @@ export default function PublicLayout({ children }) {
         onDrawerClose={closeDrawer}
       />
 
-      <Box sx={{ display: 'flex', height: '100%' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flex: 1,
+        }}
+      >
         <Drawer
           links={drawerLinks}
           bottomLinks={bottomLinks}

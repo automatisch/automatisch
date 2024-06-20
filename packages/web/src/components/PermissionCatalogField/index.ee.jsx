@@ -10,18 +10,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+
 import ControlledCheckbox from 'components/ControlledCheckbox';
 import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 import PermissionSettings from './PermissionSettings.ee';
 import PermissionCatalogFieldLoader from './PermissionCatalogFieldLoader';
+
 const PermissionCatalogField = ({
   name = 'permissions',
   disabled = false,
   defaultChecked = false,
 }) => {
-  const { permissionCatalog, loading } = usePermissionCatalog();
+  const { data, isLoading: isPermissionCatalogLoading } =
+    usePermissionCatalog();
+  const permissionCatalog = data?.data;
   const [dialogName, setDialogName] = React.useState();
-  if (loading) return <PermissionCatalogFieldLoader />;
+
+  if (isPermissionCatalogLoading) return <PermissionCatalogFieldLoader />;
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -29,7 +35,7 @@ const PermissionCatalogField = ({
           <TableRow>
             <TableCell component="th" />
 
-            {permissionCatalog.actions.map((action) => (
+            {permissionCatalog?.actions.map((action) => (
               <TableCell component="th" key={action.key}>
                 <Typography
                   variant="subtitle1"
@@ -48,7 +54,7 @@ const PermissionCatalogField = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {permissionCatalog.subjects.map((subject) => (
+          {permissionCatalog?.subjects.map((subject) => (
             <TableRow
               key={subject.key}
               sx={{ '&:last-child td': { border: 0 } }}
@@ -58,7 +64,7 @@ const PermissionCatalogField = ({
                 <Typography variant="subtitle2">{subject.label}</Typography>
               </TableCell>
 
-              {permissionCatalog.actions.map((action) => (
+              {permissionCatalog?.actions.map((action) => (
                 <TableCell key={`${subject.key}.${action.key}`} align="center">
                   <Typography variant="subtitle2">
                     {action.subjects.includes(subject.key) && (
@@ -91,8 +97,8 @@ const PermissionCatalogField = ({
                     onClose={() => setDialogName('')}
                     fieldPrefix={`${name}.${subject.key}`}
                     subject={subject.key}
-                    actions={permissionCatalog.actions}
-                    conditions={permissionCatalog.conditions}
+                    actions={permissionCatalog?.actions}
+                    conditions={permissionCatalog?.conditions}
                     defaultChecked={defaultChecked}
                   />
                 </Stack>

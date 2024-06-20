@@ -1,13 +1,17 @@
-import { useQuery } from '@apollo/client';
-import { GET_APP_CONFIG } from 'graphql/queries/get-app-config.ee';
-export default function useAppConfig(key) {
-  const { data, loading } = useQuery(GET_APP_CONFIG, {
-    variables: { key },
-    context: { autoSnackbar: false },
+import { useQuery } from '@tanstack/react-query';
+import api from 'helpers/api';
+
+export default function useAppConfig(appKey) {
+  const query = useQuery({
+    queryKey: ['apps', appKey, 'config'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get(`/v1/apps/${appKey}/config`, {
+        signal,
+      });
+
+      return data;
+    },
   });
-  const appConfig = data?.getAppConfig;
-  return {
-    appConfig,
-    loading,
-  };
+
+  return query;
 }

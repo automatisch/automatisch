@@ -10,7 +10,7 @@ export default defineApp({
   name: 'Discord',
   key: 'discord',
   iconUrl: '{BASE_URL}/apps/discord/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/discord/connection',
+  authDocUrl: '{DOCS_URL}/apps/discord/connection',
   supportsConnections: true,
   baseUrl: 'https://discord.com',
   apiBaseUrl: 'https://discord.com/api',

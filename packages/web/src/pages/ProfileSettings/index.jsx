@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import * as yup from 'yup';
+
 import Container from 'components/Container';
 import DeleteAccountDialog from 'components/DeleteAccountDialog/index.ee';
 import Form from 'components/Form';
@@ -17,6 +18,8 @@ import TextField from 'components/TextField';
 import { UPDATE_CURRENT_USER } from 'graphql/mutations/update-current-user';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { useQueryClient } from '@tanstack/react-query';
+
 const validationSchema = yup
   .object({
     fullName: yup.string().required(),
@@ -27,27 +30,34 @@ const validationSchema = yup
       .oneOf([yup.ref('password')], 'Passwords must match'),
   })
   .required();
+
 const StyledForm = styled(Form)`
   display: flex;
   align-items: end;
   flex-direction: column;
 `;
+
 function ProfileSettings() {
   const [showDeleteAccountConfirmation, setShowDeleteAccountConfirmation] =
     React.useState(false);
   const enqueueSnackbar = useEnqueueSnackbar();
-  const currentUser = useCurrentUser();
+  const { data } = useCurrentUser();
+  const currentUser = data?.data;
   const formatMessage = useFormatMessage();
   const [updateCurrentUser] = useMutation(UPDATE_CURRENT_USER);
+  const queryClient = useQueryClient();
+
   const handleProfileSettingsUpdate = async (data) => {
     const { fullName, password, email } = data;
     const mutationInput = {
       fullName,
       email,
     };
+
     if (password) {
       mutationInput.password = password;
     }
+
     await updateCurrentUser({
       variables: {
         input: mutationInput,
@@ -61,6 +71,9 @@ function ProfileSettings() {
         },
       },
     });
+
+    await queryClient.invalidateQueries({ queryKey: ['users', 'me'] });
+
     enqueueSnackbar(formatMessage('profileSettings.updatedProfile'), {
       variant: 'success',
       SnackbarProps: {
@@ -68,6 +81,7 @@ function ProfileSettings() {
       },
     });
   };
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={9} md={8} lg={6}>

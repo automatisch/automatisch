@@ -2,6 +2,7 @@ import appConfig from '../../src/config/app.js';
 import logger from '../../src/helpers/logger.js';
 import client from './client.js';
 import User from '../../src/models/user.js';
+import Config from '../../src/models/config.js';
 import Role from '../../src/models/role.js';
 import '../../src/config/orm.js';
 import process from 'process';
@@ -21,6 +22,14 @@ export async function createUser(
   email = 'user@automatisch.io',
   password = 'sample'
 ) {
+  if (appConfig.disableSeedUser) {
+    logger.info('Seed user is disabled.');
+
+    process.exit(0);
+
+    return;
+  }
+
   const UNIQUE_VIOLATION_CODE = '23505';
 
   const role = await fetchAdminRole();
@@ -37,6 +46,8 @@ export async function createUser(
     if (userCount === 0) {
       const user = await User.query().insertAndFetch(userParams);
       logger.info(`User has been saved: ${user.email}`);
+
+      await Config.markInstallationCompleted();
     } else {
       logger.info('No need to seed a user.');
     }

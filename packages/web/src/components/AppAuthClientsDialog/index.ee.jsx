@@ -6,29 +6,33 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import * as React from 'react';
-import useAppAuthClients from 'hooks/useAppAuthClients.ee';
+import useAppAuthClients from 'hooks/useAppAuthClients';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 function AppAuthClientsDialog(props) {
   const { appKey, onClientClick, onClose } = props;
-  const { appAuthClients } = useAppAuthClients({ appKey, active: true });
+  const { data: appAuthClients } = useAppAuthClients(appKey);
+
   const formatMessage = useFormatMessage();
+
   React.useEffect(
     function autoAuthenticateSingleClient() {
-      if (appAuthClients?.length === 1) {
-        onClientClick(appAuthClients[0].id);
+      if (appAuthClients?.data.length === 1) {
+        onClientClick(appAuthClients.data[0].id);
       }
     },
-    [appAuthClients],
+    [appAuthClients?.data],
   );
-  if (!appAuthClients?.length || appAuthClients?.length === 1)
+
+  if (!appAuthClients?.data.length || appAuthClients?.data.length === 1)
     return <React.Fragment />;
+
   return (
     <Dialog onClose={onClose} open={true}>
       <DialogTitle>{formatMessage('appAuthClientsDialog.title')}</DialogTitle>
 
       <List sx={{ pt: 0 }}>
-        {appAuthClients.map((appAuthClient) => (
+        {appAuthClients.data.map((appAuthClient) => (
           <ListItem disableGutters key={appAuthClient.id}>
             <ListItemButton onClick={() => onClientClick(appAuthClient.id)}>
               <ListItemText primary={appAuthClient.name} />

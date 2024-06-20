@@ -8,7 +8,7 @@ export default function useAutomatischInfo() {
      * So we can set the `staleTime` to Infinity
      **/
     staleTime: Infinity,
-    queryKey: ['automatischInfo'],
+    queryKey: ['automatisch', 'info'],
     queryFn: async (payload, signal) => {
       const { data } = await api.get('/v1/automatisch/info', { signal });
 

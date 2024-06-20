@@ -1,38 +1,46 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import AlertTitle from '@mui/material/AlertTitle';
 import Alert from '@mui/material/Alert';
+
 import useFormatMessage from 'hooks/useFormatMessage';
 import ExecutionHeader from 'components/ExecutionHeader';
 import ExecutionStep from 'components/ExecutionStep';
 import Container from 'components/Container';
-import { GET_EXECUTION } from 'graphql/queries/get-execution';
-import { GET_EXECUTION_STEPS } from 'graphql/queries/get-execution-steps';
-const EXECUTION_PER_PAGE = 100;
-const getLimitAndOffset = (page) => ({
-  limit: EXECUTION_PER_PAGE,
-  offset: (page - 1) * EXECUTION_PER_PAGE,
-});
+import useExecutionSteps from 'hooks/useExecutionSteps';
+import useExecution from 'hooks/useExecution';
+
 export default function Execution() {
   const { executionId } = useParams();
   const formatMessage = useFormatMessage();
-  const { data: execution } = useQuery(GET_EXECUTION, {
-    variables: { executionId },
+
+  const { data: execution } = useExecution({ executionId });
+
+  const {
+    data,
+    isLoading: isExecutionStepsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useExecutionSteps({
+    executionId: executionId,
   });
-  const { data, loading } = useQuery(GET_EXECUTION_STEPS, {
-    variables: { executionId, ...getLimitAndOffset(1) },
-  });
-  const { edges } = data?.getExecutionSteps || {};
-  const executionSteps = edges?.map((edge) => edge.node);
+
+  React.useEffect(() => {
+    if (!isFetching && !isFetchingNextPage && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]);
+
   return (
     <Container sx={{ py: 3 }}>
-      <ExecutionHeader execution={execution?.getExecution} />
+      <ExecutionHeader execution={execution?.data} />
 
       <Grid container item sx={{ mt: 2, mb: [2, 5] }} rowGap={3}>
-        {!loading && !executionSteps?.length && (
+        {!isExecutionStepsLoading && !data?.pages?.[0].data.length && (
           <Alert severity="warning" sx={{ flex: 1 }}>
             <AlertTitle sx={{ fontWeight: 700 }}>
               {formatMessage('execution.noDataTitle')}
@@ -44,12 +52,16 @@ export default function Execution() {
           </Alert>
         )}
 
-        {executionSteps?.map((executionStep) => (
-          <ExecutionStep
-            key={executionStep.id}
-            executionStep={executionStep}
-            step={executionStep.step}
-          />
+        {data?.pages?.map((group, i) => (
+          <React.Fragment key={i}>
+            {group?.data?.map((executionStep) => (
+              <ExecutionStep
+                key={executionStep.id}
+                executionStep={executionStep}
+                step={executionStep.step}
+              />
+            ))}
+          </React.Fragment>
         ))}
       </Grid>
     </Container>

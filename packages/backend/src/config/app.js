@@ -38,6 +38,9 @@ if (process.env.WEB_APP_URL) {
 let webhookUrl = new URL(process.env.WEBHOOK_URL || apiUrl).toString();
 webhookUrl = webhookUrl.substring(0, webhookUrl.length - 1);
 
+const publicDocsUrl = 'https://automatisch.io/docs';
+const docsUrl = process.env.DOCS_URL || publicDocsUrl;
+
 const appEnv = process.env.APP_ENV || 'development';
 
 const appConfig = {
@@ -49,7 +52,7 @@ const appConfig = {
   isDev: appEnv === 'development',
   isTest: appEnv === 'test',
   isProd: appEnv === 'production',
-  version: process.env.npm_package_version,
+  version: '0.12.0',
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
   postgresSchema: process.env.POSTGRES_SCHEMA || 'public',
   postgresPort: parseInt(process.env.POSTGRES_PORT || '5432'),
@@ -73,6 +76,7 @@ const appConfig = {
   baseUrl: apiUrl,
   webAppUrl,
   webhookUrl,
+  docsUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
   requestBodySizeLimit: '1mb',
   smtpHost: process.env.SMTP_HOST,
@@ -94,6 +98,7 @@ const appConfig = {
   disableFavicon: process.env.DISABLE_FAVICON === 'true',
   additionalDrawerLink: process.env.ADDITIONAL_DRAWER_LINK,
   additionalDrawerLinkText: process.env.ADDITIONAL_DRAWER_LINK_TEXT,
+  disableSeedUser: process.env.DISABLE_SEED_USER === 'true',
 };
 
 if (!appConfig.encryptionKey) {

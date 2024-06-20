@@ -7,7 +7,7 @@ export default defineApp({
   name: 'Spotify',
   key: 'spotify',
   iconUrl: '{BASE_URL}/apps/spotify/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/spotify/connection',
+  authDocUrl: '{DOCS_URL}/apps/spotify/connection',
   supportsConnections: true,
   baseUrl: 'https://spotify.com',
   apiBaseUrl: 'https://api.spotify.com',

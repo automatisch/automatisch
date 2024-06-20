@@ -1,10 +1,24 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-import useSubscriptionStatus from 'hooks/useSubscriptionStatus.ee';
+
+import useSubscription from 'hooks/useSubscription.ee';
+import useFormatMessage from 'hooks/useFormatMessage';
+import { DateTime } from 'luxon';
+import useUserTrial from 'hooks/useUserTrial.ee';
+
 export default function SubscriptionCancelledAlert() {
-  const subscriptionStatus = useSubscriptionStatus();
-  if (!subscriptionStatus) return <React.Fragment />;
+  const formatMessage = useFormatMessage();
+  const subscription = useSubscription();
+  const trial = useUserTrial();
+
+  if (subscription?.data?.status === 'active' || trial.hasTrial)
+    return <React.Fragment />;
+
+  const cancellationEffectiveDateObject = DateTime.fromISO(
+    subscription?.data?.cancellationEffectiveDate,
+  );
+
   return (
     <Alert
       severity="warning"
@@ -14,7 +28,9 @@ export default function SubscriptionCancelledAlert() {
       }}
     >
       <Typography variant="subtitle2" sx={{ lineHeight: 1.5 }}>
-        {subscriptionStatus.message}
+        {formatMessage('subscriptionCancelledAlert.text', {
+          date: cancellationEffectiveDateObject.toFormat('DDD'),
+        })}
       </Typography>
     </Alert>
   );

@@ -1,6 +1,18 @@
-import { useQuery } from '@apollo/client';
-import { GET_PERMISSION_CATALOG } from 'graphql/queries/get-permission-catalog.ee';
+import { useQuery } from '@tanstack/react-query';
+
+import api from 'helpers/api';
+
 export default function usePermissionCatalog() {
-  const { data, loading } = useQuery(GET_PERMISSION_CATALOG);
-  return { permissionCatalog: data?.getPermissionCatalog, loading };
+  const query = useQuery({
+    queryKey: ['admin', 'permissions', 'catalog'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get('/v1/admin/permissions/catalog', {
+        signal,
+      });
+
+      return data;
+    },
+  });
+
+  return query;
 }

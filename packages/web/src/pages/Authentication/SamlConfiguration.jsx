@@ -2,8 +2,9 @@ import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
+
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import Form from 'components/Form';
 import Switch from 'components/Switch';
@@ -11,6 +12,7 @@ import TextField from 'components/TextField';
 import { UPSERT_SAML_AUTH_PROVIDER } from 'graphql/mutations/upsert-saml-auth-provider';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
+
 const defaultValues = {
   active: false,
   name: '',
@@ -24,16 +26,21 @@ const defaultValues = {
   roleAttributeName: '',
   defaultRoleId: '',
 };
+
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
-function SamlConfiguration({ provider, providerLoading, refetchProvider }) {
+
+function SamlConfiguration({ provider, providerLoading }) {
   const formatMessage = useFormatMessage();
-  const { roles, loading: rolesLoading } = useRoles();
+  const { data, loading: isRolesLoading } = useRoles();
+  const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
+
   const [upsertSamlAuthProvider, { loading }] = useMutation(
     UPSERT_SAML_AUTH_PROVIDER,
   );
+
   const handleProviderUpdate = async (providerDataToUpdate) => {
     try {
       const {
@@ -66,9 +73,7 @@ function SamlConfiguration({ provider, providerLoading, refetchProvider }) {
           },
         },
       });
-      if (!provider?.id) {
-        await refetchProvider();
-      }
+
       enqueueSnackbar(formatMessage('authenticationForm.successfullySaved'), {
         variant: 'success',
         SnackbarProps: {
@@ -79,9 +84,11 @@ function SamlConfiguration({ provider, providerLoading, refetchProvider }) {
       throw new Error('Failed while saving!');
     }
   };
+
   if (providerLoading) {
     return null;
   }
+
   return (
     <Form
       defaultValues={provider || defaultValues}
@@ -170,7 +177,7 @@ function SamlConfiguration({ provider, providerLoading, refetchProvider }) {
               label={formatMessage('authenticationForm.defaultRole')}
             />
           )}
-          loading={rolesLoading}
+          loading={isRolesLoading}
         />
         <LoadingButton
           type="submit"

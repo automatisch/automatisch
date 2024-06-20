@@ -1,10 +1,17 @@
-import { useQuery } from '@apollo/client';
-import { GET_PADDLE_INFO } from 'graphql/queries/get-paddle-info.ee';
+import { useQuery } from '@tanstack/react-query';
+import api from 'helpers/api';
+
 export default function usePaddleInfo() {
-  const { data, loading } = useQuery(GET_PADDLE_INFO);
-  return {
-    sandbox: data?.getPaddleInfo?.sandbox,
-    vendorId: data?.getPaddleInfo?.vendorId,
-    loading,
-  };
+  const query = useQuery({
+    queryKey: ['payment', 'paddleInfo'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get('/v1/payment/paddle-info', {
+        signal,
+      });
+
+      return data;
+    },
+  });
+
+  return query;
 }

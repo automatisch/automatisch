@@ -11,7 +11,7 @@ describe('GET /api/v1/payment/plans', () => {
 
   beforeEach(async () => {
     user = await createUser();
-    token = createAuthTokenByUserId(user.id);
+    token = await createAuthTokenByUserId(user.id);
 
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
   });

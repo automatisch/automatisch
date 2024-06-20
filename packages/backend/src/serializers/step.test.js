@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createStep } from '../../test/factories/step';
+import { createExecutionStep } from '../../test/factories/execution-step';
 import stepSerializer from './step';
+import executionStepSerializer from './execution-step';
 
 describe('stepSerializer', () => {
   let step;
@@ -23,5 +25,21 @@ describe('stepSerializer', () => {
     };
 
     expect(stepSerializer(step)).toEqual(expectedPayload);
+  });
+
+  it('should return step data with the execution steps', async () => {
+    const executionStepOne = await createExecutionStep({ stepId: step.id });
+    const executionStepTwo = await createExecutionStep({ stepId: step.id });
+
+    step.executionSteps = [executionStepOne, executionStepTwo];
+
+    const expectedPayload = {
+      executionSteps: [
+        executionStepSerializer(executionStepOne),
+        executionStepSerializer(executionStepTwo),
+      ],
+    };
+
+    expect(stepSerializer(step)).toMatchObject(expectedPayload);
   });
 });

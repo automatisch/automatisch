@@ -18,7 +18,6 @@ const config = {
   baseUrl: process.env.REACT_APP_BASE_URL,
   graphqlUrl: computeUrl('/graphql', backendUrl),
   restApiUrl: computeUrl('/api', backendUrl),
-  chatwootBaseUrl: 'https://app.chatwoot.com',
   supportEmailAddress: 'support@automatisch.io',
 };
 

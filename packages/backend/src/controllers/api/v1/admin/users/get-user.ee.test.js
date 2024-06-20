@@ -18,7 +18,7 @@ describe('GET /api/v1/admin/users/:userId', () => {
     anotherUser = await createUser();
     anotherUserRole = await anotherUser.$relatedQuery('role');
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return specified user info', async () => {

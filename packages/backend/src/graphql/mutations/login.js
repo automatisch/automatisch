@@ -7,7 +7,7 @@ const login = async (_parent, params) => {
   });
 
   if (user && (await user.login(params.input.password))) {
-    const token = createAuthTokenByUserId(user.id);
+    const token = await createAuthTokenByUserId(user.id);
     return { token, user };
   }
 

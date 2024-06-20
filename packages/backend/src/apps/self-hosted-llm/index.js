@@ -11,7 +11,7 @@ export default defineApp({
   baseUrl: '',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/self-hosted-llm/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/self-hosted-llm/connection',
+  authDocUrl: '{DOCS_URL}/apps/self-hosted-llm/connection',
   primaryColor: '000000',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],

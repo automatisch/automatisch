@@ -12,17 +12,20 @@ import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 function LoginForm() {
   const isCloud = useCloud();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const authentication = useAuthentication();
   const [login, { loading }] = useMutation(LOGIN);
+
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
       navigate(URLS.DASHBOARD);
     }
   }, [authentication.isAuthenticated]);
+
   const handleSubmit = async (values) => {
     const { data } = await login({
       variables: {
@@ -32,6 +35,7 @@ function LoginForm() {
     const { token } = data.login;
     authentication.updateToken(token);
   };
+
   return (
     <Paper sx={{ px: 2, py: 4 }}>
       <Typography
@@ -107,4 +111,5 @@ function LoginForm() {
     </Paper>
   );
 }
+
 export default LoginForm;

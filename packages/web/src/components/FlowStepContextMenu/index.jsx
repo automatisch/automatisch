@@ -1,24 +1,29 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useMutation } from '@apollo/client';
+
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+
 import { DELETE_STEP } from 'graphql/mutations/delete-step';
 import useFormatMessage from 'hooks/useFormatMessage';
+import { useQueryClient } from '@tanstack/react-query';
 
 function FlowStepContextMenu(props) {
-  const { stepId, onClose, anchorEl, deletable } = props;
-  const [deleteStep] = useMutation(DELETE_STEP, {
-    refetchQueries: ['GetFlow', 'GetStepWithTestExecutions'],
-  });
+  const { stepId, onClose, anchorEl, deletable, flowId } = props;
   const formatMessage = useFormatMessage();
+  const queryClient = useQueryClient();
+  const [deleteStep] = useMutation(DELETE_STEP);
+
   const deleteActionHandler = React.useCallback(
     async (event) => {
       event.stopPropagation();
       await deleteStep({ variables: { input: { id: stepId } } });
+      await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
     },
-    [stepId],
+    [stepId, queryClient],
   );
+
   return (
     <Menu
       open={true}

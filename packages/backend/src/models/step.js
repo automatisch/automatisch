@@ -7,6 +7,8 @@ import Connection from './connection.js';
 import ExecutionStep from './execution-step.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import appConfig from '../config/app.js';
+import globalVariable from '../helpers/global-variable.js';
+import computeParameters from '../helpers/compute-parameters.js';
 
 class Step extends Base {
   static tableName = 'steps';
@@ -103,6 +105,10 @@ class Step extends Base {
       return `/webhooks/connections/${this.connectionId}`;
     }
 
+    if (this.parameters.workSynchronously) {
+      return `/webhooks/flows/${this.flowId}/sync`;
+    }
+
     return `/webhooks/flows/${this.flowId}`;
   }
 
@@ -161,7 +167,7 @@ class Step extends Base {
     if (!isTrigger || !appKey || !key) return null;
 
     const app = await App.findOneByKey(appKey);
-    const command = app.triggers.find((trigger) => trigger.key === key);
+    const command = app.triggers?.find((trigger) => trigger.key === key);
 
     return command;
   }
@@ -171,7 +177,7 @@ class Step extends Base {
     if (!isAction || !appKey || !key) return null;
 
     const app = await App.findOneByKey(appKey);
-    const command = app.actions.find((action) => action.key === key);
+    const command = app.actions?.find((action) => action.key === key);
 
     return command;
   }
@@ -190,6 +196,59 @@ class Step extends Base {
     ).arguments;
 
     return existingArguments;
+  }
+
+  async createDynamicFields(dynamicFieldsKey, parameters) {
+    const connection = await this.$relatedQuery('connection');
+    const flow = await this.$relatedQuery('flow');
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection, app, flow, step: this });
+
+    const command = app.dynamicFields.find(
+      (data) => data.key === dynamicFieldsKey
+    );
+
+    for (const parameterKey in parameters) {
+      const parameterValue = parameters[parameterKey];
+      $.step.parameters[parameterKey] = parameterValue;
+    }
+
+    const dynamicFields = (await command.run($)) || [];
+
+    return dynamicFields;
+  }
+
+  async createDynamicData(dynamicDataKey, parameters) {
+    const connection = await this.$relatedQuery('connection');
+    const flow = await this.$relatedQuery('flow');
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection, app, flow, step: this });
+
+    const command = app.dynamicData.find((data) => data.key === dynamicDataKey);
+
+    for (const parameterKey in parameters) {
+      const parameterValue = parameters[parameterKey];
+      $.step.parameters[parameterKey] = parameterValue;
+    }
+
+    const lastExecution = await flow.$relatedQuery('lastExecution');
+    const lastExecutionId = lastExecution?.id;
+
+    const priorExecutionSteps = lastExecutionId
+      ? await ExecutionStep.query().where({
+          execution_id: lastExecutionId,
+        })
+      : [];
+
+    const computedParameters = computeParameters(
+      $.step.parameters,
+      priorExecutionSteps
+    );
+
+    $.step.parameters = computedParameters;
+    const dynamicData = (await command.run($)).data;
+
+    return dynamicData;
   }
 
   async updateWebhookUrl() {

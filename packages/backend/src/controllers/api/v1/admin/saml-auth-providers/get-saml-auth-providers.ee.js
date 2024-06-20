@@ -7,5 +7,7 @@ export default async (request, response) => {
     'desc'
   );
 
-  renderObject(response, samlAuthProviders);
+  renderObject(response, samlAuthProviders, {
+    serializer: 'AdminSamlAuthProvider',
+  });
 };

@@ -2,7 +2,7 @@ import appConfig from './app.js';
 
 const corsOptions = {
   origin: appConfig.webAppUrl,
-  methods: 'POST',
+  methods: 'GET,HEAD,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 200,
 };

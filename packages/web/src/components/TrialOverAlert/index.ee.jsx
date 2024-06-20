@@ -1,14 +1,18 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
+
 import * as URLS from 'config/urls';
 import { generateInternalLink } from 'helpers/translationValues';
-import useTrialStatus from 'hooks/useTrialStatus.ee';
+import useUserTrial from 'hooks/useUserTrial.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+
 export default function TrialOverAlert() {
   const formatMessage = useFormatMessage();
-  const trialStatus = useTrialStatus();
+  const trialStatus = useUserTrial();
+
   if (!trialStatus || !trialStatus.over) return <React.Fragment />;
+
   return (
     <Alert
       severity="error"

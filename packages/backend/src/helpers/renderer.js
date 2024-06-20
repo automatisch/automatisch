@@ -15,7 +15,7 @@ const renderObject = (response, object, options) => {
   let data = isPaginated(object) ? object.records : object;
 
   const type = isPaginated(object)
-    ? object.records[0].constructor.name
+    ? object.records[0]?.constructor?.name || 'Object'
     : Array.isArray(object)
     ? object?.[0]?.constructor?.name || 'Object'
     : object.constructor.name;
@@ -44,4 +44,22 @@ const renderObject = (response, object, options) => {
   return response.json(computedPayload);
 };
 
-export { renderObject };
+const renderError = (response, errors, status, type) => {
+  const errorStatus = status || 422;
+  const errorType = type || 'ValidationError';
+
+  const payload = {
+    errors: errors.reduce((acc, error) => {
+      const key = Object.keys(error)[0];
+      acc[key] = error[key];
+      return acc;
+    }, {}),
+    meta: {
+      type: errorType,
+    },
+  };
+
+  return response.status(errorStatus).send(payload);
+};
+
+export { renderObject, renderError };

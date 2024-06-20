@@ -1,65 +1,6 @@
 type Query {
-  getApps(
-    name: String
-    onlyWithTriggers: Boolean
-    onlyWithActions: Boolean
-  ): [App]
-  getApp(key: String!): App
-  getAppConfig(key: String!): AppConfig
-  getAppAuthClient(id: String!): AppAuthClient
-  getAppAuthClients(appKey: String!, active: Boolean): [AppAuthClient]
-  getConnectedApps(name: String): [App]
-  testConnection(id: String!): Connection
-  getFlow(id: String!): Flow
-  getFlows(
-    limit: Int!
-    offset: Int!
-    appKey: String
-    connectionId: String
-    name: String
-  ): FlowConnection
-  getStepWithTestExecutions(stepId: String!): [Step]
-  getExecution(executionId: String!): Execution
-  getExecutions(
-    limit: Int!
-    offset: Int!
-    filters: ExecutionFiltersInput
-  ): ExecutionConnection
-  getExecutionSteps(
-    executionId: String!
-    limit: Int!
-    offset: Int!
-  ): ExecutionStepConnection
-  getDynamicData(
-    stepId: String!
-    key: String!
-    parameters: JSONObject
-  ): JSONObject
-  getDynamicFields(
-    stepId: String!
-    key: String!
-    parameters: JSONObject
-  ): [SubstepArgument]
-  getBillingAndUsage: GetBillingAndUsage
-  getCurrentUser: User
-  getConfig(keys: [String]): JSONObject
-  getInvoices: [Invoice]
-  getPaddleInfo: GetPaddleInfo
-  getPaymentPlans: [PaymentPlan]
-  getPermissionCatalog: PermissionCatalog
-  getRole(id: String!): Role
-  getRoles: [Role]
-  getNotifications: [Notification]
-  getSamlAuthProvider: SamlAuthProvider
-  getSamlAuthProviderRoleMappings(id: String!): [SamlAuthProvidersRoleMapping]
-  getSubscriptionStatus: GetSubscriptionStatus
-  getTrialStatus: GetTrialStatus
-  getUser(id: String!): User
-  getUsers(limit: Int!, offset: Int!): UserConnection
-  healthcheck: AppHealth
-  listSamlAuthProviders: [ListSamlAuthProvider]
+  placeholderQuery(name: String): Boolean
 }
-
 type Mutation {
   createAppConfig(input: CreateAppConfigInput): AppConfig
   createAppAuthClient(input: CreateAppAuthClientInput): AppAuthClient
@@ -288,15 +229,6 @@ type Field {
   options: [SubstepArgumentOption]
 }
 
-type FlowConnection {
-  edges: [FlowEdge]
-  pageInfo: PageInfo
-}
-
-type FlowEdge {
-  node: Flow
-}
-
 enum FlowStatus {
   paused
   published
@@ -311,15 +243,6 @@ type Flow {
   createdAt: String
   updatedAt: String
   status: FlowStatus
-}
-
-type Execution {
-  id: String
-  testRun: Boolean
-  createdAt: String
-  updatedAt: String
-  status: String
-  flow: Flow
 }
 
 type SamlAuthProvider {
@@ -342,16 +265,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-type UserConnection {
-  edges: [UserEdge]
-  pageInfo: PageInfo
-  totalCount: Int
-}
-
-type UserEdge {
-  node: User
 }
 
 input CreateConnectionInput {
@@ -621,26 +534,13 @@ type PageInfo {
   totalPages: Int!
 }
 
-type ExecutionEdge {
-  node: Execution
-}
-
 type ExecutionStepEdge {
   node: ExecutionStep
-}
-
-type ExecutionConnection {
-  edges: [ExecutionEdge]
-  pageInfo: PageInfo
 }
 
 type ExecutionStepConnection {
   edges: [ExecutionStepEdge]
   pageInfo: PageInfo
-}
-
-type AppHealth {
-  version: String
 }
 
 type License {
@@ -650,89 +550,11 @@ type License {
   verified: Boolean
 }
 
-type GetTrialStatus {
-  expireAt: String
-}
-
-type GetSubscriptionStatus {
-  cancellationEffectiveDate: String
-}
-
-type GetBillingAndUsage {
-  subscription: Subscription
-  usage: Usage
-}
-
-type MonthlyQuota {
-  title: String
-  action: BillingCardAction
-}
-
-type NextBillAmount {
-  title: String
-  action: BillingCardAction
-}
-
-type NextBillDate {
-  title: String
-  action: BillingCardAction
-}
-
-type BillingCardAction {
-  type: String
-  text: String
-  src: String
-}
-
-type Subscription {
-  status: String
-  monthlyQuota: MonthlyQuota
-  nextBillAmount: NextBillAmount
-  nextBillDate: NextBillDate
-}
-
-type Usage {
-  task: Int
-}
-
-type GetPaddleInfo {
-  sandbox: Boolean
-  vendorId: Int
-}
-
-type Invoice {
-  id: Int
-  amount: Float
-  currency: String
-  payout_date: String
-  receipt_url: String
-}
-
-type PaymentPlan {
-  name: String
-  limit: String
-  price: String
-  productId: String
-}
-
-type ListSamlAuthProvider {
-  id: String
-  name: String
-  issuer: String
-  loginUrl: String
-}
-
 type Permission {
   id: String
   action: String
   subject: String
   conditions: [String]
-}
-
-type PermissionCatalog {
-  actions: [Action]
-  subjects: [Subject]
-  conditions: [Condition]
 }
 
 type Action {
@@ -784,24 +606,6 @@ input UpdateAppAuthClientInput {
   name: String
   formattedAuthDefaults: JSONObject
   active: Boolean
-}
-
-type Notification {
-  name: String
-  createdAt: String
-  documentationUrl: String
-  description: String
-}
-
-input ExecutionCreatedAtFilterInput {
-  from: String
-  to: String
-}
-
-input ExecutionFiltersInput {
-  flowId: String
-  createdAt: ExecutionCreatedAtFilterInput
-  status: String
 }
 
 schema {

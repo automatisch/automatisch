@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useLazyQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import debounce from 'lodash/debounce';
 import { useTheme } from '@mui/material/styles';
@@ -20,15 +19,17 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
+
 import * as URLS from 'config/urls';
 import AppIcon from 'components/AppIcon';
-import { GET_APPS } from 'graphql/queries/get-apps';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useLazyApps from 'hooks/useLazyApps';
 
 function createConnectionOrFlow(appKey, supportsConnections = false) {
   if (!supportsConnections) {
     return URLS.CREATE_FLOW_WITH_APP(appKey);
   }
+
   return URLS.APP_ADD_CONNECTION(appKey);
 }
 function AddNewAppConnection(props) {
@@ -36,29 +37,30 @@ function AddNewAppConnection(props) {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('sm'));
   const formatMessage = useFormatMessage();
-  const [appName, setAppName] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
-  const [getApps, { data }] = useLazyQuery(GET_APPS, {
-    onCompleted: () => {
-      setLoading(false);
+  const [appName, setAppName] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const { data: apps, mutate } = useLazyApps(
+    { appName },
+    {
+      onSuccess: () => {
+        setIsLoading(false);
+      },
     },
-  });
-  const fetchData = React.useMemo(
-    () => debounce((name) => getApps({ variables: { name } }), 300),
-    [getApps],
   );
-  React.useEffect(
-    function fetchAppsOnAppNameChange() {
-      setLoading(true);
-      fetchData(appName);
-    },
-    [fetchData, appName],
-  );
-  React.useEffect(function cancelDebounceOnUnmount() {
+
+  const fetchData = React.useMemo(() => debounce(mutate, 300), [mutate]);
+
+  React.useEffect(() => {
+    setIsLoading(true);
+
+    fetchData(appName);
+
     return () => {
       fetchData.cancel();
     };
-  }, []);
+  }, [fetchData, appName]);
+
   return (
     <Dialog
       open={true}
@@ -102,15 +104,15 @@ function AddNewAppConnection(props) {
 
       <DialogContent>
         <List sx={{ pt: 2, width: '100%' }}>
-          {loading && (
+          {isLoading && (
             <CircularProgress
               data-test="search-for-app-loader"
               sx={{ display: 'block', margin: '20px auto' }}
             />
           )}
 
-          {!loading &&
-            data?.getApps?.map((app) => (
+          {!isLoading &&
+            apps?.data.map((app) => (
               <ListItem disablePadding key={app.name} data-test="app-list-item">
                 <ListItemButton
                   component={Link}

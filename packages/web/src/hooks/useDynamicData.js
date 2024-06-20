@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { useLazyQuery } from '@apollo/client';
 import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
+import { useMutation } from '@tanstack/react-query';
 import isEqual from 'lodash/isEqual';
-import { GET_DYNAMIC_DATA } from 'graphql/queries/get-dynamic-data';
+
+import api from 'helpers/api';
+
 const variableRegExp = /({.*?})/;
+
 function computeArguments(args, getValues) {
   const initialValue = {};
+
   return args.reduce((result, { name, value }) => {
     const isVariable = variableRegExp.test(value);
     if (isVariable) {
@@ -17,6 +21,7 @@ function computeArguments(args, getValues) {
       set(result, name, computedValue);
       return result;
     }
+
     set(result, name, value);
     return result;
   }, initialValue);
@@ -30,8 +35,22 @@ function computeArguments(args, getValues) {
  */
 function useDynamicData(stepId, schema) {
   const lastComputedVariables = React.useRef({});
-  const [getDynamicData, { called, data, loading }] =
-    useLazyQuery(GET_DYNAMIC_DATA);
+
+  const {
+    data,
+    isPending: isDynamicDataPending,
+    mutate: getDynamicData,
+  } = useMutation({
+    mutationFn: async (variables) => {
+      const { data } = await api.post(
+        `/v1/steps/${stepId}/dynamic-data`,
+        variables,
+      );
+
+      return data;
+    },
+  });
+
   const { getValues } = useFormContext();
   const formValues = getValues();
   /**
@@ -60,6 +79,7 @@ function useDynamicData(stepId, schema) {
      * `getValues` is for convenience as it supports paths for fields like `getValues('foo.bar.baz')`.
      */
   }, [schema, formValues, getValues]);
+
   React.useEffect(() => {
     if (
       schema.type === 'dropdown' &&
@@ -67,18 +87,18 @@ function useDynamicData(stepId, schema) {
       schema.source &&
       computedVariables
     ) {
+      const { key, parameters } = computedVariables;
+
       getDynamicData({
-        variables: {
-          stepId,
-          ...computedVariables,
-        },
+        dynamicDataKey: key,
+        parameters,
       });
     }
   }, [getDynamicData, stepId, schema, computedVariables]);
+
   return {
-    called,
-    data: data?.getDynamicData,
-    loading,
+    data: data?.data,
+    loading: isDynamicDataPending,
   };
 }
 export default useDynamicData;

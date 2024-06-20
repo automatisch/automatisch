@@ -11,7 +11,7 @@ describe('GET /api/v1/apps/:appKey/triggers/:triggerKey/substeps', () => {
 
   beforeEach(async () => {
     currentUser = await createUser();
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
     exampleApp = await App.findOneByKey('github');
   });
 

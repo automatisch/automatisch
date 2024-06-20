@@ -153,6 +153,24 @@ class Connection extends Base {
     return await App.findOneByKey(this.key);
   }
 
+  async testAndUpdateConnection() {
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection: this, app });
+
+    let isStillVerified;
+
+    try {
+      isStillVerified = !!(await app.auth.isStillVerified($));
+    } catch {
+      isStillVerified = false;
+    }
+
+    return await this.$query().patchAndFetch({
+      formattedData: this.formattedData,
+      verified: isStillVerified,
+    });
+  }
+
   async verifyWebhook(request) {
     if (!this.key) return true;
 

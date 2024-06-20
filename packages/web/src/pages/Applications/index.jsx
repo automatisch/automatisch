@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
@@ -15,23 +14,25 @@ import PageTitle from 'components/PageTitle';
 import AppRow from 'components/AppRow';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { GET_CONNECTED_APPS } from 'graphql/queries/get-connected-apps';
 import * as URLS from 'config/urls';
+import useUserApps from 'hooks/useUserApps';
+
 export default function Applications() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [appName, setAppName] = React.useState(null);
-  const { data, loading } = useQuery(GET_CONNECTED_APPS, {
-    variables: { name: appName },
-  });
-  const apps = data?.getConnectedApps;
+  const { data, isLoading } = useUserApps(appName);
+  const apps = data?.data;
   const hasApps = apps?.length;
+
   const onSearchChange = React.useCallback((event) => {
     setAppName(event.target.value);
   }, []);
+
   const goToApps = React.useCallback(() => {
     navigate(URLS.APPS);
   }, [navigate]);
+
   return (
     <Box sx={{ py: 3 }}>
       <Container>
@@ -75,21 +76,21 @@ export default function Applications() {
 
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
 
-        {loading && (
+        {isLoading && (
           <CircularProgress
             data-test="apps-loader"
             sx={{ display: 'block', margin: '20px auto' }}
           />
         )}
 
-        {!loading && !hasApps && (
+        {!isLoading && !hasApps && (
           <NoResultFound
             text={formatMessage('apps.noConnections')}
             to={URLS.NEW_APP_CONNECTION}
           />
         )}
 
-        {!loading &&
+        {!isLoading &&
           apps?.map((app) => (
             <AppRow key={app.name} application={app} url={URLS.APP(app.key)} />
           ))}

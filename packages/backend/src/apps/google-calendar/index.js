@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://calendar.google.com',
   apiBaseUrl: 'https://www.googleapis.com/calendar',
   iconUrl: '{BASE_URL}/apps/google-calendar/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/google-calendar/connection',
+  authDocUrl: '{DOCS_URL}/apps/google-calendar/connection',
   primaryColor: '448AFF',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

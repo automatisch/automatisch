@@ -17,7 +17,7 @@ describe('GET /api/v1/executions/:executionId', () => {
     currentUser = await createUser();
     currentUserRole = await currentUser.$relatedQuery('role');
 
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return the execution data of current user', async () => {

@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import { createAppConfig } from './app-config.js';
 import AppAuthClient from '../../src/models/app-auth-client';
 
 const formattedAuthDefaults = {
@@ -12,14 +11,12 @@ const formattedAuthDefaults = {
 export const createAppAuthClient = async (params = {}) => {
   params.name = params?.name || faker.person.fullName();
   params.id = params?.id || faker.string.uuid();
-  params.appConfigId = params?.appConfigId || (await createAppConfig()).id;
+  params.appKey = params?.appKey || 'deepl';
   params.active = params?.active ?? true;
   params.formattedAuthDefaults =
     params?.formattedAuthDefaults || formattedAuthDefaults;
 
-  const appAuthClient = await AppAuthClient.query()
-    .insert(params)
-    .returning('*');
+  const appAuthClient = await AppAuthClient.query().insertAndFetch(params);
 
   return appAuthClient;
 };

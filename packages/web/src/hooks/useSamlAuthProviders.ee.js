@@ -1,9 +1,18 @@
-import { useQuery } from '@apollo/client';
-import { LIST_SAML_AUTH_PROVIDERS } from 'graphql/queries/list-saml-auth-providers.ee';
+import { useQuery } from '@tanstack/react-query';
+
+import api from 'helpers/api';
+
 export default function useSamlAuthProviders() {
-  const { data, loading } = useQuery(LIST_SAML_AUTH_PROVIDERS);
-  return {
-    providers: data?.listSamlAuthProviders || [],
-    loading,
-  };
+  const query = useQuery({
+    queryKey: ['samlAuthProviders'],
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get('/v1/saml-auth-providers', {
+        signal,
+      });
+
+      return data;
+    },
+  });
+
+  return query;
 }

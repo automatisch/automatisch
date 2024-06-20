@@ -225,7 +225,9 @@ export const defaultTheme = createTheme({
           textDecoration: 'none',
         },
         '#root': {
-          height: '100vh',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
         },
       },
     },
@@ -297,6 +299,6 @@ export const mationTheme = createTheme(
         },
       },
     },
-  })
+  }),
 );
 export default defaultTheme;

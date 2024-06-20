@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
 import {
   Link,
   Route,
@@ -17,9 +16,10 @@ import Grid from '@mui/material/Grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddIcon from '@mui/icons-material/Add';
+
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAppConfig from 'hooks/useAppConfig.ee';
-import { GET_APP } from 'graphql/queries/get-app';
+import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import * as URLS from 'config/urls';
 import SplitButton from 'components/SplitButton';
 import ConditionalIconButton from 'components/ConditionalIconButton';
@@ -29,9 +29,12 @@ import AddAppConnection from 'components/AddAppConnection';
 import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
+import useApp from 'hooks/useApp';
+
 const ReconnectConnection = (props) => {
   const { application, onClose } = props;
   const { connectionId } = useParams();
+
   return (
     <AddAppConnection
       onClose={onClose}
@@ -40,6 +43,7 @@ const ReconnectConnection = (props) => {
     />
   );
 };
+
 export default function Application() {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -52,33 +56,46 @@ export default function Application() {
   const [searchParams] = useSearchParams();
   const { appKey } = useParams();
   const navigate = useNavigate();
-  const { data, loading } = useQuery(GET_APP, { variables: { key: appKey } });
-  const { appConfig } = useAppConfig(appKey);
+
+  const { data, loading } = useApp(appKey);
+  const app = data?.data || {};
+
+  const { data: appConfig } = useAppConfig(appKey);
   const connectionId = searchParams.get('connectionId') || undefined;
+
+  const currentUserAbility = useCurrentUserAbility();
+
   const goToApplicationPage = () => navigate('connections');
-  const app = data?.getApp || {};
+
   const connectionOptions = React.useMemo(() => {
     const shouldHaveCustomConnection =
-      appConfig?.canConnect && appConfig?.canCustomConnect;
+      appConfig?.data?.canConnect && appConfig?.data?.canCustomConnect;
+
     const options = [
       {
         label: formatMessage('app.addConnection'),
         key: 'addConnection',
         'data-test': 'add-connection-button',
-        to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.canConnect),
+        to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.data?.canConnect),
+        disabled: !currentUserAbility.can('create', 'Connection'),
       },
     ];
+
     if (shouldHaveCustomConnection) {
       options.push({
         label: formatMessage('app.addCustomConnection'),
         key: 'addCustomConnection',
         'data-test': 'add-custom-connection-button',
         to: URLS.APP_ADD_CONNECTION(appKey),
+        disabled: !currentUserAbility.can('create', 'Connection'),
       });
     }
+
     return options;
-  }, [appKey, appConfig]);
+  }, [appKey, appConfig?.data, currentUserAbility]);
+
   if (loading) return null;
+
   return (
     <>
       <Box sx={{ py: 3 }}>
@@ -113,6 +130,7 @@ export default function Application() {
                       )}
                       fullWidth
                       icon={<AddIcon />}
+                      disabled={!currentUserAbility.can('create', 'Flow')}
                     >
                       {formatMessage('app.createFlow')}
                     </ConditionalIconButton>
@@ -124,9 +142,10 @@ export default function Application() {
                   element={
                     <SplitButton
                       disabled={
-                        appConfig &&
-                        !appConfig?.canConnect &&
-                        !appConfig?.canCustomConnect
+                        (appConfig?.data &&
+                          !appConfig?.data?.canConnect &&
+                          !appConfig?.data?.canCustomConnect) ||
+                        connectionOptions.every(({ disabled }) => disabled)
                       }
                       options={connectionOptions}
                     />

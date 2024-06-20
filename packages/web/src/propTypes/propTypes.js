@@ -210,7 +210,7 @@ export const ConnectionPropType = PropTypes.shape({
   count: PropTypes.number,
   flowCount: PropTypes.number,
   appData: AppPropType,
-  createdAt: PropTypes.string,
+  createdAt: PropTypes.number,
   reconnectable: PropTypes.bool,
   appAuthClientId: PropTypes.string,
 });
@@ -225,8 +225,8 @@ export const ExecutionStepPropType = PropTypes.shape({
   dataOut: PropTypes.object,
   errorDetails: PropTypes.object,
   status: PropTypes.string,
-  createdAt: PropTypes.string,
-  updatedAt: PropTypes.string,
+  createdAt: PropTypes.number,
+  updatedAt: PropTypes.number,
 });
 
 export const FlowPropType = PropTypes.shape({
@@ -236,10 +236,12 @@ export const FlowPropType = PropTypes.shape({
   active: PropTypes.bool,
   status: PropTypes.oneOf(['paused', 'published', 'draft']),
   createdAt: PropTypes.oneOfType([
+    PropTypes.number,
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),
   updatedAt: PropTypes.oneOfType([
+    PropTypes.number,
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),
@@ -279,10 +281,12 @@ export const ExecutionPropType = PropTypes.shape({
   executionSteps: PropTypes.arrayOf(ExecutionStepPropType),
   updatedAt: PropTypes.oneOfType([
     PropTypes.string,
+    PropTypes.number,
     PropTypes.instanceOf(Date),
   ]),
   createdAt: PropTypes.oneOfType([
     PropTypes.string,
+    PropTypes.number,
     PropTypes.instanceOf(Date),
   ]),
 });

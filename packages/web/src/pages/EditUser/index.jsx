@@ -7,6 +7,8 @@ import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+
 import Can from 'components/Can';
 import Container from 'components/Container';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
@@ -17,18 +19,24 @@ import * as URLS from 'config/urls';
 import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
-import useUser from 'hooks/useUser';
+import useAdminUser from 'hooks/useAdminUser';
+
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
+
 export default function EditUser() {
   const formatMessage = useFormatMessage();
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
-  const { user, loading: userLoading } = useUser(userId);
-  const { roles, loading: rolesLoading } = useRoles();
+  const { data: userData, isLoading: isUserLoading } = useAdminUser({ userId });
+  const user = userData?.data;
+  const { data, isLoading: isRolesLoading } = useRoles();
+  const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const handleUserUpdate = async (userDataToUpdate) => {
     try {
       await updateUser({
@@ -43,6 +51,8 @@ export default function EditUser() {
           },
         },
       });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',
         SnackbarProps: {
@@ -50,11 +60,13 @@ export default function EditUser() {
           persist: true,
         },
       });
+
       navigate(URLS.USERS);
     } catch (error) {
       throw new Error('Failed while updating!');
     }
   };
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -65,7 +77,7 @@ export default function EditUser() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          {userLoading && (
+          {isUserLoading && (
             <Stack direction="column" gap={2}>
               <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={55} />
@@ -74,7 +86,7 @@ export default function EditUser() {
             </Stack>
           )}
 
-          {!userLoading && (
+          {!isUserLoading && (
             <Form defaultValues={user} onSubmit={handleUserUpdate}>
               <Stack direction="column" gap={2}>
                 <TextField
@@ -106,7 +118,7 @@ export default function EditUser() {
                         label={formatMessage('userForm.role')}
                       />
                     )}
-                    loading={rolesLoading}
+                    loading={isRolesLoading}
                   />
                 </Can>
 

@@ -5,8 +5,12 @@ import crypto from 'node:crypto';
 import appConfig from '../config/app.js';
 import { hasValidLicense } from '../helpers/license.ee.js';
 import userAbility from '../helpers/user-ability.js';
+import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
 import Base from './base.js';
+import App from './app.js';
+import AccessToken from './access-token.js';
 import Connection from './connection.js';
+import Config from './config.js';
 import Execution from './execution.js';
 import Flow from './flow.js';
 import Identity from './identity.ee.js';
@@ -40,6 +44,14 @@ class User extends Base {
   };
 
   static relationMappings = () => ({
+    accessTokens: {
+      relation: Base.HasManyRelation,
+      modelClass: AccessToken,
+      join: {
+        from: 'users.id',
+        to: 'access_tokens.user_id',
+      },
+    },
     connections: {
       relation: Base.HasManyRelation,
       modelClass: Connection,
@@ -149,11 +161,34 @@ class User extends Base {
     return conditions.isCreator ? this.$relatedQuery('flows') : Flow.query();
   }
 
+  get authorizedSteps() {
+    const conditions = this.can('read', 'Flow');
+    return conditions.isCreator ? this.$relatedQuery('steps') : Step.query();
+  }
+
+  get authorizedConnections() {
+    const conditions = this.can('read', 'Connection');
+    return conditions.isCreator
+      ? this.$relatedQuery('connections')
+      : Connection.query();
+  }
+
   get authorizedExecutions() {
     const conditions = this.can('read', 'Execution');
     return conditions.isCreator
       ? this.$relatedQuery('executions')
       : Execution.query();
+  }
+
+  static async authenticate(email, password) {
+    const user = await User.query().findOne({
+      email: email?.toLowerCase() || null,
+    });
+
+    if (user && (await user.login(password))) {
+      const token = await createAuthTokenByUserId(user.id);
+      return token;
+    }
   }
 
   login(password) {
@@ -250,6 +285,31 @@ class User extends Base {
     return currentUsageData.consumedTaskCount < plan.quota;
   }
 
+  async getPlanAndUsage() {
+    const usageData = await this.$relatedQuery(
+      'currentUsageData'
+    ).throwIfNotFound();
+
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    const currentPlan = Billing.paddlePlans.find(
+      (plan) => plan.productId === subscription?.paddlePlanId
+    );
+
+    const planAndUsage = {
+      usage: {
+        task: usageData.consumedTaskCount,
+      },
+      plan: {
+        id: subscription?.paddlePlanId || null,
+        name: subscription ? currentPlan.name : 'Free Trial',
+        limit: currentPlan?.limit || null,
+      },
+    };
+
+    return planAndUsage;
+  }
+
   async getInvoices() {
     const subscription = await this.$relatedQuery('currentSubscription');
 
@@ -262,6 +322,71 @@ class User extends Base {
     );
 
     return invoices;
+  }
+
+  async getApps(name) {
+    const connections = await this.authorizedConnections
+      .clone()
+      .select('connections.key')
+      .where({ draft: false })
+      .count('connections.id as count')
+      .groupBy('connections.key');
+
+    const flows = await this.authorizedFlows
+      .clone()
+      .withGraphJoined('steps')
+      .orderBy('created_at', 'desc');
+
+    const duplicatedUsedApps = flows
+      .map((flow) => flow.steps.map((step) => step.appKey))
+      .flat()
+      .filter(Boolean);
+
+    const connectionKeys = connections.map((connection) => connection.key);
+    const usedApps = [...new Set([...duplicatedUsedApps, ...connectionKeys])];
+
+    let apps = await App.findAll(name);
+
+    apps = apps
+      .filter((app) => {
+        return usedApps.includes(app.key);
+      })
+      .map((app) => {
+        const connection = connections.find(
+          (connection) => connection.key === app.key
+        );
+
+        app.connectionCount = connection?.count || 0;
+        app.flowCount = 0;
+
+        flows.forEach((flow) => {
+          const usedFlow = flow.steps.find((step) => step.appKey === app.key);
+
+          if (usedFlow) {
+            app.flowCount += 1;
+          }
+        });
+
+        return app;
+      })
+      .sort((appA, appB) => appA.name.localeCompare(appB.name));
+
+    return apps;
+  }
+
+  static async createAdmin({ email, password, fullName }) {
+    const adminRole = await Role.findAdmin();
+
+    const adminUser = await this.query().insert({
+      email,
+      password,
+      fullName,
+      roleId: adminRole.id
+    });
+
+    await Config.markInstallationCompleted();
+
+    return adminUser;
   }
 
   async $beforeInsert(queryContext) {

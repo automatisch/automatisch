@@ -8,23 +8,29 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
+
 import useFormatMessage from 'hooks/useFormatMessage';
 import useApps from 'hooks/useApps';
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
+import useTriggers from 'hooks/useTriggers';
+import useActions from 'hooks/useActions';
 
 const optionGenerator = (app) => ({
   label: app.name,
   value: app.key,
 });
+
 const eventOptionGenerator = (app) => ({
   label: app.name,
   value: app.key,
   type: app?.type,
 });
+
 const getOption = (options, selectedOptionValue) =>
   options.find((option) => option.value === selectedOptionValue);
+
 function ChooseAppAndEventSubstep(props) {
   const {
     substep,
@@ -39,26 +45,48 @@ function ChooseAppAndEventSubstep(props) {
   const editorContext = React.useContext(EditorContext);
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
-  const { apps } = useApps({
-    onlyWithTriggers: isTrigger,
-    onlyWithActions: isAction,
-  });
-  const app = apps?.find((currentApp) => currentApp.key === step.appKey);
-  const appOptions = React.useMemo(
-    () => apps?.map((app) => optionGenerator(app)) || [],
-    [apps],
+  const useAppsOptions = {};
+
+  if (isTrigger) {
+    useAppsOptions.onlyWithTriggers = true;
+  }
+
+  if (isAction) {
+    useAppsOptions.onlyWithActions = true;
+  }
+
+  const { data: apps } = useApps(useAppsOptions);
+
+  const app = apps?.data?.find(
+    (currentApp) => currentApp?.key === step?.appKey,
   );
-  const actionsOrTriggers = (isTrigger ? app?.triggers : app?.actions) || [];
+
+  const { data: triggers } = useTriggers(app?.key);
+
+  const { data: actions } = useActions(app?.key);
+
+  const appOptions = React.useMemo(
+    () => apps?.data?.map((app) => optionGenerator(app)) || [],
+    [apps?.data],
+  );
+
+  const actionsOrTriggers = (isTrigger ? triggers?.data : actions?.data) || [];
+
   const actionOrTriggerOptions = React.useMemo(
     () => actionsOrTriggers.map((trigger) => eventOptionGenerator(trigger)),
-    [app?.key],
+    [actionsOrTriggers],
   );
+
   const selectedActionOrTrigger = actionsOrTriggers.find(
     (actionOrTrigger) => actionOrTrigger.key === step?.key,
   );
+
   const isWebhook = isTrigger && selectedActionOrTrigger?.type === 'webhook';
+
   const { name } = substep;
+
   const valid = !!step.key && !!step.appKey;
+
   // placeholders
   const onEventChange = React.useCallback(
     (event, selectedOption) => {
@@ -79,6 +107,7 @@ function ChooseAppAndEventSubstep(props) {
     },
     [step, onChange],
   );
+
   const onAppChange = React.useCallback(
     (event, selectedOption) => {
       if (typeof selectedOption === 'object') {
@@ -100,7 +129,9 @@ function ChooseAppAndEventSubstep(props) {
     },
     [step, onChange],
   );
+
   const onToggle = expanded ? onCollapse : onExpand;
+
   return (
     <React.Fragment>
       <FlowSubstepTitle
@@ -128,11 +159,13 @@ function ChooseAppAndEventSubstep(props) {
               <TextField
                 {...params}
                 label={formatMessage('flowEditor.chooseApp')}
+                required
               />
             )}
             value={getOption(appOptions, step.appKey) || null}
             onChange={onAppChange}
             data-test="choose-app-autocomplete"
+            componentsProps={{ popper: { className: 'nowheel' } }}
           />
 
           {step.appKey && (
@@ -154,6 +187,7 @@ function ChooseAppAndEventSubstep(props) {
                   <TextField
                     {...params}
                     label={formatMessage('flowEditor.chooseEvent')}
+                    required
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
@@ -194,6 +228,7 @@ function ChooseAppAndEventSubstep(props) {
                 value={getOption(actionOrTriggerOptions, step.key) || null}
                 onChange={onEventChange}
                 data-test="choose-event-autocomplete"
+                componentsProps={{ popper: { className: 'nowheel' } }}
               />
             </Box>
           )}

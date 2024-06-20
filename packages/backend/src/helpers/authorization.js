@@ -7,9 +7,49 @@ const authorizationList = {
     action: 'read',
     subject: 'User',
   },
+  'GET /api/v1/users/:userId/apps': {
+    action: 'read',
+    subject: 'Connection',
+  },
   'GET /api/v1/flows/:flowId': {
     action: 'read',
     subject: 'Flow',
+  },
+  'GET /api/v1/flows/': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/steps/:stepId/connection': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/steps/:stepId/previous-steps': {
+    action: 'update',
+    subject: 'Flow',
+  },
+  'POST /api/v1/steps/:stepId/dynamic-fields': {
+    action: 'update',
+    subject: 'Flow',
+  },
+  'POST /api/v1/steps/:stepId/dynamic-data': {
+    action: 'update',
+    subject: 'Flow',
+  },
+  'GET /api/v1/connections/:connectionId/flows': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'POST /api/v1/connections/:connectionId/test': {
+    action: 'update',
+    subject: 'Connection',
+  },
+  'GET /api/v1/apps/:appKey/flows': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'GET /api/v1/apps/:appKey/connections': {
+    action: 'read',
+    subject: 'Connection',
   },
   'GET /api/v1/executions/:executionId': {
     action: 'read',

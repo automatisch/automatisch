@@ -6,6 +6,8 @@ import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+
 import Can from 'components/Can';
 import Container from 'components/Container';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
@@ -16,15 +18,20 @@ import * as URLS from 'config/urls';
 import { CREATE_USER } from 'graphql/mutations/create-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
+
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
+
 export default function CreateUser() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [createUser, { loading }] = useMutation(CREATE_USER);
-  const { roles, loading: rolesLoading } = useRoles();
+  const { data, loading: isRolesLoading } = useRoles();
+  const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
+  const queryClient = useQueryClient();
+
   const handleUserCreation = async (userData) => {
     try {
       await createUser({
@@ -39,6 +46,7 @@ export default function CreateUser() {
           },
         },
       });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
       enqueueSnackbar(formatMessage('createUser.successfullyCreated'), {
         variant: 'success',
         persist: true,
@@ -46,11 +54,13 @@ export default function CreateUser() {
           'data-test': 'snackbar-create-user-success',
         },
       });
+
       navigate(URLS.USERS);
     } catch (error) {
       throw new Error('Failed while creating!');
     }
   };
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -101,7 +111,7 @@ export default function CreateUser() {
                       label={formatMessage('userForm.role')}
                     />
                   )}
-                  loading={rolesLoading}
+                  loading={isRolesLoading}
                 />
               </Can>
 

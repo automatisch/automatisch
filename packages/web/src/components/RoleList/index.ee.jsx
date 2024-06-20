@@ -11,14 +11,18 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
+
 import DeleteRoleButton from 'components/DeleteRoleButton/index.ee';
 import ListLoader from 'components/ListLoader';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
 import * as URLS from 'config/urls';
+
 export default function RoleList() {
   const formatMessage = useFormatMessage();
-  const { roles, loading } = useRoles();
+  const { data, isLoading: isRolesLoading } = useRoles();
+  const roles = data?.data;
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -46,15 +50,15 @@ export default function RoleList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {loading && (
+          {isRolesLoading && (
             <ListLoader
               rowsNumber={3}
               columnsNumber={2}
               data-test="roles-list-loader"
             />
           )}
-          {!loading &&
-            roles.map((role) => (
+          {!isRolesLoading &&
+            roles?.map((role) => (
               <TableRow
                 key={role.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

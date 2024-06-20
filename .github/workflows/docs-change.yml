@@ -1,0 +1,32 @@
+name: Automatisch Docs Change
+on:
+  pull_request:
+    paths:
+      - 'packages/docs/**'
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Label PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { pull_request } = context.payload;
+
+            const label = 'documentation-change';
+            const hasLabel = pull_request.labels.some(({ name }) => name === label);
+
+            if (!hasLabel) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pull_request.number,
+                labels: [label],
+              });
+
+              console.log(`Label "${label}" added to PR #${pull_request.number}`);
+            } else {
+              console.log(`Label "${label}" already exists on PR #${pull_request.number}`);
+            }

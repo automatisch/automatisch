@@ -9,7 +9,7 @@ export default defineApp({
   baseUrl: 'https://www.youtube.com/',
   apiBaseUrl: 'https://www.googleapis.com/youtube',
   iconUrl: '{BASE_URL}/apps/youtube/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/youtube/connection',
+  authDocUrl: '{DOCS_URL}/apps/youtube/connection',
   primaryColor: 'FF0000',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

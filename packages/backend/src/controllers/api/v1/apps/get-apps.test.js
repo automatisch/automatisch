@@ -11,7 +11,7 @@ describe('GET /api/v1/apps', () => {
 
   beforeEach(async () => {
     currentUser = await createUser();
-    token = createAuthTokenByUserId(currentUser.id);
+    token = await createAuthTokenByUserId(currentUser.id);
     apps = await App.findAll();
   });
 

@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://www.reddit.com',
   apiBaseUrl: 'https://oauth.reddit.com',
   iconUrl: '{BASE_URL}/apps/reddit/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/reddit/connection',
+  authDocUrl: '{DOCS_URL}/apps/reddit/connection',
   primaryColor: 'FF4500',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

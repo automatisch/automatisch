@@ -1,7 +1,6 @@
 import { allow, rule, shield } from 'graphql-shield';
-import jwt from 'jsonwebtoken';
-import appConfig from '../config/app.js';
 import User from '../models/user.js';
+import AccessToken from '../models/access-token.js';
 
 export const isAuthenticated = async (_parent, _args, req) => {
   const token = req.headers['authorization'];
@@ -9,10 +8,22 @@ export const isAuthenticated = async (_parent, _args, req) => {
   if (token == null) return false;
 
   try {
-    const { userId } = jwt.verify(token, appConfig.appSecretKey);
+    const accessToken = await AccessToken.query().findOne({
+      token,
+      revoked_at: null,
+    });
+
+    const expirationTime =
+      new Date(accessToken.createdAt).getTime() + accessToken.expiresIn * 1000;
+
+    if (Date.now() > expirationTime) {
+      return false;
+    }
+
+    const user = await accessToken.$relatedQuery('user');
 
     req.currentUser = await User.query()
-      .findById(userId)
+      .findById(user.id)
       .leftJoinRelated({
         role: true,
         permissions: true,
@@ -40,13 +51,6 @@ export const authenticateUser = async (request, response, next) => {
 const isAuthenticatedRule = rule()(isAuthenticated);
 
 export const authenticationRules = {
-  Query: {
-    '*': isAuthenticatedRule,
-    getConfig: allow,
-    getNotifications: allow,
-    healthcheck: allow,
-    listSamlAuthProviders: allow,
-  },
   Mutation: {
     '*': isAuthenticatedRule,
     forgotPassword: allow,

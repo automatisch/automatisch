@@ -7,7 +7,7 @@ export default defineApp({
   name: 'Telegram',
   key: 'telegram-bot',
   iconUrl: '{BASE_URL}/apps/telegram-bot/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/telegram-bot/connection',
+  authDocUrl: '{DOCS_URL}/apps/telegram-bot/connection',
   supportsConnections: true,
   baseUrl: 'https://telegram.org',
   apiBaseUrl: 'https://api.telegram.org',

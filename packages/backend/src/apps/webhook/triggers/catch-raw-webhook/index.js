@@ -7,7 +7,20 @@ export default defineTrigger({
   key: 'catchRawWebhook',
   type: 'webhook',
   showWebhookUrl: true,
-  description: 'Triggers when the webhook receives a request.',
+  description:
+    'Triggers (immediately if configured) when the webhook receives a request.',
+  arguments: [
+    {
+      label: 'Wait until flow is done',
+      key: 'workSynchronously',
+      type: 'dropdown',
+      required: true,
+      options: [
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
+      ],
+    },
+  ],
 
   async run($) {
     const dataItem = {

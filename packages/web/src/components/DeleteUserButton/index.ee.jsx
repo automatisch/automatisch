@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import { useQueryClient } from '@tanstack/react-query';
+
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import ConfirmationDialog from 'components/ConfirmationDialog';
@@ -17,9 +19,12 @@ function DeleteUserButton(props) {
   });
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
+  const queryClient = useQueryClient();
+
   const handleConfirm = React.useCallback(async () => {
     try {
       await deleteUser();
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
       setShowConfirmation(false);
       enqueueSnackbar(formatMessage('deleteUserButton.successfullyDeleted'), {
         variant: 'success',
@@ -31,6 +36,7 @@ function DeleteUserButton(props) {
       throw new Error('Failed while deleting!');
     }
   }, [deleteUser]);
+
   return (
     <>
       <IconButton

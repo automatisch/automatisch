@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { useLazyQuery } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -14,6 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
@@ -23,7 +23,7 @@ import ChooseConnectionSubstep from 'components/ChooseConnectionSubstep';
 import Form from 'components/Form';
 import FlowStepContextMenu from 'components/FlowStepContextMenu';
 import AppIcon from 'components/AppIcon';
-import { GET_STEP_WITH_TEST_EXECUTIONS } from 'graphql/queries/get-step-with-test-executions';
+
 import useFormatMessage from 'hooks/useFormatMessage';
 import useApps from 'hooks/useApps';
 import {
@@ -35,6 +35,11 @@ import {
 } from './style';
 import isEmpty from 'helpers/isEmpty';
 import { StepPropType } from 'propTypes/propTypes';
+import useTriggers from 'hooks/useTriggers';
+import useActions from 'hooks/useActions';
+import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
+import useActionSubsteps from 'hooks/useActionSubsteps';
+import useStepWithTestExecutions from 'hooks/useStepWithTestExecutions';
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -83,6 +88,7 @@ function generateValidationSchema(substeps) {
           }
         }
       }
+
       return {
         ...allValidations,
         ...substepArgumentValidations,
@@ -90,14 +96,16 @@ function generateValidationSchema(substeps) {
     },
     {},
   );
+
   const validationSchema = yup.object({
     parameters: yup.object(fieldValidations),
   });
+
   return yupResolver(validationSchema);
 }
 
 function FlowStep(props) {
-  const { collapsed, onChange, onContinue } = props;
+  const { collapsed, onChange, onContinue, flowId } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
   const step = props.step;
@@ -106,51 +114,78 @@ function FlowStep(props) {
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState(0);
-  const { apps } = useApps({
-    onlyWithTriggers: isTrigger,
-    onlyWithActions: isAction,
-  });
-  const [
-    getStepWithTestExecutions,
-    { data: stepWithTestExecutionsData, called: stepWithTestExecutionsCalled },
-  ] = useLazyQuery(GET_STEP_WITH_TEST_EXECUTIONS, {
-    fetchPolicy: 'network-only',
-  });
-  React.useEffect(() => {
-    if (!stepWithTestExecutionsCalled && !collapsed && !isTrigger) {
-      getStepWithTestExecutions({
-        variables: {
-          stepId: step.id,
-        },
-      });
-    }
-  }, [
-    collapsed,
-    stepWithTestExecutionsCalled,
-    getStepWithTestExecutions,
+  const useAppsOptions = {};
+
+  if (isTrigger) {
+    useAppsOptions.onlyWithTriggers = true;
+  }
+
+  if (isAction) {
+    useAppsOptions.onlyWithActions = true;
+  }
+
+  const { data: apps } = useApps(useAppsOptions);
+
+  const { data: stepWithTestExecutions, refetch } = useStepWithTestExecutions(
     step.id,
-    isTrigger,
-  ]);
-  const app = apps?.find((currentApp) => currentApp.key === step.appKey);
-  const actionsOrTriggers = (isTrigger ? app?.triggers : app?.actions) || [];
+  );
+  const stepWithTestExecutionsData = stepWithTestExecutions?.data;
+
+  React.useEffect(() => {
+    if (!collapsed && !isTrigger) {
+      refetch(step.id);
+    }
+  }, [collapsed, refetch, step.id, isTrigger]);
+
+  const app = apps?.data?.find((currentApp) => currentApp.key === step.appKey);
+
+  const { data: triggers } = useTriggers(app?.key);
+
+  const { data: actions } = useActions(app?.key);
+
+  const actionsOrTriggers = (isTrigger ? triggers?.data : actions?.data) || [];
+
   const actionOrTrigger = actionsOrTriggers?.find(
     ({ key }) => key === step.key,
   );
-  const substeps = actionOrTrigger?.substeps || [];
+
+  const { data: triggerSubsteps } = useTriggerSubsteps({
+    appKey: app?.key,
+    triggerKey: actionOrTrigger?.key,
+  });
+
+  const triggerSubstepsData = triggerSubsteps?.data || [];
+
+  const { data: actionSubsteps } = useActionSubsteps({
+    appKey: app?.key,
+    actionKey: actionOrTrigger?.key,
+  });
+
+  const actionSubstepsData = actionSubsteps?.data || [];
+
+  const substeps =
+    triggerSubstepsData.length > 0
+      ? triggerSubstepsData
+      : actionSubstepsData || [];
+
   const handleChange = React.useCallback(({ step }) => {
     onChange(step);
   }, []);
+
   const expandNextStep = React.useCallback(() => {
     setCurrentSubstep((currentSubstep) => (currentSubstep ?? 0) + 1);
   }, []);
+
   const handleSubmit = (val) => {
     handleChange({ step: val });
   };
+
   const stepValidationSchema = React.useMemo(
     () => generateValidationSchema(substeps),
     [substeps],
   );
-  if (!apps) {
+
+  if (!apps?.data) {
     return (
       <CircularProgress
         data-test="step-circular-loader"
@@ -158,22 +193,29 @@ function FlowStep(props) {
       />
     );
   }
+
   const onContextMenuClose = (event) => {
     event.stopPropagation();
     setAnchorEl(null);
   };
+
   const onContextMenuClick = (event) => {
     event.stopPropagation();
     setAnchorEl(contextButtonRef.current);
   };
+
   const onOpen = () => collapsed && props.onOpen?.();
+
   const onClose = () => props.onClose?.();
+
   const toggleSubstep = (substepIndex) =>
     setCurrentSubstep((value) =>
       value !== substepIndex ? substepIndex : null,
     );
+
   const validationStatusIcon =
     step.status === 'completed' ? validIcon : errorIcon;
+
   return (
     <Wrapper
       elevation={collapsed ? 1 : 4}
@@ -220,9 +262,7 @@ function FlowStep(props) {
       <Collapse in={!collapsed} unmountOnExit>
         <Content>
           <List>
-            <StepExecutionsProvider
-              value={stepWithTestExecutionsData?.getStepWithTestExecutions}
-            >
+            <StepExecutionsProvider value={stepWithTestExecutionsData}>
               <Form
                 defaultValues={step}
                 onSubmit={handleSubmit}
@@ -274,6 +314,7 @@ function FlowStep(props) {
                               : false
                           }
                           step={step}
+                          flowId={flowId}
                         />
                       )}
 
@@ -309,6 +350,7 @@ function FlowStep(props) {
           deletable={!isTrigger}
           onClose={onContextMenuClose}
           anchorEl={anchorEl}
+          flowId={flowId}
         />
       )}
     </Wrapper>
@@ -318,7 +360,6 @@ function FlowStep(props) {
 FlowStep.propTypes = {
   collapsed: PropTypes.bool,
   step: StepPropType.isRequired,
-  index: PropTypes.number,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   onChange: PropTypes.func.isRequired,

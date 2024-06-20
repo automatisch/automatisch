@@ -6,7 +6,7 @@ export default defineApp({
   name: 'SMTP',
   key: 'smtp',
   iconUrl: '{BASE_URL}/apps/smtp/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/smtp/connection',
+  authDocUrl: '{DOCS_URL}/apps/smtp/connection',
   supportsConnections: true,
   baseUrl: '',
   apiBaseUrl: '',

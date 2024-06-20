@@ -1,13 +1,10 @@
 import AppConfig from '../../src/models/app-config.js';
+import { faker } from '@faker-js/faker';
 
 export const createAppConfig = async (params = {}) => {
-  const appConfigData = {
-    key: params?.key || 'gitlab',
-  };
+  params.key = params?.key || faker.lorem.word();
 
-  const appConfig = await AppConfig.query()
-    .insert(appConfigData)
-    .returning('*');
+  const appConfig = await AppConfig.query().insertAndFetch(params);
 
   return appConfig;
 };

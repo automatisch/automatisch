@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://docs.google.com/forms',
   apiBaseUrl: 'https://forms.googleapis.com',
   iconUrl: '{BASE_URL}/apps/google-forms/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/google-forms/connection',
+  authDocUrl: '{DOCS_URL}/apps/google-forms/connection',
   primaryColor: '673AB7',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
