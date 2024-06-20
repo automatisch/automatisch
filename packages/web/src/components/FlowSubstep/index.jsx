@@ -11,6 +11,7 @@ import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
+import { usePrevious } from 'hooks/usePrevious';
 
 function FlowSubstep(props) {
   const {
@@ -23,7 +24,7 @@ function FlowSubstep(props) {
     onChange,
   } = props;
 
-  const stepRef = React.useRef(step);
+  const prevStep = usePrevious(step);
 
   const { name, arguments: args } = substep;
   const editorContext = React.useContext(EditorContext);
@@ -33,22 +34,13 @@ function FlowSubstep(props) {
 
   React.useEffect(() => {
     return () => {
-      if (
-        !isEqual(
-          stepRef.current.parameters,
-          formContext.getValues('parameters'),
-        )
-      ) {
+      if (!isEqual(prevStep?.parameters, formContext.getValues('parameters'))) {
         onChange({
           step: { ...step, parameters: formContext.getValues('parameters') },
         });
       }
     };
   }, []);
-
-  React.useEffect(() => {
-    stepRef.current = step;
-  }, [step]);
 
   return (
     <React.Fragment>
