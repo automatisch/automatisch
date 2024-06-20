@@ -5,13 +5,11 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import isEqual from 'lodash/isEqual';
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
-import { usePrevious } from 'hooks/usePrevious';
 
 function FlowSubstep(props) {
   const {
@@ -21,26 +19,12 @@ function FlowSubstep(props) {
     onCollapse,
     onSubmit,
     step,
-    onChange,
   } = props;
-
-  const prevStep = usePrevious(step);
-
   const { name, arguments: args } = substep;
   const editorContext = React.useContext(EditorContext);
   const formContext = useFormContext();
   const validationStatus = formContext.formState.isValid;
   const onToggle = expanded ? onCollapse : onExpand;
-
-  React.useEffect(() => {
-    return () => {
-      if (!isEqual(prevStep?.parameters, formContext.getValues('parameters'))) {
-        onChange({
-          step: { ...step, parameters: formContext.getValues('parameters') },
-        });
-      }
-    };
-  }, []);
 
   return (
     <React.Fragment>
