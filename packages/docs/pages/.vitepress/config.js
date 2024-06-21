@@ -123,6 +123,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Firefly III',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/firefly-iii/connection' }],
+        },
+        {
           text: 'Flickr',
           collapsible: true,
           collapsed: true,
