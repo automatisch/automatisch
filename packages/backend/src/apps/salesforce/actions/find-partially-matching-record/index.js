@@ -1,4 +1,6 @@
 import defineAction from '../../../../helpers/define-action.js';
+import listObjects from '../../dynamic-data/list-objects/index.js';
+import listFields from '../../dynamic-data/list-fields/index.js';
 
 export default defineAction({
   name: 'Find partially matching record',
@@ -57,13 +59,31 @@ export default defineAction({
   ],
 
   async run($) {
+    const sanitizedSearchValue = $.step.parameters.searchValue.replaceAll(`'`, `\\'`);
+
+    // validate given object
+    const objects = await listObjects.run($);
+    const validObject = objects.data.find((object) => object.value === $.step.parameters.object);
+
+    if (!validObject) {
+      throw new Error(`The "${$.step.parameters.object}" object does not exist.`);
+    }
+
+    // validate given object field
+    const fields = await listFields.run($);
+    const validField = fields.data.find((field) => field.value === $.step.parameters.field);
+
+    if (!validField) {
+      throw new Error(`The "${$.step.parameters.field}" field does not exist on the "${$.step.parameters.object}" object.`);
+    }
+
     const query = `
       SELECT
         FIELDS(ALL)
       FROM
         ${$.step.parameters.object}
       WHERE
-        ${$.step.parameters.field} LIKE '%${$.step.parameters.searchValue}%'
+        ${$.step.parameters.field} LIKE '%${sanitizedSearchValue}%'
       LIMIT 1
     `;
 
