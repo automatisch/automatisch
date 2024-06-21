@@ -518,6 +518,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Actions', link: '/apps/wordpress/actions' },
             { text: 'Triggers', link: '/apps/wordpress/triggers' },
             { text: 'Connection', link: '/apps/wordpress/connection' },
           ],
