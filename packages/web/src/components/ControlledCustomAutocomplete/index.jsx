@@ -61,6 +61,7 @@ function ControlledCustomAutocomplete(props) {
   const [isSingleChoice, setSingleChoice] = React.useState(undefined);
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef(null);
+  const mountedRef = React.useRef(false);
 
   const renderElement = React.useCallback(
     (props) => <Element {...props} disabled={disabled} />,
@@ -94,10 +95,14 @@ function ControlledCustomAutocomplete(props) {
   }, []);
 
   React.useEffect(() => {
-    const hasDependencies = dependsOnValues.length;
-    if (hasDependencies) {
-      // Reset the field when a dependent has been updated
-      resetEditor(editor);
+    if (mountedRef.current) {
+      const hasDependencies = dependsOnValues.length;
+      if (hasDependencies) {
+        // Reset the field when a dependent has been updated
+        resetEditor(editor);
+      }
+    } else {
+      mountedRef.current = true;
     }
   }, dependsOnValues);
 
