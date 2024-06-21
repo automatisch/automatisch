@@ -262,6 +262,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Monday',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/monday/connection' }],
+        },
+        {
           text: 'Notion',
           collapsible: true,
           collapsed: true,
