@@ -26,15 +26,14 @@ export default {
       clickToCopy: false,
     },
     {
-      key: 'domain',
-      label: 'Domain',
+      key: 'instanceUrl',
+      label: 'Instance URL',
       type: 'string',
       required: true,
       readOnly: false,
       value: null,
       placeholder: null,
-      description:
-        'For example: acmeco.od1 if your dashboard url is https://acmeco.od1.vtiger.com. (Unfortunately, we are not able to offer support for self-hosted instances at this moment.)',
+      description: '',
       clickToCopy: false,
     },
   ],
