@@ -3,7 +3,6 @@ const addAuthHeader = ($, requestConfig) => {
     requestConfig.headers.Authorization = `Bearer ${$.auth.data.apiKey}`;
     requestConfig.headers['carbone-version'] = '4';
   }
-
   return requestConfig;
 };
 
