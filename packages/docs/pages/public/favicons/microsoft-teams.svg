@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024" width="1024"  height="1024" >
+      <defs>
+        <linearGradient id="plate-fill" x1="-.2" y1="-.2" x2=".8" y2=".8">
+          <stop offset="0" stop-color="#5a62c4"></stop>
+          <stop offset="1" stop-color="#3940ab"></stop>
+        </linearGradient>
+        <style>
+          .cls-1{fill:#5059c9}.cls-2{fill:#7b83eb}
+        </style>
+        <filter id="person-shadow" x="-50%" y="-50%" width="300%" height="300%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="25"></feGaussianBlur>
+          <feOffset dy="25"></feOffset>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope=".25"></feFuncA>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+
+
+        <filter id="back-plate-shadow" x="-50%" y="-50%" width="300%" height="300%">
+          
+	<feGaussianBlur in="SourceAlpha" stdDeviation="24"></feGaussianBlur>
+	  <feOffset dx="2" dy="24"></feOffset>
+          <feComponentTransfer>
+          <feFuncA type="linear" slope=".6"></feFuncA>
+
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+        <filter id="tee-shadow" x="-50%" y="-50%" width="250%" height="250%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="12"></feGaussianBlur>
+          <feOffset dx="10" dy="20"></feOffset>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope=".2"></feFuncA>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+
+       
+
+        <clipPath id="back-plate-clip">
+          <path d="M684 432H512v-49.143A112 112 0 1 0 416 272a111.556 111.556 0 0 0 10.785 48H160a32.094 32.094 0 0 0-32 32v320a32.094 32.094 0 0 0 32 32h178.67c15.236 90.8 94.2 160 189.33 160 106.039 0 192-85.961 192-192V468a36 36 0 0 0-36-36z" fill="#fff"></path>
+        </clipPath>
+      </defs>
+      <g id="small_person" filter="url(#person-shadow)">
+        <path id="Body" class="cls-1" d="M692 432h168a36 36 0 0 1 36 36v164a120 120 0 0 1-120 120 120 120 0 0 1-120-120V468a36 36 0 0 1 36-36z"></path>
+        <circle id="Head" class="cls-1" cx="776" cy="304" r="80"></circle>
+      </g>
+      <g id="Large_Person" filter="url(#person-shadow)">
+        <path id="Body-2" data-name="Body" class="cls-2" d="M372 432h312a36 36 0 0 1 36 36v204a192 192 0 0 1-192 192 192 192 0 0 1-192-192V468a36 36 0 0 1 36-36z"></path>
+        <circle id="Head-2" data-name="Head" class="cls-2" cx="528" cy="272" r="112"></circle>
+      </g>
+      <rect id="Back_Plate" x="128" y="320" width="384" height="384" rx="32" ry="32" filter="url(#back-plate-shadow)" clip-path="url(#back-plate-clip)" fill="url(#plate-fill)"></rect>
+      <path id="Letter_T" d="M399.365 445.855h-60.293v164.2h-38.418v-164.2h-60.02V414h158.73z" filter="url(#tee-shadow)" fill="#fff"></path>
+    </svg>
