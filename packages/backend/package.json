@@ -5,8 +5,8 @@
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*.js' --exec 'node' src/server.js",
-    "worker": "nodemon --watch 'src/**/*.js' --exec 'node' src/worker.js",
+    "dev": "nodemon --watch 'src/**/*.js' --exec node src/server.js",
+    "worker": "nodemon --watch 'src/**/*.js' --exec node src/worker.js",
     "start": "node src/server.js",
     "start:worker": "node src/worker.js",
     "pretest": "APP_ENV=test node ./test/setup/prepare-test-env.js",
