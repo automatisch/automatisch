@@ -32,7 +32,7 @@ export const useAutoLayout = () => {
   const nodes = useNodes();
   const prevNodes = usePrevious(nodes);
   const nodesInitialized = useNodesInitialized();
-  const { getEdges, setNodes, setEdges } = useReactFlow();
+  const { getEdges, setNodes, setEdges, fitView } = useReactFlow();
 
   const onLayout = useCallback(
     (nodes, edges) => {
@@ -61,6 +61,8 @@ export const useAutoLayout = () => {
         nodes.map(({ width, height }) => ({ width, height })),
         prevNodes.map(({ width, height }) => ({ width, height })),
       );
+
+    fitView();
 
     if (shouldAutoLayout) {
       onLayout(nodes, getEdges());

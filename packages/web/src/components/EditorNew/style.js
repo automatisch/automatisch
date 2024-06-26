@@ -7,7 +7,7 @@ export const EditorWrapper = styled(Stack)(({ theme }) => ({
     flexGrow: 1,
   },
 
-  '& .react-flow__pane, & .react-flow__node': {
-    cursor: 'auto !important',
-  },
+  // '& .react-flow__pane, & .react-flow__node': {
+  //   cursor: 'auto !important',
+  // },
 }));

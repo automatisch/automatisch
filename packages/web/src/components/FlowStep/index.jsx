@@ -105,7 +105,7 @@ function generateValidationSchema(substeps) {
 }
 
 function FlowStep(props) {
-  const { collapsed, onChange, onContinue, flowId } = props;
+  const { collapsed, onChange, onContinue, flowId, collapseAnimation } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
   const step = props.step;
@@ -259,7 +259,11 @@ function FlowStep(props) {
         </Stack>
       </Header>
 
-      <Collapse in={!collapsed} unmountOnExit>
+      <Collapse
+        in={!collapsed}
+        unmountOnExit
+        {...(!collapseAnimation ? { timeout: 0 } : {})}
+      >
         <Content>
           <List>
             <StepExecutionsProvider value={stepWithTestExecutionsData}>
@@ -364,6 +368,11 @@ FlowStep.propTypes = {
   onClose: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onContinue: PropTypes.func,
+  collapseAnimation: PropTypes.bool,
+};
+
+FlowStep.defaultProps = {
+  collapseAnimation: true,
 };
 
 export default FlowStep;

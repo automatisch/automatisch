@@ -9,6 +9,6 @@ export const NodeWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export const NodeInnerWrapper = styled(Box)(({ theme }) => ({
-  maxWidth: 900,
+  width: 900,
   flex: 1,
 }));
