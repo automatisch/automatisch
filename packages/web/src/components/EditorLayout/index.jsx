@@ -59,23 +59,25 @@ export default function EditorLayout() {
 
   const onFlowStatusUpdate = React.useCallback(
     async (active) => {
-      await updateFlowStatus({
-        variables: {
-          input: {
-            id: flowId,
-            active,
+      try {
+        await updateFlowStatus({
+          variables: {
+            input: {
+              id: flowId,
+              active,
+            },
           },
-        },
-        optimisticResponse: {
-          updateFlowStatus: {
-            __typename: 'Flow',
-            id: flowId,
-            active,
+          optimisticResponse: {
+            updateFlowStatus: {
+              __typename: 'Flow',
+              id: flowId,
+              active,
+            },
           },
-        },
-      });
+        });
 
-      await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
+        await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
+      } catch (err) {}
     },
     [flowId, queryClient],
   );
