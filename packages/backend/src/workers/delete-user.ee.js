@@ -40,6 +40,7 @@ export const worker = new Worker(
       await user.$relatedQuery('usageData').withSoftDeleted().hardDelete();
     }
 
+    await user.$relatedQuery('accessTokens').withSoftDeleted().hardDelete();
     await user.$query().withSoftDeleted().hardDelete();
   },
   { connection: redisConfig }
