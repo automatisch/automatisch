@@ -36,23 +36,18 @@ export default function EditorLayout() {
 
   const onFlowNameUpdate = React.useCallback(
     async (name) => {
-      await updateFlow({
-        variables: {
-          input: {
-            id: flowId,
-            name,
+      try {
+        await updateFlow({
+          variables: {
+            input: {
+              id: flowId,
+              name,
+            },
           },
-        },
-        optimisticResponse: {
-          updateFlow: {
-            __typename: 'Flow',
-            id: flowId,
-            name,
-          },
-        },
-      });
+        });
 
-      await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
+        await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
+      } catch (e) {}
     },
     [flowId, queryClient],
   );
@@ -63,13 +58,6 @@ export default function EditorLayout() {
         await updateFlowStatus({
           variables: {
             input: {
-              id: flowId,
-              active,
-            },
-          },
-          optimisticResponse: {
-            updateFlowStatus: {
-              __typename: 'Flow',
               id: flowId,
               active,
             },
@@ -126,7 +114,7 @@ export default function EditorLayout() {
           <Button
             variant="contained"
             size="small"
-            onClick={() => onFlowStatusUpdate(!flow.active)}
+            onClick={() => onFlowStatusUpdate(flow ? !flow.active : false)}
             data-test={
               flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'
             }
