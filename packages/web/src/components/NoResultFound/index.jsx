@@ -5,8 +5,10 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CardActionArea from '@mui/material/CardActionArea';
 import Typography from '@mui/material/Typography';
 import { CardContent } from './style';
+
 export default function NoResultFound(props) {
   const { text, to } = props;
+
   const ActionAreaLink = React.useMemo(
     () =>
       React.forwardRef(function InlineLink(linkProps, ref) {
@@ -15,12 +17,12 @@ export default function NoResultFound(props) {
       }),
     [to],
   );
+
   return (
     <Card elevation={0}>
       <CardActionArea component={ActionAreaLink} {...props}>
         <CardContent>
           {!!to && <AddCircleIcon color="primary" />}
-
           <Typography variant="body1">{text}</Typography>
         </CardContent>
       </CardActionArea>

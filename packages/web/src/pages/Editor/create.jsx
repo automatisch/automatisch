@@ -7,13 +7,15 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { CREATE_FLOW } from 'graphql/mutations/create-flow';
 import Box from '@mui/material/Box';
+
 export default function CreateFlow() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const [createFlow] = useMutation(CREATE_FLOW);
+  const [createFlow, { error }] = useMutation(CREATE_FLOW);
   const appKey = searchParams.get('appKey');
   const connectionId = searchParams.get('connectionId');
+
   React.useEffect(() => {
     async function initiate() {
       const variables = {};
@@ -33,6 +35,11 @@ export default function CreateFlow() {
     }
     initiate();
   }, [createFlow, navigate, appKey, connectionId]);
+
+  if (error) {
+    return null;
+  }
+
   return (
     <Box
       sx={{
@@ -45,7 +52,6 @@ export default function CreateFlow() {
       }}
     >
       <CircularProgress size={16} thickness={7.5} />
-
       <Typography variant="body2">
         {formatMessage('createFlow.creating')}
       </Typography>
