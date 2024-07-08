@@ -43,6 +43,11 @@ class User extends Base {
         type: ['string', 'null'],
         format: 'date-time',
       },
+      invitationToken: { type: ['string', 'null'] },
+      invitationTokenSentAt: {
+        type: ['string', 'null'],
+        format: 'date-time',
+      },
       trialExpiryDate: { type: 'string' },
       roleId: { type: 'string', format: 'uuid' },
       deletedAt: { type: 'string' },
@@ -210,10 +215,25 @@ class User extends Base {
     await this.$query().patch({ resetPasswordToken, resetPasswordTokenSentAt });
   }
 
+  async generateInvitationToken() {
+    const invitationToken = crypto.randomBytes(64).toString('hex');
+    const invitationTokenSentAt = new Date().toISOString();
+
+    await this.$query().patch({ invitationToken, invitationTokenSentAt });
+  }
+
   async resetPassword(password) {
     return await this.$query().patch({
       resetPasswordToken: null,
       resetPasswordTokenSentAt: null,
+      password,
+    });
+  }
+
+  async acceptInvitation(password) {
+    return await this.$query().patch({
+      invitationToken: null,
+      invitationTokenSentAt: null,
       password,
     });
   }
@@ -228,6 +248,18 @@ class User extends Base {
     const fourHoursInMilliseconds = 1000 * 60 * 60 * 4;
 
     return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
+  }
+
+  async isInvitationTokenValid() {
+    if (!this.invitationTokenSentAt) {
+      return false;
+    }
+
+    const sentAt = new Date(this.invitationTokenSentAt);
+    const now = new Date();
+    const seventyTwoHoursInMilliseconds = 1000 * 60 * 60 * 72;
+
+    return now.getTime() - sentAt.getTime() < seventyTwoHoursInMilliseconds;
   }
 
   async generateHash() {

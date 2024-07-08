@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
@@ -26,9 +27,9 @@ function generateRoleOptions(roles) {
 export default function CreateUser() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const [createUser, { loading }] = useMutation(CREATE_USER);
-  const { data, loading: isRolesLoading } = useRoles();
-  const roles = data?.data;
+  const [createUser, { loading, data }] = useMutation(CREATE_USER);
+  const { data: rolesData, loading: isRolesLoading } = useRoles();
+  const roles = rolesData?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const queryClient = useQueryClient();
 
@@ -38,7 +39,6 @@ export default function CreateUser() {
         variables: {
           input: {
             fullName: userData.fullName,
-            password: userData.password,
             email: userData.email,
             role: {
               id: userData.role?.id,
@@ -54,8 +54,6 @@ export default function CreateUser() {
           'data-test': 'snackbar-create-user-success',
         },
       });
-
-      navigate(URLS.USERS);
     } catch (error) {
       throw new Error('Failed while creating!');
     }
@@ -89,15 +87,6 @@ export default function CreateUser() {
                 fullWidth
               />
 
-              <TextField
-                required={true}
-                name="password"
-                label={formatMessage('userForm.password')}
-                type="password"
-                data-test="password-input"
-                fullWidth
-              />
-
               <Can I="update" a="Role">
                 <ControlledAutocomplete
                   name="role.id"
@@ -125,6 +114,26 @@ export default function CreateUser() {
               >
                 {formatMessage('createUser.submit')}
               </LoadingButton>
+
+              {data && (
+                <Alert
+                  severity="info"
+                  color="primary"
+                  sx={{ fontWeight: '500' }}
+                >
+                  {formatMessage('createUser.invitationEmailInfo', {
+                    link: () => (
+                      <a
+                        href={data.createUser.acceptInvitationUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {data.createUser.acceptInvitationUrl}
+                      </a>
+                    ),
+                  })}
+                </Alert>
+              )}
             </Stack>
           </Form>
         </Grid>
