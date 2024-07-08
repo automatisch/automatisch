@@ -33,8 +33,16 @@ class User extends Base {
       fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string' },
+      status: {
+        type: 'string',
+        enum: ['active', 'pending'],
+        default: 'active',
+      },
       resetPasswordToken: { type: ['string', 'null'] },
-      resetPasswordTokenSentAt: { type: ['string', 'null'], format: 'date-time' },
+      resetPasswordTokenSentAt: {
+        type: ['string', 'null'],
+        format: 'date-time',
+      },
       trialExpiryDate: { type: 'string' },
       roleId: { type: 'string', format: 'uuid' },
       deletedAt: { type: 'string' },
@@ -381,7 +389,7 @@ class User extends Base {
       email,
       password,
       fullName,
-      roleId: adminRole.id
+      roleId: adminRole.id,
     });
 
     await Config.markInstallationCompleted();
