@@ -7,6 +7,7 @@ export default async (request, response) => {
     disableNotificationsPage: appConfig.disableNotificationsPage,
     disableFavicon: appConfig.disableFavicon,
     additionalDrawerLink: appConfig.additionalDrawerLink,
+    additionalDrawerLinkIcon: appConfig.additionalDrawerLinkIcon,
     additionalDrawerLinkText: appConfig.additionalDrawerLinkText,
   };
 

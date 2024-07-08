@@ -8,8 +8,9 @@ import AppsIcon from '@mui/icons-material/Apps';
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
 import HistoryIcon from '@mui/icons-material/History';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
 import PropTypes from 'prop-types';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import SecurityIcon from '@mui/icons-material/Security';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -17,6 +18,11 @@ import useVersion from 'hooks/useVersion';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
+
+const additionalDrawerLinkIcons = {
+  Security: SecurityIcon,
+  ArrowBackIosNew: ArrowBackIosNewIcon,
+};
 
 const drawerLinks = [
   {
@@ -43,6 +49,7 @@ const generateDrawerBottomLinks = async ({
   disableNotificationsPage,
   notificationBadgeContent = 0,
   additionalDrawerLink,
+  additionalDrawerLinkIcon,
   additionalDrawerLinkText,
   formatMessage,
 }) => {
@@ -57,7 +64,9 @@ const generateDrawerBottomLinks = async ({
     additionalDrawerLink && additionalDrawerLinkText;
 
   const additionalDrawerLinkObject = {
-    Icon: ArrowBackIosNew,
+    Icon:
+      additionalDrawerLinkIcons[additionalDrawerLinkIcon] ||
+      ArrowBackIosNewIcon,
     primary: additionalDrawerLinkText || '',
     to: additionalDrawerLink || '',
     target: '_blank',
@@ -95,6 +104,7 @@ function PublicLayout({ children }) {
         notificationBadgeContent: version.newVersionCount,
         disableNotificationsPage: config?.disableNotificationsPage,
         additionalDrawerLink: config?.additionalDrawerLink,
+        additionalDrawerLinkIcon: config?.additionalDrawerLinkIcon,
         additionalDrawerLinkText: config?.additionalDrawerLinkText,
         formatMessage,
       });
