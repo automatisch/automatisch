@@ -11,10 +11,10 @@ export class AdminCreateUserPage extends AuthenticatedPage {
     super(page);
     this.fullNameInput = page.getByTestId('full-name-input');
     this.emailInput = page.getByTestId('email-input');
-    this.passwordInput = page.getByTestId('password-input');
     this.roleInput = page.getByTestId('role.id-autocomplete');
     this.createButton = page.getByTestId('create-button');
     this.pageTitle = page.getByTestId('create-user-title');
+    this.invitationEmailInfoAlert = page.getByTestId('invitation-email-info-alert');
   }
 
   seed(seed) {

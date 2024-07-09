@@ -190,13 +190,15 @@ test.describe('Role management page', () => {
         await adminCreateUserPage.emailInput.fill(
           'user-role-test@automatisch.io'
         );
-        await adminCreateUserPage.passwordInput.fill('sample');
         await adminCreateUserPage.roleInput.click();
         await adminCreateUserPage.page
           .getByRole('option', { name: 'Delete Role', exact: true })
           .click();
         await adminCreateUserPage.createButton.click();
-        await adminUsersPage.snackbar.waitFor({
+        await adminCreateUserPage.snackbar.waitFor({
+          state: 'attached',
+        });
+        await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
           state: 'attached',
         });
         const snackbar = await adminUsersPage.getSnackbarData(
@@ -292,13 +294,15 @@ test.describe('Role management page', () => {
       await adminCreateUserPage.emailInput.fill(
         'user-delete-role-test@automatisch.io'
       );
-      await adminCreateUserPage.passwordInput.fill('sample');
       await adminCreateUserPage.roleInput.click();
       await adminCreateUserPage.page
         .getByRole('option', { name: 'Cannot Delete Role' })
         .click();
       await adminCreateUserPage.createButton.click();
       await adminCreateUserPage.snackbar.waitFor({
+        state: 'attached',
+      });
+      await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
         state: 'attached',
       });
       const snackbar = await adminCreateUserPage.getSnackbarData(
@@ -333,7 +337,7 @@ test.describe('Role management page', () => {
         state: 'attached',
       });
       /*
-        * TODO: await snackbar - make assertions based on product 
+        * TODO: await snackbar - make assertions based on product
         * decisions
         const snackbar = await adminRolesPage.getSnackbarData();
         await expect(snackbar.variant).toBe('...');
@@ -374,13 +378,15 @@ test('Accessibility of role management page', async ({
     await adminCreateUserPage.isMounted();
     await adminCreateUserPage.fullNameInput.fill('Role Test');
     await adminCreateUserPage.emailInput.fill('basic-role-test@automatisch.io');
-    await adminCreateUserPage.passwordInput.fill('sample');
     await adminCreateUserPage.roleInput.click();
     await adminCreateUserPage.page
       .getByRole('option', { name: 'Basic Test' })
       .click();
     await adminCreateUserPage.createButton.click();
     await adminCreateUserPage.snackbar.waitFor({
+      state: 'attached',
+    });
+    await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
       state: 'attached',
     });
     const snackbar = await adminCreateUserPage.getSnackbarData(

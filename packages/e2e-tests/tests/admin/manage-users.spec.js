@@ -29,12 +29,15 @@ test.describe('User management page', () => {
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(user.fullName);
           await adminCreateUserPage.emailInput.fill(user.email);
-          await adminCreateUserPage.passwordInput.fill(user.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
+          await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
+            state: 'attached'
+          });
+
           const snackbar = await adminUsersPage.getSnackbarData(
             'snackbar-create-user-success'
           );
@@ -57,7 +60,7 @@ test.describe('User management page', () => {
         'Edit user info and make sure the edit works correctly',
         async () => {
           await adminUsersPage.findUserPageWithEmail(user.email);
-          
+
           let userRow = await adminUsersPage.getUserRowByEmail(user.email);
           await adminUsersPage.clickEditUser(userRow);
           await adminEditUserPage.waitForLoad(user.fullName);
@@ -85,7 +88,7 @@ test.describe('User management page', () => {
           await adminUsersPage.clickDeleteUser(userRow);
           const modal = adminUsersPage.deleteUserModal;
           await modal.deleteButton.click();
-        
+
           const snackbar = await adminUsersPage.getSnackbarData(
             'snackbar-delete-user-success'
           );
@@ -108,7 +111,6 @@ test.describe('User management page', () => {
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
           await adminCreateUserPage.emailInput.fill(testUser.email);
-          await adminCreateUserPage.passwordInput.fill(testUser.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
@@ -179,7 +181,6 @@ test.describe('User management page', () => {
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
           await adminCreateUserPage.emailInput.fill(testUser.email);
-          await adminCreateUserPage.passwordInput.fill(testUser.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
@@ -206,7 +207,7 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          
+
           await expect(page.url()).toBe(createUserPageUrl);
           const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
           await expect(snackbar.variant).toBe('error');
@@ -230,7 +231,6 @@ test.describe('User management page', () => {
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(user1.fullName);
           await adminCreateUserPage.emailInput.fill(user1.email);
-          await adminCreateUserPage.passwordInput.fill(user1.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }

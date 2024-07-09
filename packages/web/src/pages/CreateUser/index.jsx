@@ -15,7 +15,6 @@ import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
-import * as URLS from 'config/urls';
 import { CREATE_USER } from 'graphql/mutations/create-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
@@ -25,7 +24,6 @@ function generateRoleOptions(roles) {
 }
 
 export default function CreateUser() {
-  const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [createUser, { loading, data }] = useMutation(CREATE_USER);
   const { data: rolesData, loading: isRolesLoading } = useRoles();
@@ -120,6 +118,7 @@ export default function CreateUser() {
                   severity="info"
                   color="primary"
                   sx={{ fontWeight: '500' }}
+                  data-test="invitation-email-info-alert"
                 >
                   {formatMessage('createUser.invitationEmailInfo', {
                     link: () => (
