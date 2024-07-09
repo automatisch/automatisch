@@ -23,7 +23,7 @@ const createUser = async (_parent, params, context) => {
   const userPayload = {
     fullName,
     email,
-    status: 'pending',
+    status: 'invited',
   };
 
   try {

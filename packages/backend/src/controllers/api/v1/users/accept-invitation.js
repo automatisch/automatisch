@@ -12,9 +12,7 @@ export default async (request, response) => {
     .throwIfNotFound();
 
   if (!user.isInvitationTokenValid()) {
-    throw new Error(
-      'Invitation link is not valid or expired. You can use reset password to get a new link.'
-    );
+    return response.status(422).end();
   }
 
   await user.acceptInvitation(password);

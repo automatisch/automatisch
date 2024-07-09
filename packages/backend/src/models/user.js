@@ -35,7 +35,7 @@ class User extends Base {
       password: { type: 'string' },
       status: {
         type: 'string',
-        enum: ['active', 'pending'],
+        enum: ['active', 'invited'],
         default: 'active',
       },
       resetPasswordToken: { type: ['string', 'null'] },
@@ -234,11 +234,12 @@ class User extends Base {
     return await this.$query().patch({
       invitationToken: null,
       invitationTokenSentAt: null,
+      status: 'active',
       password,
     });
   }
 
-  async isResetPasswordTokenValid() {
+  isResetPasswordTokenValid() {
     if (!this.resetPasswordTokenSentAt) {
       return false;
     }
@@ -250,7 +251,7 @@ class User extends Base {
     return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
   }
 
-  async isInvitationTokenValid() {
+  isInvitationTokenValid() {
     if (!this.invitationTokenSentAt) {
       return false;
     }

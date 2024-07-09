@@ -5,6 +5,7 @@ export const EXECUTION = (executionId) => `/executions/${executionId}`;
 export const LOGIN = '/login';
 export const LOGIN_CALLBACK = `${LOGIN}/callback`;
 export const SIGNUP = '/sign-up';
+export const ACCEPT_INVITATON = '/accept-invitation';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const RESET_PASSWORD = '/reset-password';
 export const APPS = '/apps';
