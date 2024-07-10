@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from 'helpers/api';
 
 const variableRegExp = /({.*?})/;
+
 // TODO: extract this function to a separate file
 function computeArguments(args, getValues) {
   const initialValue = {};

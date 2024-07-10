@@ -19,7 +19,9 @@ function FlowSubstep(props) {
     onCollapse,
     onSubmit,
     step,
+    addAdditionalFieldsValidation,
   } = props;
+
   const { name, arguments: args } = substep;
   const editorContext = React.useContext(EditorContext);
   const formContext = useFormContext();
@@ -54,6 +56,7 @@ function FlowSubstep(props) {
                   stepId={step.id}
                   disabled={editorContext.readOnly}
                   showOptionValue={true}
+                  addAdditionalFieldsValidation={addAdditionalFieldsValidation}
                 />
               ))}
             </Stack>
