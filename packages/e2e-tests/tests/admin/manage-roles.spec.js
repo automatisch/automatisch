@@ -1,5 +1,6 @@
 const { test, expect } = require('../../fixtures/index');
 const { LoginPage } = require('../../fixtures/login-page');
+const { AcceptInvitation } = require('../../fixtures/accept-invitation-page');
 
 test.describe('Role management page', () => {
   test('Admin role is not deletable', async ({ adminRolesPage }) => {
@@ -397,10 +398,23 @@ test('Accessibility of role management page', async ({
   });
 
   await test.step('Logout and login to the basic role user', async () => {
+    const acceptInvitationLink = await adminCreateUserPage.acceptInvitationLink;
+    console.log(acceptInvitationLink);
+    const acceptInvitationUrl = await acceptInvitationLink.textContent();
+    console.log(acceptInvitationUrl);
+    const acceptInvitatonToken = acceptInvitationUrl.split('?token=')[1];
+
     await page.getByTestId('profile-menu-button').click();
     await page.getByTestId('logout-item').click();
-    // await page.reload({ waitUntil: 'networkidle' });
+
+    const acceptInvitationPage = new AcceptInvitation(page);
+
+    await acceptInvitationPage.open(acceptInvitatonToken);
+
+    await acceptInvitationPage.acceptInvitation('sample');
+
     const loginPage = new LoginPage(page);
+
     // await loginPage.isMounted();
     await loginPage.login('basic-role-test@automatisch.io', 'sample');
     await expect(loginPage.loginButton).not.toBeVisible();
@@ -416,9 +430,14 @@ test('Accessibility of role management page', async ({
       await page.waitForTimeout(750);
       const isUnmounted = await page.evaluate(() => {
         const root = document.querySelector('#root');
+
         if (root) {
-          return root.children.length === 0;
+          // We have react query devtools only in dev env.
+          // In production, there is nothing in root.
+          // That's why `<= 1`.
+          return root.children.length <= 1;
         }
+
         return false;
       });
       await expect(isUnmounted).toBe(true);

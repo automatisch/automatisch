@@ -151,6 +151,7 @@ function AddAppConnection(props) {
               color="primary"
               sx={{ boxShadow: 2 }}
               loading={inProgress}
+              disabled={!authenticate}
               data-test="create-connection-button"
             >
               {formatMessage('addAppConnection.submit')}

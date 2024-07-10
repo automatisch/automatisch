@@ -57,6 +57,7 @@ export default function ResetPasswordForm() {
           mb: 2,
         }}
         gutterBottom
+        data-test="accept-invitation-form-title"
       >
         {formatMessage('acceptInvitationForm.title')}
       </Typography>
@@ -70,6 +71,7 @@ export default function ResetPasswordForm() {
             <TextField
               label={formatMessage('acceptInvitationForm.passwordFieldLabel')}
               name="password"
+              data-test="password-text-field"
               fullWidth
               margin="dense"
               type="password"
@@ -90,6 +92,7 @@ export default function ResetPasswordForm() {
                 'acceptInvitationForm.confirmPasswordFieldLabel',
               )}
               name="confirmPassword"
+              data-test="confirm-password-text-field"
               fullWidth
               margin="dense"
               type="password"
@@ -118,6 +121,7 @@ export default function ResetPasswordForm() {
             <LoadingButton
               type="submit"
               variant="contained"
+              data-test="submit-button"
               color="primary"
               sx={{ boxShadow: 2, my: 3 }}
               loading={acceptInvitation.isPending}
