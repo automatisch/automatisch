@@ -108,7 +108,11 @@ function AddAppConnection(props) {
   if (appAuthClientId) return <React.Fragment />;
 
   return (
-    <Dialog open={true} onClose={onClose} data-test="add-app-connection-dialog">
+    <Dialog
+      open={true}
+      onClose={() => onClose()}
+      data-test="add-app-connection-dialog"
+    >
       <DialogTitle>
         {hasConnection
           ? formatMessage('app.reconnectConnection')
