@@ -4,4 +4,5 @@ export const Link = styled(RouterLink)(() => ({
   textDecoration: 'none',
   color: 'inherit',
   display: 'inline-flex',
+  flex: 1,
 }));
