@@ -14,6 +14,7 @@ import { EditorProvider } from 'contexts/Editor';
 import EditableTypography from 'components/EditableTypography';
 import Container from 'components/Container';
 import Editor from 'components/Editor';
+import Can from 'components/Can';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { UPDATE_FLOW_STATUS } from 'graphql/mutations/update-flow-status';
 import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
@@ -111,18 +112,23 @@ export default function EditorLayout() {
         </Box>
 
         <Box pr={1}>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => onFlowStatusUpdate(flow ? !flow.active : false)}
-            data-test={
-              flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'
-            }
-          >
-            {flow?.active
-              ? formatMessage('flowEditor.unpublish')
-              : formatMessage('flowEditor.publish')}
-          </Button>
+          <Can I="publish" a="Flow" passThrough>
+            {(allowed) => (
+              <Button
+                disabled={!allowed || !flow}
+                variant="contained"
+                size="small"
+                onClick={() => onFlowStatusUpdate(!flow.active)}
+                data-test={
+                  flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'
+                }
+              >
+                {flow?.active
+                  ? formatMessage('flowEditor.unpublish')
+                  : formatMessage('flowEditor.publish')}
+              </Button>
+            )}
+          </Can>
         </Box>
       </TopBar>
 
