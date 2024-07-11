@@ -140,8 +140,7 @@ function ChooseConnectionSubstep(props) {
   const handleAddConnectionClose = React.useCallback(
     async (response) => {
       setShowAddConnectionDialog(false);
-      const connectionId = response?.createConnection.id;
-
+      const connectionId = response?.createConnection?.id;
       if (connectionId) {
         await refetch();
         onChange({
