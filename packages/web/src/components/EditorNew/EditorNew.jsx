@@ -1,4 +1,4 @@
-import { useEffect, useCallback, createContext, useRef } from 'react';
+import { useEffect, useCallback, createContext, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useQueryClient } from '@tanstack/react-query';
 import { FlowPropType } from 'propTypes/propTypes';
@@ -45,11 +45,13 @@ const EditorNew = ({ flow }) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(
     generateInitialEdges(flow),
   );
+  const [containerHeight, setContainerHeight] = useState(null);
 
   useAutoLayout();
-  useScrollBoundaries();
+  useScrollBoundaries(containerHeight);
 
   const createdStepIdRef = useRef(null);
+  const containerRef = useRef(null);
 
   const openNextStep = useCallback(
     (currentStepId) => {
@@ -229,6 +231,22 @@ const EditorNew = ({ flow }) => {
     }
   }, [flow.steps]);
 
+  useEffect(function updateContainerHeightOnResize() {
+    const updateHeight = () => {
+      if (containerRef.current) {
+        setContainerHeight(containerRef.current.clientHeight);
+      }
+    };
+
+    updateHeight();
+
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
   return (
     <NodesContext.Provider
       value={{
@@ -247,7 +265,7 @@ const EditorNew = ({ flow }) => {
           flowActive: flow.active,
         }}
       >
-        <EditorWrapper direction="column">
+        <EditorWrapper direction="column" ref={containerRef}>
           <ReactFlow
             nodes={nodes}
             edges={edges}
