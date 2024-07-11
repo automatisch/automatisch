@@ -11,10 +11,11 @@ export class AdminCreateUserPage extends AuthenticatedPage {
     super(page);
     this.fullNameInput = page.getByTestId('full-name-input');
     this.emailInput = page.getByTestId('email-input');
-    this.passwordInput = page.getByTestId('password-input');
     this.roleInput = page.getByTestId('role.id-autocomplete');
     this.createButton = page.getByTestId('create-button');
     this.pageTitle = page.getByTestId('create-user-title');
+    this.invitationEmailInfoAlert = page.getByTestId('invitation-email-info-alert');
+    this.acceptInvitationLink = page.getByTestId('invitation-email-info-alert').getByRole('link');
   }
 
   seed(seed) {
@@ -25,7 +26,6 @@ export class AdminCreateUserPage extends AuthenticatedPage {
     return {
       fullName: faker.person.fullName(),
       email: faker.internet.email().toLowerCase(),
-      password: faker.internet.password(),
     };
   }
 }

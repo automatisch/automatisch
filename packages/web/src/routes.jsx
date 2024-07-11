@@ -11,6 +11,7 @@ import Execution from 'pages/Execution';
 import Flows from 'pages/Flows';
 import Flow from 'pages/Flow';
 import Login from 'pages/Login';
+import AcceptInvitation from 'pages/AcceptInvitation';
 import LoginCallback from 'pages/LoginCallback';
 import SignUp from 'pages/SignUp/index.ee';
 import ForgotPassword from 'pages/ForgotPassword/index.ee';
@@ -102,6 +103,15 @@ function Routes() {
         element={
           <PublicLayout>
             <SignUp />
+          </PublicLayout>
+        }
+      />
+
+      <Route
+        path={URLS.ACCEPT_INVITATON}
+        element={
+          <PublicLayout>
+            <AcceptInvitation />
           </PublicLayout>
         }
       />

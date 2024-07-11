@@ -9,6 +9,7 @@ import getAppsAction from '../../../controllers/api/v1/users/get-apps.js';
 import getInvoicesAction from '../../../controllers/api/v1/users/get-invoices.ee.js';
 import getSubscriptionAction from '../../../controllers/api/v1/users/get-subscription.ee.js';
 import getPlanAndUsageAction from '../../../controllers/api/v1/users/get-plan-and-usage.ee.js';
+import acceptInvitationAction from '../../../controllers/api/v1/users/accept-invitation.js';
 
 const router = Router();
 
@@ -48,5 +49,7 @@ router.get(
   checkIsCloud,
   asyncHandler(getPlanAndUsageAction)
 );
+
+router.post('/invitation', asyncHandler(acceptInvitationAction));
 
 export default router;

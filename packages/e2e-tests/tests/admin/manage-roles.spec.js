@@ -1,5 +1,6 @@
 const { test, expect } = require('../../fixtures/index');
 const { LoginPage } = require('../../fixtures/login-page');
+const { AcceptInvitation } = require('../../fixtures/accept-invitation-page');
 
 test.describe('Role management page', () => {
   test('Admin role is not deletable', async ({ adminRolesPage }) => {
@@ -190,13 +191,15 @@ test.describe('Role management page', () => {
         await adminCreateUserPage.emailInput.fill(
           'user-role-test@automatisch.io'
         );
-        await adminCreateUserPage.passwordInput.fill('sample');
         await adminCreateUserPage.roleInput.click();
         await adminCreateUserPage.page
           .getByRole('option', { name: 'Delete Role', exact: true })
           .click();
         await adminCreateUserPage.createButton.click();
-        await adminUsersPage.snackbar.waitFor({
+        await adminCreateUserPage.snackbar.waitFor({
+          state: 'attached',
+        });
+        await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
           state: 'attached',
         });
         const snackbar = await adminUsersPage.getSnackbarData(
@@ -292,13 +295,15 @@ test.describe('Role management page', () => {
       await adminCreateUserPage.emailInput.fill(
         'user-delete-role-test@automatisch.io'
       );
-      await adminCreateUserPage.passwordInput.fill('sample');
       await adminCreateUserPage.roleInput.click();
       await adminCreateUserPage.page
         .getByRole('option', { name: 'Cannot Delete Role' })
         .click();
       await adminCreateUserPage.createButton.click();
       await adminCreateUserPage.snackbar.waitFor({
+        state: 'attached',
+      });
+      await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
         state: 'attached',
       });
       const snackbar = await adminCreateUserPage.getSnackbarData(
@@ -333,7 +338,7 @@ test.describe('Role management page', () => {
         state: 'attached',
       });
       /*
-        * TODO: await snackbar - make assertions based on product 
+        * TODO: await snackbar - make assertions based on product
         * decisions
         const snackbar = await adminRolesPage.getSnackbarData();
         await expect(snackbar.variant).toBe('...');
@@ -374,13 +379,15 @@ test('Accessibility of role management page', async ({
     await adminCreateUserPage.isMounted();
     await adminCreateUserPage.fullNameInput.fill('Role Test');
     await adminCreateUserPage.emailInput.fill('basic-role-test@automatisch.io');
-    await adminCreateUserPage.passwordInput.fill('sample');
     await adminCreateUserPage.roleInput.click();
     await adminCreateUserPage.page
       .getByRole('option', { name: 'Basic Test' })
       .click();
     await adminCreateUserPage.createButton.click();
     await adminCreateUserPage.snackbar.waitFor({
+      state: 'attached',
+    });
+    await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
       state: 'attached',
     });
     const snackbar = await adminCreateUserPage.getSnackbarData(
@@ -391,10 +398,23 @@ test('Accessibility of role management page', async ({
   });
 
   await test.step('Logout and login to the basic role user', async () => {
+    const acceptInvitationLink = await adminCreateUserPage.acceptInvitationLink;
+    console.log(acceptInvitationLink);
+    const acceptInvitationUrl = await acceptInvitationLink.textContent();
+    console.log(acceptInvitationUrl);
+    const acceptInvitatonToken = acceptInvitationUrl.split('?token=')[1];
+
     await page.getByTestId('profile-menu-button').click();
     await page.getByTestId('logout-item').click();
-    // await page.reload({ waitUntil: 'networkidle' });
+
+    const acceptInvitationPage = new AcceptInvitation(page);
+
+    await acceptInvitationPage.open(acceptInvitatonToken);
+
+    await acceptInvitationPage.acceptInvitation('sample');
+
     const loginPage = new LoginPage(page);
+
     // await loginPage.isMounted();
     await loginPage.login('basic-role-test@automatisch.io', 'sample');
     await expect(loginPage.loginButton).not.toBeVisible();
@@ -410,9 +430,14 @@ test('Accessibility of role management page', async ({
       await page.waitForTimeout(750);
       const isUnmounted = await page.evaluate(() => {
         const root = document.querySelector('#root');
+
         if (root) {
-          return root.children.length === 0;
+          // We have react query devtools only in dev env.
+          // In production, there is nothing in root.
+          // That's why `<= 1`.
+          return root.children.length <= 1;
         }
+
         return false;
       });
       await expect(isUnmounted).toBe(true);

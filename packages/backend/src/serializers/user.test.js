@@ -35,6 +35,7 @@ describe('userSerializer', () => {
       email: user.email,
       fullName: user.fullName,
       id: user.id,
+      status: user.status,
       updatedAt: user.updatedAt.getTime(),
     };
 

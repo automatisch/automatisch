@@ -33,8 +33,21 @@ class User extends Base {
       fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string' },
+      status: {
+        type: 'string',
+        enum: ['active', 'invited'],
+        default: 'active',
+      },
       resetPasswordToken: { type: ['string', 'null'] },
-      resetPasswordTokenSentAt: { type: ['string', 'null'], format: 'date-time' },
+      resetPasswordTokenSentAt: {
+        type: ['string', 'null'],
+        format: 'date-time',
+      },
+      invitationToken: { type: ['string', 'null'] },
+      invitationTokenSentAt: {
+        type: ['string', 'null'],
+        format: 'date-time',
+      },
       trialExpiryDate: { type: 'string' },
       roleId: { type: 'string', format: 'uuid' },
       deletedAt: { type: 'string' },
@@ -202,6 +215,13 @@ class User extends Base {
     await this.$query().patch({ resetPasswordToken, resetPasswordTokenSentAt });
   }
 
+  async generateInvitationToken() {
+    const invitationToken = crypto.randomBytes(64).toString('hex');
+    const invitationTokenSentAt = new Date().toISOString();
+
+    await this.$query().patch({ invitationToken, invitationTokenSentAt });
+  }
+
   async resetPassword(password) {
     return await this.$query().patch({
       resetPasswordToken: null,
@@ -210,7 +230,16 @@ class User extends Base {
     });
   }
 
-  async isResetPasswordTokenValid() {
+  async acceptInvitation(password) {
+    return await this.$query().patch({
+      invitationToken: null,
+      invitationTokenSentAt: null,
+      status: 'active',
+      password,
+    });
+  }
+
+  isResetPasswordTokenValid() {
     if (!this.resetPasswordTokenSentAt) {
       return false;
     }
@@ -220,6 +249,18 @@ class User extends Base {
     const fourHoursInMilliseconds = 1000 * 60 * 60 * 4;
 
     return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
+  }
+
+  isInvitationTokenValid() {
+    if (!this.invitationTokenSentAt) {
+      return false;
+    }
+
+    const sentAt = new Date(this.invitationTokenSentAt);
+    const now = new Date();
+    const seventyTwoHoursInMilliseconds = 1000 * 60 * 60 * 72;
+
+    return now.getTime() - sentAt.getTime() < seventyTwoHoursInMilliseconds;
   }
 
   async generateHash() {
@@ -381,7 +422,7 @@ class User extends Base {
       email,
       password,
       fullName,
-      roleId: adminRole.id
+      roleId: adminRole.id,
     });
 
     await Config.markInstallationCompleted();

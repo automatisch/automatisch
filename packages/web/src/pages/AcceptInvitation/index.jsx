@@ -1,16 +1,13 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import useCloud from 'hooks/useCloud';
 import Container from 'components/Container';
-import ForgotPasswordForm from 'components/ForgotPasswordForm/index.ee';
+import AcceptInvitationForm from 'components/AcceptInvitationForm';
 
-export default function ForgotPassword() {
-  useCloud({ redirect: true });
-
+export default function AcceptInvitation() {
   return (
     <Box sx={{ display: 'flex', flex: 1, alignItems: 'center' }}>
       <Container maxWidth="sm">
-        <ForgotPasswordForm />
+        <AcceptInvitationForm />
       </Container>
     </Box>
   );

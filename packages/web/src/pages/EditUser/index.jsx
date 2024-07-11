@@ -3,6 +3,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
@@ -82,6 +84,7 @@ export default function EditUser() {
               <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={55} />
+              <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={45} />
             </Stack>
           )}
@@ -89,6 +92,18 @@ export default function EditUser() {
           {!isUserLoading && (
             <Form defaultValues={user} onSubmit={handleUserUpdate}>
               <Stack direction="column" gap={2}>
+                <Stack direction="row" gap={2} mb={2} alignItems="center">
+                  <Typography variant="h6" noWrap>
+                    {formatMessage('editUser.status')}
+                  </Typography>
+
+                  <Chip
+                    label={user.status}
+                    variant="outlined"
+                    color={user.status === 'active' ? 'success' : 'warning'}
+                  />
+                </Stack>
+
                 <TextField
                   required={true}
                   name="fullName"

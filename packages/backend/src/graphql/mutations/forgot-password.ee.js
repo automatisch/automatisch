@@ -22,7 +22,7 @@ const forgotPassword = async (_parent, params) => {
   const jobPayload = {
     email: user.email,
     subject: 'Reset Password',
-    template: 'reset-password-instructions',
+    template: 'reset-password-instructions.ee',
     params: {
       token: user.resetPasswordToken,
       webAppUrl: appConfig.webAppUrl,

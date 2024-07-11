@@ -8,7 +8,7 @@ type Mutation {
   createFlow(input: CreateFlowInput): Flow
   createRole(input: CreateRoleInput): Role
   createStep(input: CreateStepInput): Step
-  createUser(input: CreateUserInput): User
+  createUser(input: CreateUserInput): UserWithAcceptInvitationUrl
   deleteConnection(input: DeleteConnectionInput): Boolean
   deleteCurrentUser: Boolean
   deleteFlow(input: DeleteFlowInput): Boolean
@@ -375,7 +375,6 @@ input DeleteStepInput {
 input CreateUserInput {
   fullName: String!
   email: String!
-  password: String!
   role: UserRoleInput!
 }
 
@@ -518,6 +517,11 @@ type User {
   permissions: [Permission]
   createdAt: String
   updatedAt: String
+}
+
+type UserWithAcceptInvitationUrl {
+  user: User
+  acceptInvitationUrl: String
 }
 
 type Role {

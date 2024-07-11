@@ -8,6 +8,7 @@ const userSerializer = (user) => {
     email: user.email,
     createdAt: user.createdAt.getTime(),
     updatedAt: user.updatedAt.getTime(),
+    status: user.status,
     fullName: user.fullName,
   };
 

@@ -36,6 +36,7 @@ test.describe('Connections page', () => {
     }) => {
       await connectionsPage.clickAddConnectionButton();
       await expect(page).toHaveURL('/app/ntfy/connections/add?shared=false');
+      await expect(page.getByTestId('create-connection-button')).not.toBeDisabled();
       await page.getByTestId('create-connection-button').click();
       await expect(
         page.getByTestId('create-connection-button')

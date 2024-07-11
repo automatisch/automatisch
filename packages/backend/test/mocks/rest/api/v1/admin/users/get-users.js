@@ -18,6 +18,7 @@ const getUsersMock = async (users, roles) => {
             updatedAt: role.updatedAt.getTime(),
           }
         : null,
+      status: user.status,
       trialExpiryDate: user.trialExpiryDate.toISOString(),
       updatedAt: user.updatedAt.getTime(),
     };
