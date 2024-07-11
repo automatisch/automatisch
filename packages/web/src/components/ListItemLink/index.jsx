@@ -4,9 +4,12 @@ import ListItem from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom';
-export default function ListItemLink(props) {
+import PropTypes from 'prop-types';
+
+function ListItemLink(props) {
   const { icon, primary, to, onClick, 'data-test': dataTest, target } = props;
   const selected = useMatch({ path: to, end: true });
+
   const CustomLink = React.useMemo(
     () =>
       React.forwardRef(function InLineLink(linkProps, ref) {
@@ -28,6 +31,7 @@ export default function ListItemLink(props) {
       }),
     [to],
   );
+
   return (
     <li>
       <ListItem
@@ -47,3 +51,14 @@ export default function ListItemLink(props) {
     </li>
   );
 }
+
+ListItemLink.propTypes = {
+  icon: PropTypes.node.isRequired,
+  primary: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+  target: PropTypes.oneOf(['_blank']),
+  onClick: PropTypes.func,
+  'data-test': PropTypes.string,
+};
+
+export default ListItemLink;

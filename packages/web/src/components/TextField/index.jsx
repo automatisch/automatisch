@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import MuiTextField from '@mui/material/TextField';
@@ -5,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import copyInputValue from 'helpers/copyInputValue';
+
 const createCopyAdornment = (ref) => {
   return (
     <InputAdornment position="end">
@@ -14,7 +16,8 @@ const createCopyAdornment = (ref) => {
     </InputAdornment>
   );
 };
-export default function TextField(props) {
+
+function TextField(props) {
   const { control } = useFormContext();
   const inputRef = React.useRef(null);
   const {
@@ -74,3 +77,18 @@ export default function TextField(props) {
     />
   );
 }
+
+TextField.propTypes = {
+  required: PropTypes.bool,
+  defaultValue: PropTypes.string,
+  shouldUnregister: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  clickToCopy: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  'data-test': PropTypes.string,
+  disabled: PropTypes.bool,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+};
+
+export default TextField;

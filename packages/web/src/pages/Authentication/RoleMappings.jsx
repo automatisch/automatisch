@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
@@ -105,4 +106,12 @@ function RoleMappings({ provider, providerLoading }) {
     </>
   );
 }
+
+RoleMappings.propTypes = {
+  provider: PropTypes.shape({
+    id: PropTypes.oneOf([PropTypes.number, PropTypes.string]).isRequired,
+  }),
+  providerLoading: PropTypes.bool,
+};
+
 export default RoleMappings;

@@ -43,8 +43,12 @@ function FlowStepContextMenu(props) {
 FlowStepContextMenu.propTypes = {
   stepId: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  anchorEl: PropTypes.element.isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
   deletable: PropTypes.bool.isRequired,
+  flowId: PropTypes.string.isRequired,
 };
 
 export default FlowStepContextMenu;

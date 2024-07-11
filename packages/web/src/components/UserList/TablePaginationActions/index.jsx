@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
@@ -5,21 +6,27 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import Box from '@mui/material/Box';
-export default function TablePaginationActions(props) {
+
+function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
+
   const handleFirstPageButtonClick = (event) => {
     onPageChange(event, 0);
   };
+
   const handleBackButtonClick = (event) => {
     onPageChange(event, page - 1);
   };
+
   const handleNextButtonClick = (event) => {
     onPageChange(event, page + 1);
   };
+
   const handleLastPageButtonClick = (event) => {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
+
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton
@@ -65,3 +72,12 @@ export default function TablePaginationActions(props) {
     </Box>
   );
 }
+
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+};
+
+export default TablePaginationActions;

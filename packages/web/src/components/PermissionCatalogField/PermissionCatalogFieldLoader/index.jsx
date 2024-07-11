@@ -11,7 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+
 import ControlledCheckbox from 'components/ControlledCheckbox';
+
 const PermissionCatalogFieldLoader = () => {
   return (
     <TableContainer>
@@ -56,4 +58,5 @@ const PermissionCatalogFieldLoader = () => {
     </TableContainer>
   );
 };
+
 export default PermissionCatalogFieldLoader;

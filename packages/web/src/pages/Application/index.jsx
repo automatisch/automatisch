@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import {
   Link,
@@ -31,6 +32,7 @@ import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useApp from 'hooks/useApp';
 import Can from 'components/Can';
+import { AppPropType } from 'propTypes/propTypes';
 
 const ReconnectConnection = (props) => {
   const { application, onClose } = props;
@@ -43,6 +45,11 @@ const ReconnectConnection = (props) => {
       connectionId={connectionId}
     />
   );
+};
+
+ReconnectConnection.propTypes = {
+  application: AppPropType.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default function Application() {

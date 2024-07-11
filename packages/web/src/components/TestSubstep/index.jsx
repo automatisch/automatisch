@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
@@ -14,6 +15,7 @@ import JSONViewer from 'components/JSONViewer';
 import WebhookUrlInfo from 'components/WebhookUrlInfo';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import { useQueryClient } from '@tanstack/react-query';
+import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 
 function serializeErrors(graphQLErrors) {
   return graphQLErrors?.map((error) => {
@@ -154,4 +156,18 @@ function TestSubstep(props) {
     </React.Fragment>
   );
 }
+
+TestSubstep.propTypes = {
+  substep: SubstepPropType.isRequired,
+  expanded: PropTypes.bool,
+  showWebhookUrl: PropTypes.bool,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+  onContinue: PropTypes.func,
+  step: StepPropType.isRequired,
+  flowId: PropTypes.string.isRequired,
+};
+
 export default TestSubstep;

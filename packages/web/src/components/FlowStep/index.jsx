@@ -364,6 +364,7 @@ FlowStep.propTypes = {
   onClose: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onContinue: PropTypes.func,
+  flowId: PropTypes.string.isRequired,
 };
 
 export default FlowStep;

@@ -76,7 +76,10 @@ const CustomOptions = (props) => {
 
 CustomOptions.propTypes = {
   open: PropTypes.bool.isRequired,
-  anchorEl: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

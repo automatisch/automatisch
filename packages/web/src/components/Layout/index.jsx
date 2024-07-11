@@ -9,6 +9,7 @@ import SwapCallsIcon from '@mui/icons-material/SwapCalls';
 import HistoryIcon from '@mui/icons-material/History';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
+import PropTypes from 'prop-types';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -75,7 +76,7 @@ const generateDrawerBottomLinks = async ({
   return links;
 };
 
-export default function PublicLayout({ children }) {
+function PublicLayout({ children }) {
   const version = useVersion();
   const { data: configData, isLoading } = useAutomatischConfig();
   const config = configData?.data;
@@ -135,3 +136,9 @@ export default function PublicLayout({ children }) {
     </>
   );
 }
+
+PublicLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default PublicLayout;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
@@ -13,52 +14,33 @@ import * as React from 'react';
 import { FixedSizeList } from 'react-window';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';
+import SuggestionItem from './SuggestionItem';
+
 const SHORT_LIST_LENGTH = 4;
 const LIST_ITEM_HEIGHT = 64;
+
 const computeListHeight = (currentLength) => {
   const numberOfRenderedItems = Math.min(SHORT_LIST_LENGTH, currentLength);
   return LIST_ITEM_HEIGHT * numberOfRenderedItems;
 };
+
 const getPartialArray = (array, length = array.length) => {
   return array.slice(0, length);
 };
+
 const renderItemFactory =
   ({ onSuggestionClick }) =>
-  (props) => {
-    const { index, style, data } = props;
-    const suboption = data[index];
-    return (
-      <ListItemButton
-        sx={{ pl: 4 }}
-        divider
-        onClick={() => onSuggestionClick(suboption)}
-        data-test="power-input-suggestion-item"
-        key={index}
-        style={style}
-      >
-        <ListItemText
-          primary={suboption.label}
-          primaryTypographyProps={{
-            variant: 'subtitle1',
-            title: 'Property name',
-            sx: { fontWeight: 700 },
-          }}
-          secondary={suboption.sampleValue || ''}
-          secondaryTypographyProps={{
-            variant: 'subtitle2',
-            title: 'Sample value',
-            noWrap: true,
-          }}
-        />
-      </ListItemButton>
-    );
-  };
+  (props) => (
+    <SuggestionItem {...props} onSuggestionClick={onSuggestionClick} />
+  );
+
 const Suggestions = (props) => {
   const formatMessage = useFormatMessage();
   const { data, onSuggestionClick = () => null } = props;
   const [current, setCurrent] = React.useState(0);
   const [listLength, setListLength] = React.useState(SHORT_LIST_LENGTH);
   const [filteredData, setFilteredData] = React.useState(data);
+
   React.useEffect(
     function syncOptions() {
       setFilteredData((filteredData) => {
@@ -70,6 +52,7 @@ const Suggestions = (props) => {
     },
     [data],
   );
+
   const renderItem = React.useMemo(
     () =>
       renderItemFactory({
@@ -77,15 +60,19 @@ const Suggestions = (props) => {
       }),
     [onSuggestionClick],
   );
+
   const expandList = () => {
     setListLength(Infinity);
   };
+
   const collapseList = () => {
     setListLength(SHORT_LIST_LENGTH);
   };
+
   React.useEffect(() => {
     setListLength(SHORT_LIST_LENGTH);
   }, [current]);
+
   const onSearchChange = React.useMemo(
     () =>
       throttle((event) => {
@@ -111,6 +98,7 @@ const Suggestions = (props) => {
       }, 400),
     [data],
   );
+
   return (
     <Paper elevation={0} sx={{ width: '100%' }}>
       <Box px={2} pb={2}>
@@ -182,4 +170,16 @@ const Suggestions = (props) => {
     </Paper>
   );
 };
+
+Suggestions.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      output: PropTypes.arrayOf(PropTypes.object).isRequired,
+    }),
+  ).isRequired,
+  onSuggestionClick: PropTypes.func,
+};
+
 export default Suggestions;

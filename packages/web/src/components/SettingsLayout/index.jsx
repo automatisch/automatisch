@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,6 +12,7 @@ import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import useFormatMessage from 'hooks/useFormatMessage';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
+
 function createDrawerLinks({ isCloud }) {
   const items = [
     {
@@ -28,7 +30,8 @@ function createDrawerLinks({ isCloud }) {
   }
   return items;
 }
-export default function SettingsLayout({ children }) {
+
+function SettingsLayout({ children }) {
   const { data: automatischInfo } = useAutomatischInfo();
   const isCloud = automatischInfo?.data.isCloud;
   const theme = useTheme();
@@ -45,6 +48,7 @@ export default function SettingsLayout({ children }) {
       to: '/',
     },
   ];
+
   return (
     <>
       <AppBar
@@ -71,3 +75,9 @@ export default function SettingsLayout({ children }) {
     </>
   );
 }
+
+SettingsLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default SettingsLayout;
