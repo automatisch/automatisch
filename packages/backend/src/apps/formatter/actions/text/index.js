@@ -14,6 +14,7 @@ import stringToBase64 from './transformers/string-to-base64.js';
 import encodeUri from './transformers/encode-uri.js';
 import trimWhitespace from './transformers/trim-whitespace.js';
 import useDefaultValue from './transformers/use-default-value.js';
+import parseStringifiedJson from './transformers/parse-stringified-json.js';
 
 const transformers = {
   base64ToString,
@@ -30,6 +31,7 @@ const transformers = {
   encodeUri,
   trimWhitespace,
   useDefaultValue,
+  parseStringifiedJson,
 };
 
 export default defineAction({
@@ -62,6 +64,7 @@ export default defineAction({
         { label: 'Encode URI', value: 'encodeUri' },
         { label: 'Trim Whitespace', value: 'trimWhitespace' },
         { label: 'Use Default Value', value: 'useDefaultValue' },
+        { label: 'Parse stringified JSON', value: 'parseStringifiedJson' },
       ],
       additionalFields: {
         type: 'query',
