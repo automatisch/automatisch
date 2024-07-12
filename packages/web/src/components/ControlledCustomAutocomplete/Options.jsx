@@ -57,9 +57,7 @@ Item.propTypes = {
 
 const renderItemFactory =
   ({ onOptionClick }) =>
-  (props) => {
-    <Item onOptionClick={onOptionClick} {...props} />;
-  };
+  (props) => <Item onOptionClick={onOptionClick} {...props} />;
 
 const Options = (props) => {
   const formatMessage = useFormatMessage();
