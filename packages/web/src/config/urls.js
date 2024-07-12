@@ -8,6 +8,7 @@ export const SIGNUP = '/sign-up';
 export const ACCEPT_INVITATON = '/accept-invitation';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const RESET_PASSWORD = '/reset-password';
+export const INSTALLATION = '/installation';
 export const APPS = '/apps';
 export const NEW_APP_CONNECTION = '/apps/new';
 export const APP = (appKey) => `/app/${appKey}`;

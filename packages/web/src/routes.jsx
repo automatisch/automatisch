@@ -1,4 +1,10 @@
-import { Route, Routes as ReactRouterRoutes, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import {
+  Route,
+  Routes as ReactRouterRoutes,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom';
 
 import Layout from 'components/Layout';
 import NoResultFound from 'components/NotFound';
@@ -23,11 +29,21 @@ import adminSettingsRoutes from './adminSettingsRoutes';
 import Notifications from 'pages/Notifications';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAuthentication from 'hooks/useAuthentication';
+import Installation from 'pages/Installation';
 
 function Routes() {
   const { data: configData } = useAutomatischConfig();
   const { isAuthenticated } = useAuthentication();
   const config = configData?.data;
+
+  const installed = configData?.data?.['installation.completed'] === true;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!installed) {
+      navigate(URLS.INSTALLATION, { replace: true });
+    }
+  }, []);
 
   return (
     <ReactRouterRoutes>
@@ -133,6 +149,17 @@ function Routes() {
           </PublicLayout>
         }
       />
+
+      {!installed && (
+        <Route
+          path={URLS.INSTALLATION}
+          element={
+            <PublicLayout>
+              <Installation />
+            </PublicLayout>
+          }
+        />
+      )}
 
       {!config?.disableNotificationsPage && (
         <Route
