@@ -98,9 +98,9 @@ const globalVariable = async (options) => {
         });
 
         return {
-          key: datastore.key,
-          value: datastore.value,
-          [datastore.key]: datastore.value,
+          key: key,
+          value: datastore?.value ?? null,
+          [key]: datastore?.value ?? null,
         };
       },
       set: async ({ key, value }) => {
