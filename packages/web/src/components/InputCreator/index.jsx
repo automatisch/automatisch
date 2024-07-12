@@ -132,8 +132,7 @@ function InputCreator(props) {
         <React.Fragment>
           <PowerInput
             key={computedName}
-            // label={label}
-            label="PowerInput"
+            label={label}
             description={description}
             name={computedName}
             required={required}
