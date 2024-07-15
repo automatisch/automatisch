@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.2.0",
-    "@playwright/test": "^1.36.2"
+    "@playwright/test": "^1.45.1"
   },
   "dependencies": {
     "dotenv": "^16.3.1",

@@ -4,6 +4,7 @@ import { createConfig } from '../../../../../test/factories/config.js';
 import app from '../../../../app.js';
 import configMock from '../../../../../test/mocks/rest/api/v1/automatisch/config.js';
 import * as license from '../../../../helpers/license.ee.js';
+import appConfig from '../../../../config/app.js';
 
 describe('GET /api/v1/automatisch/config', () => {
   it('should return Automatisch config', async () => {
@@ -47,5 +48,19 @@ describe('GET /api/v1/automatisch/config', () => {
     );
 
     expect(response.body).toEqual(expectedPayload);
+  });
+
+  it('should return additional environment variables', async () => {
+    vi.spyOn(appConfig, 'disableNotificationsPage', 'get').mockReturnValue(true);
+    vi.spyOn(appConfig, 'disableFavicon', 'get').mockReturnValue(true);
+    vi.spyOn(appConfig, 'additionalDrawerLink', 'get').mockReturnValue('link');
+    vi.spyOn(appConfig, 'additionalDrawerLinkIcon', 'get').mockReturnValue('icon');
+    vi.spyOn(appConfig, 'additionalDrawerLinkText', 'get').mockReturnValue('text');
+
+    expect(appConfig.disableNotificationsPage).toEqual(true);
+    expect(appConfig.disableFavicon).toEqual(true);
+    expect(appConfig.additionalDrawerLink).toEqual('link');
+    expect(appConfig.additionalDrawerLinkIcon).toEqual('icon');
+    expect(appConfig.additionalDrawerLinkText).toEqual('text');
   });
 });
