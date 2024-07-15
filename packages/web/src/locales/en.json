@@ -129,7 +129,7 @@
   "installationForm.emailFieldLabel": "Email",
   "installationForm.passwordFieldLabel": "Password",
   "installationForm.confirmPasswordFieldLabel": "Confirm password",
-  "installationForm.submit": "Install",
+  "installationForm.submit": "Create admin",
   "installationForm.validateEmail": "Email must be valid.",
   "installationForm.passwordsMustMatch": "Passwords must match.",
   "installationForm.mandatoryInput": "{inputName} is required.",
