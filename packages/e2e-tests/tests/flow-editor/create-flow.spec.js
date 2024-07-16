@@ -1,4 +1,3 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test('Ensure creating a new flow works', async ({ page }) => {
