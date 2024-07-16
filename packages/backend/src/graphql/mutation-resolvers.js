@@ -10,12 +10,9 @@ import deleteCurrentUser from './mutations/delete-current-user.ee.js';
 import deleteFlow from './mutations/delete-flow.js';
 import deleteRole from './mutations/delete-role.ee.js';
 import deleteStep from './mutations/delete-step.js';
-import deleteUser from './mutations/delete-user.ee.js';
 import duplicateFlow from './mutations/duplicate-flow.js';
 import executeFlow from './mutations/execute-flow.js';
-import forgotPassword from './mutations/forgot-password.ee.js';
 import generateAuthUrl from './mutations/generate-auth-url.js';
-import login from './mutations/login.js';
 import registerUser from './mutations/register-user.ee.js';
 import resetConnection from './mutations/reset-connection.js';
 import resetPassword from './mutations/reset-password.ee.js';
@@ -32,6 +29,11 @@ import updateUser from './mutations/update-user.ee.js';
 import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee.js';
 import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-providers-role-mappings.ee.js';
 import verifyConnection from './mutations/verify-connection.js';
+
+// Converted mutations
+import deleteUser from './mutations/delete-user.ee.js';
+import login from './mutations/login.js';
+import forgotPassword from './mutations/forgot-password.ee.js';
 
 const mutationResolvers = {
   createAppAuthClient,
