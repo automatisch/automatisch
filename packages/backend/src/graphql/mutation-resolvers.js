@@ -15,7 +15,6 @@ import executeFlow from './mutations/execute-flow.js';
 import generateAuthUrl from './mutations/generate-auth-url.js';
 import registerUser from './mutations/register-user.ee.js';
 import resetConnection from './mutations/reset-connection.js';
-import resetPassword from './mutations/reset-password.ee.js';
 import updateAppAuthClient from './mutations/update-app-auth-client.ee.js';
 import updateAppConfig from './mutations/update-app-config.ee.js';
 import updateConfig from './mutations/update-config.ee.js';
@@ -34,6 +33,7 @@ import verifyConnection from './mutations/verify-connection.js';
 import deleteUser from './mutations/delete-user.ee.js';
 import login from './mutations/login.js';
 import forgotPassword from './mutations/forgot-password.ee.js';
+import resetPassword from './mutations/reset-password.ee.js';
 
 const mutationResolvers = {
   createAppAuthClient,
