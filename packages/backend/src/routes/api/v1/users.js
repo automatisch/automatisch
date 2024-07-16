@@ -10,6 +10,7 @@ import getInvoicesAction from '../../../controllers/api/v1/users/get-invoices.ee
 import getSubscriptionAction from '../../../controllers/api/v1/users/get-subscription.ee.js';
 import getPlanAndUsageAction from '../../../controllers/api/v1/users/get-plan-and-usage.ee.js';
 import acceptInvitationAction from '../../../controllers/api/v1/users/accept-invitation.js';
+import forgotPasswordAction from '../../../controllers/api/v1/users/forgot-password.js';
 
 const router = Router();
 
@@ -51,5 +52,6 @@ router.get(
 );
 
 router.post('/invitation', asyncHandler(acceptInvitationAction));
+router.post('/forgot-password', asyncHandler(forgotPasswordAction));
 
 export default router;

@@ -1,11 +1,10 @@
-import { vi, describe, it, beforeEach } from 'vitest';
+import { describe, it, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id';
 import { createUser } from '../../../../../../test/factories/user';
 import { createRole } from '../../../../../../test/factories/role';
-import * as license from '../../../../../helpers/license.ee.js';
 
 describe('DELETE /api/v1/admin/users/:userId', () => {
   let currentUser, currentUserRole, anotherUser, token;
@@ -20,8 +19,6 @@ describe('DELETE /api/v1/admin/users/:userId', () => {
   });
 
   it('should soft delete user and respond with no content', async () => {
-    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
-
     await request(app)
       .delete(`/api/v1/admin/users/${anotherUser.id}`)
       .set('Authorization', token)
@@ -29,8 +26,6 @@ describe('DELETE /api/v1/admin/users/:userId', () => {
   });
 
   it('should return not found response for not existing user UUID', async () => {
-    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
-
     const notExistingUserUUID = Crypto.randomUUID();
 
     await request(app)
@@ -40,8 +35,6 @@ describe('DELETE /api/v1/admin/users/:userId', () => {
   });
 
   it('should return bad request response for invalid UUID', async () => {
-    vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
-
     await request(app)
       .delete('/api/v1/admin/users/invalidUserUUID')
       .set('Authorization', token)

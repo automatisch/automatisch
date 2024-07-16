@@ -20,7 +20,13 @@ import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import Billing from '../helpers/billing/index.ee.js';
+
 import deleteUserQueue from '../queues/delete-user.ee.js';
+import emailQueue from '../queues/email.js';
+import {
+  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+} from '../helpers/remove-job-configuration.js';
 
 class User extends Base {
   static tableName = 'users';
@@ -251,6 +257,30 @@ class User extends Base {
     };
 
     await deleteUserQueue.add(jobName, jobPayload, jobOptions);
+  }
+
+  async sendResetPasswordEmail() {
+    await this.generateResetPasswordToken();
+
+    const jobName = `Reset Password Email - ${this.id}`;
+
+    const jobPayload = {
+      email: this.email,
+      subject: 'Reset Password',
+      template: 'reset-password-instructions.ee',
+      params: {
+        token: this.resetPasswordToken,
+        webAppUrl: appConfig.webAppUrl,
+        fullName: this.fullName,
+      },
+    };
+
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+    };
+
+    await emailQueue.add(jobName, jobPayload, jobOptions);
   }
 
   isResetPasswordTokenValid() {
