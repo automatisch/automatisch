@@ -5,6 +5,7 @@ const { ExecutionsPage } = require('./executions-page');
 const { FlowEditorPage } = require('./flow-editor-page');
 const { UserInterfacePage } = require('./user-interface-page');
 const { LoginPage } = require('./login-page');
+const { AcceptInvitation } = require('./accept-invitation-page');
 const { adminFixtures } = require('./admin');
 
 exports.test = test.extend({
@@ -46,6 +47,11 @@ exports.publicTest = test.extend({
 
     await use(loginPage);
   },
+
+  acceptInvitationPage: async ({ page }, use) => {
+    const acceptInvitationPage = new AcceptInvitation(page);
+    await use(acceptInvitationPage);
+  }
 });
 
 expect.extend({

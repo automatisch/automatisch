@@ -1,4 +1,3 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 // no execution data exists in an empty account

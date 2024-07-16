@@ -1,8 +1,7 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test.describe('Executions page', () => {
-  test.beforeEach(async ({ page, executionsPage }) => {
+  test.beforeEach(async ({ page }) => {
     await page.getByTestId('executions-page-drawer-link').click();
   });
 

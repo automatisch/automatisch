@@ -1,8 +1,7 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test.describe('Connections page', () => {
-  test.beforeEach(async ({ page, connectionsPage }) => {
+  test.beforeEach(async ({ page }) => {
     await page.getByTestId('apps-page-drawer-link').click();
     await page.goto('/app/ntfy/connections');
   });
