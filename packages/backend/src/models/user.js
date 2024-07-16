@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import crypto from 'node:crypto';
 
 import appConfig from '../config/app.js';
@@ -20,6 +20,7 @@ import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import Billing from '../helpers/billing/index.ee.js';
+import deleteUserQueue from '../queues/delete-user.ee.js';
 
 class User extends Base {
   static tableName = 'users';
@@ -237,6 +238,19 @@ class User extends Base {
       status: 'active',
       password,
     });
+  }
+
+  async softRemove() {
+    await this.$query().delete();
+
+    const jobName = `Delete user - ${this.id}`;
+    const jobPayload = { id: this.id };
+    const millisecondsFor30Days = Duration.fromObject({ days: 30 }).toMillis();
+    const jobOptions = {
+      delay: millisecondsFor30Days,
+    };
+
+    await deleteUserQueue.add(jobName, jobPayload, jobOptions);
   }
 
   isResetPasswordTokenValid() {
