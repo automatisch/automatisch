@@ -11,6 +11,7 @@ import getSubscriptionAction from '../../../controllers/api/v1/users/get-subscri
 import getPlanAndUsageAction from '../../../controllers/api/v1/users/get-plan-and-usage.ee.js';
 import acceptInvitationAction from '../../../controllers/api/v1/users/accept-invitation.js';
 import forgotPasswordAction from '../../../controllers/api/v1/users/forgot-password.js';
+import resetPasswordAction from '../../../controllers/api/v1/users/reset-password.js';
 
 const router = Router();
 
@@ -53,5 +54,7 @@ router.get(
 
 router.post('/invitation', asyncHandler(acceptInvitationAction));
 router.post('/forgot-password', asyncHandler(forgotPasswordAction));
+
+router.post('/reset-password', asyncHandler(resetPasswordAction));
 
 export default router;
