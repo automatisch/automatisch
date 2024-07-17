@@ -157,6 +157,7 @@
   "forgotPasswordForm.submit": "Send reset instructions",
   "forgotPasswordForm.instructionsSent": "The instructions have been sent!",
   "forgotPasswordForm.emailFieldLabel": "Email",
+  "forgotPasswordForm.error": "Something went wrong. Please try again.",
   "resetPasswordForm.passwordsMustMatch": "Passwords must match.",
   "resetPasswordForm.mandatoryInput": "{inputName} is required.",
   "resetPasswordForm.title": "Reset password",
