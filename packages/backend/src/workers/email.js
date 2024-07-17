@@ -21,7 +21,7 @@ export const worker = new Worker(
   async (job) => {
     const { email, subject, template, params } = job.data;
 
-    if (isCloudSandbox && !isAutomatischEmail(email)) {
+    if (isCloudSandbox() && !isAutomatischEmail(email)) {
       logger.info(
         'Only Automatisch emails are allowed for non-production environments!'
       );
