@@ -1,8 +1,10 @@
 import defineAction from '../../../../helpers/define-action.js';
 import formatDateTime from './transformers/format-date-time.js';
+import getCurrentTimestamp from './transformers/get-current-timestamp.js';
 
 const transformers = {
   formatDateTime,
+  getCurrentTimestamp,
 };
 
 export default defineAction({
@@ -16,7 +18,16 @@ export default defineAction({
       type: 'dropdown',
       required: true,
       variables: true,
-      options: [{ label: 'Format Date / Time', value: 'formatDateTime' }],
+      options: [
+        {
+          label: 'Get current timestamp',
+          value: 'getCurrentTimestamp',
+        },
+        {
+          label: 'Format Date / Time',
+          value: 'formatDateTime',
+        },
+      ],
       additionalFields: {
         type: 'query',
         name: 'getDynamicFields',
