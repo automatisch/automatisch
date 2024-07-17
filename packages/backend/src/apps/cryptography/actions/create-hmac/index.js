@@ -27,11 +27,25 @@ export default defineAction({
       variables: true,
     },
     {
-      label: 'Secret key',
+      label: 'Secret Key',
       key: 'secretKey',
       type: 'string',
       required: true,
       description: 'The secret key used to create the HMAC.',
+      variables: true,
+    },
+    {
+      label: 'Output Encoding',
+      key: 'outputEncoding',
+      type: 'dropdown',
+      required: true,
+      value: 'hex',
+      description: 'Specifies the encoding format for the HMAC digest output.',
+      options: [
+        { label: 'base64', value: 'base64' },
+        { label: 'base64url', value: 'base64url' },
+        { label: 'hex', value: 'hex' },
+      ],
       variables: true,
     },
   ],
@@ -39,7 +53,7 @@ export default defineAction({
   async run($) {
     const hash = createHmac($.step.parameters.algorithm, $.step.parameters.secretKey)
       .update($.step.parameters.message)
-      .digest('hex');
+      .digest($.step.parameters.outputEncoding);
 
     $.setActionItem({
       raw: {
