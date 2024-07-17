@@ -21,7 +21,6 @@ type Mutation {
   login(input: LoginInput): Auth
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
-  resetPassword(input: ResetPasswordInput): Boolean
   updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
   updateAppConfig(input: UpdateAppConfigInput): AppConfig
   updateConfig(input: JSONObject): JSONObject
@@ -402,11 +401,6 @@ input UpdateCurrentUserInput {
   email: String
   password: String
   fullName: String
-}
-
-input ResetPasswordInput {
-  token: String!
-  password: String!
 }
 
 input LoginInput {

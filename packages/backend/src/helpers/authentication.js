@@ -55,7 +55,6 @@ export const authenticationRules = {
     '*': isAuthenticatedRule,
     login: allow,
     registerUser: allow,
-    resetPassword: allow,
   },
 };
 
