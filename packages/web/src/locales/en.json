@@ -165,6 +165,7 @@
   "resetPasswordForm.passwordFieldLabel": "Password",
   "resetPasswordForm.confirmPasswordFieldLabel": "Confirm password",
   "resetPasswordForm.passwordUpdated": "The password has been updated. Now, you can login.",
+  "resetPasswordForm.error": "Something went wrong. Please try again.",
   "acceptInvitationForm.passwordsMustMatch": "Passwords must match.",
   "acceptInvitationForm.mandatoryInput": "{inputName} is required.",
   "acceptInvitationForm.title": "Accept invitation",
