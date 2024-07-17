@@ -17,7 +17,6 @@ type Mutation {
   deleteUser(input: DeleteUserInput): Boolean
   duplicateFlow(input: DuplicateFlowInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
-  forgotPassword(input: ForgotPasswordInput): Boolean
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   login(input: LoginInput): Auth
   registerUser(input: RegisterUserInput): User
@@ -403,10 +402,6 @@ input UpdateCurrentUserInput {
   email: String
   password: String
   fullName: String
-}
-
-input ForgotPasswordInput {
-  email: String!
 }
 
 input ResetPasswordInput {

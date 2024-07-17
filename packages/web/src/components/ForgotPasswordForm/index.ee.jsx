@@ -1,23 +1,36 @@
 import * as React from 'react';
-import { useMutation } from '@apollo/client';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { FORGOT_PASSWORD } from 'graphql/mutations/forgot-password.ee';
+import { enqueueSnackbar } from 'notistack';
+
+import useForgotPassword from 'hooks/useForgotPassword';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 export default function ForgotPasswordForm() {
   const formatMessage = useFormatMessage();
-  const [forgotPassword, { data, loading }] = useMutation(FORGOT_PASSWORD);
+  const {
+    mutateAsync: forgotPassword,
+    isPending: loading,
+    isSuccess,
+  } = useForgotPassword();
 
   const handleSubmit = async (values) => {
-    await forgotPassword({
-      variables: {
-        input: values,
-      },
-    });
+    const { email } = values;
+    try {
+      await forgotPassword({
+        email,
+      });
+    } catch (error) {
+      enqueueSnackbar(
+        error?.message || formatMessage('forgotPasswordForm.error'),
+        {
+          variant: 'error',
+        },
+      );
+    }
   };
 
   return (
@@ -35,7 +48,6 @@ export default function ForgotPasswordForm() {
       >
         {formatMessage('forgotPasswordForm.title')}
       </Typography>
-
       <Form onSubmit={handleSubmit}>
         <TextField
           label={formatMessage('forgotPasswordForm.emailFieldLabel')}
@@ -45,20 +57,18 @@ export default function ForgotPasswordForm() {
           margin="dense"
           autoComplete="username"
         />
-
         <LoadingButton
           type="submit"
           variant="contained"
           color="primary"
           sx={{ boxShadow: 2, my: 3 }}
           loading={loading}
-          disabled={data}
+          disabled={isSuccess}
           fullWidth
         >
           {formatMessage('forgotPasswordForm.submit')}
         </LoadingButton>
-
-        {data && (
+        {isSuccess && (
           <Typography
             variant="body1"
             sx={{ color: (theme) => theme.palette.success.main }}
