@@ -98,7 +98,7 @@ test.describe('User management page', () => {
           await expect(userRow).not.toBeVisible(false);
         }
       );
-  });
+    });
 
   test(
     'Creating a user which has been deleted',

@@ -87,6 +87,7 @@ export class AdminUsersPage extends AuthenticatedPage {
       await this.firstPageButton.click();
     }
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       if (await this.usersLoader.isVisible()) {
         await this.usersLoader.waitFor({
@@ -108,6 +109,7 @@ export class AdminUsersPage extends AuthenticatedPage {
 
   async getTotalRows() {
     return await this.page.evaluate(() => {
+      // eslint-disable-next-line no-undef
       const node = document.querySelector('[data-total-count]');
       if (node) {
         const count = Number(node.dataset.totalCount);
@@ -121,6 +123,7 @@ export class AdminUsersPage extends AuthenticatedPage {
 
   async getRowsPerPage() {
     return await this.page.evaluate(() => {
+      // eslint-disable-next-line no-undef
       const node = document.querySelector('[data-rows-per-page]');
       if (node) {
         const count = Number(node.dataset.rowsPerPage);

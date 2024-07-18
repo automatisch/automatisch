@@ -23,6 +23,7 @@ export class AdminEditUserPage extends AuthenticatedPage {
    */
   async waitForLoad(fullName) {
     return await this.page.waitForFunction((fullName) => {
+      // eslint-disable-next-line no-undef
       const el = document.querySelector("[data-test='full-name-input']");
       return el && el.value === fullName;
     }, fullName);
