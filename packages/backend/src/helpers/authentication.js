@@ -53,7 +53,6 @@ const isAuthenticatedRule = rule()(isAuthenticated);
 export const authenticationRules = {
   Mutation: {
     '*': isAuthenticatedRule,
-    login: allow,
     registerUser: allow,
   },
 };
