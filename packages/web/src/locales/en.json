@@ -213,6 +213,7 @@
   "deleteUserButton.cancel": "Cancel",
   "deleteUserButton.confirm": "Delete",
   "deleteUserButton.successfullyDeleted": "The user has been deleted.",
+  "deleteUserButton.deleteError": "Failed while deleting!",
   "createUserPage.title": "Create user",
   "userForm.fullName": "Full name",
   "userForm.email": "Email",

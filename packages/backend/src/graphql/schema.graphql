@@ -14,7 +14,6 @@ type Mutation {
   deleteFlow(input: DeleteFlowInput): Boolean
   deleteRole(input: DeleteRoleInput): Boolean
   deleteStep(input: DeleteStepInput): Step
-  deleteUser(input: DeleteUserInput): Boolean
   duplicateFlow(input: DuplicateFlowInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
@@ -379,10 +378,6 @@ input UpdateUserInput {
   fullName: String
   email: String
   role: UserRoleInput
-}
-
-input DeleteUserInput {
-  id: String!
 }
 
 input RegisterUserInput {
