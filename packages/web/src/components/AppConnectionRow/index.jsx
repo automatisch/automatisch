@@ -10,7 +10,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import { DateTime } from 'luxon';
-
+import { useQueryClient } from '@tanstack/react-query';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import ConnectionContextMenu from 'components/AppConnectionContextMenu';
 import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
@@ -35,6 +35,7 @@ function AppConnectionRow(props) {
   const [verificationVisible, setVerificationVisible] = React.useState(false);
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const queryClient = useQueryClient();
 
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
 
@@ -75,6 +76,9 @@ function AppConnectionRow(props) {
           },
         });
 
+        await queryClient.invalidateQueries({
+          queryKey: ['apps', key, 'connections'],
+        });
         enqueueSnackbar(formatMessage('connection.deletedMessage'), {
           variant: 'success',
           SnackbarProps: {
@@ -86,7 +90,7 @@ function AppConnectionRow(props) {
         testConnection({ variables: { id } });
       }
     },
-    [deleteConnection, id, testConnection, formatMessage, enqueueSnackbar],
+    [deleteConnection, id, queryClient, key, enqueueSnackbar, formatMessage, testConnection],
   );
 
   const relativeCreatedAt = DateTime.fromMillis(
