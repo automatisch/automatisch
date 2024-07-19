@@ -11,8 +11,10 @@ import * as URLS from 'config/urls';
 import { REGISTER_USER } from 'graphql/mutations/register-user.ee';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
-import { LOGIN } from 'graphql/mutations/login';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useCreateAccessToken from 'hooks/useCreateAccessToken';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+
 const validationSchema = yup.object().shape({
   fullName: yup.string().trim().required('signupForm.mandatoryInput'),
   email: yup
@@ -26,39 +28,57 @@ const validationSchema = yup.object().shape({
     .required('signupForm.mandatoryInput')
     .oneOf([yup.ref('password')], 'signupForm.passwordsMustMatch'),
 });
+
 const initialValues = {
   fullName: '',
   email: '',
   password: '',
   confirmPassword: '',
 };
+
 function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
   const formatMessage = useFormatMessage();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const [registerUser, { loading: registerUserLoading }] =
     useMutation(REGISTER_USER);
-  const [login, { loading: loginLoading }] = useMutation(LOGIN);
+  const { mutateAsync: createAccessToken, isPending: loginLoading } =
+    useCreateAccessToken();
+
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
       navigate(URLS.DASHBOARD);
     }
   }, [authentication.isAuthenticated]);
+
   const handleSubmit = async (values) => {
     const { fullName, email, password } = values;
+
     await registerUser({
       variables: {
-        input: { fullName, email, password },
+        input: {
+          fullName,
+          email,
+          password,
+        },
       },
     });
-    const { data } = await login({
-      variables: {
-        input: { email, password },
-      },
-    });
-    const { token } = data.login;
-    authentication.updateToken(token);
+
+    try {
+      const { data } = await createAccessToken({
+        email,
+        password,
+      });
+      const { token } = data;
+      authentication.updateToken(token);
+    } catch (error) {
+      enqueueSnackbar(error?.message || formatMessage('signupForm.error'), {
+        variant: 'error',
+      });
+    }
   };
+
   return (
     <Paper sx={{ px: 2, py: 4 }}>
       <Typography
@@ -168,4 +188,5 @@ function SignUpForm() {
     </Paper>
   );
 }
+
 export default SignUpForm;

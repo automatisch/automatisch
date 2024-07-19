@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
@@ -8,17 +7,20 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import useAuthentication from 'hooks/useAuthentication';
 import useCloud from 'hooks/useCloud';
 import * as URLS from 'config/urls';
-import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useCreateAccessToken from 'hooks/useCreateAccessToken';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
 function LoginForm() {
   const isCloud = useCloud();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const authentication = useAuthentication();
-  const [login, { loading }] = useMutation(LOGIN);
+  const { mutateAsync: createAccessToken, isPending: loading } =
+    useCreateAccessToken();
 
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
@@ -27,13 +29,19 @@ function LoginForm() {
   }, [authentication.isAuthenticated]);
 
   const handleSubmit = async (values) => {
-    const { data } = await login({
-      variables: {
-        input: values,
-      },
-    });
-    const { token } = data.login;
-    authentication.updateToken(token);
+    try {
+      const { email, password } = values;
+      const { data } = await createAccessToken({
+        email,
+        password,
+      });
+      const { token } = data;
+      authentication.updateToken(token);
+    } catch (error) {
+      enqueueSnackbar(error?.message || formatMessage('loginForm.error'), {
+        variant: 'error',
+      });
+    }
   };
 
   return (

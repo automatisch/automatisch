@@ -18,7 +18,6 @@ type Mutation {
   duplicateFlow(input: DuplicateFlowInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
-  login(input: LoginInput): Auth
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
   updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
@@ -150,11 +149,6 @@ type AppAuth {
 enum ArgumentEnumType {
   integer
   string
-}
-
-type Auth {
-  user: User
-  token: String
 }
 
 type AuthenticationStep {
@@ -401,11 +395,6 @@ input UpdateCurrentUserInput {
   email: String
   password: String
   fullName: String
-}
-
-input LoginInput {
-  email: String!
-  password: String!
 }
 
 input PermissionInput {
