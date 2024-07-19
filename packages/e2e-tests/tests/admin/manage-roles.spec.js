@@ -17,7 +17,6 @@ test.describe('Role management page', () => {
     adminCreateRolePage,
     adminEditRolePage,
     adminRolesPage,
-    page,
   }) => {
     await test.step('Create a new role', async () => {
       await adminRolesPage.navigateTo();
@@ -126,12 +125,14 @@ test.describe('Role management page', () => {
       await adminCreateRolePage.isMounted();
 
       const initScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await page.mouse.move(400, 100);
       await page.mouse.click(400, 100);
       await page.mouse.wheel(200, 0);
       const updatedScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await expect(initScrollTop).not.toBe(updatedScrollTop);
@@ -144,11 +145,13 @@ test.describe('Role management page', () => {
       await adminEditRolePage.isMounted();
 
       const initScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await page.mouse.move(400, 100);
       await page.mouse.wheel(200, 0);
       const updatedScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await expect(initScrollTop).not.toBe(updatedScrollTop);
@@ -165,7 +168,6 @@ test.describe('Role management page', () => {
     adminUsersPage,
     adminCreateUserPage,
     adminEditUserPage,
-    page,
   }) => {
     await adminRolesPage.navigateTo();
     await test.step('Create a new role', async () => {
@@ -270,7 +272,6 @@ test.describe('Role management page', () => {
     adminRolesPage,
     adminUsersPage,
     adminCreateUserPage,
-    page,
   }) => {
     await adminRolesPage.navigateTo();
     await test.step('Create a new role', async () => {
@@ -429,6 +430,7 @@ test('Accessibility of role management page', async ({
       await page.goto(url);
       await page.waitForTimeout(750);
       const isUnmounted = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         const root = document.querySelector('#root');
 
         if (root) {

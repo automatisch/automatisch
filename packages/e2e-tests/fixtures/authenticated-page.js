@@ -1,7 +1,4 @@
-const path = require('node:path');
-const { expect } = require('@playwright/test');
 const { BasePage } = require('./base-page');
-const { LoginPage } = require('./login-page');
 
 export class AuthenticatedPage extends BasePage {
   /**

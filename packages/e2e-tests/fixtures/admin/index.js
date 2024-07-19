@@ -25,5 +25,5 @@ export const adminFixtures = {
   adminCreateRolePage: async ({ page}, use) => {
     await use(new AdminCreateRolePage(page));
   },
-}
+};
 
