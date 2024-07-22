@@ -45,6 +45,11 @@ module.exports = defineConfig({
     {
       name: 'setup',
       testMatch: /.*\.setup\.js/,
+      teardown: 'teardown',
+    },
+    {
+      name: 'teardown',
+      testMatch: /.*\.teardown\.js/,
     },
     {
       name: 'chromium',

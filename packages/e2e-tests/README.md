@@ -44,6 +44,14 @@ and it should install the associated browsers for the test running. For more inf
 
 We recommend using [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) maintained by Microsoft. This lets you run playwright tests from within the code editor, giving you access to additional tools, such as easily running subsets of tests.
 
+[Global setup and teardown](https://playwright.dev/docs/test-global-setup-teardown) are part of the tests.
+
+By running `yarn test` setup and teardown actions will take place.
+
+If you need to setup Admin account (if you didn't seed the DB with the admin account or have clean DB) you should run `auth.setup.js` file.
+
+If you want to clean the database (drop tables) and perform required migrations run `global.teardown.js`.
+
 # Test failures
 
 If there are failing tests in the test suite, this can be caused by a myriad of reasons, but one of the best places to start is either running the test in a headed browser, looking at the associated trace file for the failed test, or checking out the output of a failed GitHub Action.

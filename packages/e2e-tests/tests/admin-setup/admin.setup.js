@@ -1,8 +1,6 @@
 const { publicTest: setup, expect } = require('../../fixtures/index');
 
 setup.describe.serial('Admin setup page', () => {
-  setup.skip(!process.env.CI);
-
   // eslint-disable-next-line no-unused-vars
   setup('should not be able to login if admin is not created', async ({ page, adminSetupPage, loginPage }) => {
     await expect(async () => {
