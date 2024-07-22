@@ -32,11 +32,11 @@ import useAuthentication from 'hooks/useAuthentication';
 import Installation from 'pages/Installation';
 
 function Routes() {
-  const { data: configData } = useAutomatischConfig();
+  const { data: configData, isSuccess } = useAutomatischConfig();
   const { isAuthenticated } = useAuthentication();
   const config = configData?.data;
 
-  const installed = configData?.data?.['installation.completed'] === true;
+  const installed = isSuccess ? config?.['installation.completed'] === true : true;
   const navigate = useNavigate();
 
   useEffect(() => {

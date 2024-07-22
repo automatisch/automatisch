@@ -1,4 +1,5 @@
 const { BasePage } = require('../../base-page');
+const { expect } = require('@playwright/test');
 
 export class GithubPopup extends BasePage {
 
@@ -11,7 +12,7 @@ export class GithubPopup extends BasePage {
   }
 
   getPathname () {
-    const url = this.page.url()
+    const url = this.page.url();
     try {
       return new URL(url).pathname;
     } catch (e) {
@@ -34,17 +35,17 @@ export class GithubPopup extends BasePage {
     loginInput.click();
     await loginInput.fill(process.env.GITHUB_USERNAME);
     const passwordInput = this.page.getByLabel('Password');
-    passwordInput.click()
+    passwordInput.click();
     await passwordInput.fill(process.env.GITHUB_PASSWORD);
     await this.page.getByRole('button', { name: 'Sign in' }).click();
     // await this.page.waitForTimeout(2000);
     if (this.page.isClosed()) {
-      return
+      return;
     }
     // await this.page.waitForLoadState('networkidle', 30000);
     this.page.waitForEvent('load');
     if (this.page.isClosed()) {
-      return
+      return;
     }
     await this.page.waitForURL(function (url) {
       const u = new URL(url);
@@ -55,7 +56,7 @@ export class GithubPopup extends BasePage {
   }
 
   async handleAuthorize () {
-    if (this.page.isClosed()) { return }
+    if (this.page.isClosed()) { return; }
     const authorizeButton = this.page.getByRole(
       'button',
       { name: 'Authorize' }
@@ -69,7 +70,7 @@ export class GithubPopup extends BasePage {
       ) && (
         u.searchParams.get('client_id') === null
       );
-    })
+    });
     const passwordInput = this.page.getByLabel('Password');
     if (await passwordInput.isVisible()) {
       await passwordInput.fill(process.env.GITHUB_PASSWORD);
@@ -87,6 +88,6 @@ export class GithubPopup extends BasePage {
         };
       }
     }
-    await this.page.waitForEvent('close')
+    await this.page.waitForEvent('close');
   }
 }

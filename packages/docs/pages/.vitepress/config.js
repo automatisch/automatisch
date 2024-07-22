@@ -60,6 +60,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Cryptography',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/cryptography/actions' },
+            { text: 'Connection', link: '/apps/cryptography/connection' },
+          ],
+        },
+        {
           text: 'Datastore',
           collapsible: true,
           collapsed: true,

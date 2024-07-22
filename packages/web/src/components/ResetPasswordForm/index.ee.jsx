@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Paper from '@mui/material/Paper';
@@ -7,11 +6,12 @@ import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
+
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
-import { RESET_PASSWORD } from 'graphql/mutations/reset-password.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useResetPassword from 'hooks/useResetPassword';
 
 const validationSchema = yup.object().shape({
   password: yup.string().required('resetPasswordForm.mandatoryInput'),
@@ -26,25 +26,35 @@ export default function ResetPasswordForm() {
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [resetPassword, { data, loading }] = useMutation(RESET_PASSWORD);
+  const {
+    mutateAsync: resetPassword,
+    isPending,
+    isSuccess,
+  } = useResetPassword();
   const token = searchParams.get('token');
 
   const handleSubmit = async (values) => {
-    await resetPassword({
-      variables: {
-        input: {
-          password: values.password,
-          token,
+    const { password } = values;
+    try {
+      await resetPassword({
+        password,
+        token,
+      });
+      enqueueSnackbar(formatMessage('resetPasswordForm.passwordUpdated'), {
+        variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-reset-password-success',
         },
-      },
-    });
-    enqueueSnackbar(formatMessage('resetPasswordForm.passwordUpdated'), {
-      variant: 'success',
-      SnackbarProps: {
-        'data-test': 'snackbar-reset-password-success',
-      },
-    });
-    navigate(URLS.LOGIN);
+      });
+      navigate(URLS.LOGIN);
+    } catch (error) {
+      enqueueSnackbar(
+        error?.message || formatMessage('resetPasswordForm.error'),
+        {
+          variant: 'error',
+        },
+      );
+    }
   };
 
   return (
@@ -113,8 +123,8 @@ export default function ResetPasswordForm() {
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, my: 3 }}
-              loading={loading}
-              disabled={data || !token}
+              loading={isPending}
+              disabled={isSuccess || !token}
               fullWidth
             >
               {formatMessage('resetPasswordForm.submit')}

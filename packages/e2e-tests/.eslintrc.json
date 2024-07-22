@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": [
+      2,
+      "always"
+    ],
+    "indent": [
+      "error",
+      2
+    ]
+  }
+}

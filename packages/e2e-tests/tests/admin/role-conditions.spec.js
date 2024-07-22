@@ -51,7 +51,7 @@ test(
 
     const subjects = ['Connection', 'Execution', 'Flow'];
     for (let subject of subjects) {
-      const row = adminCreateRolePage.getSubjectRow(subject)
+      const row = adminCreateRolePage.getSubjectRow(subject);
       const modal = adminCreateRolePage.getRoleConditionsModal(subject);
       await adminCreateRolePage.clickPermissionSettings(row);
       await expect(modal.modal).toBeVisible();

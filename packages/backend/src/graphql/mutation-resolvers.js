@@ -29,11 +29,6 @@ import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee.js'
 import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-providers-role-mappings.ee.js';
 import verifyConnection from './mutations/verify-connection.js';
 
-// Converted mutations
-import deleteUser from './mutations/delete-user.ee.js';
-import login from './mutations/login.js';
-import resetPassword from './mutations/reset-password.ee.js';
-
 const mutationResolvers = {
   createAppAuthClient,
   createAppConfig,
@@ -47,14 +42,11 @@ const mutationResolvers = {
   deleteFlow,
   deleteRole,
   deleteStep,
-  deleteUser,
   duplicateFlow,
   executeFlow,
   generateAuthUrl,
-  login,
   registerUser,
   resetConnection,
-  resetPassword,
   updateAppAuthClient,
   updateAppConfig,
   updateConfig,

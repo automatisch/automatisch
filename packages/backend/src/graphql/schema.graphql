@@ -14,14 +14,11 @@ type Mutation {
   deleteFlow(input: DeleteFlowInput): Boolean
   deleteRole(input: DeleteRoleInput): Boolean
   deleteStep(input: DeleteStepInput): Step
-  deleteUser(input: DeleteUserInput): Boolean
   duplicateFlow(input: DuplicateFlowInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
-  login(input: LoginInput): Auth
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
-  resetPassword(input: ResetPasswordInput): Boolean
   updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
   updateAppConfig(input: UpdateAppConfigInput): AppConfig
   updateConfig(input: JSONObject): JSONObject
@@ -151,11 +148,6 @@ type AppAuth {
 enum ArgumentEnumType {
   integer
   string
-}
-
-type Auth {
-  user: User
-  token: String
 }
 
 type AuthenticationStep {
@@ -388,10 +380,6 @@ input UpdateUserInput {
   role: UserRoleInput
 }
 
-input DeleteUserInput {
-  id: String!
-}
-
 input RegisterUserInput {
   fullName: String!
   email: String!
@@ -402,16 +390,6 @@ input UpdateCurrentUserInput {
   email: String
   password: String
   fullName: String
-}
-
-input ResetPasswordInput {
-  token: String!
-  password: String!
-}
-
-input LoginInput {
-  email: String!
-  password: String!
 }
 
 input PermissionInput {

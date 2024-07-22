@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useQueryClient } from '@tanstack/react-query';
@@ -7,16 +6,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import { DELETE_USER } from 'graphql/mutations/delete-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAdminUserDelete from 'hooks/useAdminUserDelete';
 
 function DeleteUserButton(props) {
   const { userId } = props;
   const [showConfirmation, setShowConfirmation] = React.useState(false);
-  const [deleteUser] = useMutation(DELETE_USER, {
-    variables: { input: { id: userId } },
-    refetchQueries: ['GetUsers'],
-  });
+  const { mutateAsync: deleteUser } = useAdminUserDelete(userId);
+
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
   const queryClient = useQueryClient();
@@ -33,7 +30,12 @@ function DeleteUserButton(props) {
         },
       });
     } catch (error) {
-      throw new Error('Failed while deleting!');
+      enqueueSnackbar(
+        error?.message || formatMessage('deleteUserButton.deleteError'),
+        {
+          variant: 'error',
+        },
+      );
     }
   }, [deleteUser]);
 

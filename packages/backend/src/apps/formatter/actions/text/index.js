@@ -15,6 +15,7 @@ import encodeUri from './transformers/encode-uri.js';
 import trimWhitespace from './transformers/trim-whitespace.js';
 import useDefaultValue from './transformers/use-default-value.js';
 import parseStringifiedJson from './transformers/parse-stringified-json.js';
+import createUuid from './transformers/create-uuid.js';
 
 const transformers = {
   base64ToString,
@@ -32,6 +33,7 @@ const transformers = {
   trimWhitespace,
   useDefaultValue,
   parseStringifiedJson,
+  createUuid,
 };
 
 export default defineAction({
@@ -49,22 +51,23 @@ export default defineAction({
       options: [
         { label: 'Base64 to String', value: 'base64ToString' },
         { label: 'Capitalize', value: 'capitalize' },
+        { label: 'Convert HTML to Markdown', value: 'htmlToMarkdown' },
+        { label: 'Convert Markdown to HTML', value: 'markdownToHtml' },
+        { label: 'Create UUID', value: 'createUuid' },
+        { label: 'Encode URI', value: 'encodeUri' },
         {
           label: 'Encode URI Component',
           value: 'encodeUriComponent',
         },
-        { label: 'Convert HTML to Markdown', value: 'htmlToMarkdown' },
-        { label: 'Convert Markdown to HTML', value: 'markdownToHtml' },
         { label: 'Extract Email Address', value: 'extractEmailAddress' },
         { label: 'Extract Number', value: 'extractNumber' },
         { label: 'Lowercase', value: 'lowercase' },
+        { label: 'Parse stringified JSON', value: 'parseStringifiedJson' },
         { label: 'Pluralize', value: 'pluralize' },
         { label: 'Replace', value: 'replace' },
         { label: 'String to Base64', value: 'stringToBase64' },
-        { label: 'Encode URI', value: 'encodeUri' },
         { label: 'Trim Whitespace', value: 'trimWhitespace' },
         { label: 'Use Default Value', value: 'useDefaultValue' },
-        { label: 'Parse stringified JSON', value: 'parseStringifiedJson' },
       ],
       additionalFields: {
         type: 'query',

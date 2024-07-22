@@ -7,7 +7,8 @@
   "scripts": {
     "start-mock-license-server": "node ./license-server-with-mock.js",
     "test": "playwright test",
-    "test:fast": "yarn test -j 90% --quiet --reporter null --ignore-snapshots -x"
+    "test:fast": "yarn test -j 90% --quiet --reporter null --ignore-snapshots -x",
+    "lint": "eslint ."
   },
   "contributors": [
     {
