@@ -71,9 +71,6 @@ jobs:
       - name: Migrate database
         working-directory: ./packages/backend
         run: yarn db:migrate
-      - name: Seed user
-        working-directory: ./packages/backend
-        run: yarn db:seed:user &
       - name: Install certutils
         run: sudo apt install -y libnss3-tools
       - name: Install mkcert

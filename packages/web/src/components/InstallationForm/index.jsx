@@ -134,6 +134,7 @@ function InstallationForm() {
               fullWidth
               margin="dense"
               type="password"
+              data-test="password-text-field"
               error={touchedFields.password && !!errors?.password}
               helperText={
                 touchedFields.password && errors?.password?.message
@@ -155,6 +156,7 @@ function InstallationForm() {
               fullWidth
               margin="dense"
               type="password"
+              data-test="repeat-password-text-field"
               error={touchedFields.confirmPassword && !!errors?.confirmPassword}
               helperText={
                 touchedFields.confirmPassword &&
@@ -186,7 +188,7 @@ function InstallationForm() {
         )}
       />
       {install.isSuccess && (
-        <Alert severity="success" sx={{ mt: 3, fontWeight: 500 }}>
+        <Alert data-test="success-alert" severity="success" sx={{ mt: 3, fontWeight: 500 }}>
           {formatMessage('installationForm.success', {
             link: (str) => (
               <Link

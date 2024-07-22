@@ -7,6 +7,7 @@ const { UserInterfacePage } = require('./user-interface-page');
 const { LoginPage } = require('./login-page');
 const { AcceptInvitation } = require('./accept-invitation-page');
 const { adminFixtures } = require('./admin');
+const { AdminSetupPage } = require('./admin-setup-page');
 const { AdminCreateUserPage } = require('./admin/create-user-page');
 
 exports.test = test.extend({
@@ -52,6 +53,11 @@ exports.publicTest = test.extend({
   acceptInvitationPage: async ({ page }, use) => {
     const acceptInvitationPage = new AcceptInvitation(page);
     await use(acceptInvitationPage);
+  },
+
+  adminSetupPage: async ({ page }, use) => {
+    const adminSetupPage = new AdminSetupPage(page);
+    await use(adminSetupPage);
   },
 
   adminCreateUserPage: async ({page}, use) => {
