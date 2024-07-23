@@ -100,6 +100,9 @@ const appConfig = {
   additionalDrawerLinkIcon: process.env.ADDITIONAL_DRAWER_LINK_ICON,
   additionalDrawerLinkText: process.env.ADDITIONAL_DRAWER_LINK_TEXT,
   disableSeedUser: process.env.DISABLE_SEED_USER === 'true',
+  httpProxy: process.env.http_proxy,
+  httpsProxy: process.env.https_proxy,
+  noProxy: process.env.no_proxy,
 };
 
 if (!appConfig.encryptionKey) {

@@ -1,40 +1,37 @@
-import { URL } from 'node:url';
 import HttpError from '../../errors/http.js';
 import axios from '../axios-with-proxy.js';
 
-const removeBaseUrlForAbsoluteUrls = (requestConfig) => {
-  try {
-    const url = new URL(requestConfig.url);
-    requestConfig.baseURL = url.origin;
-    requestConfig.url = url.pathname + url.search;
-
-    return requestConfig;
-  } catch {
-    return requestConfig;
-  }
-};
+// Mutates the `toInstance` by copying the request interceptors from `fromInstance`
+const copyRequestInterceptors = (fromInstance, toInstance) => {
+  // Copy request interceptors
+  fromInstance.interceptors.request.forEach(interceptor => {
+    toInstance.interceptors.request.use(
+      interceptor.fulfilled,
+      interceptor.rejected,
+      {
+        synchronous: interceptor.synchronous,
+        runWhen: interceptor.runWhen
+      }
+    );
+  });
+}
 
 export default function createHttpClient({ $, baseURL, beforeRequest = [] }) {
   const instance = axios.create({
     baseURL,
   });
 
+  // 1. apply the beforeRequest functions from the app
   instance.interceptors.request.use((requestConfig) => {
-    const newRequestConfig = removeBaseUrlForAbsoluteUrls(requestConfig);
-
     const result = beforeRequest.reduce((newConfig, beforeRequestFunc) => {
       return beforeRequestFunc($, newConfig);
-    }, newRequestConfig);
+    }, requestConfig);
 
-    /**
-     * axios seems to want InternalAxiosRequestConfig returned not AxioRequestConfig
-     * anymore even though requests do require AxiosRequestConfig.
-     *
-     * Since both interfaces are very similar (InternalAxiosRequestConfig
-     * extends AxiosRequestConfig), we can utilize an assertion below
-     **/
     return result;
   });
+
+  // 2. inherit the request inceptors from the parent instance
+  copyRequestInterceptors(axios, instance);
 
   instance.interceptors.response.use(
     (response) => response,
