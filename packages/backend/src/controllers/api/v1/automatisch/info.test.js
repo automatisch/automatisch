@@ -10,6 +10,7 @@ describe('GET /api/v1/automatisch/info', () => {
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
     vi.spyOn(appConfig, 'isMation', 'get').mockReturnValue(false);
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+    vi.spyOn(appConfig, 'docsUrl', 'get').mockReturnValue('https://automatisch.io/docs');
 
     const response = await request(app)
       .get('/api/v1/automatisch/info')

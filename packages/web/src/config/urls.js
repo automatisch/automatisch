@@ -97,6 +97,8 @@ export const ADMIN_APP_AUTH_CLIENT = (appKey, id) =>
 export const ADMIN_APP_AUTH_CLIENTS_CREATE = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients/create`;
 export const DASHBOARD = FLOWS;
-// External links
-export const WEBHOOK_DOCS =
-  'https://automatisch.io/docs/apps/webhooks/connection';
+
+// External links and paths
+// The paths are sensitive for their relativity.
+export const WEBHOOK_DOCS_PATH =
+  './apps/webhooks/connection';
