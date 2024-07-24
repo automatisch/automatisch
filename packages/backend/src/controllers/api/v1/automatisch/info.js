@@ -7,6 +7,7 @@ export default async (request, response) => {
     isCloud: appConfig.isCloud,
     isMation: appConfig.isMation,
     isEnterprise: await hasValidLicense(),
+    docsUrl: appConfig.docsUrl,
   };
 
   renderObject(response, info);
