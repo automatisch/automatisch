@@ -1,7 +1,7 @@
 ---
 favicon: /favicons/appwrite.svg
 items:
-  - name: New documets
+  - name: New documents
     desc: Triggers when a new document is created.
 ---
 
