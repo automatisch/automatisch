@@ -54,12 +54,14 @@ export function createInstance(customConfig = {}, { requestInterceptor, response
   // not always we have custom request interceptors
   if (requestInterceptor) {
     instance.interceptors.request.use(
-      function customInterceptor(requestConfig) {
-        const result = requestInterceptor.reduce((newConfig, requestInterceptor) => {
-          return requestInterceptor(newConfig);
-        }, requestConfig);
+      async function customInterceptor(requestConfig) {
+        let newRequestConfig = requestConfig;
 
-        return result;
+        for (const interceptor of requestInterceptor) {
+          newRequestConfig = await interceptor(newRequestConfig);
+        }
+
+        return newRequestConfig;
       }
     );
   }
@@ -83,7 +85,6 @@ export function createInstance(customConfig = {}, { requestInterceptor, response
     },
     (error) => Promise.reject(error)
   );
-
 
   // not always we have custom response error interceptor
   if (responseErrorInterceptor) {

@@ -141,7 +141,7 @@ describe('Custom default axios with proxy', () => {
       const customInterceptor = requestInterceptors[1].fulfilled;
 
       expect(requestInterceptors.length).toBe(3);
-      expect(customInterceptor({})).toStrictEqual({ test: true });
+      await expect(customInterceptor({})).resolves.toStrictEqual({ test: true });
     });
 
     it('should work with a custom interceptor setting a baseURL and a request to path', async () => {
