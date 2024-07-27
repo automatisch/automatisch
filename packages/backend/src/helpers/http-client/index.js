@@ -33,7 +33,7 @@ export default function createHttpClient({ $, baseURL, beforeRequest = [] }) {
     },
     {
       requestInterceptor: beforeRequest.map((originalBeforeRequest) => {
-        return (requestConfig) => originalBeforeRequest($, requestConfig);
+        return async (requestConfig) => await originalBeforeRequest($, requestConfig);
       }),
       responseErrorInterceptor: interceptResponseError,
     }
