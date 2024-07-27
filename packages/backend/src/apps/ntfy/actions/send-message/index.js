@@ -89,6 +89,8 @@ export default defineAction({
 
     const response = await $.http.post('/', payload);
 
+    console.log(response.config.additionalProperties.extraData);
+
     $.setActionItem({
       raw: response.data,
     });

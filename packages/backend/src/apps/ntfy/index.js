@@ -1,5 +1,6 @@
 import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
+import asyncBeforeRequest from './common/async-before-request.js';
 import auth from './auth/index.js';
 import actions from './actions/index.js';
 
@@ -12,7 +13,7 @@ export default defineApp({
   baseUrl: 'https://ntfy.sh',
   apiBaseUrl: 'https://ntfy.sh',
   primaryColor: '56bda8',
-  beforeRequest: [addAuthHeader],
+  beforeRequest: [asyncBeforeRequest, addAuthHeader],
   auth,
   actions,
 });

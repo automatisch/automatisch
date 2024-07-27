@@ -1,4 +1,7 @@
 const addAuthHeader = ($, requestConfig) => {
+  console.log('requestConfig', requestConfig)
+  if (requestConfig.additionalProperties?.skip) return requestConfig;
+
   if ($.auth.data.serverUrl) {
     requestConfig.baseURL = $.auth.data.serverUrl;
   }
