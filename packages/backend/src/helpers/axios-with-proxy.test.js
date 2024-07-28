@@ -1,6 +1,6 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest';
 
-describe('Axios with proxy', () => {
+describe('Custom default axios with proxy', () => {
   beforeEach(() => {
     vi.resetModules();
   });
@@ -23,7 +23,13 @@ describe('Axios with proxy', () => {
     expect(secondRequestInterceptor.fulfilled.name).toBe('removeBaseUrlForAbsoluteUrls');
   });
 
-  describe('skipProxyIfInNoProxy', () => {
+  it('should throw with invalid url (consisting of path alone)', async () => {
+    const axios = (await import('./axios-with-proxy.js')).default;
+
+    await expect(() => axios('/just-a-path')).rejects.toThrowError('Invalid URL');
+  });
+
+  describe('with skipProxyIfInNoProxy interceptor', () => {
     let appConfig, axios;
     beforeEach(async() => {
       appConfig = (await import('../config/app.js')).default;
@@ -67,7 +73,7 @@ describe('Axios with proxy', () => {
     });
   });
 
-  describe('removeBaseUrlForAbsoluteUrls', () => {
+  describe('with removeBaseUrlForAbsoluteUrls interceptor', () => {
     let axios;
     beforeEach(async() => {
       axios = (await import('./axios-with-proxy.js')).default;
@@ -115,5 +121,49 @@ describe('Axios with proxy', () => {
       expect(interceptedRequestConfig.baseURL).toBe('https://automatisch.io');
       expect(interceptedRequestConfig.url).toBe('/path?query=1');
     });
+  });
+
+  describe('with extra requestInterceptors', () => {
+    it('should apply extra request interceptors in the middle', async () => {
+      const { createInstance } = await import('./axios-with-proxy.js');
+
+      const interceptor = (config) => {
+        config.test = true;
+        return config;
+      }
+
+      const instance = createInstance({}, {
+        requestInterceptor: [
+          interceptor
+        ]
+      });
+      const requestInterceptors = instance.interceptors.request.handlers;
+      const customInterceptor = requestInterceptors[1].fulfilled;
+
+      expect(requestInterceptors.length).toBe(3);
+      await expect(customInterceptor({})).resolves.toStrictEqual({ test: true });
+    });
+
+    it('should work with a custom interceptor setting a baseURL and a request to path', async () => {
+      const { createInstance } = await import('./axios-with-proxy.js');
+
+      const interceptor = (config) => {
+        config.baseURL = 'http://localhost';
+        return config;
+      }
+
+      const instance = createInstance({}, {
+        requestInterceptor: [
+          interceptor
+        ]
+      });
+
+      try {
+        await instance.get('/just-a-path');
+      } catch (error) {
+        expect(error.config.baseURL).toBe('http://localhost');
+        expect(error.config.url).toBe('/just-a-path');
+      }
+    })
   });
 });
