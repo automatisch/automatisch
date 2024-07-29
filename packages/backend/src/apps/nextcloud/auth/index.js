@@ -1,6 +1,5 @@
 import verifyCredentials from './verify-credentials.js';
 import isStillVerified from './is-still-verified.js';
-import getInstanceUrl from '../common/get-instance-url.js';
 
 export default {
   fields: [
@@ -54,5 +53,4 @@ export default {
 
   verifyCredentials,
   isStillVerified,
-  getInstanceUrl,
 };
