@@ -49,6 +49,7 @@
     "http-errors": "~1.6.3",
     "http-proxy-agent": "^7.0.0",
     "https-proxy-agent": "^7.0.1",
+    "isolated-vm": "^5.0.1",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.0",
     "libphonenumber-js": "^1.10.48",
