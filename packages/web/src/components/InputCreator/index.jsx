@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import useDynamicFields from 'hooks/useDynamicFields';
 import useDynamicData from 'hooks/useDynamicData';
 import PowerInput from 'components/PowerInput';
+import CodeEditor from 'components/CodeEditor';
 import TextField from 'components/TextField';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import ControlledCustomAutocomplete from 'components/ControlledCustomAutocomplete';
@@ -122,6 +123,26 @@ function InputCreator(props) {
             shouldUnregister={shouldUnregister}
           />
         ))}
+      </React.Fragment>
+    );
+  }
+
+  if (type === 'code') {
+    return (
+      <React.Fragment>
+        <CodeEditor
+          key={computedName}
+          defaultValue={value}
+          required={required}
+          readOnly={readOnly || disabled}
+          name={computedName}
+          data-test={`${computedName}-text`}
+          label={label}
+          fullWidth
+          helperText={description}
+          shouldUnregister={shouldUnregister}
+          disabled={disabled}
+        />
       </React.Fragment>
     );
   }

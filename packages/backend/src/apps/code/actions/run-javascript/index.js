@@ -39,7 +39,7 @@ export default defineAction({
     {
       label: 'Code Snippet',
       key: 'codeSnippet',
-      type: 'string',
+      type: 'code',
       required: true,
       variables: false,
       value: 'const code = async (inputs) => { return true; };',
@@ -49,31 +49,22 @@ export default defineAction({
   async run($) {
     const { inputs = [], codeSnippet } = $.step.parameters;
 
+    const objectifiedInput = {};
+    for (const input of inputs) {
+      objectifiedInput[input.key] = input.value;
+    }
+
     const ivm = (await import('isolated-vm')).default;
     const isolate = new ivm.Isolate({ memoryLimit: 128 });
 
     try {
       const context = await isolate.createContext();
+      await context.global.set('inputs', new ivm.ExternalCopy(objectifiedInput).copyInto())
 
-      const externalData = new ivm.ExternalCopy(inputs).copyInto();
+      const compiledCodeSnippet = await isolate.compileScript(`${codeSnippet}; code(inputs);`);
+      const codeFunction = await compiledCodeSnippet.run(context, { reference: true, promise: true });
 
-      const compiledCodeSnippet = await isolate.compileScript(codeSnippet);
-
-      const codeRun = await compiledCodeSnippet.run(context);
-
-      const codeFunction = await context.global.get('code', {
-        reference: true,
-        promise: true,
-      });
-
-      const result = await codeFunction.apply(undefined, [externalData], {});
-
-      // const codeReturn = await outRef.copy();
-      const codeReturn = await result.copy();
-
-      // console.log(codeReturn);
-
-      $.setActionItem({ raw: { output: codeReturn } });
+      $.setActionItem({ raw: { output: await codeFunction.copy() } });
     } finally {
       isolate.dispose();
     }
