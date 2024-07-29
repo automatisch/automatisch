@@ -9,13 +9,9 @@ export default defineTrigger({
   async run($) {
     let response;
 
-    const headers = {
-      'OCS-APIRequest': true,
-    };
-
     do {
       let requestPath = `/ocs/v2.php/apps/activity/api/v2/activity`;
-      response = await $.http.get(requestPath, { headers });
+      response = await $.http.get(requestPath);
 
       response.data.ocs.data.forEach((activity) => {
         const dataItem = {

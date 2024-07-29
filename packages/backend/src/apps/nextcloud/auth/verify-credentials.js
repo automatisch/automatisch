@@ -7,11 +7,7 @@ const verifyCredentials = async ($) => {
     throw new Error('Failed while authorizing!');
   }
 
-  await $.http.get('/ocs/v1.php/cloud/capabilities', {
-    headers: {
-      'OCS-APIRequest': true,
-    },
-  });
+  await $.http.get('/ocs/v1.php/cloud/capabilities');
 
   await $.auth.set({
     screenName: $.auth.data.screenName,

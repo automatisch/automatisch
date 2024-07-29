@@ -9,6 +9,8 @@ const addAuthHeader = ($, requestConfig) => {
     };
   }
 
+  requestConfig.headers['OCS-APIRequest'] = true;
+
   return requestConfig;
 };
 
