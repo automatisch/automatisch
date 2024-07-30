@@ -19,7 +19,13 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
     const value = joinBy('.', parentKey, index?.toString(), name);
 
     if (Array.isArray(sampleValue)) {
-      return sampleValue.flatMap((item, index) =>
+      const arrayItself = {
+        label,
+        value,
+        sampleValue: JSON.stringify(sampleValue),
+      };
+
+      const arrayItems =  sampleValue.flatMap((item, index) =>
         process({
           data: item,
           parentKey: value,
@@ -27,6 +33,9 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
           parentLabel: label,
         }),
       );
+
+      // TODO: remove spreading
+      return [arrayItself, ...arrayItems];
     }
 
     if (typeof sampleValue === 'object' && sampleValue !== null) {
@@ -36,6 +45,7 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
         parentLabel: label,
       });
     }
+
     return [
       {
         label,
