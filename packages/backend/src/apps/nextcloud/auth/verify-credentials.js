@@ -3,10 +3,6 @@ const verifyCredentials = async ($) => {
   const password = $.auth.data.password;
   const login = $.auth.data.login;
 
-  if (!password) {
-    throw new Error('Failed while authorizing!');
-  }
-
   await $.http.get('/ocs/v1.php/cloud/capabilities');
 
   await $.auth.set({
