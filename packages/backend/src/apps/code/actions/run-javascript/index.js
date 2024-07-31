@@ -42,7 +42,7 @@ export default defineAction({
       type: 'code',
       required: true,
       variables: false,
-      value: 'const code = async (inputs) => { return true; };',
+      value: 'const code = async (inputs) => { \n  return true;\n};',
     },
   ],
 
