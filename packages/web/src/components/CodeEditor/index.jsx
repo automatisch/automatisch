@@ -24,17 +24,14 @@ function CodeEditor(props) {
     editorRef.current = editor;
 
     editor.onDidContentSizeChange((event) => {
-      const {
-        contentHeight,
-        contentHeightChanged,
-      } = event;
+      const { contentHeight, contentHeightChanged } = event;
 
       if (contentHeightChanged) {
         // cap the editor height at 500px
         const editorContentHeight = Math.min(500, contentHeight);
 
         setContainerHeight(editorContentHeight);
-      };
+      }
     });
   };
 
@@ -45,10 +42,8 @@ function CodeEditor(props) {
       defaultValue={defaultValue || ''}
       control={control}
       shouldUnregister={shouldUnregister}
-      render={({
-        field,
-      }) => (
-        <div style={{ paddingTop: 36, position:'relative' }}>
+      render={({ field }) => (
+        <div style={{ paddingTop: 36, position: 'relative' }}>
           <InputLabelWrapper>
             <InputLabel
               shrink={true}
@@ -60,20 +55,26 @@ function CodeEditor(props) {
             </InputLabel>
           </InputLabelWrapper>
 
-          <div style={{ height: containerHeight, width: '100%' }} data-test={dataTest}>
+          <div
+            style={{ height: containerHeight, width: '100%' }}
+            data-test={dataTest}
+          >
             <Editor
               {...field}
               ref={containerRef}
               defaultLanguage="javascript"
               defaultValue={defaultValue}
               onMount={handleEditorOnMount}
-              onChange={(value, event) => { field.onChange(value, event); }}
+              onChange={(value, event) => {
+                field.onChange(value, event);
+              }}
               options={{
+                fontSize: 13,
                 automaticLayout: true,
                 bracketPairColorization: true,
                 formatOnPaste: true,
                 minimap: {
-                  enabled: false
+                  enabled: false,
                 },
                 overviewRulerLanes: 0,
                 readOnly: disabled,
@@ -84,7 +85,6 @@ function CodeEditor(props) {
             />
           </div>
         </div>
-
       )}
     />
   );
