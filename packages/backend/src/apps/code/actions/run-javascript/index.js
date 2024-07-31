@@ -42,7 +42,8 @@ export default defineAction({
       type: 'code',
       required: true,
       variables: false,
-      value: 'const code = async (inputs) => { \n  return true;\n};',
+      value:
+        'const code = async (inputs) => { \n  // E.g. if you have an input called username,\n  // you can access its value by calling inputs.username\n  // Return value will be used as output of this step.\n\n  return true;\n};',
     },
   ],
 
@@ -59,10 +60,18 @@ export default defineAction({
 
     try {
       const context = await isolate.createContext();
-      await context.global.set('inputs', new ivm.ExternalCopy(objectifiedInput).copyInto())
+      await context.global.set(
+        'inputs',
+        new ivm.ExternalCopy(objectifiedInput).copyInto()
+      );
 
-      const compiledCodeSnippet = await isolate.compileScript(`${codeSnippet}; code(inputs);`);
-      const codeFunction = await compiledCodeSnippet.run(context, { reference: true, promise: true });
+      const compiledCodeSnippet = await isolate.compileScript(
+        `${codeSnippet}; code(inputs);`
+      );
+      const codeFunction = await compiledCodeSnippet.run(context, {
+        reference: true,
+        promise: true,
+      });
 
       $.setActionItem({ raw: { output: await codeFunction.copy() } });
     } finally {
