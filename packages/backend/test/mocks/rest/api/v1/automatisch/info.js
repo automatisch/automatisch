@@ -1,10 +1,11 @@
 const infoMock = () => {
   return {
     data: {
-      isCloud: false,
-      isMation: false,
-      isEnterprise: true,
       docsUrl: 'https://automatisch.io/docs',
+      installationCompleted: true,
+      isCloud: false,
+      isEnterprise: true,
+      isMation: false,
     },
     meta: {
       count: 1,
