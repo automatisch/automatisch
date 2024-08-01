@@ -29,14 +29,16 @@ import adminSettingsRoutes from './adminSettingsRoutes';
 import Notifications from 'pages/Notifications';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAuthentication from 'hooks/useAuthentication';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import Installation from 'pages/Installation';
 
 function Routes() {
-  const { data: configData, isSuccess } = useAutomatischConfig();
+  const { data: automatischInfo, isSuccess } = useAutomatischInfo();
+  const { data: configData } = useAutomatischConfig();
   const { isAuthenticated } = useAuthentication();
   const config = configData?.data;
 
-  const installed = isSuccess ? config?.['installation.completed'] === true : true;
+  const installed = isSuccess ? automatischInfo.data.installationCompleted : true;
   const navigate = useNavigate();
 
   useEffect(() => {
