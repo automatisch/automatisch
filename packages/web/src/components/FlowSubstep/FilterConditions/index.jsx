@@ -122,7 +122,7 @@ function FilterConditions(props) {
     <React.Fragment>
       <Stack sx={{ width: '100%' }} direction="column" spacing={2} mt={2}>
         {groups?.map((group, groupIndex) => (
-          <>
+          <React.Fragment key={groupIndex}>
             {groupIndex !== 0 && <Divider />}
 
             <Typography variant="subtitle2" gutterBottom>
@@ -200,6 +200,7 @@ function FilterConditions(props) {
                   edge="start"
                   onClick={() => removeGroupItem(groupIndex, groupItemIndex)}
                   sx={{ width: 61, height: 61 }}
+                  disabled={groups.length === 1 && group.and.length === 1}
                 >
                   <RemoveIcon />
                 </IconButton>
@@ -227,7 +228,7 @@ function FilterConditions(props) {
                 </IconButton>
               )}
             </Stack>
-          </>
+          </React.Fragment>
         ))}
       </Stack>
     </React.Fragment>
