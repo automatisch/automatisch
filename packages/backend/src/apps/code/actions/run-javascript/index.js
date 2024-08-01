@@ -52,7 +52,9 @@ export default defineAction({
 
     const objectifiedInput = {};
     for (const input of inputs) {
-      objectifiedInput[input.key] = input.value;
+      if (input.key) {
+        objectifiedInput[input.key] = input.value;
+      }
     }
 
     const ivm = (await import('isolated-vm')).default;
