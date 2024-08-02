@@ -263,42 +263,41 @@ function FlowStep(props) {
         <Content>
           <List>
             <StepExecutionsProvider value={stepWithTestExecutionsData}>
-              <Form
-                defaultValues={step}
-                onSubmit={handleSubmit}
-                resolver={stepValidationSchema}
-              >
-                <ChooseAppAndEventSubstep
-                  expanded={currentSubstep === 0}
-                  substep={{
-                    key: 'chooAppAndEvent',
-                    name: 'Choose app & event',
-                    arguments: [],
-                  }}
-                  onExpand={() => toggleSubstep(0)}
-                  onCollapse={() => toggleSubstep(0)}
-                  onSubmit={expandNextStep}
-                  onChange={handleChange}
-                  step={step}
-                />
+              <ChooseAppAndEventSubstep
+                expanded={currentSubstep === 0}
+                substep={{
+                  key: 'chooAppAndEvent',
+                  name: 'Choose app & event',
+                  arguments: [],
+                }}
+                onExpand={() => toggleSubstep(0)}
+                onCollapse={() => toggleSubstep(0)}
+                onSubmit={expandNextStep}
+                onChange={handleChange}
+                step={step}
+              />
 
-                {actionOrTrigger &&
-                  substeps?.length > 0 &&
-                  substeps.map((substep, index) => (
-                    <React.Fragment key={`${substep?.name}-${index}`}>
-                      {substep.key === 'chooseConnection' && app && (
-                        <ChooseConnectionSubstep
-                          expanded={currentSubstep === index + 1}
-                          substep={substep}
-                          onExpand={() => toggleSubstep(index + 1)}
-                          onCollapse={() => toggleSubstep(index + 1)}
-                          onSubmit={expandNextStep}
-                          onChange={handleChange}
-                          application={app}
-                          step={step}
-                        />
-                      )}
-
+              {actionOrTrigger &&
+                substeps?.length > 0 &&
+                substeps.map((substep, index) => (
+                  <React.Fragment key={`${substep?.name}-${index}`}>
+                    {substep.key === 'chooseConnection' && app && (
+                      <ChooseConnectionSubstep
+                        expanded={currentSubstep === index + 1}
+                        substep={substep}
+                        onExpand={() => toggleSubstep(index + 1)}
+                        onCollapse={() => toggleSubstep(index + 1)}
+                        onSubmit={expandNextStep}
+                        onChange={handleChange}
+                        application={app}
+                        step={step}
+                      />
+                    )}
+                    <Form
+                      defaultValues={step}
+                      onSubmit={handleSubmit}
+                      resolver={stepValidationSchema}
+                    >
                       {substep.key === 'testStep' && (
                         <TestSubstep
                           expanded={currentSubstep === index + 1}
@@ -317,7 +316,6 @@ function FlowStep(props) {
                           flowId={flowId}
                         />
                       )}
-
                       {substep.key &&
                         ['chooseConnection', 'testStep'].includes(
                           substep.key,
@@ -332,9 +330,9 @@ function FlowStep(props) {
                             step={step}
                           />
                         )}
-                    </React.Fragment>
-                  ))}
-              </Form>
+                    </Form>
+                  </React.Fragment>
+                ))}
             </StepExecutionsProvider>
           </List>
         </Content>
