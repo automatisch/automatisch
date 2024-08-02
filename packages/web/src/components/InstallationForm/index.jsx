@@ -44,7 +44,7 @@ function InstallationForm() {
 
   const handleOnRedirect = () => {
     queryClient.invalidateQueries({
-      queryKey: ['automatisch', 'config'],
+      queryKey: ['automatisch', 'info'],
     });
   };
 
