@@ -52,7 +52,7 @@ const appConfig = {
   isDev: appEnv === 'development',
   isTest: appEnv === 'test',
   isProd: appEnv === 'production',
-  version: '0.13.0',
+  version: '0.13.1',
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
   postgresSchema: process.env.POSTGRES_SCHEMA || 'public',
   postgresPort: parseInt(process.env.POSTGRES_PORT || '5432'),
