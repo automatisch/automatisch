@@ -37,6 +37,10 @@ export default function computeParameters(parameters, executionSteps) {
       try {
         const parsedValue = JSON.parse(computedValue);
 
+        if (typeof parsedValue === 'number') {
+          throw new Error('Use original unparsed value.');
+        }
+
         return {
           ...result,
           [key]: parsedValue,
