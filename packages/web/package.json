@@ -11,6 +11,7 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@hookform/resolvers": "^2.8.8",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.11.9",
     "@mui/lab": "^5.0.0-alpha.120",
     "@mui/material": "^5.11.10",

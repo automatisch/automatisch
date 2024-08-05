@@ -4,7 +4,7 @@ FROM node:18-alpine
 ENV PORT=3000
 
 RUN \
-  apk --no-cache add --virtual build-dependencies python3 build-base git
+  apk --no-cache add --virtual build-dependencies python3 build-base git make g++
 
 WORKDIR /automatisch
 
