@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM node:18-alpine
 
-ENV PORT 3000
+ENV PORT=3000
 
 RUN \
   apk --no-cache add --virtual build-dependencies python3 build-base git
