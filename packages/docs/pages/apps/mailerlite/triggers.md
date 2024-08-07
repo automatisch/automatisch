@@ -1,6 +1,8 @@
 ---
 favicon: /favicons/mailerlite.svg
 items:
+  - name: Campaign Sent
+    desc: Triggers when a campaign has been activated.
   - name: Spam Complaint
     desc: Triggers when a subscriber reports an email as spam.
   - name: Subscriber created
