@@ -6,7 +6,6 @@ import Alert from '@mui/material/Alert';
 import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Can from 'components/Can';
@@ -95,6 +94,7 @@ export default function CreateUser() {
                   renderInput={(params) => (
                     <MuiTextField
                       {...params}
+                      required
                       label={formatMessage('userForm.role')}
                     />
                   )}
