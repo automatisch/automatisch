@@ -10,7 +10,7 @@ export default defineAction({
       label: 'Repo',
       key: 'repo',
       type: 'dropdown',
-      required: false,
+      required: true,
       variables: true,
       source: {
         type: 'query',
