@@ -145,6 +145,13 @@ export default defineAction({
       responseData = Buffer.from(responseData).toString('base64');
     }
 
-    $.setActionItem({ raw: { data: responseData } });
+    $.setActionItem({
+      raw: {
+        data: responseData,
+        headers: response.headers,
+        status: response.status,
+        statusText: response.statusText
+      }
+    });
   },
 });
