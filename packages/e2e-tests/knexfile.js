@@ -17,7 +17,7 @@ const knexConfig = {
     loadExtensions: [`.${fileExtension}`],
   },
   seeds: {
-    directory: '../../packages/backend/src/db/seeds',
+    directory: '../../packages/backend/src/db/seeds/',
   },
   ...(process.env.APP_ENV === 'test' ? knexSnakeCaseMappers() : {}),
 };
