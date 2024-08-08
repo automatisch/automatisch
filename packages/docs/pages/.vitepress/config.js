@@ -132,6 +132,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Firebase',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/firebase/connection' }],
+        },
+        {
           text: 'Flickr',
           collapsible: true,
           collapsed: true,
