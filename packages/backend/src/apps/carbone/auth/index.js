@@ -23,7 +23,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Carbone API key of your account.',
+      description: 'Carbone API Access key. The production or test API key is available on your Carbone account: https://account.carbone.io.',
       clickToCopy: false,
     },
   ],
