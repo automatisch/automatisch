@@ -30,6 +30,11 @@ const updateFlowStatus = async (_parent, params, context) => {
   }
 
   const triggerStep = await flow.getTriggerStep();
+
+  if (triggerStep.status === 'incomplete') {
+    throw flow.IncompleteStepsError;
+  }
+
   const trigger = await triggerStep.getTriggerCommand();
   const interval = trigger.getInterval?.(triggerStep.parameters);
   const repeatOptions = {
