@@ -25,7 +25,7 @@ export default {
         for (const campaign of data.campaigns) {
           campaigns.data.push({
             value: campaign.id,
-            name: campaign.settings.title || campaign.settings.subject_line,
+            name: campaign.settings.title || campaign.settings.subject_line || 'Unnamed campaign',
           });
         }
       }

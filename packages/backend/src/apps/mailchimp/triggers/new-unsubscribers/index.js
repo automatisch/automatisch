@@ -68,7 +68,7 @@ export default defineTrigger({
     const dataItem = {
       raw: computedWebhookEvent,
       meta: {
-        internalId: computedWebhookEvent.id,
+        internalId: '',
       },
     };
 
