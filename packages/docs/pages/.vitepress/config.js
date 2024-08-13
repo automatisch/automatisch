@@ -253,6 +253,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Mailchimp',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/mailchimp/connection' }],
+        },
+        {
           text: 'MailerLite',
           collapsible: true,
           collapsed: true,
@@ -260,12 +266,6 @@ export default defineConfig({
             { text: 'Triggers', link: '/apps/mailerlite/triggers' },
             { text: 'Connection', link: '/apps/mailerlite/connection' },
           ],
-        },
-        {
-          text: 'Mailchimp',
-          collapsible: true,
-          collapsed: true,
-          items: [{ text: 'Connection', link: '/apps/mailchimp/connection' }],
         },
         {
           text: 'Mattermost',
