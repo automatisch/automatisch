@@ -29,7 +29,7 @@ export default {
         }
       }
 
-      if (data.resultSet.count > data.resultSet.limit) {
+      if (data.resultSet.count >= data.resultSet.limit) {
         hasMore = true;
       } else {
         hasMore = false;
