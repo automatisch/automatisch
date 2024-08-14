@@ -4,14 +4,13 @@ import isStillVerified from './is-still-verified.js';
 export default {
   fields: [
     {
-      key: 'instanceUrl',
-      label: 'Jotform instance URL',
+      key: 'apiUrl',
+      label: 'API URL',
       type: 'string',
       required: false,
       readOnly: false,
-      value: null,
-      placeholder: 'https://${subdomain}.jotform.com',
-      description: 'If you have an enterprise plan, you can use your api url.',
+      value: 'https://api.jotform.com',
+      placeholder: 'https://${subdomain}.jotform.com/api',
       clickToCopy: true,
     },
     {
@@ -22,7 +21,6 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Jotform API key of your account.',
       clickToCopy: false,
     },
   ],
