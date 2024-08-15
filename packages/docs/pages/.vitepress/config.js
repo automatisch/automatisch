@@ -60,6 +60,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'ClickUp',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/clickup/actions' },
+            { text: 'Triggers', link: '/apps/clickup/triggers' },
+            { text: 'Connection', link: '/apps/clickup/connection' },
+          ],
+        },
+        {
           text: 'Cryptography',
           collapsible: true,
           collapsed: true,
@@ -75,16 +85,6 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/datastore/actions' },
             { text: 'Connection', link: '/apps/datastore/connection' },
-          ],
-        },
-        {
-          text: 'ClickUp',
-          collapsible: true,
-          collapsed: true,
-          items: [
-            { text: 'Actions', link: '/apps/clickup/actions' },
-            { text: 'Triggers', link: '/apps/clickup/triggers' },
-            { text: 'Connection', link: '/apps/clickup/connection' },
           ],
         },
         {
