@@ -2,10 +2,10 @@ import Crypto from 'crypto';
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
-  name: 'Task changes',
-  key: 'taskChanges',
+  name: 'Updated task',
+  key: 'updatedTask',
   type: 'webhook',
-  description: 'Triggers when a task alters.',
+  description: 'Triggers when a task is updated.',
   arguments: [
     {
       label: 'Workspace',
@@ -98,15 +98,13 @@ export default defineTrigger({
       label: 'What Changed?',
       key: 'whatChanged',
       type: 'dropdown',
-      required: true,
-      description: '',
+      required: false,
       variables: true,
       options: [
         { label: 'Status', value: 'taskStatusUpdated' },
         { label: 'Assignee Added', value: 'taskAssigneeUpdated' },
         { label: 'Priority', value: 'taskPriorityUpdated' },
         { label: 'Tag Added', value: 'taskTagUpdated' },
-        { label: 'Custom Field Updated', value: 'customFieldUpdated' },
       ],
     },
   ],
@@ -126,7 +124,7 @@ export default defineTrigger({
     const sampleEventData = {
       event: 'taskUpdated',
       task_id: '86enn7pg7',
-      webhook_id: $.webhookUrl.split('/')[5],
+      webhook_id: Crypto.randomUUID(),
       history_items: [],
     };
 
@@ -150,11 +148,7 @@ export default defineTrigger({
       space_id: spaceId,
     };
 
-    if (whatChanged !== 'customFieldUpdated') {
-      payload.events = [whatChanged];
-    } else {
-      payload.events = ['taskUpdated'];
-    }
+    payload.events = [whatChanged || 'taskUpdated'];
 
     if (folderId) {
       payload.folder_id = folderId;

@@ -7,8 +7,8 @@ items:
     desc: Triggers when a new list is created.
   - name: New tasks
     desc: Triggers when a new task is created.
-  - name: Task Changes
-    desc: Triggers when a task alters.
+  - name: Updated task
+    desc: Triggers when a task is updated.
 ---
 
 <script setup>
