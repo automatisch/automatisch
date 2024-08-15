@@ -78,6 +78,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'ClickUp',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/clickup/actions' },
+            { text: 'Triggers', link: '/apps/clickup/triggers' },
+            { text: 'Connection', link: '/apps/clickup/connection' },
+          ],
+        },
+        {
           text: 'DeepL',
           collapsible: true,
           collapsed: true,
