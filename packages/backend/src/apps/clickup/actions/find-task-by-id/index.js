@@ -55,11 +55,11 @@ export default defineAction({
       options: [
         {
           label: 'True',
-          value: 'true',
+          value: true,
         },
         {
           label: 'False',
-          value: 'false',
+          value: false,
         },
       ],
     },

@@ -253,13 +253,31 @@ export default defineAction({
 
     const body = {
       name: taskName,
-      assignees,
-      tags,
-      status: taskStatus,
-      priority,
-      due_date: dueDate,
-      start_date: startDate,
     };
+
+    if (assignees.length) {
+      body.assignees = assignees;
+    }
+
+    if (taskStatus) {
+      body.status = taskStatus;
+    }
+
+    if (tags.length) {
+      body.tags = tags;
+    }
+
+    if (priority) {
+      body.priority = priority;
+    }
+
+    if (dueDate) {
+      body.due_date = dueDate;
+    }
+
+    if (startDate) {
+      body.start_date = startDate;
+    }
 
     if (markdownContent) {
       body.markdown_description = taskDescription;
