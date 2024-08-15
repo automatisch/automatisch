@@ -77,7 +77,7 @@ export default defineTrigger({
     const dataItem = {
       raw: $.request.body,
       meta: {
-        internalId: Crypto.randomUUID(),
+        internalId: $.request.body.list_id,
       },
     };
 
@@ -88,7 +88,7 @@ export default defineTrigger({
     const sampleEventData = {
       event: 'listCreated',
       list_id: '901800588812',
-      webhook_id: $.webhookUrl.split('/')[5],
+      webhook_id: Crypto.randomUUID(),
     };
 
     const dataItem = {

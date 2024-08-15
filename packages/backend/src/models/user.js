@@ -1,12 +1,16 @@
 import bcrypt from 'bcrypt';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import crypto from 'node:crypto';
 
 import appConfig from '../config/app.js';
 import { hasValidLicense } from '../helpers/license.ee.js';
 import userAbility from '../helpers/user-ability.js';
+import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
 import Base from './base.js';
+import App from './app.js';
+import AccessToken from './access-token.js';
 import Connection from './connection.js';
+import Config from './config.js';
 import Execution from './execution.js';
 import Flow from './flow.js';
 import Identity from './identity.ee.js';
@@ -15,6 +19,14 @@ import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
+import Billing from '../helpers/billing/index.ee.js';
+
+import deleteUserQueue from '../queues/delete-user.ee.js';
+import emailQueue from '../queues/email.js';
+import {
+  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+} from '../helpers/remove-job-configuration.js';
 
 class User extends Base {
   static tableName = 'users';
@@ -28,8 +40,21 @@ class User extends Base {
       fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
       password: { type: 'string' },
-      resetPasswordToken: { type: 'string' },
-      resetPasswordTokenSentAt: { type: 'string' },
+      status: {
+        type: 'string',
+        enum: ['active', 'invited'],
+        default: 'active',
+      },
+      resetPasswordToken: { type: ['string', 'null'] },
+      resetPasswordTokenSentAt: {
+        type: ['string', 'null'],
+        format: 'date-time',
+      },
+      invitationToken: { type: ['string', 'null'] },
+      invitationTokenSentAt: {
+        type: ['string', 'null'],
+        format: 'date-time',
+      },
       trialExpiryDate: { type: 'string' },
       roleId: { type: 'string', format: 'uuid' },
       deletedAt: { type: 'string' },
@@ -39,6 +64,14 @@ class User extends Base {
   };
 
   static relationMappings = () => ({
+    accessTokens: {
+      relation: Base.HasManyRelation,
+      modelClass: AccessToken,
+      join: {
+        from: 'users.id',
+        to: 'access_tokens.user_id',
+      },
+    },
     connections: {
       relation: Base.HasManyRelation,
       modelClass: Connection,
@@ -143,15 +176,39 @@ class User extends Base {
     },
   });
 
-  $formatJson(json) {
-    json = super.$formatJson(json);
+  get authorizedFlows() {
+    const conditions = this.can('read', 'Flow');
+    return conditions.isCreator ? this.$relatedQuery('flows') : Flow.query();
+  }
 
-    delete json.password;
-    delete json.deletedAt;
-    delete json.resetPasswordToken;
-    delete json.resetPasswordTokenSentAt;
+  get authorizedSteps() {
+    const conditions = this.can('read', 'Flow');
+    return conditions.isCreator ? this.$relatedQuery('steps') : Step.query();
+  }
 
-    return json;
+  get authorizedConnections() {
+    const conditions = this.can('read', 'Connection');
+    return conditions.isCreator
+      ? this.$relatedQuery('connections')
+      : Connection.query();
+  }
+
+  get authorizedExecutions() {
+    const conditions = this.can('read', 'Execution');
+    return conditions.isCreator
+      ? this.$relatedQuery('executions')
+      : Execution.query();
+  }
+
+  static async authenticate(email, password) {
+    const user = await User.query().findOne({
+      email: email?.toLowerCase() || null,
+    });
+
+    if (user && (await user.login(password))) {
+      const token = await createAuthTokenByUserId(user.id);
+      return token;
+    }
   }
 
   login(password) {
@@ -165,6 +222,13 @@ class User extends Base {
     await this.$query().patch({ resetPasswordToken, resetPasswordTokenSentAt });
   }
 
+  async generateInvitationToken() {
+    const invitationToken = crypto.randomBytes(64).toString('hex');
+    const invitationTokenSentAt = new Date().toISOString();
+
+    await this.$query().patch({ invitationToken, invitationTokenSentAt });
+  }
+
   async resetPassword(password) {
     return await this.$query().patch({
       resetPasswordToken: null,
@@ -173,7 +237,53 @@ class User extends Base {
     });
   }
 
-  async isResetPasswordTokenValid() {
+  async acceptInvitation(password) {
+    return await this.$query().patch({
+      invitationToken: null,
+      invitationTokenSentAt: null,
+      status: 'active',
+      password,
+    });
+  }
+
+  async softRemove() {
+    await this.$query().delete();
+
+    const jobName = `Delete user - ${this.id}`;
+    const jobPayload = { id: this.id };
+    const millisecondsFor30Days = Duration.fromObject({ days: 30 }).toMillis();
+    const jobOptions = {
+      delay: millisecondsFor30Days,
+    };
+
+    await deleteUserQueue.add(jobName, jobPayload, jobOptions);
+  }
+
+  async sendResetPasswordEmail() {
+    await this.generateResetPasswordToken();
+
+    const jobName = `Reset Password Email - ${this.id}`;
+
+    const jobPayload = {
+      email: this.email,
+      subject: 'Reset Password',
+      template: 'reset-password-instructions.ee',
+      params: {
+        token: this.resetPasswordToken,
+        webAppUrl: appConfig.webAppUrl,
+        fullName: this.fullName,
+      },
+    };
+
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+    };
+
+    await emailQueue.add(jobName, jobPayload, jobOptions);
+  }
+
+  isResetPasswordTokenValid() {
     if (!this.resetPasswordTokenSentAt) {
       return false;
     }
@@ -183,6 +293,18 @@ class User extends Base {
     const fourHoursInMilliseconds = 1000 * 60 * 60 * 4;
 
     return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
+  }
+
+  isInvitationTokenValid() {
+    if (!this.invitationTokenSentAt) {
+      return false;
+    }
+
+    const sentAt = new Date(this.invitationTokenSentAt);
+    const now = new Date();
+    const seventyTwoHoursInMilliseconds = 1000 * 60 * 60 * 72;
+
+    return now.getTime() - sentAt.getTime() < seventyTwoHoursInMilliseconds;
   }
 
   async generateHash() {
@@ -246,6 +368,110 @@ class User extends Base {
     const currentUsageData = await this.$relatedQuery('currentUsageData');
 
     return currentUsageData.consumedTaskCount < plan.quota;
+  }
+
+  async getPlanAndUsage() {
+    const usageData = await this.$relatedQuery(
+      'currentUsageData'
+    ).throwIfNotFound();
+
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    const currentPlan = Billing.paddlePlans.find(
+      (plan) => plan.productId === subscription?.paddlePlanId
+    );
+
+    const planAndUsage = {
+      usage: {
+        task: usageData.consumedTaskCount,
+      },
+      plan: {
+        id: subscription?.paddlePlanId || null,
+        name: subscription ? currentPlan.name : 'Free Trial',
+        limit: currentPlan?.limit || null,
+      },
+    };
+
+    return planAndUsage;
+  }
+
+  async getInvoices() {
+    const subscription = await this.$relatedQuery('currentSubscription');
+
+    if (!subscription) {
+      return [];
+    }
+
+    const invoices = await Billing.paddleClient.getInvoices(
+      Number(subscription.paddleSubscriptionId)
+    );
+
+    return invoices;
+  }
+
+  async getApps(name) {
+    const connections = await this.authorizedConnections
+      .clone()
+      .select('connections.key')
+      .where({ draft: false })
+      .count('connections.id as count')
+      .groupBy('connections.key');
+
+    const flows = await this.authorizedFlows
+      .clone()
+      .withGraphJoined('steps')
+      .orderBy('created_at', 'desc');
+
+    const duplicatedUsedApps = flows
+      .map((flow) => flow.steps.map((step) => step.appKey))
+      .flat()
+      .filter(Boolean);
+
+    const connectionKeys = connections.map((connection) => connection.key);
+    const usedApps = [...new Set([...duplicatedUsedApps, ...connectionKeys])];
+
+    let apps = await App.findAll(name);
+
+    apps = apps
+      .filter((app) => {
+        return usedApps.includes(app.key);
+      })
+      .map((app) => {
+        const connection = connections.find(
+          (connection) => connection.key === app.key
+        );
+
+        app.connectionCount = connection?.count || 0;
+        app.flowCount = 0;
+
+        flows.forEach((flow) => {
+          const usedFlow = flow.steps.find((step) => step.appKey === app.key);
+
+          if (usedFlow) {
+            app.flowCount += 1;
+          }
+        });
+
+        return app;
+      })
+      .sort((appA, appB) => appA.name.localeCompare(appB.name));
+
+    return apps;
+  }
+
+  static async createAdmin({ email, password, fullName }) {
+    const adminRole = await Role.findAdmin();
+
+    const adminUser = await this.query().insert({
+      email,
+      password,
+      fullName,
+      roleId: adminRole.id,
+    });
+
+    await Config.markInstallationCompleted();
+
+    return adminUser;
   }
 
   async $beforeInsert(queryContext) {

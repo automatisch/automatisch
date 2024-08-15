@@ -1,8 +1,13 @@
-const deleteStep = async (_parent, params, context) => {
-  context.currentUser.can('update', 'Flow');
+import Step from '../../models/step.js';
 
-  const step = await context.currentUser
-    .$relatedQuery('steps')
+const deleteStep = async (_parent, params, context) => {
+  const conditions = context.currentUser.can('update', 'Flow');
+  const isCreator = conditions.isCreator;
+  const allSteps = Step.query();
+  const userSteps = context.currentUser.$relatedQuery('steps');
+  const baseQuery = isCreator ? userSteps : allSteps;
+
+  const step = await baseQuery
     .withGraphFetched('flow')
     .findOne({
       'steps.id': params.input.id,

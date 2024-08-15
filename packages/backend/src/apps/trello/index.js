@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://trello.com/',
   apiBaseUrl: 'https://api.trello.com',
   iconUrl: '{BASE_URL}/apps/trello/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/trello/connection',
+  authDocUrl: '{DOCS_URL}/apps/trello/connection',
   supportsConnections: true,
   primaryColor: '0079bf',
   beforeRequest: [addAuthHeader],

@@ -9,7 +9,7 @@ export class AdminEditUserPage extends AuthenticatedPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
-  constructor (page) {
+  constructor(page) {
     super(page);
     this.fullNameInput = page.getByTestId('full-name-input');
     this.emailInput = page.getByTestId('email-input');
@@ -18,10 +18,21 @@ export class AdminEditUserPage extends AuthenticatedPage {
     this.pageTitle = page.getByTestId('edit-user-title');
   }
 
-  generateUser () {
+  /**
+   * @param {string} fullName
+   */
+  async waitForLoad(fullName) {
+    return await this.page.waitForFunction((fullName) => {
+      // eslint-disable-next-line no-undef
+      const el = document.querySelector("[data-test='full-name-input']");
+      return el && el.value === fullName;
+    }, fullName);
+  }
+
+  generateUser() {
     return {
       fullName: faker.person.fullName(),
       email: faker.internet.email(),
-    }
+    };
   }
 }

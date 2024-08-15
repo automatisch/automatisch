@@ -18,11 +18,20 @@ process.on('SIGTERM', async () => {
   await removeCancelledSubscriptionsQueue.close();
 });
 
-removeCancelledSubscriptionsQueue.on('error', (err) => {
-  if (err.code === CONNECTION_REFUSED) {
-    logger.error('Make sure you have installed Redis and it is running.', err);
+removeCancelledSubscriptionsQueue.on('error', (error) => {
+  if (error.code === CONNECTION_REFUSED) {
+    logger.error(
+      'Make sure you have installed Redis and it is running.',
+      error
+    );
+
     process.exit();
   }
+
+  logger.error(
+    'Error happened in remove cancelled subscriptions queue!',
+    error
+  );
 });
 
 removeCancelledSubscriptionsQueue.add('remove-cancelled-subscriptions', null, {

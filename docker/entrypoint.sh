@@ -2,8 +2,12 @@
 
 set -e
 
+cd packages/backend
+
 if [ -n "$WORKER" ]; then
-  automatisch start-worker
+  yarn start:worker
 else
-  automatisch start
+  yarn db:migrate
+  yarn db:seed:user
+  yarn start
 fi

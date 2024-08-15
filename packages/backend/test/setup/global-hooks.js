@@ -1,13 +1,14 @@
 import { Model } from 'objection';
 import { client as knex } from '../../src/config/database.js';
 import logger from '../../src/helpers/logger.js';
+import { vi } from 'vitest';
 
 global.beforeAll(async () => {
   global.knex = null;
   logger.silent = true;
 
   // Remove default roles and permissions before running the test suite
-  await knex.raw('TRUNCATE TABLE roles, permissions CASCADE');
+  await knex.raw('TRUNCATE TABLE config, roles, permissions CASCADE');
 });
 
 global.beforeEach(async () => {
@@ -22,8 +23,8 @@ global.afterEach(async () => {
   await global.knex.rollback();
   Model.knex(knex);
 
-  // jest.restoreAllMocks();
-  // jest.clearAllMocks();
+  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
 
 global.afterAll(async () => {

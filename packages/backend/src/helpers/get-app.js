@@ -1,10 +1,10 @@
-import path from 'node:path';
+import path, { join } from 'path';
 import fs from 'node:fs';
 import omit from 'lodash/omit.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import addAuthenticationSteps from './add-authentication-steps.js';
 import addReconnectionSteps from './add-reconnection-steps.js';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,7 +14,7 @@ const apps = fs
     if (!dirent.isDirectory()) return apps;
 
     apps[dirent.name] = import(
-      path.resolve(__dirname, '../apps', dirent.name, 'index.js')
+      pathToFileURL(join(__dirname, '../apps', dirent.name, 'index.js'))
     );
 
     return apps;

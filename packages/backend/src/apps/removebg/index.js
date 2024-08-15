@@ -7,7 +7,7 @@ export default defineApp({
   name: 'Remove.bg',
   key: 'removebg',
   iconUrl: '{BASE_URL}/apps/removebg/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/removebg/connection',
+  authDocUrl: '{DOCS_URL}/apps/removebg/connection',
   supportsConnections: true,
   baseUrl: 'https://www.remove.bg',
   apiBaseUrl: 'https://api.remove.bg/v1.0',

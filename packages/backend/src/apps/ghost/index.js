@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://ghost.org',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/ghost/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/ghost/connection',
+  authDocUrl: '{DOCS_URL}/apps/ghost/connection',
   primaryColor: '15171A',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],

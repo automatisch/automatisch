@@ -1,4 +1,3 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test('Ensure creating a new flow works', async ({ page }) => {
@@ -7,7 +6,7 @@ test('Ensure creating a new flow works', async ({ page }) => {
   await expect(page).toHaveURL(
     /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
   );
-})
+});
 
 test(
   'Create a new flow with a Scheduler step then an Ntfy step',

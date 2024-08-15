@@ -10,7 +10,7 @@ export default defineApp({
   baseUrl: 'https://drive.google.com',
   apiBaseUrl: 'https://www.googleapis.com/drive',
   iconUrl: '{BASE_URL}/apps/google-drive/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/google-drive/connection',
+  authDocUrl: '{DOCS_URL}/apps/google-drive/connection',
   primaryColor: '1FA463',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

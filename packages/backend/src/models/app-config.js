@@ -1,6 +1,6 @@
 import App from './app.js';
-import Base from './base.js';
 import AppAuthClient from './app-auth-client.js';
+import Base from './base.js';
 
 class AppConfig extends Base {
   static tableName = 'app_configs';
@@ -18,20 +18,20 @@ class AppConfig extends Base {
     },
   };
 
-  static get virtualAttributes() {
-    return ['canConnect', 'canCustomConnect'];
-  }
-
   static relationMappings = () => ({
     appAuthClients: {
       relation: Base.HasManyRelation,
       modelClass: AppAuthClient,
       join: {
-        from: 'app_configs.id',
-        to: 'app_auth_clients.app_config_id',
+        from: 'app_configs.key',
+        to: 'app_auth_clients.app_key',
       },
     },
   });
+
+  static get virtualAttributes() {
+    return ['canConnect', 'canCustomConnect'];
+  }
 
   get canCustomConnect() {
     return !this.disabled && this.allowCustomConnection;

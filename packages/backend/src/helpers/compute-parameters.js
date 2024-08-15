@@ -11,6 +11,7 @@ export default function computeParameters(parameters, executionSteps) {
       const computedValue = parts
         .map((part) => {
           const isVariable = part.match(variableRegExp);
+
           if (isVariable) {
             const stepIdAndKeyPath = part.replace(/{{step.|}}/g, '');
             const [stepId, ...keyPaths] = stepIdAndKeyPath.split('.');
@@ -20,17 +21,36 @@ export default function computeParameters(parameters, executionSteps) {
             });
             const data = executionStep?.dataOut;
             const dataValue = get(data, keyPath);
+
+            // Covers both arrays and objects
+            if (typeof dataValue === 'object') {
+              return JSON.stringify(dataValue);
+            }
+
             return dataValue;
           }
 
           return part;
-        })
-        .join('');
+        }).join('');
 
-      return {
-        ...result,
-        [key]: computedValue,
-      };
+      // challenge the input to see if it is stringifies object or array
+      try {
+        const parsedValue = JSON.parse(computedValue);
+
+        if (typeof parsedValue === 'number') {
+          throw new Error('Use original unparsed value.');
+        }
+
+        return {
+          ...result,
+          [key]: parsedValue,
+        };
+      } catch (error) {
+        return {
+          ...result,
+          [key]: computedValue,
+        };
+      }
     }
 
     if (Array.isArray(value)) {

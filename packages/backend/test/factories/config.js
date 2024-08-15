@@ -7,7 +7,11 @@ export const createConfig = async (params = {}) => {
     value: params?.value || { data: 'sampleConfig' },
   };
 
-  const config = await Config.query().insert(configData).returning('*');
+  const config = await Config.query().insertAndFetch(configData);
 
   return config;
 };
+
+export const createInstallationCompletedConfig = async () => {
+  return await createConfig({ key: 'installation.completed', value: { data: true } });
+}

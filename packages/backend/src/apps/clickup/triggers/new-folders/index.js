@@ -54,7 +54,7 @@ export default defineTrigger({
     const dataItem = {
       raw: $.request.body,
       meta: {
-        internalId: Crypto.randomUUID(),
+        internalId: $.request.body.folder_id,
       },
     };
 
@@ -65,13 +65,13 @@ export default defineTrigger({
     const sampleEventData = {
       event: 'folderCreated',
       folder_id: '90180382912',
-      webhook_id: $.webhookUrl.split('/')[5],
+      webhook_id: Crypto.randomUUID(),
     };
 
     const dataItem = {
       raw: sampleEventData,
       meta: {
-        internalId: sampleEventData.webhook_id,
+        internalId: '',
       },
     };
 

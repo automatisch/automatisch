@@ -10,7 +10,7 @@ class App {
   static folderPath = join(__dirname, '../apps');
   static list = fs
     .readdirSync(this.folderPath)
-    .filter((file) => fs.statSync(this.folderPath + '/' + file).isDirectory());
+    .filter((file) => fs.statSync(join(this.folderPath, file)).isDirectory());
 
   static async findAll(name, stripFuncs = true) {
     if (!name)
@@ -37,6 +37,47 @@ class App {
     const rawAppData = await getApp(key, stripFuncs);
 
     return appInfoConverter(rawAppData);
+  }
+
+  static async findAuthByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.auth || {};
+  }
+
+  static async findTriggersByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.triggers || [];
+  }
+
+  static async findTriggerSubsteps(appKey, triggerKey, stripFuncs = false) {
+    const rawAppData = await getApp(appKey, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    const trigger = appData?.triggers?.find(
+      (trigger) => trigger.key === triggerKey
+    );
+
+    return trigger?.substeps || [];
+  }
+
+  static async findActionsByKey(key, stripFuncs = false) {
+    const rawAppData = await getApp(key, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    return appData?.actions || [];
+  }
+
+  static async findActionSubsteps(appKey, actionKey, stripFuncs = false) {
+    const rawAppData = await getApp(appKey, stripFuncs);
+    const appData = appInfoConverter(rawAppData);
+
+    const action = appData?.actions?.find((action) => action.key === actionKey);
+
+    return action?.substeps || [];
   }
 
   static async checkAppAndAction(appKey, actionKey) {

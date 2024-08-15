@@ -11,7 +11,7 @@ export default defineApp({
     'https://azure.microsoft.com/en-us/products/ai-services/openai-service',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/azure-openai/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/azure-openai/connection',
+  authDocUrl: '{DOCS_URL}/apps/azure-openai/connection',
   primaryColor: '000000',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],

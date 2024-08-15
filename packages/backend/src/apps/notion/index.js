@@ -12,7 +12,7 @@ export default defineApp({
   baseUrl: 'https://notion.com',
   apiBaseUrl: 'https://api.notion.com',
   iconUrl: '{BASE_URL}/apps/notion/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/notion/connection',
+  authDocUrl: '{DOCS_URL}/apps/notion/connection',
   primaryColor: '000000',
   supportsConnections: true,
   beforeRequest: [addAuthHeader, addNotionVersionHeader],

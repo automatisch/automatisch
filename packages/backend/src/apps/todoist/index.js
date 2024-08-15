@@ -9,7 +9,7 @@ export default defineApp({
   name: 'Todoist',
   key: 'todoist',
   iconUrl: '{BASE_URL}/apps/todoist/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/todoist/connection',
+  authDocUrl: '{DOCS_URL}/apps/todoist/connection',
   supportsConnections: true,
   baseUrl: 'https://todoist.com',
   apiBaseUrl: 'https://api.todoist.com/rest/v2',

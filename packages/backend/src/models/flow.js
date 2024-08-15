@@ -112,6 +112,13 @@ class Flow extends Base {
     return lastExecutions.map((execution) => execution.internalId);
   }
 
+  get IncompleteStepsError() {
+    return new ValidationError({
+      message: 'All steps should be completed before updating flow status!',
+      type: 'incompleteStepsError',
+    });
+  }
+
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
@@ -124,10 +131,7 @@ class Flow extends Base {
     });
 
     if (incompleteStep) {
-      throw new ValidationError({
-        message: 'All steps should be completed before updating flow status!',
-        type: 'incompleteStepsError',
-      });
+      throw this.IncompleteStepsError;
     }
 
     const allSteps = await oldFlow.$relatedQuery('steps');
@@ -160,7 +164,7 @@ class Flow extends Base {
   }
 
   async isPaused() {
-    const user = await this.$relatedQuery('user');
+    const user = await this.$relatedQuery('user').withSoftDeleted();
     const allowedToRunFlows = await user.isAllowedToRunFlows();
     return allowedToRunFlows ? false : true;
   }

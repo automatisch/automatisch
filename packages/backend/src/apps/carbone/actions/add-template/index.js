@@ -7,7 +7,7 @@ export default defineAction({
     'Creates an attachment of a specified object by given parent ID.',
   arguments: [
     {
-      label: 'Templete Data',
+      label: 'Template Data',
       key: 'templateData',
       type: 'string',
       required: true,

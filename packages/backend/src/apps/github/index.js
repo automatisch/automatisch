@@ -11,7 +11,7 @@ export default defineApp({
   baseUrl: 'https://github.com',
   apiBaseUrl: 'https://api.github.com',
   iconUrl: '{BASE_URL}/apps/github/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/github/connection',
+  authDocUrl: '{DOCS_URL}/apps/github/connection',
   primaryColor: '000000',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

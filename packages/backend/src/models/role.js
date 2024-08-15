@@ -45,6 +45,10 @@ class Role extends Base {
   get isAdmin() {
     return this.key === 'admin';
   }
+
+  static async findAdmin() {
+    return await this.query().findOne({ key: 'admin' });
+  }
 }
 
 export default Role;

@@ -1,4 +1,4 @@
-const { AdminCreateRolePage } = require('./create-role-page')
+const { AdminCreateRolePage } = require('./create-role-page');
 
 export class AdminEditRolePage extends AdminCreateRolePage {
   constructor (page) {

@@ -26,12 +26,30 @@ export default defineConfig({
       },
       {
         text: 'Apps',
-        link: '/apps/carbone/connection',
+        link: '/apps/airtable/connection',
         activeMatch: '/apps/',
       },
     ],
     sidebar: {
       '/apps/': [
+        {
+          text: 'Airtable',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/airtable/actions' },
+            { text: 'Connection', link: '/apps/airtable/connection' },
+          ],
+        },
+        {
+          text: 'Appwrite',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/appwrite/triggers' },
+            { text: 'Connection', link: '/apps/appwrite/connection' },
+          ],
+        },
         {
           text: 'Carbone',
           collapsible: true,
@@ -49,6 +67,24 @@ export default defineConfig({
             { text: 'Actions', link: '/apps/clickup/actions' },
             { text: 'Triggers', link: '/apps/clickup/triggers' },
             { text: 'Connection', link: '/apps/clickup/connection' },
+          ],
+        },
+        {
+          text: 'Cryptography',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/cryptography/actions' },
+            { text: 'Connection', link: '/apps/cryptography/connection' },
+          ],
+        },
+        {
+          text: 'Datastore',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/datastore/actions' },
+            { text: 'Connection', link: '/apps/datastore/connection' },
           ],
         },
         {
@@ -76,6 +112,15 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/discord/actions' },
             { text: 'Connection', link: '/apps/discord/connection' },
+          ],
+        },
+        {
+          text: 'Disqus',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/disqus/triggers' },
+            { text: 'Connection', link: '/apps/disqus/connection' },
           ],
         },
         {
@@ -180,6 +225,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Google Tasks',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/google-tasks/triggers' },
+            { text: 'Actions', link: '/apps/google-tasks/actions' },
+            { text: 'Connection', link: '/apps/google-tasks/connection' },
+          ],
+        },
+        {
           text: 'HTTP Request',
           collapsible: true,
           collapsed: true,
@@ -205,6 +260,30 @@ export default defineConfig({
             { text: 'Triggers', link: '/apps/invoice-ninja/triggers' },
             { text: 'Actions', link: '/apps/invoice-ninja/actions' },
             { text: 'Connection', link: '/apps/invoice-ninja/connection' },
+          ],
+        },
+        {
+          text: 'Jotform',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/jotform/triggers' },
+            { text: 'Connection', link: '/apps/jotform/connection' },
+          ],
+        },
+        {
+          text: 'Mailchimp',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/mailchimp/connection' }],
+        },
+        {
+          text: 'MailerLite',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/mailerlite/triggers' },
+            { text: 'Connection', link: '/apps/mailerlite/connection' },
           ],
         },
         {
@@ -459,6 +538,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Vtiger CRM',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/vtiger-crm/triggers' },
+            { text: 'Actions', link: '/apps/vtiger-crm/actions' },
+            { text: 'Connection', link: '/apps/vtiger-crm/connection' },
+          ],
+        },
+        {
           text: 'Webhooks',
           collapsible: true,
           collapsed: true,
@@ -483,6 +572,15 @@ export default defineConfig({
           items: [
             { text: 'Triggers', link: '/apps/xero/triggers' },
             { text: 'Connection', link: '/apps/xero/connection' },
+          ],
+        },
+        {
+          text: 'You Need A Budget',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/you-need-a-budget/triggers' },
+            { text: 'Connection', link: '/apps/you-need-a-budget/connection' },
           ],
         },
         {

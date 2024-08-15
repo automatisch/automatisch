@@ -7,7 +7,7 @@ export default defineApp({
   name: 'DeepL',
   key: 'deepl',
   iconUrl: '{BASE_URL}/apps/deepl/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/deepl/connection',
+  authDocUrl: '{DOCS_URL}/apps/deepl/connection',
   supportsConnections: true,
   baseUrl: 'https://deepl.com',
   apiBaseUrl: 'https://api.deepl.com',

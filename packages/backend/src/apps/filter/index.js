@@ -5,7 +5,7 @@ export default defineApp({
   name: 'Filter',
   key: 'filter',
   iconUrl: '{BASE_URL}/apps/filter/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/filter/connection',
+  authDocUrl: '{DOCS_URL}/apps/filter/connection',
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',

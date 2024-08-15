@@ -1,8 +1,7 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test.describe('Connections page', () => {
-  test.beforeEach(async ({ page, connectionsPage }) => {
+  test.beforeEach(async ({ page }) => {
     await page.getByTestId('apps-page-drawer-link').click();
     await page.goto('/app/ntfy/connections');
   });
@@ -36,6 +35,7 @@ test.describe('Connections page', () => {
     }) => {
       await connectionsPage.clickAddConnectionButton();
       await expect(page).toHaveURL('/app/ntfy/connections/add?shared=false');
+      await expect(page.getByTestId('create-connection-button')).not.toBeDisabled();
       await page.getByTestId('create-connection-button').click();
       await expect(
         page.getByTestId('create-connection-button')

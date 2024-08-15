@@ -8,7 +8,7 @@ export const createUser = async (params = {}) => {
   params.email = params?.email || faker.internet.email();
   params.password = params?.password || faker.internet.password();
 
-  const user = await User.query().insert(params).returning('*');
+  const user = await User.query().insertAndFetch(params);
 
   return user;
 };

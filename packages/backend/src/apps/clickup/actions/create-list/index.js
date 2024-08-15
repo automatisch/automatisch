@@ -116,9 +116,15 @@ export default defineAction({
     const body = {
       name: listName,
       content: listInfo,
-      due_date: dueDate,
-      priority,
     };
+
+    if (priority) {
+      body.priority = priority;
+    }
+
+    if (dueDate) {
+      body.due_date = dueDate;
+    }
 
     const { data } = await $.http.post(`/v2/folder/${folderId}/list`, body);
 

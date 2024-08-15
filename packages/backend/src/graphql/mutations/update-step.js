@@ -56,6 +56,7 @@ const updateStep = async (_parent, params, context) => {
       appKey: input.appKey,
       connectionId: input.connection.id,
       parameters: input.parameters,
+      status: 'incomplete'
     })
     .withGraphFetched('connection');
 

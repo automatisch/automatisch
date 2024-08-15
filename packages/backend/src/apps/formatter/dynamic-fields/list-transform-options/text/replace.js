@@ -23,6 +23,33 @@ const replace = [
     description: 'Text that will replace the found text.',
     variables: true,
   },
+  {
+    label: 'Use Regular Expression',
+    key: 'useRegex',
+    type: 'dropdown',
+    required: true,
+    description: 'Use regex to search values.',
+    variables: true,
+    value: false,
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+    additionalFields: {
+      type: 'query',
+      name: 'getDynamicFields',
+      arguments: [
+        {
+          name: 'key',
+          value: 'listReplaceRegexOptions',
+        },
+        {
+          name: 'parameters.useRegex',
+          value: '{parameters.useRegex}',
+        },
+      ],
+    },
+  },
 ];
 
 export default replace;

@@ -17,7 +17,7 @@ export const createConnection = async (params = {}) => {
     appConfig.encryptionKey
   ).toString();
 
-  const connection = await Connection.query().insert(params).returning('*');
+  const connection = await Connection.query().insertAndFetch(params);
 
   return connection;
 };

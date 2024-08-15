@@ -1,4 +1,3 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test.describe('Apps page', () => {
@@ -61,7 +60,7 @@ test.describe('Apps page', () => {
 
       await applicationsPage.page.getByTestId('app-list-item').first().click();
       await expect(applicationsPage.page).toHaveURL(
-        '/app/azure-openai/connections/add?shared=false'
+        '/app/airtable/connections/add?shared=false'
       );
       await expect(
         applicationsPage.page.getByTestId('add-app-connection-dialog')
@@ -75,14 +74,14 @@ test.describe('Apps page', () => {
     }) => {
       await applicationsPage.page.getByTestId('app-list-item').first().click();
       await expect(applicationsPage.page).toHaveURL(
-        '/app/azure-openai/connections/add?shared=false'
+        '/app/airtable/connections/add?shared=false'
       );
       await expect(
         applicationsPage.page.getByTestId('add-app-connection-dialog')
       ).toBeVisible();
       await applicationsPage.clickAway();
       await expect(applicationsPage.page).toHaveURL(
-        '/app/azure-openai/connections'
+        '/app/airtable/connections'
       );
       await expect(
         applicationsPage.page.getByTestId('add-app-connection-dialog')

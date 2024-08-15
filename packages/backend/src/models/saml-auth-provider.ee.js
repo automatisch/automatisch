@@ -1,5 +1,7 @@
 import { URL } from 'node:url';
+import { v4 as uuidv4 } from 'uuid';
 import appConfig from '../config/app.js';
+import axios from '../helpers/axios-with-proxy.js';
 import Base from './base.js';
 import Identity from './identity.ee.js';
 import SamlAuthProvidersRoleMapping from './saml-auth-providers-role-mapping.ee.js';
@@ -61,26 +63,70 @@ class SamlAuthProvider extends Base {
   });
 
   static get virtualAttributes() {
-    return ['loginUrl'];
+    return ['loginUrl', 'remoteLogoutUrl'];
   }
 
   get loginUrl() {
     return new URL(`/login/saml/${this.issuer}`, appConfig.baseUrl).toString();
   }
 
-  get config() {
-    const callbackUrl = new URL(
+  get loginCallBackUrl() {
+    return new URL(
       `/login/saml/${this.issuer}/callback`,
       appConfig.baseUrl
     ).toString();
+  }
 
+  get remoteLogoutUrl() {
+    return this.entryPoint;
+  }
+
+  get config() {
     return {
-      callbackUrl,
+      callbackUrl: this.loginCallBackUrl,
       cert: this.certificate,
       entryPoint: this.entryPoint,
       issuer: this.issuer,
       signatureAlgorithm: this.signatureAlgorithm,
+      logoutUrl: this.remoteLogoutUrl
     };
+  }
+
+  generateLogoutRequestBody(sessionId) {
+    const logoutRequest = `
+      <samlp:LogoutRequest
+          xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+          ID="${uuidv4()}"
+          Version="2.0"
+          IssueInstant="${new Date().toISOString()}"
+          Destination="${this.remoteLogoutUrl}">
+
+          <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">${this.issuer}</saml:Issuer>
+          <samlp:SessionIndex>${sessionId}</samlp:SessionIndex>
+      </samlp:LogoutRequest>
+    `;
+
+    const encodedLogoutRequest = Buffer.from(logoutRequest).toString('base64')
+
+    return encodedLogoutRequest
+  }
+
+  async terminateRemoteSession(sessionId) {
+    const logoutRequest = this.generateLogoutRequestBody(sessionId);
+
+    const response = await axios.post(
+      this.remoteLogoutUrl,
+      new URLSearchParams({
+        SAMLRequest: logoutRequest,
+      }).toString(),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }
+      }
+    );
+
+    return response;
   }
 }
 

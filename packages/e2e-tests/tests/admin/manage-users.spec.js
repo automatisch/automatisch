@@ -29,16 +29,20 @@ test.describe('User management page', () => {
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(user.fullName);
           await adminCreateUserPage.emailInput.fill(user.email);
-          await adminCreateUserPage.passwordInput.fill(user.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
+          await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
+            state: 'attached'
+          });
+
           const snackbar = await adminUsersPage.getSnackbarData(
             'snackbar-create-user-success'
           );
           await expect(snackbar.variant).toBe('success');
+          await adminUsersPage.navigateTo();
           await adminUsersPage.closeSnackbar();
         }
       );
@@ -57,9 +61,10 @@ test.describe('User management page', () => {
         'Edit user info and make sure the edit works correctly',
         async () => {
           await adminUsersPage.findUserPageWithEmail(user.email);
-          
+
           let userRow = await adminUsersPage.getUserRowByEmail(user.email);
           await adminUsersPage.clickEditUser(userRow);
+          await adminEditUserPage.waitForLoad(user.fullName);
           const newUserInfo = adminEditUserPage.generateUser();
           await adminEditUserPage.fullNameInput.fill(newUserInfo.fullName);
           await adminEditUserPage.updateButton.click();
@@ -84,7 +89,7 @@ test.describe('User management page', () => {
           await adminUsersPage.clickDeleteUser(userRow);
           const modal = adminUsersPage.deleteUserModal;
           await modal.deleteButton.click();
-        
+
           const snackbar = await adminUsersPage.getSnackbarData(
             'snackbar-delete-user-success'
           );
@@ -93,7 +98,7 @@ test.describe('User management page', () => {
           await expect(userRow).not.toBeVisible(false);
         }
       );
-  });
+    });
 
   test(
     'Creating a user which has been deleted',
@@ -104,10 +109,10 @@ test.describe('User management page', () => {
       await test.step(
         'Create the test user',
         async () => {
+          await adminUsersPage.navigateTo();
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
           await adminCreateUserPage.emailInput.fill(testUser.email);
-          await adminCreateUserPage.passwordInput.fill(testUser.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
@@ -124,6 +129,7 @@ test.describe('User management page', () => {
       await test.step(
         'Delete the created user',
         async () => {
+          await adminUsersPage.navigateTo();
           await adminUsersPage.findUserPageWithEmail(testUser.email);
           const userRow = await adminUsersPage.getUserRowByEmail(testUser.email);
           await adminUsersPage.clickDeleteUser(userRow);
@@ -145,7 +151,6 @@ test.describe('User management page', () => {
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
           await adminCreateUserPage.emailInput.fill(testUser.email);
-          await adminCreateUserPage.passwordInput.fill(testUser.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
@@ -178,7 +183,6 @@ test.describe('User management page', () => {
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
           await adminCreateUserPage.emailInput.fill(testUser.email);
-          await adminCreateUserPage.passwordInput.fill(testUser.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
@@ -195,17 +199,17 @@ test.describe('User management page', () => {
       await test.step(
         'Create the user again',
         async () => {
+          await adminUsersPage.navigateTo();
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
           await adminCreateUserPage.emailInput.fill(testUser.email);
-          await adminCreateUserPage.passwordInput.fill(testUser.password);
           const createUserPageUrl = page.url();
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          
+
           await expect(page.url()).toBe(createUserPageUrl);
           const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
           await expect(snackbar.variant).toBe('error');
@@ -226,10 +230,10 @@ test.describe('User management page', () => {
       await test.step(
         'Create the first user',
         async () => {
+          await adminUsersPage.navigateTo();
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(user1.fullName);
           await adminCreateUserPage.emailInput.fill(user1.email);
-          await adminCreateUserPage.passwordInput.fill(user1.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
@@ -246,10 +250,10 @@ test.describe('User management page', () => {
       await test.step(
         'Create the second user',
         async () => {
+          await adminUsersPage.navigateTo();
           await adminUsersPage.createUserButton.click();
           await adminCreateUserPage.fullNameInput.fill(user2.fullName);
           await adminCreateUserPage.emailInput.fill(user2.email);
-          await adminCreateUserPage.passwordInput.fill(user2.password);
           await adminCreateUserPage.roleInput.click();
           await adminCreateUserPage.page.getByRole(
             'option', { name: 'Admin' }
@@ -266,10 +270,11 @@ test.describe('User management page', () => {
       await test.step(
         'Try editing the second user to have the email of the first user',
         async () => {
+          await adminUsersPage.navigateTo();
           await adminUsersPage.findUserPageWithEmail(user2.email);
           let userRow = await adminUsersPage.getUserRowByEmail(user2.email);
           await adminUsersPage.clickEditUser(userRow);
-          
+          await adminEditUserPage.waitForLoad(user2.fullName);
           await adminEditUserPage.emailInput.fill(user1.email);
           const editPageUrl = page.url();
           await adminEditUserPage.updateButton.click();

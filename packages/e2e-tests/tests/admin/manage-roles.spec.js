@@ -1,12 +1,12 @@
 const { test, expect } = require('../../fixtures/index');
 const { LoginPage } = require('../../fixtures/login-page');
+const { AcceptInvitation } = require('../../fixtures/accept-invitation-page');
 
 test.describe('Role management page', () => {
   test('Admin role is not deletable', async ({ adminRolesPage }) => {
     await adminRolesPage.navigateTo();
     const adminRow = await adminRolesPage.getRoleRowByName('Admin');
-    const rowCount = await adminRow.count();
-    await expect(rowCount).toBe(1);
+    await expect(adminRow).toHaveCount(1);
     const data = await adminRolesPage.getRowData(adminRow);
     await expect(data.role).toBe('Admin');
     await expect(data.canEdit).toBe(true);
@@ -17,7 +17,6 @@ test.describe('Role management page', () => {
     adminCreateRolePage,
     adminEditRolePage,
     adminRolesPage,
-    page,
   }) => {
     await test.step('Create a new role', async () => {
       await adminRolesPage.navigateTo();
@@ -42,8 +41,7 @@ test.describe('Role management page', () => {
         const roleRow = await adminRolesPage.getRoleRowByName(
           'Create Edit Test'
         );
-        const rowCount = await roleRow.count();
-        await expect(rowCount).toBe(1);
+        await expect(roleRow).toHaveCount(1);
         const roleData = await adminRolesPage.getRowData(roleRow);
         await expect(roleData.role).toBe('Create Edit Test');
         await expect(roleData.description).toBe('Test description');
@@ -76,8 +74,7 @@ test.describe('Role management page', () => {
         const roleRow = await adminRolesPage.getRoleRowByName(
           'Create Update Test'
         );
-        const rowCount = await roleRow.count();
-        await expect(rowCount).toBe(1);
+        await expect(roleRow).toHaveCount(1);
         const roleData = await adminRolesPage.getRowData(roleRow);
         await expect(roleData.role).toBe('Create Update Test');
         await expect(roleData.description).toBe('Update test description');
@@ -105,8 +102,7 @@ test.describe('Role management page', () => {
       await deleteModal.modal.waitFor({
         state: 'detached',
       });
-      const rowCount = await roleRow.count();
-      await expect(rowCount).toBe(0);
+      await expect(roleRow).toHaveCount(0);
     });
   });
 
@@ -129,12 +125,14 @@ test.describe('Role management page', () => {
       await adminCreateRolePage.isMounted();
 
       const initScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await page.mouse.move(400, 100);
       await page.mouse.click(400, 100);
       await page.mouse.wheel(200, 0);
       const updatedScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await expect(initScrollTop).not.toBe(updatedScrollTop);
@@ -147,11 +145,13 @@ test.describe('Role management page', () => {
       await adminEditRolePage.isMounted();
 
       const initScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await page.mouse.move(400, 100);
       await page.mouse.wheel(200, 0);
       const updatedScrollTop = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         return document.documentElement.scrollTop;
       });
       await expect(initScrollTop).not.toBe(updatedScrollTop);
@@ -168,7 +168,6 @@ test.describe('Role management page', () => {
     adminUsersPage,
     adminCreateUserPage,
     adminEditUserPage,
-    page,
   }) => {
     await adminRolesPage.navigateTo();
     await test.step('Create a new role', async () => {
@@ -194,13 +193,15 @@ test.describe('Role management page', () => {
         await adminCreateUserPage.emailInput.fill(
           'user-role-test@automatisch.io'
         );
-        await adminCreateUserPage.passwordInput.fill('sample');
         await adminCreateUserPage.roleInput.click();
         await adminCreateUserPage.page
-          .getByRole('option', { name: 'Delete Role' })
+          .getByRole('option', { name: 'Delete Role', exact: true })
           .click();
         await adminCreateUserPage.createButton.click();
-        await adminUsersPage.snackbar.waitFor({
+        await adminCreateUserPage.snackbar.waitFor({
+          state: 'attached',
+        });
+        await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
           state: 'attached',
         });
         const snackbar = await adminUsersPage.getSnackbarData(
@@ -271,7 +272,6 @@ test.describe('Role management page', () => {
     adminRolesPage,
     adminUsersPage,
     adminCreateUserPage,
-    page,
   }) => {
     await adminRolesPage.navigateTo();
     await test.step('Create a new role', async () => {
@@ -296,13 +296,15 @@ test.describe('Role management page', () => {
       await adminCreateUserPage.emailInput.fill(
         'user-delete-role-test@automatisch.io'
       );
-      await adminCreateUserPage.passwordInput.fill('sample');
       await adminCreateUserPage.roleInput.click();
       await adminCreateUserPage.page
         .getByRole('option', { name: 'Cannot Delete Role' })
         .click();
       await adminCreateUserPage.createButton.click();
       await adminCreateUserPage.snackbar.waitFor({
+        state: 'attached',
+      });
+      await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
         state: 'attached',
       });
       const snackbar = await adminCreateUserPage.getSnackbarData(
@@ -337,7 +339,7 @@ test.describe('Role management page', () => {
         state: 'attached',
       });
       /*
-        * TODO: await snackbar - make assertions based on product 
+        * TODO: await snackbar - make assertions based on product
         * decisions
         const snackbar = await adminRolesPage.getSnackbarData();
         await expect(snackbar.variant).toBe('...');
@@ -378,13 +380,15 @@ test('Accessibility of role management page', async ({
     await adminCreateUserPage.isMounted();
     await adminCreateUserPage.fullNameInput.fill('Role Test');
     await adminCreateUserPage.emailInput.fill('basic-role-test@automatisch.io');
-    await adminCreateUserPage.passwordInput.fill('sample');
     await adminCreateUserPage.roleInput.click();
     await adminCreateUserPage.page
       .getByRole('option', { name: 'Basic Test' })
       .click();
     await adminCreateUserPage.createButton.click();
     await adminCreateUserPage.snackbar.waitFor({
+      state: 'attached',
+    });
+    await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
       state: 'attached',
     });
     const snackbar = await adminCreateUserPage.getSnackbarData(
@@ -395,10 +399,23 @@ test('Accessibility of role management page', async ({
   });
 
   await test.step('Logout and login to the basic role user', async () => {
+    const acceptInvitationLink = await adminCreateUserPage.acceptInvitationLink;
+    console.log(acceptInvitationLink);
+    const acceptInvitationUrl = await acceptInvitationLink.textContent();
+    console.log(acceptInvitationUrl);
+    const acceptInvitatonToken = acceptInvitationUrl.split('?token=')[1];
+
     await page.getByTestId('profile-menu-button').click();
     await page.getByTestId('logout-item').click();
-    // await page.reload({ waitUntil: 'networkidle' });
+
+    const acceptInvitationPage = new AcceptInvitation(page);
+
+    await acceptInvitationPage.open(acceptInvitatonToken);
+
+    await acceptInvitationPage.acceptInvitation('sample');
+
     const loginPage = new LoginPage(page);
+
     // await loginPage.isMounted();
     await loginPage.login('basic-role-test@automatisch.io', 'sample');
     await expect(loginPage.loginButton).not.toBeVisible();
@@ -413,10 +430,16 @@ test('Accessibility of role management page', async ({
       await page.goto(url);
       await page.waitForTimeout(750);
       const isUnmounted = await page.evaluate(() => {
+        // eslint-disable-next-line no-undef
         const root = document.querySelector('#root');
+
         if (root) {
-          return root.children.length === 0;
+          // We have react query devtools only in dev env.
+          // In production, there is nothing in root.
+          // That's why `<= 1`.
+          return root.children.length <= 1;
         }
+
         return false;
       });
       await expect(isUnmounted).toBe(true);
@@ -468,7 +491,6 @@ test('Accessibility of role management page', async ({
     await deleteModal.modal.waitFor({
       state: 'detached',
     });
-    const rowCount = await roleRow.count();
-    await expect(rowCount).toBe(0);
+    await expect(roleRow).toHaveCount(0);
   });
 });

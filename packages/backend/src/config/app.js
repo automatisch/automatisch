@@ -38,6 +38,9 @@ if (process.env.WEB_APP_URL) {
 let webhookUrl = new URL(process.env.WEBHOOK_URL || apiUrl).toString();
 webhookUrl = webhookUrl.substring(0, webhookUrl.length - 1);
 
+const publicDocsUrl = 'https://automatisch.io/docs';
+const docsUrl = process.env.DOCS_URL || publicDocsUrl;
+
 const appEnv = process.env.APP_ENV || 'development';
 
 const appConfig = {
@@ -49,7 +52,7 @@ const appConfig = {
   isDev: appEnv === 'development',
   isTest: appEnv === 'test',
   isProd: appEnv === 'production',
-  version: process.env.npm_package_version,
+  version: '0.13.1',
   postgresDatabase: process.env.POSTGRES_DATABASE || 'automatisch_development',
   postgresSchema: process.env.POSTGRES_SCHEMA || 'public',
   postgresPort: parseInt(process.env.POSTGRES_PORT || '5432'),
@@ -63,16 +66,24 @@ const appConfig = {
   appSecretKey: process.env.APP_SECRET_KEY || '',
   serveWebAppSeparately,
   redisHost: process.env.REDIS_HOST || '127.0.0.1',
+  redisName: process.env.REDIS_NAME || 'mymaster',
   redisPort: parseInt(process.env.REDIS_PORT || '6379'),
   redisUsername: process.env.REDIS_USERNAME,
   redisPassword: process.env.REDIS_PASSWORD,
+  redisDb: parseInt(process.env.REDIS_DB || '0'),
+  redisRole: process.env.REDIS_ROLE || 'master',
   redisTls: process.env.REDIS_TLS === 'true',
+  redisSentinelHost: process.env.REDIS_SENTINEL_HOST,
+  redisSentinelUsername: process.env.REDIS_SENTINEL_USERNAME,
+  redisSentinelPassword: process.env.REDIS_SENTINEL_PASSWORD,
+  redisSentinelPort: parseInt(process.env.REDIS_SENTINEL_PORT || '26379'),
   enableBullMQDashboard: process.env.ENABLE_BULLMQ_DASHBOARD === 'true',
   bullMQDashboardUsername: process.env.BULLMQ_DASHBOARD_USERNAME,
   bullMQDashboardPassword: process.env.BULLMQ_DASHBOARD_PASSWORD,
   baseUrl: apiUrl,
   webAppUrl,
   webhookUrl,
+  docsUrl,
   telemetryEnabled: process.env.TELEMETRY_ENABLED === 'false' ? false : true,
   requestBodySizeLimit: '1mb',
   smtpHost: process.env.SMTP_HOST,
@@ -93,7 +104,12 @@ const appConfig = {
   disableNotificationsPage: process.env.DISABLE_NOTIFICATIONS_PAGE === 'true',
   disableFavicon: process.env.DISABLE_FAVICON === 'true',
   additionalDrawerLink: process.env.ADDITIONAL_DRAWER_LINK,
+  additionalDrawerLinkIcon: process.env.ADDITIONAL_DRAWER_LINK_ICON,
   additionalDrawerLinkText: process.env.ADDITIONAL_DRAWER_LINK_TEXT,
+  disableSeedUser: process.env.DISABLE_SEED_USER === 'true',
+  httpProxy: process.env.http_proxy,
+  httpsProxy: process.env.https_proxy,
+  noProxy: process.env.no_proxy,
 };
 
 if (!appConfig.encryptionKey) {

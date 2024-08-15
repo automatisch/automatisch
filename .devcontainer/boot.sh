@@ -28,7 +28,7 @@ cd packages/web
 rm -rf .env
 echo "
 PORT=$WEB_PORT
-REACT_APP_GRAPHQL_URL=http://localhost:$BACKEND_PORT/graphql
+REACT_APP_BACKEND_URL=http://localhost:$BACKEND_PORT
 " >> .env
 cd $CURRENT_DIR
 
