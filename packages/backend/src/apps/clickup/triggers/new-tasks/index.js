@@ -124,7 +124,7 @@ export default defineTrigger({
     const dataItem = {
       raw: $.request.body,
       meta: {
-        internalId: Crypto.randomUUID(),
+        internalId: $.request.body.task_id,
       },
     };
 
@@ -135,7 +135,7 @@ export default defineTrigger({
     const sampleEventData = {
       event: 'taskCreated',
       task_id: '86enn7pg7',
-      webhook_id: $.webhookUrl.split('/')[5],
+      webhook_id: Crypto.randomUUID(),
       history_items: [],
     };
 
