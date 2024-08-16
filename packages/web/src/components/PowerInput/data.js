@@ -25,25 +25,40 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
         sampleValue: JSON.stringify(sampleValue),
       };
 
-      const arrayItems =  sampleValue.flatMap((item, index) =>
-        process({
+      const arrayItems = sampleValue.flatMap((item, index) => {
+        const itemItself = {
+          label: `${label}.${index}`,
+          value: `${value}.${index}`,
+          sampleValue: JSON.stringify(item),
+        };
+
+        const itemEntries = process({
           data: item,
           parentKey: value,
           index,
           parentLabel: label,
-        }),
-      );
+        });
 
-      // TODO: remove spreading
-      return [arrayItself, ...arrayItems];
+        return [itemItself].concat(itemEntries);
+      });
+
+      return [arrayItself].concat(arrayItems);
     }
 
     if (typeof sampleValue === 'object' && sampleValue !== null) {
-      return process({
+      const objectItself = {
+        label,
+        value,
+        sampleValue: JSON.stringify(sampleValue),
+      };
+
+      const objectEntries = process({
         data: sampleValue,
         parentKey: value,
         parentLabel: label,
       });
+
+      return [objectItself].concat(objectEntries);
     }
 
     return [
