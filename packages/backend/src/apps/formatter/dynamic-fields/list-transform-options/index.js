@@ -13,6 +13,7 @@ import encodeUri from './text/encode-uri.js';
 import trimWhitespace from './text/trim-whitespace.js';
 import useDefaultValue from './text/use-default-value.js';
 import parseStringifiedJson from './text/parse-stringified-json.js';
+import stringifyJson from './text/stringify-json.js';
 import performMathOperation from './numbers/perform-math-operation.js';
 import randomNumber from './numbers/random-number.js';
 import formatNumber from './numbers/format-number.js';
@@ -40,6 +41,7 @@ const options = {
   formatPhoneNumber,
   formatDateTime,
   parseStringifiedJson,
+  stringifyJson,
 };
 
 export default {

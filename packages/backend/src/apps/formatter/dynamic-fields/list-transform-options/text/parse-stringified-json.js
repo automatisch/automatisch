@@ -1,4 +1,4 @@
-const useDefaultValue = [
+const parseStringifiedJson = [
   {
     label: 'Input',
     key: 'input',
@@ -9,4 +9,4 @@ const useDefaultValue = [
   },
 ];
 
-export default useDefaultValue;
+export default parseStringifiedJson;

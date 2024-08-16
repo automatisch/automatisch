@@ -16,6 +16,7 @@ import trimWhitespace from './transformers/trim-whitespace.js';
 import useDefaultValue from './transformers/use-default-value.js';
 import parseStringifiedJson from './transformers/parse-stringified-json.js';
 import createUuid from './transformers/create-uuid.js';
+import stringifyJson from './transformers/stringify-json.js';
 
 const transformers = {
   base64ToString,
@@ -34,6 +35,7 @@ const transformers = {
   useDefaultValue,
   parseStringifiedJson,
   createUuid,
+  stringifyJson,
 };
 
 export default defineAction({
@@ -63,6 +65,7 @@ export default defineAction({
         { label: 'Extract Number', value: 'extractNumber' },
         { label: 'Lowercase', value: 'lowercase' },
         { label: 'Parse stringified JSON', value: 'parseStringifiedJson' },
+        { label: 'Stringify JSON', value: 'stringifyJson' },
         { label: 'Pluralize', value: 'pluralize' },
         { label: 'Replace', value: 'replace' },
         { label: 'String to Base64', value: 'stringToBase64' },
