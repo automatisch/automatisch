@@ -2,9 +2,17 @@ import get from 'lodash.get';
 
 const variableRegExp = /({{step\.[\da-zA-Z-]+(?:\.[^.}{]+)+}})/g;
 
-export default function computeParameters(parameters, executionSteps) {
+function getFieldByKey(key, fields = []) {
+  return fields.find((field) => field.key === key);
+};
+
+export default function computeParameters(parameters, fields, executionSteps) {
   const entries = Object.entries(parameters);
+
   return entries.reduce((result, [key, value]) => {
+    const parameterField = getFieldByKey(key, fields);
+    const valueType = parameterField?.valueType || 'string';
+
     if (typeof value === 'string') {
       const parts = value.split(variableRegExp);
 
@@ -33,6 +41,13 @@ export default function computeParameters(parameters, executionSteps) {
           return part;
         }).join('');
 
+      if (valueType !== 'parse') {
+        return {
+          ...result,
+          [key]: computedValue,
+        };
+      }
+
       // challenge the input to see if it is stringifies object or array
       try {
         const parsedValue = JSON.parse(computedValue);
@@ -56,7 +71,7 @@ export default function computeParameters(parameters, executionSteps) {
     if (Array.isArray(value)) {
       return {
         ...result,
-        [key]: value.map((item) => computeParameters(item, executionSteps)),
+        [key]: value.map((item) => computeParameters(item, parameterField?.fields, executionSteps)),
       };
     }
 

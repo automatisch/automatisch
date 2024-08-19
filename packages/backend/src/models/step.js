@@ -198,6 +198,30 @@ class Step extends Base {
     return existingArguments;
   }
 
+  async getSetupAndDynamicFields() {
+    const setupFields = await this.getSetupFields();
+    const setupAndDynamicFields = [];
+
+    for (const setupField of setupFields) {
+      setupAndDynamicFields.push(setupField);
+
+      const additionalFields = setupField.additionalFields;
+      if (additionalFields) {
+        const keyArgument = additionalFields.arguments.find(argument => argument.name === 'key');
+        const dynamicFieldsKey = keyArgument.value;
+
+        const dynamicFields = await this.createDynamicFields(
+          dynamicFieldsKey,
+          this.parameters
+        );
+
+        setupAndDynamicFields.push(...dynamicFields);
+      }
+    }
+
+    return setupAndDynamicFields;
+  }
+
   async createDynamicFields(dynamicFieldsKey, parameters) {
     const connection = await this.$relatedQuery('connection');
     const flow = await this.$relatedQuery('flow');
@@ -240,8 +264,11 @@ class Step extends Base {
         })
       : [];
 
+    const setupAndDynamicFields = await this.getSetupAndDynamicFields();
+
     const computedParameters = computeParameters(
       $.step.parameters,
+      setupAndDynamicFields,
       priorExecutionSteps
     );
 
