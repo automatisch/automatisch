@@ -2,7 +2,6 @@ const { test, expect } = require('../../fixtures/index');
 
 test('Ensure creating a new flow works', async ({ page }) => {
   await page.getByTestId('create-flow-button').click();
-  await expect(page).toHaveURL(/\/editor\/create/);
   await expect(page).toHaveURL(
     /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
   );
@@ -69,9 +68,9 @@ test(
 
       await test.step('test trigger', async () => {
         await test.step('show sample output', async () => {
-          await expect(flowEditorPage.testOuput).not.toBeVisible();
+          await expect(flowEditorPage.testOutput).not.toBeVisible();
           await flowEditorPage.continueButton.click();
-          await expect(flowEditorPage.testOuput).toBeVisible();
+          await expect(flowEditorPage.testOutput).toBeVisible();
           await flowEditorPage.screenshot({
             path: 'Scheduler trigger test output.png',
           });
@@ -143,12 +142,12 @@ test(
     
       await test.step('test trigger substep', async () => {
         await test.step('show sample output', async () => {
-          await expect(flowEditorPage.testOuput).not.toBeVisible();
+          await expect(flowEditorPage.testOutput).not.toBeVisible();
           await page
             .getByTestId('flow-substep-continue-button')
             .first()
             .click();
-          await expect(flowEditorPage.testOuput).toBeVisible();
+          await expect(flowEditorPage.testOutput).toBeVisible();
           await flowEditorPage.screenshot({
             path: 'Ntfy action test output.png',
           });

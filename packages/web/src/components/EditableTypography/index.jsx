@@ -41,6 +41,7 @@ function EditableTypography(props) {
   if (editing) {
     component = (
       <TextField
+        data-test="editableTypographyInput"
         onClick={handleTextFieldClick}
         onKeyDown={handleTextFieldKeyDown}
         onBlur={handleTextFieldBlur}
