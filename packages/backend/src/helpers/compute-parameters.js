@@ -43,7 +43,7 @@ function computeParameter(key, value, fields, executionSteps) {
   }
 
   if (Array.isArray(value)) {
-    const computedArrayParameter = computeArrayParameter(value, fields, executionSteps);
+    const computedArrayParameter = computeArrayParameter(key, value, fields, executionSteps);
     return computedArrayParameter;
   }
 
@@ -150,8 +150,12 @@ function computeStringParameter(key, stringValue, fields, executionSteps) {
   return computedValue;
 }
 
-function computeArrayParameter(arrayValue, fields, executionSteps) {
-  return arrayValue.map((item) => computeParameters(item, fields, executionSteps));
+function computeArrayParameter(key, arrayValue, fields, executionSteps) {
+  return arrayValue.map((item) => {
+    const itemFields = fields.find((field) => field.key === key)?.fields;
+
+    return computeParameters(item, itemFields, executionSteps);
+  });
 }
 
 export default function computeParameters(parameters, fields, executionSteps) {
