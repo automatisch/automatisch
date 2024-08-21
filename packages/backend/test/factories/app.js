@@ -41,3 +41,32 @@ export const createDropdownArgument = (params = {}) => {
 
   return dropdownArgument;
 };
+
+export const createDynamicArgument = (params = {}) => {
+  const dynamicArgument = createArgument({
+    value: [
+      {
+        key: '',
+        value: '',
+      },
+    ],
+    fields: [
+      {
+        label: 'Key',
+        key: 'key',
+        required: true,
+        variables: true,
+      },
+      {
+        label: 'Value',
+        key: 'value',
+        required: true,
+        variables: true,
+      }
+    ],
+    ...params,
+    type: 'dynamic',
+  });
+
+  return dynamicArgument;
+};

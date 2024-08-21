@@ -1,6 +1,6 @@
 import { beforeEach, describe, it, expect } from 'vitest';
 import { createExecutionStep } from '../../test/factories/execution-step.js';
-import { createDropdownArgument, createStringArgument } from '../../test/factories/app.js';
+import { createDropdownArgument, createDynamicArgument, createStringArgument } from '../../test/factories/app.js';
 import computeParameters from './compute-parameters.js';
 
 const computeVariable = (stepId, path) => `{{step.${stepId}.${path}}}`;
@@ -219,6 +219,35 @@ describe('Compute parameters helper', () => {
 
           expect(computedParameters).toStrictEqual(expectedParameters);
         });
+
+        it('should not parse non-primitives in nested arrays', () => {
+          const stepArguments = [
+            createDynamicArgument({
+              key: 'inputs',
+            })
+          ];
+
+          const parameters = {
+            inputs: [
+              {
+                key: 'person',
+                value: '{ "name": "John Doe", "age": 32 }',
+              }
+            ],
+          };
+
+          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const expectedParameters = {
+            inputs: [
+              {
+                key: 'person',
+                value: '{ "name": "John Doe", "age": 32 }',
+              }
+            ],
+          };
+
+          expect(computedParameters).toStrictEqual(expectedParameters);
+        });
       });
 
       describe(`with valueType as 'parse'`, () => {
@@ -286,7 +315,7 @@ describe('Compute parameters helper', () => {
           expect(computedParameters).toStrictEqual(expectedParameters);
         });
 
-        it('should compute mix variables correctly', () => {
+        it('should compute and parse mix variables correctly', () => {
           const parameters = {
             key1: `another static text ${computeVariable(executionStepThree.stepId, 'step3Key4.step3Key4ChildKey4')}`,
           };
@@ -299,7 +328,7 @@ describe('Compute parameters helper', () => {
           expect(computedParameters).toStrictEqual(expectedParameters);
         });
 
-        it('should compute variables correctly', () => {
+        it('should compute and parse variables correctly', () => {
           const parameters = {
             key1: `${computeVariable(executionStepThree.stepId, 'step3Key4.step3Key4ChildKey4')}`,
           };
@@ -307,6 +336,53 @@ describe('Compute parameters helper', () => {
           const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
           const expectedParameters = {
             key1: ["value1", "value2"],
+          };
+
+          expect(computedParameters).toStrictEqual(expectedParameters);
+        });
+
+        it('should compute and parse variables in nested arrays correctly', () => {
+          const stepArguments = [
+            createDynamicArgument({
+              key: 'inputs',
+              fields: [
+                {
+                  label: 'Key',
+                  key: 'key',
+                  required: true,
+                  variables: true,
+                },
+                {
+                  label: 'Value',
+                  key: 'value',
+                  required: true,
+                  variables: true,
+                  valueType: 'parse',
+                }
+              ],
+            })
+          ];
+
+          const parameters = {
+            inputs: [
+              {
+                key: 'person',
+                value: '{ "name": "John Doe", "age": 32 }',
+              }
+            ],
+          };
+
+          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const expectedParameters = {
+            inputs: [
+              {
+                key: 'person',
+                value: {
+                  name: 'John Doe',
+                  age: 32,
+                }
+              }
+            ],
           };
 
           expect(computedParameters).toStrictEqual(expectedParameters);
