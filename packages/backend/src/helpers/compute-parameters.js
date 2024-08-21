@@ -150,7 +150,7 @@ function computeStringParameter(key, stringValue, fields, executionSteps) {
   return computedValue;
 }
 
-function computeArrayParameter(key, arrayValue, fields, executionSteps) {
+function computeArrayParameter(key, arrayValue, fields = [], executionSteps) {
   return arrayValue.map((item) => {
     const itemFields = fields.find((field) => field.key === key)?.fields;
 
