@@ -101,6 +101,7 @@ export default function EditorLayout() {
 
           {!isFlowLoading && (
             <EditableTypography
+              data-test="editableTypography"
               variant="body1"
               onConfirm={onFlowNameUpdate}
               noWrap

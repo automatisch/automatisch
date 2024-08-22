@@ -118,7 +118,7 @@ function TestSubstep(props) {
           )}
 
           {hasNoOutput && (
-            <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
+            <Alert data-test="flow-test-substep-no-output" severity="warning" sx={{ mb: 1, width: '100%' }}>
               <AlertTitle sx={{ fontWeight: 700 }}>
                 {formatMessage('flowEditor.noTestDataTitle')}
               </AlertTitle>
