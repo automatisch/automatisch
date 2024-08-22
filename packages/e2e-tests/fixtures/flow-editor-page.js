@@ -11,7 +11,6 @@ export class FlowEditorPage extends AuthenticatedPage {
   constructor(page) {
     super(page);
 
-    this.page = page;
     this.appAutocomplete = this.page.getByTestId('choose-app-autocomplete');
     this.eventAutocomplete = this.page.getByTestId('choose-event-autocomplete');
     this.continueButton = this.page.getByTestId('flow-substep-continue-button');
@@ -77,7 +76,8 @@ export class FlowEditorPage extends AuthenticatedPage {
   }
 
   async testAndContinue() {
-    await this.continueButton.last().click();
+    await expect(this.continueButton).toHaveCount(1);
+    await this.continueButton.click();
     await expect(this.testOutput).toBeVisible();
     await this.continueButton.click();
   }

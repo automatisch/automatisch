@@ -20,14 +20,16 @@ test.describe('Webhook flow', () => {
 
     await flowEditorPage.chooseAppAndEvent('Webhook', 'Respond with');
 
-    await expect(flowEditorPage.continueButton.last()).not.toBeEnabled();
+    await expect(flowEditorPage.continueButton).toHaveCount(1);
+    await expect(flowEditorPage.continueButton).not.toBeEnabled();
 
     await page
       .getByTestId('parameters.statusCode-power-input')
       .locator('[contenteditable]')
       .fill('200');
     await flowEditorPage.clickAway();
-    await expect(flowEditorPage.continueButton.last()).not.toBeEnabled();
+    await expect(flowEditorPage.continueButton).toHaveCount(1);
+    await expect(flowEditorPage.continueButton).not.toBeEnabled();
 
     await page
       .getByTestId('parameters.body-power-input')
@@ -54,15 +56,16 @@ test.describe('Webhook flow', () => {
     const asyncWebhookUrl = await flowEditorPage.createWebhookTrigger(false);
 
     await flowEditorPage.chooseAppAndEvent('Webhook', 'Respond with');
-
-    await expect(flowEditorPage.continueButton.last()).not.toBeEnabled();
+    await expect(flowEditorPage.continueButton).toHaveCount(1);
+    await expect(flowEditorPage.continueButton).not.toBeEnabled();
 
     await page
       .getByTestId('parameters.statusCode-power-input')
       .locator('[contenteditable]')
       .fill('200');
     await flowEditorPage.clickAway();
-    await expect(flowEditorPage.continueButton.last()).not.toBeEnabled();
+    await expect(flowEditorPage.continueButton).toHaveCount(1);
+    await expect(flowEditorPage.continueButton).not.toBeEnabled();
 
     await page
       .getByTestId('parameters.body-power-input')
