@@ -13,6 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { isEqual } from 'lodash';
 
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
@@ -177,7 +178,9 @@ function FlowStep(props) {
   }, []);
 
   const handleSubmit = (val) => {
-    handleChange({ step: val });
+    if (!isEqual(step, val)) {
+      handleChange({ step: val });
+    }
   };
 
   const stepValidationSchema = React.useMemo(
