@@ -31,8 +31,11 @@ export const processAction = async (options) => {
     execution_id: $.execution.id,
   });
 
+  const stepSetupAndDynamicFields = await step.getSetupAndDynamicFields();
+
   const computedParameters = computeParameters(
     $.step.parameters,
+    stepSetupAndDynamicFields,
     priorExecutionSteps
   );
 

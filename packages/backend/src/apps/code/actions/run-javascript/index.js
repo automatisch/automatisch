@@ -33,6 +33,7 @@ export default defineAction({
           type: 'string',
           required: true,
           variables: true,
+          valueType: 'parse',
         },
       ],
     },

@@ -6,10 +6,21 @@ function getParameterEntries(parameters) {
   return Object.entries(parameters);
 }
 
-function computeParameterEntries(parameterEntries, executionSteps) {
+function getFieldByKey(key, fields = []) {
+  return fields.find((field) => field.key === key);
+};
+
+function getParameterValueType(parameterKey, fields) {
+  const field = getFieldByKey(parameterKey, fields);
+  const defaultValueType = 'string';
+
+  return field?.valueType || defaultValueType;
+}
+
+function computeParameterEntries(parameterEntries, fields, executionSteps) {
   const defaultComputedParameters = {};
   return parameterEntries.reduce((result, [key, value]) => {
-    const parameterComputedValue = computeParameter(value, executionSteps);
+    const parameterComputedValue = computeParameter(key, value, fields, executionSteps);
 
     return {
       ...result,
@@ -18,14 +29,21 @@ function computeParameterEntries(parameterEntries, executionSteps) {
   }, defaultComputedParameters);
 }
 
-function computeParameter(value, executionSteps) {
+function shouldAutoParse(key, fields) {
+  const parameterValueType = getParameterValueType(key, fields);
+  const shouldAutoParse = parameterValueType === 'parse';
+
+  return shouldAutoParse;
+}
+
+function computeParameter(key, value, fields, executionSteps) {
   if (typeof value === 'string') {
-    const computedStringParameter = computeStringParameter(value, executionSteps);
+    const computedStringParameter = computeStringParameter(key, value, fields, executionSteps);
     return computedStringParameter;
   }
 
   if (Array.isArray(value)) {
-    const computedArrayParameter = computeArrayParameter(value, executionSteps);
+    const computedArrayParameter = computeArrayParameter(key, value, fields, executionSteps);
     return computedArrayParameter;
   }
 
@@ -107,7 +125,7 @@ function autoParseComputedVariable(computedVariable) {
   }
 }
 
-function computeStringParameter(stringValue, executionSteps) {
+function computeStringParameter(key, stringValue, fields, executionSteps) {
   const parts = splitByVariable(stringValue);
 
   const computedValue = parts
@@ -122,17 +140,26 @@ function computeStringParameter(stringValue, executionSteps) {
     })
     .join('');
 
-  const autoParsedValue = autoParseComputedVariable(computedValue);
+  const autoParse = shouldAutoParse(key, fields);
+  if (autoParse) {
+    const autoParsedValue = autoParseComputedVariable(computedValue);
 
-  return autoParsedValue;
+    return autoParsedValue;
+  }
+
+  return computedValue;
 }
 
-function computeArrayParameter(arrayValue, executionSteps) {
-  return arrayValue.map((item) => computeParameters(item, executionSteps));
+function computeArrayParameter(key, arrayValue, fields = [], executionSteps) {
+  return arrayValue.map((item) => {
+    const itemFields = fields.find((field) => field.key === key)?.fields;
+
+    return computeParameters(item, itemFields, executionSteps);
+  });
 }
 
-export default function computeParameters(parameters, executionSteps) {
+export default function computeParameters(parameters, fields, executionSteps) {
   const parameterEntries = getParameterEntries(parameters);
 
-  return computeParameterEntries(parameterEntries, executionSteps);
+  return computeParameterEntries(parameterEntries, fields, executionSteps);
 }
