@@ -63,6 +63,10 @@ const authorizationList = {
     action: 'read',
     subject: 'Execution',
   },
+  'DELETE /api/v1/steps/:stepId': {
+    action: 'update',
+    subject: 'Flow',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
