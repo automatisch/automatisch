@@ -41,7 +41,9 @@ const renderObject = (response, object, options) => {
     },
   };
 
-  return response.json(computedPayload);
+  const status = options?.status || 200;
+
+  return response.status(status).json(computedPayload);
 };
 
 const renderError = (response, errors, status, type) => {
