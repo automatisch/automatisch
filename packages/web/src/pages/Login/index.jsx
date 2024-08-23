@@ -10,6 +10,7 @@ export default function Login() {
       <Container maxWidth="sm">
         <Stack direction="column" gap={2}>
           <LoginForm />
+
           <SsoProviders />
         </Stack>
       </Container>

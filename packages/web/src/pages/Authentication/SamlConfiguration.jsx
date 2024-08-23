@@ -75,7 +75,7 @@ function SamlConfiguration({ provider, providerLoading }) {
         },
       });
 
-      enqueueSnackbar(formatMessage('authenticationForm.successfullySaved'), {
+      enqueueSnackbar(formatMessage('samlAuthenticationForm.successfullySaved'), {
         variant: 'success',
         SnackbarProps: {
           'data-test': 'snackbar-save-saml-provider-success',
@@ -98,18 +98,18 @@ function SamlConfiguration({ provider, providerLoading }) {
       <Stack direction="column" gap={2}>
         <Switch
           name="active"
-          label={formatMessage('authenticationForm.active')}
+          label={formatMessage('samlAuthenticationForm.active')}
         />
         <TextField
           required={true}
           name="name"
-          label={formatMessage('authenticationForm.name')}
+          label={formatMessage('samlAuthenticationForm.name')}
           fullWidth
         />
         <TextField
           required={true}
           name="certificate"
-          label={formatMessage('authenticationForm.certificate')}
+          label={formatMessage('samlAuthenticationForm.certificate')}
           fullWidth
           multiline
         />
@@ -126,44 +126,44 @@ function SamlConfiguration({ provider, providerLoading }) {
           renderInput={(params) => (
             <MuiTextField
               {...params}
-              label={formatMessage('authenticationForm.signatureAlgorithm')}
+              label={formatMessage('samlAuthenticationForm.signatureAlgorithm')}
             />
           )}
         />
         <TextField
           required={true}
           name="issuer"
-          label={formatMessage('authenticationForm.issuer')}
+          label={formatMessage('samlAuthenticationForm.issuer')}
           fullWidth
         />
         <TextField
           required={true}
           name="entryPoint"
-          label={formatMessage('authenticationForm.entryPoint')}
+          label={formatMessage('samlAuthenticationForm.entryPoint')}
           fullWidth
         />
         <TextField
           required={true}
           name="firstnameAttributeName"
-          label={formatMessage('authenticationForm.firstnameAttributeName')}
+          label={formatMessage('samlAuthenticationForm.firstnameAttributeName')}
           fullWidth
         />
         <TextField
           required={true}
           name="surnameAttributeName"
-          label={formatMessage('authenticationForm.surnameAttributeName')}
+          label={formatMessage('samlAuthenticationForm.surnameAttributeName')}
           fullWidth
         />
         <TextField
           required={true}
           name="emailAttributeName"
-          label={formatMessage('authenticationForm.emailAttributeName')}
+          label={formatMessage('samlAuthenticationForm.emailAttributeName')}
           fullWidth
         />
         <TextField
           required={true}
           name="roleAttributeName"
-          label={formatMessage('authenticationForm.roleAttributeName')}
+          label={formatMessage('samlAuthenticationForm.roleAttributeName')}
           fullWidth
         />
         <ControlledAutocomplete
@@ -175,7 +175,7 @@ function SamlConfiguration({ provider, providerLoading }) {
           renderInput={(params) => (
             <MuiTextField
               {...params}
-              label={formatMessage('authenticationForm.defaultRole')}
+              label={formatMessage('samlAuthenticationForm.defaultRole')}
             />
           )}
           loading={isRolesLoading}
@@ -187,7 +187,7 @@ function SamlConfiguration({ provider, providerLoading }) {
           sx={{ boxShadow: 2 }}
           loading={loading}
         >
-          {formatMessage('authenticationForm.save')}
+          {formatMessage('samlAuthenticationForm.save')}
         </LoadingButton>
       </Stack>
     </Form>

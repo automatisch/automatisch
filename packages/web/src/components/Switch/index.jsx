@@ -40,6 +40,10 @@ function Switch(props) {
         <FormControlLabel
           className={className}
           {...FormControlLabelProps}
+          componentsProps={{
+            typography: {
+              display: 'flex',
+          }}}
           control={
             <MuiSwitch
               {...switchProps}

@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { AppPropType } from 'propTypes/propTypes';
 import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
@@ -17,7 +18,6 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { generateExternalLink } from 'helpers/translationValues';
 import { Form } from './style';
 import useAppAuth from 'hooks/useAppAuth';
-import { useQueryClient } from '@tanstack/react-query';
 
 function AddAppConnection(props) {
   const { application, connectionId, onClose } = props;

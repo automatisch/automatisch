@@ -12,6 +12,7 @@ import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCreateAccessToken from 'hooks/useCreateAccessToken';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import usePreventUsersFromUpdatingTheirProfile from 'hooks/usePreventUsersFromUpdatingTheirProfile';
 
 function LoginForm() {
   const isCloud = useCloud();
@@ -19,6 +20,7 @@ function LoginForm() {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
   const authentication = useAuthentication();
+  const preventUsersFromUpdatingTheirProfile = usePreventUsersFromUpdatingTheirProfile();
   const { mutateAsync: createAccessToken, isPending: loading } =
     useCreateAccessToken();
 
@@ -84,7 +86,7 @@ function LoginForm() {
           sx={{ mb: 1 }}
         />
 
-        {isCloud && (
+        {isCloud && !preventUsersFromUpdatingTheirProfile && (
           <Link
             component={RouterLink}
             to={URLS.FORGOT_PASSWORD}

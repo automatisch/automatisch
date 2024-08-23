@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
@@ -85,7 +84,6 @@ function RoleMappings({ provider, providerLoading }) {
 
   return (
     <>
-      <Divider sx={{ pt: 2 }} />
       <Typography variant="h3">
         {formatMessage('roleMappingsForm.title')}
       </Typography>

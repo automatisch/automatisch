@@ -95,11 +95,11 @@ export const defaultTheme = createTheme({
       },
     },
     h4: {
-      fontSize: referenceTheme.typography.pxToRem(32),
+      fontSize: referenceTheme.typography.pxToRem(28),
       lineHeight: 1.3,
       fontWeight: 700,
       [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(16),
+        fontSize: referenceTheme.typography.pxToRem(22),
       },
     },
     h5: {

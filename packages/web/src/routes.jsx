@@ -29,12 +29,14 @@ import adminSettingsRoutes from './adminSettingsRoutes';
 import Notifications from 'pages/Notifications';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAuthentication from 'hooks/useAuthentication';
+import usePreventUsersFromUpdatingTheirProfile from 'hooks/usePreventUsersFromUpdatingTheirProfile';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import Installation from 'pages/Installation';
 
 function Routes() {
   const { data: automatischInfo, isSuccess } = useAutomatischInfo();
   const { data: configData } = useAutomatischConfig();
+  const preventUsersFromUpdatingTheirProfile = usePreventUsersFromUpdatingTheirProfile();
   const { isAuthenticated } = useAuthentication();
   const config = configData?.data;
 
@@ -134,14 +136,14 @@ function Routes() {
         }
       />
 
-      <Route
+      {preventUsersFromUpdatingTheirProfile === false && <Route
         path={URLS.FORGOT_PASSWORD}
         element={
           <PublicLayout>
             <ForgotPassword />
           </PublicLayout>
         }
-      />
+      />}
 
       <Route
         path={URLS.RESET_PASSWORD}
