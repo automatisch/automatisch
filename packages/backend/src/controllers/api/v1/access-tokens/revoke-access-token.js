@@ -11,5 +11,5 @@ export default async (request, response) => {
 
   await accessToken.revoke();
 
-  response.status(204).send();
+  response.status(204).end();
 };

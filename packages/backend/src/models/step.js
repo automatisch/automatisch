@@ -207,7 +207,9 @@ class Step extends Base {
 
       const additionalFields = setupField.additionalFields;
       if (additionalFields) {
-        const keyArgument = additionalFields.arguments.find(argument => argument.name === 'key');
+        const keyArgument = additionalFields.arguments.find(
+          (argument) => argument.name === 'key'
+        );
         const dynamicFieldsKey = keyArgument.value;
 
         const dynamicFields = await this.createDynamicFields(
@@ -288,6 +290,25 @@ class Step extends Base {
     await this.$query().patchAndFetch(payload);
 
     return this;
+  }
+
+  async delete() {
+    await this.$relatedQuery('executionSteps').delete();
+    await this.$query().delete();
+
+    const flow = await this.$relatedQuery('flow');
+
+    const nextSteps = await flow
+      .$relatedQuery('steps')
+      .where('position', '>', this.position);
+
+    const nextStepQueries = nextSteps.map(async (nextStep) => {
+      await nextStep.$query().patch({
+        position: nextStep.position - 1,
+      });
+    });
+
+    await Promise.all(nextStepQueries);
   }
 }
 

@@ -6,6 +6,7 @@ import getConnectionAction from '../../../controllers/api/v1/steps/get-connectio
 import getPreviousStepsAction from '../../../controllers/api/v1/steps/get-previous-steps.js';
 import createDynamicFieldsAction from '../../../controllers/api/v1/steps/create-dynamic-fields.js';
 import createDynamicDataAction from '../../../controllers/api/v1/steps/create-dynamic-data.js';
+import deleteStepAction from '../../../controllers/api/v1/steps/delete-step.js';
 
 const router = Router();
 
@@ -35,6 +36,13 @@ router.post(
   authenticateUser,
   authorizeUser,
   asyncHandler(createDynamicDataAction)
+);
+
+router.delete(
+  '/:stepId',
+  authenticateUser,
+  authorizeUser,
+  asyncHandler(deleteStepAction)
 );
 
 export default router;
