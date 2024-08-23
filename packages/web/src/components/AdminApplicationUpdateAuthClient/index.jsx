@@ -16,7 +16,7 @@ function AdminApplicationUpdateAuthClient(props) {
   const { clientId } = useParams();
 
   const { data: adminAppAuthClient, isLoading: isAdminAuthClientLoading } =
-    useAdminAppAuthClient(clientId);
+    useAdminAppAuthClient(application.key, clientId);
 
   const { data: auth } = useAppAuth(application.key);
 

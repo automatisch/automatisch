@@ -3,7 +3,6 @@ type Query {
 }
 type Mutation {
   createAppConfig(input: CreateAppConfigInput): AppConfig
-  createAppAuthClient(input: CreateAppAuthClientInput): AppAuthClient
   createConnection(input: CreateConnectionInput): Connection
   createFlow(input: CreateFlowInput): Flow
   createRole(input: CreateRoleInput): Role
@@ -568,13 +567,6 @@ type AppAuthClient {
   id: String
   appConfigId: String
   name: String
-  active: Boolean
-}
-
-input CreateAppAuthClientInput {
-  appConfigId: String
-  name: String
-  formattedAuthDefaults: JSONObject
   active: Boolean
 }
 

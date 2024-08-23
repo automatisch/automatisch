@@ -4,9 +4,9 @@ import { useMutation } from '@apollo/client';
 
 import { AppPropType } from 'propTypes/propTypes';
 import { CREATE_APP_CONFIG } from 'graphql/mutations/create-app-config';
-import { CREATE_APP_AUTH_CLIENT } from 'graphql/mutations/create-app-auth-client';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAdminCreateAppAuthClient from 'hooks/useAdminCreateAppAuthClient.ee';
 import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
 import useAppAuth from 'hooks/useAppAuth';
 
@@ -26,13 +26,11 @@ function AdminApplicationCreateAuthClient(props) {
     context: { autoSnackbar: false },
   });
 
-  const [
-    createAppAuthClient,
-    { loading: loadingCreateAppAuthClient, error: createAppAuthClientError },
-  ] = useMutation(CREATE_APP_AUTH_CLIENT, {
-    refetchQueries: ['GetAppAuthClients'],
-    context: { autoSnackbar: false },
-  });
+  const {
+    mutateAsync: createAppAuthClient,
+    isPending: isCreateAppAuithClientPending,
+    error: createAppAuthClientError,
+  } = useAdminCreateAppAuthClient(appKey);
 
   const submitHandler = async (values) => {
     let appConfigId = appConfig?.data?.id;
@@ -55,14 +53,10 @@ function AdminApplicationCreateAuthClient(props) {
     const { name, active, ...formattedAuthDefaults } = values;
 
     await createAppAuthClient({
-      variables: {
-        input: {
-          appConfigId,
-          name,
-          active,
-          formattedAuthDefaults,
-        },
-      },
+      appKey,
+      name,
+      active,
+      formattedAuthDefaults,
     });
 
     onClose();
@@ -103,7 +97,7 @@ function AdminApplicationCreateAuthClient(props) {
       loading={isAppConfigLoading}
       submitHandler={submitHandler}
       authFields={auth?.data?.fields}
-      submitting={loadingCreateAppConfig || loadingCreateAppAuthClient}
+      submitting={loadingCreateAppConfig || isCreateAppAuithClientPending}
       defaultValues={defaultValues}
     />
   );

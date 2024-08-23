@@ -5,6 +5,7 @@ import { authorizeAdmin } from '../../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
 import getAuthClientsAction from '../../../../controllers/api/v1/admin/apps/get-auth-clients.ee.js';
 import getAuthClientAction from '../../../../controllers/api/v1/admin/apps/get-auth-client.ee.js';
+import createAuthClientAction from '../../../../controllers/api/v1/admin/apps/create-auth-client.ee.js';
 
 const router = Router();
 
@@ -14,6 +15,14 @@ router.get(
   authorizeAdmin,
   checkIsEnterprise,
   asyncHandler(getAuthClientsAction)
+);
+
+router.post(
+  '/:appKey/auth-clients',
+  authenticateUser,
+  authorizeAdmin,
+  checkIsEnterprise,
+  asyncHandler(createAuthClientAction)
 );
 
 router.get(
