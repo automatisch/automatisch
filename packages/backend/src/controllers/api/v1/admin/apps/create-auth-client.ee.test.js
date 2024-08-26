@@ -21,26 +21,6 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
     token = await createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return not found response for not existing app config', async () => {
-    const appAuthClient = {
-      active: true,
-      appKey: 'gitlab',
-      name: 'First auth client',
-      formattedAuthDefaults: {
-        clientid: 'sample client ID',
-        clientSecret: 'sample client secret',
-        instanceUrl: 'https://gitlab.com',
-        oAuthRedirectUrl: 'http://localhost:3001/app/gitlab/connection/add',
-      }
-    };
-
-    await request(app)
-      .post('/api/v1/admin/apps/gitlab/auth-clients')
-      .set('Authorization', token)
-      .send(appAuthClient)
-      .expect(404);
-  });
-
   it('should return created response for valid app config', async () => {
     await createAppConfig({
       key: 'gitlab'
@@ -68,6 +48,26 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
     expect(response.body).toMatchObject(expectedPayload);
   });
 
+  it('should return not found response for not existing app config', async () => {
+    const appAuthClient = {
+      active: true,
+      appKey: 'gitlab',
+      name: 'First auth client',
+      formattedAuthDefaults: {
+        clientid: 'sample client ID',
+        clientSecret: 'sample client secret',
+        instanceUrl: 'https://gitlab.com',
+        oAuthRedirectUrl: 'http://localhost:3001/app/gitlab/connection/add',
+      }
+    };
+
+    await request(app)
+      .post('/api/v1/admin/apps/gitlab/auth-clients')
+      .set('Authorization', token)
+      .send(appAuthClient)
+      .expect(404);
+  });
+
   it('should return bad request response for missing required fields', async () => {
     await createAppConfig({
       key: 'gitlab'
@@ -77,10 +77,16 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
       appKey: 'gitlab',
     };
 
-    await request(app)
+    const response = await request(app)
       .post('/api/v1/admin/apps/gitlab/auth-clients')
       .set('Authorization', token)
       .send(appAuthClient)
       .expect(400);
+
+    expect(response.body.meta.type).toEqual('ModelValidation');
+    expect(response.body.errors).toMatchObject({
+      name: ["must have required property 'name'"],
+      formattedAuthDefaults: ["must have required property 'formattedAuthDefaults'"]
+    });
   });
 });
