@@ -8,7 +8,18 @@ export default async (request, response) => {
 
   const appAuthClient = await appConfig
     .$relatedQuery('appAuthClients')
-    .insert(request.body);
+    .insert(appAuthClientParams(request));
 
   renderObject(response, appAuthClient, { status: 201 });
+};
+
+const appAuthClientParams = (request) => {
+  const { active, appKey, name, formattedAuthDefaults } = request.body;
+
+  return {
+    active,
+    appKey,
+    name,
+    formattedAuthDefaults,
+  };
 };
