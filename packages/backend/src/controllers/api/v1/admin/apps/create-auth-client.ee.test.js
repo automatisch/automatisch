@@ -81,7 +81,7 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
       .post('/api/v1/admin/apps/gitlab/auth-clients')
       .set('Authorization', token)
       .send(appAuthClient)
-      .expect(400);
+      .expect(422);
 
     expect(response.body.meta.type).toEqual('ModelValidation');
     expect(response.body.errors).toMatchObject({
