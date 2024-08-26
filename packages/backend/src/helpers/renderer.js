@@ -64,22 +64,16 @@ const renderError = (response, errors, status, type) => {
   return response.status(errorStatus).send(payload);
 };
 
-const renderObjectionError = (response, error) => {
-  const {
-    statusCode,
-    type,
-    data = {},
-  } = error;
+const renderObjectionError = (response, error, status) => {
+  const { statusCode, type, data = {} } = error;
 
-  const errorEntries = Object.entries(data);
+  const computedStatusCode = status || statusCode;
 
-  const computedErrors = errorEntries.reduce((errors, [fieldName, fieldErrors]) => {
-    const computedErrors = fieldErrors.map(fieldError => fieldError.message);
+  const computedErrors = Object.entries(data).map(([fieldName, fieldErrors]) => ({
+    [fieldName]: fieldErrors.map(({ message }) => message)
+  }));
 
-    return errors.concat({ [fieldName]: computedErrors });
-  }, []);
-
-  return renderError(response, computedErrors, statusCode, type);
+  return renderError(response, computedErrors, computedStatusCode, type);
 };
 
 export { renderObject, renderError, renderObjectionError };

@@ -17,7 +17,7 @@ const errorHandler = (error, request, response, next) => {
   }
 
   if (error instanceof ValidationError) {
-    renderObjectionError(response, error);
+    renderObjectionError(response, error, 422);
   }
 
   if (error instanceof DataError) {
