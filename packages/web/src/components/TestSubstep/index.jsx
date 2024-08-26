@@ -62,11 +62,11 @@ function TestSubstep(props) {
 
   React.useEffect(
     function resetTestDataOnSubstepToggle() {
-      if (!expanded) {
+      if (!expanded && !loading) {
         reset();
       }
     },
-    [expanded, reset],
+    [expanded, reset, loading],
   );
 
   const handleSubmit = React.useCallback(async () => {
@@ -118,7 +118,11 @@ function TestSubstep(props) {
           )}
 
           {hasNoOutput && (
-            <Alert data-test="flow-test-substep-no-output" severity="warning" sx={{ mb: 1, width: '100%' }}>
+            <Alert
+              data-test="flow-test-substep-no-output"
+              severity="warning"
+              sx={{ mb: 1, width: '100%' }}
+            >
               <AlertTitle sx={{ fontWeight: 700 }}>
                 {formatMessage('flowEditor.noTestDataTitle')}
               </AlertTitle>
