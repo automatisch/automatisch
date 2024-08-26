@@ -64,4 +64,22 @@ const renderError = (response, errors, status, type) => {
   return response.status(errorStatus).send(payload);
 };
 
-export { renderObject, renderError };
+const renderObjectionError = (response, error) => {
+  const {
+    statusCode,
+    type,
+    data = {},
+  } = error;
+
+  const errorEntries = Object.entries(data);
+
+  const computedErrors = errorEntries.reduce((errors, [fieldName, fieldErrors]) => {
+    const computedErrors = fieldErrors.map(fieldError => fieldError.message);
+
+    return errors.concat({ [fieldName]: computedErrors });
+  }, []);
+
+  return renderError(response, computedErrors, statusCode, type);
+};
+
+export { renderObject, renderError, renderObjectionError };
