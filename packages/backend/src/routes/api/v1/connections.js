@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../helpers/authentication.js';
 import { authorizeUser } from '../../../helpers/authorization.js';
 import getFlowsAction from '../../../controllers/api/v1/connections/get-flows.js';
-import createTestAction from '../../../controllers/api/v1/connections/create-test.js';
+import testConnectionAction from '../../../controllers/api/v1/connections/test-connection.js';
 
 const router = Router();
 
@@ -18,7 +18,7 @@ router.post(
   '/:connectionId/test',
   authenticateUser,
   authorizeUser,
-  asyncHandler(createTestAction)
+  asyncHandler(testConnectionAction)
 );
 
 export default router;
