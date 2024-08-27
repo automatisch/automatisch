@@ -1,9 +1,13 @@
 import logger from './logger.js';
 import objection from 'objection';
 import * as Sentry from './sentry.ee.js';
-const { NotFoundError, DataError, ValidationError } = objection;
+const { NotFoundError, DataError, ValidationError, UniqueViolationError } =
+  objection;
 import HttpError from '../errors/http.js';
-import { renderObjectionError } from './renderer.js';
+import {
+  renderObjectionError,
+  renderUniqueViolationError,
+} from './renderer.js';
 
 // Do not remove `next` argument as the function signature will not fit for an error handler middleware
 // eslint-disable-next-line no-unused-vars
@@ -18,6 +22,10 @@ const errorHandler = (error, request, response, next) => {
 
   if (error instanceof ValidationError) {
     renderObjectionError(response, error, 422);
+  }
+
+  if (error instanceof UniqueViolationError) {
+    renderUniqueViolationError(response, error);
   }
 
   if (error instanceof DataError) {

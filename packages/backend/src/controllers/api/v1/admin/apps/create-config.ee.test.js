@@ -23,7 +23,6 @@ describe('POST /api/v1/admin/apps/:appKey/config', () => {
 
   it('should return created app config', async () => {
     const appConfig = {
-      key: 'gitlab',
       allowCustomConnection: true,
       shared: true,
       disabled: false,
@@ -35,11 +34,14 @@ describe('POST /api/v1/admin/apps/:appKey/config', () => {
       .send(appConfig)
       .expect(201);
 
-    const expectedPayload = createAppConfigMock(appConfig);
+    const expectedPayload = createAppConfigMock({
+      ...appConfig,
+      key: 'gitlab',
+    });
     expect(response.body).toMatchObject(expectedPayload);
   });
 
-  it('should return HTTP 409 for already existing app config', async () => {
+  it('should return HTTP 422 for already existing app config', async () => {
     const appConfig = {
       key: 'gitlab',
       allowCustomConnection: true,
@@ -49,10 +51,17 @@ describe('POST /api/v1/admin/apps/:appKey/config', () => {
 
     await createAppConfig(appConfig);
 
-    await request(app)
+    const response = await request(app)
       .post('/api/v1/admin/apps/gitlab/config')
       .set('Authorization', token)
-      .send(appConfig)
-      .expect(409);
+      .send({
+        disabled: false,
+      })
+      .expect(422);
+
+    expect(response.body.meta.type).toEqual('UniqueViolationError');
+    expect(response.body.errors).toMatchObject({
+      key: ["'key' must be unique."],
+    });
   });
 });
