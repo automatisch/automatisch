@@ -23,7 +23,7 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
 
   it('should return created response for valid app config', async () => {
     await createAppConfig({
-      key: 'gitlab'
+      key: 'gitlab',
     });
 
     const appAuthClient = {
@@ -35,7 +35,7 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
         clientSecret: 'sample client secret',
         instanceUrl: 'https://gitlab.com',
         oAuthRedirectUrl: 'http://localhost:3001/app/gitlab/connection/add',
-      }
+      },
     };
 
     const response = await request(app)
@@ -58,7 +58,7 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
         clientSecret: 'sample client secret',
         instanceUrl: 'https://gitlab.com',
         oAuthRedirectUrl: 'http://localhost:3001/app/gitlab/connection/add',
-      }
+      },
     };
 
     await request(app)
@@ -70,7 +70,7 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
 
   it('should return bad request response for missing required fields', async () => {
     await createAppConfig({
-      key: 'gitlab'
+      key: 'gitlab',
     });
 
     const appAuthClient = {
@@ -86,7 +86,9 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
     expect(response.body.meta.type).toEqual('ModelValidation');
     expect(response.body.errors).toMatchObject({
       name: ["must have required property 'name'"],
-      formattedAuthDefaults: ["must have required property 'formattedAuthDefaults'"]
+      formattedAuthDefaults: [
+        "must have required property 'formattedAuthDefaults'",
+      ],
     });
   });
 });
