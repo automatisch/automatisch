@@ -26,10 +26,10 @@ import updateStep from './mutations/update-step.js';
 import updateUser from './mutations/update-user.ee.js';
 import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee.js';
 import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-providers-role-mappings.ee.js';
-import verifyConnection from './mutations/verify-connection.js';
 
 // Converted mutations
 import deleteStep from './mutations/delete-step.js';
+import verifyConnection from './mutations/verify-connection.js';
 
 const mutationResolvers = {
   createAppAuthClient,

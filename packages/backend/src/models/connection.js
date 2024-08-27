@@ -171,6 +171,17 @@ class Connection extends Base {
     });
   }
 
+  async verifyAndUpdateConnection() {
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection: this, app });
+    await app.auth.verifyCredentials($);
+
+    return await this.$query().patchAndFetch({
+      verified: true,
+      draft: false,
+    });
+  }
+
   async verifyWebhook(request) {
     if (!this.key) return true;
 
