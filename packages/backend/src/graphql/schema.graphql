@@ -2,7 +2,6 @@ type Query {
   placeholderQuery(name: String): Boolean
 }
 type Mutation {
-  createAppConfig(input: CreateAppConfigInput): AppConfig
   createConnection(input: CreateConnectionInput): Connection
   createFlow(input: CreateFlowInput): Flow
   createRole(input: CreateRoleInput): Role
@@ -547,13 +546,6 @@ type Condition {
 type Subject {
   label: String
   key: String
-}
-
-input CreateAppConfigInput {
-  key: String
-  allowCustomConnection: Boolean
-  shared: Boolean
-  disabled: Boolean
 }
 
 input UpdateAppConfigInput {
