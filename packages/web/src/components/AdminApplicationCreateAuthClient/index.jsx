@@ -28,7 +28,7 @@ function AdminApplicationCreateAuthClient(props) {
 
   const {
     mutateAsync: createAppAuthClient,
-    isPending: isCreateAppAuithClientPending,
+    isPending: isCreateAppAuthClientPending,
     error: createAppAuthClientError,
   } = useAdminCreateAppAuthClient(appKey);
 
@@ -97,7 +97,7 @@ function AdminApplicationCreateAuthClient(props) {
       loading={isAppConfigLoading}
       submitHandler={submitHandler}
       authFields={auth?.data?.fields}
-      submitting={loadingCreateAppConfig || isCreateAppAuithClientPending}
+      submitting={loadingCreateAppConfig || isCreateAppAuthClientPending}
       defaultValues={defaultValues}
     />
   );
