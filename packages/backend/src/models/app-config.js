@@ -15,6 +15,8 @@ class AppConfig extends Base {
       allowCustomConnection: { type: 'boolean', default: false },
       shared: { type: 'boolean', default: false },
       disabled: { type: 'boolean', default: false },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
