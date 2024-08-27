@@ -7,6 +7,7 @@ import createConfigAction from '../../../../controllers/api/v1/admin/apps/create
 import getAuthClientsAction from '../../../../controllers/api/v1/admin/apps/get-auth-clients.ee.js';
 import getAuthClientAction from '../../../../controllers/api/v1/admin/apps/get-auth-client.ee.js';
 import createAuthClientAction from '../../../../controllers/api/v1/admin/apps/create-auth-client.ee.js';
+import updateAuthClientAction from '../../../../controllers/api/v1/admin/apps/update-auth-client.ee.js';
 
 const router = Router();
 
@@ -41,6 +42,14 @@ router.get(
   authorizeAdmin,
   checkIsEnterprise,
   asyncHandler(getAuthClientAction)
+);
+
+router.patch(
+  '/:appKey/auth-clients/:appAuthClientId',
+  authenticateUser,
+  authorizeAdmin,
+  checkIsEnterprise,
+  asyncHandler(updateAuthClientAction)
 );
 
 export default router;
