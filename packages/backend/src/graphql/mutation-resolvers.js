@@ -1,4 +1,3 @@
-import createAppConfig from './mutations/create-app-config.ee.js';
 import createConnection from './mutations/create-connection.js';
 import createFlow from './mutations/create-flow.js';
 import createRole from './mutations/create-role.ee.js';
@@ -31,7 +30,6 @@ import deleteStep from './mutations/delete-step.js';
 import verifyConnection from './mutations/verify-connection.js';
 
 const mutationResolvers = {
-  createAppConfig,
   createConnection,
   createFlow,
   createRole,

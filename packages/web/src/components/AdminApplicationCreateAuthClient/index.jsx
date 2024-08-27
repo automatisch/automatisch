@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
-import { useMutation } from '@apollo/client';
 
 import { AppPropType } from 'propTypes/propTypes';
-import { CREATE_APP_CONFIG } from 'graphql/mutations/create-app-config';
+import useAdminCreateAppConfig from 'hooks/useAdminCreateAppConfig';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminCreateAppAuthClient from 'hooks/useAdminCreateAppAuthClient.ee';
@@ -18,13 +17,11 @@ function AdminApplicationCreateAuthClient(props) {
   const { data: appConfig, isLoading: isAppConfigLoading } =
     useAppConfig(appKey);
 
-  const [
-    createAppConfig,
-    { loading: loadingCreateAppConfig, error: createAppConfigError },
-  ] = useMutation(CREATE_APP_CONFIG, {
-    refetchQueries: ['GetAppConfig'],
-    context: { autoSnackbar: false },
-  });
+  const {
+    mutateAsync: createAppConfig,
+    isPending: isCreateAppConfigPending,
+    error: createAppConfigError
+  } = useAdminCreateAppConfig(props.appKey);
 
   const {
     mutateAsync: createAppAuthClient,
@@ -37,17 +34,12 @@ function AdminApplicationCreateAuthClient(props) {
 
     if (!appConfigId) {
       const { data: appConfigData } = await createAppConfig({
-        variables: {
-          input: {
-            key: appKey,
-            allowCustomConnection: false,
-            shared: false,
-            disabled: false,
-          },
-        },
+        allowCustomConnection: true,
+        shared: false,
+        disabled: false,
       });
 
-      appConfigId = appConfigData.createAppConfig.id;
+      appConfigId = appConfigData.id;
     }
 
     const { name, active, ...formattedAuthDefaults } = values;
@@ -97,7 +89,7 @@ function AdminApplicationCreateAuthClient(props) {
       loading={isAppConfigLoading}
       submitHandler={submitHandler}
       authFields={auth?.data?.fields}
-      submitting={loadingCreateAppConfig || isCreateAppAuthClientPending}
+      submitting={isCreateAppConfigPending || isCreateAppAuthClientPending}
       defaultValues={defaultValues}
     />
   );

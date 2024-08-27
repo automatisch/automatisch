@@ -8,11 +8,11 @@ import Stack from '@mui/material/Stack';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useMutation } from '@apollo/client';
 
-import { CREATE_APP_CONFIG } from 'graphql/mutations/create-app-config';
 import { UPDATE_APP_CONFIG } from 'graphql/mutations/update-app-config';
 import Form from 'components/Form';
 import { Switch } from './style';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useAdminCreateAppConfig from 'hooks/useAdminCreateAppConfig';
 
 function AdminApplicationSettings(props) {
   const formatMessage = useFormatMessage();
@@ -20,12 +20,10 @@ function AdminApplicationSettings(props) {
 
   const { data: appConfig, isLoading: loading } = useAppConfig(props.appKey);
 
-  const [createAppConfig, { loading: loadingCreateAppConfig }] = useMutation(
-    CREATE_APP_CONFIG,
-    {
-      refetchQueries: ['GetAppConfig'],
-    },
-  );
+  const {
+    mutateAsync: createAppConfig,
+    isPending: isCreateAppConfigPending,
+  } = useAdminCreateAppConfig(props.appKey);
 
   const [updateAppConfig, { loading: loadingUpdateAppConfig }] = useMutation(
     UPDATE_APP_CONFIG,
@@ -37,11 +35,7 @@ function AdminApplicationSettings(props) {
   const handleSubmit = async (values) => {
     try {
       if (!appConfig?.data) {
-        await createAppConfig({
-          variables: {
-            input: { key: props.appKey, ...values },
-          },
-        });
+        await createAppConfig(values);
       } else {
         await updateAppConfig({
           variables: {
@@ -108,7 +102,7 @@ function AdminApplicationSettings(props) {
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, mt: 5 }}
-              loading={loadingCreateAppConfig || loadingUpdateAppConfig}
+              loading={isCreateAppConfigPending || loadingUpdateAppConfig}
               disabled={!isDirty || loading}
             >
               {formatMessage('adminAppsSettings.save')}
