@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 
 import { AppPropType } from 'propTypes/propTypes';
-import { UPDATE_APP_AUTH_CLIENT } from 'graphql/mutations/update-app-auth-client';
 import useFormatMessage from 'hooks/useFormatMessage';
 import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
 import useAdminAppAuthClient from 'hooks/useAdminAppAuthClient.ee';
+import useAdminUpdateAppAuthClient from 'hooks/useAdminUpdateAppAuthClient.ee';
 import useAppAuth from 'hooks/useAppAuth';
 
 function AdminApplicationUpdateAuthClient(props) {
@@ -20,11 +19,11 @@ function AdminApplicationUpdateAuthClient(props) {
 
   const { data: auth } = useAppAuth(application.key);
 
-  const [updateAppAuthClient, { loading: loadingUpdateAppAuthClient, error }] =
-    useMutation(UPDATE_APP_AUTH_CLIENT, {
-      refetchQueries: ['GetAppAuthClients'],
-      context: { autoSnackbar: false },
-    });
+  const {
+    mutateAsync: updateAppAuthClient,
+    isPending: isUpdateAppAuthClientPending,
+    error: updateAppAuthClientError,
+  } = useAdminUpdateAppAuthClient(application.key, clientId);
 
   const authFields = auth?.data?.fields?.map((field) => ({
     ...field,
@@ -39,14 +38,9 @@ function AdminApplicationUpdateAuthClient(props) {
     const { name, active, ...formattedAuthDefaults } = values;
 
     await updateAppAuthClient({
-      variables: {
-        input: {
-          id: adminAppAuthClient.data.id,
-          name,
-          active,
-          formattedAuthDefaults,
-        },
-      },
+      name,
+      active,
+      formattedAuthDefaults,
     });
 
     onClose();
@@ -80,12 +74,12 @@ function AdminApplicationUpdateAuthClient(props) {
   return (
     <AdminApplicationAuthClientDialog
       onClose={onClose}
-      error={error}
+      error={updateAppAuthClientError}
       title={formatMessage('updateAuthClient.title')}
       loading={isAdminAuthClientLoading}
       submitHandler={submitHandler}
       authFields={authFields}
-      submitting={loadingUpdateAppAuthClient}
+      submitting={isUpdateAppAuthClientPending}
       defaultValues={defaultValues}
       disabled={!adminAppAuthClient}
     />

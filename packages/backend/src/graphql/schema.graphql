@@ -17,7 +17,6 @@ type Mutation {
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
-  updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
   updateAppConfig(input: UpdateAppConfigInput): AppConfig
   updateConfig(input: JSONObject): JSONObject
   updateConnection(input: UpdateConnectionInput): Connection
@@ -553,20 +552,6 @@ input UpdateAppConfigInput {
   allowCustomConnection: Boolean
   shared: Boolean
   disabled: Boolean
-}
-
-type AppAuthClient {
-  id: String
-  appConfigId: String
-  name: String
-  active: Boolean
-}
-
-input UpdateAppAuthClientInput {
-  id: String
-  name: String
-  formattedAuthDefaults: JSONObject
-  active: Boolean
 }
 
 schema {
