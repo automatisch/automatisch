@@ -17,7 +17,6 @@ type Mutation {
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
-  updateAppConfig(input: UpdateAppConfigInput): AppConfig
   updateConfig(input: JSONObject): JSONObject
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
@@ -106,16 +105,6 @@ type SubstepArgumentAdditionalFields {
 type SubstepArgumentAdditionalFieldsArgument {
   name: String
   value: String
-}
-
-type AppConfig {
-  id: String
-  key: String
-  allowCustomConnection: Boolean
-  canConnect: Boolean
-  canCustomConnect: Boolean
-  shared: Boolean
-  disabled: Boolean
 }
 
 type App {
@@ -545,13 +534,6 @@ type Condition {
 type Subject {
   label: String
   key: String
-}
-
-input UpdateAppConfigInput {
-  id: String
-  allowCustomConnection: Boolean
-  shared: Boolean
-  disabled: Boolean
 }
 
 schema {

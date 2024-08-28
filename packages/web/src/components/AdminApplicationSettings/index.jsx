@@ -6,9 +6,7 @@ import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useMutation } from '@apollo/client';
 
-import { UPDATE_APP_CONFIG } from 'graphql/mutations/update-app-config';
 import Form from 'components/Form';
 import { Switch } from './style';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
