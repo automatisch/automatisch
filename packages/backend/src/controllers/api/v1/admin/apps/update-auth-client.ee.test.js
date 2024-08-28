@@ -77,4 +77,28 @@ describe('PATCH /api/v1/admin/apps/:appKey/auth-clients', () => {
       .set('Authorization', token)
       .expect(400);
   });
+
+  it('should return HTTP 422 for invalid payload', async () => {
+    const appAuthClient = {
+      formattedAuthDefaults: 'invalid input',
+    };
+
+    const existingAppAuthClient = await createAppAuthClient({
+      appKey: 'gitlab',
+      name: 'First auth client',
+    });
+
+    const response = await request(app)
+      .patch(
+        `/api/v1/admin/apps/gitlab/auth-clients/${existingAppAuthClient.id}`
+      )
+      .set('Authorization', token)
+      .send(appAuthClient)
+      .expect(422);
+
+    expect(response.body.meta.type).toBe('ModelValidation');
+    expect(response.body.errors).toMatchObject({
+      formattedAuthDefaults: ['must be object'],
+    });
+  });
 });
