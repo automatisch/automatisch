@@ -20,11 +20,11 @@ import updateFlow from './mutations/update-flow.js';
 import updateFlowStatus from './mutations/update-flow-status.js';
 import updateRole from './mutations/update-role.ee.js';
 import updateStep from './mutations/update-step.js';
-import updateUser from './mutations/update-user.ee.js';
 import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee.js';
 import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-providers-role-mappings.ee.js';
 
 // Converted mutations
+import updateUser from './mutations/update-user.ee.js';
 import deleteStep from './mutations/delete-step.js';
 import verifyConnection from './mutations/verify-connection.js';
 
