@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../helpers/authentication.js';
 import { authorizeUser } from '../../../helpers/authorization.js';
 import getFlowsAction from '../../../controllers/api/v1/connections/get-flows.js';
@@ -12,21 +11,21 @@ router.get(
   '/:connectionId/flows',
   authenticateUser,
   authorizeUser,
-  asyncHandler(getFlowsAction)
+  getFlowsAction
 );
 
 router.post(
   '/:connectionId/test',
   authenticateUser,
   authorizeUser,
-  asyncHandler(testConnectionAction)
+  testConnectionAction
 );
 
 router.post(
   '/:connectionId/verify',
   authenticateUser,
   authorizeUser,
-  asyncHandler(verifyConnectionAction)
+  verifyConnectionAction
 );
 
 export default router;

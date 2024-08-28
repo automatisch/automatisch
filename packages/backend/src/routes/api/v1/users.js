@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../helpers/authentication.js';
 import { authorizeUser } from '../../../helpers/authorization.js';
 import checkIsCloud from '../../../helpers/check-is-cloud.js';
@@ -15,46 +14,33 @@ import resetPasswordAction from '../../../controllers/api/v1/users/reset-passwor
 
 const router = Router();
 
-router.get('/me', authenticateUser, asyncHandler(getCurrentUserAction));
-
-router.get(
-  '/:userId/apps',
-  authenticateUser,
-  authorizeUser,
-  asyncHandler(getAppsAction)
-);
-
-router.get(
-  '/invoices',
-  authenticateUser,
-  checkIsCloud,
-  asyncHandler(getInvoicesAction)
-);
+router.get('/me', authenticateUser, getCurrentUserAction);
+router.get('/:userId/apps', authenticateUser, authorizeUser, getAppsAction);
+router.get('/invoices', authenticateUser, checkIsCloud, getInvoicesAction);
 
 router.get(
   '/:userId/trial',
   authenticateUser,
   checkIsCloud,
-  asyncHandler(getUserTrialAction)
+  getUserTrialAction
 );
 
 router.get(
   '/:userId/subscription',
   authenticateUser,
   checkIsCloud,
-  asyncHandler(getSubscriptionAction)
+  getSubscriptionAction
 );
 
 router.get(
   '/:userId/plan-and-usage',
   authenticateUser,
   checkIsCloud,
-  asyncHandler(getPlanAndUsageAction)
+  getPlanAndUsageAction
 );
 
-router.post('/invitation', asyncHandler(acceptInvitationAction));
-router.post('/forgot-password', asyncHandler(forgotPasswordAction));
-
-router.post('/reset-password', asyncHandler(resetPasswordAction));
+router.post('/invitation', acceptInvitationAction);
+router.post('/forgot-password', forgotPasswordAction);
+router.post('/reset-password', resetPasswordAction);
 
 export default router;

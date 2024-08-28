@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../helpers/authentication.js';
 import { authorizeUser } from '../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../helpers/check-is-enterprise.js';
@@ -18,67 +17,54 @@ import getFlowsAction from '../../../controllers/api/v1/apps/get-flows.js';
 
 const router = Router();
 
-router.get('/', authenticateUser, asyncHandler(getAppsAction));
-router.get('/:appKey', authenticateUser, asyncHandler(getAppAction));
-router.get('/:appKey/auth', authenticateUser, asyncHandler(getAuthAction));
+router.get('/', authenticateUser, getAppsAction);
+router.get('/:appKey', authenticateUser, getAppAction);
+router.get('/:appKey/auth', authenticateUser, getAuthAction);
 
 router.get(
   '/:appKey/connections',
   authenticateUser,
   authorizeUser,
-  asyncHandler(getConnectionsAction)
+  getConnectionsAction
 );
 
 router.get(
   '/:appKey/config',
   authenticateUser,
   checkIsEnterprise,
-  asyncHandler(getConfigAction)
+  getConfigAction
 );
 
 router.get(
   '/:appKey/auth-clients',
   authenticateUser,
   checkIsEnterprise,
-  asyncHandler(getAuthClientsAction)
+  getAuthClientsAction
 );
 
 router.get(
   '/:appKey/auth-clients/:appAuthClientId',
   authenticateUser,
   checkIsEnterprise,
-  asyncHandler(getAuthClientAction)
+  getAuthClientAction
 );
 
-router.get(
-  '/:appKey/triggers',
-  authenticateUser,
-  asyncHandler(getTriggersAction)
-);
+router.get('/:appKey/triggers', authenticateUser, getTriggersAction);
 
 router.get(
   '/:appKey/triggers/:triggerKey/substeps',
   authenticateUser,
-  asyncHandler(getTriggerSubstepsAction)
+  getTriggerSubstepsAction
 );
 
-router.get(
-  '/:appKey/actions',
-  authenticateUser,
-  asyncHandler(getActionsAction)
-);
+router.get('/:appKey/actions', authenticateUser, getActionsAction);
 
 router.get(
   '/:appKey/actions/:actionKey/substeps',
   authenticateUser,
-  asyncHandler(getActionSubstepsAction)
+  getActionSubstepsAction
 );
 
-router.get(
-  '/:appKey/flows',
-  authenticateUser,
-  authorizeUser,
-  asyncHandler(getFlowsAction)
-);
+router.get('/:appKey/flows', authenticateUser, authorizeUser, getFlowsAction);
 
 export default router;

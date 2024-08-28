@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import asyncHandler from 'express-async-handler';
 import { checkIsEnterprise } from '../../../helpers/check-is-enterprise.js';
 import versionAction from '../../../controllers/api/v1/automatisch/version.js';
 import notificationsAction from '../../../controllers/api/v1/automatisch/notifications.js';
@@ -9,10 +8,10 @@ import configAction from '../../../controllers/api/v1/automatisch/config.ee.js';
 
 const router = Router();
 
-router.get('/version', asyncHandler(versionAction));
-router.get('/notifications', asyncHandler(notificationsAction));
-router.get('/info', asyncHandler(infoAction));
-router.get('/license', asyncHandler(licenseAction));
-router.get('/config', checkIsEnterprise, asyncHandler(configAction));
+router.get('/version', versionAction);
+router.get('/notifications', notificationsAction);
+router.get('/info', infoAction);
+router.get('/license', licenseAction);
+router.get('/config', checkIsEnterprise, configAction);
 
 export default router;
