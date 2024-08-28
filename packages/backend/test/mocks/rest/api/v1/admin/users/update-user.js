@@ -1,4 +1,4 @@
-const updateCurrentUserMock = (user, role) => {
+const updateUserMock = (user, role) => {
   return {
     data: {
       createdAt: user.createdAt.getTime(),
@@ -26,4 +26,4 @@ const updateCurrentUserMock = (user, role) => {
   };
 };
 
-export default updateCurrentUserMock;
+export default updateUserMock;
