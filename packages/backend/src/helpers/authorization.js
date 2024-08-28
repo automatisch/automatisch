@@ -75,6 +75,10 @@ const authorizationList = {
     action: 'delete',
     subject: 'Connection',
   },
+  'POST /api/v1/connections/:connectionId/reset': {
+    action: 'create',
+    subject: 'Connection',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
