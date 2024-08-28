@@ -71,6 +71,10 @@ const authorizationList = {
     action: 'update',
     subject: 'Flow',
   },
+  'DELETE /api/v1/connections/:connectionId': {
+    action: 'delete',
+    subject: 'Connection',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {

@@ -4,8 +4,16 @@ import { authorizeUser } from '../../../helpers/authorization.js';
 import getFlowsAction from '../../../controllers/api/v1/connections/get-flows.js';
 import testConnectionAction from '../../../controllers/api/v1/connections/test-connection.js';
 import verifyConnectionAction from '../../../controllers/api/v1/connections/verify-connection.js';
+import deleteConnectionAction from '../../../controllers/api/v1/connections/delete-connection.js';
 
 const router = Router();
+
+router.delete(
+  '/:connectionId',
+  authenticateUser,
+  authorizeUser,
+  deleteConnectionAction
+);
 
 router.get(
   '/:connectionId/flows',
