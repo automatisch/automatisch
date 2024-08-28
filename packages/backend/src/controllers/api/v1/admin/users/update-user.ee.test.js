@@ -80,7 +80,7 @@ describe('PATCH /api/v1/admin/users/:userId', () => {
 
   it('should return bad request response for invalid UUID', async () => {
     await request(app)
-      .get('/api/v1/admin/users/invalidUserUUID')
+      .patch('/api/v1/admin/users/invalidUserUUID')
       .set('Authorization', token)
       .expect(400);
   });
