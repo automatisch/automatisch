@@ -43,5 +43,4 @@ router.use('/api/v1/admin/permissions', permissionsRouter);
 router.use('/api/v1/admin/saml-auth-providers', adminSamlAuthProvidersRouter);
 router.use('/api/v1/installation/users', installationUsersRouter);
 
-
 export default router;

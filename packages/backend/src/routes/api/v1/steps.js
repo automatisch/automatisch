@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../helpers/authentication.js';
 import { authorizeUser } from '../../../helpers/authorization.js';
 import getConnectionAction from '../../../controllers/api/v1/steps/get-connection.js';
@@ -14,35 +13,30 @@ router.get(
   '/:stepId/connection',
   authenticateUser,
   authorizeUser,
-  asyncHandler(getConnectionAction)
+  getConnectionAction
 );
 
 router.get(
   '/:stepId/previous-steps',
   authenticateUser,
   authorizeUser,
-  asyncHandler(getPreviousStepsAction)
+  getPreviousStepsAction
 );
 
 router.post(
   '/:stepId/dynamic-fields',
   authenticateUser,
   authorizeUser,
-  asyncHandler(createDynamicFieldsAction)
+  createDynamicFieldsAction
 );
 
 router.post(
   '/:stepId/dynamic-data',
   authenticateUser,
   authorizeUser,
-  asyncHandler(createDynamicDataAction)
+  createDynamicDataAction
 );
 
-router.delete(
-  '/:stepId',
-  authenticateUser,
-  authorizeUser,
-  asyncHandler(deleteStepAction)
-);
+router.delete('/:stepId', authenticateUser, authorizeUser, deleteStepAction);
 
 export default router;

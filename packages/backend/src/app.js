@@ -1,5 +1,6 @@
 import createError from 'http-errors';
 import express from 'express';
+import 'express-async-errors';
 import cors from 'cors';
 
 import appConfig from './config/app.js';

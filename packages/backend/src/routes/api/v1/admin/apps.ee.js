@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import asyncHandler from 'express-async-handler';
 import { authenticateUser } from '../../../../helpers/authentication.js';
 import { authorizeAdmin } from '../../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
@@ -24,7 +23,7 @@ router.get(
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  asyncHandler(getAuthClientsAction)
+  getAuthClientsAction
 );
 
 router.post(
@@ -32,7 +31,7 @@ router.post(
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  asyncHandler(createAuthClientAction)
+  createAuthClientAction
 );
 
 router.get(
@@ -40,7 +39,7 @@ router.get(
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  asyncHandler(getAuthClientAction)
+  getAuthClientAction
 );
 
 export default router;
