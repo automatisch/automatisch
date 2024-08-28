@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useMutation } from '@apollo/client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import Skeleton from '@mui/material/Skeleton';
@@ -11,9 +10,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import { DateTime } from 'luxon';
 import { useQueryClient } from '@tanstack/react-query';
+
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useDeleteConnection from 'hooks/useDeleteConnection';
 import ConnectionContextMenu from 'components/AppConnectionContextMenu';
-import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { ConnectionPropType } from 'propTypes/propTypes';
 import { CardContent, Typography } from './style';
@@ -37,7 +37,7 @@ function AppConnectionRow(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const queryClient = useQueryClient();
 
-  const [deleteConnection] = useMutation(DELETE_CONNECTION);
+  const { mutateAsync: deleteConnection } = useDeleteConnection();
 
   const { mutate: testConnection, isPending: isTestConnectionPending } =
     useTestConnection(
@@ -63,22 +63,12 @@ function AppConnectionRow(props) {
   const onContextMenuAction = React.useCallback(
     async (event, action) => {
       if (action.type === 'delete') {
-        await deleteConnection({
-          variables: { input: { id } },
-          update: (cache) => {
-            const connectionCacheId = cache.identify({
-              __typename: 'Connection',
-              id,
-            });
-            cache.evict({
-              id: connectionCacheId,
-            });
-          },
-        });
+        await deleteConnection(id);
 
         await queryClient.invalidateQueries({
           queryKey: ['apps', key, 'connections'],
         });
+
         enqueueSnackbar(formatMessage('connection.deletedMessage'), {
           variant: 'success',
           SnackbarProps: {
@@ -90,7 +80,15 @@ function AppConnectionRow(props) {
         testConnection({ variables: { id } });
       }
     },
-    [deleteConnection, id, queryClient, key, enqueueSnackbar, formatMessage, testConnection],
+    [
+      deleteConnection,
+      id,
+      queryClient,
+      key,
+      enqueueSnackbar,
+      formatMessage,
+      testConnection,
+    ],
   );
 
   const relativeCreatedAt = DateTime.fromMillis(
