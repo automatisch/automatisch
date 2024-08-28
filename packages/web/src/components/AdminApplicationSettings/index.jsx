@@ -13,6 +13,7 @@ import Form from 'components/Form';
 import { Switch } from './style';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useAdminCreateAppConfig from 'hooks/useAdminCreateAppConfig';
+import useAdminUpdateAppConfig from 'hooks/useAdminUpdateAppConfig';
 
 function AdminApplicationSettings(props) {
   const formatMessage = useFormatMessage();
@@ -20,28 +21,18 @@ function AdminApplicationSettings(props) {
 
   const { data: appConfig, isLoading: loading } = useAppConfig(props.appKey);
 
-  const {
-    mutateAsync: createAppConfig,
-    isPending: isCreateAppConfigPending,
-  } = useAdminCreateAppConfig(props.appKey);
+  const { mutateAsync: createAppConfig, isPending: isCreateAppConfigPending } =
+    useAdminCreateAppConfig(props.appKey);
 
-  const [updateAppConfig, { loading: loadingUpdateAppConfig }] = useMutation(
-    UPDATE_APP_CONFIG,
-    {
-      refetchQueries: ['GetAppConfig'],
-    },
-  );
+  const { mutateAsync: updateAppConfig, isPending: isUpdateAppConfigPending } =
+    useAdminUpdateAppConfig(props.appKey);
 
   const handleSubmit = async (values) => {
     try {
       if (!appConfig?.data) {
         await createAppConfig(values);
       } else {
-        await updateAppConfig({
-          variables: {
-            input: { id: appConfig.data.id, ...values },
-          },
-        });
+        await updateAppConfig(values);
       }
 
       enqueueSnackbar(formatMessage('adminAppsSettings.successfullySaved'), {
@@ -102,7 +93,7 @@ function AdminApplicationSettings(props) {
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, mt: 5 }}
-              loading={isCreateAppConfigPending || loadingUpdateAppConfig}
+              loading={isCreateAppConfigPending || isUpdateAppConfigPending}
               disabled={!isDirty || loading}
             >
               {formatMessage('adminAppsSettings.save')}
