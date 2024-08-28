@@ -10,13 +10,12 @@ import updateAuthClientAction from '../../../../controllers/api/v1/admin/apps/up
 
 const router = Router();
 
-
 router.post(
   '/:appKey/config',
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  asyncHandler(createConfigAction)
+  createConfigAction
 );
 
 router.get(
@@ -48,7 +47,7 @@ router.patch(
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  asyncHandler(updateAuthClientAction)
+  updateAuthClientAction
 );
 
 export default router;
