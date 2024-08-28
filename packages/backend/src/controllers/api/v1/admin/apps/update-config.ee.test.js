@@ -65,7 +65,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
       .expect(404);
   });
 
-  it('should return HTTP 422 for already existing app config', async () => {
+  it('should return HTTP 422 for invalid app config data', async () => {
     const appConfig = {
       key: 'gitlab',
       allowCustomConnection: true,
