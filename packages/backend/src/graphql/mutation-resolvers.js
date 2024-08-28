@@ -3,7 +3,6 @@ import createFlow from './mutations/create-flow.js';
 import createRole from './mutations/create-role.ee.js';
 import createStep from './mutations/create-step.js';
 import createUser from './mutations/create-user.ee.js';
-import deleteConnection from './mutations/delete-connection.js';
 import deleteCurrentUser from './mutations/delete-current-user.ee.js';
 import deleteFlow from './mutations/delete-flow.js';
 import deleteRole from './mutations/delete-role.ee.js';
@@ -33,7 +32,6 @@ const mutationResolvers = {
   createRole,
   createStep,
   createUser,
-  deleteConnection,
   deleteCurrentUser,
   deleteFlow,
   deleteRole,

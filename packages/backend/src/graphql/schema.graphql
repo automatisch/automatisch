@@ -7,7 +7,6 @@ type Mutation {
   createRole(input: CreateRoleInput): Role
   createStep(input: CreateStepInput): Step
   createUser(input: CreateUserInput): UserWithAcceptInvitationUrl
-  deleteConnection(input: DeleteConnectionInput): Boolean
   deleteCurrentUser: Boolean
   deleteFlow(input: DeleteFlowInput): Boolean
   deleteRole(input: DeleteRoleInput): Boolean
@@ -290,10 +289,6 @@ input UpsertSamlAuthProvidersRoleMappingsInput {
 input SamlAuthProviderRoleMappingInput {
   roleId: String!
   remoteRoleName: String!
-}
-
-input DeleteConnectionInput {
-  id: String!
 }
 
 input CreateFlowInput {
