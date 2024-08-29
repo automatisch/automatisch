@@ -14,7 +14,6 @@ import resetConnection from './mutations/reset-connection.js';
 import updateConfig from './mutations/update-config.ee.js';
 import updateConnection from './mutations/update-connection.js';
 import updateCurrentUser from './mutations/update-current-user.js';
-import updateFlow from './mutations/update-flow.js';
 import updateFlowStatus from './mutations/update-flow-status.js';
 import updateRole from './mutations/update-role.ee.js';
 import updateStep from './mutations/update-step.js';
@@ -44,7 +43,6 @@ const mutationResolvers = {
   updateConfig,
   updateConnection,
   updateCurrentUser,
-  updateFlow,
   updateFlowStatus,
   updateRole,
   updateStep,
