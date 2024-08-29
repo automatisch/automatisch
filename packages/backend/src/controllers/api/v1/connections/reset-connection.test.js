@@ -53,7 +53,10 @@ describe('POST /api/v1/connections/:connectionId/reset', () => {
       },
     });
 
-    expect(response.body).toMatchObject(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
+    expect(refetchedCurrentUserConnection.formattedData).toStrictEqual(
+      expectedPayload.data.formattedData
+    );
   });
 
   it('should return not found response for another user', async () => {
