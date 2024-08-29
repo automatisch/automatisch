@@ -17,10 +17,10 @@ import Editor from 'components/Editor';
 import Can from 'components/Can';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { UPDATE_FLOW_STATUS } from 'graphql/mutations/update-flow-status';
-import { UPDATE_FLOW } from 'graphql/mutations/update-flow';
 import * as URLS from 'config/urls';
 import { TopBar } from './style';
 import useFlow from 'hooks/useFlow';
+import useUpdateFlow from 'hooks/useUpdateFlow';
 import { useQueryClient } from '@tanstack/react-query';
 import EditorNew from 'components/EditorNew/EditorNew';
 
@@ -29,29 +29,17 @@ const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
 export default function EditorLayout() {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();
-  const [updateFlow] = useMutation(UPDATE_FLOW);
+  const { mutateAsync: updateFlow } = useUpdateFlow(flowId);
   const [updateFlowStatus] = useMutation(UPDATE_FLOW_STATUS);
   const { data, isLoading: isFlowLoading } = useFlow(flowId);
   const flow = data?.data;
   const queryClient = useQueryClient();
 
-  const onFlowNameUpdate = React.useCallback(
-    async (name) => {
-      try {
-        await updateFlow({
-          variables: {
-            input: {
-              id: flowId,
-              name,
-            },
-          },
-        });
-
-        await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
-      } catch (e) {}
-    },
-    [flowId, queryClient],
-  );
+  const onFlowNameUpdate = async (name) => {
+    await updateFlow({
+      name,
+    });
+  };
 
   const onFlowStatusUpdate = React.useCallback(
     async (active) => {
