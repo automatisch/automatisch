@@ -3,6 +3,7 @@ import objection from 'objection';
 import * as Sentry from './sentry.ee.js';
 const { NotFoundError, DataError, ValidationError, UniqueViolationError } =
   objection;
+import NotAuthorizedError from '../errors/not-authorized.js';
 import HttpError from '../errors/http.js';
 import {
   renderObjectionError,
@@ -41,6 +42,10 @@ const errorHandler = (error, request, response, next) => {
     };
 
     response.status(200).json(httpErrorPayload);
+  }
+
+  if (error instanceof NotAuthorizedError) {
+    response.status(403).end();
   }
 
   const statusCode = error.statusCode || 500;

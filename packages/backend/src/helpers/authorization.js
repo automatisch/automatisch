@@ -1,3 +1,5 @@
+import NotAuthorizedError from '../errors/not-authorized.js';
+
 const authorizationList = {
   'GET /api/v1/users/:userId': {
     action: 'read',
@@ -86,12 +88,8 @@ export const authorizeUser = async (request, response, next) => {
     request.method + ' ' + request.baseUrl + request.route.path;
   const currentRouteRule = authorizationList[currentRoute];
 
-  try {
-    request.currentUser.can(currentRouteRule.action, currentRouteRule.subject);
-    next();
-  } catch (error) {
-    return response.status(403).end();
-  }
+  request.currentUser.can(currentRouteRule.action, currentRouteRule.subject);
+  next();
 };
 
 export const authorizeAdmin = async (request, response, next) => {
@@ -100,6 +98,6 @@ export const authorizeAdmin = async (request, response, next) => {
   if (role?.isAdmin) {
     next();
   } else {
-    return response.status(403).end();
+    throw new NotAuthorizedError();
   }
 };
