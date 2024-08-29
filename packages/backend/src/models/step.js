@@ -59,6 +59,17 @@ class Step extends Base {
         to: 'connections.id',
       },
     },
+    lastExecutionStep: {
+      relation: Base.HasOneRelation,
+      modelClass: ExecutionStep,
+      join: {
+        from: 'steps.id',
+        to: 'execution_steps.step_id',
+      },
+      filter(builder) {
+        builder.orderBy('created_at', 'desc').limit(1).first();
+      },
+    },
     executionSteps: {
       relation: Base.HasManyRelation,
       modelClass: ExecutionStep,
