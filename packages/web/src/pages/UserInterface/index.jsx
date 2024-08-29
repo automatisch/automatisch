@@ -1,19 +1,17 @@
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import merge from 'lodash/merge';
 import * as React from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import ColorInput from 'components/ColorInput';
 import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
-import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
 import nestObject from 'helpers/nestObject';
+import useAdminUpdateConfig from 'hooks/useAdminUpdateConfig';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
@@ -36,10 +34,9 @@ const defaultValues = {
 
 export default function UserInterface() {
   const formatMessage = useFormatMessage();
-  const [updateConfig, { loading }] = useMutation(UPDATE_CONFIG);
+  const { mutateAsync: updateConfig, isPending } = useAdminUpdateConfig();
   const { data: configData, isLoading: configLoading } = useAutomatischConfig();
   const config = configData?.data;
-  const queryClient = useQueryClient();
 
   const enqueueSnackbar = useEnqueueSnackbar();
   const configWithDefaults = merge({}, defaultValues, nestObject(config));
@@ -58,19 +55,7 @@ export default function UserInterface() {
         ),
         'logo.svgData': uiData?.logo?.svgData,
       };
-      await updateConfig({
-        variables: {
-          input,
-        },
-        optimisticResponse: {
-          updateConfig: input,
-        },
-        update: async function () {
-          queryClient.invalidateQueries({
-            queryKey: ['automatisch', 'config'],
-          });
-        },
-      });
+      await updateConfig(input);
       enqueueSnackbar(formatMessage('userInterfacePage.successfullyUpdated'), {
         variant: 'success',
         SnackbarProps: {
@@ -150,7 +135,7 @@ export default function UserInterface() {
                   variant="contained"
                   color="primary"
                   sx={{ boxShadow: 2 }}
-                  loading={loading}
+                  loading={isPending}
                   data-test="update-button"
                 >
                   {formatMessage('userInterfacePage.submit')}
