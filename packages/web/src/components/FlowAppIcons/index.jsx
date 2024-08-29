@@ -4,7 +4,7 @@ import AppIcon from 'components/AppIcon';
 import IntermediateStepCount from 'components/IntermediateStepCount';
 
 function FlowAppIcons(props) {
-  const { steps } = props;
+  const { steps = [] } = props;
   const stepsCount = steps.length;
   const firstStep = steps[0];
   const lastStep = steps.length > 1 && steps[stepsCount - 1];
@@ -14,7 +14,7 @@ function FlowAppIcons(props) {
       <AppIcon
         name=" "
         variant="rounded"
-        url={firstStep.iconUrl}
+        url={firstStep?.iconUrl}
         sx={{ width: 30, height: 30 }}
       />
 
@@ -26,7 +26,7 @@ function FlowAppIcons(props) {
         <AppIcon
           name=" "
           variant="rounded"
-          url={lastStep.iconUrl}
+          url={lastStep?.iconUrl}
           sx={{ width: 30, height: 30 }}
         />
       )}
