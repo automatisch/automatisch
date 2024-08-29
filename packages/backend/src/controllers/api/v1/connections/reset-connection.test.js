@@ -32,13 +32,6 @@ describe('POST /api/v1/connections/:connectionId/reset', () => {
     });
 
     await createPermission({
-      action: 'read',
-      subject: 'Connection',
-      roleId: currentUserRole.id,
-      conditions: ['isCreator'],
-    });
-
-    await createPermission({
       action: 'create',
       subject: 'Connection',
       roleId: currentUserRole.id,
@@ -73,13 +66,6 @@ describe('POST /api/v1/connections/:connectionId/reset', () => {
     });
 
     await createPermission({
-      action: 'read',
-      subject: 'Connection',
-      roleId: currentUserRole.id,
-      conditions: [],
-    });
-
-    await createPermission({
       action: 'create',
       subject: 'Connection',
       roleId: currentUserRole.id,
@@ -96,13 +82,6 @@ describe('POST /api/v1/connections/:connectionId/reset', () => {
     const notExistingConnectionUUID = Crypto.randomUUID();
 
     await createPermission({
-      action: 'read',
-      subject: 'Connection',
-      roleId: currentUserRole.id,
-      conditions: ['isCreator'],
-    });
-
-    await createPermission({
       action: 'create',
       subject: 'Connection',
       roleId: currentUserRole.id,
@@ -116,13 +95,6 @@ describe('POST /api/v1/connections/:connectionId/reset', () => {
   });
 
   it('should return bad request response for invalid UUID', async () => {
-    await createPermission({
-      action: 'read',
-      subject: 'Connection',
-      roleId: currentUserRole.id,
-      conditions: ['isCreator'],
-    });
-
     await createPermission({
       action: 'create',
       subject: 'Connection',
