@@ -20,6 +20,7 @@ import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import Billing from '../helpers/billing/index.ee.js';
+import NotAuthorizedError from '../errors/not-authorized.js';
 
 import deleteUserQueue from '../queues/delete-user.ee.js';
 import emailQueue from '../queues/email.js';
@@ -533,7 +534,7 @@ class User extends Base {
   can(action, subject) {
     const can = this.ability.can(action, subject);
 
-    if (!can) throw new Error('Not authorized!');
+    if (!can) throw new NotAuthorizedError();
 
     const relevantRule = this.ability.relevantRuleFor(action, subject);
 
@@ -548,7 +549,7 @@ class User extends Base {
   cannot(action, subject) {
     const cannot = this.ability.cannot(action, subject);
 
-    if (cannot) throw new Error('Not authorized!');
+    if (cannot) throw new NotAuthorizedError();
 
     return cannot;
   }
