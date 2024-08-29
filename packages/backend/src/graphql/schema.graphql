@@ -18,7 +18,6 @@ type Mutation {
   resetConnection(input: ResetConnectionInput): Connection
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
-  updateFlow(input: UpdateFlowInput): Flow
   updateFlowStatus(input: UpdateFlowStatusInput): Flow
   updateRole(input: UpdateRoleInput): Role
   updateStep(input: UpdateStepInput): Step
@@ -293,11 +292,6 @@ input SamlAuthProviderRoleMappingInput {
 input CreateFlowInput {
   triggerAppKey: String
   connectionId: String
-}
-
-input UpdateFlowInput {
-  id: String!
-  name: String!
 }
 
 input UpdateFlowStatusInput {
