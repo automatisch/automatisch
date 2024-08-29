@@ -79,6 +79,10 @@ const authorizationList = {
     action: 'create',
     subject: 'Connection',
   },
+  'PATCH /api/v1/flows/:flowId': {
+    action: 'update',
+    subject: 'Flow',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
