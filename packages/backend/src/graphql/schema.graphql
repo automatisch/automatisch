@@ -16,7 +16,6 @@ type Mutation {
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
-  updateConfig(input: JSONObject): JSONObject
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   updateFlow(input: UpdateFlowInput): Flow
