@@ -13,6 +13,12 @@ const stepSerializer = (step) => {
     parameters: step.parameters,
   };
 
+  if (step.lastExecutionStep) {
+    stepData.lastExecutionStep = executionStepSerializer(
+      step.lastExecutionStep
+    );
+  }
+
   if (step.executionSteps?.length > 0) {
     stepData.executionSteps = step.executionSteps.map((executionStep) =>
       executionStepSerializer(executionStep)

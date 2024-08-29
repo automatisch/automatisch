@@ -27,6 +27,18 @@ describe('stepSerializer', () => {
     expect(stepSerializer(step)).toEqual(expectedPayload);
   });
 
+  it('should return step data with the last execution step', async () => {
+    const executionStep = await createExecutionStep({ stepId: step.id });
+
+    step.lastExecutionStep = executionStep;
+
+    const expectedPayload = {
+      lastExecutionStep: executionStepSerializer(executionStep),
+    };
+
+    expect(stepSerializer(step)).toMatchObject(expectedPayload);
+  });
+
   it('should return step data with the execution steps', async () => {
     const executionStepOne = await createExecutionStep({ stepId: step.id });
     const executionStepTwo = await createExecutionStep({ stepId: step.id });
