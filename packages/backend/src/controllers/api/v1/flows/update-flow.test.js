@@ -25,7 +25,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
       action: 'read',
       subject: 'Flow',
       roleId: currentUserRole.id,
-      conditions: [],
+      conditions: ['isCreator'],
     });
 
     await createPermission({
@@ -35,13 +35,11 @@ describe('PATCH /api/v1/flows/:flowId', () => {
       conditions: ['isCreator'],
     });
 
-    const newFlowName = 'Updated flow';
-
     const response = await request(app)
       .patch(`/api/v1/flows/${currentUserFlow.id}`)
       .set('Authorization', token)
       .send({
-        name: newFlowName,
+        name: 'Updated flow',
       })
       .expect(200);
 
@@ -49,7 +47,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
 
     const expectedPayload = await getFlowMock({
       ...refetchedCurrentUserFlow,
-      name: newFlowName,
+      name: 'Updated flow',
     });
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -96,14 +94,14 @@ describe('PATCH /api/v1/flows/:flowId', () => {
       action: 'read',
       subject: 'Flow',
       roleId: currentUserRole.id,
-      conditions: [],
+      conditions: ['isCreator'],
     });
 
     await createPermission({
       action: 'update',
       subject: 'Flow',
       roleId: currentUserRole.id,
-      conditions: [],
+      conditions: ['isCreator'],
     });
 
     const notExistingFlowUUID = Crypto.randomUUID();
@@ -119,14 +117,14 @@ describe('PATCH /api/v1/flows/:flowId', () => {
       action: 'read',
       subject: 'Flow',
       roleId: currentUserRole.id,
-      conditions: [],
+      conditions: ['isCreator'],
     });
 
     await createPermission({
       action: 'update',
       subject: 'Flow',
       roleId: currentUserRole.id,
-      conditions: [],
+      conditions: ['isCreator'],
     });
 
     await request(app)
@@ -142,7 +140,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
       action: 'read',
       subject: 'Flow',
       roleId: currentUserRole.id,
-      conditions: [],
+      conditions: ['isCreator'],
     });
 
     await createPermission({
