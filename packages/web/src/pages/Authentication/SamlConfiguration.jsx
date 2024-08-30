@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
 import MuiTextField from '@mui/material/TextField';
@@ -10,8 +9,9 @@ import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import Form from 'components/Form';
 import Switch from 'components/Switch';
 import TextField from 'components/TextField';
-import { UPSERT_SAML_AUTH_PROVIDER } from 'graphql/mutations/upsert-saml-auth-provider';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAdminCreateSamlAuthProvider from 'hooks/useAdminCreateSamlAuthProvider';
+import useAdminUpdateSamlAuthProvider from 'hooks/useAdminUpdateSamlAuthProvider';
 import useRoles from 'hooks/useRoles.ee';
 
 const defaultValues = {
@@ -38,42 +38,26 @@ function SamlConfiguration({ provider, providerLoading }) {
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
 
-  const [upsertSamlAuthProvider, { loading }] = useMutation(
-    UPSERT_SAML_AUTH_PROVIDER,
-  );
+  const {
+    mutateAsync: createSamlAuthProvider,
+    isPending: isCreateSamlAuthProviderPending,
+  } = useAdminCreateSamlAuthProvider();
 
-  const handleProviderUpdate = async (providerDataToUpdate) => {
+  const {
+    mutateAsync: updateSamlAuthProvider,
+    isPending: isUpdateSamlAuthProviderPending,
+  } = useAdminUpdateSamlAuthProvider(provider?.id);
+
+  const isPending =
+    isCreateSamlAuthProviderPending || isUpdateSamlAuthProviderPending;
+
+  const handleSubmit = async (providerData) => {
     try {
-      const {
-        name,
-        certificate,
-        signatureAlgorithm,
-        issuer,
-        entryPoint,
-        firstnameAttributeName,
-        surnameAttributeName,
-        emailAttributeName,
-        roleAttributeName,
-        active,
-        defaultRoleId,
-      } = providerDataToUpdate;
-      await upsertSamlAuthProvider({
-        variables: {
-          input: {
-            name,
-            certificate,
-            signatureAlgorithm,
-            issuer,
-            entryPoint,
-            firstnameAttributeName,
-            surnameAttributeName,
-            emailAttributeName,
-            roleAttributeName,
-            active,
-            defaultRoleId,
-          },
-        },
-      });
+      if (provider?.id) {
+        await updateSamlAuthProvider(providerData);
+      } else {
+        await createSamlAuthProvider(providerData);
+      }
 
       enqueueSnackbar(formatMessage('authenticationForm.successfullySaved'), {
         variant: 'success',
@@ -91,10 +75,7 @@ function SamlConfiguration({ provider, providerLoading }) {
   }
 
   return (
-    <Form
-      defaultValues={provider || defaultValues}
-      onSubmit={handleProviderUpdate}
-    >
+    <Form defaultValues={provider || defaultValues} onSubmit={handleSubmit}>
       <Stack direction="column" gap={2}>
         <Switch
           name="active"
@@ -185,7 +166,7 @@ function SamlConfiguration({ provider, providerLoading }) {
           variant="contained"
           color="primary"
           sx={{ boxShadow: 2 }}
-          loading={loading}
+          loading={isPending}
         >
           {formatMessage('authenticationForm.save')}
         </LoadingButton>
@@ -196,6 +177,7 @@ function SamlConfiguration({ provider, providerLoading }) {
 
 SamlConfiguration.propTypes = {
   provider: PropTypes.shape({
+    id: PropTypes.string,
     active: PropTypes.bool,
     name: PropTypes.string,
     certificate: PropTypes.string,
