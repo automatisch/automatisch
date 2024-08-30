@@ -4,35 +4,8 @@ import Config from '../../../../../models/config.js';
 
 export default async (request, response) => {
   const config = configParams(request);
-  const configKeys = Object.keys(config);
-  const updates = [];
 
-  for (const key of configKeys) {
-    const newValue = config[key];
-
-    if (newValue) {
-      const entryUpdate = Config.query()
-        .insert({
-          key,
-          value: {
-            data: newValue,
-          },
-        })
-        .onConflict('key')
-        .merge({
-          value: {
-            data: newValue,
-          },
-        });
-
-      updates.push(entryUpdate);
-    } else {
-      const entryUpdate = Config.query().findOne({ key }).delete();
-      updates.push(entryUpdate);
-    }
-  }
-
-  await Promise.all(updates);
+  await Config.batchUpdate(config);
 
   renderObject(response, config);
 };
