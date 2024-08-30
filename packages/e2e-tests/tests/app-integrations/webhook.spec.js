@@ -1,5 +1,4 @@
 const { test, expect } = require('../../fixtures/index');
-const axios = require('axios');
 
 test.describe('Webhook flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -13,6 +12,7 @@ test.describe('Webhook flow', () => {
   test('Create a new flow with a sync Webhook step then a Webhook step', async ({
     flowEditorPage,
     page,
+    request
   }) => {
     await flowEditorPage.flowName.click();
     await flowEditorPage.flowNameInput.fill('syncWebhook');
@@ -36,20 +36,23 @@ test.describe('Webhook flow', () => {
       .locator('[contenteditable]')
       .fill('response from webhook');
     await flowEditorPage.clickAway();
+    await expect(page.getByTestId("parameters.headers.0.key-power-input")).toBeVisible();
     await expect(flowEditorPage.continueButton).toBeEnabled();
     await flowEditorPage.continueButton.click();
 
     await flowEditorPage.testAndContinue();
     await flowEditorPage.publishFlowButton.click();
+    await expect(flowEditorPage.infoSnackbar).toBeVisible();
 
-    const response = await axios.get(syncWebhookUrl);
-    await expect(response.status).toBe(200);
-    await expect(response.data).toBe('response from webhook');
+    const response = await request.get(syncWebhookUrl);
+    await expect(response.status()).toBe(200);
+    await expect(await response.text()).toBe('response from webhook');
   });
 
   test('Create a new flow with an async Webhook step then a Webhook step', async ({
     flowEditorPage,
     page,
+    request
   }) => {
     await flowEditorPage.flowName.click();
     await flowEditorPage.flowNameInput.fill('asyncWebhook');
@@ -72,14 +75,16 @@ test.describe('Webhook flow', () => {
       .locator('[contenteditable]')
       .fill('response from webhook');
     await flowEditorPage.clickAway();
+    await expect(page.getByTestId("parameters.headers.0.key-power-input")).toBeVisible();
     await expect(flowEditorPage.continueButton).toBeEnabled();
     await flowEditorPage.continueButton.click();
 
     await flowEditorPage.testAndContinue();
     await flowEditorPage.publishFlowButton.click();
+    await expect(flowEditorPage.infoSnackbar).toBeVisible();
 
-    const response = await axios.get(asyncWebhookUrl);
-    await expect(response.status).toBe(204);
-    await expect(response.data).toBe('');
+    const response = await request.get(asyncWebhookUrl);
+    await expect(response.status()).toBe(204);
+    await expect(await response.text()).toBe('');
   });
 });

@@ -71,7 +71,11 @@ export class FlowEditorPage extends AuthenticatedPage {
     await this.page.getByRole('option', { name: appName }).click();
     await expect(this.eventAutocomplete).toBeVisible();
     await this.eventAutocomplete.click();
-    await this.page.getByRole('option', { name: eventName }).click();
+    await expect(this.page.locator('[data-testid="ErrorIcon"]')).toHaveCount(2);
+    await Promise.all([
+      this.page.waitForResponse(resp => /(apps\/.*\/actions\/.*\/substeps)/.test(resp.url()) && resp.status() === 200),
+      this.page.getByRole('option', { name: eventName }).click(),
+    ]);
     await this.continueButton.click();
   }
 
