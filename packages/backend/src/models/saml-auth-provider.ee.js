@@ -1,5 +1,6 @@
 import { URL } from 'node:url';
 import { v4 as uuidv4 } from 'uuid';
+import isEmpty from 'lodash/isEmpty.js';
 import appConfig from '../config/app.js';
 import axios from '../helpers/axios-with-proxy.js';
 import Base from './base.js';
@@ -88,7 +89,7 @@ class SamlAuthProvider extends Base {
       entryPoint: this.entryPoint,
       issuer: this.issuer,
       signatureAlgorithm: this.signatureAlgorithm,
-      logoutUrl: this.remoteLogoutUrl
+      logoutUrl: this.remoteLogoutUrl,
     };
   }
 
@@ -101,14 +102,16 @@ class SamlAuthProvider extends Base {
           IssueInstant="${new Date().toISOString()}"
           Destination="${this.remoteLogoutUrl}">
 
-          <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">${this.issuer}</saml:Issuer>
+          <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">${
+            this.issuer
+          }</saml:Issuer>
           <samlp:SessionIndex>${sessionId}</samlp:SessionIndex>
       </samlp:LogoutRequest>
     `;
 
-    const encodedLogoutRequest = Buffer.from(logoutRequest).toString('base64')
+    const encodedLogoutRequest = Buffer.from(logoutRequest).toString('base64');
 
-    return encodedLogoutRequest
+    return encodedLogoutRequest;
   }
 
   async terminateRemoteSession(sessionId) {
@@ -122,11 +125,35 @@ class SamlAuthProvider extends Base {
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-        }
+        },
       }
     );
 
     return response;
+  }
+
+  async updateRoleMappings(roleMappings) {
+    return await SamlAuthProvider.transaction(async (trx) => {
+      await this.$relatedQuery('samlAuthProvidersRoleMappings', trx).delete();
+
+      if (isEmpty(roleMappings)) {
+        return [];
+      }
+
+      const samlAuthProvidersRoleMappingsData = roleMappings.map(
+        (samlAuthProvidersRoleMapping) => ({
+          ...samlAuthProvidersRoleMapping,
+          samlAuthProviderId: this.id,
+        })
+      );
+
+      const samlAuthProvidersRoleMappings =
+        await SamlAuthProvidersRoleMapping.query(trx).insertAndFetch(
+          samlAuthProvidersRoleMappingsData
+        );
+
+      return samlAuthProvidersRoleMappings;
+    });
   }
 }
 
