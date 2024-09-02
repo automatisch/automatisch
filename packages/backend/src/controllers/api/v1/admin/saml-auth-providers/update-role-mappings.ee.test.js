@@ -22,9 +22,11 @@ describe('PATCH /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappi
     samlAuthProvider = await createSamlAuthProvider();
     await createSamlAuthProvidersRoleMapping({
       samlAuthProviderId: samlAuthProvider.id,
+      remoteRoleName: 'Viewer',
     });
     await createSamlAuthProvidersRoleMapping({
       samlAuthProviderId: samlAuthProvider.id,
+      remoteRoleName: 'Editor',
     });
 
     token = await createAuthTokenByUserId(currentUser.id);
