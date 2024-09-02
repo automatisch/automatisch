@@ -21,6 +21,10 @@ const authorizationList = {
     action: 'read',
     subject: 'Flow',
   },
+  'POST /api/v1/flows/': {
+    action: 'create',
+    subject: 'Flow',
+  },
   'GET /api/v1/steps/:stepId/connection': {
     action: 'read',
     subject: 'Flow',
