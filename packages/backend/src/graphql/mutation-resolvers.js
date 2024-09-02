@@ -1,5 +1,4 @@
 import createConnection from './mutations/create-connection.js';
-import createFlow from './mutations/create-flow.js';
 import createRole from './mutations/create-role.ee.js';
 import createStep from './mutations/create-step.js';
 import createUser from './mutations/create-user.ee.js';
@@ -23,6 +22,7 @@ import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-pr
 import updateUser from './mutations/update-user.ee.js';
 import deleteStep from './mutations/delete-step.js';
 import verifyConnection from './mutations/verify-connection.js';
+import createFlow from './mutations/create-flow.js';
 
 const mutationResolvers = {
   createConnection,

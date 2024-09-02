@@ -119,6 +119,22 @@ class Flow extends Base {
     });
   }
 
+  async createInitialSteps() {
+    await Step.query().insert({
+      flowId: this.id,
+      type: 'trigger',
+      position: 1,
+    });
+
+    await Step.query().insert({
+      flowId: this.id,
+      type: 'action',
+      position: 2,
+    });
+
+    return this.$query().withGraphFetched('steps');
+  }
+
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
