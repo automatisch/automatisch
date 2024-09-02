@@ -9,6 +9,7 @@ import Telemetry from '../helpers/telemetry/index.js';
 import appConfig from '../config/app.js';
 import globalVariable from '../helpers/global-variable.js';
 import computeParameters from '../helpers/compute-parameters.js';
+import testRun from '../services/test-run.js';
 
 class Step extends Base {
   static tableName = 'steps';
@@ -57,6 +58,17 @@ class Step extends Base {
       join: {
         from: 'steps.connection_id',
         to: 'connections.id',
+      },
+    },
+    lastExecutionStep: {
+      relation: Base.HasOneRelation,
+      modelClass: ExecutionStep,
+      join: {
+        from: 'steps.id',
+        to: 'execution_steps.step_id',
+      },
+      filter(builder) {
+        builder.orderBy('created_at', 'desc').limit(1).first();
       },
     },
     executionSteps: {
@@ -143,6 +155,16 @@ class Step extends Base {
     if (!this.appKey) return null;
 
     return await App.findOneByKey(this.appKey);
+  }
+
+  async test() {
+    await testRun({ stepId: this.id });
+
+    const updatedStep = await this.$query()
+      .withGraphFetched('lastExecutionStep')
+      .patchAndFetch({ status: 'completed' });
+
+    return updatedStep;
   }
 
   async getLastExecutionStep() {

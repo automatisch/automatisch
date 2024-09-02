@@ -6,7 +6,6 @@ import deleteCurrentUser from './mutations/delete-current-user.ee.js';
 import deleteFlow from './mutations/delete-flow.js';
 import deleteRole from './mutations/delete-role.ee.js';
 import duplicateFlow from './mutations/duplicate-flow.js';
-import executeFlow from './mutations/execute-flow.js';
 import generateAuthUrl from './mutations/generate-auth-url.js';
 import registerUser from './mutations/register-user.ee.js';
 import resetConnection from './mutations/reset-connection.js';
@@ -19,6 +18,7 @@ import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee.js'
 import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-providers-role-mappings.ee.js';
 
 // Converted mutations
+import executeFlow from './mutations/execute-flow.js';
 import updateUser from './mutations/update-user.ee.js';
 import deleteStep from './mutations/delete-step.js';
 import verifyConnection from './mutations/verify-connection.js';
