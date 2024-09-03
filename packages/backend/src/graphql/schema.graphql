@@ -22,7 +22,6 @@ type Mutation {
   updateRole(input: UpdateRoleInput): Role
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
-  upsertSamlAuthProvider(input: UpsertSamlAuthProviderInput): SamlAuthProvider
   upsertSamlAuthProvidersRoleMappings(
     input: UpsertSamlAuthProvidersRoleMappingsInput
   ): [SamlAuthProvidersRoleMapping]
@@ -219,21 +218,6 @@ type Flow {
   status: FlowStatus
 }
 
-type SamlAuthProvider {
-  id: String
-  name: String
-  certificate: String
-  signatureAlgorithm: String
-  issuer: String
-  entryPoint: String
-  firstnameAttributeName: String
-  surnameAttributeName: String
-  emailAttributeName: String
-  roleAttributeName: String
-  active: Boolean
-  defaultRoleId: String
-}
-
 type SamlAuthProvidersRoleMapping {
   id: String
   samlAuthProviderId: String
@@ -263,20 +247,6 @@ input ResetConnectionInput {
 
 input VerifyConnectionInput {
   id: String!
-}
-
-input UpsertSamlAuthProviderInput {
-  name: String!
-  certificate: String!
-  signatureAlgorithm: String!
-  issuer: String!
-  entryPoint: String!
-  firstnameAttributeName: String!
-  surnameAttributeName: String!
-  emailAttributeName: String!
-  roleAttributeName: String!
-  defaultRoleId: String!
-  active: Boolean!
 }
 
 input UpsertSamlAuthProvidersRoleMappingsInput {

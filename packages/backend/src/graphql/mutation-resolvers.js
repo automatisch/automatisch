@@ -14,7 +14,6 @@ import updateCurrentUser from './mutations/update-current-user.js';
 import updateFlowStatus from './mutations/update-flow-status.js';
 import updateRole from './mutations/update-role.ee.js';
 import updateStep from './mutations/update-step.js';
-import upsertSamlAuthProvider from './mutations/upsert-saml-auth-provider.ee.js';
 import upsertSamlAuthProvidersRoleMappings from './mutations/upsert-saml-auth-providers-role-mappings.ee.js';
 
 // Converted mutations
@@ -45,7 +44,6 @@ const mutationResolvers = {
   updateRole,
   updateStep,
   updateUser,
-  upsertSamlAuthProvider,
   upsertSamlAuthProvidersRoleMappings,
   verifyConnection,
 };
