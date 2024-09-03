@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -6,42 +5,55 @@ import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
-import { CREATE_ROLE } from 'graphql/mutations/create-role.ee';
 import { getPermissions } from 'helpers/computePermissions.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAdminCreateRole from 'hooks/useAdminCreateRole';
+
 export default function CreateRole() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const [createRole, { loading }] = useMutation(CREATE_ROLE);
   const enqueueSnackbar = useEnqueueSnackbar();
+  const { mutateAsync: createRole, isPending: isCreateRolePending } =
+    useAdminCreateRole();
+
   const handleRoleCreation = async (roleData) => {
     try {
       const permissions = getPermissions(roleData.computedPermissions);
+
       await createRole({
-        variables: {
-          input: {
-            name: roleData.name,
-            description: roleData.description,
-            permissions,
-          },
-        },
+        name: roleData.name,
+        description: roleData.description,
+        permissions,
       });
+
       enqueueSnackbar(formatMessage('createRole.successfullyCreated'), {
         variant: 'success',
         SnackbarProps: {
           'data-test': 'snackbar-create-role-success',
         },
       });
+
       navigate(URLS.ROLES);
     } catch (error) {
-      throw new Error('Failed while creating!');
+      const errors = Object.values(error.response.data.errors);
+
+      for (const [errorMessage] of errors) {
+        enqueueSnackbar(errorMessage, {
+          variant: 'error',
+          SnackbarProps: {
+            'data-test': 'snackbar-error',
+          },
+        });
+      }
     }
   };
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -79,7 +91,7 @@ export default function CreateRole() {
                 variant="contained"
                 color="primary"
                 sx={{ boxShadow: 2 }}
-                loading={loading}
+                loading={isCreateRolePending}
                 data-test="create-button"
               >
                 {formatMessage('createRole.submit')}
