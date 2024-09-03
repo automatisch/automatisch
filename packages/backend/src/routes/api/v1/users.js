@@ -4,6 +4,7 @@ import { authorizeUser } from '../../../helpers/authorization.js';
 import checkIsCloud from '../../../helpers/check-is-cloud.js';
 import getCurrentUserAction from '../../../controllers/api/v1/users/get-current-user.js';
 import updateCurrentUserAction from '../../../controllers/api/v1/users/update-current-user.js';
+import deleteCurrentUserAction from '../../../controllers/api/v1/users/delete-current-user.js';
 import getUserTrialAction from '../../../controllers/api/v1/users/get-user-trial.ee.js';
 import getAppsAction from '../../../controllers/api/v1/users/get-apps.js';
 import getInvoicesAction from '../../../controllers/api/v1/users/get-invoices.ee.js';
@@ -19,6 +20,7 @@ router.get('/me', authenticateUser, getCurrentUserAction);
 router.patch('/:userId', authenticateUser, updateCurrentUserAction);
 router.get('/:userId/apps', authenticateUser, authorizeUser, getAppsAction);
 router.get('/invoices', authenticateUser, checkIsCloud, getInvoicesAction);
+router.delete('/:userId', authenticateUser, deleteCurrentUserAction);
 
 router.get(
   '/:userId/trial',

@@ -12,6 +12,7 @@ import AccessToken from './access-token.js';
 import Connection from './connection.js';
 import Config from './config.js';
 import Execution from './execution.js';
+import ExecutionStep from './execution-step.js';
 import Flow from './flow.js';
 import Identity from './identity.ee.js';
 import Permission from './permission.js';
@@ -23,6 +24,7 @@ import Billing from '../helpers/billing/index.ee.js';
 import NotAuthorizedError from '../errors/not-authorized.js';
 
 import deleteUserQueue from '../queues/delete-user.ee.js';
+import flowQueue from '../queues/flow.js';
 import emailQueue from '../queues/email.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
@@ -258,6 +260,40 @@ class User extends Base {
     };
 
     await deleteUserQueue.add(jobName, jobPayload, jobOptions);
+    await this.softRemoveAssociations();
+  }
+
+  async softRemoveAssociations() {
+    const flows = await this.$relatedQuery('flows').where({
+      active: true,
+    });
+
+    const repeatableJobs = await flowQueue.getRepeatableJobs();
+
+    for (const flow of flows) {
+      const job = repeatableJobs.find((job) => job.id === flow.id);
+
+      if (job) {
+        await flowQueue.removeRepeatableByKey(job.key);
+      }
+    }
+
+    const executionIds = (
+      await this.$relatedQuery('executions').select('executions.id')
+    ).map((execution) => execution.id);
+    const flowIds = flows.map((flow) => flow.id);
+
+    await ExecutionStep.query().delete().whereIn('execution_id', executionIds);
+    await this.$relatedQuery('executions').delete();
+    await this.$relatedQuery('steps').delete();
+    await Flow.query().whereIn('id', flowIds).delete();
+    await this.$relatedQuery('connections').delete();
+    await this.$relatedQuery('identities').delete();
+
+    if (appConfig.isCloud) {
+      await this.$relatedQuery('subscriptions').delete();
+      await this.$relatedQuery('usageData').delete();
+    }
   }
 
   async sendResetPasswordEmail() {
