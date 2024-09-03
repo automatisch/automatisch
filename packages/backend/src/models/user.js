@@ -250,6 +250,7 @@ class User extends Base {
   }
 
   async softRemove() {
+    await this.softRemoveAssociations();
     await this.$query().delete();
 
     const jobName = `Delete user - ${this.id}`;
@@ -260,7 +261,6 @@ class User extends Base {
     };
 
     await deleteUserQueue.add(jobName, jobPayload, jobOptions);
-    await this.softRemoveAssociations();
   }
 
   async softRemoveAssociations() {
