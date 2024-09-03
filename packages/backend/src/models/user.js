@@ -283,6 +283,7 @@ class User extends Base {
     ).map((execution) => execution.id);
     const flowIds = flows.map((flow) => flow.id);
 
+    await this.$relatedQuery('accessTokens').delete();
     await ExecutionStep.query().delete().whereIn('execution_id', executionIds);
     await this.$relatedQuery('executions').delete();
     await this.$relatedQuery('steps').delete();
