@@ -5,7 +5,15 @@ export async function up(knex) {
 }
 
 export async function down(knex) {
+  await knex.schema.alterTable('roles', function (table) {
+    table.string('key');
+  });
+
+  await knex('roles').update({
+    key: knex.raw('LOWER(??)', ['name']),
+  });
+
   return await knex.schema.alterTable('roles', function (table) {
-    table.string('key').notNullable();
+    table.string('key').notNullable().alter();
   });
 }
