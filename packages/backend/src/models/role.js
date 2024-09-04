@@ -7,21 +7,16 @@ class Role extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['name', 'key'],
+    required: ['name'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
-      key: { type: 'string', minLength: 1 },
       description: { type: ['string', 'null'], maxLength: 255 },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
     },
   };
-
-  static get virtualAttributes() {
-    return ['isAdmin'];
-  }
 
   static relationMappings = () => ({
     users: {
@@ -43,11 +38,11 @@ class Role extends Base {
   });
 
   get isAdmin() {
-    return this.key === 'admin';
+    return this.name === 'Admin';
   }
 
   static async findAdmin() {
-    return await this.query().findOne({ key: 'admin' });
+    return await this.query().findOne({ name: 'Admin' });
   }
 }
 

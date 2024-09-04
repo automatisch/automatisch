@@ -11,8 +11,8 @@ describe('GET /api/v1/admin/roles', () => {
   let roleOne, roleTwo, currentUser, token;
 
   beforeEach(async () => {
-    roleOne = await createRole({ key: 'admin' });
-    roleTwo = await createRole({ key: 'user' });
+    roleOne = await createRole({ name: 'Admin' });
+    roleTwo = await createRole({ name: 'User' });
     currentUser = await createUser({ roleId: roleOne.id });
 
     token = await createAuthTokenByUserId(currentUser.id);

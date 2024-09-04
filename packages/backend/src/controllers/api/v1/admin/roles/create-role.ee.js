@@ -1,4 +1,3 @@
-import kebabCase from 'lodash/kebabCase.js';
 import { renderObject } from '../../../../../helpers/renderer.js';
 import Role from '../../../../../models/role.js';
 
@@ -14,10 +13,8 @@ export default async (request, response) => {
 
 const roleParams = (request) => {
   const { name, description, permissions } = request.body;
-  const key = kebabCase(name);
 
   return {
-    key,
     name,
     description,
     permissions,

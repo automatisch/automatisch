@@ -12,7 +12,7 @@ describe('GET /api/v1/admin/saml-auth-providers', () => {
   let samlAuthProviderOne, samlAuthProviderTwo, currentUser, token;
 
   beforeEach(async () => {
-    const role = await createRole({ key: 'admin' });
+    const role = await createRole({ name: 'Admin' });
     currentUser = await createUser({ roleId: role.id });
 
     samlAuthProviderOne = await createSamlAuthProvider();

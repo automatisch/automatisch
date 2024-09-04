@@ -11,7 +11,7 @@ describe('PATCH /api/v1/admin/users/:userId', () => {
   let currentUser, adminRole, token;
 
   beforeEach(async () => {
-    adminRole = await createRole({ key: 'admin' });
+    adminRole = await createRole({ name: 'Admin' });
     currentUser = await createUser({ roleId: adminRole.id });
 
     token = await createAuthTokenByUserId(currentUser.id);

@@ -14,7 +14,7 @@ describe('POST /api/v1/admin/roles', () => {
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-    role = await createRole({ key: 'admin' });
+    role = await createRole({ name: 'Admin' });
     currentUser = await createUser({ roleId: role.id });
 
     token = await createAuthTokenByUserId(currentUser.id);
@@ -41,7 +41,7 @@ describe('POST /api/v1/admin/roles', () => {
 
     const createdRole = await Role.query()
       .withGraphFetched({ permissions: true })
-      .findOne({ key: 'viewer' })
+      .findOne({ name: 'Viewer' })
       .throwIfNotFound();
 
     const expectedPayload = await createRoleMock(
@@ -61,7 +61,7 @@ describe('POST /api/v1/admin/roles', () => {
     expect(response.body).toEqual(expectedPayload);
   });
 
-  it('should return unprocessable entity response for invalid data', async () => {
+  it('should return unprocessable entity response for invalid role data', async () => {
     const roleData = {
       description: '',
       permissions: [],
@@ -76,7 +76,6 @@ describe('POST /api/v1/admin/roles', () => {
     expect(response.body).toStrictEqual({
       errors: {
         name: ["must have required property 'name'"],
-        key: ['must NOT have fewer than 1 characters'],
       },
       meta: {
         type: 'ModelValidation',
@@ -85,8 +84,10 @@ describe('POST /api/v1/admin/roles', () => {
   });
 
   it('should return unprocessable entity response for duplicate role', async () => {
+    await createRole({ name: 'Viewer' });
+
     const roleData = {
-      name: 'admin',
+      name: 'Viewer',
       permissions: [],
     };
 
@@ -98,7 +99,7 @@ describe('POST /api/v1/admin/roles', () => {
 
     expect(response.body).toStrictEqual({
       errors: {
-        key: ["'key' must be unique."],
+        name: ["'name' must be unique."],
       },
       meta: {
         type: 'UniqueViolationError',

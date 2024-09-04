@@ -9,7 +9,6 @@ const updateUserMock = (user, role) => {
       updatedAt: user.updatedAt.getTime(),
       role: {
         id: role.id,
-        key: role.key,
         name: role.name,
         isAdmin: role.isAdmin,
         createdAt: role.createdAt.getTime(),

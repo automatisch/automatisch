@@ -2,7 +2,6 @@ const getRolesMock = async (roles) => {
   const data = roles.map((role) => {
     return {
       id: role.id,
-      key: role.key,
       name: role.name,
       isAdmin: role.isAdmin,
       description: role.description,

@@ -1,7 +1,6 @@
 const getRoleMock = async (role, permissions) => {
   const data = {
     id: role.id,
-    key: role.key,
     name: role.name,
     isAdmin: role.isAdmin,
     description: role.description,

@@ -13,8 +13,7 @@ describe('POST /api/v1/installation/users', () => {
   beforeEach(async () => {
     adminRole = await createRole({
       name: 'Admin',
-      key: 'admin',
-    })
+    });
   });
 
   describe('for incomplete installations', () => {
@@ -26,7 +25,7 @@ describe('POST /api/v1/installation/users', () => {
         .send({
           email: 'user@automatisch.io',
           password: 'password',
-          fullName: 'Initial admin'
+          fullName: 'Initial admin',
         })
         .expect(204);
 
@@ -48,7 +47,7 @@ describe('POST /api/v1/installation/users', () => {
         .send({
           email: 'user@automatisch.io',
           password: 'password',
-          fullName: 'Initial admin'
+          fullName: 'Initial admin',
         })
         .expect(403);
 
@@ -71,7 +70,7 @@ describe('POST /api/v1/installation/users', () => {
         .send({
           email: 'user@automatisch.io',
           password: 'password',
-          fullName: 'Initial admin'
+          fullName: 'Initial admin',
         })
         .expect(403);
 
@@ -80,5 +79,5 @@ describe('POST /api/v1/installation/users', () => {
       expect(user).toBeUndefined();
       expect(await Config.isInstallationCompleted()).toBe(true);
     });
-  })
+  });
 });
