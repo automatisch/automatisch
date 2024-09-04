@@ -18,7 +18,6 @@ type Mutation {
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   updateFlowStatus(input: UpdateFlowStatusInput): Flow
-  updateRole(input: UpdateRoleInput): Role
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
   upsertSamlAuthProvidersRoleMappings(
@@ -333,19 +332,6 @@ input UpdateCurrentUserInput {
   email: String
   password: String
   fullName: String
-}
-
-input PermissionInput {
-  action: String!
-  subject: String!
-  conditions: [String]
-}
-
-input UpdateRoleInput {
-  id: String!
-  name: String!
-  description: String
-  permissions: [PermissionInput]
 }
 
 input DeleteRoleInput {
