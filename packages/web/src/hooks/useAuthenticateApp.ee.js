@@ -7,6 +7,7 @@ import {
 } from 'helpers/authenticationSteps';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import useAppAuth from './useAppAuth';
+import useFormatMessage from './useFormatMessage';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -28,7 +29,7 @@ export default function useAuthenticateApp(payload) {
   const { data: auth } = useAppAuth(appKey);
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
-  const [isPopupBlocked, setPopupBlocked] = React.useState(false);
+  const formatMessage = useFormatMessage();
   const steps = getSteps(auth?.data, !!connectionId, useShared);
 
   const authenticate = React.useMemo(() => {
@@ -37,6 +38,7 @@ export default function useAuthenticateApp(payload) {
     return async function authenticate(payload = {}) {
       const { fields } = payload;
       setAuthenticationInProgress(true);
+
       const response = {
         key: appKey,
         appAuthClientId: appAuthClientId || payload.appAuthClientId,
@@ -50,17 +52,18 @@ export default function useAuthenticateApp(payload) {
       while (stepIndex < steps?.length) {
         const step = steps[stepIndex];
         const variables = computeAuthStepVariables(step.arguments, response);
-        let popup;
-
-        if (step.type === 'openWithPopup') {
-          popup = processOpenWithPopup(variables.url);
-
-          if (!popup) {
-            setPopupBlocked(true);
-          }
-        }
 
         try {
+          let popup;
+
+          if (step.type === 'openWithPopup') {
+            popup = processOpenWithPopup(variables.url);
+
+            if (!popup) {
+              throw new Error(formatMessage('addAppConnection.popupReminder'));
+            }
+          }
+
           if (step.type === 'mutation') {
             const stepResponse = await processMutation(step.name, variables);
             response[step.name] = stepResponse;
@@ -81,11 +84,10 @@ export default function useAuthenticateApp(payload) {
         setAuthenticationInProgress(false);
       }
     };
-  }, [steps, appKey, appAuthClientId, connectionId]);
+  }, [steps, appKey, appAuthClientId, connectionId, formatMessage]);
 
   return {
     authenticate,
-    isPopupBlocked,
     inProgress: authenticationInProgress,
   };
 }
