@@ -3,6 +3,7 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 export default defineTrigger({
   name: 'New page',
   key: 'newPage',
+  pollInterval: 15,
   description: 'Triggers when a new page is created.',
   arguments: [
     {
