@@ -3,6 +3,7 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 export default defineTrigger({
   name: 'New video in channel',
   key: 'newVideoInChannel',
+  pollInterval: 15,
   description:
     'Triggers when a new video is published to a specific Youtube channel.',
   arguments: [
