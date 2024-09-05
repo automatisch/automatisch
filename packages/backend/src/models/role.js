@@ -37,6 +37,10 @@ class Role extends Base {
     },
   });
 
+  static get virtualAttributes() {
+    return ['isAdmin'];
+  }
+
   get isAdmin() {
     return this.name === 'Admin';
   }
