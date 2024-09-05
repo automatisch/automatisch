@@ -31,7 +31,7 @@ function AddAppConnection(props) {
   const hasConnection = Boolean(connectionId);
   const useShared = searchParams.get('shared') === 'true';
   const appAuthClientId = searchParams.get('appAuthClientId') || undefined;
-  const { authenticate, isPopupBlocked } = useAuthenticateApp({
+  const { authenticate } = useAuthenticateApp({
     appKey: key,
     connectionId,
     appAuthClientId,
@@ -131,12 +131,6 @@ function AddAppConnection(props) {
             appName: name,
             docsLink: generateExternalLink(authDocUrl),
           })}
-        </Alert>
-      )}
-
-      {isPopupBlocked && (
-        <Alert severity="warning" sx={{ fontWeight: 300, mt: 1 }}>
-          {formatMessage('addAppConnection.popupReminder')}
         </Alert>
       )}
 
