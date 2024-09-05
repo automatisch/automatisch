@@ -6,6 +6,7 @@ import createRoleAction from '../../../../controllers/api/v1/admin/roles/create-
 import getRolesAction from '../../../../controllers/api/v1/admin/roles/get-roles.ee.js';
 import getRoleAction from '../../../../controllers/api/v1/admin/roles/get-role.ee.js';
 import updateRoleAction from '../../../../controllers/api/v1/admin/roles/update-role.ee.js';
+import deleteRoleAction from '../../../../controllers/api/v1/admin/roles/delete-role.ee.js';
 
 const router = Router();
 
@@ -39,6 +40,14 @@ router.patch(
   authorizeAdmin,
   checkIsEnterprise,
   updateRoleAction
+);
+
+router.delete(
+  '/:roleId',
+  authenticateUser,
+  authorizeAdmin,
+  checkIsEnterprise,
+  deleteRoleAction
 );
 
 export default router;
