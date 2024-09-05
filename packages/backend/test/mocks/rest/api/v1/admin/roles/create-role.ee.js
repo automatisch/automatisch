@@ -1,4 +1,4 @@
-const getRoleMock = async (role, permissions) => {
+const createRoleMock = async (role, permissions = []) => {
   const data = {
     id: role.id,
     name: role.name,
@@ -29,4 +29,4 @@ const getRoleMock = async (role, permissions) => {
   };
 };
 
-export default getRoleMock;
+export default createRoleMock;

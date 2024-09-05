@@ -12,7 +12,7 @@ describe('GET /api/v1/admin/users/:userId', () => {
   let currentUser, currentUserRole, anotherUser, anotherUserRole, token;
 
   beforeEach(async () => {
-    currentUserRole = await createRole({ key: 'admin' });
+    currentUserRole = await createRole({ name: 'Admin' });
     currentUser = await createUser({ roleId: currentUserRole.id });
 
     anotherUser = await createUser();

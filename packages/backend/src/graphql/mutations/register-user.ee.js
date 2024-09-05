@@ -15,7 +15,7 @@ const registerUser = async (_parent, params) => {
     throw new Error('User already exists!');
   }
 
-  const role = await Role.query().findOne({ key: 'user' });
+  const role = await Role.query().findOne({ name: 'User' });
 
   const user = await User.query().insert({
     fullName,

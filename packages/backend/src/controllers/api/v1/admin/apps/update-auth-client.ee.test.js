@@ -17,7 +17,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/auth-clients', () => {
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-    adminRole = await createRole({ key: 'admin' });
+    adminRole = await createRole({ name: 'Admin' });
     currentUser = await createUser({ roleId: adminRole.id });
 
     token = await createAuthTokenByUserId(currentUser.id);

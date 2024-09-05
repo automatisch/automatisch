@@ -10,7 +10,7 @@ import process from 'process';
 async function fetchAdminRole() {
   const role = await Role.query()
     .where({
-      key: 'admin',
+      name: 'Admin',
     })
     .limit(1)
     .first();
