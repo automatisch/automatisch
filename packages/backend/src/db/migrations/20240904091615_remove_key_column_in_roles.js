@@ -5,7 +5,7 @@ export async function up(knex) {
 }
 
 export async function down(knex) {
-  await knex.schema.alterTable('roles', function (table) {
+  await knex.schema.alterTable('roles', (table) => {
     table.string('key');
   });
 
@@ -13,7 +13,7 @@ export async function down(knex) {
     key: knex.raw('LOWER(??)', ['name']),
   });
 
-  return await knex.schema.alterTable('roles', function (table) {
+  return await knex.schema.alterTable('roles', (table) => {
     table.string('key').notNullable().alter();
   });
 }
