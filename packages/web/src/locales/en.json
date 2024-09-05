@@ -37,6 +37,7 @@
   "apps.noConnections": "You don't have any connections yet.",
   "addAppConnection.submit": "Submit",
   "addAppConnection.callToDocs": "Visit <docsLink>our documentation</docsLink> to see how to add connection for {appName}.",
+  "addAppConnection.popupReminder": "Make sure pop-ups are enabled in your browser.",
   "connection.flowCount": "{count} flows",
   "connection.viewFlows": "View flows",
   "connection.testConnection": "Test connection",

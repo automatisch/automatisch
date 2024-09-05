@@ -31,7 +31,7 @@ function AddAppConnection(props) {
   const hasConnection = Boolean(connectionId);
   const useShared = searchParams.get('shared') === 'true';
   const appAuthClientId = searchParams.get('appAuthClientId') || undefined;
-  const { authenticate } = useAuthenticateApp({
+  const { authenticate, isPopupBlocked } = useAuthenticateApp({
     appKey: key,
     connectionId,
     appAuthClientId,
@@ -76,6 +76,7 @@ function AddAppConnection(props) {
     async (data) => {
       if (!authenticate) return;
       setInProgress(true);
+      setError(null);
       try {
         const response = await authenticate({
           fields: data,
@@ -88,7 +89,12 @@ function AddAppConnection(props) {
       } catch (err) {
         const error = err;
         console.log(error);
-        setError(error.graphQLErrors?.[0]);
+
+        if (error.message) {
+          setError(error);
+        } else {
+          setError(error.graphQLErrors?.[0]);
+        }
       } finally {
         setInProgress(false);
       }
@@ -125,6 +131,12 @@ function AddAppConnection(props) {
             appName: name,
             docsLink: generateExternalLink(authDocUrl),
           })}
+        </Alert>
+      )}
+
+      {isPopupBlocked && (
+        <Alert severity="warning" sx={{ fontWeight: 300, mt: 1 }}>
+          {formatMessage('addAppConnection.popupReminder')}
         </Alert>
       )}
 

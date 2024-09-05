@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-import { processStep } from 'helpers/authenticationSteps';
+import {
+  processMutation,
+  processOpenWithPopup,
+  processPopupMessage,
+} from 'helpers/authenticationSteps';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import useAppAuth from './useAppAuth';
 
@@ -24,6 +28,7 @@ export default function useAuthenticateApp(payload) {
   const { data: auth } = useAppAuth(appKey);
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
+  const [isPopupBlocked, setPopupBlocked] = React.useState(false);
   const steps = getSteps(auth?.data, !!connectionId, useShared);
 
   const authenticate = React.useMemo(() => {
@@ -45,10 +50,24 @@ export default function useAuthenticateApp(payload) {
       while (stepIndex < steps?.length) {
         const step = steps[stepIndex];
         const variables = computeAuthStepVariables(step.arguments, response);
+        let popup;
+
+        if (step.type === 'openWithPopup') {
+          popup = processOpenWithPopup(variables.url);
+
+          if (!popup) {
+            setPopupBlocked(true);
+          }
+        }
 
         try {
-          const stepResponse = await processStep(step, variables);
-          response[step.name] = stepResponse;
+          if (step.type === 'mutation') {
+            const stepResponse = await processMutation(step.name, variables);
+            response[step.name] = stepResponse;
+          } else if (step.type === 'openWithPopup') {
+            const stepResponse = await processPopupMessage(popup);
+            response[step.name] = stepResponse;
+          }
         } catch (err) {
           console.log(err);
           setAuthenticationInProgress(false);
@@ -66,6 +85,7 @@ export default function useAuthenticateApp(payload) {
 
   return {
     authenticate,
+    isPopupBlocked,
     inProgress: authenticationInProgress,
   };
 }
