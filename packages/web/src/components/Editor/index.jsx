@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
-import { CREATE_STEP } from 'graphql/mutations/create-step';
+import useCreateStep from 'hooks/useCreateStep';
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
 import FlowStep from 'components/FlowStep';
 import { FlowPropType } from 'propTypes/propTypes';
@@ -12,9 +12,9 @@ import { useQueryClient } from '@tanstack/react-query';
 
 function Editor(props) {
   const [updateStep] = useMutation(UPDATE_STEP);
-  const [createStep, { loading: creationInProgress }] =
-    useMutation(CREATE_STEP);
   const { flow } = props;
+  const { mutateAsync: createStep, isPending: isCreateStepPending } =
+    useCreateStep(flow?.id);
   const [triggerStep] = flow.steps;
   const [currentStepId, setCurrentStepId] = React.useState(triggerStep.id);
   const queryClient = useQueryClient();
@@ -48,24 +48,13 @@ function Editor(props) {
 
   const addStep = React.useCallback(
     async (previousStepId) => {
-      const mutationInput = {
-        previousStep: {
-          id: previousStepId,
-        },
-        flow: {
-          id: flow.id,
-        },
-      };
-
-      const createdStep = await createStep({
-        variables: { input: mutationInput },
+      const { data: createdStep } = await createStep({
+        previousStepId,
       });
 
-      const createdStepId = createdStep.data.createStep.id;
-      setCurrentStepId(createdStepId);
-      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
+      setCurrentStepId(createdStep.id);
     },
-    [createStep, flow.id, queryClient],
+    [createStep],
   );
 
   const openNextStep = React.useCallback((nextStep) => {
@@ -101,7 +90,7 @@ function Editor(props) {
           <IconButton
             onClick={() => addStep(step.id)}
             color="primary"
-            disabled={creationInProgress || flow.active}
+            disabled={isCreateStepPending || flow.active}
           >
             <AddIcon />
           </IconButton>
