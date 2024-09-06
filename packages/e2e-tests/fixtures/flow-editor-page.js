@@ -18,6 +18,7 @@ export class FlowEditorPage extends AuthenticatedPage {
     this.connectionAutocomplete = this.page.getByTestId(
       'choose-connection-autocomplete'
     );
+    this.addNewConnectionItem = this.page.getByText('Add new connection');
     this.testOutput = this.page.getByTestId('flow-test-substep-output');
     this.hasNoOutput = this.page.getByTestId('flow-test-substep-no-output');
     this.unpublishFlowButton = this.page.getByTestId('unpublish-flow-button');

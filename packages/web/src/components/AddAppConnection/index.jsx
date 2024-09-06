@@ -136,6 +136,7 @@ function AddAppConnection(props) {
 
       {error && (
         <Alert
+          data-test="add-connection-error"
           severity="error"
           sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
         >
