@@ -14,10 +14,6 @@ export default function useAdminDeleteRole(roleId) {
       queryClient.invalidateQueries({
         queryKey: ['admin', 'roles'],
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['admin', 'roles', roleId],
-      });
     },
   });
 
