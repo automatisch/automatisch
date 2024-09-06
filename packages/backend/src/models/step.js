@@ -82,6 +82,8 @@ class Step extends Base {
   });
 
   get webhookUrl() {
+    if (!this.webhookPath) return null;
+
     return new URL(this.webhookPath, appConfig.webhookUrl).toString();
   }
 
