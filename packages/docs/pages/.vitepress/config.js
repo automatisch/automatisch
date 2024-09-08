@@ -51,6 +51,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Bluesky',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/bluesky/connection' }],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
