@@ -1,6 +1,9 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
-const client = new Client({
+const pool = new Pool({
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
   host: process.env.POSTGRES_HOST,
   user: process.env.POSTGRES_USERNAME,
   port: process.env.POSTGRES_PORT,
@@ -8,4 +11,4 @@ const client = new Client({
   database: process.env.POSTGRES_DATABASE
 });
 
-exports.client = client;
+exports.pgPool = pool;

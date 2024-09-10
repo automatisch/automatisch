@@ -21,7 +21,7 @@ function NoResultFound(props) {
   );
 
   return (
-    <Card elevation={0}>
+    <Card elevation={0} data-test="no-results">
       <CardActionArea component={ActionAreaLink} {...props}>
         <CardContent>
           {!!to && <AddCircleIcon color="primary" />}

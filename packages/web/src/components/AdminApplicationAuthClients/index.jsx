@@ -43,7 +43,7 @@ function AdminApplicationAuthClients(props) {
   return (
     <div>
       {sortedAuthClients.map((client) => (
-        <Card sx={{ mb: 1 }} key={client.id}>
+        <Card sx={{ mb: 1 }} key={client.id} data-test="auth-client">
           <CardActionArea
             component={Link}
             to={URLS.ADMIN_APP_AUTH_CLIENT(appKey, client.id)}
@@ -70,7 +70,7 @@ function AdminApplicationAuthClients(props) {
       ))}
       <Stack justifyContent="flex-end" direction="row">
         <Link to={URLS.ADMIN_APP_AUTH_CLIENTS_CREATE(appKey)}>
-          <Button variant="contained" sx={{ mt: 2 }} component="div">
+          <Button variant="contained" sx={{ mt: 2 }} component="div" data-test="create-auth-client-button">
             {formatMessage('createAuthClient.button')}
           </Button>
         </Link>
