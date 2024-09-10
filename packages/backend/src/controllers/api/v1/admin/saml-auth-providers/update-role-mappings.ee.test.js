@@ -88,7 +88,7 @@ describe('PATCH /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappi
     });
   });
 
-  it('should return unprocessable entity response for not existing role UUID', async () => {
+  it('should return internal server error response for not existing role UUID', async () => {
     const notExistingRoleUUID = Crypto.randomUUID();
     const roleMappings = [
       {
