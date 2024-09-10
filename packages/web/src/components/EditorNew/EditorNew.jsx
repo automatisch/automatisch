@@ -115,8 +115,6 @@ const EditorNew = ({ flow }) => {
     async (previousStepId) => {
       const { data: createdStep } = await createStep({ previousStepId });
 
-      console.log('CHECK THIS OUT!', createdStep);
-
       createdStepIdRef.current = createdStep.id;
     },
     [createStep],
