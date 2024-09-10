@@ -4,8 +4,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { FlowPropType } from 'propTypes/propTypes';
 import ReactFlow, { useNodesState, useEdgesState } from 'reactflow';
 import 'reactflow/dist/style.css';
+
 import { UPDATE_STEP } from 'graphql/mutations/update-step';
-import { CREATE_STEP } from 'graphql/mutations/create-step';
+import useCreateStep from 'hooks/useCreateStep';
 
 import { useAutoLayout } from './useAutoLayout';
 import { useScrollBoundaries } from './useScrollBoundaries';
@@ -36,8 +37,9 @@ const edgeTypes = {
 const EditorNew = ({ flow }) => {
   const [updateStep] = useMutation(UPDATE_STEP);
   const queryClient = useQueryClient();
-  const [createStep, { loading: stepCreationInProgress }] =
-    useMutation(CREATE_STEP);
+
+  const { mutateAsync: createStep, isPending: isCreateStepPending } =
+    useCreateStep(flow?.id);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(
     generateInitialNodes(flow),
@@ -111,26 +113,11 @@ const EditorNew = ({ flow }) => {
 
   const onAddStep = useCallback(
     async (previousStepId) => {
-      const mutationInput = {
-        previousStep: {
-          id: previousStepId,
-        },
-        flow: {
-          id: flow.id,
-        },
-      };
+      const { data: createdStep } = await createStep({ previousStepId });
 
-      const {
-        data: { createStep: createdStep },
-      } = await createStep({
-        variables: { input: mutationInput },
-      });
-
-      const createdStepId = createdStep.id;
-      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
-      createdStepIdRef.current = createdStepId;
+      createdStepIdRef.current = createdStep.id;
     },
-    [flow.id, createStep, queryClient],
+    [createStep],
   );
 
   useEffect(() => {
@@ -260,7 +247,7 @@ const EditorNew = ({ flow }) => {
     >
       <EdgesContext.Provider
         value={{
-          stepCreationInProgress,
+          stepCreationInProgress: isCreateStepPending,
           onAddStep,
           flowActive: flow.active,
         }}

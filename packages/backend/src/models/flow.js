@@ -135,6 +135,31 @@ class Flow extends Base {
     return this.$query().withGraphFetched('steps');
   }
 
+  async createActionStep(previousStepId) {
+    const previousStep = await this.$relatedQuery('steps')
+      .findById(previousStepId)
+      .throwIfNotFound();
+
+    const createdStep = await this.$relatedQuery('steps').insertAndFetch({
+      type: 'action',
+      position: previousStep.position + 1,
+    });
+
+    const nextSteps = await this.$relatedQuery('steps')
+      .where('position', '>=', createdStep.position)
+      .whereNot('id', createdStep.id);
+
+    const nextStepQueries = nextSteps.map(async (nextStep, index) => {
+      return await nextStep.$query().patchAndFetch({
+        position: createdStep.position + index + 1,
+      });
+    });
+
+    await Promise.all(nextStepQueries);
+
+    return createdStep;
+  }
+
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
