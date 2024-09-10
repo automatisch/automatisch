@@ -5,7 +5,6 @@ import request from 'supertest';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../test/factories/user.js';
-import { createAdminRole } from '../../../../../test/factories/role.js';
 import { createFlow } from '../../../../../test/factories/flow.js';
 import { createStep } from '../../../../../test/factories/step.js';
 import createStepMock from '../../../../../test/mocks/rest/api/v1/flows/create-step.js';
@@ -15,8 +14,19 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
   let currentUser, flow, triggerStep, token;
 
   beforeEach(async () => {
-    const adminRole = await createAdminRole();
-    currentUser = await createUser({ roleId: adminRole.id });
+    currentUser = await createUser();
+
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'read',
+    });
+
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'update',
+    });
 
     flow = await createFlow({ userId: currentUser.id });
 
