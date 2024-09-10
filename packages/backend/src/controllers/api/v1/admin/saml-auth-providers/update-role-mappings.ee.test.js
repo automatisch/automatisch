@@ -16,7 +16,7 @@ describe('PATCH /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappi
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-    userRole = await createRole({ key: 'admin' });
+    userRole = await createRole({ name: 'Admin' });
     currentUser = await createUser({ roleId: userRole.id });
 
     samlAuthProvider = await createSamlAuthProvider();
