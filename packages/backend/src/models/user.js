@@ -42,7 +42,7 @@ class User extends Base {
       id: { type: 'string', format: 'uuid' },
       fullName: { type: 'string', minLength: 1 },
       email: { type: 'string', format: 'email', minLength: 1, maxLength: 255 },
-      password: { type: 'string' },
+      password: { type: 'string', minLength: 6 },
       status: {
         type: 'string',
         enum: ['active', 'invited'],
