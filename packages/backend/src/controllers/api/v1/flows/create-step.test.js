@@ -16,6 +16,16 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
   beforeEach(async () => {
     currentUser = await createUser();
 
+    flow = await createFlow({ userId: currentUser.id });
+
+    triggerStep = await createStep({ flowId: flow.id, type: 'trigger' });
+
+    await createStep({ flowId: flow.id, type: 'action' });
+
+    token = await createAuthTokenByUserId(currentUser.id);
+  });
+
+  it('should return created step for current user', async () => {
     await createPermission({
       roleId: currentUser.roleId,
       subject: 'Flow',
@@ -30,15 +40,6 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
       conditions: ['isCreator'],
     });
 
-    flow = await createFlow({ userId: currentUser.id });
-
-    triggerStep = await createStep({ flowId: flow.id, type: 'trigger' });
-    await createStep({ flowId: flow.id, type: 'action' });
-
-    token = await createAuthTokenByUserId(currentUser.id);
-  });
-
-  it('should return created step for current user', async () => {
     const response = await request(app)
       .post(`/api/v1/flows/${flow.id}/steps`)
       .set('Authorization', token)
@@ -57,27 +58,35 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
 
   it('should return created step for another user', async () => {
     const anotherUser = await createUser();
-    const anotherUsertoken = await createAuthTokenByUserId(anotherUser.id);
+
+    const anotherUserFlow = await createFlow({ userId: anotherUser.id });
+
+    const anotherUserFlowTriggerStep = await createStep({
+      flowId: anotherUserFlow.id,
+      type: 'trigger',
+    });
+
+    await createStep({ flowId: anotherUserFlow.id, type: 'action' });
 
     await createPermission({
-      roleId: anotherUser.roleId,
+      roleId: currentUser.roleId,
       subject: 'Flow',
       action: 'read',
       conditions: [],
     });
 
     await createPermission({
-      roleId: anotherUser.roleId,
+      roleId: currentUser.roleId,
       subject: 'Flow',
       action: 'update',
       conditions: [],
     });
 
     const response = await request(app)
-      .post(`/api/v1/flows/${flow.id}/steps`)
-      .set('Authorization', anotherUsertoken)
+      .post(`/api/v1/flows/${anotherUserFlow.id}/steps`)
+      .set('Authorization', token)
       .send({
-        previousStepId: triggerStep.id,
+        previousStepId: anotherUserFlowTriggerStep.id,
       })
       .expect(201);
 
@@ -90,6 +99,20 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
   });
 
   it('should return bad request response for invalid flow UUID', async () => {
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'read',
+      conditions: ['isCreator'],
+    });
+
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'update',
+      conditions: ['isCreator'],
+    });
+
     await request(app)
       .post('/api/v1/flows/invalidFlowUUID/steps')
       .set('Authorization', token)
@@ -100,6 +123,20 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
   });
 
   it('should return not found response for invalid flow UUID', async () => {
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'read',
+      conditions: ['isCreator'],
+    });
+
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'update',
+      conditions: ['isCreator'],
+    });
+
     const notExistingFlowUUID = Crypto.randomUUID();
 
     await request(app)
@@ -112,6 +149,20 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
   });
 
   it('should return not found response for invalid flow UUID', async () => {
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'read',
+      conditions: ['isCreator'],
+    });
+
+    await createPermission({
+      roleId: currentUser.roleId,
+      subject: 'Flow',
+      action: 'update',
+      conditions: ['isCreator'],
+    });
+
     const notExistingStepUUID = Crypto.randomUUID();
 
     await request(app)
