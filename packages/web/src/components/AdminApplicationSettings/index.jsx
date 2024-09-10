@@ -87,6 +87,7 @@ function AdminApplicationSettings(props) {
           </Stack>
           <Stack>
             <LoadingButton
+              data-test="submit-button"
               type="submit"
               variant="contained"
               color="primary"

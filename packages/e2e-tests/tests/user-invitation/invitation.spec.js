@@ -1,5 +1,5 @@
 const { publicTest, expect } = require('../../fixtures/index');
-const { client } = require('../../fixtures/postgres-client-config');
+const { pgPool } = require('../../fixtures/postgres-config');
 const { DateTime } = require('luxon');
 
 publicTest.describe('Accept invitation page', () => {
@@ -17,16 +17,8 @@ publicTest.describe('Accept invitation page', () => {
   });
 
   publicTest.describe('Accept invitation page - users', () => {
-    const expiredTokenDate = DateTime.now().minus({days: 3}).toISO();
+    const expiredTokenDate = DateTime.now().minus({ days: 3 }).toISO();
     const token = (Math.random() + 1).toString(36).substring(2);
-
-    publicTest.beforeAll(async () => {
-      await client.connect();
-    });
-
-    publicTest.afterAll(async () => {
-      await client.end();
-    });
 
     publicTest('should not be able to set the password if token is expired', async ({ acceptInvitationPage, adminCreateUserPage }) => {
       adminCreateUserPage.seed(Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER));
@@ -38,7 +30,7 @@ publicTest.describe('Accept invitation page', () => {
       };
 
       try {
-        const queryRoleIdResult = await client.query(queryRole);
+        const queryRoleIdResult = await pgPool.query(queryRole);
         expect(queryRoleIdResult.rowCount).toEqual(1);
 
         const insertUser = {
@@ -46,7 +38,7 @@ publicTest.describe('Accept invitation page', () => {
           values: [user.email, user.fullName, queryRoleIdResult.rows[0].id, 'invited', token, expiredTokenDate],
         };
 
-        const insertUserResult = await client.query(insertUser);
+        const insertUserResult = await pgPool.query(insertUser);
         expect(insertUserResult.rowCount).toBe(1);
         expect(insertUserResult.command).toBe('INSERT');
       } catch (err) {
@@ -68,7 +60,7 @@ publicTest.describe('Accept invitation page', () => {
       };
 
       try {
-        const queryRoleIdResult = await client.query(queryRole);
+        const queryRoleIdResult = await pgPool.query(queryRole);
         expect(queryRoleIdResult.rowCount).toEqual(1);
 
         const insertUser = {
@@ -76,7 +68,7 @@ publicTest.describe('Accept invitation page', () => {
           values: [user.email, user.fullName, dateNow, queryRoleIdResult.rows[0].id, 'invited', token, dateNow],
         };
 
-        const insertUserResult = await client.query(insertUser);
+        const insertUserResult = await pgPool.query(insertUser);
         expect(insertUserResult.rowCount).toBe(1);
         expect(insertUserResult.command).toBe('INSERT');
       } catch (err) {

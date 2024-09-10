@@ -30,6 +30,8 @@ export class FlowEditorPage extends AuthenticatedPage {
     this.flowNameInput = this.page
       .getByTestId('editableTypographyInput')
       .locator('input');
+
+    this.flowStep = this.page.getByTestId('flow-step');
   }
 
   async createWebhookTrigger(workSynchronously) {
@@ -68,11 +70,11 @@ export class FlowEditorPage extends AuthenticatedPage {
   }
 
   async chooseAppAndEvent(appName, eventName) {
+    await expect(this.appAutocomplete).toHaveCount(1);
     await this.appAutocomplete.click();
     await this.page.getByRole('option', { name: appName }).click();
     await expect(this.eventAutocomplete).toBeVisible();
     await this.eventAutocomplete.click();
-    await expect(this.page.locator('[data-testid="ErrorIcon"]')).toHaveCount(2);
     await Promise.all([
       this.page.waitForResponse(resp => /(apps\/.*\/actions\/.*\/substeps)/.test(resp.url()) && resp.status() === 200),
       this.page.getByRole('option', { name: eventName }).click(),

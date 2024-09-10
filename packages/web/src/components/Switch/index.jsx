@@ -42,6 +42,7 @@ function Switch(props) {
           {...FormControlLabelProps}
           control={
             <MuiSwitch
+              data-test="switch"
               {...switchProps}
               {...field}
               checked={value}

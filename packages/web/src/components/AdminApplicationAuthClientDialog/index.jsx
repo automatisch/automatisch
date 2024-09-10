@@ -49,6 +49,7 @@ function AdminApplicationAuthClientDialog(props) {
         ) : (
           <DialogContentText tabIndex={-1} component="div">
             <Form
+              data-test="auth-client-form"
               onSubmit={submitHandler}
               defaultValues={defaultValues}
               render={({ formState: { isDirty } }) => (
@@ -67,6 +68,7 @@ function AdminApplicationAuthClientDialog(props) {
                     <InputCreator key={field.key} schema={field} />
                   ))}
                   <LoadingButton
+                    data-test="submit-auth-client-form"
                     type="submit"
                     variant="contained"
                     color="primary"
