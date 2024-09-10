@@ -7,7 +7,6 @@ type Mutation {
   createUser(input: CreateUserInput): UserWithAcceptInvitationUrl
   deleteCurrentUser: Boolean
   deleteFlow(input: DeleteFlowInput): Boolean
-  deleteRole(input: DeleteRoleInput): Boolean
   deleteStep(input: DeleteStepInput): Step
   duplicateFlow(input: DuplicateFlowInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
@@ -307,10 +306,6 @@ input UpdateCurrentUserInput {
   email: String
   password: String
   fullName: String
-}
-
-input DeleteRoleInput {
-  id: String!
 }
 
 """

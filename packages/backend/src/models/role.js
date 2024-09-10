@@ -1,6 +1,8 @@
+import { ValidationError } from 'objection';
 import Base from './base.js';
 import Permission from './permission.js';
 import User from './user.js';
+import SamlAuthProvider from './saml-auth-provider.ee.js';
 import NotAuthorizedError from '../errors/not-authorized.js';
 
 class Role extends Base {
@@ -84,6 +86,59 @@ class Role extends Base {
           permissions: true,
         });
     });
+  }
+
+  async deleteWithPermissions() {
+    return await Role.transaction(async (trx) => {
+      await this.$relatedQuery('permissions', trx).delete();
+
+      return await this.$query(trx).delete();
+    });
+  }
+
+  async $beforeDelete(queryContext) {
+    await super.$beforeDelete(queryContext);
+
+    if (this.isAdmin) {
+      throw new NotAuthorizedError('The admin role cannot be deleted!');
+    }
+
+    const userCount = await this.$relatedQuery('users').limit(1).resultSize();
+    const hasUsers = userCount > 0;
+
+    if (hasUsers) {
+      throw new ValidationError({
+        data: {
+          role: [
+            {
+              message: `All users must be migrated away from the "${this.name}" role.`,
+            },
+          ],
+        },
+        type: 'ValidationError',
+      });
+    }
+
+    const samlAuthProviderUsingDefaultRole = await SamlAuthProvider.query()
+      .where({
+        default_role_id: this.id,
+      })
+      .limit(1)
+      .first();
+
+    if (samlAuthProviderUsingDefaultRole) {
+      throw new ValidationError({
+        data: {
+          samlAuthProvider: [
+            {
+              message:
+                'You need to change the default role in the SAML configuration before deleting this role.',
+            },
+          ],
+        },
+        type: 'ValidationError',
+      });
+    }
   }
 }
 

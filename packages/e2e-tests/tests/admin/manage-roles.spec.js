@@ -221,7 +221,7 @@ test.describe('Role management page', () => {
         await adminRolesPage.snackbar.waitFor({
           state: 'attached',
         });
-        const snackbar = await adminRolesPage.getSnackbarData('snackbar-error');
+        const snackbar = await adminRolesPage.getSnackbarData('snackbar-delete-role-error');
         await expect(snackbar.variant).toBe('error');
         await adminRolesPage.closeSnackbar();
         await modal.close();

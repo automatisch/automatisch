@@ -1,31 +1,26 @@
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import Can from 'components/Can';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import { DELETE_ROLE } from 'graphql/mutations/delete-role.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAdminDeleteRole from 'hooks/useAdminDeleteRole';
 
 function DeleteRoleButton(props) {
   const { disabled, roleId } = props;
   const [showConfirmation, setShowConfirmation] = React.useState(false);
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
-  const queryClient = useQueryClient();
 
-  const [deleteRole] = useMutation(DELETE_ROLE, {
-    variables: { input: { id: roleId } },
-  });
+  const { mutateAsync: deleteRole } = useAdminDeleteRole(roleId);
 
   const handleConfirm = React.useCallback(async () => {
     try {
       await deleteRole();
-      queryClient.invalidateQueries({ queryKey: ['admin', 'roles'] });
+
       setShowConfirmation(false);
       enqueueSnackbar(formatMessage('deleteRoleButton.successfullyDeleted'), {
         variant: 'success',
@@ -34,9 +29,22 @@ function DeleteRoleButton(props) {
         },
       });
     } catch (error) {
+      const errors = Object.values(
+        error.response.data.errors || [['Failed while deleting!']],
+      );
+
+      for (const [error] of errors) {
+        enqueueSnackbar(error, {
+          variant: 'error',
+          SnackbarProps: {
+            'data-test': 'snackbar-delete-role-error',
+          },
+        });
+      }
+
       throw new Error('Failed while deleting!');
     }
-  }, [deleteRole, enqueueSnackbar, formatMessage, queryClient]);
+  }, [deleteRole, enqueueSnackbar, formatMessage]);
 
   return (
     <>
