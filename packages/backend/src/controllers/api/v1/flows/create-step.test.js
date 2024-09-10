@@ -20,12 +20,14 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
       roleId: currentUser.roleId,
       subject: 'Flow',
       action: 'read',
+      conditions: ['isCreator'],
     });
 
     await createPermission({
       roleId: currentUser.roleId,
       subject: 'Flow',
       action: 'update',
+      conditions: ['isCreator'],
     });
 
     flow = await createFlow({ userId: currentUser.id });
@@ -36,7 +38,7 @@ describe('POST /api/v1/flows/:flowId/steps', () => {
     token = await createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return created step', async () => {
+  it('should return created step for current user', async () => {
     const response = await request(app)
       .post(`/api/v1/flows/${flow.id}/steps`)
       .set('Authorization', token)
