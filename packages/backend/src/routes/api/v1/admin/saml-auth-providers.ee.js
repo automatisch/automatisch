@@ -7,6 +7,7 @@ import updateSamlAuthProviderAction from '../../../../controllers/api/v1/admin/s
 import getSamlAuthProvidersAction from '../../../../controllers/api/v1/admin/saml-auth-providers/get-saml-auth-providers.ee.js';
 import getSamlAuthProviderAction from '../../../../controllers/api/v1/admin/saml-auth-providers/get-saml-auth-provider.ee.js';
 import getRoleMappingsAction from '../../../../controllers/api/v1/admin/saml-auth-providers/get-role-mappings.ee.js';
+import updateRoleMappingsAction from '../../../../controllers/api/v1/admin/saml-auth-providers/update-role-mappings.ee.js';
 
 const router = Router();
 
@@ -48,6 +49,14 @@ router.patch(
   authorizeAdmin,
   checkIsEnterprise,
   updateSamlAuthProviderAction
+);
+
+router.patch(
+  '/:samlAuthProviderId/role-mappings',
+  authenticateUser,
+  authorizeAdmin,
+  checkIsEnterprise,
+  updateRoleMappingsAction
 );
 
 export default router;

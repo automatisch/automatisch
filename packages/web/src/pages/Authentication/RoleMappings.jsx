@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
@@ -8,9 +7,9 @@ import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { useMemo } from 'react';
 
 import Form from 'components/Form';
-import { UPSERT_SAML_AUTH_PROVIDERS_ROLE_MAPPINGS } from 'graphql/mutations/upsert-saml-auth-providers-role-mappings';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminSamlAuthProviderRoleMappings from 'hooks/useAdminSamlAuthProviderRoleMappings';
+import useAdminUpdateSamlAuthProviderRoleMappings from 'hooks/useAdminUpdateSamlAuthProviderRoleMappings';
 import RoleMappingsFieldArray from './RoleMappingsFieldsArray';
 
 function generateFormRoleMappings(roleMappings) {
@@ -28,33 +27,26 @@ function RoleMappings({ provider, providerLoading }) {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
 
+  const {
+    mutateAsync: updateSamlAuthProvidersRoleMappings,
+    isPending: isUpdateSamlAuthProvidersRoleMappingsPending,
+  } = useAdminUpdateSamlAuthProviderRoleMappings(provider?.id);
+
   const { data, isLoading: isAdminSamlAuthProviderRoleMappingsLoading } =
     useAdminSamlAuthProviderRoleMappings({
       adminSamlAuthProviderId: provider?.id,
     });
   const roleMappings = data?.data;
 
-  const [
-    upsertSamlAuthProvidersRoleMappings,
-    { loading: upsertRoleMappingsLoading },
-  ] = useMutation(UPSERT_SAML_AUTH_PROVIDERS_ROLE_MAPPINGS);
-
   const handleRoleMappingsUpdate = async (values) => {
     try {
       if (provider?.id) {
-        await upsertSamlAuthProvidersRoleMappings({
-          variables: {
-            input: {
-              samlAuthProviderId: provider.id,
-              samlAuthProvidersRoleMappings: values.roleMappings.map(
-                ({ roleId, remoteRoleName }) => ({
-                  roleId,
-                  remoteRoleName,
-                }),
-              ),
-            },
-          },
-        });
+        await updateSamlAuthProvidersRoleMappings(
+          values.roleMappings.map(({ roleId, remoteRoleName }) => ({
+            roleId,
+            remoteRoleName,
+          })),
+        );
 
         enqueueSnackbar(formatMessage('roleMappingsForm.successfullySaved'), {
           variant: 'success',
@@ -97,7 +89,7 @@ function RoleMappings({ provider, providerLoading }) {
             variant="contained"
             color="primary"
             sx={{ boxShadow: 2 }}
-            loading={upsertRoleMappingsLoading}
+            loading={isUpdateSamlAuthProvidersRoleMappingsPending}
           >
             {formatMessage('roleMappingsForm.save')}
           </LoadingButton>

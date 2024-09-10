@@ -20,9 +20,6 @@ type Mutation {
   updateFlowStatus(input: UpdateFlowStatusInput): Flow
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
-  upsertSamlAuthProvidersRoleMappings(
-    input: UpsertSamlAuthProvidersRoleMappingsInput
-  ): [SamlAuthProvidersRoleMapping]
   verifyConnection(input: VerifyConnectionInput): Connection
 }
 
@@ -245,16 +242,6 @@ input ResetConnectionInput {
 
 input VerifyConnectionInput {
   id: String!
-}
-
-input UpsertSamlAuthProvidersRoleMappingsInput {
-  samlAuthProviderId: String!
-  samlAuthProvidersRoleMappings: [SamlAuthProviderRoleMappingInput]
-}
-
-input SamlAuthProviderRoleMappingInput {
-  roleId: String!
-  remoteRoleName: String!
 }
 
 input CreateFlowInput {
