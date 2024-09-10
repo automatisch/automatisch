@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
@@ -13,20 +12,21 @@ import PageTitle from 'components/PageTitle';
 import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
-import { UPDATE_ROLE } from 'graphql/mutations/update-role.ee';
 import {
   getPermissions,
   getRoleWithComputedPermissions,
 } from 'helpers/computePermissions.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAdminUpdateRole from 'hooks/useAdminUpdateRole';
 import useRole from 'hooks/useRole.ee';
 
 export default function EditRole() {
   const formatMessage = useFormatMessage();
-  const [updateRole, { loading }] = useMutation(UPDATE_ROLE);
   const navigate = useNavigate();
   const { roleId } = useParams();
   const { data, loading: isRoleLoading } = useRole({ roleId });
+  const { mutateAsync: updateRole, isPending: isUpdateRolePending } =
+    useAdminUpdateRole(roleId);
   const role = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
 
@@ -34,14 +34,9 @@ export default function EditRole() {
     try {
       const newPermissions = getPermissions(roleData.computedPermissions);
       await updateRole({
-        variables: {
-          input: {
-            id: roleId,
-            name: roleData.name,
-            description: roleData.description,
-            permissions: newPermissions,
-          },
-        },
+        name: roleData.name,
+        description: roleData.description,
+        permissions: newPermissions,
       });
 
       enqueueSnackbar(formatMessage('editRole.successfullyUpdated'), {
@@ -111,7 +106,7 @@ export default function EditRole() {
                 variant="contained"
                 color="primary"
                 sx={{ boxShadow: 2 }}
-                loading={loading}
+                loading={isUpdateRolePending}
                 disabled={role?.isAdmin || isRoleLoading}
                 data-test="update-button"
               >

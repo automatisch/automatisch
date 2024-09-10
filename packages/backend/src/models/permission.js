@@ -1,4 +1,5 @@
 import Base from './base.js';
+import permissionCatalog from '../helpers/permission-catalog.ee.js';
 
 class Permission extends Base {
   static tableName = 'permissions';
@@ -17,6 +18,26 @@ class Permission extends Base {
       updatedAt: { type: 'string' },
     },
   };
+
+  static sanitize(permissions) {
+    const sanitizedPermissions = permissions.filter((permission) => {
+      const { action, subject, conditions } = permission;
+
+      const relevantAction = permissionCatalog.actions.find(
+        (actionCatalogItem) => actionCatalogItem.key === action
+      );
+      const validSubject = relevantAction.subjects.includes(subject);
+      const validConditions = conditions.every((condition) => {
+        return !!permissionCatalog.conditions.find(
+          (conditionCatalogItem) => conditionCatalogItem.key === condition
+        );
+      });
+
+      return validSubject && validConditions;
+    });
+
+    return sanitizedPermissions;
+  }
 }
 
 export default Permission;

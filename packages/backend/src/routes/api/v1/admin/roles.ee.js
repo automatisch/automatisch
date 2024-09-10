@@ -5,6 +5,7 @@ import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
 import createRoleAction from '../../../../controllers/api/v1/admin/roles/create-role.ee.js';
 import getRolesAction from '../../../../controllers/api/v1/admin/roles/get-roles.ee.js';
 import getRoleAction from '../../../../controllers/api/v1/admin/roles/get-role.ee.js';
+import updateRoleAction from '../../../../controllers/api/v1/admin/roles/update-role.ee.js';
 
 const router = Router();
 
@@ -30,6 +31,14 @@ router.get(
   authorizeAdmin,
   checkIsEnterprise,
   getRoleAction
+);
+
+router.patch(
+  '/:roleId',
+  authenticateUser,
+  authorizeAdmin,
+  checkIsEnterprise,
+  updateRoleAction
 );
 
 export default router;

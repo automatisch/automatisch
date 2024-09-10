@@ -1,6 +1,7 @@
 import Base from './base.js';
 import Permission from './permission.js';
 import User from './user.js';
+import NotAuthorizedError from '../errors/not-authorized.js';
 
 class Role extends Base {
   static tableName = 'roles';
@@ -47,6 +48,42 @@ class Role extends Base {
 
   static async findAdmin() {
     return await this.query().findOne({ name: 'Admin' });
+  }
+
+  async updateWithPermissions(data) {
+    if (this.isAdmin) {
+      throw new NotAuthorizedError('The admin role cannot be altered!');
+    }
+
+    const { name, description, permissions } = data;
+
+    return await Role.transaction(async (trx) => {
+      await this.$relatedQuery('permissions', trx).delete();
+
+      if (permissions?.length) {
+        const sanitizedPermissions = Permission.sanitize(permissions).map(
+          (permission) => ({
+            ...permission,
+            roleId: this.id,
+          })
+        );
+
+        await Permission.query().insert(sanitizedPermissions);
+      }
+
+      await this.$query(trx).patch({
+        name,
+        description,
+      });
+
+      return await this.$query(trx)
+        .leftJoinRelated({
+          permissions: true,
+        })
+        .withGraphFetched({
+          permissions: true,
+        });
+    });
   }
 }
 
