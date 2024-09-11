@@ -196,6 +196,87 @@ class Flow extends Base {
     await this.$query().delete();
   }
 
+  async duplicateFor(user) {
+    const steps = await this.$relatedQuery('steps').orderBy(
+      'steps.position',
+      'asc'
+    );
+
+    const duplicatedFlow = await user.$relatedQuery('flows').insertAndFetch({
+      name: `Copy of ${this.name}`,
+      active: false,
+    });
+
+    const updateStepId = (value, newStepIds) => {
+      let newValue = value;
+
+      const stepIdEntries = Object.entries(newStepIds);
+      for (const stepIdEntry of stepIdEntries) {
+        const [oldStepId, newStepId] = stepIdEntry;
+
+        const partialOldVariable = `{{step.${oldStepId}.`;
+        const partialNewVariable = `{{step.${newStepId}.`;
+
+        newValue = newValue.replaceAll(partialOldVariable, partialNewVariable);
+      }
+
+      return newValue;
+    };
+
+    const updateStepVariables = (parameters, newStepIds) => {
+      const entries = Object.entries(parameters);
+
+      return entries.reduce((result, [key, value]) => {
+        if (typeof value === 'string') {
+          return {
+            ...result,
+            [key]: updateStepId(value, newStepIds),
+          };
+        }
+
+        if (Array.isArray(value)) {
+          return {
+            ...result,
+            [key]: value.map((item) => updateStepVariables(item, newStepIds)),
+          };
+        }
+
+        return {
+          ...result,
+          [key]: value,
+        };
+      }, {});
+    };
+
+    const newStepIds = {};
+    for (const step of steps) {
+      const duplicatedStep = await duplicatedFlow
+        .$relatedQuery('steps')
+        .insert({
+          key: step.key,
+          appKey: step.appKey,
+          type: step.type,
+          connectionId: step.connectionId,
+          position: step.position,
+          parameters: updateStepVariables(step.parameters, newStepIds),
+        });
+
+      if (duplicatedStep.isTrigger) {
+        await duplicatedStep.updateWebhookUrl();
+      }
+
+      newStepIds[step.id] = duplicatedStep.id;
+    }
+
+    const duplicatedFlowWithSteps = duplicatedFlow
+      .$query()
+      .withGraphJoined({ steps: true })
+      .orderBy('steps.position', 'asc')
+      .throwIfNotFound();
+
+    return duplicatedFlowWithSteps;
+  }
+
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
