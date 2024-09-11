@@ -8,7 +8,6 @@ type Mutation {
   deleteCurrentUser: Boolean
   deleteFlow(input: DeleteFlowInput): Boolean
   deleteStep(input: DeleteStepInput): Step
-  duplicateFlow(input: DuplicateFlowInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   resetConnection(input: ResetConnectionInput): Connection
@@ -256,10 +255,6 @@ input ExecuteFlowInput {
 }
 
 input DeleteFlowInput {
-  id: String!
-}
-
-input DuplicateFlowInput {
   id: String!
 }
 

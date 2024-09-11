@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom';
 import Can from 'components/Can';
 import * as URLS from 'config/urls';
 import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
-import { DUPLICATE_FLOW } from 'graphql/mutations/duplicate-flow';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useDuplicateFlow from 'hooks/useDuplicateFlow';
 

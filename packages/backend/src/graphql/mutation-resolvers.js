@@ -1,4 +1,3 @@
-import duplicateFlow from './mutations/duplicate-flow.js';
 import updateFlowStatus from './mutations/update-flow-status.js';
 import updateStep from './mutations/update-step.js';
 
@@ -24,7 +23,6 @@ const mutationResolvers = {
   deleteCurrentUser,
   deleteFlow,
   deleteStep,
-  duplicateFlow,
   executeFlow,
   generateAuthUrl,
   resetConnection,
