@@ -534,6 +534,21 @@ class User extends Base {
     return adminUser;
   }
 
+  static async registerUser(userData) {
+    const { fullName, email, password } = userData;
+
+    const role = await Role.query().findOne({ name: 'User' }).throwIfNotFound();
+
+    const user = await User.query().insertAndFetch({
+      fullName,
+      email,
+      password,
+      roleId: role.id,
+    });
+
+    return user;
+  }
+
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
 
