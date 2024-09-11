@@ -11,7 +11,7 @@ const registerUserMock = (user) => {
   };
 
   if (appConfig.isCloud && user.trialExpiryDate) {
-    userData.trialExpiryDate = user.trial;
+    userData.trialExpiryDate = user.trialExpiryDate.toISOString();
   }
 
   return {
