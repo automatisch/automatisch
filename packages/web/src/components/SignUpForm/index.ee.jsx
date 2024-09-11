@@ -6,14 +6,15 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
-import { REGISTER_USER } from 'graphql/mutations/register-user.ee';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCreateAccessToken from 'hooks/useCreateAccessToken';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useRegisterUser from 'hooks/useRegisterUser';
 
 const validationSchema = yup.object().shape({
   fullName: yup.string().trim().required('signupForm.mandatoryInput'),
@@ -41,8 +42,8 @@ function SignUpForm() {
   const authentication = useAuthentication();
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
-  const [registerUser, { loading: registerUserLoading }] =
-    useMutation(REGISTER_USER);
+  const { mutateAsync: registerUser, isPending: isRegisterUserPending } =
+    useRegisterUser();
   const { mutateAsync: createAccessToken, isPending: loginLoading } =
     useCreateAccessToken();
 
@@ -56,13 +57,9 @@ function SignUpForm() {
     const { fullName, email, password } = values;
 
     await registerUser({
-      variables: {
-        input: {
-          fullName,
-          email,
-          password,
-        },
-      },
+      fullName,
+      email,
+      password,
     });
 
     try {
@@ -176,7 +173,7 @@ function SignUpForm() {
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, mt: 3 }}
-              loading={registerUserLoading || loginLoading}
+              loading={isRegisterUserPending || loginLoading}
               fullWidth
               data-test="signUp-button"
             >
