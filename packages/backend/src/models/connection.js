@@ -238,6 +238,17 @@ class Connection extends Base {
 
     return app.auth.verifyWebhook($);
   }
+
+  async generateAuthUrl() {
+    const app = await App.findOneByKey(this.key);
+    const $ = await globalVariable({ connection: this, app });
+
+    await app.auth.generateAuthUrl($);
+
+    const url = this.formattedData.url;
+
+    return { url };
+  }
 }
 
 export default Connection;
