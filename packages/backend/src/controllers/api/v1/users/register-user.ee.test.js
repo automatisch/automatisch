@@ -48,7 +48,7 @@ describe('POST /api/v1/users/register', () => {
       .expect(404);
   });
 
-  it('should return unprocessable entity respones with already used email', async () => {
+  it('should return unprocessable entity response with already used email', async () => {
     await createRole({ name: 'User' });
     await createUser({
       email: 'registered@sample.com',
