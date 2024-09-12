@@ -14,6 +14,7 @@ import getTriggerSubstepsAction from '../../../controllers/api/v1/apps/get-trigg
 import getActionsAction from '../../../controllers/api/v1/apps/get-actions.js';
 import getActionSubstepsAction from '../../../controllers/api/v1/apps/get-action-substeps.js';
 import getFlowsAction from '../../../controllers/api/v1/apps/get-flows.js';
+import createConnectionAction from '../../../controllers/api/v1/apps/create-connection.js';
 
 const router = Router();
 
@@ -26,6 +27,13 @@ router.get(
   authenticateUser,
   authorizeUser,
   getConnectionsAction
+);
+
+router.post(
+  '/:appKey/connections',
+  authenticateUser,
+  authorizeUser,
+  createConnectionAction
 );
 
 router.get(

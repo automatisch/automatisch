@@ -9,6 +9,7 @@ import Step from './step.js';
 import appConfig from '../config/app.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import globalVariable from '../helpers/global-variable.js';
+import NotAuthorizedError from '../errors/not-authorized.js';
 
 class Connection extends Base {
   static tableName = 'connections';
@@ -121,10 +122,51 @@ class Connection extends Base {
     return this.data ? true : false;
   }
 
+  async checkEligibilityForCreation() {
+    const app = await App.findOneByKey(this.key);
+
+    const appConfig = await AppConfig.query().findOne({ key: this.key });
+
+    if (appConfig) {
+      if (appConfig.disabled) {
+        throw new NotAuthorizedError(
+          'The application has been disabled for new connections!'
+        );
+      }
+
+      if (!appConfig.allowCustomConnection && this.formattedData) {
+        throw new NotAuthorizedError(
+          `New custom connections have been disabled for ${app.name}!`
+        );
+      }
+
+      if (!appConfig.shared && this.appAuthClientId) {
+        throw new NotAuthorizedError(
+          'The connection with the given app auth client is not allowed!'
+        );
+      }
+
+      if (appConfig.shared && !this.formattedData) {
+        const authClient = await appConfig
+          .$relatedQuery('appAuthClients')
+          .findById(this.appAuthClientId)
+          .where({ active: true })
+          .throwIfNotFound();
+
+        this.formattedData = authClient.formattedAuthDefaults;
+      }
+    }
+
+    return this;
+  }
+
   // TODO: Make another abstraction like beforeSave instead of using
   // beforeInsert and beforeUpdate separately for the same operation.
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
+
+    await this.checkEligibilityForCreation();
+
     this.encryptData();
   }
 
