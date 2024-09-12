@@ -31,7 +31,7 @@ describe('PATCH /api/v1/users/:userId/password', () => {
     expect(response.body).toStrictEqual(expectedPayload);
   });
 
-  it.only('should return HTTP 422 with invalid current password', async () => {
+  it('should return HTTP 422 with invalid current password', async () => {
     const userData = {
       currentPassword: '',
       password: 'new-password',
