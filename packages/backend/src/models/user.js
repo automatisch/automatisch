@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { DateTime, Duration } from 'luxon';
 import crypto from 'node:crypto';
+import { ValidationError } from 'objection';
 
 import appConfig from '../config/app.js';
 import { hasValidLicense } from '../helpers/license.ee.js';
@@ -246,6 +247,27 @@ class User extends Base {
       invitationTokenSentAt: null,
       status: 'active',
       password,
+    });
+  }
+
+  async updatePassword({ currentPassword, password }) {
+    if (await User.authenticate(this.email, currentPassword)) {
+      const user = await this.$query().patchAndFetch({
+        password,
+      });
+
+      return user;
+    }
+
+    throw new ValidationError({
+      data: {
+        currentPassword: [
+          {
+            message: 'is incorrect.',
+          },
+        ],
+      },
+      type: 'ValidationError',
     });
   }
 

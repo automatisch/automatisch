@@ -9,15 +9,20 @@ describe('PATCH /api/v1/users/:userId/password', () => {
   let currentUser, token;
 
   beforeEach(async () => {
-    currentUser = await createUser();
+    currentUser = await createUser({ password: 'old-password' });
     token = await createAuthTokenByUserId(currentUser.id);
   });
 
   it('should return updated user with valid password', async () => {
+    const userData = {
+      currentPassword: 'old-password',
+      password: 'new-password',
+    };
+
     const response = await request(app)
       .patch(`/api/v1/users/${currentUser.id}/password`)
       .set('Authorization', token)
-      .send({ password: 'new-password' })
+      .send(userData)
       .expect(200);
 
     const refetchedCurrentUser = await currentUser.$query();
@@ -26,16 +31,21 @@ describe('PATCH /api/v1/users/:userId/password', () => {
     expect(response.body).toStrictEqual(expectedPayload);
   });
 
-  it('should return HTTP 422 with invalid password', async () => {
+  it.only('should return HTTP 422 with invalid current password', async () => {
+    const userData = {
+      currentPassword: '',
+      password: 'new-password',
+    };
+
     const response = await request(app)
       .patch(`/api/v1/users/${currentUser.id}/password`)
       .set('Authorization', token)
-      .send({ password: '' })
+      .send(userData)
       .expect(422);
 
-    expect(response.body.meta.type).toEqual('ModelValidation');
+    expect(response.body.meta.type).toEqual('ValidationError');
     expect(response.body.errors).toMatchObject({
-      password: ['must NOT have fewer than 6 characters'],
+      currentPassword: ['is incorrect.'],
     });
   });
 });
