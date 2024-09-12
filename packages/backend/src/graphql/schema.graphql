@@ -11,7 +11,6 @@ type Mutation {
   duplicateFlow(input: DuplicateFlowInput): Flow
   executeFlow(input: ExecuteFlowInput): executeFlowType
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
-  registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
@@ -294,12 +293,6 @@ input UpdateUserInput {
   fullName: String
   email: String
   role: UserRoleInput
-}
-
-input RegisterUserInput {
-  fullName: String!
-  email: String!
-  password: String!
 }
 
 input UpdateCurrentUserInput {

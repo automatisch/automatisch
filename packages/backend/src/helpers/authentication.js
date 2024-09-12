@@ -1,4 +1,4 @@
-import { allow, rule, shield } from 'graphql-shield';
+import { rule, shield } from 'graphql-shield';
 import User from '../models/user.js';
 import AccessToken from '../models/access-token.js';
 
@@ -53,7 +53,6 @@ const isAuthenticatedRule = rule()(isAuthenticated);
 export const authenticationRules = {
   Mutation: {
     '*': isAuthenticatedRule,
-    registerUser: allow,
   },
 };
 
