@@ -29,6 +29,17 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
 
     currentUser = await createUser({ roleId: role.id });
 
+    currentUser = await currentUser
+      .$query()
+      .leftJoinRelated({
+        role: true,
+        permissions: true,
+      })
+      .withGraphFetched({
+        role: true,
+        permissions: true,
+      });
+
     token = await createAuthTokenByUserId(currentUser.id);
   });
 

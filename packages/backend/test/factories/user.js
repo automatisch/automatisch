@@ -10,17 +10,5 @@ export const createUser = async (params = {}) => {
 
   const user = await User.query().insertAndFetch(params);
 
-  // important to mimic request.currentUser functionality.
-  const userWithRoleAndPermissions = await user
-    .$query()
-    .leftJoinRelated({
-      role: true,
-      permissions: true,
-    })
-    .withGraphFetched({
-      role: true,
-      permissions: true,
-    });
-
-  return userWithRoleAndPermissions;
+  return user;
 };
