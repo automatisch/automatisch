@@ -257,6 +257,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
 
   describe('with auth clients enabled', async () => {
     let appAuthClient;
+
     beforeEach(async () => {
       await createAppConfig({
         key: 'gitlab',
@@ -339,6 +340,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
   });
   describe('with auth clients disabled', async () => {
     let appAuthClient;
+
     beforeEach(async () => {
       await createAppConfig({
         key: 'gitlab',
