@@ -240,7 +240,7 @@ class Connection extends Base {
   }
 
   async generateAuthUrl() {
-    const app = await App.findOneByKey(this.key);
+    const app = await this.getApp();
     const $ = await globalVariable({ connection: this, app });
 
     await app.auth.generateAuthUrl($);
