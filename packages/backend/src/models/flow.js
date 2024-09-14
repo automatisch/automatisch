@@ -3,6 +3,9 @@ import Base from './base.js';
 import Step from './step.js';
 import User from './user.js';
 import Execution from './execution.js';
+import ExecutionStep from './execution-step.js';
+import globalVariable from '../helpers/global-variable.js';
+import logger from '../helpers/logger.js';
 import Telemetry from '../helpers/telemetry/index.js';
 
 class Flow extends Base {
@@ -158,6 +161,39 @@ class Flow extends Base {
     await Promise.all(nextStepQueries);
 
     return createdStep;
+  }
+
+  async delete() {
+    const triggerStep = await this.getTriggerStep();
+    const trigger = await triggerStep?.getTriggerCommand();
+
+    if (trigger?.type === 'webhook' && trigger.unregisterHook) {
+      const $ = await globalVariable({
+        flow: this,
+        connection: await triggerStep.$relatedQuery('connection'),
+        app: await triggerStep.getApp(),
+        step: triggerStep,
+      });
+
+      try {
+        await trigger.unregisterHook($);
+      } catch (error) {
+        // suppress error as the remote resource might have been already deleted
+        logger.debug(
+          `Failed to unregister webhook for flow ${this.id}: ${error.message}`
+        );
+      }
+    }
+
+    const executionIds = (
+      await this.$relatedQuery('executions').select('executions.id')
+    ).map((execution) => execution.id);
+
+    await ExecutionStep.query().delete().whereIn('execution_id', executionIds);
+
+    await this.$relatedQuery('executions').delete();
+    await this.$relatedQuery('steps').delete();
+    await this.$query().delete();
   }
 
   async $beforeUpdate(opt, queryContext) {
