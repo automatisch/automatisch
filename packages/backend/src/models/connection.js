@@ -249,6 +249,18 @@ class Connection extends Base {
 
     return { url };
   }
+
+  async reset() {
+    const formattedData = this?.formattedData?.screenName
+      ? { screenName: this.formattedData.screenName }
+      : null;
+
+    const updatedConnection = await this.$query().patchAndFetch({
+      formattedData,
+    });
+
+    return updatedConnection;
+  }
 }
 
 export default Connection;

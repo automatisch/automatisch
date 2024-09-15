@@ -8,11 +8,7 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
-  connection = await connection.$query().patchAndFetch({
-    formattedData: connection?.formattedData?.screenName
-      ? { screenName: connection.formattedData.screenName }
-      : null,
-  });
+  connection = await connection.reset();
 
   renderObject(response, connection);
 };
