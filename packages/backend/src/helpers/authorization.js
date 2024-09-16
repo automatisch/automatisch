@@ -85,6 +85,10 @@ const authorizationList = {
     action: 'update',
     subject: 'Flow',
   },
+  'PATCH /api/v1/connections/:connectionId': {
+    action: 'update',
+    subject: 'Connection',
+  },
   'DELETE /api/v1/connections/:connectionId': {
     action: 'delete',
     subject: 'Connection',
