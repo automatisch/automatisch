@@ -261,6 +261,23 @@ class Connection extends Base {
 
     return updatedConnection;
   }
+
+  async update({ formattedData, appAuthClientId }) {
+    if (appAuthClientId) {
+      const appAuthClient = await AppAuthClient.query()
+        .findById(appAuthClientId)
+        .throwIfNotFound();
+
+      formattedData = appAuthClient.formattedAuthDefaults;
+    }
+
+    return await this.$query().patchAndFetch({
+      formattedData: {
+        ...this.formattedData,
+        ...formattedData,
+      },
+    });
+  }
 }
 
 export default Connection;
