@@ -230,7 +230,10 @@ class User extends Base {
     const invitationToken = crypto.randomBytes(64).toString('hex');
     const invitationTokenSentAt = new Date().toISOString();
 
-    await this.$query().patch({ invitationToken, invitationTokenSentAt });
+    await this.$query().patchAndFetch({
+      invitationToken,
+      invitationTokenSentAt,
+    });
   }
 
   async resetPassword(password) {
@@ -353,6 +356,30 @@ class User extends Base {
     const fourHoursInMilliseconds = 1000 * 60 * 60 * 4;
 
     return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
+  }
+
+  async sendInvitationEmail() {
+    await this.generateInvitationToken();
+
+    const jobName = `Invitation Email - ${this.id}`;
+    const acceptInvitationUrl = `${appConfig.webAppUrl}/accept-invitation?token=${this.invitationToken}`;
+
+    const jobPayload = {
+      email: this.email,
+      subject: 'You are invited!',
+      template: 'invitation-instructions',
+      params: {
+        fullName: this.fullName,
+        acceptInvitationUrl,
+      },
+    };
+
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+    };
+
+    await emailQueue.add(jobName, jobPayload, jobOptions);
   }
 
   isInvitationTokenValid() {
