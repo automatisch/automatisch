@@ -1,4 +1,4 @@
-const getFlowMock = async (flow, steps = []) => {
+const duplicateFlowMock = async (flow, steps = []) => {
   const data = {
     active: flow.active,
     id: flow.id,
@@ -34,4 +34,4 @@ const getFlowMock = async (flow, steps = []) => {
   };
 };
 
-export default getFlowMock;
+export default duplicateFlowMock;
