@@ -1,4 +1,3 @@
-import updateFlowStatus from './mutations/update-flow-status.js';
 import updateStep from './mutations/update-step.js';
 
 // Converted mutations
@@ -15,6 +14,7 @@ import deleteFlow from './mutations/delete-flow.js';
 import resetConnection from './mutations/reset-connection.js';
 import updateConnection from './mutations/update-connection.js';
 import createUser from './mutations/create-user.ee.js';
+import updateFlowStatus from './mutations/update-flow-status.js';
 
 const mutationResolvers = {
   createConnection,

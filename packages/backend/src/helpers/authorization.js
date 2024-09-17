@@ -25,6 +25,10 @@ const authorizationList = {
     action: 'create',
     subject: 'Flow',
   },
+  'PATCH /api/v1/flows/:flowId': {
+    action: 'update',
+    subject: 'Flow',
+  },
   'DELETE /api/v1/flows/:flowId': {
     action: 'delete',
     subject: 'Flow',
@@ -97,8 +101,8 @@ const authorizationList = {
     action: 'create',
     subject: 'Connection',
   },
-  'PATCH /api/v1/flows/:flowId': {
-    action: 'update',
+  'PATCH /api/v1/flows/:flowId/status': {
+    action: 'publish',
     subject: 'Flow',
   },
   'POST /api/v1/flows/:flowId/duplicate': {
