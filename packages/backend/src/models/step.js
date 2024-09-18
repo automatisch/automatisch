@@ -334,6 +334,30 @@ class Step extends Base {
 
     await Promise.all(nextStepQueries);
   }
+
+  async update(newStepData) {
+    const { connectionId, appKey, key, parameters } = newStepData;
+
+    if (this.isTrigger && appKey && key) {
+      await App.checkAppAndTrigger(appKey, key);
+    }
+
+    if (this.isAction && appKey && key) {
+      await App.checkAppAndAction(appKey, key);
+    }
+
+    const updatedStep = await this.$query().patchAndFetch({
+      key: key,
+      appKey: appKey,
+      connectionId: connectionId,
+      parameters: parameters,
+      status: 'incomplete',
+    });
+
+    await updatedStep.updateWebhookUrl();
+
+    return updatedStep;
+  }
 }
 
 export default Step;
