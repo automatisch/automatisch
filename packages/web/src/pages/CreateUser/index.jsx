@@ -51,6 +51,14 @@ export default function CreateUser() {
         },
       });
     } catch (error) {
+      enqueueSnackbar(formatMessage('createUser.error'), {
+        variant: 'error',
+        persist: true,
+        SnackbarProps: {
+          'data-test': 'snackbar-error',
+        },
+      });
+
       throw new Error('Failed while creating!');
     }
   };
