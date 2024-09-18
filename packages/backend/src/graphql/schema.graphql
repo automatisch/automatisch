@@ -4,7 +4,6 @@ type Query {
 type Mutation {
   createConnection(input: CreateConnectionInput): Connection
   createUser(input: CreateUserInput): UserWithAcceptInvitationUrl
-  deleteFlow(input: DeleteFlowInput): Boolean
   deleteStep(input: DeleteStepInput): Step
   executeFlow(input: ExecuteFlowInput): executeFlowType
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
@@ -245,10 +244,6 @@ input UpdateFlowStatusInput {
 
 input ExecuteFlowInput {
   stepId: String!
-}
-
-input DeleteFlowInput {
-  id: String!
 }
 
 input UpdateStepInput {
