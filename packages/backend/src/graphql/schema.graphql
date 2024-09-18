@@ -10,7 +10,6 @@ type Mutation {
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   updateFlowStatus(input: UpdateFlowStatusInput): Flow
-  updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
 }
@@ -243,17 +242,6 @@ input UpdateFlowStatusInput {
 
 input ExecuteFlowInput {
   stepId: String!
-}
-
-input UpdateStepInput {
-  id: String
-  previousStepId: String
-  key: String
-  appKey: String
-  connection: StepConnectionInput
-  flow: StepFlowInput
-  parameters: JSONObject
-  previousStep: PreviousStepInput
 }
 
 input CreateUserInput {
