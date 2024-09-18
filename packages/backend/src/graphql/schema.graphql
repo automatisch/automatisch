@@ -3,7 +3,6 @@ type Query {
 }
 type Mutation {
   createConnection(input: CreateConnectionInput): Connection
-  createFlow(input: CreateFlowInput): Flow
   createUser(input: CreateUserInput): UserWithAcceptInvitationUrl
   deleteCurrentUser: Boolean
   deleteFlow(input: DeleteFlowInput): Boolean
@@ -238,11 +237,6 @@ input ResetConnectionInput {
 
 input VerifyConnectionInput {
   id: String!
-}
-
-input CreateFlowInput {
-  triggerAppKey: String
-  connectionId: String
 }
 
 input UpdateFlowStatusInput {
