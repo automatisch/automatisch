@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/client';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useQueryClient } from '@tanstack/react-query';
@@ -10,9 +9,9 @@ import { Link } from 'react-router-dom';
 
 import Can from 'components/Can';
 import * as URLS from 'config/urls';
-import { DELETE_FLOW } from 'graphql/mutations/delete-flow';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useDuplicateFlow from 'hooks/useDuplicateFlow';
+import useDeleteFlow from 'hooks/useDeleteFlow';
 
 function ContextMenu(props) {
   const { flowId, onClose, anchorEl, onDuplicateFlow, onDeleteFlow, appKey } =
@@ -21,7 +20,7 @@ function ContextMenu(props) {
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
   const { mutateAsync: duplicateFlow } = useDuplicateFlow(flowId);
-  const [deleteFlow] = useMutation(DELETE_FLOW);
+  const { mutateAsync: deleteFlow } = useDeleteFlow();
 
   const onFlowDuplicate = React.useCallback(async () => {
     await duplicateFlow();
@@ -52,18 +51,7 @@ function ContextMenu(props) {
   ]);
 
   const onFlowDelete = React.useCallback(async () => {
-    await deleteFlow({
-      variables: { input: { id: flowId } },
-      update: (cache) => {
-        const flowCacheId = cache.identify({
-          __typename: 'Flow',
-          id: flowId,
-        });
-        cache.evict({
-          id: flowCacheId,
-        });
-      },
-    });
+    await deleteFlow(flowId);
 
     if (appKey) {
       await queryClient.invalidateQueries({
