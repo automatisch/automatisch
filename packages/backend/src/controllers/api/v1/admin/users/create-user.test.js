@@ -6,7 +6,7 @@ import User from '../../../../../models/user.js';
 import Role from '../../../../../models/role.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createRole } from '../../../../../../test/factories/role.js';
-import createUserMock from '../../../../../../test/mocks/rest/api/v1/users/create-user.js';
+import createUserMock from '../../../../../../test/mocks/rest/api/v1/admin/users/create-user.js';
 
 describe('POST /api/v1/admin/users', () => {
   let currentUser, adminRole, token;
