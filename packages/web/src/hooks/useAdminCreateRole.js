@@ -12,7 +12,7 @@ export default function useAdminCreateRole() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['apps', 'roles'],
+        queryKey: ['admin', 'roles'],
       });
     },
   });
