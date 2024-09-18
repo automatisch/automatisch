@@ -4,7 +4,6 @@ type Query {
 type Mutation {
   createConnection(input: CreateConnectionInput): Connection
   createUser(input: CreateUserInput): UserWithAcceptInvitationUrl
-  deleteCurrentUser: Boolean
   deleteFlow(input: DeleteFlowInput): Boolean
   deleteStep(input: DeleteStepInput): Step
   executeFlow(input: ExecuteFlowInput): executeFlowType

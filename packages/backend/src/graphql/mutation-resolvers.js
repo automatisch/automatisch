@@ -5,7 +5,6 @@ import executeFlow from './mutations/execute-flow.js';
 import updateUser from './mutations/update-user.ee.js';
 import deleteStep from './mutations/delete-step.js';
 import verifyConnection from './mutations/verify-connection.js';
-import deleteCurrentUser from './mutations/delete-current-user.ee.js';
 import updateCurrentUser from './mutations/update-current-user.js';
 import generateAuthUrl from './mutations/generate-auth-url.js';
 import createConnection from './mutations/create-connection.js';
@@ -18,7 +17,6 @@ import updateFlowStatus from './mutations/update-flow-status.js';
 const mutationResolvers = {
   createConnection,
   createUser,
-  deleteCurrentUser,
   deleteFlow,
   deleteStep,
   executeFlow,
