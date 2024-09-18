@@ -3,7 +3,14 @@ type Query {
 }
 type Mutation {
   createConnection(input: CreateConnectionInput): Connection
+<<<<<<< HEAD
   createUser(input: CreateUserInput): UserWithAcceptInvitationUrl
+=======
+  createFlow(input: CreateFlowInput): Flow
+  deleteCurrentUser: Boolean
+  deleteFlow(input: DeleteFlowInput): Boolean
+  deleteStep(input: DeleteStepInput): Step
+>>>>>>> 3aa20fed (chore: remove redundant create user mutation)
   executeFlow(input: ExecuteFlowInput): executeFlowType
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   resetConnection(input: ResetConnectionInput): Connection
@@ -244,12 +251,6 @@ input ExecuteFlowInput {
   stepId: String!
 }
 
-input CreateUserInput {
-  fullName: String!
-  email: String!
-  role: UserRoleInput!
-}
-
 input UserRoleInput {
   id: String
 }
@@ -342,11 +343,6 @@ type User {
   permissions: [Permission]
   createdAt: String
   updatedAt: String
-}
-
-type UserWithAcceptInvitationUrl {
-  user: User
-  acceptInvitationUrl: String
 }
 
 type Role {
