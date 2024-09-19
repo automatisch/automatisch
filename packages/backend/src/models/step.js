@@ -335,8 +335,17 @@ class Step extends Base {
     await Promise.all(nextStepQueries);
   }
 
-  async update(newStepData) {
+  async updateFor(user, newStepData) {
     const { connectionId, appKey, key, parameters } = newStepData;
+
+    if (connectionId && (appKey || this.appKey)) {
+      await user.authorizedConnections
+        .findOne({
+          id: connectionId,
+          key: appKey || this.appKey,
+        })
+        .throwIfNotFound();
+    }
 
     if (this.isTrigger && appKey && key) {
       await App.checkAppAndTrigger(appKey, key);

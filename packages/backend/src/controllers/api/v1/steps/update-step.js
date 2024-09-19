@@ -5,18 +5,7 @@ export default async (request, response) => {
     .findById(request.params.stepId)
     .throwIfNotFound();
 
-  const stepData = stepParams(request);
-
-  if (stepData.connectionId && (stepData.appKey || step.appKey)) {
-    await request.currentUser.authorizedConnections
-      .findOne({
-        id: stepData.connectionId,
-        key: stepData.appKey || step.appKey,
-      })
-      .throwIfNotFound();
-  }
-
-  step = await step.update(stepData);
+  step = await step.updateFor(request.currentUser, stepParams(request));
 
   renderObject(response, step);
 };
