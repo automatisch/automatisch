@@ -334,6 +334,39 @@ class Step extends Base {
 
     await Promise.all(nextStepQueries);
   }
+
+  async updateFor(user, newStepData) {
+    const { connectionId, appKey, key, parameters } = newStepData;
+
+    if (connectionId && (appKey || this.appKey)) {
+      await user.authorizedConnections
+        .findOne({
+          id: connectionId,
+          key: appKey || this.appKey,
+        })
+        .throwIfNotFound();
+    }
+
+    if (this.isTrigger && appKey && key) {
+      await App.checkAppAndTrigger(appKey, key);
+    }
+
+    if (this.isAction && appKey && key) {
+      await App.checkAppAndAction(appKey, key);
+    }
+
+    const updatedStep = await this.$query().patchAndFetch({
+      key: key,
+      appKey: appKey,
+      connectionId: connectionId,
+      parameters: parameters,
+      status: 'incomplete',
+    });
+
+    await updatedStep.updateWebhookUrl();
+
+    return updatedStep;
+  }
 }
 
 export default Step;

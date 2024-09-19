@@ -5,8 +5,8 @@ import { FlowPropType } from 'propTypes/propTypes';
 import ReactFlow, { useNodesState, useEdgesState } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-import { UPDATE_STEP } from 'graphql/mutations/update-step';
 import useCreateStep from 'hooks/useCreateStep';
+import useUpdateStep from 'hooks/useUpdateStep';
 
 import { useAutoLayout } from './useAutoLayout';
 import { useScrollBoundaries } from './useScrollBoundaries';
@@ -35,7 +35,7 @@ const edgeTypes = {
 };
 
 const EditorNew = ({ flow }) => {
-  const [updateStep] = useMutation(UPDATE_STEP);
+  const { mutateAsync: updateStep } = useUpdateStep();
   const queryClient = useQueryClient();
 
   const { mutateAsync: createStep, isPending: isCreateStepPending } =
@@ -84,31 +84,24 @@ const EditorNew = ({ flow }) => {
 
   const onStepChange = useCallback(
     async (step) => {
-      const mutationInput = {
+      const payload = {
         id: step.id,
         key: step.key,
         parameters: step.parameters,
-        connection: {
-          id: step.connection?.id,
-        },
-        flow: {
-          id: flow.id,
-        },
+        connectionId: step.connection?.id,
       };
 
       if (step.appKey) {
-        mutationInput.appKey = step.appKey;
+        payload.appKey = step.appKey;
       }
 
-      await updateStep({
-        variables: { input: mutationInput },
-      });
+      await updateStep(payload);
+
       await queryClient.invalidateQueries({
         queryKey: ['steps', step.id, 'connection'],
       });
-      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
     },
-    [flow.id, updateStep, queryClient],
+    [updateStep, queryClient],
   );
 
   const onAddStep = useCallback(

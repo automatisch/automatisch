@@ -7,6 +7,7 @@ import getPreviousStepsAction from '../../../controllers/api/v1/steps/get-previo
 import createDynamicFieldsAction from '../../../controllers/api/v1/steps/create-dynamic-fields.js';
 import createDynamicDataAction from '../../../controllers/api/v1/steps/create-dynamic-data.js';
 import deleteStepAction from '../../../controllers/api/v1/steps/delete-step.js';
+import updateStepAction from '../../../controllers/api/v1/steps/update-step.js';
 
 const router = Router();
 
@@ -40,6 +41,7 @@ router.post(
   createDynamicDataAction
 );
 
+router.patch('/:stepId', authenticateUser, authorizeUser, updateStepAction);
 router.delete('/:stepId', authenticateUser, authorizeUser, deleteStepAction);
 
 export default router;

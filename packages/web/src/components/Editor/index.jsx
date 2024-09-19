@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
 import useCreateStep from 'hooks/useCreateStep';
-import { UPDATE_STEP } from 'graphql/mutations/update-step';
+import useUpdateStep from 'hooks/useUpdateStep';
 import FlowStep from 'components/FlowStep';
 import { FlowPropType } from 'propTypes/propTypes';
 import { useQueryClient } from '@tanstack/react-query';
 
 function Editor(props) {
-  const [updateStep] = useMutation(UPDATE_STEP);
   const { flow } = props;
+  const { mutateAsync: updateStep } = useUpdateStep();
   const { mutateAsync: createStep, isPending: isCreateStepPending } =
     useCreateStep(flow?.id);
   const [triggerStep] = flow.steps;
@@ -21,29 +20,24 @@ function Editor(props) {
 
   const onStepChange = React.useCallback(
     async (step) => {
-      const mutationInput = {
+      const payload = {
         id: step.id,
         key: step.key,
         parameters: step.parameters,
-        connection: {
-          id: step.connection?.id,
-        },
-        flow: {
-          id: flow.id,
-        },
+        connectionId: step.connection?.id,
       };
 
       if (step.appKey) {
-        mutationInput.appKey = step.appKey;
+        payload.appKey = step.appKey;
       }
 
-      await updateStep({ variables: { input: mutationInput } });
+      await updateStep(payload);
+
       await queryClient.invalidateQueries({
         queryKey: ['steps', step.id, 'connection'],
       });
-      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
     },
-    [updateStep, flow.id, queryClient],
+    [updateStep, queryClient],
   );
 
   const addStep = React.useCallback(
