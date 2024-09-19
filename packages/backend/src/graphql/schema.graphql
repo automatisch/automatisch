@@ -8,7 +8,6 @@ type Mutation {
   resetConnection(input: ResetConnectionInput): Connection
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
-  updateFlowStatus(input: UpdateFlowStatusInput): Flow
   updateUser(input: UpdateUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
 }
@@ -232,11 +231,6 @@ input ResetConnectionInput {
 
 input VerifyConnectionInput {
   id: String!
-}
-
-input UpdateFlowStatusInput {
-  id: String!
-  active: Boolean!
 }
 
 input ExecuteFlowInput {
