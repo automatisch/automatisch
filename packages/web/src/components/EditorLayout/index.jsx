@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -16,12 +15,11 @@ import Container from 'components/Container';
 import Editor from 'components/Editor';
 import Can from 'components/Can';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { UPDATE_FLOW_STATUS } from 'graphql/mutations/update-flow-status';
 import * as URLS from 'config/urls';
 import { TopBar } from './style';
 import useFlow from 'hooks/useFlow';
 import useUpdateFlow from 'hooks/useUpdateFlow';
-import { useQueryClient } from '@tanstack/react-query';
+import useUpdateFlowStatus from 'hooks/useUpdateFlowStatus';
 import EditorNew from 'components/EditorNew/EditorNew';
 
 const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
@@ -30,34 +28,15 @@ export default function EditorLayout() {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();
   const { mutateAsync: updateFlow } = useUpdateFlow(flowId);
-  const [updateFlowStatus] = useMutation(UPDATE_FLOW_STATUS);
+  const { mutateAsync: updateFlowStatus } = useUpdateFlowStatus(flowId);
   const { data, isLoading: isFlowLoading } = useFlow(flowId);
   const flow = data?.data;
-  const queryClient = useQueryClient();
 
   const onFlowNameUpdate = async (name) => {
     await updateFlow({
       name,
     });
   };
-
-  const onFlowStatusUpdate = React.useCallback(
-    async (active) => {
-      try {
-        await updateFlowStatus({
-          variables: {
-            input: {
-              id: flowId,
-              active,
-            },
-          },
-        });
-
-        await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
-      } catch (err) {}
-    },
-    [flowId, queryClient],
-  );
 
   return (
     <>
@@ -107,7 +86,7 @@ export default function EditorLayout() {
                 disabled={!allowed || !flow}
                 variant="contained"
                 size="small"
-                onClick={() => onFlowStatusUpdate(!flow.active)}
+                onClick={() => updateFlowStatus(!flow.active)}
                 data-test={
                   flow?.active ? 'unpublish-flow-button' : 'publish-flow-button'
                 }
@@ -153,7 +132,7 @@ export default function EditorLayout() {
           <Button
             variant="contained"
             size="small"
-            onClick={() => onFlowStatusUpdate(!flow.active)}
+            onClick={() => updateFlowStatus(!flow.active)}
             data-test="unpublish-flow-from-snackbar"
           >
             {formatMessage('flowEditor.unpublish')}
