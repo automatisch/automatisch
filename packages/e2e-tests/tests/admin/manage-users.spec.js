@@ -156,15 +156,8 @@ test.describe('User management page', () => {
             'option', { name: 'Admin' }
           ).click();
           await adminCreateUserPage.createButton.click();
-          await adminUsersPage.snackbar.waitFor({
-            state: 'attached'
-          });
-          /*
-            TODO: assert snackbar behavior after deciding what should
-            happen here, i.e. if this should create a new user, stay the
-            same, un-delete the user, or something else
-          */
-          // await adminUsersPage.getSnackbarData('snackbar-error');
+          const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
+          await expect(snackbar.variant).toBe('error');
           await adminUsersPage.closeSnackbar();
         }
       );

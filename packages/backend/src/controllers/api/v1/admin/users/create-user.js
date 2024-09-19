@@ -6,7 +6,7 @@ export default async (request, response) => {
   const user = await User.query().insertAndFetch(await userParams(request));
   await user.sendInvitationEmail();
 
-  renderObject(response, user, { status: 201 });
+  renderObject(response, user, { status: 201, serializer: 'AdminUser' });
 };
 
 const userParams = async (request) => {

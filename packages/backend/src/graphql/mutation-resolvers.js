@@ -7,12 +7,10 @@ import generateAuthUrl from './mutations/generate-auth-url.js';
 import createConnection from './mutations/create-connection.js';
 import resetConnection from './mutations/reset-connection.js';
 import updateConnection from './mutations/update-connection.js';
-import createUser from './mutations/create-user.ee.js';
 import updateFlowStatus from './mutations/update-flow-status.js';
 
 const mutationResolvers = {
   createConnection,
-  createUser,
   executeFlow,
   generateAuthUrl,
   resetConnection,

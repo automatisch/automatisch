@@ -180,6 +180,10 @@ class User extends Base {
     },
   });
 
+  static get virtualAttributes() {
+    return ['acceptInvitationUrl'];
+  }
+
   get authorizedFlows() {
     const conditions = this.can('read', 'Flow');
     return conditions.isCreator ? this.$relatedQuery('flows') : Flow.query();
@@ -202,6 +206,10 @@ class User extends Base {
     return conditions.isCreator
       ? this.$relatedQuery('executions')
       : Execution.query();
+  }
+
+  get acceptInvitationUrl() {
+    return `${appConfig.webAppUrl}/accept-invitation?token=${this.invitationToken}`;
   }
 
   static async authenticate(email, password) {
@@ -362,7 +370,6 @@ class User extends Base {
     await this.generateInvitationToken();
 
     const jobName = `Invitation Email - ${this.id}`;
-    const acceptInvitationUrl = `${appConfig.webAppUrl}/accept-invitation?token=${this.invitationToken}`;
 
     const jobPayload = {
       email: this.email,
@@ -370,7 +377,7 @@ class User extends Base {
       template: 'invitation-instructions',
       params: {
         fullName: this.fullName,
-        acceptInvitationUrl,
+        acceptInvitationUrl: this.acceptInvitationUrl,
       },
     };
 

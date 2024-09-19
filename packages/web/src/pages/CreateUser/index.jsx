@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -14,9 +13,9 @@ import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
-import { CREATE_USER } from 'graphql/mutations/create-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
+import useAdminCreateUser from 'hooks/useAdminCreateUser';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -24,7 +23,11 @@ function generateRoleOptions(roles) {
 
 export default function CreateUser() {
   const formatMessage = useFormatMessage();
-  const [createUser, { loading, data }] = useMutation(CREATE_USER);
+  const {
+    mutateAsync: createUser,
+    isPending: isCreateUserPending,
+    data: createdUser,
+  } = useAdminCreateUser();
   const { data: rolesData, loading: isRolesLoading } = useRoles();
   const roles = rolesData?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
@@ -33,17 +36,13 @@ export default function CreateUser() {
   const handleUserCreation = async (userData) => {
     try {
       await createUser({
-        variables: {
-          input: {
-            fullName: userData.fullName,
-            email: userData.email,
-            role: {
-              id: userData.role?.id,
-            },
-          },
-        },
+        fullName: userData.fullName,
+        email: userData.email,
+        roleId: userData.role?.id,
       });
+
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+
       enqueueSnackbar(formatMessage('createUser.successfullyCreated'), {
         variant: 'success',
         persist: true,
@@ -52,6 +51,14 @@ export default function CreateUser() {
         },
       });
     } catch (error) {
+      enqueueSnackbar(formatMessage('createUser.error'), {
+        variant: 'error',
+        persist: true,
+        SnackbarProps: {
+          'data-test': 'snackbar-error',
+        },
+      });
+
       throw new Error('Failed while creating!');
     }
   };
@@ -107,13 +114,13 @@ export default function CreateUser() {
                 variant="contained"
                 color="primary"
                 sx={{ boxShadow: 2 }}
-                loading={loading}
+                loading={isCreateUserPending}
                 data-test="create-button"
               >
                 {formatMessage('createUser.submit')}
               </LoadingButton>
 
-              {data && (
+              {createdUser && (
                 <Alert
                   severity="info"
                   color="primary"
@@ -123,11 +130,11 @@ export default function CreateUser() {
                   {formatMessage('createUser.invitationEmailInfo', {
                     link: () => (
                       <a
-                        href={data.createUser.acceptInvitationUrl}
+                        href={createdUser.data.acceptInvitationUrl}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {data.createUser.acceptInvitationUrl}
+                        {createdUser.data.acceptInvitationUrl}
                       </a>
                     ),
                   })}
