@@ -1,8 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from 'helpers/api';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 export default function useAdminUpdateRole(userId) {
   const queryClient = useQueryClient();
+  const enqueueSnackbar = useEnqueueSnackbar();
+  const formatMessage = useFormatMessage();
 
   const query = useMutation({
     mutationFn: async (payload) => {
@@ -15,6 +19,15 @@ export default function useAdminUpdateRole(userId) {
         queryKey: ['admin', 'users'],
       });
     },
+    onError: () => {
+      enqueueSnackbar(formatMessage('editUser.error'), {
+        variant: 'error',
+        persist: true,
+        SnackbarProps: {
+          'data-test': 'snackbar-error',
+        },
+      });
+    }
   });
 
   return query;
