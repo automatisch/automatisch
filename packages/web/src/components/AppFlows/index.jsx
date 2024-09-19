@@ -43,10 +43,7 @@ function AppFlows(props) {
             text={formatMessage('app.noFlows')}
             data-test="flows-no-results"
             {...(allowed && {
-              to: URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
-                appKey,
-                connectionId
-              ),
+              to: URLS.CREATE_FLOW,
             })}
           />
         )}

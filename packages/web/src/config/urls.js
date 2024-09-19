@@ -41,19 +41,6 @@ export const APP_FLOWS_FOR_CONNECTION = (appKey, connectionId) =>
 export const APP_FLOWS_PATTERN = '/app/:appKey/flows';
 export const EDITOR = '/editor';
 export const CREATE_FLOW = '/editor/create';
-export const CREATE_FLOW_WITH_APP = (appKey) =>
-  `/editor/create?appKey=${appKey}`;
-export const CREATE_FLOW_WITH_APP_AND_CONNECTION = (appKey, connectionId) => {
-  const params = {};
-  if (appKey) {
-    params.appKey = appKey;
-  }
-  if (connectionId) {
-    params.connectionId = connectionId;
-  }
-  const searchParams = new URLSearchParams(params).toString();
-  return `/editor/create?${searchParams}`;
-};
 export const FLOW_EDITOR = (flowId) => `/editor/${flowId}`;
 export const FLOWS = '/flows';
 // TODO: revert this back to /flows/:flowId once we have a proper single flow page
@@ -100,5 +87,4 @@ export const DASHBOARD = FLOWS;
 
 // External links and paths
 // The paths are sensitive for their relativity.
-export const WEBHOOK_DOCS_PATH =
-  './apps/webhooks/connection';
+export const WEBHOOK_DOCS_PATH = './apps/webhooks/connection';

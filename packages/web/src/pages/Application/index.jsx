@@ -134,10 +134,7 @@ export default function Application() {
                           color="primary"
                           size="large"
                           component={Link}
-                          to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
-                            appKey,
-                            connectionId,
-                          )}
+                          to={URLS.CREATE_FLOW}
                           fullWidth
                           icon={<AddIcon />}
                           disabled={!allowed}

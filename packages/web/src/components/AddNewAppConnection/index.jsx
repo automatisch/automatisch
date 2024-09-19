@@ -27,11 +27,12 @@ import useLazyApps from 'hooks/useLazyApps';
 
 function createConnectionOrFlow(appKey, supportsConnections = false) {
   if (!supportsConnections) {
-    return URLS.CREATE_FLOW_WITH_APP(appKey);
+    return URLS.CREATE_FLOW;
   }
 
   return URLS.APP_ADD_CONNECTION(appKey);
 }
+
 function AddNewAppConnection(props) {
   const { onClose } = props;
   const theme = useTheme();
