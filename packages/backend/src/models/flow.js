@@ -125,7 +125,13 @@ class Flow extends Base {
 
   get IncompleteStepsError() {
     return new ValidationError({
-      message: 'All steps should be completed before updating flow status!',
+      data: {
+        flow: [
+          {
+            message: 'All steps should be completed before updating flow status!'
+          }
+        ],
+      },
       type: 'incompleteStepsError',
     });
   }
@@ -366,8 +372,13 @@ class Flow extends Base {
 
     if (allSteps.length < 2) {
       throw new ValidationError({
-        message:
-          'There should be at least one trigger and one action steps in the flow!',
+        data: {
+          flow: [
+            {
+              message: 'There should be at least one trigger and one action steps in the flow!'
+            }
+          ],
+        },
         type: 'insufficientStepsError',
       });
     }
