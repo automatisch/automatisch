@@ -14,6 +14,8 @@ class Config extends Base {
       palettePrimaryLight: { type: ['string', 'null'] },
       palettePrimaryMain: { type: ['string', 'null'] },
       title: { type: ['string', 'null'] },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
