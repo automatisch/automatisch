@@ -1,19 +1,13 @@
-const infoMock = (
-  logoConfig,
-  primaryDarkConfig,
-  primaryLightConfig,
-  primaryMainConfig,
-  titleConfig
-) => {
+const configMock = (config) => {
   return {
     data: {
       disableFavicon: false,
       disableNotificationsPage: false,
-      'logo.svgData': logoConfig.value.data,
-      'palette.primary.dark': primaryDarkConfig.value.data,
-      'palette.primary.light': primaryLightConfig.value.data,
-      'palette.primary.main': primaryMainConfig.value.data,
-      title: titleConfig.value.data,
+      logoSvgData: config.logoSvgData,
+      palettePrimaryDark: config.palettePrimaryDark,
+      palettePrimaryMain: config.palettePrimaryMain,
+      palettePrimaryLight: config.palettePrimaryLight,
+      title: config.title,
     },
     meta: {
       count: 1,
@@ -25,4 +19,4 @@ const infoMock = (
   };
 };
 
-export default infoMock;
+export default configMock;

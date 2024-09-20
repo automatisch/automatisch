@@ -3,7 +3,7 @@ import Config from '../../../../models/config.js';
 import { renderObject } from '../../../../helpers/renderer.js';
 
 export default async (request, response) => {
-  const defaultConfig = {
+  const staticConfig = {
     disableNotificationsPage: appConfig.disableNotificationsPage,
     disableFavicon: appConfig.disableFavicon,
     additionalDrawerLink: appConfig.additionalDrawerLink,
@@ -11,15 +11,12 @@ export default async (request, response) => {
     additionalDrawerLinkText: appConfig.additionalDrawerLinkText,
   };
 
-  let config = await Config.query().orderBy('key', 'asc');
+  const dynamicConfig = await Config.get();
 
-  config = config.reduce((computedConfig, configEntry) => {
-    const { key, value } = configEntry;
+  const dynamicAndStaticConfig = {
+    ...dynamicConfig,
+    ...staticConfig,
+  };
 
-    computedConfig[key] = value?.data;
-
-    return computedConfig;
-  }, defaultConfig);
-
-  renderObject(response, config);
+  renderObject(response, dynamicAndStaticConfig);
 };

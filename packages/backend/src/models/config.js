@@ -5,67 +5,46 @@ class Config extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['key', 'value'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },
-      key: { type: 'string', minLength: 1 },
-      value: { type: 'object' },
+      installationCompleted: { type: 'boolean' },
+      logoSvgData: { type: ['string', 'null'] },
+      palettePrimaryDark: { type: ['string', 'null'] },
+      palettePrimaryLight: { type: ['string', 'null'] },
+      palettePrimaryMain: { type: ['string', 'null'] },
+      title: { type: ['string', 'null'] },
     },
   };
 
+  static async get() {
+    const existingConfig = await this.query().limit(1).first();
+
+    if (!existingConfig) {
+      return await this.query().insertAndFetch({});
+    }
+
+    return existingConfig;
+  }
+
+  static async update(config) {
+    const configEntry = await this.get();
+
+    return await configEntry.$query().patchAndFetch(config);
+  }
+
   static async isInstallationCompleted() {
-    const installationCompletedEntry = await this.query()
-      .where({
-        key: 'installation.completed',
-      })
-      .first();
+    const config = await this.get();
 
-    const installationCompleted =
-      installationCompletedEntry?.value?.data === true;
-
-    return installationCompleted;
+    return config.installationCompleted;
   }
 
   static async markInstallationCompleted() {
-    return await this.query().insert({
-      key: 'installation.completed',
-      value: {
-        data: true,
-      },
+    const config = await this.get();
+
+    return await config.$query().patchAndFetch({
+      installationCompleted: true,
     });
-  }
-
-  static async batchUpdate(config) {
-    const configKeys = Object.keys(config);
-    const updates = [];
-
-    for (const key of configKeys) {
-      const newValue = config[key];
-
-      if (newValue) {
-        const entryUpdate = Config.query()
-          .insert({
-            key,
-            value: {
-              data: newValue,
-            },
-          })
-          .onConflict('key')
-          .merge({
-            value: {
-              data: newValue,
-            },
-          });
-
-        updates.push(entryUpdate);
-      } else {
-        const entryUpdate = Config.query().findOne({ key }).delete();
-        updates.push(entryUpdate);
-      }
-    }
-
-    return await Promise.all(updates);
   }
 }
 

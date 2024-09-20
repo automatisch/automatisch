@@ -5,7 +5,7 @@ import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createRole } from '../../../../../../test/factories/role.js';
-import { createBulkConfig } from '../../../../../../test/factories/config.js';
+import { updateConfig } from '../../../../../../test/factories/config.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
 describe('PATCH /api/v1/admin/config', () => {
@@ -30,13 +30,13 @@ describe('PATCH /api/v1/admin/config', () => {
 
     const appConfig = {
       title,
-      'palette.primary.main': palettePrimaryMain,
-      'palette.primary.dark': palettePrimaryDark,
-      'palette.primary.light': palettePrimaryLight,
-      'logo.svgData': logoSvgData,
+      palettePrimaryMain: palettePrimaryMain,
+      palettePrimaryDark: palettePrimaryDark,
+      palettePrimaryLight: palettePrimaryLight,
+      logoSvgData: logoSvgData,
     };
 
-    await createBulkConfig(appConfig);
+    await updateConfig(appConfig);
 
     const newTitle = 'Updated title';
 
@@ -51,7 +51,7 @@ describe('PATCH /api/v1/admin/config', () => {
       .expect(200);
 
     expect(response.body.data.title).toEqual(newTitle);
-    expect(response.body.meta.type).toEqual('Object');
+    expect(response.body.meta.type).toEqual('Config');
   });
 
   it('should return created config for unexisting config', async () => {
@@ -68,7 +68,7 @@ describe('PATCH /api/v1/admin/config', () => {
       .expect(200);
 
     expect(response.body.data.title).toEqual(newTitle);
-    expect(response.body.meta.type).toEqual('Object');
+    expect(response.body.meta.type).toEqual('Config');
   });
 
   it('should return null for deleted config entry', async () => {
@@ -83,6 +83,6 @@ describe('PATCH /api/v1/admin/config', () => {
       .expect(200);
 
     expect(response.body.data.title).toBeNull();
-    expect(response.body.meta.type).toEqual('Object');
+    expect(response.body.meta.type).toEqual('Config');
   });
 });

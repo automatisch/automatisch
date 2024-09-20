@@ -3,19 +3,17 @@ import { renderObject } from '../../../../../helpers/renderer.js';
 import Config from '../../../../../models/config.js';
 
 export default async (request, response) => {
-  const config = configParams(request);
+  const updatedConfig = await Config.update(configParams(request));
 
-  await Config.batchUpdate(config);
-
-  renderObject(response, config);
+  renderObject(response, updatedConfig);
 };
 
 const configParams = (request) => {
   const updatableConfigurationKeys = [
-    'logo.svgData',
-    'palette.primary.dark',
-    'palette.primary.light',
-    'palette.primary.main',
+    'logoSvgData',
+    'palettePrimaryDark',
+    'palettePrimaryLight',
+    'palettePrimaryMain',
     'title',
   ];
 
