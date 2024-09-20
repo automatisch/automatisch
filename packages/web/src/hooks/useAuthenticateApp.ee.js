@@ -12,6 +12,7 @@ import useCreateConnection from './useCreateConnection';
 import useCreateConnectionAuthUrl from './useCreateConnectionAuthUrl';
 import useUpdateConnection from './useUpdateConnection';
 import useResetConnection from './useResetConnection';
+import useVerifyConnection from './useVerifyConnection';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -39,6 +40,7 @@ export default function useAuthenticateApp(payload) {
     React.useState(false);
   const formatMessage = useFormatMessage();
   const steps = getSteps(auth?.data, !!connectionId, useShared);
+  const { mutateAsync: verifyConnection } = useVerifyConnection();
 
   const authenticate = React.useMemo(() => {
     if (!steps?.length) return;
@@ -91,6 +93,9 @@ export default function useAuthenticateApp(payload) {
               const stepResponse = await resetConnection(response.connectionId);
 
               response[step.name] = stepResponse.data;
+            } else if (step.name === 'verifyConnection') {
+              const stepResponse = await verifyConnection(variables?.id);
+              response[step.name] = stepResponse?.data;
             } else {
               const stepResponse = await processMutation(step.name, variables);
               response[step.name] = stepResponse;
