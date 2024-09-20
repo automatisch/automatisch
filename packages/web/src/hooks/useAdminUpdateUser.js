@@ -3,7 +3,7 @@ import api from 'helpers/api';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useFormatMessage from 'hooks/useFormatMessage';
 
-export default function useAdminUpdateRole(userId) {
+export default function useAdminUpdateUser(userId) {
   const queryClient = useQueryClient();
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
@@ -27,7 +27,7 @@ export default function useAdminUpdateRole(userId) {
           'data-test': 'snackbar-error',
         },
       });
-    }
+    },
   });
 
   return query;
