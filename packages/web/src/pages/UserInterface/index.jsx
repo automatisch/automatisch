@@ -2,7 +2,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import merge from 'lodash/merge';
+import mergeWith from 'lodash/mergeWith';
 import * as React from 'react';
 
 import ColorInput from 'components/ColorInput';
@@ -10,7 +10,6 @@ import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
-import nestObject from 'helpers/nestObject';
 import useAdminUpdateConfig from 'hooks/useAdminUpdateConfig';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -27,9 +26,17 @@ const getPrimaryLightColor = (color) => color || primaryLightColor;
 
 const defaultValues = {
   title: 'Automatisch',
-  'palette.primary.main': primaryMainColor,
-  'palette.primary.dark': primaryDarkColor,
-  'palette.primary.light': primaryLightColor,
+  palettePrimaryMain: primaryMainColor,
+  palettePrimaryDark: primaryDarkColor,
+  palettePrimaryLight: primaryLightColor,
+};
+
+const mergeIfGiven = (oldValue, newValue) => {
+  if (newValue) {
+    return newValue;
+  }
+
+  return oldValue;
 };
 
 export default function UserInterface() {
@@ -39,21 +46,16 @@ export default function UserInterface() {
   const config = configData?.data;
 
   const enqueueSnackbar = useEnqueueSnackbar();
-  const configWithDefaults = merge({}, defaultValues, nestObject(config));
+  const configWithDefaults = mergeWith(defaultValues, config, mergeIfGiven);
+
   const handleUserInterfaceUpdate = async (uiData) => {
     try {
       const input = {
-        title: uiData?.title,
-        'palette.primary.main': getPrimaryMainColor(
-          uiData?.palette?.primary.main,
-        ),
-        'palette.primary.dark': getPrimaryDarkColor(
-          uiData?.palette?.primary.dark,
-        ),
-        'palette.primary.light': getPrimaryLightColor(
-          uiData?.palette?.primary.light,
-        ),
-        'logo.svgData': uiData?.logo?.svgData,
+        title: uiData.title,
+        palettePrimaryMain: getPrimaryMainColor(uiData.palettePrimaryMain),
+        palettePrimaryDark: getPrimaryDarkColor(uiData.palettePrimaryDark),
+        palettePrimaryLight: getPrimaryLightColor(uiData.palettePrimaryLight),
+        'logo.svgData': uiData.logoSvgData,
       };
       await updateConfig(input);
       enqueueSnackbar(formatMessage('userInterfacePage.successfullyUpdated'), {
@@ -66,6 +68,7 @@ export default function UserInterface() {
       throw new Error('Failed while updating!');
     }
   };
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -96,7 +99,7 @@ export default function UserInterface() {
                 />
 
                 <ColorInput
-                  name="palette.primary.main"
+                  name="palettePrimaryMain"
                   label={formatMessage(
                     'userInterfacePage.primaryMainColorFieldLabel',
                   )}
@@ -105,7 +108,7 @@ export default function UserInterface() {
                 />
 
                 <ColorInput
-                  name="palette.primary.dark"
+                  name="palettePrimaryDark"
                   label={formatMessage(
                     'userInterfacePage.primaryDarkColorFieldLabel',
                   )}
@@ -114,7 +117,7 @@ export default function UserInterface() {
                 />
 
                 <ColorInput
-                  name="palette.primary.light"
+                  name="palettePrimaryLight"
                   label={formatMessage(
                     'userInterfacePage.primaryLightColorFieldLabel',
                   )}
@@ -123,7 +126,7 @@ export default function UserInterface() {
                 />
 
                 <TextField
-                  name="logo.svgData"
+                  name="logoSvgData"
                   label={formatMessage('userInterfacePage.svgDataFieldLabel')}
                   multiline
                   fullWidth
