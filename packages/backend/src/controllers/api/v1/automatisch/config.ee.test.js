@@ -13,7 +13,7 @@ describe('GET /api/v1/automatisch/config', () => {
     const logoConfig = await updateConfig({
       logoSvgData: '<svg>Sample</svg>',
       palettePrimaryDark: '#001f52',
-      palettePrimrayLight: '#4286FF',
+      palettePrimaryLight: '#4286FF',
       palettePrimaryMain: '#0059F7',
       title: 'Sample Title',
     });
