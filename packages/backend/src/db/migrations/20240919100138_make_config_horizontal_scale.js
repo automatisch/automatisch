@@ -1,61 +1,47 @@
-function getValueForKey(rows, key) {
-  const row = rows.find((row) => row.key === key);
-
-  return row?.value?.data || null;
-}
-
 export async function up(knex) {
   await knex.schema.alterTable('config', (table) => {
-    table.dropPrimary();
     table.dropUnique('key');
-  });
 
-  await knex.schema.renameTable('config', 'config_old');
-
-  await knex.schema.createTable('config', (table) => {
-    table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'));
+    table.string('key').nullable().alter();
     table.boolean('installation_completed').defaultTo(false);
     table.text('logo_svg_data');
     table.text('palette_primary_dark');
     table.text('palette_primary_light');
     table.text('palette_primary_main');
     table.string('title');
-
-    table.timestamps(true, true);
   });
 
-  const oldConfig = await knex('config_old').select('key', 'value');
+  const config = await knex('config').select('key', 'value');
 
-  const singletonData = {
-    logo_svg_data: getValueForKey(oldConfig, 'logo.svgData'),
-    palette_primary_dark: getValueForKey(oldConfig, 'palette.primary.dark'),
-    palette_primary_light: getValueForKey(oldConfig, 'palette.primary.light'),
-    palette_primary_main: getValueForKey(oldConfig, 'palette.primary.main'),
-    title: getValueForKey(oldConfig, 'title'),
-    installation_completed: getValueForKey(oldConfig, 'installation.completed'),
+  const newConfigData = {
+    logo_svg_data: getValueForKey(config, 'logo.svgData'),
+    palette_primary_dark: getValueForKey(config, 'palette.primary.dark'),
+    palette_primary_light: getValueForKey(config, 'palette.primary.light'),
+    palette_primary_main: getValueForKey(config, 'palette.primary.main'),
+    title: getValueForKey(config, 'title'),
+    installation_completed: getValueForKey(config, 'installation.completed'),
   };
 
-  await knex('config').insert(singletonData);
+  const [configEntry] = await knex('config')
+    .insert(newConfigData)
+    .select('id')
+    .returning('id');
 
-  await knex.schema.dropTable('config_old');
+  await knex('config').where('id', '!=', configEntry.id).delete();
+
+  await knex.schema.alterTable('config', (table) => {
+    table.dropColumn('key');
+    table.dropColumn('value');
+  });
 }
 
 export async function down(knex) {
   await knex.schema.alterTable('config', (table) => {
-    table.dropPrimary();
-  });
-
-  await knex.schema.renameTable('config', 'config_old');
-
-  await knex.schema.createTable('config', (table) => {
-    table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'));
-    table.string('key').unique().notNullable();
+    table.string('key');
     table.jsonb('value').notNullable().defaultTo({});
-
-    table.timestamps(true, true);
   });
 
-  const configRow = await knex('config_old').first();
+  const configRow = await knex('config').first();
 
   const config = [
     {
@@ -96,7 +82,24 @@ export async function down(knex) {
     },
   ];
 
-  await knex('config').insert(config);
+  await knex('config').insert(config).returning('id');
 
-  await knex.schema.dropTable('config_old');
+  await knex('config').where('id', '=', configRow.id).delete();
+
+  await knex.schema.alterTable('config', (table) => {
+    table.dropColumn('installation_completed');
+    table.dropColumn('logo_svg_data');
+    table.dropColumn('palette_primary_dark');
+    table.dropColumn('palette_primary_light');
+    table.dropColumn('palette_primary_main');
+    table.dropColumn('title');
+
+    table.string('key').unique().notNullable().alter();
+  });
+}
+
+function getValueForKey(rows, key) {
+  const row = rows.find((row) => row.key === key);
+
+  return row?.value?.data || null;
 }
