@@ -1,6 +1,5 @@
 // Converted mutations
 import executeFlow from './mutations/execute-flow.js';
-import updateUser from './mutations/update-user.ee.js';
 import verifyConnection from './mutations/verify-connection.js';
 import updateCurrentUser from './mutations/update-current-user.js';
 import generateAuthUrl from './mutations/generate-auth-url.js';
@@ -15,7 +14,6 @@ const mutationResolvers = {
   resetConnection,
   updateConnection,
   updateCurrentUser,
-  updateUser,
   verifyConnection,
 };
 

@@ -8,7 +8,6 @@ type Mutation {
   resetConnection(input: ResetConnectionInput): Connection
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
-  updateUser(input: UpdateUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
 }
 
@@ -239,13 +238,6 @@ input ExecuteFlowInput {
 
 input UserRoleInput {
   id: String
-}
-
-input UpdateUserInput {
-  id: String!
-  fullName: String
-  email: String
-  role: UserRoleInput
 }
 
 input UpdateCurrentUserInput {

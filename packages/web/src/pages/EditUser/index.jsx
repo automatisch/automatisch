@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
@@ -9,7 +8,6 @@ import MuiTextField from '@mui/material/TextField';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 
 import Can from 'components/Can';
 import Container from 'components/Container';
@@ -18,9 +16,9 @@ import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
-import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
+import useAdminUpdateUser from 'hooks/useAdminUpdateUser';
 import useAdminUser from 'hooks/useAdminUser';
 
 function generateRoleOptions(roles) {
@@ -29,31 +27,23 @@ function generateRoleOptions(roles) {
 
 export default function EditUser() {
   const formatMessage = useFormatMessage();
-  const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
+  const { mutateAsync: updateUser, isPending: isAdminUpdateUserPending } =
+    useAdminUpdateUser(userId);
   const { data: userData, isLoading: isUserLoading } = useAdminUser({ userId });
   const user = userData?.data;
   const { data, isLoading: isRolesLoading } = useRoles();
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const handleUserUpdate = async (userDataToUpdate) => {
     try {
       await updateUser({
-        variables: {
-          input: {
-            id: userId,
-            fullName: userDataToUpdate.fullName,
-            email: userDataToUpdate.email,
-            role: {
-              id: userDataToUpdate.role?.id,
-            },
-          },
-        },
+        fullName: userDataToUpdate.fullName,
+        email: userDataToUpdate.email,
+        roleId: userDataToUpdate.role?.id,
       });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
 
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',
@@ -142,7 +132,7 @@ export default function EditUser() {
                   variant="contained"
                   color="primary"
                   sx={{ boxShadow: 2 }}
-                  loading={loading}
+                  loading={isAdminUpdateUserPending}
                   data-test="update-button"
                 >
                   {formatMessage('editUser.submit')}
