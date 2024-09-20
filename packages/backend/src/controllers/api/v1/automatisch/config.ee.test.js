@@ -10,7 +10,7 @@ describe('GET /api/v1/automatisch/config', () => {
   it('should return Automatisch config', async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-    const logoConfig = await updateConfig({
+    const config = await updateConfig({
       logoSvgData: '<svg>Sample</svg>',
       palettePrimaryDark: '#001f52',
       palettePrimaryLight: '#4286FF',
@@ -22,9 +22,9 @@ describe('GET /api/v1/automatisch/config', () => {
       .get('/api/v1/automatisch/config')
       .expect(200);
 
-    const expectedPayload = configMock(logoConfig);
+    const expectedPayload = configMock(config);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return additional environment variables', async () => {

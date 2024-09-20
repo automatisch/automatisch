@@ -13,10 +13,7 @@ export default async (request, response) => {
 
   const dynamicConfig = await Config.get();
 
-  const dynamicAndStaticConfig = {
-    ...dynamicConfig,
-    ...staticConfig,
-  };
+  const dynamicAndStaticConfig = Object.assign(dynamicConfig, staticConfig);
 
   renderObject(response, dynamicAndStaticConfig);
 };
