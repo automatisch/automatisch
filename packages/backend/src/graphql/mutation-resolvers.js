@@ -1,8 +1,3 @@
-// Converted mutations
-import verifyConnection from './mutations/verify-connection.js';
-
-const mutationResolvers = {
-  verifyConnection,
-};
+const mutationResolvers = {};
 
 export default mutationResolvers;

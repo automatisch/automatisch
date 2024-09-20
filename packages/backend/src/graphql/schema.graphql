@@ -3,7 +3,7 @@ type Query {
 }
 
 type Mutation {
-  verifyConnection(input: VerifyConnectionInput): Connection
+  placeholderQuery(name: String): Boolean
 }
 
 type Trigger {
@@ -182,10 +182,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-input VerifyConnectionInput {
-  id: String!
 }
 
 input UserRoleInput {
