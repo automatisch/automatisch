@@ -2,6 +2,7 @@ import { Model } from 'objection';
 import { client as knex } from '../../src/config/database.js';
 import logger from '../../src/helpers/logger.js';
 import { vi } from 'vitest';
+import './insert-assertions.js';
 
 global.beforeAll(async () => {
   global.knex = null;
