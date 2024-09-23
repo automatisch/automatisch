@@ -1,21 +1,28 @@
-import pick from 'lodash/pick.js';
 import { renderObject } from '../../../../../helpers/renderer.js';
 import Config from '../../../../../models/config.js';
 
 export default async (request, response) => {
-  const updatedConfig = await Config.update(configParams(request));
+  const config = await Config.query().updateFirstOrInsert(
+    configParams(request)
+  );
 
-  renderObject(response, updatedConfig);
+  renderObject(response, config);
 };
 
 const configParams = (request) => {
-  const updatableConfigurationKeys = [
-    'logoSvgData',
-    'palettePrimaryDark',
-    'palettePrimaryLight',
-    'palettePrimaryMain',
-    'title',
-  ];
+  const {
+    logoSvgData,
+    palettePrimaryDark,
+    palettePrimaryLight,
+    palettePrimaryMain,
+    title,
+  } = request.body;
 
-  return pick(request.body, updatableConfigurationKeys);
+  return {
+    logoSvgData,
+    palettePrimaryDark,
+    palettePrimaryLight,
+    palettePrimaryMain,
+    title,
+  };
 };
