@@ -23,6 +23,7 @@ env:
   REDIS_HOST: localhost
   APP_ENV: production
   LICENSE_KEY: dummy_license_key
+  BACKEND_APP_URL: http://localhost:3000
 
 jobs:
   test:
