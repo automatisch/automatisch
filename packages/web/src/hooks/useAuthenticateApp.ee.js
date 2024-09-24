@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
-  processMutation,
   processOpenWithPopup,
   processPopupMessage,
 } from 'helpers/authenticationSteps';
@@ -100,9 +99,6 @@ export default function useAuthenticateApp(payload) {
                 response.connectionId,
               );
               response[step.name] = stepResponse?.data;
-            } else {
-              const stepResponse = await processMutation(step.name, variables);
-              response[step.name] = stepResponse;
             }
           } else if (step.type === 'openWithPopup') {
             const stepResponse = await processPopupMessage(popup);
