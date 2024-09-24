@@ -71,10 +71,6 @@ const authenticationStepsWithAuthUrl = [
     name: 'updateConnection',
     arguments: [
       {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-      {
         name: 'formattedData',
         value: '{openAuthPopup.all}',
       },
@@ -110,12 +106,7 @@ const sharedAuthenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'generateAuthUrl',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
   {
     type: 'openWithPopup',
@@ -131,10 +122,6 @@ const sharedAuthenticationStepsWithAuthUrl = [
     type: 'mutation',
     name: 'updateConnection',
     arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
       {
         name: 'formattedData',
         value: '{openAuthPopup.all}',
