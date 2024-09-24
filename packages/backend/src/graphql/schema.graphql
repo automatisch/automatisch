@@ -3,7 +3,6 @@ type Query {
 }
 
 type Mutation {
-  resetConnection(input: ResetConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
 }
@@ -184,10 +183,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-input ResetConnectionInput {
-  id: String!
 }
 
 input VerifyConnectionInput {
