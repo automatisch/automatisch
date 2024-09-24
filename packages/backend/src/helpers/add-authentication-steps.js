@@ -54,12 +54,7 @@ const authenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'generateAuthUrl',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
   {
     type: 'openWithPopup',

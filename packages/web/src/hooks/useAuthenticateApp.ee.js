@@ -9,6 +9,7 @@ import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import useAppAuth from './useAppAuth';
 import useCreateConnection from './useCreateConnection';
 import useFormatMessage from './useFormatMessage';
+import useCreateConnectionAuthUrl from './useCreateConnectionAuthUrl';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -29,6 +30,7 @@ export default function useAuthenticateApp(payload) {
   const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
   const { data: auth } = useAppAuth(appKey);
   const { mutateAsync: createConnection } = useCreateConnection(appKey);
+  const { mutateAsync: createConnectionAuthUrl } = useCreateConnectionAuthUrl();
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
   const formatMessage = useFormatMessage();
@@ -69,6 +71,11 @@ export default function useAuthenticateApp(payload) {
           if (step.type === 'mutation') {
             if (step.name === 'createConnection') {
               const stepResponse = await createConnection(variables);
+              response[step.name] = stepResponse?.data;
+            } else if (step.name === 'generateAuthUrl') {
+              const stepResponse = await createConnectionAuthUrl(
+                response.createConnection.id,
+              );
               response[step.name] = stepResponse?.data;
             } else {
               const stepResponse = await processMutation(step.name, variables);

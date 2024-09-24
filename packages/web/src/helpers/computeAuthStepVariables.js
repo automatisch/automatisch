@@ -6,7 +6,7 @@ const computeAuthStepVariables = (variableSchema, aggregatedData) => {
     if (variable.properties) {
       variables[variable.name] = computeAuthStepVariables(
         variable.properties,
-        aggregatedData
+        aggregatedData,
       );
       continue;
     }
@@ -17,7 +17,7 @@ const computeAuthStepVariables = (variableSchema, aggregatedData) => {
         continue;
       }
       const computedVariable = template(variable.value, { interpolate })(
-        aggregatedData
+        aggregatedData,
       );
       variables[variable.name] = computedVariable;
     }
