@@ -1,23 +1,13 @@
 type Query {
   placeholderQuery(name: String): Boolean
 }
+
 type Mutation {
-  generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   resetConnection(input: ResetConnectionInput): Connection
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
 }
-
-"""
-Exposes a URL that specifies the behaviour of this scalar.
-"""
-directive @specifiedBy(
-  """
-  The URL that specifies the behaviour of this scalar.
-  """
-  url: String!
-) on SCALAR
 
 type Trigger {
   name: String
@@ -131,10 +121,6 @@ type AuthenticationStepProperty {
   value: String
 }
 
-type AuthLink {
-  url: String
-}
-
 type Connection {
   id: String
   key: String
@@ -199,10 +185,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-input GenerateAuthUrlInput {
-  id: String!
 }
 
 input UpdateConnectionInput {
