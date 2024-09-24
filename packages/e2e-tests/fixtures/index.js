@@ -35,7 +35,7 @@ exports.test = test.extend({
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));
   },
-  ...adminFixtures
+  ...adminFixtures,
 });
 
 exports.publicTest = test.extend({
@@ -49,21 +49,18 @@ exports.publicTest = test.extend({
 
     await use(loginPage);
   },
-
   acceptInvitationPage: async ({ page }, use) => {
     const acceptInvitationPage = new AcceptInvitation(page);
     await use(acceptInvitationPage);
   },
-
   adminSetupPage: async ({ page }, use) => {
     const adminSetupPage = new AdminSetupPage(page);
     await use(adminSetupPage);
   },
-
-  adminCreateUserPage: async ({page}, use) => {
+  adminCreateUserPage: async ({ page }, use) => {
     const adminCreateUserPage = new AdminCreateUserPage(page);
     await use(adminCreateUserPage);
-  }
+  },
 });
 
 expect.extend({
