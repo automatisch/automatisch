@@ -160,6 +160,7 @@ function ProfileSettings() {
                   variant="contained"
                   type="submit"
                   disabled={!isDirty || !isValid || isSubmitting}
+                  data-test="update-profile-button"
                 >
                   {formatMessage('profileSettings.updateProfile')}
                 </Button>

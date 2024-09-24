@@ -8,6 +8,7 @@ export class AuthenticatedPage extends BasePage {
     super(page);
 
     this.profileMenuButton = this.page.getByTestId('profile-menu-button');
+    this.logoutMenuItem = this.page.getByTestId('logout-item');
     this.adminMenuItem = this.page.getByRole('menuitem', { name: 'Admin' });
     this.userInterfaceDrawerItem = this.page.getByTestId(
       'user-interface-drawer-link'
@@ -17,5 +18,10 @@ export class AuthenticatedPage extends BasePage {
     this.goToDashboardButton = this.page.getByTestId('go-back-drawer-link');
     this.typographyLogo = this.page.getByTestId('typography-logo');
     this.customLogo = this.page.getByTestId('custom-logo');
+  }
+
+  async logout() {
+    await this.profileMenuButton.click();
+    await this.logoutMenuItem.click();
   }
 }
