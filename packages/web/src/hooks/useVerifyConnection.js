@@ -10,8 +10,12 @@ export default function useVerifyConnection() {
         );
 
         return data;
-      } catch {
-        throw new Error('Failed while verifying connection!');
+      } catch (err) {
+        if (err.response.status === 500) {
+          throw new Error('Failed while verifying connection!');
+        }
+
+        throw err;
       }
     },
   });
