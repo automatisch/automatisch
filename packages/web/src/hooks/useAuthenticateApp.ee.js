@@ -6,10 +6,11 @@ import {
   processPopupMessage,
 } from 'helpers/authenticationSteps';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
+import useFormatMessage from './useFormatMessage';
 import useAppAuth from './useAppAuth';
 import useCreateConnection from './useCreateConnection';
-import useFormatMessage from './useFormatMessage';
 import useCreateConnectionAuthUrl from './useCreateConnectionAuthUrl';
+import useUpdateConnection from './useUpdateConnection';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -31,6 +32,7 @@ export default function useAuthenticateApp(payload) {
   const { data: auth } = useAppAuth(appKey);
   const { mutateAsync: createConnection } = useCreateConnection(appKey);
   const { mutateAsync: createConnectionAuthUrl } = useCreateConnectionAuthUrl();
+  const { mutateAsync: updateConnection } = useUpdateConnection();
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
   const formatMessage = useFormatMessage();
@@ -77,6 +79,13 @@ export default function useAuthenticateApp(payload) {
                 response.createConnection.id,
               );
               response[step.name] = stepResponse?.data;
+            } else if (step.name === 'updateConnection') {
+              const stepResponse = await updateConnection({
+                ...variables,
+                connectionId: response.createConnection.id,
+              });
+
+              response[step.name] = stepResponse?.data;
             } else {
               const stepResponse = await processMutation(step.name, variables);
               response[step.name] = stepResponse;
@@ -98,7 +107,16 @@ export default function useAuthenticateApp(payload) {
         setAuthenticationInProgress(false);
       }
     };
-  }, [steps, appKey, appAuthClientId, connectionId, formatMessage]);
+  }, [
+    steps,
+    appKey,
+    appAuthClientId,
+    connectionId,
+    formatMessage,
+    createConnection,
+    createConnectionAuthUrl,
+    updateConnection,
+  ]);
 
   return {
     authenticate,
