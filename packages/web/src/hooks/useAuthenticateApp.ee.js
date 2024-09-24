@@ -11,6 +11,7 @@ import useAppAuth from './useAppAuth';
 import useCreateConnection from './useCreateConnection';
 import useCreateConnectionAuthUrl from './useCreateConnectionAuthUrl';
 import useUpdateConnection from './useUpdateConnection';
+import useResetConnection from './useResetConnection';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -33,6 +34,7 @@ export default function useAuthenticateApp(payload) {
   const { mutateAsync: createConnection } = useCreateConnection(appKey);
   const { mutateAsync: createConnectionAuthUrl } = useCreateConnectionAuthUrl();
   const { mutateAsync: updateConnection } = useUpdateConnection();
+  const { mutateAsync: resetConnection } = useResetConnection();
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
   const formatMessage = useFormatMessage();
@@ -48,9 +50,7 @@ export default function useAuthenticateApp(payload) {
       const response = {
         key: appKey,
         appAuthClientId: appAuthClientId || payload.appAuthClientId,
-        connection: {
-          id: connectionId,
-        },
+        connectionId,
         fields,
       };
       let stepIndex = 0;
@@ -73,19 +73,24 @@ export default function useAuthenticateApp(payload) {
           if (step.type === 'mutation') {
             if (step.name === 'createConnection') {
               const stepResponse = await createConnection(variables);
-              response[step.name] = stepResponse?.data;
+              response[step.name] = stepResponse.data;
+              response.connectionId = stepResponse.data.id;
             } else if (step.name === 'generateAuthUrl') {
               const stepResponse = await createConnectionAuthUrl(
-                response.createConnection.id,
+                response.connectionId,
               );
-              response[step.name] = stepResponse?.data;
+              response[step.name] = stepResponse.data;
             } else if (step.name === 'updateConnection') {
               const stepResponse = await updateConnection({
                 ...variables,
-                connectionId: response.createConnection.id,
+                connectionId: response.connectionId,
               });
 
-              response[step.name] = stepResponse?.data;
+              response[step.name] = stepResponse.data;
+            } else if (step.name === 'resetConnection') {
+              const stepResponse = await resetConnection(response.connectionId);
+
+              response[step.name] = stepResponse.data;
             } else {
               const stepResponse = await processMutation(step.name, variables);
               response[step.name] = stepResponse;
@@ -116,6 +121,7 @@ export default function useAuthenticateApp(payload) {
     createConnection,
     createConnectionAuthUrl,
     updateConnection,
+    resetConnection,
   ]);
 
   return {
