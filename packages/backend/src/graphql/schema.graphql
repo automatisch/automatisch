@@ -4,7 +4,6 @@ type Query {
 
 type Mutation {
   resetConnection(input: ResetConnectionInput): Connection
-  updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
 }
@@ -185,12 +184,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-input UpdateConnectionInput {
-  id: String!
-  formattedData: JSONObject
-  appAuthClientId: String
 }
 
 input ResetConnectionInput {
