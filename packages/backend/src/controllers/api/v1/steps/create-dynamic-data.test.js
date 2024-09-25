@@ -169,7 +169,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-data', () => {
           dynamicDataKey: 'listRepos',
           parameters: {},
         })
-        .expect(200);
+        .expect(422);
 
       expect(response.body.errors).toEqual(errors);
     });
