@@ -27,12 +27,7 @@ const authenticationStepsWithoutAuthUrl = [
   {
     type: 'mutation',
     name: 'verifyConnection',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
 ];
 
@@ -79,12 +74,7 @@ const authenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'verifyConnection',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
 ];
 
@@ -131,12 +121,7 @@ const sharedAuthenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'verifyConnection',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
 ];
 
