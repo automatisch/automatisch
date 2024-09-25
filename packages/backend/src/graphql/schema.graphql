@@ -2,7 +2,6 @@ type Query {
   placeholderQuery(name: String): Boolean
 }
 type Mutation {
-  createConnection(input: CreateConnectionInput): Connection
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   resetConnection(input: ResetConnectionInput): Connection
   updateConnection(input: UpdateConnectionInput): Connection
@@ -200,12 +199,6 @@ type SamlAuthProvidersRoleMapping {
   samlAuthProviderId: String
   roleId: String
   remoteRoleName: String
-}
-
-input CreateConnectionInput {
-  key: String!
-  appAuthClientId: String
-  formattedData: JSONObject
 }
 
 input GenerateAuthUrlInput {

@@ -7,6 +7,7 @@ import {
 } from 'helpers/authenticationSteps';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
 import useAppAuth from './useAppAuth';
+import useCreateConnection from './useCreateConnection';
 import useFormatMessage from './useFormatMessage';
 
 function getSteps(auth, hasConnection, useShared) {
@@ -27,6 +28,7 @@ function getSteps(auth, hasConnection, useShared) {
 export default function useAuthenticateApp(payload) {
   const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
   const { data: auth } = useAppAuth(appKey);
+  const { mutateAsync: createConnection } = useCreateConnection(appKey);
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
   const formatMessage = useFormatMessage();
@@ -65,8 +67,13 @@ export default function useAuthenticateApp(payload) {
           }
 
           if (step.type === 'mutation') {
-            const stepResponse = await processMutation(step.name, variables);
-            response[step.name] = stepResponse;
+            if (step.name === 'createConnection') {
+              const stepResponse = await createConnection(variables);
+              response[step.name] = stepResponse?.data;
+            } else {
+              const stepResponse = await processMutation(step.name, variables);
+              response[step.name] = stepResponse;
+            }
           } else if (step.type === 'openWithPopup') {
             const stepResponse = await processPopupMessage(popup);
             response[step.name] = stepResponse;
