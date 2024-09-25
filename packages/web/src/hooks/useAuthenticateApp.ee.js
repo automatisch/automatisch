@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import {
-  processMutation,
   processOpenWithPopup,
   processPopupMessage,
 } from 'helpers/authenticationSteps';
@@ -32,6 +32,7 @@ function getSteps(auth, hasConnection, useShared) {
 export default function useAuthenticateApp(payload) {
   const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
   const { data: auth } = useAppAuth(appKey);
+  const queryClient = useQueryClient();
   const { mutateAsync: createConnection } = useCreateConnection(appKey);
   const { mutateAsync: createConnectionAuthUrl } = useCreateConnectionAuthUrl();
   const { mutateAsync: updateConnection } = useUpdateConnection();
@@ -94,11 +95,10 @@ export default function useAuthenticateApp(payload) {
 
               response[step.name] = stepResponse.data;
             } else if (step.name === 'verifyConnection') {
-              const stepResponse = await verifyConnection(variables?.id);
+              const stepResponse = await verifyConnection(
+                response.connectionId,
+              );
               response[step.name] = stepResponse?.data;
-            } else {
-              const stepResponse = await processMutation(step.name, variables);
-              response[step.name] = stepResponse;
             }
           } else if (step.type === 'openWithPopup') {
             const stepResponse = await processPopupMessage(popup);
@@ -107,26 +107,37 @@ export default function useAuthenticateApp(payload) {
         } catch (err) {
           console.log(err);
           setAuthenticationInProgress(false);
+
+          queryClient.invalidateQueries({
+            queryKey: ['apps', appKey, 'connections'],
+          });
+
           throw err;
         }
-        stepIndex++;
 
-        if (stepIndex === steps.length) {
-          return response;
-        }
-        setAuthenticationInProgress(false);
+        stepIndex++;
       }
+
+      await queryClient.invalidateQueries({
+        queryKey: ['apps', appKey, 'connections'],
+      });
+
+      setAuthenticationInProgress(false);
+
+      return response;
     };
   }, [
     steps,
     appKey,
     appAuthClientId,
     connectionId,
+    queryClient,
     formatMessage,
     createConnection,
     createConnectionAuthUrl,
     updateConnection,
     resetConnection,
+    verifyConnection,
   ]);
 
   return {

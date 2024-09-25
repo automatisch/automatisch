@@ -1,9 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import api from 'helpers/api';
 
 export default function useVerifyConnection() {
-  const queryClient = useQueryClient();
-
   const query = useMutation({
     mutationFn: async (connectionId) => {
       try {
@@ -12,15 +10,13 @@ export default function useVerifyConnection() {
         );
 
         return data;
-      } catch {
-        throw new Error('Failed while verifying connection!');
+      } catch (err) {
+        if (err.response.status === 500) {
+          throw new Error('Failed while verifying connection!');
+        }
+
+        throw err;
       }
-    },
-    onSuccess: (data) => {
-      const appKey = data?.data.key;
-      queryClient.invalidateQueries({
-        queryKey: ['apps', appKey, 'connections'],
-      });
     },
   });
 
