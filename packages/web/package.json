@@ -4,7 +4,6 @@
   "license": "See LICENSE file",
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "dependencies": {
-    "@apollo/client": "^3.6.9",
     "@casl/ability": "^6.5.0",
     "@casl/react": "^3.1.0",
     "@dagrejs/dagre": "^1.1.2",
@@ -21,7 +20,6 @@
     "@testing-library/user-event": "^12.1.10",
     "clipboard-copy": "^4.0.1",
     "compare-versions": "^4.1.3",
-    "graphql": "^15.6.0",
     "lodash": "^4.17.21",
     "luxon": "^2.3.1",
     "mui-color-input": "^2.0.0",

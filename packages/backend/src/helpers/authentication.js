@@ -1,4 +1,3 @@
-import { rule, shield } from 'graphql-shield';
 import User from '../models/user.js';
 import AccessToken from '../models/access-token.js';
 
@@ -47,19 +46,3 @@ export const authenticateUser = async (request, response, next) => {
     return response.status(401).end();
   }
 };
-
-const isAuthenticatedRule = rule()(isAuthenticated);
-
-export const authenticationRules = {
-  Mutation: {
-    '*': isAuthenticatedRule,
-  },
-};
-
-const authenticationOptions = {
-  allowExternalErrors: true,
-};
-
-const authentication = shield(authenticationRules, authenticationOptions);
-
-export default authentication;

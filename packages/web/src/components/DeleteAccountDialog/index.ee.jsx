@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import * as URLS from 'config/urls';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import apolloClient from 'graphql/client';
 import useAuthentication from 'hooks/useAuthentication';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -26,8 +25,6 @@ function DeleteAccountDialog(props) {
     await deleteCurrentUser();
 
     authentication.removeToken();
-
-    await apolloClient.clearStore();
 
     navigate(URLS.LOGIN);
   }, [deleteCurrentUser, authentication, navigate]);

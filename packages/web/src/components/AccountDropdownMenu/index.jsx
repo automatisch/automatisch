@@ -6,11 +6,11 @@ import Menu from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
 
 import Can from 'components/Can';
-import apolloClient from 'graphql/client';
 import * as URLS from 'config/urls';
 import useAuthentication from 'hooks/useAuthentication';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRevokeAccessToken from 'hooks/useRevokeAccessToken';
+
 function AccountDropdownMenu(props) {
   const formatMessage = useFormatMessage();
   const authentication = useAuthentication();
@@ -23,7 +23,6 @@ function AccountDropdownMenu(props) {
     await revokeAccessTokenMutation.mutateAsync();
 
     authentication.removeToken();
-    await apolloClient.clearStore();
     onClose();
     navigate(URLS.LOGIN);
   };

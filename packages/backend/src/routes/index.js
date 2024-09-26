@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import graphQLInstance from '../helpers/graphql-instance.js';
 import webhooksRouter from './webhooks.js';
 import paddleRouter from './paddle.ee.js';
 import healthcheckRouter from './healthcheck.js';
@@ -23,7 +22,6 @@ import installationUsersRouter from './api/v1/installation/users.js';
 
 const router = Router();
 
-router.use('/graphql', graphQLInstance);
 router.use('/webhooks', webhooksRouter);
 router.use('/paddle', paddleRouter);
 router.use('/healthcheck', healthcheckRouter);

@@ -3,7 +3,6 @@ import { Settings } from 'luxon';
 
 import ThemeProvider from 'components/ThemeProvider';
 import IntlProvider from 'components/IntlProvider';
-import ApolloProvider from 'components/ApolloProvider';
 import SnackbarProvider from 'components/SnackbarProvider';
 import MetadataProvider from 'components/MetadataProvider';
 import { AuthenticationProvider } from 'contexts/Authentication';
@@ -23,13 +22,11 @@ root.render(
     <SnackbarProvider>
       <AuthenticationProvider>
         <QueryClientProvider>
-          <ApolloProvider>
-            <IntlProvider>
-              <ThemeProvider>
-                <MetadataProvider>{routes}</MetadataProvider>
-              </ThemeProvider>
-            </IntlProvider>
-          </ApolloProvider>
+          <IntlProvider>
+            <ThemeProvider>
+              <MetadataProvider>{routes}</MetadataProvider>
+            </ThemeProvider>
+          </IntlProvider>
         </QueryClientProvider>
       </AuthenticationProvider>
     </SnackbarProvider>
