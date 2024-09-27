@@ -5,7 +5,6 @@ type Mutation {
   generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
   resetConnection(input: ResetConnectionInput): Connection
   updateConnection(input: UpdateConnectionInput): Connection
-  updateCurrentUser(input: UpdateCurrentUserInput): User
   verifyConnection(input: VerifyConnectionInput): Connection
 }
 
@@ -221,12 +220,6 @@ input VerifyConnectionInput {
 
 input UserRoleInput {
   id: String
-}
-
-input UpdateCurrentUserInput {
-  email: String
-  password: String
-  fullName: String
 }
 
 """

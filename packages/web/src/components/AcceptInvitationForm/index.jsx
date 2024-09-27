@@ -86,7 +86,6 @@ export default function ResetPasswordForm() {
                   : ''
               }
             />
-
             <TextField
               label={formatMessage(
                 'acceptInvitationForm.confirmPasswordFieldLabel',
@@ -111,7 +110,7 @@ export default function ResetPasswordForm() {
 
             {acceptInvitation.isError && (
               <Alert
-                data-test='accept-invitation-form-error'
+                data-test="accept-invitation-form-error"
                 severity="error"
                 sx={{ mt: 1, fontWeight: 500 }}
               >
