@@ -5,7 +5,7 @@ class Datastore extends Base {
 
   static jsonSchema = {
     type: 'object',
-    required: ['key', 'value', 'scope', 'scopeId'],
+    required: ['key', 'value', 'scopeId'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },

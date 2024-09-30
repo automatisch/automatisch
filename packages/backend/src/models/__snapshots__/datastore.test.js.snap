@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Datastore model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "key": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "scope": {
+      "default": "flow",
+      "enum": [
+        "flow",
+      ],
+      "type": "string",
+    },
+    "scopeId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "value": {
+      "type": "string",
+    },
+  },
+  "required": [
+    "key",
+    "value",
+    "scopeId",
+  ],
+  "type": "object",
+}
+`;
