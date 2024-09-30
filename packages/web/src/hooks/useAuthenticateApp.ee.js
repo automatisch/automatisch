@@ -1,14 +1,18 @@
 import * as React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import {
-  processMutation,
   processOpenWithPopup,
   processPopupMessage,
 } from 'helpers/authenticationSteps';
 import computeAuthStepVariables from 'helpers/computeAuthStepVariables';
+import useFormatMessage from './useFormatMessage';
 import useAppAuth from './useAppAuth';
 import useCreateConnection from './useCreateConnection';
-import useFormatMessage from './useFormatMessage';
+import useCreateConnectionAuthUrl from './useCreateConnectionAuthUrl';
+import useUpdateConnection from './useUpdateConnection';
+import useResetConnection from './useResetConnection';
+import useVerifyConnection from './useVerifyConnection';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -28,11 +32,16 @@ function getSteps(auth, hasConnection, useShared) {
 export default function useAuthenticateApp(payload) {
   const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
   const { data: auth } = useAppAuth(appKey);
+  const queryClient = useQueryClient();
   const { mutateAsync: createConnection } = useCreateConnection(appKey);
+  const { mutateAsync: createConnectionAuthUrl } = useCreateConnectionAuthUrl();
+  const { mutateAsync: updateConnection } = useUpdateConnection();
+  const { mutateAsync: resetConnection } = useResetConnection();
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
   const formatMessage = useFormatMessage();
   const steps = getSteps(auth?.data, !!connectionId, useShared);
+  const { mutateAsync: verifyConnection } = useVerifyConnection();
 
   const authenticate = React.useMemo(() => {
     if (!steps?.length) return;
@@ -44,9 +53,7 @@ export default function useAuthenticateApp(payload) {
       const response = {
         key: appKey,
         appAuthClientId: appAuthClientId || payload.appAuthClientId,
-        connection: {
-          id: connectionId,
-        },
+        connectionId,
         fields,
       };
       let stepIndex = 0;
@@ -69,10 +76,29 @@ export default function useAuthenticateApp(payload) {
           if (step.type === 'mutation') {
             if (step.name === 'createConnection') {
               const stepResponse = await createConnection(variables);
+              response[step.name] = stepResponse.data;
+              response.connectionId = stepResponse.data.id;
+            } else if (step.name === 'generateAuthUrl') {
+              const stepResponse = await createConnectionAuthUrl(
+                response.connectionId,
+              );
+              response[step.name] = stepResponse.data;
+            } else if (step.name === 'updateConnection') {
+              const stepResponse = await updateConnection({
+                ...variables,
+                connectionId: response.connectionId,
+              });
+
+              response[step.name] = stepResponse.data;
+            } else if (step.name === 'resetConnection') {
+              const stepResponse = await resetConnection(response.connectionId);
+
+              response[step.name] = stepResponse.data;
+            } else if (step.name === 'verifyConnection') {
+              const stepResponse = await verifyConnection(
+                response.connectionId,
+              );
               response[step.name] = stepResponse?.data;
-            } else {
-              const stepResponse = await processMutation(step.name, variables);
-              response[step.name] = stepResponse;
             }
           } else if (step.type === 'openWithPopup') {
             const stepResponse = await processPopupMessage(popup);
@@ -81,17 +107,38 @@ export default function useAuthenticateApp(payload) {
         } catch (err) {
           console.log(err);
           setAuthenticationInProgress(false);
+
+          queryClient.invalidateQueries({
+            queryKey: ['apps', appKey, 'connections'],
+          });
+
           throw err;
         }
-        stepIndex++;
 
-        if (stepIndex === steps.length) {
-          return response;
-        }
-        setAuthenticationInProgress(false);
+        stepIndex++;
       }
+
+      await queryClient.invalidateQueries({
+        queryKey: ['apps', appKey, 'connections'],
+      });
+
+      setAuthenticationInProgress(false);
+
+      return response;
     };
-  }, [steps, appKey, appAuthClientId, connectionId, formatMessage]);
+  }, [
+    steps,
+    appKey,
+    appAuthClientId,
+    connectionId,
+    queryClient,
+    formatMessage,
+    createConnection,
+    createConnectionAuthUrl,
+    updateConnection,
+    resetConnection,
+    verifyConnection,
+  ]);
 
   return {
     authenticate,

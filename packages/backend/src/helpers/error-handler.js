@@ -50,7 +50,7 @@ const errorHandler = (error, request, response, next) => {
       },
     };
 
-    response.status(200).json(httpErrorPayload);
+    response.status(422).json(httpErrorPayload);
   }
 
   if (error instanceof NotAuthorizedError) {

@@ -1,20 +1,3 @@
-import apolloClient from 'graphql/client';
-import MUTATIONS from 'graphql/mutations';
-
-export const processMutation = async (mutationName, variables) => {
-  const mutation = MUTATIONS[mutationName];
-  const mutationResponse = await apolloClient.mutate({
-    mutation,
-    variables: { input: variables },
-    context: {
-      autoSnackbar: false,
-    },
-  });
-  const responseData = mutationResponse.data[mutationName];
-
-  return responseData;
-};
-
 const parseUrlSearchParams = (event) => {
   const searchParams = new URLSearchParams(event.data.payload.search);
   const hashParams = new URLSearchParams(event.data.payload.hash.substring(1));

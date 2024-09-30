@@ -27,12 +27,7 @@ const authenticationStepsWithoutAuthUrl = [
   {
     type: 'mutation',
     name: 'verifyConnection',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
 ];
 
@@ -54,12 +49,7 @@ const authenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'generateAuthUrl',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
   {
     type: 'openWithPopup',
@@ -76,10 +66,6 @@ const authenticationStepsWithAuthUrl = [
     name: 'updateConnection',
     arguments: [
       {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-      {
         name: 'formattedData',
         value: '{openAuthPopup.all}',
       },
@@ -88,12 +74,7 @@ const authenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'verifyConnection',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
 ];
 
@@ -115,12 +96,7 @@ const sharedAuthenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'generateAuthUrl',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
   {
     type: 'openWithPopup',
@@ -137,10 +113,6 @@ const sharedAuthenticationStepsWithAuthUrl = [
     name: 'updateConnection',
     arguments: [
       {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-      {
         name: 'formattedData',
         value: '{openAuthPopup.all}',
       },
@@ -149,12 +121,7 @@ const sharedAuthenticationStepsWithAuthUrl = [
   {
     type: 'mutation',
     name: 'verifyConnection',
-    arguments: [
-      {
-        name: 'id',
-        value: '{createConnection.id}',
-      },
-    ],
+    arguments: [],
   },
 ];
 
