@@ -7,8 +7,6 @@ describe('Datastore model', () => {
   });
 
   it('jsonSchema should have correct validations', () => {
-    expect(Datastore).toRequireProperty('key');
-    expect(Datastore).toRequireProperty('value');
-    expect(Datastore).toRequireProperty('scopeId');
+    expect(Datastore.jsonSchema).toMatchSnapshot();
   });
 });
