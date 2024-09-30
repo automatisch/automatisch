@@ -17,7 +17,6 @@ export function init(app) {
     integrations: [
       app && new Sentry.Integrations.Http({ tracing: true }),
       app && new Tracing.Integrations.Express({ app }),
-      app && new Tracing.Integrations.GraphQL(),
     ].filter(Boolean),
     tracesSampleRate: 1.0,
   });

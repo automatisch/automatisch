@@ -7,7 +7,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
-import { ApolloError } from '@apollo/client';
 
 import { FieldPropType } from 'propTypes/propTypes';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -89,7 +88,9 @@ function AdminApplicationAuthClientDialog(props) {
 }
 
 AdminApplicationAuthClientDialog.propTypes = {
-  error: PropTypes.instanceOf(ApolloError),
+  error: PropTypes.shape({
+    message: PropTypes.string,
+  }),
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,

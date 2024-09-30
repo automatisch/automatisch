@@ -1,8 +1,7 @@
-import { rule, shield } from 'graphql-shield';
 import User from '../models/user.js';
 import AccessToken from '../models/access-token.js';
 
-export const isAuthenticated = async (_parent, _args, req) => {
+export const isAuthenticated = async (req) => {
   const token = req.headers['authorization'];
 
   if (token == null) return false;
@@ -41,25 +40,9 @@ export const isAuthenticated = async (_parent, _args, req) => {
 };
 
 export const authenticateUser = async (request, response, next) => {
-  if (await isAuthenticated(null, null, request)) {
+  if (await isAuthenticated(request)) {
     next();
   } else {
     return response.status(401).end();
   }
 };
-
-const isAuthenticatedRule = rule()(isAuthenticated);
-
-export const authenticationRules = {
-  Mutation: {
-    '*': isAuthenticatedRule,
-  },
-};
-
-const authenticationOptions = {
-  allowExternalErrors: true,
-};
-
-const authentication = shield(authenticationRules, authenticationOptions);
-
-export default authentication;

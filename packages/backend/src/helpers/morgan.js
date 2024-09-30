@@ -6,18 +6,8 @@ const stream = {
     logger.http(message.substring(0, message.lastIndexOf('\n'))),
 };
 
-const registerGraphQLToken = () => {
-  morgan.token('graphql-query', (req) => {
-    if (req.body.query) {
-      return `\n GraphQL ${req.body.query}`;
-    }
-  });
-};
-
-registerGraphQLToken();
-
 const morganMiddleware = morgan(
-  ':method :url :status :res[content-length] - :response-time ms :graphql-query',
+  ':method :url :status :res[content-length] - :response-time ms',
   { stream }
 );
 
