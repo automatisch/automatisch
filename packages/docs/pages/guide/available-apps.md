@@ -30,6 +30,7 @@ The following integrations are currently supported by Automatisch.
 - [Mailchimp](/apps/mailchimp/triggers)
 - [MailerLite](/apps/mailerlite/triggers)
 - [Mattermost](/apps/mattermost/actions)
+- [Microsoft Outlook](/apps/microsoft-outlook/triggers)
 - [Miro](/apps/miro/actions)
 - [Notion](/apps/notion/triggers)
 - [Ntfy](/apps/ntfy/actions)
