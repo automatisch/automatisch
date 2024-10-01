@@ -34,24 +34,25 @@ class AccessToken extends Base {
       return;
     }
 
-    const user = await this
-      .$relatedQuery('user');
+    const user = await this.$relatedQuery('user');
 
-    const firstIdentity = await user
-      .$relatedQuery('identities')
-      .first();
+    const firstIdentity = await user.$relatedQuery('identities').first();
 
     const samlAuthProvider = await firstIdentity
       .$relatedQuery('samlAuthProvider')
       .throwIfNotFound();
 
-    const response = await samlAuthProvider.terminateRemoteSession(this.samlSessionId);
+    const response = await samlAuthProvider.terminateRemoteSession(
+      this.samlSessionId
+    );
 
     return response;
   }
 
   async revoke() {
-    const response = await this.$query().patch({ revokedAt: new Date().toISOString() });
+    const response = await this.$query().patch({
+      revokedAt: new Date().toISOString(),
+    });
 
     try {
       await this.terminateRemoteSamlSession();

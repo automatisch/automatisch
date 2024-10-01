@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AccessToken model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "expiresIn": {
+      "type": "integer",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "revokedAt": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "samlSessionId": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "token": {
+      "minLength": 32,
+      "type": "string",
+    },
+    "userId": {
+      "format": "uuid",
+      "type": "string",
+    },
+  },
+  "required": [
+    "token",
+    "expiresIn",
+  ],
+  "type": "object",
+}
+`;
