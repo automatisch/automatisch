@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Identity model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "providerId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "providerType": {
+      "enum": [
+        "saml",
+      ],
+      "type": "string",
+    },
+    "remoteId": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "userId": {
+      "format": "uuid",
+      "type": "string",
+    },
+  },
+  "required": [
+    "providerId",
+    "remoteId",
+    "userId",
+    "providerType",
+  ],
+  "type": "object",
+}
+`;
