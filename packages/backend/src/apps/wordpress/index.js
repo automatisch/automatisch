@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://wordpress.com',
   apiBaseUrl: '',
-  primaryColor: '464342',
+  primaryColor: '#464342',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   triggers,

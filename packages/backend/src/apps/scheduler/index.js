@@ -9,7 +9,7 @@ export default defineApp({
   authDocUrl: '{DOCS_URL}/apps/scheduler/connection',
   baseUrl: '',
   apiBaseUrl: '',
-  primaryColor: '0059F7',
+  primaryColor: '#0059F7',
   supportsConnections: false,
   triggers,
 });

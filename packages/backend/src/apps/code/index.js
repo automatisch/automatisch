@@ -8,7 +8,7 @@ export default defineApp({
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/code/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/code/connection',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   supportsConnections: false,
   actions,
 });

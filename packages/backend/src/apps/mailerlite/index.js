@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://www.mailerlite.com',
   apiBaseUrl: 'https://connect.mailerlite.com/api',
-  primaryColor: '09C269',
+  primaryColor: '#09C269',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

@@ -106,8 +106,11 @@ function ExecutionStep(props) {
         <Stack direction="row" gap={3}>
           <AppIconWrapper>
             <AppIconStatusIconWrapper>
-              <AppIcon url={app?.iconUrl} name={app?.name} />
-
+              <AppIcon
+                url={app?.iconUrl}
+                name={app?.name}
+                color={app?.primaryColor}
+              />
               {validationStatusIcon}
             </AppIconStatusIconWrapper>
           </AppIconWrapper>

@@ -10,7 +10,7 @@ export default defineApp({
   apiBaseUrl: 'https://www.googleapis.com/youtube',
   iconUrl: '{BASE_URL}/apps/youtube/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/youtube/connection',
-  primaryColor: 'FF0000',
+  primaryColor: '#FF0000',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

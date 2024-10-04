@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://stripe.com',
   apiBaseUrl: 'https://api.stripe.com',
-  primaryColor: '635bff',
+  primaryColor: '#635bff',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

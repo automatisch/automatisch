@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://dropbox.com',
   apiBaseUrl: 'https://api.dropboxapi.com',
-  primaryColor: '0061ff',
+  primaryColor: '#0061ff',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

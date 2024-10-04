@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://disqus.com/api',
   iconUrl: '{BASE_URL}/apps/disqus/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/disqus/connection',
-  primaryColor: '2E9FFF',
+  primaryColor: '#2E9FFF',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

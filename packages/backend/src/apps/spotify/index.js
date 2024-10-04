@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://spotify.com',
   apiBaseUrl: 'https://api.spotify.com',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

@@ -10,7 +10,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://odoo.com',
   apiBaseUrl: '',
-  primaryColor: '9c5789',
+  primaryColor: '#9c5789',
   auth,
   actions,
 });

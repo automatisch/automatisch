@@ -10,7 +10,7 @@ export default defineApp({
   apiBaseUrl: 'https://api.ynab.com/v1',
   iconUrl: '{BASE_URL}/apps/you-need-a-budget/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/you-need-a-budget/connection',
-  primaryColor: '19223C',
+  primaryColor: '#19223C',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

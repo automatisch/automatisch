@@ -228,7 +228,11 @@ function FlowStep(props) {
       <Header collapsed={collapsed}>
         <Stack direction="row" alignItems="center" gap={2}>
           <AppIconWrapper>
-            <AppIcon url={app?.iconUrl} name={app?.name} />
+            <AppIcon
+              url={app?.iconUrl}
+              name={app?.name}
+              color={app?.primaryColor}
+            />
 
             <AppIconStatusIconWrapper>
               {validationStatusIcon}

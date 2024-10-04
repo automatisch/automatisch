@@ -13,7 +13,7 @@ export default defineApp({
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/pipedrive/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/pipedrive/connection',
-  primaryColor: 'FFFFFF',
+  primaryColor: '#FFFFFF',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

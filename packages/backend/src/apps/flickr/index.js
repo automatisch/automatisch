@@ -10,7 +10,7 @@ export default defineApp({
   iconUrl: '{BASE_URL}/apps/flickr/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/flickr/connection',
   docUrl: 'https://automatisch.io/docs/flickr',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   supportsConnections: true,
   baseUrl: 'https://www.flickr.com/',
   apiBaseUrl: 'https://www.flickr.com/services',

@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://flowers-software.com',
   apiBaseUrl: 'https://webapp.flowers-software.com/api',
-  primaryColor: '02AFC7',
+  primaryColor: '#02AFC7',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

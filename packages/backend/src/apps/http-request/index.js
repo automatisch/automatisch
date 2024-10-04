@@ -9,6 +9,6 @@ export default defineApp({
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   actions,
 });
