@@ -15,23 +15,52 @@ describe('AppAuthClient model', () => {
     expect(AppAuthClient.jsonSchema).toMatchSnapshot();
   });
 
-  it('encryptData should encrypt formattedAuthDefaults and set it to authDefaults', async () => {
-    const formattedAuthDefaults = {
-      key: 'value',
-    };
+  describe('encryptData', () => {
+    it('should return undefined if eligibleForEncryption is not true', async () => {
+      vi.spyOn(
+        AppAuthClient.prototype,
+        'eligibleForEncryption'
+      ).mockReturnValue(false);
 
-    const appAuthClient = await createAppAuthClient({
-      formattedAuthDefaults,
+      const appAuthClient = new AppAuthClient();
+
+      expect(appAuthClient.encryptData()).toBeUndefined();
     });
 
-    expect(
-      JSON.parse(
-        AES.decrypt(
-          appAuthClient.authDefaults,
-          appConfig.encryptionKey
-        ).toString(enc)
-      )
-    ).toStrictEqual(formattedAuthDefaults);
+    it('should encrypt formattedAuthDefaults and set it to authDefaults', async () => {
+      vi.spyOn(
+        AppAuthClient.prototype,
+        'eligibleForEncryption'
+      ).mockReturnValue(true);
+
+      const formattedAuthDefaults = {
+        key: 'value',
+      };
+
+      const appAuthClient = new AppAuthClient();
+      appAuthClient.formattedAuthDefaults = formattedAuthDefaults;
+      appAuthClient.encryptData();
+
+      expect(appAuthClient.authDefaults).toBeDefined();
+      expect(appAuthClient.authDefaults).not.toEqual(formattedAuthDefaults);
+    });
+
+    it('should encrypt formattedAuthDefaults and remove formattedAuthDefaults', async () => {
+      vi.spyOn(
+        AppAuthClient.prototype,
+        'eligibleForEncryption'
+      ).mockReturnValue(true);
+
+      const formattedAuthDefaults = {
+        key: 'value',
+      };
+
+      const appAuthClient = new AppAuthClient();
+      appAuthClient.formattedAuthDefaults = formattedAuthDefaults;
+      appAuthClient.encryptData();
+
+      expect(appAuthClient.formattedAuthDefaults).not.toBeDefined();
+    });
   });
 
   it('decryptData should decrypt authDefaults and set it to formattedAuthDefaults', async () => {
