@@ -12,6 +12,7 @@ class AppConfig extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string' },
+      canConnect: { type: 'boolean', default: false },
       allowCustomConnection: { type: 'boolean', default: false },
       shared: { type: 'boolean', default: false },
       disabled: { type: 'boolean', default: false },
@@ -32,15 +33,22 @@ class AppConfig extends Base {
   });
 
   static get virtualAttributes() {
-    return ['canConnect', 'canCustomConnect'];
+    return ['canCustomConnect'];
   }
 
   get canCustomConnect() {
     return !this.disabled && this.allowCustomConnection;
   }
 
-  get canConnect() {
-    const hasSomeActiveAppAuthClients = !!this.appAuthClients?.some(
+  async getApp() {
+    if (!this.key) return null;
+
+    return await App.findOneByKey(this.key);
+  }
+
+  async updateCanConnectValue() {
+    const appAuthClients = await this.$relatedQuery('appAuthClients');
+    const hasSomeActiveAppAuthClients = !!appAuthClients?.some(
       (appAuthClient) => appAuthClient.active
     );
     const shared = this.shared;
@@ -48,13 +56,15 @@ class AppConfig extends Base {
 
     const conditions = [hasSomeActiveAppAuthClients, shared, active];
 
-    return conditions.every(Boolean);
+    this.canConnect = conditions.every(Boolean);
+
+    return this;
   }
 
-  async getApp() {
-    if (!this.key) return null;
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
 
-    return await App.findOneByKey(this.key);
+    await opt.old.updateCanConnectValue();
   }
 }
 

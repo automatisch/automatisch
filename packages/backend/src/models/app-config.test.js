@@ -36,14 +36,6 @@ describe('AppConfig model', () => {
     expect(AppConfig.virtualAttributes).toMatchSnapshot();
   });
 
-  it('getApp should return associated application', async () => {
-    const appConfig = await createAppConfig({ key: 'deepl' });
-
-    const app = await appConfig.getApp();
-
-    expect(app.key).toBe('deepl');
-  });
-
   describe('canCustomConnect', () => {
     it('should return true when app is enabled and allows custom connection', async () => {
       const appConfig = await createAppConfig({
@@ -111,5 +103,13 @@ describe('AppConfig model', () => {
 
       expect(appConfig.canConnect).toBe(false);
     });
+  });
+
+  it('getApp should return associated application', async () => {
+    const appConfig = await createAppConfig({ key: 'deepl' });
+
+    const app = await appConfig.getApp();
+
+    expect(app.key).toBe('deepl');
   });
 });

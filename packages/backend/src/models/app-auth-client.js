@@ -2,6 +2,7 @@ import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 import appConfig from '../config/app.js';
 import Base from './base.js';
+import AppConfig from './app-config.js';
 
 class AppAuthClient extends Base {
   static tableName = 'app_auth_clients';
@@ -20,6 +21,17 @@ class AppAuthClient extends Base {
       updatedAt: { type: 'string' },
     },
   };
+
+  static relationMappings = () => ({
+    appConfig: {
+      relation: Base.HasOneRelation,
+      modelClass: AppConfig,
+      join: {
+        from: 'app_auth_clients.app_key',
+        to: 'app_configs.key',
+      },
+    },
+  });
 
   encryptData() {
     if (!this.eligibleForEncryption()) return;
@@ -48,6 +60,12 @@ class AppAuthClient extends Base {
     return this.authDefaults ? true : false;
   }
 
+  async triggerAppConfigUpdate() {
+    const appConfig = await this.$relatedQuery('appConfig').select('*');
+
+    await appConfig.$query().patch({});
+  }
+
   // TODO: Make another abstraction like beforeSave instead of using
   // beforeInsert and beforeUpdate separately for the same operation.
   async $beforeInsert(queryContext) {
@@ -55,9 +73,21 @@ class AppAuthClient extends Base {
     this.encryptData();
   }
 
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+
+    await this.triggerAppConfigUpdate();
+  }
+
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     this.encryptData();
+  }
+
+  async $afterUpdate(queryContext) {
+    await super.$afterUpdate(queryContext);
+
+    await this.triggerAppConfigUpdate();
   }
 
   async $afterFind() {
