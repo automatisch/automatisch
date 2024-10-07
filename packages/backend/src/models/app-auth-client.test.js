@@ -41,7 +41,14 @@ describe('AppAuthClient model', () => {
       appAuthClient.formattedAuthDefaults = formattedAuthDefaults;
       appAuthClient.encryptData();
 
-      expect(appAuthClient.authDefaults).toBeDefined();
+      const expectedDecryptedValue = JSON.parse(
+        AES.decrypt(
+          appAuthClient.authDefaults,
+          appConfig.encryptionKey
+        ).toString(enc)
+      );
+
+      expect(formattedAuthDefaults).toStrictEqual(expectedDecryptedValue);
       expect(appAuthClient.authDefaults).not.toEqual(formattedAuthDefaults);
     });
 
@@ -63,20 +70,42 @@ describe('AppAuthClient model', () => {
     });
   });
 
-  it('decryptData should decrypt authDefaults and set it to formattedAuthDefaults', async () => {
-    const formattedAuthDefaults = {
-      key: 'value',
-    };
+  describe('decryptData', () => {
+    it('should return undefined if eligibleForDecryption is not true', () => {
+      vi.spyOn(
+        AppAuthClient.prototype,
+        'eligibleForDecryption'
+      ).mockReturnValue(false);
 
-    const appAuthClient = await createAppAuthClient({
-      formattedAuthDefaults,
+      const appAuthClient = new AppAuthClient();
+
+      expect(appAuthClient.decryptData()).toBeUndefined();
     });
 
-    const refetchedAppAuthClient = await appAuthClient.$query();
+    it('should decrypt authDefaults and set it to formattedAuthDefaults', async () => {
+      vi.spyOn(
+        AppAuthClient.prototype,
+        'eligibleForDecryption'
+      ).mockReturnValue(true);
 
-    expect(refetchedAppAuthClient.formattedAuthDefaults).toStrictEqual(
-      formattedAuthDefaults
-    );
+      const formattedAuthDefaults = {
+        key: 'value',
+      };
+
+      const authDefaults = AES.encrypt(
+        JSON.stringify(formattedAuthDefaults),
+        appConfig.encryptionKey
+      ).toString();
+
+      const appAuthClient = new AppAuthClient();
+      appAuthClient.authDefaults = authDefaults;
+      appAuthClient.decryptData();
+
+      expect(appAuthClient.formattedAuthDefaults).toStrictEqual(
+        formattedAuthDefaults
+      );
+      expect(appAuthClient.authDefaults).not.toEqual(formattedAuthDefaults);
+    });
   });
 
   describe('eligibleForEncryption', () => {
