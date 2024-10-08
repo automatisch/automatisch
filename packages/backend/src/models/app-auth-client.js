@@ -63,7 +63,7 @@ class AppAuthClient extends Base {
   async triggerAppConfigUpdate() {
     const appConfig = await this.$relatedQuery('appConfig').select('*');
 
-    await appConfig.$query().patch({});
+    await appConfig?.updateCanConnectProperty();
   }
 
   // TODO: Make another abstraction like beforeSave instead of using
@@ -84,8 +84,8 @@ class AppAuthClient extends Base {
     this.encryptData();
   }
 
-  async $afterUpdate(queryContext) {
-    await super.$afterUpdate(queryContext);
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
 
     await this.triggerAppConfigUpdate();
   }

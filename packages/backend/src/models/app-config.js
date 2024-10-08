@@ -46,25 +46,46 @@ class AppConfig extends Base {
     return await App.findOneByKey(this.key);
   }
 
-  async updateCanConnectValue() {
-    const appAuthClients = await this.$relatedQuery('appAuthClients');
+  async computeCanConnectProperty(oldAppConfig) {
+    const appAuthClients = await oldAppConfig.$relatedQuery('appAuthClients');
     const hasSomeActiveAppAuthClients = !!appAuthClients?.some(
       (appAuthClient) => appAuthClient.active
     );
-    const shared = this.shared;
-    const active = this.disabled === false;
+    const shared = this.shared ?? oldAppConfig.shared;
+    const disabled = this.disabled ?? oldAppConfig.disabled;
+    const active = disabled === false;
 
     const conditions = [hasSomeActiveAppAuthClients, shared, active];
 
-    this.canConnect = conditions.every(Boolean);
+    const canConnect = conditions.every(Boolean);
 
-    return this;
+    return canConnect;
+  }
+
+  async updateCanConnectProperty() {
+    const canConnect = await this.computeCanConnectProperty(this);
+
+    return await this.$query().patch({
+      canConnect,
+    });
+  }
+
+  async computeAndAssignCanConnectProperty(oldAppConfig) {
+    this.canConnect = await this.computeCanConnectProperty(oldAppConfig);
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    await this.computeAndAssignCanConnectProperty(this);
   }
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    await opt.old.updateCanConnectValue();
+    const oldAppConfig = opt.old;
+
+    await this.computeAndAssignCanConnectProperty(oldAppConfig);
   }
 }
 
