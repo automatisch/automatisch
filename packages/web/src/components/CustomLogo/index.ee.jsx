@@ -5,9 +5,9 @@ const CustomLogo = () => {
   const { data: configData, isLoading } = useAutomatischConfig();
   const config = configData?.data;
 
-  if (isLoading || !config?.['logo.svgData']) return null;
+  if (isLoading || !config?.logoSvgData) return null;
 
-  const logoSvgData = config['logo.svgData'];
+  const logoSvgData = config?.logoSvgData;
 
   return (
     <LogoImage

@@ -7,7 +7,7 @@ const updateConfigMock = (
 ) => {
   return {
     data: {
-      'logo.svgData': logoConfig,
+      logoSvgData: logoConfig,
       'palette.primary.dark': primaryDarkConfig,
       'palette.primary.light': primaryLightConfig,
       'palette.primary.main': primaryMainConfig,

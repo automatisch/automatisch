@@ -55,7 +55,7 @@ export default function UserInterface() {
         palettePrimaryMain: getPrimaryMainColor(uiData.palettePrimaryMain),
         palettePrimaryDark: getPrimaryDarkColor(uiData.palettePrimaryDark),
         palettePrimaryLight: getPrimaryLightColor(uiData.palettePrimaryLight),
-        'logo.svgData': uiData.logoSvgData,
+        logoSvgData: uiData.logoSvgData,
       };
       await updateConfig(input);
       enqueueSnackbar(formatMessage('userInterfacePage.successfullyUpdated'), {

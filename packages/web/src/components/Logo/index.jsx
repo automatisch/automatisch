@@ -7,7 +7,7 @@ import useAutomatischConfig from 'hooks/useAutomatischConfig';
 const Logo = () => {
   const { data: configData, isLoading } = useAutomatischConfig();
   const config = configData?.data;
-  const logoSvgData = config?.['logo.svgData'];
+  const logoSvgData = config?.logoSvgData;
 
   if (isLoading && !logoSvgData) return <React.Fragment />;
 
