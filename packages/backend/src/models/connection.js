@@ -172,6 +172,7 @@ class Connection extends Base {
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
+
     this.encryptData();
   }
 

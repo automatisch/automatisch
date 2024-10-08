@@ -66,24 +66,52 @@ describe('AppConfig model', () => {
   });
 
   describe('canConnect', () => {
-    it('should return true when app is enabled, shared and allows custom connection', async () => {
+    it('should return true when app is enabled, shared and allows custom connection with an active app auth client at least', async () => {
       await createAppAuthClient({
         appKey: 'deepl',
         active: true,
       });
 
-      let appConfig = await createAppConfig({
+      await createAppAuthClient({
+        appKey: 'deepl',
+        active: false,
+      });
+
+      const appConfig = await createAppConfig({
         disabled: false,
         allowCustomConnection: true,
         shared: true,
         key: 'deepl',
       });
 
-      appConfig = await appConfig.$query().withGraphFetched({
-        appAuthClients: true,
+      expect(appConfig.canConnect).toBe(true);
+    });
+
+    it('should return true when app is enabled, shared and allows custom connection with no active app auth client', async () => {
+      await createAppAuthClient({
+        appKey: 'deepl',
+        active: false,
       });
 
-      expect(appConfig.canConnect).toBe(true);
+      const appConfig = await createAppConfig({
+        disabled: false,
+        allowCustomConnection: true,
+        shared: true,
+        key: 'deepl',
+      });
+
+      expect(appConfig.canConnect).toBe(false);
+    });
+
+    it('should return false when app is enabled, shared and allows custom connection without any app auth clients', async () => {
+      const appConfig = await createAppConfig({
+        disabled: false,
+        allowCustomConnection: true,
+        shared: true,
+        key: 'deepl',
+      });
+
+      expect(appConfig.canConnect).toBe(false);
     });
 
     it('should return false when app is disabled', async () => {
