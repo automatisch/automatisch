@@ -31,6 +31,7 @@ class AppAuthClient extends Base {
 
     delete this.formattedAuthDefaults;
   }
+
   decryptData() {
     if (!this.eligibleForDecryption()) return;
 
