@@ -7,8 +7,19 @@ import * as license from '../../../../helpers/license.ee.js';
 import appConfig from '../../../../config/app.js';
 
 describe('GET /api/v1/automatisch/config', () => {
-  it('should return Automatisch config', async () => {
+  it('should return Automatisch config along with static config', async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+    vi.spyOn(appConfig, 'disableNotificationsPage', 'get').mockReturnValue(
+      true
+    );
+    vi.spyOn(appConfig, 'disableFavicon', 'get').mockReturnValue(true);
+    vi.spyOn(appConfig, 'additionalDrawerLink', 'get').mockReturnValue('link');
+    vi.spyOn(appConfig, 'additionalDrawerLinkIcon', 'get').mockReturnValue(
+      'icon'
+    );
+    vi.spyOn(appConfig, 'additionalDrawerLinkText', 'get').mockReturnValue(
+      'text'
+    );
 
     const config = await updateConfig({
       logoSvgData: '<svg>Sample</svg>',
@@ -22,28 +33,15 @@ describe('GET /api/v1/automatisch/config', () => {
       .get('/api/v1/automatisch/config')
       .expect(200);
 
-    const expectedPayload = configMock(config);
+    const expectedPayload = configMock({
+      ...config,
+      disableNotificationsPage: true,
+      disableFavicon: true,
+      additionalDrawerLink: 'link',
+      additionalDrawerLinkIcon: 'icon',
+      additionalDrawerLinkText: 'text',
+    });
 
     expect(response.body).toStrictEqual(expectedPayload);
-  });
-
-  it('should return additional environment variables', async () => {
-    vi.spyOn(appConfig, 'disableNotificationsPage', 'get').mockReturnValue(
-      true
-    );
-    vi.spyOn(appConfig, 'disableFavicon', 'get').mockReturnValue(true);
-    vi.spyOn(appConfig, 'additionalDrawerLink', 'get').mockReturnValue('link');
-    vi.spyOn(appConfig, 'additionalDrawerLinkIcon', 'get').mockReturnValue(
-      'icon'
-    );
-    vi.spyOn(appConfig, 'additionalDrawerLinkText', 'get').mockReturnValue(
-      'text'
-    );
-
-    expect(appConfig.disableNotificationsPage).toEqual(true);
-    expect(appConfig.disableFavicon).toEqual(true);
-    expect(appConfig.additionalDrawerLink).toEqual('link');
-    expect(appConfig.additionalDrawerLinkIcon).toEqual('icon');
-    expect(appConfig.additionalDrawerLinkText).toEqual('text');
   });
 });
