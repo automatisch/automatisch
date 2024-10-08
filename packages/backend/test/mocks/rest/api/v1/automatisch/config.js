@@ -1,28 +1,29 @@
-const infoMock = (
-  logoConfig,
-  primaryDarkConfig,
-  primaryLightConfig,
-  primaryMainConfig,
-  titleConfig
-) => {
+const configMock = (config) => {
   return {
     data: {
-      disableFavicon: false,
-      disableNotificationsPage: false,
-      'logo.svgData': logoConfig.value.data,
-      'palette.primary.dark': primaryDarkConfig.value.data,
-      'palette.primary.light': primaryLightConfig.value.data,
-      'palette.primary.main': primaryMainConfig.value.data,
-      title: titleConfig.value.data,
+      id: config.id,
+      updatedAt: config.updatedAt.getTime(),
+      createdAt: config.createdAt.getTime(),
+      disableFavicon: config.disableFavicon,
+      disableNotificationsPage: config.disableNotificationsPage,
+      additionalDrawerLink: config.additionalDrawerLink,
+      additionalDrawerLinkIcon: config.additionalDrawerLinkIcon,
+      additionalDrawerLinkText: config.additionalDrawerLinkText,
+      logoSvgData: config.logoSvgData,
+      palettePrimaryDark: config.palettePrimaryDark,
+      palettePrimaryMain: config.palettePrimaryMain,
+      palettePrimaryLight: config.palettePrimaryLight,
+      installationCompleted: config.installationCompleted || false,
+      title: config.title,
     },
     meta: {
       count: 1,
       currentPage: null,
       isArray: false,
       totalPages: null,
-      type: 'Object',
+      type: 'Config',
     },
   };
 };
 
-export default infoMock;
+export default configMock;

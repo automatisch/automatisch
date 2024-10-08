@@ -5,7 +5,7 @@ import Config from '../../../../../models/config.js';
 import User from '../../../../../models/user.js';
 import { createRole } from '../../../../../../test/factories/role';
 import { createUser } from '../../../../../../test/factories/user';
-import { createInstallationCompletedConfig } from '../../../../../../test/factories/config';
+import { markInstallationCompleted } from '../../../../../../test/factories/config';
 
 describe('POST /api/v1/installation/users', () => {
   let adminRole;
@@ -59,7 +59,7 @@ describe('POST /api/v1/installation/users', () => {
 
   describe('for completed installations', () => {
     beforeEach(async () => {
-      await createInstallationCompletedConfig();
+      await markInstallationCompleted();
     });
 
     it('should respond with HTTP 403 when installation completed', async () => {

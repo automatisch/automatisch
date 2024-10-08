@@ -6,7 +6,7 @@ export default function useAdminUpdateConfig(appKey) {
 
   const query = useMutation({
     mutationFn: async (payload) => {
-      const { data } = await api.patch(`/v1/admin/config`, payload);
+      const { data } = await api.patch('/v1/admin/config', payload);
 
       return data;
     },
