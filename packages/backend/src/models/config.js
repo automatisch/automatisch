@@ -1,3 +1,4 @@
+import appConfig from '../config/app.js';
 import Base from './base.js';
 
 class Config extends Base {
@@ -18,6 +19,36 @@ class Config extends Base {
       updatedAt: { type: 'string' },
     },
   };
+
+  static get virtualAttributes() {
+    return [
+      'disableNotificationsPage',
+      'disableFavicon',
+      'additionalDrawerLink',
+      'additionalDrawerLinkIcon',
+      'additionalDrawerLinkText',
+    ];
+  }
+
+  get disableNotificationsPage() {
+    return appConfig.disableNotificationsPage;
+  }
+
+  get disableFavicon() {
+    return appConfig.disableFavicon;
+  }
+
+  get additionalDrawerLink() {
+    return appConfig.additionalDrawerLink;
+  }
+
+  get additionalDrawerLinkIcon() {
+    return appConfig.additionalDrawerLinkIcon;
+  }
+
+  get additionalDrawerLinkText() {
+    return appConfig.additionalDrawerLinkText;
+  }
 
   static async get() {
     const existingConfig = await this.query().limit(1).first();
