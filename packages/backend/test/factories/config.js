@@ -1,5 +1,9 @@
 import Config from '../../src/models/config';
 
+export const getConfig = async () => {
+  return await Config.get();
+};
+
 export const updateConfig = async (params = {}) => {
   return await Config.update(params);
 };
