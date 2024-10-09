@@ -13,7 +13,7 @@ export default defineApp({
   apiBaseUrl: 'https://invoicing.co/api',
   iconUrl: '{BASE_URL}/apps/invoice-ninja/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/invoice-ninja/connection',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

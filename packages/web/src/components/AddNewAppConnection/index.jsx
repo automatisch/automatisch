@@ -121,7 +121,7 @@ function AddNewAppConnection(props) {
                 >
                   <ListItemIcon sx={{ minWidth: 74 }}>
                     <AppIcon
-                      color="transparent"
+                      color={app.primaryColor}
                       url={app.iconUrl}
                       name={app.name}
                     />

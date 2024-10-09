@@ -10,7 +10,7 @@ export default defineApp({
   apiBaseUrl: 'https://api.pushover.net',
   iconUrl: '{BASE_URL}/apps/pushover/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/pushover/connection',
-  primaryColor: '249DF1',
+  primaryColor: '#249DF1',
   supportsConnections: true,
   auth,
   actions,

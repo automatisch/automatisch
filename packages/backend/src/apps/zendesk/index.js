@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/zendesk/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/zendesk/connection',
-  primaryColor: '17494d',
+  primaryColor: '#17494d',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

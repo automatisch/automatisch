@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://www.strava.com',
   apiBaseUrl: 'https://www.strava.com/api',
-  primaryColor: 'fc4c01',
+  primaryColor: '#fc4c01',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

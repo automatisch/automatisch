@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://www.jotform.com',
   apiBaseUrl: 'https://api.jotform.com',
-  primaryColor: 'FF6100',
+  primaryColor: '#FF6100',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   triggers,

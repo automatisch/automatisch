@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://www.googleapis.com/drive',
   iconUrl: '{BASE_URL}/apps/google-drive/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/google-drive/connection',
-  primaryColor: '1FA463',
+  primaryColor: '#1FA463',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

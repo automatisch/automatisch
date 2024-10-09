@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://slack.com',
   apiBaseUrl: 'https://slack.com/api',
-  primaryColor: '4a154b',
+  primaryColor: '#4a154b',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

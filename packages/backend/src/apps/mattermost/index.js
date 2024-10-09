@@ -13,7 +13,7 @@ export default defineApp({
   authDocUrl: '{DOCS_URL}/apps/mattermost/connection',
   baseUrl: 'https://mattermost.com',
   apiBaseUrl: '', // there is no cloud version of this app, user always need to provide address of own instance when creating connection
-  primaryColor: '4a154b',
+  primaryColor: '#4a154b',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addXRequestedWithHeader, addAuthHeader],
   auth,

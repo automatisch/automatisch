@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://telegram.org',
   apiBaseUrl: 'https://api.telegram.org',
-  primaryColor: '2AABEE',
+  primaryColor: '#2AABEE',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://signalwire.com',
   apiBaseUrl: '',
-  primaryColor: '044cf6',
+  primaryColor: '#044cf6',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

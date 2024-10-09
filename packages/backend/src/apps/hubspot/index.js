@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://www.hubspot.com',
   apiBaseUrl: 'https://api.hubapi.com',
-  primaryColor: 'F95C35',
+  primaryColor: '#F95C35',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

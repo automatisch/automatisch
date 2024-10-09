@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://app.tryhelix.ai',
   iconUrl: '{BASE_URL}/apps/helix/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/helix/connection',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

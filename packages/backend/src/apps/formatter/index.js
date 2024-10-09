@@ -10,7 +10,7 @@ export default defineApp({
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',
-  primaryColor: '001F52',
+  primaryColor: '#001F52',
   actions,
   dynamicFields,
 });

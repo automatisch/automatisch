@@ -12,7 +12,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://typeform.com',
   apiBaseUrl: 'https://api.typeform.com',
-  primaryColor: '262627',
+  primaryColor: '#262627',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,
