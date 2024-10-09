@@ -39,9 +39,3 @@ exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
   "type": "object",
 }
 `;
-
-exports[`AppConfig model > virtualAttributes should return correct properties 1`] = `
-[
-  "canCustomConnect",
-]
-`;

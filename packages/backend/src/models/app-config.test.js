@@ -36,14 +36,14 @@ describe('AppConfig model', () => {
     expect(AppConfig.virtualAttributes).toMatchSnapshot();
   });
 
-  describe('canCustomConnect', () => {
+  describe('allowCustomConnection', () => {
     it('should return true when app is enabled and allows custom connection', async () => {
       const appConfig = await createAppConfig({
         disabled: false,
         allowCustomConnection: true,
       });
 
-      expect(appConfig.canCustomConnect).toBe(true);
+      expect(appConfig.allowCustomConnection).toBe(true);
     });
 
     it('should return false when app is disabled', async () => {
@@ -52,7 +52,7 @@ describe('AppConfig model', () => {
         allowCustomConnection: true,
       });
 
-      expect(appConfig.canCustomConnect).toBe(false);
+      expect(appConfig.allowCustomConnection).toBe(false);
     });
 
     it(`should return false when app doesn't allow custom connection`, async () => {
@@ -61,7 +61,7 @@ describe('AppConfig model', () => {
         allowCustomConnection: false,
       });
 
-      expect(appConfig.canCustomConnect).toBe(false);
+      expect(appConfig.allowCustomConnection).toBe(false);
     });
   });
 
