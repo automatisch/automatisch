@@ -45,17 +45,15 @@ describe('ExecutionStep model', () => {
 
   describe('isFailed', () => {
     it('should return true if status is failure', async () => {
-      const executionStep = await createExecutionStep({
-        status: 'failure',
-      });
+      const executionStep = new ExecutionStep();
+      executionStep.status = 'failure';
 
       expect(executionStep.isFailed).toBe(true);
     });
 
     it('should return false if status is not failure', async () => {
-      const executionStep = await createExecutionStep({
-        status: 'success',
-      });
+      const executionStep = new ExecutionStep();
+      executionStep.status = 'success';
 
       expect(executionStep.isFailed).toBe(false);
     });
