@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 
 const noop = () => null;
 
@@ -23,6 +24,7 @@ function Form(props) {
   });
 
   const form = useWatch({ control: methods.control });
+  const prevDefaultValues = React.useRef(defaultValues);
 
   /**
    * For fields having `dependsOn` fields, we need to re-validate the form.
@@ -32,7 +34,10 @@ function Form(props) {
   }, [methods.trigger, form]);
 
   React.useEffect(() => {
-    methods.reset(defaultValues);
+    if (!isEqual(defaultValues, prevDefaultValues.current)) {
+      prevDefaultValues.current = defaultValues;
+      methods.reset(defaultValues);
+    }
   }, [defaultValues]);
 
   return (
