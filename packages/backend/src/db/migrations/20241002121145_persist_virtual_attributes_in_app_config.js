@@ -1,6 +1,6 @@
 export async function up(knex) {
   await knex.schema.alterTable('app_configs', (table) => {
-    table.boolean('can_connect').defaultTo(false);
+    table.boolean('connectionAllowed').defaultTo(false);
   });
 
   const appConfigs = await knex('app_configs').select('*');
@@ -17,17 +17,21 @@ export async function up(knex) {
     const shared = appConfig.shared;
     const active = appConfig.disabled === false;
 
-    const canConnectConditions = [hasSomeActiveAppAuthClients, shared, active];
-    const canConnect = canConnectConditions.every(Boolean);
+    const connectionAllowedConditions = [
+      hasSomeActiveAppAuthClients,
+      shared,
+      active,
+    ];
+    const connectionAllowed = connectionAllowedConditions.every(Boolean);
 
     await knex('app_configs')
       .where('id', appConfig.id)
-      .update({ can_connect: canConnect });
+      .update({ connection_allowed: connectionAllowed });
   }
 }
 
 export async function down(knex) {
   await knex.schema.alterTable('app_configs', (table) => {
-    table.dropColumn('can_connect');
+    table.dropColumn('connectionAllowed');
   });
 }

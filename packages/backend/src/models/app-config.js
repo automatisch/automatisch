@@ -12,7 +12,7 @@ class AppConfig extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string' },
-      canConnect: { type: 'boolean', default: false },
+      connectionAllowed: { type: 'boolean', default: false },
       allowCustomConnection: { type: 'boolean', default: false },
       shared: { type: 'boolean', default: false },
       disabled: { type: 'boolean', default: false },
@@ -46,7 +46,7 @@ class AppConfig extends Base {
     return await App.findOneByKey(this.key);
   }
 
-  async computeCanConnectProperty(oldAppConfig) {
+  async computeConnectionAllowedProperty(oldAppConfig) {
     const appAuthClients = await oldAppConfig.$relatedQuery('appAuthClients');
     const hasSomeActiveAppAuthClients = !!appAuthClients?.some(
       (appAuthClient) => appAuthClient.active
@@ -57,27 +57,29 @@ class AppConfig extends Base {
 
     const conditions = [hasSomeActiveAppAuthClients, shared, active];
 
-    const canConnect = conditions.every(Boolean);
+    const connectionAllowed = conditions.every(Boolean);
 
-    return canConnect;
+    return connectionAllowed;
   }
 
-  async updateCanConnectProperty() {
-    const canConnect = await this.computeCanConnectProperty(this);
+  async updateConnectionAllowedProperty() {
+    const connectionAllowed = await this.computeConnectionAllowedProperty(this);
 
     return await this.$query().patch({
-      canConnect,
+      connectionAllowed,
     });
   }
 
-  async computeAndAssignCanConnectProperty(oldAppConfig) {
-    this.canConnect = await this.computeCanConnectProperty(oldAppConfig);
+  async computeAndAssignConnectionAllowedProperty(oldAppConfig) {
+    this.connectionAllowed = await this.computeConnectionAllowedProperty(
+      oldAppConfig
+    );
   }
 
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
 
-    await this.computeAndAssignCanConnectProperty(this);
+    await this.computeAndAssignConnectionAllowedProperty(this);
   }
 
   async $beforeUpdate(opt, queryContext) {
@@ -85,7 +87,7 @@ class AppConfig extends Base {
 
     const oldAppConfig = opt.old;
 
-    await this.computeAndAssignCanConnectProperty(oldAppConfig);
+    await this.computeAndAssignConnectionAllowedProperty(oldAppConfig);
   }
 }
 

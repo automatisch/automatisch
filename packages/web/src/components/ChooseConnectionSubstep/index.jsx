@@ -100,7 +100,7 @@ function ChooseConnectionSubstep(props) {
       });
     }
 
-    if (appConfig?.data?.canConnect) {
+    if (appConfig?.data?.connectionAllowed) {
       options.push({
         label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
         value: ADD_SHARED_CONNECTION_VALUE,

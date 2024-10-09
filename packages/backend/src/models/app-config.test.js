@@ -65,7 +65,7 @@ describe('AppConfig model', () => {
     });
   });
 
-  describe('canConnect', () => {
+  describe('connectionAllowed', () => {
     it('should return true when app is enabled, shared and allows custom connection with an active app auth client at least', async () => {
       await createAppAuthClient({
         appKey: 'deepl',
@@ -84,7 +84,7 @@ describe('AppConfig model', () => {
         key: 'deepl',
       });
 
-      expect(appConfig.canConnect).toBe(true);
+      expect(appConfig.connectionAllowed).toBe(true);
     });
 
     it('should return true when app is enabled, shared and allows custom connection with no active app auth client', async () => {
@@ -100,7 +100,7 @@ describe('AppConfig model', () => {
         key: 'deepl',
       });
 
-      expect(appConfig.canConnect).toBe(false);
+      expect(appConfig.connectionAllowed).toBe(false);
     });
 
     it('should return false when app is enabled, shared and allows custom connection without any app auth clients', async () => {
@@ -111,7 +111,7 @@ describe('AppConfig model', () => {
         key: 'deepl',
       });
 
-      expect(appConfig.canConnect).toBe(false);
+      expect(appConfig.connectionAllowed).toBe(false);
     });
 
     it('should return false when app is disabled', async () => {
@@ -120,7 +120,7 @@ describe('AppConfig model', () => {
         allowCustomConnection: true,
       });
 
-      expect(appConfig.canConnect).toBe(false);
+      expect(appConfig.connectionAllowed).toBe(false);
     });
 
     it(`should return false when app doesn't allow custom connection`, async () => {
@@ -129,7 +129,7 @@ describe('AppConfig model', () => {
         allowCustomConnection: false,
       });
 
-      expect(appConfig.canConnect).toBe(false);
+      expect(appConfig.connectionAllowed).toBe(false);
     });
   });
 
