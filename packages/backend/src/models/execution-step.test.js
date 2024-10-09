@@ -61,7 +61,7 @@ describe('ExecutionStep model', () => {
     });
   });
 
-  describe('isNormalSuccededRun', () => {
+  describe('isSucceededNonTestRun', () => {
     it('should return false if it has a test run execution', async () => {
       const execution = await createExecution({
         testRun: true,
@@ -71,7 +71,7 @@ describe('ExecutionStep model', () => {
         executionId: execution.id,
       });
 
-      expect(await executionStep.isNormalSucceededRun()).toBe(false);
+      expect(await executionStep.isSucceededNonTestRun()).toBe(false);
     });
 
     it('should return false if it has a failure status', async () => {
@@ -79,15 +79,15 @@ describe('ExecutionStep model', () => {
         status: 'failure',
       });
 
-      expect(await executionStep.isNormalSucceededRun()).toBe(false);
+      expect(await executionStep.isSucceededNonTestRun()).toBe(false);
     });
 
-    it('should return true if it has a succeeded normal execution', async () => {
+    it('should return true if it has a succeeded non test run', async () => {
       const executionStep = await createExecutionStep({
         status: 'success',
       });
 
-      expect(await executionStep.isNormalSucceededRun()).toBe(true);
+      expect(await executionStep.isSucceededNonTestRun()).toBe(true);
     });
   });
 
@@ -107,11 +107,12 @@ describe('ExecutionStep model', () => {
   });
 
   describe('increaseUsageCount', () => {
-    it('should call updateUsageData for cloud and normal succeeded run', async () => {
+    it('should call updateUsageData for cloud and succeeded non test run', async () => {
       vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
-      vi.spyOn(ExecutionStep.prototype, 'isNormalSucceededRun').mockReturnValue(
-        true
-      );
+      vi.spyOn(
+        ExecutionStep.prototype,
+        'isSucceededNonTestRun'
+      ).mockReturnValue(true);
 
       const executionStep = await createExecutionStep();
 

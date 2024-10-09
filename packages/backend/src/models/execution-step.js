@@ -47,7 +47,7 @@ class ExecutionStep extends Base {
     return this.status === 'failure';
   }
 
-  async isNormalSucceededRun() {
+  async isSucceededNonTestRun() {
     const execution = await this.$relatedQuery('execution');
     return !execution.testRun && !this.isFailed;
   }
@@ -63,7 +63,7 @@ class ExecutionStep extends Base {
   }
 
   async increaseUsageCount() {
-    if (appConfig.isCloud && this.isNormalSucceededRun()) {
+    if (appConfig.isCloud && this.isSucceededNonTestRun()) {
       await this.updateUsageData();
     }
   }
