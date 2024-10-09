@@ -1,6 +1,6 @@
 export async function up(knex) {
   await knex.schema.alterTable('app_configs', (table) => {
-    table.boolean('connectionAllowed').defaultTo(false);
+    table.boolean('connection_allowed').defaultTo(false);
   });
 
   const appConfigs = await knex('app_configs').select('*');
@@ -32,6 +32,6 @@ export async function up(knex) {
 
 export async function down(knex) {
   await knex.schema.alterTable('app_configs', (table) => {
-    table.dropColumn('connectionAllowed');
+    table.dropColumn('connection_allowed');
   });
 }
