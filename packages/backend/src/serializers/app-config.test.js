@@ -13,7 +13,7 @@ describe('appConfig serializer', () => {
     const expectedPayload = {
       id: appConfig.id,
       key: appConfig.key,
-      allowCustomConnection: appConfig.allowCustomConnection,
+      customConnectionAllowed: appConfig.customConnectionAllowed,
       shared: appConfig.shared,
       disabled: appConfig.disabled,
       connectionAllowed: appConfig.connectionAllowed,

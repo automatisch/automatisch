@@ -3,16 +3,16 @@
 exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
 {
   "properties": {
-    "allowCustomConnection": {
-      "default": false,
-      "type": "boolean",
-    },
     "connectionAllowed": {
       "default": false,
       "type": "boolean",
     },
     "createdAt": {
       "type": "string",
+    },
+    "customConnectionAllowed": {
+      "default": false,
+      "type": "boolean",
     },
     "disabled": {
       "default": false,
@@ -39,3 +39,5 @@ exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
   "type": "object",
 }
 `;
+
+exports[`AppConfig model > virtualAttributes should return correct properties 1`] = `null`;

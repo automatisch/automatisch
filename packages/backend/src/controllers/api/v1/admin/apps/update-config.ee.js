@@ -14,10 +14,10 @@ export default async (request, response) => {
 };
 
 const appConfigParams = (request) => {
-  const { allowCustomConnection, shared, disabled } = request.body;
+  const { customConnectionAllowed, shared, disabled } = request.body;
 
   return {
-    allowCustomConnection,
+    customConnectionAllowed,
     shared,
     disabled,
   };
