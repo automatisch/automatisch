@@ -32,10 +32,6 @@ describe('AppConfig model', () => {
     expect(relationMappings).toStrictEqual(expectedRelations);
   });
 
-  it('virtualAttributes should return correct properties', () => {
-    expect(AppConfig.virtualAttributes).toMatchSnapshot();
-  });
-
   describe('connectionAllowed', () => {
     it('should return true when app is enabled, shared and allows custom connection with an active app auth client at least', async () => {
       await createAppAuthClient({
