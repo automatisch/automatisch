@@ -32,14 +32,6 @@ class AppConfig extends Base {
     },
   });
 
-  static get virtualAttributes() {
-    return ['canCustomConnect'];
-  }
-
-  get canCustomConnect() {
-    return !this.disabled && this.allowCustomConnection;
-  }
-
   async getApp() {
     if (!this.key) return null;
 

@@ -77,7 +77,8 @@ export default function Application() {
 
   const connectionOptions = React.useMemo(() => {
     const shouldHaveCustomConnection =
-      appConfig?.data?.connectionAllowed && appConfig?.data?.canCustomConnect;
+      appConfig?.data?.connectionAllowed &&
+      appConfig?.data?.allowCustomConnection;
 
     const options = [
       {
@@ -155,8 +156,9 @@ export default function Application() {
                           disabled={
                             !allowed ||
                             (appConfig?.data &&
+                              !appConfig?.data?.disabled &&
                               !appConfig?.data?.connectionAllowed &&
-                              !appConfig?.data?.canCustomConnect) ||
+                              !appConfig?.data?.allowCustomConnection) ||
                             connectionOptions.every(({ disabled }) => disabled)
                           }
                           options={connectionOptions}
