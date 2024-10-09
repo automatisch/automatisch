@@ -7,7 +7,7 @@ export default defineApp({
   name: 'MailerLite',
   key: 'mailerlite',
   iconUrl: '{BASE_URL}/apps/mailerlite/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/mailerlite/connection',
+  authDocUrl: '{DOCS_URL}/apps/mailerlite/connection',
   supportsConnections: true,
   baseUrl: 'https://www.mailerlite.com',
   apiBaseUrl: 'https://connect.mailerlite.com/api',

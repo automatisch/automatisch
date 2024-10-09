@@ -9,7 +9,7 @@ export default defineApp({
   name: 'Jotform',
   key: 'jotform',
   iconUrl: '{BASE_URL}/apps/jotform/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/jotform/connection',
+  authDocUrl: '{DOCS_URL}/apps/jotform/connection',
   supportsConnections: true,
   baseUrl: 'https://www.jotform.com',
   apiBaseUrl: 'https://api.jotform.com',

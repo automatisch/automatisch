@@ -12,7 +12,7 @@ export default defineApp({
   baseUrl: 'https://mailchimp.com',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/mailchimp/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/mailchimp/connection',
+  authDocUrl: '{DOCS_URL}/apps/mailchimp/connection',
   primaryColor: '#000000',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
