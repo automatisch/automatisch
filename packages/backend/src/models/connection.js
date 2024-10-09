@@ -89,7 +89,7 @@ class Connection extends Base {
     }
 
     if (this.appConfig) {
-      return !this.appConfig.disabled && this.appConfig.allowCustomConnection;
+      return !this.appConfig.disabled && this.appConfig.customConnectionAllowed;
     }
 
     return true;
@@ -134,7 +134,7 @@ class Connection extends Base {
         );
       }
 
-      if (!appConfig.allowCustomConnection && this.formattedData) {
+      if (!appConfig.customConnectionAllowed && this.formattedData) {
         throw new NotAuthorizedError(
           `New custom connections have been disabled for ${app.name}!`
         );

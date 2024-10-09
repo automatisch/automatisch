@@ -36,35 +36,6 @@ describe('AppConfig model', () => {
     expect(AppConfig.virtualAttributes).toMatchSnapshot();
   });
 
-  describe('allowCustomConnection', () => {
-    it('should return true when app is enabled and allows custom connection', async () => {
-      const appConfig = await createAppConfig({
-        disabled: false,
-        allowCustomConnection: true,
-      });
-
-      expect(appConfig.allowCustomConnection).toBe(true);
-    });
-
-    it('should return false when app is disabled', async () => {
-      const appConfig = await createAppConfig({
-        disabled: true,
-        allowCustomConnection: true,
-      });
-
-      expect(appConfig.allowCustomConnection).toBe(false);
-    });
-
-    it(`should return false when app doesn't allow custom connection`, async () => {
-      const appConfig = await createAppConfig({
-        disabled: false,
-        allowCustomConnection: false,
-      });
-
-      expect(appConfig.allowCustomConnection).toBe(false);
-    });
-  });
-
   describe('connectionAllowed', () => {
     it('should return true when app is enabled, shared and allows custom connection with an active app auth client at least', async () => {
       await createAppAuthClient({
@@ -79,7 +50,7 @@ describe('AppConfig model', () => {
 
       const appConfig = await createAppConfig({
         disabled: false,
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
         shared: true,
         key: 'deepl',
       });
@@ -95,7 +66,7 @@ describe('AppConfig model', () => {
 
       const appConfig = await createAppConfig({
         disabled: false,
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
         shared: true,
         key: 'deepl',
       });
@@ -106,7 +77,7 @@ describe('AppConfig model', () => {
     it('should return false when app is enabled, shared and allows custom connection without any app auth clients', async () => {
       const appConfig = await createAppConfig({
         disabled: false,
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
         shared: true,
         key: 'deepl',
       });
@@ -117,7 +88,7 @@ describe('AppConfig model', () => {
     it('should return false when app is disabled', async () => {
       const appConfig = await createAppConfig({
         disabled: true,
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
       });
 
       expect(appConfig.connectionAllowed).toBe(false);
@@ -126,7 +97,7 @@ describe('AppConfig model', () => {
     it(`should return false when app doesn't allow custom connection`, async () => {
       const appConfig = await createAppConfig({
         disabled: false,
-        allowCustomConnection: false,
+        customConnectionAllowed: false,
       });
 
       expect(appConfig.connectionAllowed).toBe(false);

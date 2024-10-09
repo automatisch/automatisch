@@ -13,7 +13,7 @@ class AppConfig extends Base {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string' },
       connectionAllowed: { type: 'boolean', default: false },
-      allowCustomConnection: { type: 'boolean', default: false },
+      customConnectionAllowed: { type: 'boolean', default: false },
       shared: { type: 'boolean', default: false },
       disabled: { type: 'boolean', default: false },
       createdAt: { type: 'string' },
