@@ -47,21 +47,31 @@ class ExecutionStep extends Base {
     return this.status === 'failure';
   }
 
+  async isSucceededNonTestRun() {
+    const execution = await this.$relatedQuery('execution');
+    return !execution.testRun && !this.isFailed;
+  }
+
+  async updateUsageData() {
+    const execution = await this.$relatedQuery('execution');
+
+    const flow = await execution.$relatedQuery('flow');
+    const user = await flow.$relatedQuery('user');
+    const usageData = await user.$relatedQuery('currentUsageData');
+
+    await usageData.increaseConsumedTaskCountByOne();
+  }
+
+  async increaseUsageCount() {
+    if (appConfig.isCloud && this.isSucceededNonTestRun()) {
+      await this.updateUsageData();
+    }
+  }
+
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.executionStepCreated(this);
-
-    if (appConfig.isCloud) {
-      const execution = await this.$relatedQuery('execution');
-
-      if (!execution.testRun && !this.isFailed) {
-        const flow = await execution.$relatedQuery('flow');
-        const user = await flow.$relatedQuery('user');
-        const usageData = await user.$relatedQuery('currentUsageData');
-
-        await usageData.increaseConsumedTaskCountByOne();
-      }
-    }
+    await this.increaseUsageCount();
   }
 }
 
