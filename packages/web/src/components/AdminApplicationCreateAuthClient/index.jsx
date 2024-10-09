@@ -20,7 +20,7 @@ function AdminApplicationCreateAuthClient(props) {
   const {
     mutateAsync: createAppConfig,
     isPending: isCreateAppConfigPending,
-    error: createAppConfigError
+    error: createAppConfigError,
   } = useAdminCreateAppConfig(props.appKey);
 
   const {
@@ -34,7 +34,7 @@ function AdminApplicationCreateAuthClient(props) {
 
     if (!appConfigId) {
       const { data: appConfigData } = await createAppConfig({
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
         shared: false,
         disabled: false,
       });
