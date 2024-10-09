@@ -61,7 +61,7 @@ class AppAuthClient extends Base {
   }
 
   async triggerAppConfigUpdate() {
-    const appConfig = await this.$relatedQuery('appConfig').select('*');
+    const appConfig = await this.$relatedQuery('appConfig');
 
     await appConfig?.updateConnectionAllowedProperty();
   }
