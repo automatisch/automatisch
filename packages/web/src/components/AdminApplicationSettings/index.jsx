@@ -46,7 +46,8 @@ function AdminApplicationSettings(props) {
 
   const defaultValues = useMemo(
     () => ({
-      allowCustomConnection: appConfig?.data?.allowCustomConnection || false,
+      customConnectionAllowed:
+        appConfig?.data?.customConnectionAllowed || false,
       shared: appConfig?.data?.shared || false,
       disabled: appConfig?.data?.disabled || false,
     }),
@@ -61,8 +62,8 @@ function AdminApplicationSettings(props) {
         <Paper sx={{ p: 2, mt: 4 }}>
           <Stack spacing={2} direction="column">
             <Switch
-              name="allowCustomConnection"
-              label={formatMessage('adminAppsSettings.allowCustomConnection')}
+              name="customConnectionAllowed"
+              label={formatMessage('adminAppsSettings.customConnectionAllowed')}
               FormControlLabelProps={{
                 labelPlacement: 'start',
               }}

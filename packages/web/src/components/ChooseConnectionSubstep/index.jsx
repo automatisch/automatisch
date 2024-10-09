@@ -95,7 +95,7 @@ function ChooseConnectionSubstep(props) {
 
     if (
       !appConfig?.data ||
-      (!appConfig.data?.disabled && appConfig.data?.allowCustomConnection)
+      (!appConfig.data?.disabled && appConfig.data?.customConnectionAllowed)
     ) {
       options.push({
         label: formatMessage('chooseConnectionSubstep.addNewConnection'),

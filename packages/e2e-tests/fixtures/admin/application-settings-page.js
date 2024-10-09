@@ -8,11 +8,15 @@ export class AdminApplicationSettingsPage extends AuthenticatedPage {
   constructor(page) {
     super(page);
 
-    this.allowCustomConnectionsSwitch = this.page.locator('[name="allowCustomConnection"]');
+    this.allowCustomConnectionsSwitch = this.page.locator(
+      '[name="customConnectionAllowed"]'
+    );
     this.allowSharedConnectionsSwitch = this.page.locator('[name="shared"]');
     this.disableConnectionsSwitch = this.page.locator('[name="disabled"]');
     this.saveButton = this.page.getByTestId('submit-button');
-    this.successSnackbar = this.page.getByTestId('snackbar-save-admin-apps-settings-success');
+    this.successSnackbar = this.page.getByTestId(
+      'snackbar-save-admin-apps-settings-success'
+    );
   }
 
   async allowCustomConnections() {
