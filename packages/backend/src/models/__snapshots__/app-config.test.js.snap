@@ -7,7 +7,7 @@ exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
       "default": false,
       "type": "boolean",
     },
-    "canConnect": {
+    "connectionAllowed": {
       "default": false,
       "type": "boolean",
     },
