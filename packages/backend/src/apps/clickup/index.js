@@ -12,7 +12,7 @@ export default defineApp({
   baseUrl: 'https://clickup.com',
   apiBaseUrl: 'https://api.clickup.com/api',
   iconUrl: '{BASE_URL}/apps/clickup/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/clickup/connection',
+  authDocUrl: '{DOCS_URL}/apps/clickup/connection',
   primaryColor: '#FD71AF',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
