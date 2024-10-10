@@ -56,6 +56,19 @@ function RoleMappings({ provider, providerLoading }) {
         });
       }
     } catch (error) {
+      const errors = Object.values(
+        error.response.data.errors || [['Failed while saving!']],
+      );
+
+      for (const [error] of errors) {
+        enqueueSnackbar(error, {
+          variant: 'error',
+          SnackbarProps: {
+            'data-test': 'snackbar-update-role-mappings-error',
+          },
+        });
+      }
+
       throw new Error('Failed while saving!');
     }
   };

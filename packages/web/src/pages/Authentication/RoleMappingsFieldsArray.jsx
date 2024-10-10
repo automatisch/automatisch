@@ -66,10 +66,10 @@ function RoleMappingsFieldArray() {
                   <MuiTextField
                     {...params}
                     label={formatMessage('roleMappingsForm.role')}
+                    required
                   />
                 )}
                 loading={isRolesLoading}
-                required
               />
             </Stack>
             <IconButton
