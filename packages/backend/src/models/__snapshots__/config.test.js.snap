@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Config model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "installationCompleted": {
+      "type": "boolean",
+    },
+    "logoSvgData": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "palettePrimaryDark": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "palettePrimaryLight": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "palettePrimaryMain": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "title": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;
