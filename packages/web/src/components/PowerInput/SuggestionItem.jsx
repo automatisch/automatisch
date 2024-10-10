@@ -40,7 +40,7 @@ SuggestionItem.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string,
-      sampleValue: PropTypes.string,
+      sampleValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }),
   ).isRequired,
   onSuggestionClick: PropTypes.func.isRequired,

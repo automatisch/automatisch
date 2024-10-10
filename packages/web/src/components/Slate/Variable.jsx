@@ -32,7 +32,8 @@ Variable.propTypes = {
   children: PropTypes.node.isRequired,
   element: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    sampleValue: PropTypes.string.isRequired,
+    sampleValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
   }),
   disabled: PropTypes.bool,
 };
