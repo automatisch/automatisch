@@ -93,14 +93,17 @@ function ChooseConnectionSubstep(props) {
       appWithConnections?.map((connection) => optionGenerator(connection)) ||
       [];
 
-    if (!appConfig?.data || appConfig?.data?.canCustomConnect) {
+    if (
+      !appConfig?.data ||
+      (!appConfig.data?.disabled && appConfig.data?.customConnectionAllowed)
+    ) {
       options.push({
         label: formatMessage('chooseConnectionSubstep.addNewConnection'),
         value: ADD_CONNECTION_VALUE,
       });
     }
 
-    if (appConfig?.data?.canConnect) {
+    if (appConfig?.data?.connectionAllowed) {
       options.push({
         label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
         value: ADD_SHARED_CONNECTION_VALUE,
