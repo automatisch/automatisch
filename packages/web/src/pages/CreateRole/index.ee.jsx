@@ -11,9 +11,13 @@ import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
-import { getPermissions } from 'helpers/computePermissions.ee';
+import {
+  getComputedPermissionsDefaultValues,
+  getPermissions,
+} from 'helpers/computePermissions.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminCreateRole from 'hooks/useAdminCreateRole';
+import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 
 export default function CreateRole() {
   const navigate = useNavigate();
@@ -21,6 +25,21 @@ export default function CreateRole() {
   const enqueueSnackbar = useEnqueueSnackbar();
   const { mutateAsync: createRole, isPending: isCreateRolePending } =
     useAdminCreateRole();
+  const { data: permissionCatalogData } = usePermissionCatalog();
+
+  const defaultValues = React.useMemo(
+    () => ({
+      name: '',
+      description: '',
+      computedPermissions: getComputedPermissionsDefaultValues(
+        permissionCatalogData?.data,
+        {
+          isCreator: true,
+        },
+      ),
+    }),
+    [permissionCatalogData],
+  );
 
   const handleRoleCreation = async (roleData) => {
     try {
@@ -64,7 +83,7 @@ export default function CreateRole() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Form onSubmit={handleRoleCreation}>
+          <Form onSubmit={handleRoleCreation} defaultValues={defaultValues}>
             <Stack direction="column" gap={2}>
               <TextField
                 required={true}
@@ -81,10 +100,7 @@ export default function CreateRole() {
                 data-test="description-input"
               />
 
-              <PermissionCatalogField
-                name="computedPermissions"
-                defaultChecked={true}
-              />
+              <PermissionCatalogField name="computedPermissions" />
 
               <LoadingButton
                 type="submit"

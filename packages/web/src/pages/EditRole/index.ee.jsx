@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { merge } from 'lodash';
 
 import Container from 'components/Container';
 import Form from 'components/Form';
@@ -13,20 +14,23 @@ import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
 import {
+  getComputedPermissionsDefaultValues,
   getPermissions,
   getRoleWithComputedPermissions,
 } from 'helpers/computePermissions.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminUpdateRole from 'hooks/useAdminUpdateRole';
 import useRole from 'hooks/useRole.ee';
+import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 
 export default function EditRole() {
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
   const { roleId } = useParams();
-  const { data, loading: isRoleLoading } = useRole({ roleId });
+  const { data, isLoading: isRoleLoading } = useRole({ roleId });
   const { mutateAsync: updateRole, isPending: isUpdateRolePending } =
     useAdminUpdateRole(roleId);
+  const { data: permissionCatalogData } = usePermissionCatalog();
   const role = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
 
@@ -54,6 +58,23 @@ export default function EditRole() {
 
   const roleWithComputedPermissions = getRoleWithComputedPermissions(role);
 
+  const computedPermissionsDefaultValues = React.useMemo(
+    () => getComputedPermissionsDefaultValues(permissionCatalogData?.data),
+    [permissionCatalogData],
+  );
+
+  const defaultValues = React.useMemo(
+    () => ({
+      ...roleWithComputedPermissions,
+      computedPermissions: merge(
+        {},
+        computedPermissionsDefaultValues,
+        roleWithComputedPermissions.computedPermissions,
+      ),
+    }),
+    [roleWithComputedPermissions, computedPermissionsDefaultValues],
+  );
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -64,10 +85,7 @@ export default function EditRole() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Form
-            defaultValues={roleWithComputedPermissions}
-            onSubmit={handleRoleUpdate}
-          >
+          <Form defaultValues={defaultValues} onSubmit={handleRoleUpdate}>
             <Stack direction="column" gap={2}>
               {isRoleLoading && (
                 <>
