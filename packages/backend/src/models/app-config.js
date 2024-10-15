@@ -38,48 +38,45 @@ class AppConfig extends Base {
     return await App.findOneByKey(this.key);
   }
 
-  async computeConnectionAllowedProperty(oldAppConfig) {
-    const appAuthClients = await oldAppConfig.$relatedQuery('appAuthClients');
-    const hasSomeActiveAppAuthClients = !!appAuthClients?.some(
-      (appAuthClient) => appAuthClient.active
-    );
-    const shared = this.shared ?? oldAppConfig.shared;
-    const disabled = this.disabled ?? oldAppConfig.disabled;
-    const active = disabled === false;
-
-    const conditions = [hasSomeActiveAppAuthClients, shared, active];
-
-    const connectionAllowed = conditions.every(Boolean);
-
-    return connectionAllowed;
-  }
-
   async updateConnectionAllowedProperty() {
-    const connectionAllowed = await this.computeConnectionAllowedProperty(this);
+    const connectionAllowed = await this.computeConnectionAllowedProperty();
 
     return await this.$query().patch({
       connectionAllowed,
     });
   }
 
-  async computeAndAssignConnectionAllowedProperty(oldAppConfig) {
-    this.connectionAllowed = await this.computeConnectionAllowedProperty(
-      oldAppConfig
-    );
+  async computeAndAssignConnectionAllowedProperty() {
+    this.connectionAllowed = await this.computeConnectionAllowedProperty();
+  }
+
+  async computeConnectionAllowedProperty() {
+    const appAuthClients = await this.$relatedQuery('appAuthClients');
+
+    const hasSomeActiveAppAuthClients =
+      appAuthClients?.some((appAuthClient) => appAuthClient.active) || false;
+
+    const conditions = [
+      hasSomeActiveAppAuthClients,
+      this.shared,
+      !this.disabled,
+    ];
+
+    const connectionAllowed = conditions.every(Boolean);
+
+    return connectionAllowed;
   }
 
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
 
-    await this.computeAndAssignConnectionAllowedProperty(this);
+    await this.computeAndAssignConnectionAllowedProperty();
   }
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    const oldAppConfig = opt.old;
-
-    await this.computeAndAssignConnectionAllowedProperty(oldAppConfig);
+    await this.computeAndAssignConnectionAllowedProperty();
   }
 }
 

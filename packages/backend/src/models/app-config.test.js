@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 
 import Base from './base.js';
 import AppConfig from './app-config.js';
@@ -52,8 +52,48 @@ describe('AppConfig model', () => {
     });
   });
 
-  describe('connectionAllowed', () => {
-    it('should return true when app is enabled, shared and allows custom connection with an active app auth client at least', async () => {
+  describe('updateConnectionAllowedProperty', () => {
+    it('should call computeConnectionAllowedProperty and patch the result', async () => {
+      const appConfig = await createAppConfig();
+
+      const computeConnectionAllowedPropertySpy = vi
+        .spyOn(appConfig, 'computeConnectionAllowedProperty')
+        .mockResolvedValue(true);
+
+      const patchSpy = vi
+        .fn()
+        .mockImplementation((newAppConfig) => newAppConfig);
+
+      vi.spyOn(appConfig, '$query').mockImplementation(() => ({
+        patch: patchSpy,
+      }));
+
+      await appConfig.updateConnectionAllowedProperty();
+
+      expect(computeConnectionAllowedPropertySpy).toHaveBeenCalled();
+      expect(patchSpy).toHaveBeenCalledWith({
+        connectionAllowed: true,
+      });
+    });
+  });
+
+  describe('computeAndAssignConnectionAllowedProperty', () => {
+    it('should call computeConnectionAllowedProperty and assign the result', async () => {
+      const appConfig = await createAppConfig();
+
+      const computeConnectionAllowedPropertySpy = vi
+        .spyOn(appConfig, 'computeConnectionAllowedProperty')
+        .mockResolvedValue(true);
+
+      await appConfig.computeAndAssignConnectionAllowedProperty();
+
+      expect(computeConnectionAllowedPropertySpy).toHaveBeenCalled();
+      expect(appConfig.connectionAllowed).toBe(true);
+    });
+  });
+
+  describe('computeConnectionAllowedProperty', () => {
+    it('should return true when app is enabled, shared and allows custom connection with an active app auth client', async () => {
       await createAppAuthClient({
         appKey: 'deepl',
         active: true,
@@ -71,10 +111,13 @@ describe('AppConfig model', () => {
         key: 'deepl',
       });
 
-      expect(appConfig.connectionAllowed).toBe(true);
+      const connectionAllowed =
+        await appConfig.computeConnectionAllowedProperty();
+
+      expect(connectionAllowed).toBe(true);
     });
 
-    it('should return true when app is enabled, shared and allows custom connection with no active app auth client', async () => {
+    it('should return false if there is no active app auth client', async () => {
       await createAppAuthClient({
         appKey: 'deepl',
         active: false,
@@ -87,10 +130,13 @@ describe('AppConfig model', () => {
         key: 'deepl',
       });
 
-      expect(appConfig.connectionAllowed).toBe(false);
+      const connectionAllowed =
+        await appConfig.computeConnectionAllowedProperty();
+
+      expect(connectionAllowed).toBe(false);
     });
 
-    it('should return false when app is enabled, shared and allows custom connection without any app auth clients', async () => {
+    it('should return false if there is no app auth clients', async () => {
       const appConfig = await createAppConfig({
         disabled: false,
         customConnectionAllowed: true,
@@ -98,7 +144,10 @@ describe('AppConfig model', () => {
         key: 'deepl',
       });
 
-      expect(appConfig.connectionAllowed).toBe(false);
+      const connectionAllowed =
+        await appConfig.computeConnectionAllowedProperty();
+
+      expect(connectionAllowed).toBe(false);
     });
 
     it('should return false when app is disabled', async () => {
@@ -107,7 +156,10 @@ describe('AppConfig model', () => {
         customConnectionAllowed: true,
       });
 
-      expect(appConfig.connectionAllowed).toBe(false);
+      const connectionAllowed =
+        await appConfig.computeConnectionAllowedProperty();
+
+      expect(connectionAllowed).toBe(false);
     });
 
     it(`should return false when app doesn't allow custom connection`, async () => {
@@ -116,7 +168,34 @@ describe('AppConfig model', () => {
         customConnectionAllowed: false,
       });
 
-      expect(appConfig.connectionAllowed).toBe(false);
+      const connectionAllowed =
+        await appConfig.computeConnectionAllowedProperty();
+
+      expect(connectionAllowed).toBe(false);
     });
+  });
+
+  it('$beforeInsert should call computeAndAssignConnectionAllowedProperty', async () => {
+    const computeAndAssignConnectionAllowedPropertySpy = vi
+      .spyOn(AppConfig.prototype, 'computeAndAssignConnectionAllowedProperty')
+      .mockResolvedValue(true);
+
+    await createAppConfig();
+
+    expect(computeAndAssignConnectionAllowedPropertySpy).toHaveBeenCalledOnce();
+  });
+
+  it('$beforeUpdate should call computeAndAssignConnectionAllowedProperty', async () => {
+    const appConfig = await createAppConfig();
+
+    const computeAndAssignConnectionAllowedPropertySpy = vi
+      .spyOn(AppConfig.prototype, 'computeAndAssignConnectionAllowedProperty')
+      .mockResolvedValue(true);
+
+    await appConfig.$query().patch({
+      key: 'deepl',
+    });
+
+    expect(computeAndAssignConnectionAllowedPropertySpy).toHaveBeenCalledOnce();
   });
 });
