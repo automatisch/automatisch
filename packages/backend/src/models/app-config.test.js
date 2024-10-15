@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import Base from './base.js';
 import AppConfig from './app-config.js';
+import App from './app.js';
 import AppAuthClient from './app-auth-client.js';
 import { createAppConfig } from '../../test/factories/app-config.js';
 import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
@@ -30,6 +31,25 @@ describe('AppConfig model', () => {
     };
 
     expect(relationMappings).toStrictEqual(expectedRelations);
+  });
+
+  describe('getApp', () => {
+    it('getApp should return null if there is no key', async () => {
+      const appConfig = new AppConfig();
+      const app = await appConfig.getApp();
+
+      expect(app).toBeNull();
+    });
+
+    it('getApp should return app with provided key', async () => {
+      const appConfig = new AppConfig();
+      appConfig.key = 'deepl';
+
+      const app = await appConfig.getApp();
+      const expectedApp = await App.findOneByKey(appConfig.key);
+
+      expect(app).toStrictEqual(expectedApp);
+    });
   });
 
   describe('connectionAllowed', () => {
@@ -98,13 +118,5 @@ describe('AppConfig model', () => {
 
       expect(appConfig.connectionAllowed).toBe(false);
     });
-  });
-
-  it('getApp should return associated application', async () => {
-    const appConfig = await createAppConfig({ key: 'deepl' });
-
-    const app = await appConfig.getApp();
-
-    expect(app.key).toBe('deepl');
   });
 });
