@@ -8,6 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class App {
   static folderPath = join(__dirname, '../apps');
+
   static list = fs
     .readdirSync(this.folderPath)
     .filter((file) => fs.statSync(join(this.folderPath, file)).isDirectory());

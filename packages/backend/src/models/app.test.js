@@ -6,9 +6,7 @@ import * as appInfoConverterModule from '../helpers/app-info-converter.js';
 
 describe('App model', () => {
   it('folderPath should return correct path', () => {
-    expect(App.folderPath).toEqual(
-      expect.stringMatching(/\/packages\/backend\/src\/apps$/)
-    );
+    expect(App.folderPath.endsWith('/packages/backend/src/apps')).toBe(true);
   });
 
   it('list should have list of applications keys', () => {
