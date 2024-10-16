@@ -160,35 +160,6 @@ class Connection extends Base {
     return this;
   }
 
-  // TODO: Make another abstraction like beforeSave instead of using
-  // beforeInsert and beforeUpdate separately for the same operation.
-  async $beforeInsert(queryContext) {
-    await super.$beforeInsert(queryContext);
-
-    await this.checkEligibilityForCreation();
-
-    this.encryptData();
-  }
-
-  async $beforeUpdate(opt, queryContext) {
-    await super.$beforeUpdate(opt, queryContext);
-    this.encryptData();
-  }
-
-  async $afterFind() {
-    this.decryptData();
-  }
-
-  async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
-    Telemetry.connectionCreated(this);
-  }
-
-  async $afterUpdate(opt, queryContext) {
-    await super.$afterUpdate(opt, queryContext);
-    Telemetry.connectionUpdated(this);
-  }
-
   async getApp() {
     if (!this.key) return null;
 
@@ -277,6 +248,35 @@ class Connection extends Base {
         ...formattedData,
       },
     });
+  }
+
+  // TODO: Make another abstraction like beforeSave instead of using
+  // beforeInsert and beforeUpdate separately for the same operation.
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    await this.checkEligibilityForCreation();
+
+    this.encryptData();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+    this.encryptData();
+  }
+
+  async $afterFind() {
+    this.decryptData();
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+    Telemetry.connectionCreated(this);
+  }
+
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
+    Telemetry.connectionUpdated(this);
   }
 }
 
