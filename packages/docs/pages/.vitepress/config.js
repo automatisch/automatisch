@@ -184,6 +184,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/gitlab/triggers' },
+            { text: 'Actions', link: '/apps/gitlab/actions' },
             { text: 'Connection', link: '/apps/gitlab/connection' },
           ],
         },
