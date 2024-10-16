@@ -17,11 +17,7 @@ import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 import PermissionSettings from './PermissionSettings.ee';
 import PermissionCatalogFieldLoader from './PermissionCatalogFieldLoader';
 
-const PermissionCatalogField = ({
-  name = 'permissions',
-  disabled = false,
-  defaultChecked = false,
-}) => {
+const PermissionCatalogField = ({ name = 'permissions', disabled = false }) => {
   const { data, isLoading: isPermissionCatalogLoading } =
     usePermissionCatalog();
   const permissionCatalog = data?.data;
@@ -100,7 +96,6 @@ const PermissionCatalogField = ({
                     subject={subject.key}
                     actions={permissionCatalog?.actions}
                     conditions={permissionCatalog?.conditions}
-                    defaultChecked={defaultChecked}
                   />
                 </Stack>
               </TableCell>
@@ -114,7 +109,6 @@ const PermissionCatalogField = ({
 PermissionCatalogField.propTypes = {
   name: PropTypes.string,
   disabled: PropTypes.bool,
-  defaultChecked: PropTypes.bool,
 };
 
 export default PermissionCatalogField;

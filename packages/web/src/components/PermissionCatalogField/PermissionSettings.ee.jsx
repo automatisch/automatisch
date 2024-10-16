@@ -25,7 +25,6 @@ function PermissionSettings(props) {
     subject,
     actions,
     conditions,
-    defaultChecked,
   } = props;
   const formatMessage = useFormatMessage();
   const { getValues, resetField } = useFormContext();
@@ -106,7 +105,6 @@ function PermissionSettings(props) {
                             dataTest={`${
                               condition.key
                             }-${action.key.toLowerCase()}-checkbox`}
-                            defaultValue={defaultChecked}
                             disabled={
                               getValues(
                                 `${fieldPrefix}.${action.key}.value`,
@@ -144,7 +142,6 @@ PermissionSettings.propTypes = {
   fieldPrefix: PropTypes.string.isRequired,
   subject: PropTypes.string.isRequired,
   open: PropTypes.bool,
-  defaultChecked: PropTypes.bool,
   actions: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string,
