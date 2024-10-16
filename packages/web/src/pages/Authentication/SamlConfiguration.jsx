@@ -65,7 +65,7 @@ function SamlConfiguration({ provider, providerLoading }) {
           'data-test': 'snackbar-save-saml-provider-success',
         },
       });
-    } catch (error) {
+    } catch {
       throw new Error('Failed while saving!');
     }
   };
