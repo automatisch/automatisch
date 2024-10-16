@@ -12,6 +12,9 @@ on:
   workflow_dispatch:
 
 env:
+  BULLMQ_DASHBOARD_USERNAME: root
+  BULLMQ_DASHBOARD_PASSWORD: sample
+  ENABLE_BULLMQ_DASHBOARD: true
   ENCRYPTION_KEY: sample_encryption_key
   WEBHOOK_SECRET_KEY: sample_webhook_secret_key
   APP_SECRET_KEY: sample_app_secret_key
@@ -22,6 +25,7 @@ env:
   POSTGRES_PASSWORD: automatisch_password
   REDIS_HOST: localhost
   APP_ENV: production
+  PORT: 3000
   LICENSE_KEY: dummy_license_key
 
 jobs:
