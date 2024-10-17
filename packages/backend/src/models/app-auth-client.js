@@ -64,7 +64,9 @@ class AppAuthClient extends Base {
     const appConfig = await this.$relatedQuery('appConfig');
 
     // This is a workaround to update connection allowed column for AppConfig
-    await appConfig?.$query().patch({});
+    await appConfig?.$query().patch({
+      key: appConfig.key,
+    });
   }
 
   // TODO: Make another abstraction like beforeSave instead of using
