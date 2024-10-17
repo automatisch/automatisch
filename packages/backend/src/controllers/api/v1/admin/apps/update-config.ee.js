@@ -8,16 +8,19 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
-  await appConfig.$query().patchAndFetch(appConfigParams(request));
+  await appConfig.$query().patchAndFetch({
+    ...appConfigParams(request),
+    key: request.params.appKey,
+  });
 
   renderObject(response, appConfig);
 };
 
 const appConfigParams = (request) => {
-  const { allowCustomConnection, shared, disabled } = request.body;
+  const { customConnectionAllowed, shared, disabled } = request.body;
 
   return {
-    allowCustomConnection,
+    customConnectionAllowed,
     shared,
     disabled,
   };

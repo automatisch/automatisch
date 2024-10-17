@@ -10,11 +10,11 @@ export default async (request, response) => {
 };
 
 const appConfigParams = (request) => {
-  const { allowCustomConnection, shared, disabled } = request.body;
+  const { customConnectionAllowed, shared, disabled } = request.body;
 
   return {
     key: request.params.appKey,
-    allowCustomConnection,
+    customConnectionAllowed,
     shared,
     disabled,
   };

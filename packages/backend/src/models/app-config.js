@@ -12,7 +12,8 @@ class AppConfig extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string' },
-      allowCustomConnection: { type: 'boolean', default: false },
+      connectionAllowed: { type: 'boolean', default: false },
+      customConnectionAllowed: { type: 'boolean', default: false },
       shared: { type: 'boolean', default: false },
       disabled: { type: 'boolean', default: false },
       createdAt: { type: 'string' },
@@ -31,30 +32,51 @@ class AppConfig extends Base {
     },
   });
 
-  static get virtualAttributes() {
-    return ['canConnect', 'canCustomConnect'];
-  }
-
-  get canCustomConnect() {
-    return !this.disabled && this.allowCustomConnection;
-  }
-
-  get canConnect() {
-    const hasSomeActiveAppAuthClients = !!this.appAuthClients?.some(
-      (appAuthClient) => appAuthClient.active
-    );
-    const shared = this.shared;
-    const active = this.disabled === false;
-
-    const conditions = [hasSomeActiveAppAuthClients, shared, active];
-
-    return conditions.every(Boolean);
-  }
-
   async getApp() {
     if (!this.key) return null;
 
     return await App.findOneByKey(this.key);
+  }
+
+  async updateConnectionAllowedProperty() {
+    const connectionAllowed = await this.computeConnectionAllowedProperty();
+
+    return await this.$query().patch({
+      connectionAllowed,
+    });
+  }
+
+  async computeAndAssignConnectionAllowedProperty() {
+    this.connectionAllowed = await this.computeConnectionAllowedProperty();
+  }
+
+  async computeConnectionAllowedProperty() {
+    const appAuthClients = await this.$relatedQuery('appAuthClients');
+
+    const hasSomeActiveAppAuthClients =
+      appAuthClients?.some((appAuthClient) => appAuthClient.active) || false;
+
+    const conditions = [
+      hasSomeActiveAppAuthClients,
+      this.shared,
+      !this.disabled,
+    ];
+
+    const connectionAllowed = conditions.every(Boolean);
+
+    return connectionAllowed;
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    await this.computeAndAssignConnectionAllowedProperty();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    await this.computeAndAssignConnectionAllowedProperty();
   }
 }
 
