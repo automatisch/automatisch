@@ -8,7 +8,10 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
-  await appConfig.$query().patchAndFetch(appConfigParams(request));
+  await appConfig.$query().patchAndFetch({
+    ...appConfigParams(request),
+    key: request.params.appKey,
+  });
 
   renderObject(response, appConfig);
 };
