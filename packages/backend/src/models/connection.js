@@ -122,10 +122,20 @@ class Connection extends Base {
     return this.data ? true : false;
   }
 
-  async checkEligibilityForCreation() {
-    const app = await App.findOneByKey(this.key);
+  async getApp() {
+    if (!this.key) return null;
 
-    const appConfig = await AppConfig.query().findOne({ key: this.key });
+    return await App.findOneByKey(this.key);
+  }
+
+  async getAppConfig() {
+    return await AppConfig.query().findOne({ key: this.key });
+  }
+
+  async checkEligibilityForCreation() {
+    const app = await this.getApp();
+
+    const appConfig = await this.getAppConfig();
 
     if (appConfig) {
       if (appConfig.disabled) {
@@ -158,12 +168,6 @@ class Connection extends Base {
     }
 
     return this;
-  }
-
-  async getApp() {
-    if (!this.key) return null;
-
-    return await App.findOneByKey(this.key);
   }
 
   async testAndUpdateConnection() {
@@ -224,7 +228,7 @@ class Connection extends Base {
   async reset() {
     const formattedData = this?.formattedData?.screenName
       ? { screenName: this.formattedData.screenName }
-      : null;
+      : {};
 
     const updatedConnection = await this.$query().patchAndFetch({
       formattedData,
@@ -233,7 +237,7 @@ class Connection extends Base {
     return updatedConnection;
   }
 
-  async update({ formattedData, appAuthClientId }) {
+  async updateFormattedData({ formattedData, appAuthClientId }) {
     if (appAuthClientId) {
       const appAuthClient = await AppAuthClient.query()
         .findById(appAuthClientId)

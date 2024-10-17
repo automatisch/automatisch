@@ -8,7 +8,7 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
-  connection = await connection.update(connectionParams(request));
+  connection = await connection.updateFormattedData(connectionParams(request));
 
   renderObject(response, connection);
 };
