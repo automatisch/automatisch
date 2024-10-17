@@ -53,15 +53,14 @@ function SignUpForm() {
   }, [authentication.isAuthenticated]);
 
   const handleSubmit = async (values) => {
-    const { fullName, email, password } = values;
-
-    await registerUser({
-      fullName,
-      email,
-      password,
-    });
-
     try {
+      const { fullName, email, password } = values;
+      await registerUser({
+        fullName,
+        email,
+        password,
+      });
+
       const { data } = await createAccessToken({
         email,
         password,
