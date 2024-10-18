@@ -19,24 +19,38 @@ class Permission extends Base {
     },
   };
 
-  static sanitize(permissions) {
+  static filter(permissions) {
     const sanitizedPermissions = permissions.filter((permission) => {
       const { action, subject, conditions } = permission;
 
-      const relevantAction = permissionCatalog.actions.find(
-        (actionCatalogItem) => actionCatalogItem.key === action
-      );
-      const validSubject = relevantAction.subjects.includes(subject);
-      const validConditions = conditions.every((condition) => {
-        return !!permissionCatalog.conditions.find(
-          (conditionCatalogItem) => conditionCatalogItem.key === condition
-        );
-      });
+      const relevantAction = this.findAction(action);
+      const validSubject = this.isSubjectValid(subject, relevantAction);
+      const validConditions = this.areConditionsValid(conditions);
 
-      return validSubject && validConditions;
+      return relevantAction && validSubject && validConditions;
     });
 
     return sanitizedPermissions;
+  }
+
+  static findAction(action) {
+    return permissionCatalog.actions.find(
+      (actionCatalogItem) => actionCatalogItem.key === action
+    );
+  }
+
+  static isSubjectValid(subject, action) {
+    return action && action.subjects.includes(subject);
+  }
+
+  static areConditionsValid(conditions) {
+    return conditions.every((condition) => this.isConditionValid(condition));
+  }
+
+  static isConditionValid(condition) {
+    return !!permissionCatalog.conditions.find(
+      (conditionCatalogItem) => conditionCatalogItem.key === condition
+    );
   }
 }
 

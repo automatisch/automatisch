@@ -1,0 +1,42 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Permission model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "action": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "conditions": {
+      "items": {
+        "type": "string",
+      },
+      "type": "array",
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "roleId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "subject": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "required": [
+    "roleId",
+    "action",
+    "subject",
+  ],
+  "type": "object",
+}
+`;
