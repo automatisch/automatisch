@@ -63,14 +63,14 @@ class Role extends Base {
       await this.$relatedQuery('permissions', trx).delete();
 
       if (permissions?.length) {
-        const sanitizedPermissions = Permission.sanitize(permissions).map(
+        const validPermissions = Permission.filter(permissions).map(
           (permission) => ({
             ...permission,
             roleId: this.id,
           })
         );
 
-        await Permission.query().insert(sanitizedPermissions);
+        await Permission.query().insert(validPermissions);
       }
 
       await this.$query(trx).patch({
