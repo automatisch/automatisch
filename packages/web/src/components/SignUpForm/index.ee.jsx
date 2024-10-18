@@ -53,15 +53,13 @@ function SignUpForm() {
   }, [authentication.isAuthenticated]);
 
   const handleSubmit = async (values) => {
-    const { fullName, email, password } = values;
-
-    await registerUser({
-      fullName,
-      email,
-      password,
-    });
-
     try {
+      const { fullName, email, password } = values;
+      await registerUser({
+        fullName,
+        email,
+        password,
+      });
       const { data } = await createAccessToken({
         email,
         password,
@@ -69,9 +67,27 @@ function SignUpForm() {
       const { token } = data;
       authentication.updateToken(token);
     } catch (error) {
-      enqueueSnackbar(error?.message || formatMessage('signupForm.error'), {
-        variant: 'error',
-      });
+      const errors = error?.response?.data?.errors
+        ? Object.values(error.response.data.errors)
+        : [];
+
+      if (errors.length) {
+        for (const [error] of errors) {
+          enqueueSnackbar(error, {
+            variant: 'error',
+            SnackbarProps: {
+              'data-test': 'snackbar-sign-up-error',
+            },
+          });
+        }
+      } else {
+        enqueueSnackbar(error?.message || formatMessage('signupForm.error'), {
+          variant: 'error',
+          SnackbarProps: {
+            'data-test': 'snackbar-sign-up-error',
+          },
+        });
+      }
     }
   };
 
