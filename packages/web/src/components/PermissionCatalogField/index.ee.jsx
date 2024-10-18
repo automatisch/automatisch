@@ -12,12 +12,16 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
-import ControlledCheckbox from 'components/ControlledCheckbox';
 import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 import PermissionSettings from './PermissionSettings.ee';
 import PermissionCatalogFieldLoader from './PermissionCatalogFieldLoader';
+import ActionField from './ActionField';
 
-const PermissionCatalogField = ({ name = 'permissions', disabled = false }) => {
+const PermissionCatalogField = ({
+  name = 'permissions',
+  disabled = false,
+  syncIsCreator = false,
+}) => {
   const { data, isLoading: isPermissionCatalogLoading } =
     usePermissionCatalog();
   const permissionCatalog = data?.data;
@@ -35,6 +39,7 @@ const PermissionCatalogField = ({ name = 'permissions', disabled = false }) => {
             {permissionCatalog?.actions.map((action) => (
               <TableCell component="th" key={action.key}>
                 <Typography
+                  component="div"
                   variant="subtitle1"
                   align="center"
                   sx={{
@@ -58,22 +63,20 @@ const PermissionCatalogField = ({ name = 'permissions', disabled = false }) => {
               data-test={`${subject.key}-permission-row`}
             >
               <TableCell scope="row">
-                <Typography variant="subtitle2">{subject.label}</Typography>
+                <Typography variant="subtitle2" component="div">
+                  {subject.label}
+                </Typography>
               </TableCell>
 
               {permissionCatalog?.actions.map((action) => (
                 <TableCell key={`${subject.key}.${action.key}`} align="center">
-                  <Typography variant="subtitle2">
-                    {action.subjects.includes(subject.key) && (
-                      <ControlledCheckbox
-                        disabled={disabled}
-                        name={`${name}.${subject.key}.${action.key}.value`}
-                        dataTest={`${action.key.toLowerCase()}-checkbox`}
-                      />
-                    )}
-
-                    {!action.subjects.includes(subject.key) && '-'}
-                  </Typography>
+                  <ActionField
+                    action={action}
+                    subject={subject}
+                    disabled={disabled}
+                    name={name}
+                    syncIsCreator={syncIsCreator}
+                  />
                 </TableCell>
               ))}
 
@@ -109,6 +112,7 @@ const PermissionCatalogField = ({ name = 'permissions', disabled = false }) => {
 PermissionCatalogField.propTypes = {
   name: PropTypes.string,
   disabled: PropTypes.bool,
+  syncIsCreator: PropTypes.bool,
 };
 
 export default PermissionCatalogField;

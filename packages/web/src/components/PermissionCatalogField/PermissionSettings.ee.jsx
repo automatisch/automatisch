@@ -33,7 +33,7 @@ function PermissionSettings(props) {
     for (const action of actions) {
       for (const condition of conditions) {
         const fieldName = `${fieldPrefix}.${action.key}.conditions.${condition.key}`;
-        resetField(fieldName);
+        resetField(fieldName, { keepTouched: true });
       }
     }
     onClose();
@@ -44,7 +44,7 @@ function PermissionSettings(props) {
       for (const condition of conditions) {
         const fieldName = `${fieldPrefix}.${action.key}.conditions.${condition.key}`;
         const value = getValues(fieldName);
-        resetField(fieldName, { defaultValue: value });
+        resetField(fieldName, { defaultValue: value, keepTouched: true });
       }
     }
     onClose();
@@ -55,6 +55,7 @@ function PermissionSettings(props) {
       open={open}
       onClose={cancel}
       data-test={`${subject}-role-conditions-modal`}
+      keepMounted
     >
       <DialogTitle>{formatMessage('permissionSettings.title')}</DialogTitle>
 
@@ -64,10 +65,10 @@ function PermissionSettings(props) {
             <TableHead>
               <TableRow>
                 <TableCell component="th" />
-
                 {actions.map((action) => (
                   <TableCell component="th" key={action.key}>
                     <Typography
+                      component="div"
                       variant="subtitle1"
                       align="center"
                       sx={{
@@ -88,7 +89,7 @@ function PermissionSettings(props) {
                   sx={{ '&:last-child td': { border: 0 } }}
                 >
                   <TableCell scope="row">
-                    <Typography variant="subtitle2">
+                    <Typography variant="subtitle2" component="div">
                       {condition.label}
                     </Typography>
                   </TableCell>
@@ -98,7 +99,7 @@ function PermissionSettings(props) {
                       key={`${action.key}.${condition.key}`}
                       align="center"
                     >
-                      <Typography variant="subtitle2">
+                      <Typography variant="subtitle2" component="div">
                         {action.subjects.includes(subject) && (
                           <ControlledCheckbox
                             name={`${fieldPrefix}.${action.key}.conditions.${condition.key}`}

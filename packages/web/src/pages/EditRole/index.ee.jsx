@@ -117,6 +117,7 @@ export default function EditRole() {
               <PermissionCatalogField
                 name="computedPermissions"
                 disabled={role?.isAdmin}
+                syncIsCreator
               />
 
               <LoadingButton
