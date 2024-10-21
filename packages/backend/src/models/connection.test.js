@@ -121,7 +121,7 @@ describe('Connection model', () => {
       const appConfig = await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
       });
 
       const connection = await createConnection({
@@ -151,7 +151,7 @@ describe('Connection model', () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: true,
-        allowCustomConnection: false,
+        customConnectionAllowed: false,
       });
 
       const connectionWithAppAuthClient = await connection
@@ -373,7 +373,7 @@ describe('Connection model', () => {
 
       vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue({
         disabled: false,
-        allowCustomConnection: false,
+        customConnectionAllowed: false,
       });
 
       const connection = new Connection();
@@ -410,7 +410,7 @@ describe('Connection model', () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
         shared: true,
       });
 
