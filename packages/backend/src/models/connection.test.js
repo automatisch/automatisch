@@ -9,6 +9,7 @@ import Base from './base.js';
 import Connection from './connection';
 import Step from './step.js';
 import User from './user.js';
+import Telemetry from '../helpers/telemetry/index.js';
 import { createConnection } from '../../test/factories/connection.js';
 import { createAppConfig } from '../../test/factories/app-config.js';
 import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
@@ -468,6 +469,122 @@ describe('Connection model', () => {
         clientId: 'sample-id',
         token: 'sample-token',
       });
+    });
+  });
+
+  describe('$beforeInsert', () => {
+    it('should call super.$beforeInsert', async () => {
+      const superBeforeInsertSpy = vi
+        .spyOn(Base.prototype, '$beforeInsert')
+        .mockResolvedValue();
+
+      await createConnection();
+
+      expect(superBeforeInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call checkEligibilityForCreation', async () => {
+      const checkEligibilityForCreationSpy = vi
+        .spyOn(Connection.prototype, 'checkEligibilityForCreation')
+        .mockResolvedValue();
+
+      await createConnection();
+
+      expect(checkEligibilityForCreationSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call encryptData', async () => {
+      const encryptDataSpy = vi
+        .spyOn(Connection.prototype, 'encryptData')
+        .mockResolvedValue();
+
+      await createConnection();
+
+      expect(encryptDataSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('$beforeUpdate', () => {
+    it('should call super.$beforeUpdate', async () => {
+      const superBeforeUpdateSpy = vi
+        .spyOn(Base.prototype, '$beforeUpdate')
+        .mockResolvedValue();
+
+      const connection = await createConnection();
+
+      await connection.$query().patch({ verified: false });
+
+      expect(superBeforeUpdateSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call encryptData', async () => {
+      const connection = await createConnection();
+
+      const encryptDataSpy = vi
+        .spyOn(Connection.prototype, 'encryptData')
+        .mockResolvedValue();
+
+      await connection.$query().patch({ verified: false });
+
+      expect(encryptDataSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('$afterFind', () => {
+    it('should call decryptData', async () => {
+      const connection = await createConnection();
+
+      const decryptDataSpy = vi
+        .spyOn(Connection.prototype, 'decryptData')
+        .mockResolvedValue();
+
+      await connection.$query();
+
+      expect(decryptDataSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('$afterInsert', () => {
+    it('should call super.$afterInsert', async () => {
+      const superAfterInsertSpy = vi.spyOn(Base.prototype, '$afterInsert');
+
+      await createConnection();
+
+      expect(superAfterInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call Telemetry.connectionCreated', async () => {
+      const telemetryConnectionCreatedSpy = vi
+        .spyOn(Telemetry, 'connectionCreated')
+        .mockImplementation(() => {});
+
+      const connection = await createConnection();
+
+      expect(telemetryConnectionCreatedSpy).toHaveBeenCalledWith(connection);
+    });
+  });
+
+  describe('$afterUpdate', () => {
+    it('should call super.$afterUpdate', async () => {
+      const superAfterInsertSpy = vi.spyOn(Base.prototype, '$afterUpdate');
+
+      const connection = await createConnection();
+
+      await connection.$query().patch({ verified: false });
+
+      expect(superAfterInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call Telemetry.connectionUpdated', async () => {
+      const telemetryconnectionUpdatedSpy = vi
+        .spyOn(Telemetry, 'connectionCreated')
+        .mockImplementation(() => {});
+
+      const connection = await createConnection();
+
+      await connection.$query().patch({ verified: false });
+
+      expect(telemetryconnectionUpdatedSpy).toHaveBeenCalledWith(connection);
     });
   });
 });
