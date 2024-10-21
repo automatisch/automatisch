@@ -92,7 +92,77 @@ describe('Connection model', () => {
     });
   });
 
-  describe.todo('reconnectable');
+  describe('reconnectable', () => {
+    it('should return active status of app auth client when created via app auth client', async () => {
+      const appAuthClient = await createAppAuthClient({
+        active: true,
+        formattedAuthDefaults: {
+          clientId: 'sample-id',
+        },
+      });
+
+      const connection = await createConnection({
+        appAuthClientId: appAuthClient.id,
+        formattedData: {
+          token: 'sample-token',
+        },
+      });
+
+      const connectionWithAppAuthClient = await connection
+        .$query()
+        .withGraphFetched({
+          appAuthClient: true,
+        });
+
+      expect(connectionWithAppAuthClient.reconnectable).toBe(true);
+    });
+
+    it('should return true when app config is not disabled and allows custom connection', async () => {
+      const appConfig = await createAppConfig({
+        key: 'gitlab',
+        disabled: false,
+        allowCustomConnection: true,
+      });
+
+      const connection = await createConnection({
+        key: appConfig.key,
+        formattedData: {
+          token: 'sample-token',
+        },
+      });
+
+      const connectionWithAppAuthClient = await connection
+        .$query()
+        .withGraphFetched({
+          appConfig: true,
+        });
+
+      expect(connectionWithAppAuthClient.reconnectable).toBe(true);
+    });
+
+    it('should return false when app config is disabled or does not allow custom connection', async () => {
+      const connection = await createConnection({
+        key: 'gitlab',
+        formattedData: {
+          token: 'sample-token',
+        },
+      });
+
+      await createAppConfig({
+        key: 'gitlab',
+        disabled: true,
+        allowCustomConnection: false,
+      });
+
+      const connectionWithAppAuthClient = await connection
+        .$query()
+        .withGraphFetched({
+          appConfig: true,
+        });
+
+      expect(connectionWithAppAuthClient.reconnectable).toBe(false);
+    });
+  });
 
   describe('encryptData', () => {
     it('should return undefined if eligibleForEncryption is not true', async () => {
@@ -247,7 +317,124 @@ describe('Connection model', () => {
     expect(connectionAppConfig).toStrictEqual(appConfig);
   });
 
-  describe.todo('checkEligibilityForCreation', async () => {});
+  describe('checkEligibilityForCreation', () => {
+    it('should return connection if no app config exists', async () => {
+      vi.spyOn(Connection.prototype, 'getApp').mockResolvedValue({
+        name: 'gitlab',
+      });
+
+      vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue();
+
+      const connection = new Connection();
+
+      expect(await connection.checkEligibilityForCreation()).toBe(connection);
+    });
+
+    it('should throw an error when app does not exist', async () => {
+      vi.spyOn(Connection.prototype, 'getApp').mockRejectedValue(
+        new Error(
+          `An application with the "unexisting-app" key couldn't be found.`
+        )
+      );
+
+      vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue();
+
+      const connection = new Connection();
+
+      await expect(() =>
+        connection.checkEligibilityForCreation()
+      ).rejects.toThrow(
+        `An application with the "unexisting-app" key couldn't be found.`
+      );
+    });
+
+    it('should throw an error when app config is disabled', async () => {
+      vi.spyOn(Connection.prototype, 'getApp').mockResolvedValue({
+        name: 'gitlab',
+      });
+
+      vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue({
+        disabled: true,
+      });
+
+      const connection = new Connection();
+
+      await expect(() =>
+        connection.checkEligibilityForCreation()
+      ).rejects.toThrow(
+        'The application has been disabled for new connections!'
+      );
+    });
+
+    it('should throw an error when app config does not allow custom connection with formatted data', async () => {
+      vi.spyOn(Connection.prototype, 'getApp').mockResolvedValue({
+        name: 'gitlab',
+      });
+
+      vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue({
+        disabled: false,
+        allowCustomConnection: false,
+      });
+
+      const connection = new Connection();
+      connection.formattedData = {};
+
+      await expect(() =>
+        connection.checkEligibilityForCreation()
+      ).rejects.toThrow(
+        'New custom connections have been disabled for gitlab!'
+      );
+    });
+
+    it('should throw an error when app config is not shared with app auth client', async () => {
+      vi.spyOn(Connection.prototype, 'getApp').mockResolvedValue({
+        name: 'gitlab',
+      });
+
+      vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue({
+        disabled: false,
+        shared: false,
+      });
+
+      const connection = new Connection();
+      connection.appAuthClientId = 'sample-id';
+
+      await expect(() =>
+        connection.checkEligibilityForCreation()
+      ).rejects.toThrow(
+        'The connection with the given app auth client is not allowed!'
+      );
+    });
+
+    it('should apply app auth client auth defaults when creating with shared app auth client', async () => {
+      await createAppConfig({
+        key: 'gitlab',
+        disabled: false,
+        allowCustomConnection: true,
+        shared: true,
+      });
+
+      const appAuthClient = await createAppAuthClient({
+        appKey: 'gitlab',
+        active: true,
+        formattedAuthDefaults: {
+          clientId: 'sample-id',
+        },
+      });
+
+      const connection = await createConnection({
+        key: 'gitlab',
+        appAuthClientId: appAuthClient.id,
+        formattedData: null,
+      });
+
+      await connection.checkEligibilityForCreation();
+
+      expect(connection.formattedData).toStrictEqual({
+        clientId: 'sample-id',
+      });
+    });
+  });
 
   describe('testAndUpdateConnection', () => {
     it('should verify connection and persist it', async () => {
@@ -276,7 +463,33 @@ describe('Connection model', () => {
       expect(updatedConnection.verified).toBe(true);
     });
 
-    it.todo('should unverify connection and persist it');
+    it('should unverify connection and persist it', async () => {
+      const connection = await createConnection({ verified: true });
+
+      const isStillVerifiedSpy = vi
+        .fn()
+        .mockRejectedValue(new Error('Wrong credentials!'));
+
+      const originalApp = await connection.getApp();
+
+      const getAppSpy = vi
+        .spyOn(connection, 'getApp')
+        .mockImplementation(() => {
+          return {
+            ...originalApp,
+            auth: {
+              ...originalApp.auth,
+              isStillVerified: isStillVerifiedSpy,
+            },
+          };
+        });
+
+      const updatedConnection = await connection.testAndUpdateConnection();
+
+      expect(getAppSpy).toHaveBeenCalledOnce();
+      expect(isStillVerifiedSpy).toHaveBeenCalledOnce();
+      expect(updatedConnection.verified).toBe(false);
+    });
   });
 
   describe('verifyAndUpdateConnection', () => {
