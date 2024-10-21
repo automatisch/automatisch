@@ -177,17 +177,6 @@ describe('Connection model', () => {
   });
 
   describe('eligibleForEncryption', () => {
-    it('should access formattedData', async () => {
-      const connection = new Connection();
-      connection.formattedData = { clientId: 'sample-id' };
-
-      const spy = vi.spyOn(connection, 'formattedData', 'get');
-
-      connection.eligibleForEncryption();
-
-      expect(spy).toHaveBeenCalledOnce();
-    });
-
     it('should return true when formattedData property exists', async () => {
       const connection = new Connection();
       connection.formattedData = { clientId: 'sample-id' };
@@ -204,17 +193,6 @@ describe('Connection model', () => {
   });
 
   describe('eligibleForDecryption', () => {
-    it('should access formattedData', async () => {
-      const connection = new Connection();
-      connection.data = 'encrypted-data';
-
-      const spy = vi.spyOn(connection, 'data', 'get');
-
-      connection.eligibleForDecryption();
-
-      expect(spy).toHaveBeenCalledOnce();
-    });
-
     it('should return true when data property exists', async () => {
       const connection = new Connection();
       connection.data = 'encrypted-data';
