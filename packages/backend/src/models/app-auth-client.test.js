@@ -2,9 +2,11 @@ import { describe, it, expect, vi } from 'vitest';
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 
+import AppConfig from './app-config.js';
 import AppAuthClient from './app-auth-client.js';
 import appConfig from '../config/app.js';
 import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
+import { createAppConfig } from '../../test/factories/app-config.js';
 
 describe('AppAuthClient model', () => {
   it('tableName should return correct name', () => {
@@ -140,6 +142,23 @@ describe('AppAuthClient model', () => {
     });
   });
 
+  it('triggerAppConfigUpdate should trigger an update in related app config', async () => {
+    await createAppConfig({ key: 'gitlab' });
+
+    const appAuthClient = await createAppAuthClient({
+      appKey: 'gitlab',
+    });
+
+    const appConfigBeforeUpdateSpy = vi.spyOn(
+      AppConfig.prototype,
+      '$beforeUpdate'
+    );
+
+    await appAuthClient.triggerAppConfigUpdate();
+
+    expect(appConfigBeforeUpdateSpy).toHaveBeenCalledOnce();
+  });
+
   it('$beforeInsert should call AppAuthClient.encryptData', async () => {
     const appAuthClientBeforeInsertSpy = vi.spyOn(
       AppAuthClient.prototype,
@@ -149,6 +168,17 @@ describe('AppAuthClient model', () => {
     await createAppAuthClient();
 
     expect(appAuthClientBeforeInsertSpy).toHaveBeenCalledOnce();
+  });
+
+  it('$afterInsert should call AppAuthClient.triggerAppConfigUpdate', async () => {
+    const appAuthClientAfterInsertSpy = vi.spyOn(
+      AppAuthClient.prototype,
+      '$afterInsert'
+    );
+
+    await createAppAuthClient();
+
+    expect(appAuthClientAfterInsertSpy).toHaveBeenCalledOnce();
   });
 
   it('$beforeUpdate should call AppAuthClient.encryptData', async () => {
@@ -162,6 +192,19 @@ describe('AppAuthClient model', () => {
     await appAuthClient.$query().patchAndFetch({ name: 'sample' });
 
     expect(appAuthClientBeforeUpdateSpy).toHaveBeenCalledOnce();
+  });
+
+  it('$afterUpdate should call AppAuthClient.triggerAppConfigUpdate', async () => {
+    const appAuthClient = await createAppAuthClient();
+
+    const appAuthClientAfterUpdateSpy = vi.spyOn(
+      AppAuthClient.prototype,
+      'triggerAppConfigUpdate'
+    );
+
+    await appAuthClient.$query().patchAndFetch({ name: 'sample' });
+
+    expect(appAuthClientAfterUpdateSpy).toHaveBeenCalledOnce();
   });
 
   it('$afterFind should call AppAuthClient.decryptData', async () => {
