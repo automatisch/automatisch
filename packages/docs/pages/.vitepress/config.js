@@ -342,6 +342,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'PDFMonkey',
+          collapsible: true,
+          collapsed: true,
+          items: [{ text: 'Connection', link: '/apps/pdf-monkey/connection' }],
+        },
+        {
           text: 'Pipedrive',
           collapsible: true,
           collapsed: true,
