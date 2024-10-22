@@ -5,6 +5,8 @@ import Permission from './permission.js';
 import User from './user.js';
 import { createRole } from '../../test/factories/role.js';
 import { createPermission } from '../../test/factories/permission.js';
+import { createUser } from '../../test/factories/user.js';
+import { createSamlAuthProvider } from '../../test/factories/saml-auth-provider.ee.js';
 
 describe('Role model', () => {
   it('tableName should return correct name', () => {
@@ -201,6 +203,85 @@ describe('Role model', () => {
 
       expect(refetchedRole).toBe(undefined);
       expect(rolePermissions).toStrictEqual([]);
+    });
+  });
+
+  describe('assertNoRoleUserExists', () => {
+    it('should reject with an error when the role has users', async () => {
+      const role = await createRole({ name: 'User' });
+      await createUser({ roleId: role.id });
+
+      await expect(() => role.assertNoRoleUserExists()).rejects.toThrowError(
+        `All users must be migrated away from the "User" role.`
+      );
+    });
+
+    it('should resolve when the role does not have any users', async () => {
+      const role = await createRole();
+
+      expect(await role.assertNoRoleUserExists()).toBe(undefined);
+    });
+  });
+
+  describe('assertNoConfigurationUsage', () => {
+    it('should reject with an error when the role is used in configuration', async () => {
+      const role = await createRole();
+      await createSamlAuthProvider({ defaultRoleId: role.id });
+
+      await expect(() =>
+        role.assertNoConfigurationUsage()
+      ).rejects.toThrowError(
+        'samlAuthProvider: You need to change the default role in the SAML configuration before deleting this role.'
+      );
+    });
+
+    it('should resolve when the role does not have any users', async () => {
+      const role = await createRole();
+
+      expect(await role.assertNoConfigurationUsage()).toBe(undefined);
+    });
+  });
+
+  it('assertRoleIsNotUsed should call assertNoRoleUserExists and assertNoConfigurationUsage', async () => {
+    const role = new Role();
+
+    const assertNoRoleUserExistsSpy = vi
+      .spyOn(role, 'assertNoRoleUserExists')
+      .mockResolvedValue();
+
+    const assertNoConfigurationUsageSpy = vi
+      .spyOn(role, 'assertNoConfigurationUsage')
+      .mockResolvedValue();
+
+    await role.assertRoleIsNotUsed();
+
+    expect(assertNoRoleUserExistsSpy).toHaveBeenCalledOnce();
+    expect(assertNoConfigurationUsageSpy).toHaveBeenCalledOnce();
+  });
+
+  describe('$beforeDelete', () => {
+    it('should call preventAlteringAdmin', async () => {
+      const role = await createRole({ name: 'User' });
+
+      const preventAlteringAdminSpy = vi
+        .spyOn(role, 'preventAlteringAdmin')
+        .mockResolvedValue();
+
+      await role.$query().delete();
+
+      expect(preventAlteringAdminSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call assertRoleIsNotUsed', async () => {
+      const role = await createRole({ name: 'User' });
+
+      const assertRoleIsNotUsedSpy = vi
+        .spyOn(role, 'assertRoleIsNotUsed')
+        .mockResolvedValue();
+
+      await role.$query().delete();
+
+      expect(assertRoleIsNotUsedSpy).toHaveBeenCalledOnce();
     });
   });
 });

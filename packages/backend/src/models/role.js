@@ -109,17 +109,7 @@ class Role extends Base {
     return await this.$query().delete();
   }
 
-  async $beforeUpdate(opt, queryContext) {
-    await super.$beforeUpdate(opt, queryContext);
-
-    await this.preventAlteringAdmin();
-  }
-
-  async $beforeDelete(queryContext) {
-    await super.$beforeDelete(queryContext);
-
-    await this.preventAlteringAdmin();
-
+  async assertNoRoleUserExists() {
     const userCount = await this.$relatedQuery('users').limit(1).resultSize();
     const hasUsers = userCount > 0;
 
@@ -135,7 +125,9 @@ class Role extends Base {
         type: 'ValidationError',
       });
     }
+  }
 
+  async assertNoConfigurationUsage() {
     const samlAuthProviderUsingDefaultRole = await SamlAuthProvider.query()
       .where({
         default_role_id: this.id,
@@ -156,6 +148,26 @@ class Role extends Base {
         type: 'ValidationError',
       });
     }
+  }
+
+  async assertRoleIsNotUsed() {
+    await this.assertNoRoleUserExists();
+
+    await this.assertNoConfigurationUsage();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    await this.preventAlteringAdmin();
+  }
+
+  async $beforeDelete(queryContext) {
+    await super.$beforeDelete(queryContext);
+
+    await this.preventAlteringAdmin();
+
+    await this.assertRoleIsNotUsed();
   }
 }
 
