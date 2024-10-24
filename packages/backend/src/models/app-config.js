@@ -5,6 +5,10 @@ import Base from './base.js';
 class AppConfig extends Base {
   static tableName = 'app_configs';
 
+  static get idColumn() {
+    return 'key';
+  }
+
   static jsonSchema = {
     type: 'object',
     required: ['key'],
