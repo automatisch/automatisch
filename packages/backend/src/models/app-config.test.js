@@ -12,6 +12,10 @@ describe('AppConfig model', () => {
     expect(AppConfig.tableName).toBe('app_configs');
   });
 
+  it('idColumn should return key field', () => {
+    expect(AppConfig.idColumn).toBe('key');
+  });
+
   it('jsonSchema should have correct validations', () => {
     expect(AppConfig.jsonSchema).toMatchSnapshot();
   });
