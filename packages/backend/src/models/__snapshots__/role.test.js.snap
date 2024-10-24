@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Role model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "description": {
+      "maxLength": 255,
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "name": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "required": [
+    "name",
+  ],
+  "type": "object",
+}
+`;

@@ -52,32 +52,53 @@ class Role extends Base {
     return await this.query().findOne({ name: 'Admin' });
   }
 
-  async updateWithPermissions(data) {
+  preventAlteringAdmin() {
     if (this.isAdmin) {
       throw new NotAuthorizedError('The admin role cannot be altered!');
     }
+  }
+
+  async deletePermissions(trx) {
+    return await this.$relatedQuery('permissions', trx).delete();
+  }
+
+  async createPermissions(permissions, trx) {
+    if (permissions?.length) {
+      const validPermissions = Permission.filter(permissions).map(
+        (permission) => ({
+          ...permission,
+          roleId: this.id,
+        })
+      );
+
+      await Permission.query(trx).insert(validPermissions);
+    }
+
+    return this;
+  }
+
+  async overridePermissions(permissions, trx) {
+    await this.deletePermissions(trx);
+
+    await this.createPermissions(permissions, trx);
+
+    return this;
+  }
+
+  async updateWithPermissions(data) {
+    this.preventAlteringAdmin();
 
     const { name, description, permissions } = data;
 
     return await Role.transaction(async (trx) => {
-      await this.$relatedQuery('permissions', trx).delete();
-
-      if (permissions?.length) {
-        const validPermissions = Permission.filter(permissions).map(
-          (permission) => ({
-            ...permission,
-            roleId: this.id,
-          })
-        );
-
-        await Permission.query().insert(validPermissions);
-      }
+      await this.overridePermissions(permissions, trx);
 
       await this.$query(trx).patch({
         name,
         description,
       });
 
+      // TODO: consider removing returning permissions as they're not utilized
       return await this.$query(trx)
         .leftJoinRelated({
           permissions: true,
@@ -90,19 +111,13 @@ class Role extends Base {
 
   async deleteWithPermissions() {
     return await Role.transaction(async (trx) => {
-      await this.$relatedQuery('permissions', trx).delete();
+      await this.deletePermissions(trx);
 
       return await this.$query(trx).delete();
     });
   }
 
-  async $beforeDelete(queryContext) {
-    await super.$beforeDelete(queryContext);
-
-    if (this.isAdmin) {
-      throw new NotAuthorizedError('The admin role cannot be deleted!');
-    }
-
+  async assertNoRoleUserExists() {
     const userCount = await this.$relatedQuery('users').limit(1).resultSize();
     const hasUsers = userCount > 0;
 
@@ -118,7 +133,9 @@ class Role extends Base {
         type: 'ValidationError',
       });
     }
+  }
 
+  async assertNoConfigurationUsage() {
     const samlAuthProviderUsingDefaultRole = await SamlAuthProvider.query()
       .where({
         default_role_id: this.id,
@@ -139,6 +156,20 @@ class Role extends Base {
         type: 'ValidationError',
       });
     }
+  }
+
+  async assertRoleIsNotUsed() {
+    await this.assertNoRoleUserExists();
+
+    await this.assertNoConfigurationUsage();
+  }
+
+  async $beforeDelete(queryContext) {
+    await super.$beforeDelete(queryContext);
+
+    this.preventAlteringAdmin();
+
+    await this.assertRoleIsNotUsed();
   }
 }
 
