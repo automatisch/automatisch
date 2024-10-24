@@ -191,7 +191,7 @@ describe('AppAuthClient model', () => {
   it('$afterInsert should call AppAuthClient.triggerAppConfigUpdate', async () => {
     const appAuthClientAfterInsertSpy = vi.spyOn(
       AppAuthClient.prototype,
-      '$afterInsert'
+      'triggerAppConfigUpdate'
     );
 
     await createAppAuthClient();
