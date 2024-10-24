@@ -4,6 +4,7 @@ import enc from 'crypto-js/enc-utf8.js';
 
 import AppConfig from './app-config.js';
 import AppAuthClient from './app-auth-client.js';
+import Base from './base.js';
 import appConfig from '../config/app.js';
 import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
 import { createAppConfig } from '../../test/factories/app-config.js';
@@ -15,6 +16,23 @@ describe('AppAuthClient model', () => {
 
   it('jsonSchema should have correct validations', () => {
     expect(AppAuthClient.jsonSchema).toMatchSnapshot();
+  });
+
+  it('relationMappings should return correct associations', () => {
+    const relationMappings = AppAuthClient.relationMappings();
+
+    const expectedRelations = {
+      appConfig: {
+        relation: Base.BelongsToOneRelation,
+        modelClass: AppConfig,
+        join: {
+          from: 'app_auth_clients.app_key',
+          to: 'app_configs.key',
+        },
+      },
+    };
+
+    expect(relationMappings).toStrictEqual(expectedRelations);
   });
 
   describe('encryptData', () => {
