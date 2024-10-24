@@ -47,21 +47,15 @@ class AppConfig extends Base {
   }
 
   async computeConnectionAllowedProperty() {
-    const refetchedRecord = await AppConfig.query().findOne({ key: this.key });
-
-    if (!refetchedRecord) return;
-
-    const appAuthClients = await refetchedRecord.$relatedQuery(
-      'appAuthClients'
-    );
+    const appAuthClients = await this.$relatedQuery('appAuthClients');
 
     const hasSomeActiveAppAuthClients =
       appAuthClients?.some((appAuthClient) => appAuthClient.active) || false;
 
     const conditions = [
       hasSomeActiveAppAuthClients,
-      refetchedRecord.shared,
-      !refetchedRecord.disabled,
+      this.shared,
+      !this.disabled,
     ];
 
     const connectionAllowed = conditions.every(Boolean);

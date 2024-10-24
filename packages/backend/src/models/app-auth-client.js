@@ -66,6 +66,8 @@ class AppAuthClient extends Base {
     // This is a workaround to update connection allowed column for AppConfig
     await appConfig?.$query().patch({
       key: appConfig.key,
+      shared: appConfig.shared,
+      disabled: appConfig.disabled,
     });
   }
 
