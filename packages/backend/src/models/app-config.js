@@ -42,14 +42,6 @@ class AppConfig extends Base {
     return await App.findOneByKey(this.key);
   }
 
-  async updateConnectionAllowedProperty() {
-    const connectionAllowed = await this.computeConnectionAllowedProperty();
-
-    return await this.$query().patch({
-      connectionAllowed,
-    });
-  }
-
   async computeAndAssignConnectionAllowedProperty() {
     this.connectionAllowed = await this.computeConnectionAllowedProperty();
   }

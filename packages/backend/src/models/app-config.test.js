@@ -56,31 +56,6 @@ describe('AppConfig model', () => {
     });
   });
 
-  describe('updateConnectionAllowedProperty', () => {
-    it('should call computeConnectionAllowedProperty and patch the result', async () => {
-      const appConfig = await createAppConfig();
-
-      const computeConnectionAllowedPropertySpy = vi
-        .spyOn(appConfig, 'computeConnectionAllowedProperty')
-        .mockResolvedValue(true);
-
-      const patchSpy = vi
-        .fn()
-        .mockImplementation((newAppConfig) => newAppConfig);
-
-      vi.spyOn(appConfig, '$query').mockImplementation(() => ({
-        patch: patchSpy,
-      }));
-
-      await appConfig.updateConnectionAllowedProperty();
-
-      expect(computeConnectionAllowedPropertySpy).toHaveBeenCalled();
-      expect(patchSpy).toHaveBeenCalledWith({
-        connectionAllowed: true,
-      });
-    });
-  });
-
   describe('computeAndAssignConnectionAllowedProperty', () => {
     it('should call computeConnectionAllowedProperty and assign the result', async () => {
       const appConfig = await createAppConfig();
