@@ -30,16 +30,15 @@ function AdminApplicationCreateAuthClient(props) {
   } = useAdminCreateAppAuthClient(appKey);
 
   const submitHandler = async (values) => {
-    let appConfigId = appConfig?.data?.id;
+    let appConfigKey = appConfig?.data?.key;
 
-    if (!appConfigId) {
+    if (!appConfigKey) {
       const { data: appConfigData } = await createAppConfig({
         customConnectionAllowed: true,
         shared: false,
         disabled: false,
       });
-
-      appConfigId = appConfigData.id;
+      appConfigKey = appConfigData.key;
     }
 
     const { name, active, ...formattedAuthDefaults } = values;

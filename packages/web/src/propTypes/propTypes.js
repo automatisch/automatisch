@@ -468,7 +468,7 @@ export const AppConfigPropType = PropTypes.shape({
 export const AppAuthClientPropType = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,
-  appConfigId: PropTypes.string,
+  appConfigKey: PropTypes.string,
   authDefaults: PropTypes.string,
   formattedAuthDefaults: PropTypes.object,
   active: PropTypes.bool,
