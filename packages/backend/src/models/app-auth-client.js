@@ -24,7 +24,7 @@ class AppAuthClient extends Base {
 
   static relationMappings = () => ({
     appConfig: {
-      relation: Base.HasOneRelation,
+      relation: Base.BelongsToOneRelation,
       modelClass: AppConfig,
       join: {
         from: 'app_auth_clients.app_key',
