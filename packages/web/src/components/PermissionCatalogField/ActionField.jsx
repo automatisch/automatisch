@@ -1,46 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import ControlledCheckbox from 'components/ControlledCheckbox';
 
 const ActionField = ({ action, subject, disabled, name, syncIsCreator }) => {
-  const { watch, formState, resetField } = useFormContext();
+  const { formState, resetField } = useFormContext();
 
-  const actionFieldName = `${name}.${subject.key}.${action.key}.value`;
-  const actionFieldValue = watch(actionFieldName);
-
+  const actionDefaultValue =
+    formState.defaultValues?.[name]?.[subject.key]?.[action.key].value;
   const conditionFieldName = `${name}.${subject.key}.${action.key}.conditions.isCreator`;
   const conditionFieldTouched =
     formState.touchedFields?.[name]?.[subject.key]?.[action.key]?.conditions
       ?.isCreator === true;
 
-  const defaultActionFieldValueRef = useRef(actionFieldValue);
-
-  useEffect(() => {
-    if (defaultActionFieldValueRef?.current === undefined) {
-      defaultActionFieldValueRef.current = actionFieldValue;
-    } else if (
+  const handleSyncIsCreator = (newValue) => {
+    if (
       syncIsCreator &&
-      defaultActionFieldValueRef?.current === false &&
+      actionDefaultValue === false &&
       !conditionFieldTouched
     ) {
-      resetField(conditionFieldName, { defaultValue: actionFieldValue });
+      resetField(conditionFieldName, { defaultValue: newValue });
     }
-  }, [actionFieldValue, syncIsCreator]);
+  };
 
   return (
-    <Typography variant="subtitle2" component="div">
-      {action.subjects.includes(subject.key) && (
-        <ControlledCheckbox
-          disabled={disabled}
-          name={`${name}.${subject.key}.${action.key}.value`}
-          dataTest={`${action.key.toLowerCase()}-checkbox`}
-        />
-      )}
-
-      {!action.subjects.includes(subject.key) && '-'}
-    </Typography>
+    <ControlledCheckbox
+      disabled={disabled}
+      name={`${name}.${subject.key}.${action.key}.value`}
+      dataTest={`${action.key.toLowerCase()}-checkbox`}
+      onChange={(e, value) => {
+        handleSyncIsCreator(value);
+      }}
+    />
   );
 };
 

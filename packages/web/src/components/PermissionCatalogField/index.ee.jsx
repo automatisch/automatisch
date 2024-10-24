@@ -70,13 +70,18 @@ const PermissionCatalogField = ({
 
               {permissionCatalog?.actions.map((action) => (
                 <TableCell key={`${subject.key}.${action.key}`} align="center">
-                  <ActionField
-                    action={action}
-                    subject={subject}
-                    disabled={disabled}
-                    name={name}
-                    syncIsCreator={syncIsCreator}
-                  />
+                  <Typography variant="subtitle2" component="div">
+                    {action.subjects.includes(subject.key) && (
+                      <ActionField
+                        action={action}
+                        subject={subject}
+                        disabled={disabled}
+                        name={name}
+                        syncIsCreator={syncIsCreator}
+                      />
+                    )}
+                    {!action.subjects.includes(subject.key) && '-'}
+                  </Typography>
                 </TableCell>
               ))}
 

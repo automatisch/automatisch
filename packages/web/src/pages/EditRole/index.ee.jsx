@@ -27,11 +27,12 @@ export default function EditRole() {
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
   const { roleId } = useParams();
-  const { data, isLoading: isRoleLoading } = useRole({ roleId });
+  const { data: roleData, isLoading: isRoleLoading } = useRole({ roleId });
   const { mutateAsync: updateRole, isPending: isUpdateRolePending } =
     useAdminUpdateRole(roleId);
   const { data: permissionCatalogData } = usePermissionCatalog();
-  const role = data?.data;
+  const role = roleData?.data;
+  const permissionCatalog = permissionCatalogData?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleRoleUpdate = async (roleData) => {
@@ -56,24 +57,20 @@ export default function EditRole() {
     }
   };
 
-  const roleWithComputedPermissions = getRoleWithComputedPermissions(role);
+  const defaultValues = React.useMemo(() => {
+    const roleWithComputedPermissions = getRoleWithComputedPermissions(role);
+    const computedPermissionsDefaultValues =
+      getComputedPermissionsDefaultValues(permissionCatalog);
 
-  const computedPermissionsDefaultValues = React.useMemo(
-    () => getComputedPermissionsDefaultValues(permissionCatalogData?.data),
-    [permissionCatalogData],
-  );
-
-  const defaultValues = React.useMemo(
-    () => ({
+    return {
       ...roleWithComputedPermissions,
       computedPermissions: merge(
         {},
         computedPermissionsDefaultValues,
         roleWithComputedPermissions.computedPermissions,
       ),
-    }),
-    [roleWithComputedPermissions, computedPermissionsDefaultValues],
-  );
+    };
+  }, [role, permissionCatalog]);
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
@@ -113,13 +110,11 @@ export default function EditRole() {
                   />
                 </>
               )}
-
               <PermissionCatalogField
                 name="computedPermissions"
                 disabled={role?.isAdmin}
                 syncIsCreator
               />
-
               <LoadingButton
                 type="submit"
                 variant="contained"
