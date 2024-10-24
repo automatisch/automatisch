@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "connectionAllowed": {
+      "default": false,
+      "type": "boolean",
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "customConnectionAllowed": {
+      "default": false,
+      "type": "boolean",
+    },
+    "disabled": {
+      "default": false,
+      "type": "boolean",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "key": {
+      "type": "string",
+    },
+    "shared": {
+      "default": false,
+      "type": "boolean",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "required": [
+    "key",
+  ],
+  "type": "object",
+}
+`;

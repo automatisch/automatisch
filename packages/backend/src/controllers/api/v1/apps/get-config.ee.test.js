@@ -17,7 +17,7 @@ describe('GET /api/v1/apps/:appKey/config', () => {
 
     appConfig = await createAppConfig({
       key: 'deepl',
-      allowCustomConnection: true,
+      customConnectionAllowed: true,
       shared: true,
       disabled: false,
     });

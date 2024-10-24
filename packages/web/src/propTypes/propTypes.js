@@ -459,9 +459,8 @@ export const SamlAuthProviderRolePropType = PropTypes.shape({
 export const AppConfigPropType = PropTypes.shape({
   id: PropTypes.string,
   key: PropTypes.string,
-  allowCustomConnection: PropTypes.bool,
-  canConnect: PropTypes.bool,
-  canCustomConnect: PropTypes.bool,
+  customConnectionAllowed: PropTypes.bool,
+  connectionAllowed: PropTypes.bool,
   shared: PropTypes.bool,
   disabled: PropTypes.bool,
 });
@@ -469,7 +468,7 @@ export const AppConfigPropType = PropTypes.shape({
 export const AppAuthClientPropType = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,
-  appConfigId: PropTypes.string,
+  appConfigKey: PropTypes.string,
   authDefaults: PropTypes.string,
   formattedAuthDefaults: PropTypes.object,
   active: PropTypes.bool,

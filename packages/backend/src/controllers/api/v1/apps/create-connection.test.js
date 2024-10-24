@@ -155,7 +155,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        allowCustomConnection: true,
+        customConnectionAllowed: true,
       });
     });
 
@@ -218,7 +218,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        allowCustomConnection: false,
+        customConnectionAllowed: false,
       });
     });
 

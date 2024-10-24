@@ -292,7 +292,7 @@
   "adminApps.connections": "Connections",
   "adminApps.authClients": "Auth clients",
   "adminApps.settings": "Settings",
-  "adminAppsSettings.allowCustomConnection": "Allow custom connection",
+  "adminAppsSettings.customConnectionAllowed": "Allow custom connection",
   "adminAppsSettings.shared": "Shared",
   "adminAppsSettings.disabled": "Disabled",
   "adminAppsSettings.save": "Save",

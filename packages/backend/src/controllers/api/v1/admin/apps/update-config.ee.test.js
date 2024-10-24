@@ -24,7 +24,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
   it('should return updated app config', async () => {
     const appConfig = {
       key: 'gitlab',
-      allowCustomConnection: true,
+      customConnectionAllowed: true,
       shared: true,
       disabled: false,
     };
@@ -34,7 +34,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
     const newAppConfigValues = {
       shared: false,
       disabled: true,
-      allowCustomConnection: false,
+      customConnectionAllowed: false,
     };
 
     const response = await request(app)
@@ -55,7 +55,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
     const appConfig = {
       shared: false,
       disabled: true,
-      allowCustomConnection: false,
+      customConnectionAllowed: false,
     };
 
     await request(app)
@@ -68,7 +68,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
   it('should return HTTP 422 for invalid app config data', async () => {
     const appConfig = {
       key: 'gitlab',
-      allowCustomConnection: true,
+      customConnectionAllowed: true,
       shared: true,
       disabled: false,
     };

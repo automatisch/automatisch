@@ -2,6 +2,7 @@ import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 import appConfig from '../config/app.js';
 import Base from './base.js';
+import AppConfig from './app-config.js';
 
 class AppAuthClient extends Base {
   static tableName = 'app_auth_clients';
@@ -20,6 +21,17 @@ class AppAuthClient extends Base {
       updatedAt: { type: 'string' },
     },
   };
+
+  static relationMappings = () => ({
+    appConfig: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: AppConfig,
+      join: {
+        from: 'app_auth_clients.app_key',
+        to: 'app_configs.key',
+      },
+    },
+  });
 
   encryptData() {
     if (!this.eligibleForEncryption()) return;
@@ -48,6 +60,17 @@ class AppAuthClient extends Base {
     return this.authDefaults ? true : false;
   }
 
+  async triggerAppConfigUpdate() {
+    const appConfig = await this.$relatedQuery('appConfig');
+
+    // This is a workaround to update connection allowed column for AppConfig
+    await appConfig?.$query().patch({
+      key: appConfig.key,
+      shared: appConfig.shared,
+      disabled: appConfig.disabled,
+    });
+  }
+
   // TODO: Make another abstraction like beforeSave instead of using
   // beforeInsert and beforeUpdate separately for the same operation.
   async $beforeInsert(queryContext) {
@@ -55,9 +78,21 @@ class AppAuthClient extends Base {
     this.encryptData();
   }
 
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+
+    await this.triggerAppConfigUpdate();
+  }
+
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     this.encryptData();
+  }
+
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
+
+    await this.triggerAppConfigUpdate();
   }
 
   async $afterFind() {

@@ -10,7 +10,6 @@ const formattedAuthDefaults = {
 
 export const createAppAuthClient = async (params = {}) => {
   params.name = params?.name || faker.person.fullName();
-  params.id = params?.id || faker.string.uuid();
   params.appKey = params?.appKey || 'deepl';
   params.active = params?.active ?? true;
   params.formattedAuthDefaults =
