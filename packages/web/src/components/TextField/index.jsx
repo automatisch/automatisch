@@ -31,6 +31,7 @@ function TextField(props) {
     onBlur,
     onChange,
     'data-test': dataTest,
+    showError = false,
     ...textFieldProps
   } = props;
   return (
@@ -47,6 +48,7 @@ function TextField(props) {
           onBlur: controllerOnBlur,
           ...field
         },
+        fieldState: { error },
       }) => (
         <MuiTextField
           {...textFieldProps}
@@ -72,6 +74,7 @@ function TextField(props) {
           inputProps={{
             'data-test': dataTest,
           }}
+          {...(showError && { helperText: error?.message, error: !!error })}
         />
       )}
     />
@@ -89,6 +92,7 @@ TextField.propTypes = {
   disabled: PropTypes.bool,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
+  showError: PropTypes.bool,
 };
 
 export default TextField;

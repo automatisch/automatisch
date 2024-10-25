@@ -29,6 +29,8 @@ function ControlledAutocomplete(props) {
     options = [],
     dependsOn = [],
     showOptionValue,
+    renderInput,
+    showHelperText = true,
     ...autocompleteProps
   } = props;
   let dependsOnValues = [];
@@ -105,16 +107,18 @@ function ControlledAutocomplete(props) {
                 )}
               </li>
             )}
+            renderInput={(params) => renderInput(params, fieldState)}
           />
-
-          <FormHelperText
-            variant="outlined"
-            error={Boolean(fieldState.isTouched && fieldState.error)}
-          >
-            {fieldState.isTouched
-              ? fieldState.error?.message || description
-              : description}
-          </FormHelperText>
+          {showHelperText && (
+            <FormHelperText
+              variant="outlined"
+              error={Boolean(fieldState.isTouched && fieldState.error)}
+            >
+              {fieldState.isTouched
+                ? fieldState.error?.message || description
+                : description}
+            </FormHelperText>
+          )}
         </div>
       )}
     />
@@ -132,6 +136,10 @@ ControlledAutocomplete.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   options: PropTypes.array,
+  renderInput: PropTypes.func.isRequired,
+  showFormHelperText: PropTypes.bool,
+  showErrorTouched: PropTypes.bool,
+  showHelperText: PropTypes.bool,
 };
 
 export default ControlledAutocomplete;

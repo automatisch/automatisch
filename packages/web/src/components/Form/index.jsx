@@ -13,12 +13,14 @@ function Form(props) {
     resolver,
     render,
     mode = 'all',
+    reValidateMode = 'onBlur',
+    automaticValidation = true,
     ...formProps
   } = props;
 
   const methods = useForm({
     defaultValues,
-    reValidateMode: 'onBlur',
+    reValidateMode,
     resolver,
     mode,
   });
@@ -30,7 +32,9 @@ function Form(props) {
    * For fields having `dependsOn` fields, we need to re-validate the form.
    */
   React.useEffect(() => {
-    methods.trigger();
+    if (automaticValidation) {
+      methods.trigger();
+    }
   }, [methods.trigger, form]);
 
   React.useEffect(() => {
@@ -56,6 +60,8 @@ Form.propTypes = {
   render: PropTypes.func,
   resolver: PropTypes.func,
   mode: PropTypes.oneOf(['onChange', 'onBlur', 'onSubmit', 'onTouched', 'all']),
+  reValidateMode: PropTypes.oneOf(['onChange', 'onBlur', 'onSubmit']),
+  automaticValidation: PropTypes.bool,
 };
 
 export default Form;
