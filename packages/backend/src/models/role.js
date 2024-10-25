@@ -75,7 +75,7 @@ class Role extends Base {
     }
   }
 
-  async overridePermissions(permissions, trx) {
+  async updatePermissions(permissions, trx) {
     await this.deletePermissions(trx);
 
     await this.createPermissions(permissions, trx);
@@ -85,7 +85,7 @@ class Role extends Base {
     const { name, description, permissions } = data;
 
     return await Role.transaction(async (trx) => {
-      await this.overridePermissions(permissions, trx);
+      await this.updatePermissions(permissions, trx);
 
       await this.$query(trx).patch({
         name,

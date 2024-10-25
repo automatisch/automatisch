@@ -164,7 +164,7 @@ describe('Role model', () => {
     });
   });
 
-  it('overridePermissions should delete existing permissions and create new permissions', async () => {
+  it('updatePermissions should delete existing permissions and create new permissions', async () => {
     const permissionsData = [
       { action: 'read', subject: 'Flow', conditions: [] },
     ];
@@ -179,7 +179,7 @@ describe('Role model', () => {
 
     const role = await createRole({ name: 'User' });
 
-    await role.overridePermissions(permissionsData, transaction);
+    await role.updatePermissions(permissionsData, transaction);
 
     expect(deletePermissionsSpy.mock.invocationCallOrder[0]).toBeLessThan(
       createPermissionsSpy.mock.invocationCallOrder[0]
@@ -236,8 +236,8 @@ describe('Role model', () => {
 
     it('should use transaction', async () => {
       const transaction = vi.fn();
-      const overridePermissionsSpy = vi
-        .spyOn(Role.prototype, 'overridePermissions')
+      const updatePermissionsSpy = vi
+        .spyOn(Role.prototype, 'updatePermissions')
         .mockResolvedValue();
 
       const querySpy = vi.spyOn(Role.prototype, '$query').mockReturnValue({
@@ -263,7 +263,7 @@ describe('Role model', () => {
 
       expect(transactionSpy).toHaveBeenCalledOnce();
 
-      expect(overridePermissionsSpy).toHaveBeenCalledWith(
+      expect(updatePermissionsSpy).toHaveBeenCalledWith(
         newRoleData.permissions,
         transaction
       );
