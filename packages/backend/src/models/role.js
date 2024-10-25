@@ -73,16 +73,12 @@ class Role extends Base {
 
       await Permission.query(trx).insert(validPermissions);
     }
-
-    return this;
   }
 
   async overridePermissions(permissions, trx) {
     await this.deletePermissions(trx);
 
     await this.createPermissions(permissions, trx);
-
-    return this;
   }
 
   async updateWithPermissions(data) {
