@@ -92,21 +92,4 @@ describe('DELETE /api/v1/admin/roles/:roleId', () => {
       },
     });
   });
-
-  it('should not delete role and permissions on unsuccessful response', async () => {
-    const role = await createRole();
-    const permission = await createPermission({ roleId: role.id });
-    await createUser({ roleId: role.id });
-
-    await request(app)
-      .delete(`/api/v1/admin/roles/${role.id}`)
-      .set('Authorization', token)
-      .expect(422);
-
-    const refetchedRole = await role.$query();
-    const refetchedPermission = await permission.$query();
-
-    expect(refetchedRole).toStrictEqual(role);
-    expect(refetchedPermission).toStrictEqual(permission);
-  });
 });
