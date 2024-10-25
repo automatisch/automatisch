@@ -82,8 +82,6 @@ class Role extends Base {
   }
 
   async updateWithPermissions(data) {
-    this.preventAlteringAdmin();
-
     const { name, description, permissions } = data;
 
     return await Role.transaction(async (trx) => {
@@ -158,6 +156,12 @@ class Role extends Base {
     await this.assertNoRoleUserExists();
 
     await this.assertNoConfigurationUsage();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    this.preventAlteringAdmin();
   }
 
   async $beforeDelete(queryContext) {
