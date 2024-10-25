@@ -4111,10 +4111,10 @@
   resolved "https://registry.npmjs.org/@types/html-minifier-terser/-/html-minifier-terser-6.1.0.tgz"
   integrity sha512-oh/6byDPnL1zeNXFrDXFLyZjkr1MsBG667IM792caf1L2UPOOMf65NFzjUH/ltyfwjAGfs1rsX1eftK0jC/KIg==
 
-"@types/http-proxy@^1.17.5":
-  version "1.17.8"
-  resolved "https://registry.npmjs.org/@types/http-proxy/-/http-proxy-1.17.8.tgz"
-  integrity sha512-5kPLG5BKpWYkw/LVOGWpiq3nEVqxiN32rTgI53Sk12/xHFQ2rG3ehI9IO+O3W2QoKeyB92dJkoka8SUm6BX1pA==
+"@types/http-proxy@^1.17.8":
+  version "1.17.15"
+  resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.17.15.tgz#12118141ce9775a6499ecb4c01d02f90fc839d36"
+  integrity sha512-25g5atgiVNTIv0LBDTg1H74Hvayx0ajtJPLLcYE3whFv75J0pWNtOBzaXJQgDTmrX1bx5U9YC2w/n65BN1HwRQ==
   dependencies:
     "@types/node" "*"
 
@@ -9451,11 +9451,11 @@ http-proxy-agent@^7.0.0:
     debug "^4.3.4"
 
 http-proxy-middleware@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/http-proxy-middleware/-/http-proxy-middleware-2.0.1.tgz"
-  integrity sha512-cfaXRVoZxSed/BmkA7SwBVNI9Kj7HFltaE5rqYOub5kWzWZ+gofV2koVN1j2rMW7pEfSSlCHGJ31xmuyFyfLOg==
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/http-proxy-middleware/-/http-proxy-middleware-2.0.7.tgz#915f236d92ae98ef48278a95dedf17e991936ec6"
+  integrity sha512-fgVY8AV7qU7z/MmXJ/rxwbrtQH4jBQ9m7kp3llF0liB7glmFeVZFBepQb32T3y8n8k2+AEYuMPCpinYW+/CuRA==
   dependencies:
-    "@types/http-proxy" "^1.17.5"
+    "@types/http-proxy" "^1.17.8"
     http-proxy "^1.18.1"
     is-glob "^4.0.1"
     is-plain-obj "^3.0.0"
