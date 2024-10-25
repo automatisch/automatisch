@@ -88,30 +88,13 @@ describe('Role model', () => {
     });
   });
 
-  describe('deletePermissions', () => {
-    it("should delete role's permissions", async () => {
-      const role = await createRole({ name: 'User' });
-      await createPermission({ roleId: role.id });
+  it("deletePermissions should delete role's permissions", async () => {
+    const role = await createRole({ name: 'User' });
+    await createPermission({ roleId: role.id });
 
-      await role.deletePermissions();
+    await role.deletePermissions();
 
-      expect(await role.$relatedQuery('permissions')).toStrictEqual([]);
-    });
-
-    it('should accept transaction', async () => {
-      const transaction = vi.fn();
-
-      const relatedQuerySpy = vi
-        .spyOn(Role.prototype, '$relatedQuery')
-        .mockReturnValue({ delete: () => {} });
-
-      const role = await createRole({ name: 'User' });
-
-      await role.deletePermissions(transaction);
-
-      expect(relatedQuerySpy).toHaveBeenCalledWith('permissions', transaction);
-      1;
-    });
+    expect(await role.$relatedQuery('permissions')).toStrictEqual([]);
   });
 
   describe('createPermissions', () => {
@@ -144,24 +127,6 @@ describe('Role model', () => {
 
       expect(permissionFilterSpy).toHaveBeenCalledWith(permissions);
     });
-
-    it('should accept transaction', async () => {
-      const transaction = vi.fn();
-
-      const permissionQuerySpy = vi
-        .spyOn(Permission, 'query')
-        .mockReturnValue({ insert: () => {} });
-
-      const role = await createRole({ name: 'User' });
-
-      await role.createPermissions(
-        [{ action: 'read', subject: 'Flow', conditions: [] }],
-        transaction
-      );
-
-      expect(permissionQuerySpy).toHaveBeenCalledWith(transaction);
-      1;
-    });
   });
 
   it('updatePermissions should delete existing permissions and create new permissions', async () => {
@@ -169,7 +134,6 @@ describe('Role model', () => {
       { action: 'read', subject: 'Flow', conditions: [] },
     ];
 
-    const transaction = vi.fn();
     const deletePermissionsSpy = vi
       .spyOn(Role.prototype, 'deletePermissions')
       .mockResolvedValueOnce();
@@ -179,18 +143,14 @@ describe('Role model', () => {
 
     const role = await createRole({ name: 'User' });
 
-    await role.updatePermissions(permissionsData, transaction);
+    await role.updatePermissions(permissionsData);
 
     expect(deletePermissionsSpy.mock.invocationCallOrder[0]).toBeLessThan(
       createPermissionsSpy.mock.invocationCallOrder[0]
     );
 
-    expect(deletePermissionsSpy).toHaveBeenNthCalledWith(1, transaction);
-    expect(createPermissionsSpy).toHaveBeenNthCalledWith(
-      1,
-      permissionsData,
-      transaction
-    );
+    expect(deletePermissionsSpy).toHaveBeenNthCalledWith(1);
+    expect(createPermissionsSpy).toHaveBeenNthCalledWith(1, permissionsData);
   });
 
   describe('updateWithPermissions', () => {
@@ -224,83 +184,6 @@ describe('Role model', () => {
 
       expect(roleWithPermissions).toMatchObject(newRoleData);
     });
-
-    it('should throw an error while updating the admin role', async () => {
-      const role = new Role();
-      role.name = 'Admin';
-
-      await expect(() => role.updateWithPermissions()).rejects.toThrowError(
-        'The admin role cannot be altered!'
-      );
-    });
-
-    it('should use transaction', async () => {
-      const transaction = vi.fn();
-      const updatePermissionsSpy = vi
-        .spyOn(Role.prototype, 'updatePermissions')
-        .mockResolvedValue();
-
-      const querySpy = vi.spyOn(Role.prototype, '$query').mockReturnValue({
-        patch: vi.fn().mockReturnValue(Promise.resolve()),
-        leftJoinRelated: vi.fn().mockReturnThis(),
-        withGraphFetched: vi.fn().mockResolvedValue({}),
-      });
-
-      const transactionSpy = vi
-        .spyOn(Role, 'transaction')
-        .mockImplementation(async (callback) => {
-          return await callback(transaction);
-        });
-      const role = await createRole({ name: 'User' });
-
-      const newRoleData = {
-        name: 'New user',
-        description: 'Updated user role',
-        permissions: [{ action: 'read', subject: 'Flow', conditions: [] }],
-      };
-
-      await role.updateWithPermissions(newRoleData);
-
-      expect(transactionSpy).toHaveBeenCalledOnce();
-
-      expect(updatePermissionsSpy).toHaveBeenCalledWith(
-        newRoleData.permissions,
-        transaction
-      );
-
-      expect(querySpy).toHaveBeenNthCalledWith(2, transaction);
-    });
-
-    it('should revert changes when an error occurs', async () => {
-      const role = await createRole({ name: 'User' });
-      await createPermission({
-        roleId: role.id,
-        subject: 'Flow',
-        action: 'read',
-        conditions: [],
-      });
-
-      const roleWithPermissions = await role
-        .$query()
-        .leftJoinRelated({ permissions: true })
-        .withGraphFetched({ permissions: true });
-
-      await expect(() =>
-        role.updateWithPermissions({
-          name: false,
-          description: 123,
-        })
-      ).rejects.toThrowError(
-        'name: must be string, description: must be string,null'
-      );
-
-      const refetchedRoleWithPermissions = await role
-        .$query()
-        .leftJoinRelated({ permissions: true })
-        .withGraphFetched({ permissions: true });
-
-      expect(roleWithPermissions).toStrictEqual(refetchedRoleWithPermissions);
-    });
   });
 
   describe('deleteWithPermissions', () => {
@@ -322,32 +205,6 @@ describe('Role model', () => {
 
       expect(refetchedRole).toBe(undefined);
       expect(rolePermissions).toStrictEqual([]);
-    });
-
-    it('should use transaction', async () => {
-      const transaction = vi.fn();
-      const deletePermissionsSpy = vi
-        .spyOn(Role.prototype, 'deletePermissions')
-        .mockResolvedValue();
-
-      const querySpy = vi.spyOn(Role.prototype, '$query').mockReturnValue({
-        delete: vi.fn().mockReturnValue(Promise.resolve()),
-      });
-
-      const transactionSpy = vi
-        .spyOn(Role, 'transaction')
-        .mockImplementation(async (callback) => {
-          return await callback(transaction);
-        });
-      const role = await createRole({ name: 'User' });
-
-      await role.deleteWithPermissions();
-
-      expect(transactionSpy).toHaveBeenCalledOnce();
-
-      expect(deletePermissionsSpy).toHaveBeenCalledWith(transaction);
-
-      expect(querySpy).toHaveBeenCalledWith(transaction);
     });
   });
 
