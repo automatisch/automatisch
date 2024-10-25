@@ -23,7 +23,7 @@ describe('executionSerializer', () => {
       updatedAt: execution.updatedAt.getTime(),
     };
 
-    expect(executionSerializer(execution)).toEqual(expectedPayload);
+    expect(executionSerializer(execution)).toStrictEqual(expectedPayload);
   });
 
   it('should return the execution data with status', async () => {
@@ -37,7 +37,7 @@ describe('executionSerializer', () => {
       status: 'success',
     };
 
-    expect(executionSerializer(execution)).toEqual(expectedPayload);
+    expect(executionSerializer(execution)).toStrictEqual(expectedPayload);
   });
 
   it('should return the execution data with the flow', async () => {

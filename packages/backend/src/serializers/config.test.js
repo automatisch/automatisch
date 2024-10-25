@@ -27,6 +27,6 @@ describe('configSerializer', () => {
       updatedAt: config.updatedAt.getTime(),
     };
 
-    expect(configSerializer(config)).toEqual(expectedPayload);
+    expect(configSerializer(config)).toStrictEqual(expectedPayload);
   });
 });

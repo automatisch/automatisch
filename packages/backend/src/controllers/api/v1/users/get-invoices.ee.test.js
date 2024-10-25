@@ -29,6 +29,6 @@ describe('GET /api/v1/user/invoices', () => {
 
     const expectedPayload = await getInvoicesMock(invoices);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

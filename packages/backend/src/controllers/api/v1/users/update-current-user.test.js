@@ -47,7 +47,8 @@ describe('PATCH /api/v1/users/:userId', () => {
       .send(userData)
       .expect(422);
 
-    expect(response.body.meta.type).toEqual('ModelValidation');
+    expect(response.body.meta.type).toStrictEqual('ModelValidation');
+
     expect(response.body.errors).toMatchObject({
       email: ['must be string'],
       fullName: ['must be string'],

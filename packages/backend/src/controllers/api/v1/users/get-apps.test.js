@@ -79,7 +79,7 @@ describe('GET /api/v1/users/:userId/apps', () => {
       .expect(200);
 
     const expectedPayload = getAppsMock();
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return all apps of the another user', async () => {
@@ -143,7 +143,7 @@ describe('GET /api/v1/users/:userId/apps', () => {
       .expect(200);
 
     const expectedPayload = getAppsMock();
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return specified app of the current user', async () => {
@@ -204,7 +204,7 @@ describe('GET /api/v1/users/:userId/apps', () => {
       .set('Authorization', token)
       .expect(200);
 
-    expect(response.body.data.length).toEqual(1);
-    expect(response.body.data[0].key).toEqual('deepl');
+    expect(response.body.data.length).toStrictEqual(1);
+    expect(response.body.data[0].key).toStrictEqual('deepl');
   });
 });

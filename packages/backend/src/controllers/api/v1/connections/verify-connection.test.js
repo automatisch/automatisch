@@ -47,7 +47,7 @@ describe('POST /api/v1/connections/:connectionId/verify', () => {
       .set('Authorization', token)
       .expect(200);
 
-    expect(response.body.data.verified).toEqual(true);
+    expect(response.body.data.verified).toStrictEqual(true);
   });
 
   it('should return not found response for not existing connection UUID', async () => {

@@ -66,7 +66,7 @@ describe('GET /api/v1/executions', () => {
       [stepOne, stepTwo]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the executions of another user', async () => {
@@ -114,6 +114,6 @@ describe('GET /api/v1/executions', () => {
       [stepOne, stepTwo]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

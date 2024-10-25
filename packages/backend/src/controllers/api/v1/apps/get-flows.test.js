@@ -62,7 +62,7 @@ describe('GET /api/v1/apps/:appKey/flows', () => {
       [triggerStepFlowOne, actionStepFlowOne]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the flows data of specified app for another user', async () => {
@@ -110,7 +110,7 @@ describe('GET /api/v1/apps/:appKey/flows', () => {
       [triggerStepFlowOne, actionStepFlowOne]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for invalid app key', async () => {

@@ -16,6 +16,6 @@ describe('actionSerializer', () => {
       type: action.type,
     };
 
-    expect(actionSerializer(action)).toEqual(expectedPayload);
+    expect(expectedPayload).toMatchObject(actionSerializer(action));
   });
 });

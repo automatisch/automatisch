@@ -15,6 +15,6 @@ describe('appSerializer', () => {
       primaryColor: app.primaryColor,
     };
 
-    expect(appSerializer(app)).toEqual(expectedPayload);
+    expect(appSerializer(app)).toStrictEqual(expectedPayload);
   });
 });

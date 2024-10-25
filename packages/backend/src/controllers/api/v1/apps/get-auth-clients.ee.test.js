@@ -37,6 +37,6 @@ describe('GET /api/v1/apps/:appKey/auth-clients', () => {
       appAuthClientOne,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

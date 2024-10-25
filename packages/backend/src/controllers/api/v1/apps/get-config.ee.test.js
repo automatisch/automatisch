@@ -32,7 +32,7 @@ describe('GET /api/v1/apps/:appKey/config', () => {
       .expect(200);
 
     const expectedPayload = getAppConfigMock(appConfig);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing app key', async () => {

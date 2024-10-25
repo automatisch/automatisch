@@ -29,7 +29,7 @@ describe('GET /api/v1/apps/:appKey/auth-clients/:appAuthClientId', () => {
       .expect(200);
 
     const expectedPayload = getAppAuthClientMock(currentAppAuthClient);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing app auth client ID', async () => {

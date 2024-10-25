@@ -193,7 +193,7 @@ describe('Connection model', () => {
       );
 
       expect(formattedData).toStrictEqual(expectedDecryptedValue);
-      expect(connection.data).not.toEqual(formattedData);
+      expect(connection.data).not.toStrictEqual(formattedData);
     });
 
     it('should encrypt formattedData and remove formattedData', async () => {
@@ -243,7 +243,7 @@ describe('Connection model', () => {
       connection.decryptData();
 
       expect(connection.formattedData).toStrictEqual(formattedData);
-      expect(connection.data).not.toEqual(formattedData);
+      expect(connection.data).not.toStrictEqual(formattedData);
     });
   });
 

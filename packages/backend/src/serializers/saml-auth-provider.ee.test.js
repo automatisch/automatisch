@@ -17,7 +17,7 @@ describe('samlAuthProviderSerializer', () => {
       issuer: samlAuthProvider.issuer,
     };
 
-    expect(samlAuthProviderSerializer(samlAuthProvider)).toEqual(
+    expect(samlAuthProviderSerializer(samlAuthProvider)).toStrictEqual(
       expectedPayload
     );
   });

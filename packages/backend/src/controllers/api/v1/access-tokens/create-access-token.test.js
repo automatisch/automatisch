@@ -32,7 +32,7 @@ describe('POST /api/v1/access-tokens', () => {
       })
       .expect(422);
 
-    expect(response.body.errors.general).toEqual([
+    expect(response.body.errors.general).toStrictEqual([
       'Incorrect email or password.',
     ]);
   });

@@ -32,7 +32,7 @@ describe('GET /api/v1/users/:userId/trial', () => {
         .expect(200);
 
       const expectedResponsePayload = await getUserTrialMock(user);
-      expect(response.body).toEqual(expectedResponsePayload);
+      expect(response.body).toStrictEqual(expectedResponsePayload);
     });
   });
 });

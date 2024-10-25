@@ -31,7 +31,7 @@ describe('flowSerializer', () => {
       updatedAt: flow.updatedAt.getTime(),
     };
 
-    expect(flowSerializer(flow)).toEqual(expectedPayload);
+    expect(flowSerializer(flow)).toStrictEqual(expectedPayload);
   });
 
   it('should return flow data with the steps', async () => {

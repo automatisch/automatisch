@@ -58,7 +58,7 @@ describe('POST /api/v1/admin/roles', () => {
       ]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return unprocessable entity response for invalid role data', async () => {

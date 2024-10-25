@@ -43,7 +43,7 @@ describe('GET /api/v1/steps/:stepId/connection', () => {
 
     const expectedPayload = await getConnectionMock(currentUserConnection);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the current user connection data of specified step', async () => {
@@ -70,7 +70,7 @@ describe('GET /api/v1/steps/:stepId/connection', () => {
 
     const expectedPayload = await getConnectionMock(anotherUserConnection);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing step without connection', async () => {

@@ -47,7 +47,7 @@ describe('GET /api/v1/apps/:appKey/connections', () => {
       currentUserConnectionOne,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the connections data of specified app for another user', async () => {
@@ -82,7 +82,7 @@ describe('GET /api/v1/apps/:appKey/connections', () => {
       anotherUserConnectionOne,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for invalid connection UUID', async () => {

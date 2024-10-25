@@ -17,6 +17,8 @@ describe('appAuthClient serializer', () => {
       active: appAuthClient.active,
     };
 
-    expect(appAuthClientSerializer(appAuthClient)).toEqual(expectedPayload);
+    expect(appAuthClientSerializer(appAuthClient)).toStrictEqual(
+      expectedPayload
+    );
   });
 });

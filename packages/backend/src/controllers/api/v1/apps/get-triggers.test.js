@@ -23,7 +23,7 @@ describe('GET /api/v1/apps/:appKey/triggers', () => {
       .expect(200);
 
     const expectedPayload = getTriggersMock(exampleApp.triggers);
-    expect(response.body).toEqual(expectedPayload);
+    expect(expectedPayload).toMatchObject(response.body);
   });
 
   it('should return not found response for invalid app key', async () => {

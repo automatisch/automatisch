@@ -12,7 +12,7 @@ describe('adminUserSerializer', () => {
   it('should return user data with accept invitation url', async () => {
     const serializedUser = adminUserSerializer(user);
 
-    expect(serializedUser.acceptInvitationUrl).toEqual(
+    expect(serializedUser.acceptInvitationUrl).toStrictEqual(
       user.acceptInvitationUrl
     );
   });

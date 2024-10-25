@@ -22,7 +22,7 @@ describe('GET /api/v1/apps', () => {
       .expect(200);
 
     const expectedPayload = getAppsMock(apps);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return all apps filtered by name', async () => {
@@ -34,7 +34,7 @@ describe('GET /api/v1/apps', () => {
       .expect(200);
 
     const expectedPayload = getAppsMock(appsWithNameGit);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return only the apps with triggers', async () => {
@@ -46,7 +46,7 @@ describe('GET /api/v1/apps', () => {
       .expect(200);
 
     const expectedPayload = getAppsMock(appsWithTriggers);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return only the apps with actions', async () => {
@@ -58,6 +58,6 @@ describe('GET /api/v1/apps', () => {
       .expect(200);
 
     const expectedPayload = getAppsMock(appsWithActions);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

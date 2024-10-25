@@ -26,7 +26,9 @@ describe('executionStepSerializer', () => {
       updatedAt: executionStep.updatedAt.getTime(),
     };
 
-    expect(executionStepSerializer(executionStep)).toEqual(expectedPayload);
+    expect(executionStepSerializer(executionStep)).toStrictEqual(
+      expectedPayload
+    );
   });
 
   it('should return the execution step data with the step', async () => {
