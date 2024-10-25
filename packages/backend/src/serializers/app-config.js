@@ -1,6 +1,5 @@
 const appConfigSerializer = (appConfig) => {
   return {
-    id: appConfig.id,
     key: appConfig.key,
     customConnectionAllowed: appConfig.customConnectionAllowed,
     shared: appConfig.shared,
