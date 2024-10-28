@@ -71,20 +71,18 @@ describe('Role model', () => {
   });
 
   describe('preventAlteringAdmin', () => {
-    it('preventAlteringAdmin should throw an error when altering admin role', () => {
-      const role = new Role();
-      role.name = 'Admin';
+    it('preventAlteringAdmin should throw an error when altering admin role', async () => {
+      const role = await createRole({ name: 'Admin' });
 
-      expect(() => role.preventAlteringAdmin()).toThrowError(
+      await expect(() => role.preventAlteringAdmin()).rejects.toThrowError(
         'The admin role cannot be altered!'
       );
     });
 
-    it('preventAlteringAdmin should not throw an error when altering non-admin roles', () => {
-      const role = new Role();
-      role.name = 'User';
+    it('preventAlteringAdmin should not throw an error when altering non-admin roles', async () => {
+      const role = await createRole({ name: 'User' });
 
-      expect(() => role.preventAlteringAdmin()).not.toThrowError();
+      expect(await role.preventAlteringAdmin()).toBe(undefined);
     });
   });
 
