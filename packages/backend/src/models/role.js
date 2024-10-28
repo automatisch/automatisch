@@ -52,8 +52,10 @@ class Role extends Base {
     return await this.query().findOne({ name: 'Admin' });
   }
 
-  preventAlteringAdmin() {
-    if (this.isAdmin) {
+  async preventAlteringAdmin() {
+    const currentRole = await Role.query().findById(this.id);
+
+    if (currentRole.isAdmin) {
       throw new NotAuthorizedError('The admin role cannot be altered!');
     }
   }
@@ -87,6 +89,7 @@ class Role extends Base {
     await this.updatePermissions(permissions);
 
     await this.$query().patchAndFetch({
+      id: this.id,
       name,
       description,
     });
@@ -156,13 +159,13 @@ class Role extends Base {
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    opt.old.preventAlteringAdmin();
+    await this.preventAlteringAdmin();
   }
 
   async $beforeDelete(queryContext) {
     await super.$beforeDelete(queryContext);
 
-    this.preventAlteringAdmin();
+    await this.preventAlteringAdmin();
 
     await this.assertRoleIsNotUsed();
   }
