@@ -3,7 +3,6 @@ const getAppAuthClientMock = (appAuthClient) => {
     data: {
       name: appAuthClient.name,
       id: appAuthClient.id,
-      appConfigId: appAuthClient.appConfigId,
       active: appAuthClient.active,
     },
     meta: {

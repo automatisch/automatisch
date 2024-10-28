@@ -28,6 +28,6 @@ describe('GET /api/v1/payment/paddle-info', () => {
 
     const expectedResponsePayload = await getPaddleInfoMock();
 
-    expect(response.body).toEqual(expectedResponsePayload);
+    expect(response.body).toStrictEqual(expectedResponsePayload);
   });
 });

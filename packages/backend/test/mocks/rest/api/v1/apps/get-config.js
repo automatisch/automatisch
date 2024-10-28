@@ -1,7 +1,6 @@
 const getAppConfigMock = (appConfig) => {
   return {
     data: {
-      id: appConfig.id,
       key: appConfig.key,
       customConnectionAllowed: appConfig.customConnectionAllowed,
       shared: appConfig.shared,

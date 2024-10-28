@@ -16,6 +16,6 @@ describe('triggerSerializer', () => {
       type: trigger.type,
     };
 
-    expect(triggerSerializer(trigger)).toEqual(expectedPayload);
+    expect(triggerSerializer(trigger)).toStrictEqual(expectedPayload);
   });
 });

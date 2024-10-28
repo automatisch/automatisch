@@ -63,7 +63,7 @@ describe('GET /api/v1/flows', () => {
       ]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the flows data of another user', async () => {
@@ -113,6 +113,6 @@ describe('GET /api/v1/flows', () => {
       ]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

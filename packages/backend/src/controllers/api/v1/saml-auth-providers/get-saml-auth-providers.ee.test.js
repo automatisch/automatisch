@@ -25,6 +25,6 @@ describe('GET /api/v1/saml-auth-providers', () => {
       samlAuthProviderOne,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

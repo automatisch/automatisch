@@ -20,6 +20,6 @@ describe('permissionSerializer', () => {
       updatedAt: permission.updatedAt.getTime(),
     };
 
-    expect(permissionSerializer(permission)).toEqual(expectedPayload);
+    expect(permissionSerializer(permission)).toStrictEqual(expectedPayload);
   });
 });

@@ -33,7 +33,7 @@ describe('GET /api/v1/users/:userId/subscription', () => {
 
     const expectedPayload = getSubscriptionMock(subscription);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response if there is no current subscription', async () => {

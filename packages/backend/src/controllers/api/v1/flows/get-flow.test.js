@@ -41,7 +41,7 @@ describe('GET /api/v1/flows/:flowId', () => {
       actionStep,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the flow data of another user', async () => {
@@ -67,7 +67,7 @@ describe('GET /api/v1/flows/:flowId', () => {
       actionStep,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing flow UUID', async () => {

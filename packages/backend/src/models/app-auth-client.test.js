@@ -69,7 +69,9 @@ describe('AppAuthClient model', () => {
       );
 
       expect(formattedAuthDefaults).toStrictEqual(expectedDecryptedValue);
-      expect(appAuthClient.authDefaults).not.toEqual(formattedAuthDefaults);
+      expect(appAuthClient.authDefaults).not.toStrictEqual(
+        formattedAuthDefaults
+      );
     });
 
     it('should encrypt formattedAuthDefaults and remove formattedAuthDefaults', async () => {
@@ -124,7 +126,9 @@ describe('AppAuthClient model', () => {
       expect(appAuthClient.formattedAuthDefaults).toStrictEqual(
         formattedAuthDefaults
       );
-      expect(appAuthClient.authDefaults).not.toEqual(formattedAuthDefaults);
+      expect(appAuthClient.authDefaults).not.toStrictEqual(
+        formattedAuthDefaults
+      );
     });
   });
 

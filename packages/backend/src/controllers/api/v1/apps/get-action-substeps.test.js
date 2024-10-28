@@ -29,7 +29,7 @@ describe('GET /api/v1/apps/:appKey/actions/:actionKey/substeps', () => {
       .expect(200);
 
     const expectedPayload = getActionSubstepsMock(exampleAction.substeps);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for invalid app key', async () => {
@@ -47,6 +47,6 @@ describe('GET /api/v1/apps/:appKey/actions/:actionKey/substeps', () => {
       .set('Authorization', token)
       .expect(200);
 
-    expect(response.body.data).toEqual([]);
+    expect(response.body.data).toStrictEqual([]);
   });
 });

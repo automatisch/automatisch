@@ -46,6 +46,6 @@ describe('GET /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mapping
       roleMappingTwo,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

@@ -28,6 +28,6 @@ describe('GET /api/v1/admin/roles', () => {
 
     const expectedPayload = await getRolesMock([roleOne, roleTwo]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

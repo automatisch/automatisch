@@ -40,6 +40,6 @@ describe('GET /api/v1/admin/users', () => {
       [anotherUserRole, currentUserRole]
     );
 
-    expect(response.body).toEqual(expectedResponsePayload);
+    expect(response.body).toStrictEqual(expectedResponsePayload);
   });
 });

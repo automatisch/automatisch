@@ -10,7 +10,6 @@ const getUserMock = (currentUser, role) => {
         description: null,
         id: role.id,
         isAdmin: role.isAdmin,
-        key: role.key,
         name: role.name,
         updatedAt: role.updatedAt.getTime(),
       },

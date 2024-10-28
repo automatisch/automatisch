@@ -36,7 +36,7 @@ describe('GET /api/v1/users/:userId/plan-and-usage', () => {
       },
     };
 
-    expect(response.body.data).toEqual(expectedResponseData);
+    expect(response.body.data).toStrictEqual(expectedResponseData);
   });
 
   it('should return current plan and usage data', async () => {
@@ -63,6 +63,6 @@ describe('GET /api/v1/users/:userId/plan-and-usage', () => {
       },
     };
 
-    expect(response.body.data).toEqual(expectedResponseData);
+    expect(response.body.data).toStrictEqual(expectedResponseData);
   });
 });

@@ -23,6 +23,6 @@ describe('connectionSerializer', () => {
       updatedAt: connection.updatedAt.getTime(),
     };
 
-    expect(connectionSerializer(connection)).toEqual(expectedPayload);
+    expect(connectionSerializer(connection)).toStrictEqual(expectedPayload);
   });
 });

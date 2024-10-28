@@ -21,6 +21,6 @@ describe('GET /api/v1/automatisch/version', () => {
       },
     };
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

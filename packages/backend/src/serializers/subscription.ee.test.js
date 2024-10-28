@@ -30,6 +30,6 @@ describe('subscriptionSerializer', () => {
       cancellationEffectiveDate: subscription.cancellationEffectiveDate,
     };
 
-    expect(subscriptionSerializer(subscription)).toEqual(expectedPayload);
+    expect(subscriptionSerializer(subscription)).toStrictEqual(expectedPayload);
   });
 });

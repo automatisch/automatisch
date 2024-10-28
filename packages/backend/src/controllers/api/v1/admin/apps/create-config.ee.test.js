@@ -59,7 +59,7 @@ describe('POST /api/v1/admin/apps/:appKey/config', () => {
       })
       .expect(422);
 
-    expect(response.body.meta.type).toEqual('UniqueViolationError');
+    expect(response.body.meta.type).toStrictEqual('UniqueViolationError');
     expect(response.body.errors).toMatchObject({
       key: ["'key' must be unique."],
     });

@@ -43,7 +43,7 @@ describe('PATCH /api/v1/users/:userId/password', () => {
       .send(userData)
       .expect(422);
 
-    expect(response.body.meta.type).toEqual('ValidationError');
+    expect(response.body.meta.type).toStrictEqual('ValidationError');
     expect(response.body.errors).toMatchObject({
       currentPassword: ['is incorrect.'],
     });

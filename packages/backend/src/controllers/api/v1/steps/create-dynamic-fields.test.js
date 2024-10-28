@@ -56,7 +56,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-fields', () => {
 
     const expectedPayload = await createDynamicFieldsMock();
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return dynamically created fields of the another users step', async () => {
@@ -97,7 +97,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-fields', () => {
 
     const expectedPayload = await createDynamicFieldsMock();
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing step UUID', async () => {

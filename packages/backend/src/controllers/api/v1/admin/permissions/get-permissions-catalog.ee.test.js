@@ -27,6 +27,6 @@ describe('GET /api/v1/admin/permissions/catalog', () => {
 
     const expectedPayload = await getPermissionsCatalogMock();
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

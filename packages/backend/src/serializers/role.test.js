@@ -34,7 +34,7 @@ describe('roleSerializer', () => {
       isAdmin: role.isAdmin,
     };
 
-    expect(roleSerializer(role)).toEqual(expectedPayload);
+    expect(roleSerializer(role)).toStrictEqual(expectedPayload);
   });
 
   it('should return role data with the permissions', async () => {

@@ -24,6 +24,6 @@ describe('GET /api/v1/payment/plans', () => {
 
     const expectedResponsePayload = await getPaymentPlansMock();
 
-    expect(response.body).toEqual(expectedResponsePayload);
+    expect(response.body).toStrictEqual(expectedResponsePayload);
   });
 });

@@ -69,7 +69,7 @@ describe('GET /api/v1/connections/:connectionId/flows', () => {
       [triggerStepFlowOne, actionStepFlowOne]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the flows data of specified connection for another user', async () => {
@@ -123,6 +123,6 @@ describe('GET /api/v1/connections/:connectionId/flows', () => {
       [triggerStepFlowOne, actionStepFlowOne]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

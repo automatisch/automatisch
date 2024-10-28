@@ -53,7 +53,7 @@ describe('POST /api/v1/installation/users', () => {
 
       const usersCountAfter = await User.query().resultSize();
 
-      expect(usersCountBefore).toEqual(usersCountAfter);
+      expect(usersCountBefore).toStrictEqual(usersCountAfter);
     });
   });
 

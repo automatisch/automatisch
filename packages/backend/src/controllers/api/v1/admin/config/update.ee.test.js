@@ -50,8 +50,8 @@ describe('PATCH /api/v1/admin/config', () => {
       .send(newConfigValues)
       .expect(200);
 
-    expect(response.body.data.title).toEqual(newTitle);
-    expect(response.body.meta.type).toEqual('Config');
+    expect(response.body.data.title).toStrictEqual(newTitle);
+    expect(response.body.meta.type).toStrictEqual('Config');
   });
 
   it('should return created config for unexisting config', async () => {
@@ -67,8 +67,8 @@ describe('PATCH /api/v1/admin/config', () => {
       .send(newConfigValues)
       .expect(200);
 
-    expect(response.body.data.title).toEqual(newTitle);
-    expect(response.body.meta.type).toEqual('Config');
+    expect(response.body.data.title).toStrictEqual(newTitle);
+    expect(response.body.meta.type).toStrictEqual('Config');
   });
 
   it('should return null for deleted config entry', async () => {
@@ -83,6 +83,6 @@ describe('PATCH /api/v1/admin/config', () => {
       .expect(200);
 
     expect(response.body.data.title).toBeNull();
-    expect(response.body.meta.type).toEqual('Config');
+    expect(response.body.meta.type).toStrictEqual('Config');
   });
 });

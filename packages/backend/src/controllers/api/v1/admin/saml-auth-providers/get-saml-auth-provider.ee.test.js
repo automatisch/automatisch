@@ -30,7 +30,7 @@ describe('GET /api/v1/admin/saml-auth-provider/:samlAuthProviderId', () => {
 
     const expectedPayload = await getSamlAuthProviderMock(samlAuthProvider);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing saml auth provider UUID', async () => {

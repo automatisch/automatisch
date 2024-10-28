@@ -39,6 +39,6 @@ describe('GET /api/v1/users/me', () => {
       permissionTwo,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

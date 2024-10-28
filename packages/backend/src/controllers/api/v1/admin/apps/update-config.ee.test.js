@@ -83,7 +83,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
       })
       .expect(422);
 
-    expect(response.body.meta.type).toEqual('ModelValidation');
+    expect(response.body.meta.type).toStrictEqual('ModelValidation');
     expect(response.body.errors).toMatchObject({
       disabled: ['must be boolean'],
     });

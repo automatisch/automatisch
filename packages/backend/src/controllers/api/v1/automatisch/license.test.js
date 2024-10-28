@@ -18,6 +18,6 @@ describe('GET /api/v1/automatisch/license', () => {
 
     const expectedPayload = licenseMock();
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 });

@@ -12,6 +12,6 @@ describe('authSerializer', () => {
       reconnectionSteps: auth.reconnectionSteps,
     };
 
-    expect(authSerializer(auth)).toEqual(expectedPayload);
+    expect(authSerializer(auth)).toStrictEqual(expectedPayload);
   });
 });

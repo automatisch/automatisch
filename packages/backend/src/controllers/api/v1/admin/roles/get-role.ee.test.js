@@ -34,7 +34,7 @@ describe('GET /api/v1/admin/roles/:roleId', () => {
       permissionTwo,
     ]);
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing role UUID', async () => {

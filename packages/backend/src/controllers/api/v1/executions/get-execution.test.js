@@ -57,7 +57,7 @@ describe('GET /api/v1/executions/:executionId', () => {
       [stepOne, stepTwo]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return the execution data of another user', async () => {
@@ -99,7 +99,7 @@ describe('GET /api/v1/executions/:executionId', () => {
       [stepOne, stepTwo]
     );
 
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing execution UUID', async () => {

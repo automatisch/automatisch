@@ -25,7 +25,7 @@ describe('adminSamlAuthProviderSerializer', () => {
       defaultRoleId: samlAuthProvider.defaultRoleId,
     };
 
-    expect(adminSamlAuthProviderSerializer(samlAuthProvider)).toEqual(
+    expect(adminSamlAuthProviderSerializer(samlAuthProvider)).toStrictEqual(
       expectedPayload
     );
   });

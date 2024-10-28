@@ -30,7 +30,7 @@ describe('GET /api/v1/admin/users/:userId', () => {
       .expect(200);
 
     const expectedPayload = getUserMock(anotherUser, anotherUserRole);
-    expect(response.body).toEqual(expectedPayload);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing user UUID', async () => {

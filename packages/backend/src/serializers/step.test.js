@@ -24,7 +24,7 @@ describe('stepSerializer', () => {
       parameters: step.parameters,
     };
 
-    expect(stepSerializer(step)).toEqual(expectedPayload);
+    expect(stepSerializer(step)).toStrictEqual(expectedPayload);
   });
 
   it('should return step data with the last execution step', async () => {

@@ -11,7 +11,6 @@ describe('appConfig serializer', () => {
 
   it('should return app config data', async () => {
     const expectedPayload = {
-      id: appConfig.id,
       key: appConfig.key,
       customConnectionAllowed: appConfig.customConnectionAllowed,
       shared: appConfig.shared,
@@ -21,6 +20,6 @@ describe('appConfig serializer', () => {
       updatedAt: appConfig.updatedAt.getTime(),
     };
 
-    expect(appConfigSerializer(appConfig)).toEqual(expectedPayload);
+    expect(appConfigSerializer(appConfig)).toStrictEqual(expectedPayload);
   });
 });

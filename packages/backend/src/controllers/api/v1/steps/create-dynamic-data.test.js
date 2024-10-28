@@ -78,7 +78,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-data', () => {
         })
         .expect(200);
 
-      expect(response.body.data).toEqual(repositories);
+      expect(response.body.data).toStrictEqual(repositories);
     });
 
     it('of the another users step', async () => {
@@ -117,7 +117,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-data', () => {
         })
         .expect(200);
 
-      expect(response.body.data).toEqual(repositories);
+      expect(response.body.data).toStrictEqual(repositories);
     });
   });
 
@@ -171,7 +171,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-data', () => {
         })
         .expect(422);
 
-      expect(response.body.errors).toEqual(errors);
+      expect(response.body.errors).toStrictEqual(errors);
     });
   });
 
