@@ -156,7 +156,7 @@ class Role extends Base {
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
-    this.preventAlteringAdmin();
+    opt.old.preventAlteringAdmin();
   }
 
   async $beforeDelete(queryContext) {
