@@ -86,10 +86,18 @@ class Role extends Base {
 
     await this.updatePermissions(permissions);
 
-    await this.$query().patch({
+    await this.$query().patchAndFetch({
       name,
       description,
     });
+
+    return await this.$query()
+      .leftJoinRelated({
+        permissions: true,
+      })
+      .withGraphFetched({
+        permissions: true,
+      });
   }
 
   async deleteWithPermissions() {
