@@ -52,56 +52,73 @@ class Role extends Base {
     return await this.query().findOne({ name: 'Admin' });
   }
 
-  async updateWithPermissions(data) {
-    if (this.isAdmin) {
+  async preventAlteringAdmin() {
+    const currentRole = await Role.query().findById(this.id);
+
+    if (currentRole.isAdmin) {
       throw new NotAuthorizedError('The admin role cannot be altered!');
     }
+  }
 
+  async deletePermissions() {
+    return await this.$relatedQuery('permissions').delete();
+  }
+
+  async createPermissions(permissions) {
+    if (permissions?.length) {
+      const validPermissions = Permission.filter(permissions).map(
+        (permission) => ({
+          ...permission,
+          roleId: this.id,
+        })
+      );
+
+      await Permission.query().insert(validPermissions);
+    }
+  }
+
+  async updatePermissions(permissions) {
+    await this.deletePermissions();
+
+    await this.createPermissions(permissions);
+  }
+
+  async updateWithPermissions(data) {
     const { name, description, permissions } = data;
 
-    return await Role.transaction(async (trx) => {
-      await this.$relatedQuery('permissions', trx).delete();
+    await this.updatePermissions(permissions);
 
-      if (permissions?.length) {
-        const validPermissions = Permission.filter(permissions).map(
-          (permission) => ({
-            ...permission,
-            roleId: this.id,
-          })
-        );
-
-        await Permission.query().insert(validPermissions);
-      }
-
-      await this.$query(trx).patch({
-        name,
-        description,
-      });
-
-      return await this.$query(trx)
-        .leftJoinRelated({
-          permissions: true,
-        })
-        .withGraphFetched({
-          permissions: true,
-        });
+    await this.$query().patchAndFetch({
+      id: this.id,
+      name,
+      description,
     });
+
+    return await this.$query()
+      .leftJoinRelated({
+        permissions: true,
+      })
+      .withGraphFetched({
+        permissions: true,
+      });
   }
 
   async deleteWithPermissions() {
-    return await Role.transaction(async (trx) => {
-      await this.$relatedQuery('permissions', trx).delete();
+    await this.deletePermissions();
 
-      return await this.$query(trx).delete();
-    });
+    return await this.$query().delete();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    await this.preventAlteringAdmin();
   }
 
   async $beforeDelete(queryContext) {
     await super.$beforeDelete(queryContext);
 
-    if (this.isAdmin) {
-      throw new NotAuthorizedError('The admin role cannot be deleted!');
-    }
+    await this.preventAlteringAdmin();
 
     const userCount = await this.$relatedQuery('users').limit(1).resultSize();
     const hasUsers = userCount > 0;
