@@ -52,17 +52,19 @@ class Role extends Base {
     return await this.query().findOne({ name: 'Admin' });
   }
 
-  preventAlteringAdmin() {
-    if (this.isAdmin) {
+  async preventAlteringAdmin() {
+    const currentRole = await Role.query().findById(this.id);
+
+    if (currentRole.isAdmin) {
       throw new NotAuthorizedError('The admin role cannot be altered!');
     }
   }
 
-  async deletePermissions(trx) {
-    return await this.$relatedQuery('permissions', trx).delete();
+  async deletePermissions() {
+    return await this.$relatedQuery('permissions').delete();
   }
 
-  async createPermissions(permissions, trx) {
+  async createPermissions(permissions) {
     if (permissions?.length) {
       const validPermissions = Permission.filter(permissions).map(
         (permission) => ({
@@ -71,50 +73,40 @@ class Role extends Base {
         })
       );
 
-      await Permission.query(trx).insert(validPermissions);
+      await Permission.query().insert(validPermissions);
     }
-
-    return this;
   }
 
-  async overridePermissions(permissions, trx) {
-    await this.deletePermissions(trx);
+  async updatePermissions(permissions) {
+    await this.deletePermissions();
 
-    await this.createPermissions(permissions, trx);
-
-    return this;
+    await this.createPermissions(permissions);
   }
 
   async updateWithPermissions(data) {
-    this.preventAlteringAdmin();
-
     const { name, description, permissions } = data;
 
-    return await Role.transaction(async (trx) => {
-      await this.overridePermissions(permissions, trx);
+    await this.updatePermissions(permissions);
 
-      await this.$query(trx).patch({
-        name,
-        description,
-      });
-
-      // TODO: consider removing returning permissions as they're not utilized
-      return await this.$query(trx)
-        .leftJoinRelated({
-          permissions: true,
-        })
-        .withGraphFetched({
-          permissions: true,
-        });
+    await this.$query().patchAndFetch({
+      id: this.id,
+      name,
+      description,
     });
+
+    return await this.$query()
+      .leftJoinRelated({
+        permissions: true,
+      })
+      .withGraphFetched({
+        permissions: true,
+      });
   }
 
   async deleteWithPermissions() {
-    return await Role.transaction(async (trx) => {
-      await this.deletePermissions(trx);
+    await this.deletePermissions();
 
-      return await this.$query(trx).delete();
-    });
+    return await this.$query().delete();
   }
 
   async assertNoRoleUserExists() {
@@ -164,10 +156,16 @@ class Role extends Base {
     await this.assertNoConfigurationUsage();
   }
 
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    await this.preventAlteringAdmin();
+  }
+
   async $beforeDelete(queryContext) {
     await super.$beforeDelete(queryContext);
 
-    this.preventAlteringAdmin();
+    await this.preventAlteringAdmin();
 
     await this.assertRoleIsNotUsed();
   }
