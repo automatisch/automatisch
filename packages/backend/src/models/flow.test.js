@@ -5,6 +5,7 @@ import Base from './base.js';
 import Step from './step.js';
 import Execution from './execution.js';
 import { createFlow } from '../../test/factories/flow.js';
+import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
 
 describe('Flow model', () => {
@@ -200,4 +201,113 @@ describe('Flow model', () => {
   it.todo('createActionStep');
 
   it.todo('delete');
+
+  it.todo('duplicateFor');
+
+  it('getTriggerStep', async () => {
+    const flow = await createFlow();
+    const triggerStep = await createStep({ flowId: flow.id, type: 'trigger' });
+
+    await createStep({ flowId: flow.id, type: 'action' });
+
+    expect(await flow.getTriggerStep()).toStrictEqual(triggerStep);
+  });
+
+  it.todo('isPaused');
+
+  describe('throwIfHavingIncompleteSteps', () => {
+    it('should throw validation error with incomplete steps', async () => {
+      const flow = await createFlow();
+
+      await flow.createInitialSteps();
+
+      await expect(() =>
+        flow.throwIfHavingIncompleteSteps()
+      ).rejects.toThrowError(
+        'flow: All steps should be completed before updating flow status!'
+      );
+    });
+
+    it('should return undefined when all steps are completed', async () => {
+      const flow = await createFlow();
+
+      await createStep({
+        flowId: flow.id,
+        status: 'completed',
+        type: 'trigger',
+      });
+
+      await createStep({
+        flowId: flow.id,
+        status: 'completed',
+        type: 'action',
+      });
+
+      expect(await flow.throwIfHavingIncompleteSteps()).toBe(undefined);
+    });
+  });
+
+  describe('throwIfHavingLessThanTwoSteps', () => {
+    it('should throw validation error with less than two steps', async () => {
+      const flow = await createFlow();
+
+      await expect(() =>
+        flow.throwIfHavingLessThanTwoSteps()
+      ).rejects.toThrowError(
+        'flow: There should be at least one trigger and one action steps in the flow!'
+      );
+    });
+
+    it('should return undefined when there are at least two steps', async () => {
+      const flow = await createFlow();
+
+      await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+      });
+
+      await createStep({
+        flowId: flow.id,
+        type: 'action',
+      });
+
+      expect(await flow.throwIfHavingLessThanTwoSteps()).toBe(undefined);
+    });
+  });
+
+  describe('$beforeUpdate', () => {
+    it('should invoke throwIfHavingIncompleteSteps when flow is becoming active', async () => {
+      const flow = await createFlow({ active: false });
+
+      const throwIfHavingIncompleteStepsSpy = vi
+        .spyOn(Flow.prototype, 'throwIfHavingIncompleteSteps')
+        .mockImplementation(() => {});
+
+      const throwIfHavingLessThanTwoStepsSpy = vi
+        .spyOn(Flow.prototype, 'throwIfHavingLessThanTwoSteps')
+        .mockImplementation(() => {});
+
+      await flow.$query().patch({ active: true });
+
+      expect(throwIfHavingIncompleteStepsSpy).toHaveBeenCalledOnce();
+      expect(throwIfHavingLessThanTwoStepsSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should invoke throwIfHavingIncompleteSteps when flow is not becoming active', async () => {
+      const flow = await createFlow({ active: true });
+
+      const throwIfHavingIncompleteStepsSpy = vi
+        .spyOn(Flow.prototype, 'throwIfHavingIncompleteSteps')
+        .mockImplementation(() => {});
+
+      const throwIfHavingLessThanTwoStepsSpy = vi
+        .spyOn(Flow.prototype, 'throwIfHavingLessThanTwoSteps')
+        .mockImplementation(() => {});
+
+      await flow.$query().patch({});
+
+      expect(throwIfHavingIncompleteStepsSpy).not.toHaveBeenCalledOnce();
+      expect(throwIfHavingLessThanTwoStepsSpy).not.toHaveBeenCalledOnce();
+    });
+  });
 });
