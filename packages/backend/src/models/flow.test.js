@@ -4,6 +4,7 @@ import User from './user.js';
 import Base from './base.js';
 import Step from './step.js';
 import Execution from './execution.js';
+import Telemetry from '../helpers/telemetry/index.js';
 import { createFlow } from '../../test/factories/flow.js';
 import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
@@ -308,6 +309,50 @@ describe('Flow model', () => {
 
       expect(throwIfHavingIncompleteStepsSpy).not.toHaveBeenCalledOnce();
       expect(throwIfHavingLessThanTwoStepsSpy).not.toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('$afterInsert', () => {
+    it('should call super.$afterInsert', async () => {
+      const superAfterInsertSpy = vi.spyOn(Base.prototype, '$afterInsert');
+
+      await createFlow();
+
+      expect(superAfterInsertSpy).toHaveBeenCalled();
+    });
+
+    it('should call Telemetry.flowCreated', async () => {
+      const telemetryFlowCreatedSpy = vi
+        .spyOn(Telemetry, 'flowCreated')
+        .mockImplementation(() => {});
+
+      const flow = await createFlow();
+
+      expect(telemetryFlowCreatedSpy).toHaveBeenCalledWith(flow);
+    });
+  });
+
+  describe('$afterUpdate', () => {
+    it('should call super.$afterUpdate', async () => {
+      const superAfterUpdateSpy = vi.spyOn(Base.prototype, '$afterUpdate');
+
+      const flow = await createFlow();
+
+      await flow.$query().patch({ active: false });
+
+      expect(superAfterUpdateSpy).toHaveBeenCalledOnce();
+    });
+
+    it('$afterUpdate should call Telemetry.flowUpdated', async () => {
+      const telemetryFlowUpdatedSpy = vi
+        .spyOn(Telemetry, 'flowUpdated')
+        .mockImplementation(() => {});
+
+      const flow = await createFlow();
+
+      await flow.$query().patch({ active: false });
+
+      expect(telemetryFlowUpdatedSpy).toHaveBeenCalled({});
     });
   });
 });
