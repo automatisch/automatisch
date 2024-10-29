@@ -1,7 +1,10 @@
 import defineApp from '../../helpers/define-app.js';
+import actions from './actions/index.js';
 import auth from './auth/index.js';
 import addAuthHeader from './common/add-auth-header.js';
 import setEndpoint from './common/set-endpoint.js';
+import dynamicData from './dynamic-data/index.js';
+import dynamicFields from './dynamic-fields/index.js';
 export default defineApp({
   name: 'Azure DevOps',
   key: 'azure-devops',
@@ -13,4 +16,7 @@ export default defineApp({
   primaryColor: '000000',
   beforeRequest: [addAuthHeader, setEndpoint],
   auth,
+  actions,
+  dynamicData,
+  dynamicFields,
 });
