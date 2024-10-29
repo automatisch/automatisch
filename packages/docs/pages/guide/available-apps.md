@@ -4,6 +4,7 @@ The following integrations are currently supported by Automatisch.
 
 - [Airtable](/apps/airtable/actions)
 - [Appwrite](/apps/appwrite/triggers)
+- [Azure DevOps](/apps/azure-devops/triggers)
 - [Carbone](/apps/carbone/actions)
 - [ClickUp](/apps/clickup/triggers)
 - [Datastore](/apps/datastore/actions)

@@ -5,6 +5,7 @@ import addAuthHeader from './common/add-auth-header.js';
 import setEndpoint from './common/set-endpoint.js';
 import dynamicData from './dynamic-data/index.js';
 import dynamicFields from './dynamic-fields/index.js';
+import triggers from './triggers/index.js';
 export default defineApp({
   name: 'Azure DevOps',
   key: 'azure-devops',
@@ -19,4 +20,5 @@ export default defineApp({
   actions,
   dynamicData,
   dynamicFields,
+  triggers,
 });
