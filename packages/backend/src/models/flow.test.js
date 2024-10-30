@@ -179,17 +179,17 @@ describe('Flow model', () => {
 
   it('createInitialSteps should create one trigger and one action step', async () => {
     const flow = await createFlow();
-
     await flow.createInitialSteps();
-
     const steps = await flow.$relatedQuery('steps');
 
     expect(steps.length).toBe(2);
+
     expect(steps[0]).toMatchObject({
       flowId: flow.id,
       type: 'trigger',
       position: 1,
     });
+
     expect(steps[1]).toMatchObject({
       flowId: flow.id,
       type: 'action',
