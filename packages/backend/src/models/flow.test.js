@@ -142,6 +142,7 @@ describe('Flow model', () => {
   describe('lastInternalIds', () => {
     it('should return last internal IDs', async () => {
       const flow = await createFlow();
+
       const internalIds = [
         await createExecution({ flowId: flow.id }),
         await createExecution({ flowId: flow.id }),
@@ -155,6 +156,7 @@ describe('Flow model', () => {
       const flow = new Flow();
 
       const limitSpy = vi.fn().mockResolvedValue([]);
+
       vi.spyOn(flow, '$relatedQuery').mockReturnValue({
         select: vi.fn().mockReturnThis(),
         orderBy: vi.fn().mockReturnThis(),
@@ -168,10 +170,8 @@ describe('Flow model', () => {
   });
 
   it('IncompleteStepsError should return validation error for incomplete steps', () => {
-    const flow = new Flow();
-
     expect(() => {
-      throw flow.IncompleteStepsError;
+      throw Flow.IncompleteStepsError;
     }).toThrowError(
       'flow: All steps should be completed before updating flow status!'
     );

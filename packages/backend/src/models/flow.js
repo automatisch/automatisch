@@ -123,7 +123,7 @@ class Flow extends Base {
     return lastExecutions.map((execution) => execution.internalId);
   }
 
-  get IncompleteStepsError() {
+  static get IncompleteStepsError() {
     return new ValidationError({
       data: {
         flow: [
@@ -310,7 +310,7 @@ class Flow extends Base {
     const triggerStep = await this.getTriggerStep();
 
     if (triggerStep.status === 'incomplete') {
-      throw this.IncompleteStepsError;
+      throw Flow.IncompleteStepsError;
     }
 
     const trigger = await triggerStep.getTriggerCommand();
