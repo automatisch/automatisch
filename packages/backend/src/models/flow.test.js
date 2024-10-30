@@ -80,10 +80,13 @@ describe('Flow model', () => {
 
     it('triggerStep should return the trigger step', () => {
       const relations = Flow.relationMappings();
+
       const firstSpy = vi.fn();
+
       const limitSpy = vi.fn().mockImplementation(() => ({
         first: firstSpy,
       }));
+
       const whereSpy = vi.fn().mockImplementation(() => ({
         limit: limitSpy,
       }));
@@ -97,10 +100,13 @@ describe('Flow model', () => {
 
     it('lastExecution should return the last execution', () => {
       const relations = Flow.relationMappings();
+
       const firstSpy = vi.fn();
+
       const limitSpy = vi.fn().mockImplementation(() => ({
         first: firstSpy,
       }));
+
       const orderBySpy = vi.fn().mockImplementation(() => ({
         limit: limitSpy,
       }));
