@@ -124,9 +124,12 @@ describe('Flow model', () => {
   describe('lastInternalId', () => {
     it('should return internal ID of last execution when exists', async () => {
       const flow = await createFlow();
-      const execution = await createExecution({ flowId: flow.id });
 
-      expect(await flow.lastInternalId()).toBe(execution.internalId);
+      await createExecution({ flowId: flow.id });
+      await createExecution({ flowId: flow.id });
+      const lastExecution = await createExecution({ flowId: flow.id });
+
+      expect(await flow.lastInternalId()).toBe(lastExecution.internalId);
     });
 
     it('should return null when no flow execution exists', async () => {
