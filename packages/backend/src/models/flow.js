@@ -376,7 +376,7 @@ class Flow extends Base {
     });
 
     if (incompleteStep) {
-      throw this.IncompleteStepsError;
+      throw Flow.IncompleteStepsError;
     }
 
     const allSteps = await oldFlow.$relatedQuery('steps');
