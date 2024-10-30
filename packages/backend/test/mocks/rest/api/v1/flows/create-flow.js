@@ -6,18 +6,6 @@ const createFlowMock = async (flow) => {
     status: flow.status,
     createdAt: flow.createdAt.getTime(),
     updatedAt: flow.updatedAt.getTime(),
-    steps: [
-      {
-        position: 1,
-        status: 'incomplete',
-        type: 'trigger',
-      },
-      {
-        position: 2,
-        status: 'incomplete',
-        type: 'action',
-      },
-    ],
   };
 
   return {

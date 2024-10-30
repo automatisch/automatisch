@@ -123,13 +123,14 @@ class Flow extends Base {
     return lastExecutions.map((execution) => execution.internalId);
   }
 
-  get IncompleteStepsError() {
+  static get IncompleteStepsError() {
     return new ValidationError({
       data: {
         flow: [
           {
-            message: 'All steps should be completed before updating flow status!'
-          }
+            message:
+              'All steps should be completed before updating flow status!',
+          },
         ],
       },
       type: 'incompleteStepsError',
@@ -148,8 +149,6 @@ class Flow extends Base {
       type: 'action',
       position: 2,
     });
-
-    return this.$query().withGraphFetched('steps');
   }
 
   async createActionStep(previousStepId) {
@@ -291,6 +290,18 @@ class Flow extends Base {
     return duplicatedFlowWithSteps;
   }
 
+  async getTriggerStep() {
+    return await this.$relatedQuery('steps').findOne({
+      type: 'trigger',
+    });
+  }
+
+  async isPaused() {
+    const user = await this.$relatedQuery('user').withSoftDeleted();
+    const allowedToRunFlows = await user.isAllowedToRunFlows();
+    return allowedToRunFlows ? false : true;
+  }
+
   async updateStatus(newActiveValue) {
     if (this.active === newActiveValue) {
       return this;
@@ -299,7 +310,7 @@ class Flow extends Base {
     const triggerStep = await this.getTriggerStep();
 
     if (triggerStep.status === 'incomplete') {
-      throw this.IncompleteStepsError;
+      throw Flow.IncompleteStepsError;
     }
 
     const trigger = await triggerStep.getTriggerCommand();
@@ -365,7 +376,7 @@ class Flow extends Base {
     });
 
     if (incompleteStep) {
-      throw this.IncompleteStepsError;
+      throw Flow.IncompleteStepsError;
     }
 
     const allSteps = await oldFlow.$relatedQuery('steps');
@@ -375,8 +386,9 @@ class Flow extends Base {
         data: {
           flow: [
             {
-              message: 'There should be at least one trigger and one action steps in the flow!'
-            }
+              message:
+                'There should be at least one trigger and one action steps in the flow!',
+            },
           ],
         },
         type: 'insufficientStepsError',
@@ -394,18 +406,6 @@ class Flow extends Base {
   async $afterUpdate(opt, queryContext) {
     await super.$afterUpdate(opt, queryContext);
     Telemetry.flowUpdated(this);
-  }
-
-  async getTriggerStep() {
-    return await this.$relatedQuery('steps').findOne({
-      type: 'trigger',
-    });
-  }
-
-  async isPaused() {
-    const user = await this.$relatedQuery('user').withSoftDeleted();
-    const allowedToRunFlows = await user.isAllowedToRunFlows();
-    return allowedToRunFlows ? false : true;
   }
 }
 
