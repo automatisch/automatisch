@@ -28,14 +28,3 @@ exports[`SamlAuthProvidersRoleMapping model > jsonSchema should have the correct
   "type": "object",
 }
 `;
-
-exports[`SamlAuthProvidersRoleMapping model > relationMappings should have samlAuthProvider relation 1`] = `
-{
-  "join": {
-    "from": "saml_auth_providers_role_mappings.saml_auth_provider_id",
-    "to": "saml_auth_providers.id",
-  },
-  "modelClass": [Function],
-  "relation": [Function],
-}
-`;
