@@ -364,22 +364,18 @@ class Flow extends Base {
     });
   }
 
-  async $beforeUpdate(opt, queryContext) {
-    await super.$beforeUpdate(opt, queryContext);
-
-    if (!this.active) return;
-
-    const oldFlow = opt.old;
-
-    const incompleteStep = await oldFlow.$relatedQuery('steps').findOne({
+  async throwIfHavingIncompleteSteps() {
+    const incompleteStep = await this.$relatedQuery('steps').findOne({
       status: 'incomplete',
     });
 
     if (incompleteStep) {
       throw Flow.IncompleteStepsError;
     }
+  }
 
-    const allSteps = await oldFlow.$relatedQuery('steps');
+  async throwIfHavingLessThanTwoSteps() {
+    const allSteps = await this.$relatedQuery('steps');
 
     if (allSteps.length < 2) {
       throw new ValidationError({
@@ -394,17 +390,27 @@ class Flow extends Base {
         type: 'insufficientStepsError',
       });
     }
+  }
 
-    return;
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    if (this.active) {
+      await opt.old.throwIfHavingIncompleteSteps();
+
+      await opt.old.throwIfHavingLessThanTwoSteps();
+    }
   }
 
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
+
     Telemetry.flowCreated(this);
   }
 
   async $afterUpdate(opt, queryContext) {
     await super.$afterUpdate(opt, queryContext);
+
     Telemetry.flowUpdated(this);
   }
 }
