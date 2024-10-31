@@ -121,7 +121,53 @@ describe('Flow model', () => {
     });
   });
 
-  describe.todo('afterFind - possibly refactor to persist');
+  describe('populateStatusProperty', () => {
+    it('should assign "draft" to status property when a flow is not active', async () => {
+      const referenceFlow = await createFlow({ active: false });
+
+      const flows = [referenceFlow];
+
+      vi.spyOn(referenceFlow, 'isPaused').mockResolvedValue();
+
+      await Flow.populateStatusProperty(flows);
+
+      expect(referenceFlow.status).toBe('draft');
+    });
+
+    it('should assign "paused" to status property when a flow is active, but should be paused', async () => {
+      const referenceFlow = await createFlow({ active: true });
+
+      const flows = [referenceFlow];
+
+      vi.spyOn(referenceFlow, 'isPaused').mockResolvedValue(true);
+
+      await Flow.populateStatusProperty(flows);
+
+      expect(referenceFlow.status).toBe('paused');
+    });
+
+    it('should assign "published" to status property when a flow is active', async () => {
+      const referenceFlow = await createFlow({ active: true });
+
+      const flows = [referenceFlow];
+
+      vi.spyOn(referenceFlow, 'isPaused').mockResolvedValue(false);
+
+      await Flow.populateStatusProperty(flows);
+
+      expect(referenceFlow.status).toBe('published');
+    });
+  });
+
+  it('afterFind should call Flow.populateStatusProperty', async () => {
+    const populateStatusPropertySpy = vi
+      .spyOn(Flow, 'populateStatusProperty')
+      .mockImplementation(() => {});
+
+    await createFlow();
+
+    expect(populateStatusPropertySpy).toHaveBeenCalledOnce();
+  });
 
   describe('lastInternalId', () => {
     it('should return internal ID of last execution when exists', async () => {

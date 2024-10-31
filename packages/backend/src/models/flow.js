@@ -88,15 +88,13 @@ class Flow extends Base {
     },
   });
 
-  static async afterFind(args) {
-    const { result } = args;
-
-    const referenceFlow = result[0];
+  static async populateStatusProperty(flows) {
+    const referenceFlow = flows[0];
 
     if (referenceFlow) {
       const shouldBePaused = await referenceFlow.isPaused();
 
-      for (const flow of result) {
+      for (const flow of flows) {
         if (!flow.active) {
           flow.status = 'draft';
         } else if (flow.active && shouldBePaused) {
@@ -106,6 +104,10 @@ class Flow extends Base {
         }
       }
     }
+  }
+
+  static async afterFind(args) {
+    await this.populateStatusProperty(args.result);
   }
 
   async lastInternalId() {
