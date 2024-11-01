@@ -166,14 +166,14 @@ class Flow extends Base {
     return await this.$relatedQuery('steps').where('position', '>', position);
   }
 
-  async alignStepsPositionsAsOfPosition(steps, startPosition) {
-    const nextStepQueries = steps.map(async (nextStep, index) => {
-      return await nextStep.$query().patch({
+  async updateStepPositionsFrom(startPosition, steps) {
+    const stepPositionUpdates = steps.map(async (step, index) => {
+      return await step.$query().patch({
         position: startPosition + index,
       });
     });
 
-    return await Promise.all(nextStepQueries);
+    return await Promise.all(stepPositionUpdates);
   }
 
   async createActionStepAfterStepId(previousStepId) {
@@ -185,10 +185,7 @@ class Flow extends Base {
       previousStep.position + 1
     );
 
-    await this.alignStepsPositionsAsOfPosition(
-      nextSteps,
-      createdStep.position + 1
-    );
+    await this.updateStepPositionsFrom(createdStep.position + 1, nextSteps);
 
     return createdStep;
   }

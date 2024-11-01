@@ -232,17 +232,14 @@ describe('Flow model', () => {
     ]);
   });
 
-  it('alignStepsPositionsAsOfPosition', async () => {
+  it('updateStepPositionsFrom', async () => {
     const flow = await createFlow();
 
     await createStep({ type: 'trigger', flowId: flow.id, position: 6 });
     await createStep({ type: 'action', flowId: flow.id, position: 8 });
     await createStep({ type: 'action', flowId: flow.id, position: 10 });
 
-    await flow.alignStepsPositionsAsOfPosition(
-      await flow.$relatedQuery('steps'),
-      1
-    );
+    await flow.updateStepPositionsFrom(1, await flow.$relatedQuery('steps'));
 
     expect(await flow.$relatedQuery('steps')).toMatchObject([
       { position: 1, type: 'trigger' },
