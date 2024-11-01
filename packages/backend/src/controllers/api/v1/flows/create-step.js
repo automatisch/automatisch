@@ -6,7 +6,7 @@ export default async (request, response) => {
     .findById(request.params.flowId)
     .throwIfNotFound();
 
-  const createdActionStep = await flow.createActionStepAfterStepId(
+  const createdActionStep = await flow.createStepAfter(
     request.body.previousStepId
   );
 

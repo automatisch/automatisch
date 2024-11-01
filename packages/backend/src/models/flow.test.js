@@ -248,13 +248,13 @@ describe('Flow model', () => {
     ]);
   });
 
-  it('createActionStepAfterStep should create an action step after given step ID', async () => {
+  it('createStepAfter should create an action step after given step ID', async () => {
     const flow = await createFlow();
 
     const triggerStep = await createStep({ type: 'trigger', flowId: flow.id });
     const actionStep = await createStep({ type: 'action', flowId: flow.id });
 
-    const createdStep = await flow.createActionStepAfterStepId(triggerStep.id);
+    const createdStep = await flow.createStepAfter(triggerStep.id);
 
     const refetchedActionStep = await actionStep.$query();
 

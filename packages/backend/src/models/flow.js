@@ -176,7 +176,7 @@ class Flow extends Base {
     return await Promise.all(stepPositionUpdates);
   }
 
-  async createActionStepAfterStepId(previousStepId) {
+  async createStepAfter(previousStepId) {
     const previousStep = await this.getStepById(previousStepId);
 
     const nextSteps = await this.getStepsAfterPosition(previousStep.position);
