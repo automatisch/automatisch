@@ -245,7 +245,69 @@ describe('Flow model', () => {
     });
   });
 
-  it.todo('createActionStep');
+  it('getStepById should return the step with the given ID from the flow', async () => {
+    const flow = await createFlow();
+
+    const step = await createStep({ flowId: flow.id });
+
+    expect(await flow.getStepById(step.id)).toStrictEqual(step);
+  });
+
+  it('insertActionStepAtPosition should insert action step at given position', async () => {
+    const flow = await createFlow();
+
+    await flow.createInitialSteps();
+
+    const createdStep = await flow.insertActionStepAtPosition(2);
+
+    expect(createdStep).toMatchObject({
+      type: 'action',
+      position: 2,
+    });
+  });
+
+  it('getStepsAfterPosition should return steps after the given position', async () => {
+    const flow = await createFlow();
+
+    await flow.createInitialSteps();
+
+    await createStep({ flowId: flow.id });
+
+    expect(await flow.getStepsAfterPosition(1)).toMatchObject([
+      { position: 2 },
+      { position: 3 },
+    ]);
+  });
+
+  it('updateStepPositionsFrom', async () => {
+    const flow = await createFlow();
+
+    await createStep({ type: 'trigger', flowId: flow.id, position: 6 });
+    await createStep({ type: 'action', flowId: flow.id, position: 8 });
+    await createStep({ type: 'action', flowId: flow.id, position: 10 });
+
+    await flow.updateStepPositionsFrom(2, await flow.$relatedQuery('steps'));
+
+    expect(await flow.$relatedQuery('steps')).toMatchObject([
+      { position: 2, type: 'trigger' },
+      { position: 3, type: 'action' },
+      { position: 4, type: 'action' },
+    ]);
+  });
+
+  it('createStepAfter should create an action step after given step ID', async () => {
+    const flow = await createFlow();
+
+    const triggerStep = await createStep({ type: 'trigger', flowId: flow.id });
+    const actionStep = await createStep({ type: 'action', flowId: flow.id });
+
+    const createdStep = await flow.createStepAfter(triggerStep.id);
+
+    const refetchedActionStep = await actionStep.$query();
+
+    expect(createdStep).toMatchObject({ type: 'action', position: 2 });
+    expect(refetchedActionStep.position).toBe(3);
+  });
 
   it.todo('delete');
 

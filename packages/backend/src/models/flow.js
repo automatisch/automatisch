@@ -153,27 +153,41 @@ class Flow extends Base {
     });
   }
 
-  async createActionStep(previousStepId) {
-    const previousStep = await this.$relatedQuery('steps')
-      .findById(previousStepId)
-      .throwIfNotFound();
+  async getStepById(stepId) {
+    return await this.$relatedQuery('steps').findById(stepId).throwIfNotFound();
+  }
 
-    const createdStep = await this.$relatedQuery('steps').insertAndFetch({
+  async insertActionStepAtPosition(position) {
+    return await this.$relatedQuery('steps').insertAndFetch({
       type: 'action',
-      position: previousStep.position + 1,
+      position,
     });
+  }
 
-    const nextSteps = await this.$relatedQuery('steps')
-      .where('position', '>=', createdStep.position)
-      .whereNot('id', createdStep.id);
+  async getStepsAfterPosition(position) {
+    return await this.$relatedQuery('steps').where('position', '>', position);
+  }
 
-    const nextStepQueries = nextSteps.map(async (nextStep, index) => {
-      return await nextStep.$query().patchAndFetch({
-        position: createdStep.position + index + 1,
+  async updateStepPositionsFrom(startPosition, steps) {
+    const stepPositionUpdates = steps.map(async (step, index) => {
+      return await step.$query().patch({
+        position: startPosition + index,
       });
     });
 
-    await Promise.all(nextStepQueries);
+    return await Promise.all(stepPositionUpdates);
+  }
+
+  async createStepAfter(previousStepId) {
+    const previousStep = await this.getStepById(previousStepId);
+
+    const nextSteps = await this.getStepsAfterPosition(previousStep.position);
+
+    const createdStep = await this.insertActionStepAtPosition(
+      previousStep.position + 1
+    );
+
+    await this.updateStepPositionsFrom(createdStep.position + 1, nextSteps);
 
     return createdStep;
   }
