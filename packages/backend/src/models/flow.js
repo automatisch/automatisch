@@ -192,7 +192,7 @@ class Flow extends Base {
     return createdStep;
   }
 
-  async delete() {
+  async unregisterWebhook() {
     const triggerStep = await this.getTriggerStep();
     const trigger = await triggerStep?.getTriggerCommand();
 
@@ -213,15 +213,33 @@ class Flow extends Base {
         );
       }
     }
+  }
 
+  async deleteExecutionSteps() {
     const executionIds = (
       await this.$relatedQuery('executions').select('executions.id')
     ).map((execution) => execution.id);
 
-    await ExecutionStep.query().delete().whereIn('execution_id', executionIds);
+    return await ExecutionStep.query()
+      .delete()
+      .whereIn('execution_id', executionIds);
+  }
 
-    await this.$relatedQuery('executions').delete();
-    await this.$relatedQuery('steps').delete();
+  async deleteExecutions() {
+    return await this.$relatedQuery('executions').delete();
+  }
+
+  async deleteSteps() {
+    return await this.$relatedQuery('steps').delete();
+  }
+
+  async delete() {
+    await this.unregisterWebhook();
+
+    await this.deleteExecutionSteps();
+    await this.deleteExecutions();
+    await this.deleteSteps();
+
     await this.$query().delete();
   }
 
