@@ -239,12 +239,12 @@ describe('Flow model', () => {
     await createStep({ type: 'action', flowId: flow.id, position: 8 });
     await createStep({ type: 'action', flowId: flow.id, position: 10 });
 
-    await flow.updateStepPositionsFrom(1, await flow.$relatedQuery('steps'));
+    await flow.updateStepPositionsFrom(2, await flow.$relatedQuery('steps'));
 
     expect(await flow.$relatedQuery('steps')).toMatchObject([
-      { position: 1, type: 'trigger' },
-      { position: 2, type: 'action' },
+      { position: 2, type: 'trigger' },
       { position: 3, type: 'action' },
+      { position: 4, type: 'action' },
     ]);
   });
 
