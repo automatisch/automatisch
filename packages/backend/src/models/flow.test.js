@@ -322,7 +322,33 @@ describe('Flow model', () => {
     expect(await flow.getTriggerStep()).toStrictEqual(triggerStep);
   });
 
-  it.todo('isPaused');
+  describe('isPaused', () => {
+    it('should return true when user.isAllowedToRunFlows returns false', async () => {
+      const flow = await createFlow();
+
+      const isAllowedToRunFlowsSpy = vi.fn().mockResolvedValue(false);
+      vi.spyOn(flow, '$relatedQuery').mockReturnValue({
+        withSoftDeleted: vi.fn().mockReturnThis(),
+        isAllowedToRunFlows: isAllowedToRunFlowsSpy,
+      });
+
+      expect(await flow.isPaused()).toBe(true);
+      expect(isAllowedToRunFlowsSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should return false when user.isAllowedToRunFlows returns true', async () => {
+      const flow = await createFlow();
+
+      const isAllowedToRunFlowsSpy = vi.fn().mockResolvedValue(true);
+      vi.spyOn(flow, '$relatedQuery').mockReturnValue({
+        withSoftDeleted: vi.fn().mockReturnThis(),
+        isAllowedToRunFlows: isAllowedToRunFlowsSpy,
+      });
+
+      expect(await flow.isPaused()).toBe(false);
+      expect(isAllowedToRunFlowsSpy).toHaveBeenCalledOnce();
+    });
+  });
 
   describe('throwIfHavingIncompleteSteps', () => {
     it('should throw validation error with incomplete steps', async () => {
