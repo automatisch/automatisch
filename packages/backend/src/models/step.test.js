@@ -126,4 +126,43 @@ describe('Step model', () => {
       expect(step.iconUrl).toBe(null);
     });
   });
+
+  it('isTrigger should return true when step type is trigger', () => {
+    const step = new Step();
+    step.type = 'trigger';
+
+    expect(step.isTrigger).toBe(true);
+  });
+
+  it('isAction should return true when step type is action', () => {
+    const step = new Step();
+    step.type = 'action';
+
+    expect(step.isAction).toBe(true);
+  });
+
+  describe.todo('computeWebhookPath');
+
+  describe('getWebhookUrl', () => {
+    it('should return absolute webhook URL when step type is trigger', async () => {
+      const step = new Step();
+      step.type = 'trigger';
+
+      vi.spyOn(step, 'computeWebhookPath').mockResolvedValue('/webhook-path');
+      vi.spyOn(appConfig, 'webhookUrl', 'get').mockReturnValue(
+        'https://automatisch.io'
+      );
+
+      expect(await step.getWebhookUrl()).toBe(
+        'https://automatisch.io/webhook-path'
+      );
+    });
+
+    it('should return undefined when step type is action', async () => {
+      const step = new Step();
+      step.type = 'action';
+
+      expect(await step.getWebhookUrl()).toBe(undefined);
+    });
+  });
 });

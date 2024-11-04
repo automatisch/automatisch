@@ -93,6 +93,14 @@ class Step extends Base {
     return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
+  get isTrigger() {
+    return this.type === 'trigger';
+  }
+
+  get isAction() {
+    return this.type === 'action';
+  }
+
   async computeWebhookPath() {
     if (this.type === 'action') return null;
 
@@ -133,24 +141,6 @@ class Step extends Base {
     const webhookUrl = new URL(path, appConfig.webhookUrl).toString();
 
     return webhookUrl;
-  }
-
-  async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
-    Telemetry.stepCreated(this);
-  }
-
-  async $afterUpdate(opt, queryContext) {
-    await super.$afterUpdate(opt, queryContext);
-    Telemetry.stepUpdated(this);
-  }
-
-  get isTrigger() {
-    return this.type === 'trigger';
-  }
-
-  get isAction() {
-    return this.type === 'action';
   }
 
   async getApp() {
@@ -366,6 +356,16 @@ class Step extends Base {
     await updatedStep.updateWebhookUrl();
 
     return updatedStep;
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+    Telemetry.stepCreated(this);
+  }
+
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
+    Telemetry.stepUpdated(this);
   }
 }
 
