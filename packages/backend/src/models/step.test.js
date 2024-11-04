@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import appConfig from '../config/app.js';
 import Base from './base.js';
 import Step from './step.js';
 import Flow from './flow.js';
@@ -83,6 +84,46 @@ describe('Step model', () => {
       expect(orderBySpy).toHaveBeenCalledWith('created_at', 'desc');
       expect(limitSpy).toHaveBeenCalledWith(1);
       expect(firstSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('webhookUrl', () => {
+    it('should return it along with appConfig.webhookUrl when exists', () => {
+      vi.spyOn(appConfig, 'webhookUrl', 'get').mockReturnValue(
+        'https://automatisch.io'
+      );
+
+      const step = new Step();
+      step.webhookPath = '/webhook-path';
+
+      expect(step.webhookUrl).toBe('https://automatisch.io/webhook-path');
+    });
+
+    it('should return null when webhookUrl does not exist', () => {
+      const step = new Step();
+
+      expect(step.webhookUrl).toBe(null);
+    });
+  });
+
+  describe('iconUrl', () => {
+    it('should return step app icon absolute URL when app is set', () => {
+      vi.spyOn(appConfig, 'baseUrl', 'get').mockReturnValue(
+        'https://automatisch.io'
+      );
+
+      const step = new Step();
+      step.appKey = 'gitlab';
+
+      expect(step.iconUrl).toBe(
+        'https://automatisch.io/apps/gitlab/assets/favicon.svg'
+      );
+    });
+
+    it('should return null when appKey is not set', () => {
+      const step = new Step();
+
+      expect(step.iconUrl).toBe(null);
     });
   });
 });
