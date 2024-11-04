@@ -1,10 +1,14 @@
 import { describe, it, expect, vi } from 'vitest';
 import appConfig from '../config/app.js';
+import App from './app.js';
 import Base from './base.js';
 import Step from './step.js';
 import Flow from './flow.js';
 import Connection from './connection.js';
 import ExecutionStep from './execution-step.js';
+import * as testRunModule from '../services/test-run.js';
+import { createStep } from '../../test/factories/step.js';
+import { createExecutionStep } from '../../test/factories/execution-step.js';
 
 describe('Step model', () => {
   it('tableName should return correct name', () => {
@@ -164,5 +168,54 @@ describe('Step model', () => {
 
       expect(await step.getWebhookUrl()).toBe(undefined);
     });
+  });
+  describe('getApp', () => {
+    it('should return app with the given appKey', async () => {
+      const step = new Step();
+      step.appKey = 'gitlab';
+
+      const findOneByKeySpy = vi.spyOn(App, 'findOneByKey').mockResolvedValue();
+
+      await step.getApp();
+      expect(findOneByKeySpy).toHaveBeenCalledWith('gitlab');
+    });
+
+    it('should return null with no appKey', async () => {
+      const step = new Step();
+
+      const findOneByKeySpy = vi.spyOn(App, 'findOneByKey').mockResolvedValue();
+
+      expect(await step.getApp()).toBe(null);
+      expect(findOneByKeySpy).not.toHaveBeenCalled();
+    });
+  });
+
+  it('test should test the step and mark it as completed', async () => {
+    const step = await createStep({ status: 'incomplete' });
+
+    const testRunSpy = vi.spyOn(testRunModule, 'default').mockResolvedValue();
+
+    const updatedStep = await step.test();
+
+    expect(testRunSpy).toHaveBeenCalledWith({ stepId: step.id });
+    expect(updatedStep.status).toBe('completed');
+  });
+
+  it('getLastExecutionStep should return last execution step', async () => {
+    const step = await createStep();
+    await createExecutionStep({ stepId: step.id });
+    const secondExecutionStep = await createExecutionStep({ stepId: step.id });
+
+    expect(await step.getLastExecutionStep()).toStrictEqual(
+      secondExecutionStep
+    );
+  });
+
+  it('getNextStep should return the next step', async () => {
+    const firstStep = await createStep();
+    const secondStep = await createStep({ flowId: firstStep.flowId });
+    const thirdStep = await createStep({ flowId: firstStep.flowId });
+
+    expect(await secondStep.getNextStep()).toStrictEqual(thirdStep);
   });
 });
