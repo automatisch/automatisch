@@ -190,7 +190,7 @@ describe('Step model', () => {
     });
   });
 
-  it('test should test the step and mark it as completed', async () => {
+  it('test should execute the flow and mark the step as completed', async () => {
     const step = await createStep({ status: 'incomplete' });
 
     const testRunSpy = vi.spyOn(testRunModule, 'default').mockResolvedValue();
