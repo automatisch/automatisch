@@ -160,12 +160,7 @@ class Step extends Base {
   }
 
   async getLastExecutionStep() {
-    const lastExecutionStep = await this.$relatedQuery('executionSteps')
-      .orderBy('created_at', 'desc')
-      .limit(1)
-      .first();
-
-    return lastExecutionStep;
+    return await this.$relatedQuery('lastExecutionStep');
   }
 
   async getNextStep() {
