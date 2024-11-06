@@ -220,7 +220,7 @@ describe('Step model', () => {
   });
 
   describe('getTriggerCommand', () => {
-    it('should return trigger comamand when app key and key are defined in trigger step', async () => {
+    it('should return trigger command when app key and key are defined in trigger step', async () => {
       const step = new Step();
       step.type = 'trigger';
       step.appKey = 'webhook';
