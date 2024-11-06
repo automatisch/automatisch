@@ -192,19 +192,18 @@ class Step extends Base {
   }
 
   async getSetupFields() {
-    let setupSupsteps;
+    let substeps;
 
     if (this.isTrigger) {
-      setupSupsteps = (await this.getTriggerCommand()).substeps;
+      substeps = (await this.getTriggerCommand()).substeps;
     } else {
-      setupSupsteps = (await this.getActionCommand()).substeps;
+      substeps = (await this.getActionCommand()).substeps;
     }
 
-    const existingArguments = setupSupsteps.find(
+    const setupSubstep = substeps.find(
       (substep) => substep.key === 'chooseTrigger'
-    ).arguments;
-
-    return existingArguments;
+    );
+    return setupSubstep.arguments;
   }
 
   async getSetupAndDynamicFields() {
@@ -311,13 +310,7 @@ class Step extends Base {
       .$relatedQuery('steps')
       .where('position', '>', this.position);
 
-    const nextStepQueries = nextSteps.map(async (nextStep) => {
-      await nextStep.$query().patch({
-        position: nextStep.position - 1,
-      });
-    });
-
-    await Promise.all(nextStepQueries);
+    await flow.updateStepPositionsFrom(this.position, nextSteps);
   }
 
   async updateFor(user, newStepData) {
