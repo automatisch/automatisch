@@ -218,4 +218,50 @@ describe('Step model', () => {
 
     expect(await secondStep.getNextStep()).toStrictEqual(thirdStep);
   });
+
+  describe('getTriggerCommand', () => {
+    it('should return trigger command when app key and key are defined in trigger step', async () => {
+      const step = new Step();
+      step.type = 'trigger';
+      step.appKey = 'webhook';
+      step.key = 'catchRawWebhook';
+
+      const findOneByKeySpy = vi.spyOn(App, 'findOneByKey');
+      const triggerCommand = await step.getTriggerCommand();
+
+      expect(findOneByKeySpy).toHaveBeenCalledWith(step.appKey);
+      expect(triggerCommand.key).toBe(step.key);
+    });
+
+    it('should return null when key is not defined', async () => {
+      const step = new Step();
+      step.type = 'trigger';
+      step.appKey = 'webhook';
+
+      expect(await step.getTriggerCommand()).toBe(null);
+    });
+  });
+
+  describe('getActionCommand', () => {
+    it('should return action comamand when app key and key are defined in action step', async () => {
+      const step = new Step();
+      step.type = 'action';
+      step.appKey = 'ntfy';
+      step.key = 'sendMessage';
+
+      const findOneByKeySpy = vi.spyOn(App, 'findOneByKey');
+      const actionCommand = await step.getActionCommand();
+
+      expect(findOneByKeySpy).toHaveBeenCalledWith(step.appKey);
+      expect(actionCommand.key).toBe(step.key);
+    });
+
+    it('should return null when key is not defined', async () => {
+      const step = new Step();
+      step.type = 'action';
+      step.appKey = 'ntfy';
+
+      expect(await step.getActionCommand()).toBe(null);
+    });
+  });
 });
