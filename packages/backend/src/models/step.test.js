@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import appConfig from '../config/app.js';
 import App from './app.js';
 import Base from './base.js';
@@ -9,6 +9,10 @@ import ExecutionStep from './execution-step.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import * as testRunModule from '../services/test-run.js';
 import { createFlow } from '../../test/factories/flow.js';
+import { createUser } from '../../test/factories/user.js';
+import { createRole } from '../../test/factories/role.js';
+import { createPermission } from '../../test/factories/permission.js';
+import { createConnection } from '../../test/factories/connection.js';
 import { createStep } from '../../test/factories/step.js';
 import { createExecutionStep } from '../../test/factories/execution-step.js';
 
@@ -350,6 +354,107 @@ describe('Step model', () => {
       await step.delete();
 
       expect(await executionStep.$query()).toBe(undefined);
+    });
+  });
+
+  describe('updateFor', async () => {
+    let step,
+      userRole,
+      user,
+      userConnection,
+      anotherUser,
+      anotherUserConnection;
+
+    beforeEach(async () => {
+      userRole = await createRole({ name: 'User' });
+      anotherUser = await createUser({ roleId: userRole.id });
+      user = await createUser({ roleId: userRole.id });
+
+      userConnection = await createConnection({
+        key: 'deepl',
+        userId: user.id,
+      });
+
+      anotherUserConnection = await createConnection({
+        key: 'deepl',
+        userId: anotherUser.id,
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        action: 'read',
+        subject: 'Connection',
+        conditions: ['isCreator'],
+      });
+
+      step = await createStep();
+    });
+
+    it('should update step with the given payload and mark it as incomplete', async () => {
+      const stepData = {
+        appKey: 'deepl',
+        key: 'translateText',
+        connectionId: anotherUserConnection.id,
+        parameters: {
+          key: 'value',
+        },
+      };
+
+      const anotherUserWithRoleAndPermissions = await anotherUser
+        .$query()
+        .withGraphFetched({ permissions: true, role: true });
+
+      const updatedStep = await step.updateFor(
+        anotherUserWithRoleAndPermissions,
+        stepData
+      );
+
+      expect(updatedStep).toMatchObject({
+        ...stepData,
+        status: 'incomplete',
+      });
+    });
+
+    it('should invoke updateWebhookUrl', async () => {
+      const updateWebhookUrlSpy = vi
+        .spyOn(Step.prototype, 'updateWebhookUrl')
+        .mockResolvedValue();
+
+      const stepData = {
+        appKey: 'deepl',
+        key: 'translateText',
+      };
+
+      await step.updateFor(user, stepData);
+
+      expect(updateWebhookUrlSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should not update step when inaccessible connection is given', async () => {
+      const stepData = {
+        appKey: 'deepl',
+        key: 'translateText',
+        connectionId: userConnection.id,
+      };
+
+      const anotherUserWithRoleAndPermissions = await anotherUser
+        .$query()
+        .withGraphFetched({ permissions: true, role: true });
+
+      await expect(() =>
+        step.updateFor(anotherUserWithRoleAndPermissions, stepData)
+      ).rejects.toThrowError('NotFoundError');
+    });
+
+    it('should not update step when given app key and key do not exist', async () => {
+      const stepData = {
+        appKey: 'deepl',
+        key: 'not-existing-key',
+      };
+
+      await expect(() => step.updateFor(user, stepData)).rejects.toThrowError(
+        'DeepL does not have an action with the "not-existing-key" key!'
+      );
     });
   });
 
