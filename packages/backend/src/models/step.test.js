@@ -6,6 +6,7 @@ import Step from './step.js';
 import Flow from './flow.js';
 import Connection from './connection.js';
 import ExecutionStep from './execution-step.js';
+import Telemetry from '../helpers/telemetry/index.js';
 import * as testRunModule from '../services/test-run.js';
 import { createStep } from '../../test/factories/step.js';
 import { createExecutionStep } from '../../test/factories/execution-step.js';
@@ -262,6 +263,50 @@ describe('Step model', () => {
       step.appKey = 'ntfy';
 
       expect(await step.getActionCommand()).toBe(null);
+    });
+  });
+
+  describe('$afterInsert', () => {
+    it('should call super.$afterInsert', async () => {
+      const superAfterInsertSpy = vi.spyOn(Base.prototype, '$afterInsert');
+
+      await createStep();
+
+      expect(superAfterInsertSpy).toHaveBeenCalled();
+    });
+
+    it('should call Telemetry.stepCreated', async () => {
+      const telemetryStepCreatedSpy = vi
+        .spyOn(Telemetry, 'stepCreated')
+        .mockImplementation(() => {});
+
+      const step = await createStep();
+
+      expect(telemetryStepCreatedSpy).toHaveBeenCalledWith(step);
+    });
+  });
+
+  describe('$afterUpdate', () => {
+    it('should call super.$afterUpdate', async () => {
+      const superAfterUpdateSpy = vi.spyOn(Base.prototype, '$afterUpdate');
+
+      const step = await createStep();
+
+      await step.$query().patch({ position: 2 });
+
+      expect(superAfterUpdateSpy).toHaveBeenCalledOnce();
+    });
+
+    it('$afterUpdate should call Telemetry.stepUpdated', async () => {
+      const telemetryStepUpdatedSpy = vi
+        .spyOn(Telemetry, 'stepUpdated')
+        .mockImplementation(() => {});
+
+      const step = await createStep();
+
+      await step.$query().patch({ position: 2 });
+
+      expect(telemetryStepUpdatedSpy).toHaveBeenCalled({});
     });
   });
 });
