@@ -45,3 +45,36 @@ export function getPermissions(computedPermissions) {
     [],
   );
 }
+
+export const getComputedPermissionsDefaultValues = (
+  data,
+  conditionsInitialValues,
+) => {
+  if (!data) return {};
+
+  const conditions = {};
+  data.conditions.forEach((condition) => {
+    conditions[condition.key] =
+      conditionsInitialValues?.[condition.key] || false;
+  });
+
+  const result = {};
+
+  data.subjects.forEach((subject) => {
+    const subjectKey = subject.key;
+    result[subjectKey] = {};
+
+    data.actions.forEach((action) => {
+      const actionKey = action.key;
+
+      if (action.subjects.includes(subjectKey)) {
+        result[subjectKey][actionKey] = {
+          value: false,
+          conditions: { ...conditions },
+        };
+      }
+    });
+  });
+
+  return result;
+};
