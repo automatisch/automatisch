@@ -137,8 +137,6 @@ ControlledAutocomplete.propTypes = {
   onChange: PropTypes.func,
   options: PropTypes.array,
   renderInput: PropTypes.func.isRequired,
-  showFormHelperText: PropTypes.bool,
-  showErrorTouched: PropTypes.bool,
   showHelperText: PropTypes.bool,
 };
 
