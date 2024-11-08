@@ -11,13 +11,16 @@ export default function SubscriptionCancelledAlert() {
   const formatMessage = useFormatMessage();
   const subscription = useSubscription();
   const trial = useUserTrial();
-
-  if (subscription?.data?.status === 'active' || trial.hasTrial)
-    return <React.Fragment />;
-
   const cancellationEffectiveDateObject = DateTime.fromISO(
     subscription?.data?.cancellationEffectiveDate,
   );
+
+  if (
+    subscription?.data?.status === 'active' ||
+    trial.hasTrial ||
+    !cancellationEffectiveDateObject.isValid
+  )
+    return <React.Fragment />;
 
   return (
     <Alert
