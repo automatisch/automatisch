@@ -44,7 +44,7 @@ function BillingCard(props) {
         </Typography>
 
         <Typography variant="h6" fontWeight="bold">
-          {title}
+          {title || '---'}
         </Typography>
       </CardContent>
 
@@ -119,12 +119,12 @@ export default function UsageDataInformation() {
         text: 'Upgrade plan',
       },
       nextBillAmount: {
-        title: '---',
+        title: null,
         action: null,
         text: null,
       },
       nextBillDate: {
-        title: '---',
+        title: null,
         action: null,
         text: null,
       },
@@ -137,7 +137,9 @@ export default function UsageDataInformation() {
         text: formatMessage('usageDataInformation.cancelPlan'),
       },
       nextBillAmount: {
-        title: `€${subscription?.nextBillAmount}`,
+        title: subscription?.nextBillAmount
+          ? `€${subscription?.nextBillAmount}`
+          : null,
         action: subscription?.updateUrl,
         text: formatMessage('usageDataInformation.updatePaymentMethod'),
       },
