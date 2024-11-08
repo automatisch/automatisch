@@ -314,13 +314,13 @@ class Step extends Base {
   }
 
   async updateFor(user, newStepData) {
-    const { connectionId, appKey, key, parameters } = newStepData;
+    const { appKey = this.appKey, connectionId, key, parameters } = newStepData;
 
-    if (connectionId && (appKey || this.appKey)) {
+    if (connectionId && appKey) {
       await user.authorizedConnections
         .findOne({
           id: connectionId,
-          key: appKey || this.appKey,
+          key: appKey,
         })
         .throwIfNotFound();
     }
@@ -334,8 +334,8 @@ class Step extends Base {
     }
 
     const updatedStep = await this.$query().patchAndFetch({
-      key: key,
-      appKey: appKey,
+      key,
+      appKey,
       connectionId: connectionId,
       parameters: parameters,
       status: 'incomplete',
