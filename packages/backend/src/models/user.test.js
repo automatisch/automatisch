@@ -16,6 +16,7 @@ import { createUser } from '../../test/factories/user.js';
 import { createRole } from '../../test/factories/role.js';
 import { createPermission } from '../../test/factories/permission.js';
 import { createFlow } from '../../test/factories/flow.js';
+import { createStep } from '../../test/factories/step.js';
 
 describe('User model', () => {
   it('tableName should return correct name', () => {
@@ -303,6 +304,71 @@ describe('User model', () => {
       const user = new User();
 
       expect(() => user.authorizedFlows).toThrowError(
+        'The user is not authorized!'
+      );
+    });
+  });
+
+  describe('authorizedSteps', () => {
+    it('should return user steps with isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      const userFlowStep = await createStep({ flowId: userFlow.id });
+      const anotherUserFlow = await createFlow();
+      await createStep({ flowId: anotherUserFlow.id });
+
+      expect(await userWithRoleAndPermissions.authorizedSteps).toStrictEqual([
+        userFlowStep,
+      ]);
+    });
+
+    it('should return all steps without isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      const userFlowStep = await createStep({ flowId: userFlow.id });
+      const anotherUserFlow = await createFlow();
+      const anotherUserFlowStep = await createStep({
+        flowId: anotherUserFlow.id,
+      });
+
+      expect(await userWithRoleAndPermissions.authorizedSteps).toStrictEqual([
+        userFlowStep,
+        anotherUserFlowStep,
+      ]);
+    });
+
+    it('should throw an authorization error without Flow read permission', async () => {
+      const user = new User();
+
+      expect(() => user.authorizedSteps).toThrowError(
         'The user is not authorized!'
       );
     });
