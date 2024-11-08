@@ -302,7 +302,9 @@ describe('User model', () => {
     it('should throw an authorization error without Flow read permission', async () => {
       const user = new User();
 
-      expect(() => user.authorizedFlows).toThrowError('NotAuthorized');
+      expect(() => user.authorizedFlows).toThrowError(
+        'The user is not authorized!'
+      );
     });
   });
 });
