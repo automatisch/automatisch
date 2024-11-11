@@ -493,4 +493,18 @@ describe('User model', () => {
       );
     });
   });
+
+  describe('login', () => {
+    it('should return true when the given password matches with the user password', async () => {
+      const user = await createUser({ password: 'sample-password' });
+
+      expect(await user.login('sample-password')).toBe(true);
+    });
+
+    it('should return false when the given password does not match with the user password', async () => {
+      const user = await createUser({ password: 'sample-password' });
+
+      expect(await user.login('wrong-password')).toBe(false);
+    });
+  });
 });

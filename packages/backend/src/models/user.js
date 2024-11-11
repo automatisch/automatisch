@@ -223,8 +223,8 @@ class User extends Base {
     }
   }
 
-  login(password) {
-    return bcrypt.compare(password, this.password);
+  async login(password) {
+    return await bcrypt.compare(password, this.password);
   }
 
   async generateResetPasswordToken() {
