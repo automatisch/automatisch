@@ -12,6 +12,7 @@ import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import User from './user.js';
+import { createUser } from '../../test/factories/user.js';
 
 describe('User model', () => {
   it('tableName should return correct name', () => {
@@ -198,5 +199,50 @@ describe('User model', () => {
     expect(user.acceptInvitationUrl).toBe(
       'https://automatisch.io/accept-invitation?token=invitation-token'
     );
+  });
+
+  describe('authenticate', () => {
+    it('should create and return the token for correct email and password', async () => {
+      const user = await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate(
+        'test-user@automatisch.io',
+        'sample-password'
+      );
+
+      const persistedToken = await AccessToken.query().findOne({
+        userId: user.id,
+      });
+
+      expect(token).toBe(persistedToken.token);
+    });
+
+    it('should return undefined for existing email and incorrect password', async () => {
+      await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate(
+        'test-user@automatisch.io',
+        'wrong-password'
+      );
+
+      expect(token).toBe(undefined);
+    });
+
+    it('should return undefined for non-existing email', async () => {
+      await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate('non-existing-user@automatisch.io');
+
+      expect(token).toBe(undefined);
+    });
   });
 });
