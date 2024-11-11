@@ -549,4 +549,19 @@ describe('User model', () => {
 
     vi.useRealTimers();
   });
+
+  it('resetPassword should persist given password and remove reset password token', async () => {
+    const user = await createUser({
+      resetPasswordToken: 'reset-password-token',
+      resetPasswordTokenSentAt: '2024-11-11T12:26:00.000Z',
+    });
+
+    await user.resetPassword('new-password');
+
+    const refetchedUser = await user.$query();
+
+    expect(refetchedUser.resetPasswordToken).toBe(null);
+    expect(refetchedUser.resetPasswordTokenSentAt).toBe(null);
+    expect(await refetchedUser.login('new-password')).toBe(true);
+  });
 });
