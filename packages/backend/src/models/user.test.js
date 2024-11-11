@@ -13,6 +13,7 @@ import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import User from './user.js';
 import { createUser } from '../../test/factories/user.js';
+import { createConnection } from '../../test/factories/connection.js';
 import { createRole } from '../../test/factories/role.js';
 import { createPermission } from '../../test/factories/permission.js';
 import { createFlow } from '../../test/factories/flow.js';
@@ -369,6 +370,64 @@ describe('User model', () => {
       const user = new User();
 
       expect(() => user.authorizedSteps).toThrowError(
+        'The user is not authorized!'
+      );
+    });
+  });
+
+  describe('authorizedConnections', () => {
+    it('should return user connections with isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Connection',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userConnection = await createConnection({ userId: user.id });
+      await createConnection();
+
+      expect(
+        await userWithRoleAndPermissions.authorizedConnections
+      ).toStrictEqual([userConnection]);
+    });
+
+    it('should return all connections without isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Connection',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userConnection = await createConnection({ userId: user.id });
+      const anotherUserConnection = await createConnection();
+
+      expect(
+        await userWithRoleAndPermissions.authorizedConnections
+      ).toStrictEqual([userConnection, anotherUserConnection]);
+    });
+
+    it('should throw an authorization error without Connection read permission', async () => {
+      const user = new User();
+
+      expect(() => user.authorizedConnections).toThrowError(
         'The user is not authorized!'
       );
     });
