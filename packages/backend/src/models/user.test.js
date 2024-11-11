@@ -507,4 +507,25 @@ describe('User model', () => {
       expect(await user.login('wrong-password')).toBe(false);
     });
   });
+
+  it('generateResetPasswordToken should persist a random reset password token with the current date', async () => {
+    vi.useFakeTimers();
+
+    const date = new Date(2024, 10, 11, 15, 17, 0, 0);
+    vi.setSystemTime(date);
+
+    const user = await createUser({
+      resetPasswordToken: null,
+      resetPasswordTokenSentAt: null,
+    });
+
+    await user.generateResetPasswordToken();
+
+    const refetchedUser = await user.$query();
+
+    expect(refetchedUser.resetPasswordToken.length).toBe(128);
+    expect(refetchedUser.resetPasswordTokenSentAt).toStrictEqual(date);
+
+    vi.useRealTimers();
+  });
 });
