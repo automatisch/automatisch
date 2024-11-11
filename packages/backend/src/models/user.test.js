@@ -528,4 +528,25 @@ describe('User model', () => {
 
     vi.useRealTimers();
   });
+
+  it('generateInvitationToken should persist a random invitation token with the current date', async () => {
+    vi.useFakeTimers();
+
+    const date = new Date(2024, 10, 11, 15, 26, 0, 0);
+    vi.setSystemTime(date);
+
+    const user = await createUser({
+      invitationToken: null,
+      invitationTokenSentAt: null,
+    });
+
+    await user.generateInvitationToken();
+
+    const refetchedUser = await user.$query();
+
+    expect(refetchedUser.invitationToken.length).toBe(128);
+    expect(refetchedUser.invitationTokenSentAt).toStrictEqual(date);
+
+    vi.useRealTimers();
+  });
 });
