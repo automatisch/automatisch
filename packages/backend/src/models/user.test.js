@@ -13,6 +13,12 @@ import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import User from './user.js';
 import { createUser } from '../../test/factories/user.js';
+import { createConnection } from '../../test/factories/connection.js';
+import { createRole } from '../../test/factories/role.js';
+import { createPermission } from '../../test/factories/permission.js';
+import { createFlow } from '../../test/factories/flow.js';
+import { createStep } from '../../test/factories/step.js';
+import { createExecution } from '../../test/factories/execution.js';
 
 describe('User model', () => {
   it('tableName should return correct name', () => {
@@ -243,6 +249,248 @@ describe('User model', () => {
       const token = await User.authenticate('non-existing-user@automatisch.io');
 
       expect(token).toBe(undefined);
+    });
+  });
+
+  describe('authorizedFlows', () => {
+    it('should return user flows with isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      await createFlow();
+
+      expect(await userWithRoleAndPermissions.authorizedFlows).toStrictEqual([
+        userFlow,
+      ]);
+    });
+
+    it('should return all flows without isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      const anotherUserFlow = await createFlow();
+
+      expect(await userWithRoleAndPermissions.authorizedFlows).toStrictEqual([
+        userFlow,
+        anotherUserFlow,
+      ]);
+    });
+
+    it('should throw an authorization error without Flow read permission', async () => {
+      const user = new User();
+
+      expect(() => user.authorizedFlows).toThrowError(
+        'The user is not authorized!'
+      );
+    });
+  });
+
+  describe('authorizedSteps', () => {
+    it('should return user steps with isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      const userFlowStep = await createStep({ flowId: userFlow.id });
+      const anotherUserFlow = await createFlow();
+      await createStep({ flowId: anotherUserFlow.id });
+
+      expect(await userWithRoleAndPermissions.authorizedSteps).toStrictEqual([
+        userFlowStep,
+      ]);
+    });
+
+    it('should return all steps without isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      const userFlowStep = await createStep({ flowId: userFlow.id });
+      const anotherUserFlow = await createFlow();
+      const anotherUserFlowStep = await createStep({
+        flowId: anotherUserFlow.id,
+      });
+
+      expect(await userWithRoleAndPermissions.authorizedSteps).toStrictEqual([
+        userFlowStep,
+        anotherUserFlowStep,
+      ]);
+    });
+
+    it('should throw an authorization error without Flow read permission', async () => {
+      const user = new User();
+
+      expect(() => user.authorizedSteps).toThrowError(
+        'The user is not authorized!'
+      );
+    });
+  });
+
+  describe('authorizedConnections', () => {
+    it('should return user connections with isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Connection',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userConnection = await createConnection({ userId: user.id });
+      await createConnection();
+
+      expect(
+        await userWithRoleAndPermissions.authorizedConnections
+      ).toStrictEqual([userConnection]);
+    });
+
+    it('should return all connections without isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Connection',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userConnection = await createConnection({ userId: user.id });
+      const anotherUserConnection = await createConnection();
+
+      expect(
+        await userWithRoleAndPermissions.authorizedConnections
+      ).toStrictEqual([userConnection, anotherUserConnection]);
+    });
+
+    it('should throw an authorization error without Connection read permission', async () => {
+      const user = new User();
+
+      expect(() => user.authorizedConnections).toThrowError(
+        'The user is not authorized!'
+      );
+    });
+  });
+
+  describe('authorizedExecutions', () => {
+    it('should return user executions with isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Execution',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      const userFlowExecution = await createExecution({ flowId: userFlow.id });
+      await createExecution();
+
+      expect(
+        await userWithRoleAndPermissions.authorizedExecutions
+      ).toStrictEqual([userFlowExecution]);
+    });
+
+    it('should return all executions without isCreator condition', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Execution',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      const userFlow = await createFlow({ userId: user.id });
+      const userFlowExecution = await createExecution({ flowId: userFlow.id });
+      const anotherUserFlowExecution = await createExecution();
+
+      expect(
+        await userWithRoleAndPermissions.authorizedExecutions
+      ).toStrictEqual([userFlowExecution, anotherUserFlowExecution]);
+    });
+
+    it('should throw an authorization error without Execution read permission', async () => {
+      const user = new User();
+
+      expect(() => user.authorizedExecutions).toThrowError(
+        'The user is not authorized!'
+      );
     });
   });
 });
