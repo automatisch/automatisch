@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import appConfig from '../config/app.js';
 import Base from './base.js';
 import AccessToken from './access-token.js';
 import Connection from './connection.js';
@@ -184,5 +185,18 @@ describe('User model', () => {
     const expectedAttributes = ['acceptInvitationUrl'];
 
     expect(virtualAttributes).toStrictEqual(expectedAttributes);
+  });
+
+  it('acceptInvitationUrl should return accept invitation page URL with invitation token', async () => {
+    const user = new User();
+    user.invitationToken = 'invitation-token';
+
+    vi.spyOn(appConfig, 'webAppUrl', 'get').mockReturnValue(
+      'https://automatisch.io'
+    );
+
+    expect(user.acceptInvitationUrl).toBe(
+      'https://automatisch.io/accept-invitation?token=invitation-token'
+    );
   });
 });
