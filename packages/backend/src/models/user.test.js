@@ -564,4 +564,20 @@ describe('User model', () => {
     expect(refetchedUser.resetPasswordTokenSentAt).toBe(null);
     expect(await refetchedUser.login('new-password')).toBe(true);
   });
+
+  it('acceptInvitation should persist given password, set user active and remove invitation token', async () => {
+    const user = await createUser({
+      invitationToken: 'invitation-token',
+      invitationTokenSentAt: '2024-11-11T12:26:00.000Z',
+      status: 'invited',
+    });
+
+    await user.acceptInvitation('new-password');
+
+    const refetchedUser = await user.$query();
+
+    expect(refetchedUser.invitationToken).toBe(null);
+    expect(refetchedUser.invitationTokenSentAt).toBe(null);
+    expect(refetchedUser.status).toBe('active');
+  });
 });
