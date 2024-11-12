@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { Duration } from 'luxon';
 import appConfig from '../config/app.js';
 import Base from './base.js';
 import AccessToken from './access-token.js';
@@ -12,6 +13,7 @@ import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import User from './user.js';
+import deleteUserQueue from '../queues/delete-user.ee.js';
 import { createUser } from '../../test/factories/user.js';
 import { createConnection } from '../../test/factories/connection.js';
 import { createRole } from '../../test/factories/role.js';
@@ -603,5 +605,45 @@ describe('User model', () => {
         })
       ).rejects.toThrowError('currentPassword: is incorrect.');
     });
+  });
+
+  it('softRemove should soft remove the user, its associations and queue it for hard deletion in 30 days', async () => {
+    vi.useFakeTimers();
+
+    const date = new Date(2024, 10, 12, 12, 50, 0, 0);
+    vi.setSystemTime(date);
+
+    const user = await createUser();
+
+    const softRemoveAssociationsSpy = vi
+      .spyOn(user, 'softRemoveAssociations')
+      .mockReturnValue();
+
+    const deleteUserQueueAddSpy = vi
+      .spyOn(deleteUserQueue, 'add')
+      .mockResolvedValue();
+
+    await user.softRemove();
+
+    const refetchedSoftDeletedUser = await user.$query().withSoftDeleted();
+
+    const millisecondsFor30Days = Duration.fromObject({ days: 30 }).toMillis();
+    const jobName = `Delete user - ${user.id}`;
+    const jobPayload = { id: user.id };
+
+    const jobOptions = {
+      delay: millisecondsFor30Days,
+    };
+
+    expect(softRemoveAssociationsSpy).toHaveBeenCalledOnce();
+    expect(refetchedSoftDeletedUser.deletedAt).toStrictEqual(date);
+
+    expect(deleteUserQueueAddSpy).toHaveBeenCalledWith(
+      jobName,
+      jobPayload,
+      jobOptions
+    );
+
+    vi.useRealTimers();
   });
 });
