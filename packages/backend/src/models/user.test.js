@@ -14,6 +14,11 @@ import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
 import User from './user.js';
 import deleteUserQueue from '../queues/delete-user.ee.js';
+import emailQueue from '../queues/email.js';
+import {
+  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+} from '../helpers/remove-job-configuration.js';
 import { createUser } from '../../test/factories/user.js';
 import { createConnection } from '../../test/factories/connection.js';
 import { createRole } from '../../test/factories/role.js';
@@ -639,6 +644,54 @@ describe('User model', () => {
     expect(refetchedSoftDeletedUser.deletedAt).toStrictEqual(date);
 
     expect(deleteUserQueueAddSpy).toHaveBeenCalledWith(
+      jobName,
+      jobPayload,
+      jobOptions
+    );
+
+    vi.useRealTimers();
+  });
+
+  it.todo('softRemoveAssociations');
+
+  it('sendResetPasswordEmail should generate reset password token and queue to send reset password email', async () => {
+    vi.useFakeTimers();
+
+    const date = new Date(2024, 10, 12, 14, 33, 0, 0);
+    vi.setSystemTime(date);
+
+    const user = await createUser();
+
+    const generateResetPasswordTokenSpy = vi
+      .spyOn(user, 'generateResetPasswordToken')
+      .mockReturnValue();
+
+    const emailQueueAddSpy = vi.spyOn(emailQueue, 'add').mockResolvedValue();
+
+    await user.sendResetPasswordEmail();
+
+    const refetchedUser = await user.$query();
+    const jobName = `Reset Password Email - ${user.id}`;
+
+    const jobPayload = {
+      email: refetchedUser.email,
+      subject: 'Reset Password',
+      template: 'reset-password-instructions.ee',
+      params: {
+        token: refetchedUser.resetPasswordToken,
+        webAppUrl: appConfig.webAppUrl,
+        fullName: refetchedUser.fullName,
+      },
+    };
+
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+    };
+
+    expect(generateResetPasswordTokenSpy).toHaveBeenCalledOnce();
+
+    expect(emailQueueAddSpy).toHaveBeenCalledWith(
       jobName,
       jobPayload,
       jobOptions
