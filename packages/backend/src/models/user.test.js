@@ -743,4 +743,49 @@ describe('User model', () => {
       vi.useRealTimers();
     });
   });
+
+  it('sendInvitationEmail should generate invitation token and queue to send invitation email', async () => {
+    vi.useFakeTimers();
+
+    const date = new Date(2024, 10, 12, 17, 10, 0, 0);
+    vi.setSystemTime(date);
+
+    const user = await createUser();
+
+    const generateInvitationTokenSpy = vi
+      .spyOn(user, 'generateInvitationToken')
+      .mockReturnValue();
+
+    const emailQueueAddSpy = vi.spyOn(emailQueue, 'add').mockResolvedValue();
+
+    await user.sendInvitationEmail();
+
+    const refetchedUser = await user.$query();
+    const jobName = `Invitation Email - ${refetchedUser.id}`;
+
+    const jobPayload = {
+      email: refetchedUser.email,
+      subject: 'You are invited!',
+      template: 'invitation-instructions',
+      params: {
+        fullName: refetchedUser.fullName,
+        acceptInvitationUrl: refetchedUser.acceptInvitationUrl,
+      },
+    };
+
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+    };
+
+    expect(generateInvitationTokenSpy).toHaveBeenCalledOnce();
+
+    expect(emailQueueAddSpy).toHaveBeenCalledWith(
+      jobName,
+      jobPayload,
+      jobOptions
+    );
+
+    vi.useRealTimers();
+  });
 });
