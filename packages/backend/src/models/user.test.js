@@ -699,4 +699,40 @@ describe('User model', () => {
 
     vi.useRealTimers();
   });
+  
+  describe('isResetPasswordTokenValid', () => {
+    it('should return true when resetPasswordTokenSentAt is within the next four hours', async () => {
+      vi.useFakeTimers();
+
+      const date = new Date(2024, 10, 12, 16, 30, 0, 0);
+      vi.setSystemTime(date);
+
+      const user = new User();
+      user.resetPasswordTokenSentAt = '2024-11-12T13:31:00.000Z';
+
+      expect(user.isResetPasswordTokenValid()).toBe(true);
+
+      vi.useRealTimers();
+    });
+
+    it('should return false when there is no resetPasswordTokenSentAt', async () => {
+      const user = new User();
+
+      expect(user.isResetPasswordTokenValid()).toBe(false);
+    });
+
+    it('should return false when resetPasswordTokenSentAt is older than four hours', async () => {
+      vi.useFakeTimers();
+
+      const date = new Date(2024, 10, 12, 16, 30, 0, 0);
+      vi.setSystemTime(date);
+
+      const user = new User();
+      user.resetPasswordTokenSentAt = '2024-11-12T12:29:00.000Z';
+
+      expect(user.isResetPasswordTokenValid()).toBe(false);
+
+      vi.useRealTimers();
+    });
+  });
 });
