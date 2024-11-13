@@ -580,4 +580,28 @@ describe('User model', () => {
     expect(refetchedUser.invitationTokenSentAt).toBe(null);
     expect(refetchedUser.status).toBe('active');
   });
+
+  describe('updatePassword', () => {
+    it('should update password when the given current password matches with the user password', async () => {
+      const user = await createUser({ password: 'sample-password' });
+
+      const updatedUser = await user.updatePassword({
+        currentPassword: 'sample-password',
+        password: 'new-password',
+      });
+
+      expect(await updatedUser.login('new-password')).toBe(true);
+    });
+
+    it('should throw validation error when the given current password does not match with the user password', async () => {
+      const user = await createUser({ password: 'sample-password' });
+
+      await expect(
+        user.updatePassword({
+          currentPassword: 'wrong-password',
+          password: 'new-password',
+        })
+      ).rejects.toThrowError('currentPassword: is incorrect.');
+    });
+  });
 });
