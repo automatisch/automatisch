@@ -38,9 +38,21 @@ function LoginForm() {
       const { token } = data;
       authentication.updateToken(token);
     } catch (error) {
-      enqueueSnackbar(error?.message || formatMessage('loginForm.error'), {
-        variant: 'error',
-      });
+      const errors = error?.response?.data?.errors
+        ? Object.values(error.response.data.errors)
+        : [];
+
+      if (errors.length) {
+        for (const [error] of errors) {
+          enqueueSnackbar(error, {
+            variant: 'error',
+          });
+        }
+      } else {
+        enqueueSnackbar(error?.message || formatMessage('loginForm.error'), {
+          variant: 'error',
+        });
+      }
     }
   };
 
