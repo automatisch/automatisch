@@ -836,4 +836,24 @@ describe('User model', () => {
       vi.useRealTimers();
     });
   });
+
+  describe('generateHash', () => {
+    it('should hash password and re-assign it', async () => {
+      const user = new User();
+      user.password = 'sample-password';
+
+      await user.generateHash();
+
+      expect(user.password).not.toBe('sample-password');
+      expect(await user.login('sample-password')).toBe(true);
+    });
+
+    it('should do nothing when password does not exist', async () => {
+      const user = new User();
+
+      await user.generateHash();
+
+      expect(user.password).toBe(undefined);
+    });
+  });
 });
