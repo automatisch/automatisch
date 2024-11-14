@@ -792,4 +792,40 @@ describe('User model', () => {
 
     vi.useRealTimers();
   });
+
+  describe('isInvitationTokenValid', () => {
+    it('should return truen when invitationTokenSentAt is within the next four hours', async () => {
+      vi.useFakeTimers();
+
+      const date = new Date(2024, 10, 14, 14, 30, 0, 0);
+      vi.setSystemTime(date);
+
+      const user = new User();
+      user.invitationTokenSentAt = '2024-11-14T13:31:00.000Z';
+
+      expect(user.isInvitationTokenValid()).toBe(true);
+
+      vi.useRealTimers();
+    });
+
+    it('should return false when there is no invitationTokenSentAt', async () => {
+      const user = new User();
+
+      expect(user.isInvitationTokenValid()).toBe(false);
+    });
+
+    it('should return false when invitationTokenSentAt is older than seventy two hours', async () => {
+      vi.useFakeTimers();
+
+      const date = new Date(2024, 10, 14, 14, 30, 0, 0);
+      vi.setSystemTime(date);
+
+      const user = new User();
+      user.invitationTokenSentAt = '2024-11-11T14:20:00.000Z';
+
+      expect(user.isInvitationTokenValid()).toBe(false);
+
+      vi.useRealTimers();
+    });
+  });
 });
