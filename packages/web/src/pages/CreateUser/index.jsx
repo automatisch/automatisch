@@ -124,7 +124,6 @@ export default function CreateUser() {
                 <Alert
                   severity="info"
                   color="primary"
-                  sx={{ fontWeight: '500' }}
                   data-test="invitation-email-info-alert"
                 >
                   {formatMessage('createUser.invitationEmailInfo', {

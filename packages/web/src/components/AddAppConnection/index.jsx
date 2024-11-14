@@ -126,7 +126,7 @@ function AddAppConnection(props) {
       </DialogTitle>
 
       {authDocUrl && (
-        <Alert severity="info" sx={{ fontWeight: 300 }}>
+        <Alert severity="info">
           {formatMessage('addAppConnection.callToDocs', {
             appName: name,
             docsLink: generateExternalLink(authDocUrl),
@@ -138,7 +138,7 @@ function AddAppConnection(props) {
         <Alert
           data-test="add-connection-error"
           severity="error"
-          sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
+          sx={{ mt: 1, wordBreak: 'break-all' }}
         >
           {!errorDetails && errorMessage}
           {errorDetails && (

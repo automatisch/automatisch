@@ -32,10 +32,7 @@ function AdminApplicationAuthClientDialog(props) {
     <Dialog open={true} onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>
       {error && (
-        <Alert
-          severity="error"
-          sx={{ mt: 1, fontWeight: 500, wordBreak: 'break-all' }}
-        >
+        <Alert severity="error" sx={{ mt: 1, wordBreak: 'break-all' }}>
           {error.message}
         </Alert>
       )}

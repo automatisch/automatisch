@@ -112,7 +112,7 @@ export default function ResetPasswordForm() {
               <Alert
                 data-test="accept-invitation-form-error"
                 severity="error"
-                sx={{ mt: 1, fontWeight: 500 }}
+                sx={{ mt: 1 }}
               >
                 {formatMessage('acceptInvitationForm.invalidToken')}
               </Alert>
