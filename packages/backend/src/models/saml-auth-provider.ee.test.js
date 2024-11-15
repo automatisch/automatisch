@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 import SamlAuthProvider from '../models/saml-auth-provider.ee';
 import SamlAuthProvidersRoleMapping from '../models/saml-auth-providers-role-mapping.ee';
 import Identity from './identity.ee';
 import Base from './base';
+import appConfig from '../config/app';
 
 describe('SamlAuthProvider model', () => {
   it('tableName should return correct name', () => {
@@ -44,5 +45,40 @@ describe('SamlAuthProvider model', () => {
     const expectedAttributes = ['loginUrl', 'remoteLogoutUrl'];
 
     expect(virtualAttributes).toStrictEqual(expectedAttributes);
+  });
+
+  it('loginUrl should return the URL of login', () => {
+    const samlAuthProvider = new SamlAuthProvider();
+    samlAuthProvider.issuer = 'sample-issuer';
+
+    vi.spyOn(appConfig, 'baseUrl', 'get').mockReturnValue(
+      'https://automatisch.io'
+    );
+
+    expect(samlAuthProvider.loginUrl).toStrictEqual(
+      'https://automatisch.io/login/saml/sample-issuer'
+    );
+  });
+
+  it('loginCallbackUrl should return the URL of login callback', () => {
+    const samlAuthProvider = new SamlAuthProvider();
+    samlAuthProvider.issuer = 'sample-issuer';
+
+    vi.spyOn(appConfig, 'baseUrl', 'get').mockReturnValue(
+      'https://automatisch.io'
+    );
+
+    expect(samlAuthProvider.loginCallBackUrl).toStrictEqual(
+      'https://automatisch.io/login/saml/sample-issuer/callback'
+    );
+  });
+
+  it('remoteLogoutUrl should return the URL from entrypoint', () => {
+    const samlAuthProvider = new SamlAuthProvider();
+    samlAuthProvider.entryPoint = 'https://example.com/saml/logout';
+
+    expect(samlAuthProvider.remoteLogoutUrl).toStrictEqual(
+      'https://example.com/saml/logout'
+    );
   });
 });
