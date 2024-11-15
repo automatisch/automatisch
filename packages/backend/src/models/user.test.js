@@ -917,4 +917,91 @@ describe('User model', () => {
       expect(await user.isAllowedToRunFlows()).toBe(false);
     });
   });
+
+  describe('inTrial', () => {
+    it('should return false when Automatisch is self hosted', async () => {
+      const user = new User();
+
+      vi.spyOn(appConfig, 'isSelfHosted', 'get').mockReturnValue(true);
+
+      expect(await user.inTrial()).toBe(false);
+    });
+
+    it('should return false when the user does not have trial expiry date', async () => {
+      const user = new User();
+
+      vi.spyOn(appConfig, 'isSelfHosted', 'get').mockReturnValue(false);
+
+      expect(await user.inTrial()).toBe(false);
+    });
+
+    it('should return false when the user has an active subscription', async () => {
+      const user = new User();
+      user.trialExpiryDate = '2024-12-14';
+
+      vi.spyOn(appConfig, 'isSelfHosted', 'get').mockReturnValue(false);
+
+      const hasActiveSubscriptionSpy = vi
+        .spyOn(user, 'hasActiveSubscription')
+        .mockResolvedValue(true);
+
+      expect(await user.inTrial()).toBe(false);
+      expect(hasActiveSubscriptionSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should return true when trial expiry date is in future', async () => {
+      vi.useFakeTimers();
+
+      const date = DateTime.fromObject(
+        { year: 2024, month: 11, day: 12, hour: 17, minute: 30 },
+        { zone: 'UTC+0' }
+      );
+
+      vi.setSystemTime(date);
+
+      const user = await createUser();
+
+      await user.startTrialPeriod();
+
+      const refetchedUser = await user.$query();
+
+      vi.spyOn(appConfig, 'isSelfHosted', 'get').mockReturnValue(false);
+      vi.spyOn(refetchedUser, 'hasActiveSubscription').mockResolvedValue(false);
+
+      expect(await refetchedUser.inTrial()).toBe(true);
+
+      vi.useRealTimers();
+    });
+
+    it('should return false when trial expiry date is in past', async () => {
+      vi.useFakeTimers();
+
+      const user = await createUser();
+
+      const presentDate = DateTime.fromObject(
+        { year: 2024, month: 11, day: 17, hour: 11, minute: 30 },
+        { zone: 'UTC+0' }
+      );
+
+      vi.setSystemTime(presentDate);
+
+      await user.startTrialPeriod();
+
+      const futureDate = DateTime.fromObject(
+        { year: 2025, month: 1, day: 1 },
+        { zone: 'UTC+0' }
+      );
+
+      vi.setSystemTime(futureDate);
+
+      const refetchedUser = await user.$query();
+
+      vi.spyOn(appConfig, 'isSelfHosted', 'get').mockReturnValue(false);
+      vi.spyOn(refetchedUser, 'hasActiveSubscription').mockResolvedValue(false);
+
+      expect(await refetchedUser.inTrial()).toBe(false);
+
+      vi.useRealTimers();
+    });
+  });
 });
