@@ -27,10 +27,14 @@ export default function Flows() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const flowName = searchParams.get('flowName') || '';
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   const currentUserAbility = useCurrentUserAbility();
 
-  const { data, mutate: fetchFlows } = useLazyFlows(
+  const {
+    data,
+    mutate: fetchFlows,
+    isSuccess,
+  } = useLazyFlows(
     { flowName, page },
     {
       onSettled: () => {
@@ -42,12 +46,13 @@ export default function Flows() {
   const flows = data?.data || [];
   const pageInfo = data?.meta;
   const hasFlows = flows?.length;
+  const navigateToLastPage = isSuccess && !hasFlows && page > 1;
 
   const onSearchChange = React.useCallback((event) => {
     setSearchParams({ flowName: event.target.value });
   }, []);
 
-  const getLinkWithSearchParams = (page, flowName) => {
+  const getPathWithSearchParams = (page, flowName) => {
     const searchParams = new URLSearchParams();
 
     if (page > 1) {
@@ -56,24 +61,13 @@ export default function Flows() {
     if (flowName) {
       searchParams.set('flowName', flowName);
     }
-    return `?${searchParams.toString()}`;
-  };
 
-  const onDeleteFlow = () => {
-    const isLastItem = flows?.length === 1;
-    const hasOtherPages =
-      pageInfo && pageInfo.totalPages > 1 && pageInfo.currentPage > 1;
-
-    if (isLastItem && hasOtherPages) {
-      navigate(getLinkWithSearchParams(pageInfo.currentPage - 1, flowName));
-    } else {
-      fetchFlows();
-    }
+    return { search: searchParams.toString() };
   };
 
   const onDuplicateFlow = () => {
     if (pageInfo?.currentPage > 1) {
-      navigate(getLinkWithSearchParams(1, flowName));
+      navigate(getPathWithSearchParams(1, flowName));
     } else {
       fetchFlows();
     }
@@ -93,6 +87,15 @@ export default function Flows() {
       fetchData.cancel();
     };
   }, [fetchData, flowName, page]);
+
+  React.useEffect(
+    function redirectToLastPage() {
+      if (navigateToLastPage) {
+        navigate(getPathWithSearchParams(pageInfo.totalPages, flowName));
+      }
+    },
+    [navigateToLastPage],
+  );
 
   return (
     <Box sx={{ py: 3 }}>
@@ -136,7 +139,7 @@ export default function Flows() {
         </Grid>
 
         <Divider sx={{ mt: [2, 0], mb: 2 }} />
-        {isLoading && (
+        {(isLoading || navigateToLastPage) && (
           <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
         )}
         {!isLoading &&
@@ -145,10 +148,10 @@ export default function Flows() {
               key={flow.id}
               flow={flow}
               onDuplicateFlow={onDuplicateFlow}
-              onDeleteFlow={onDeleteFlow}
+              onDeleteFlow={fetchFlows}
             />
           ))}
-        {!isLoading && !hasFlows && (
+        {!isLoading && !navigateToLastPage && !hasFlows && (
           <NoResultFound
             text={formatMessage('flows.noFlows')}
             {...(currentUserAbility.can('create', 'Flow') && {
@@ -156,20 +159,23 @@ export default function Flows() {
             })}
           />
         )}
-        {!isLoading && pageInfo && pageInfo.totalPages > 1 && (
-          <Pagination
-            sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
-            page={pageInfo?.currentPage}
-            count={pageInfo?.totalPages}
-            renderItem={(item) => (
-              <PaginationItem
-                component={Link}
-                to={getLinkWithSearchParams(item.page, flowName)}
-                {...item}
-              />
-            )}
-          />
-        )}
+        {!isLoading &&
+          !navigateToLastPage &&
+          pageInfo &&
+          pageInfo.totalPages > 1 && (
+            <Pagination
+              sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+              page={pageInfo?.currentPage}
+              count={pageInfo?.totalPages}
+              renderItem={(item) => (
+                <PaginationItem
+                  component={Link}
+                  to={getPathWithSearchParams(item.page, flowName)}
+                  {...item}
+                />
+              )}
+            />
+          )}
       </Container>
     </Box>
   );
