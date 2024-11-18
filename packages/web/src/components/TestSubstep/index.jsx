@@ -84,10 +84,7 @@ function TestSubstep(props) {
           }}
         >
           {hasError && (
-            <Alert
-              severity="error"
-              sx={{ mb: 2, fontWeight: 500, width: '100%' }}
-            >
+            <Alert severity="error" sx={{ mb: 2, width: '100%' }}>
               <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
                 {JSON.stringify(errorDetails, null, 2)}
               </pre>
@@ -104,13 +101,11 @@ function TestSubstep(props) {
               severity="warning"
               sx={{ mb: 1, width: '100%' }}
             >
-              <AlertTitle sx={{ fontWeight: 700 }}>
+              <AlertTitle>
                 {formatMessage('flowEditor.noTestDataTitle')}
               </AlertTitle>
 
-              <Box sx={{ fontWeight: 400 }}>
-                {formatMessage('flowEditor.noTestDataMessage')}
-              </Box>
+              <Box>{formatMessage('flowEditor.noTestDataMessage')}</Box>
             </Alert>
           )}
 

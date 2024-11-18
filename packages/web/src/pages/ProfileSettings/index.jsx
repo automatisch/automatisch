@@ -266,8 +266,8 @@ function ProfileSettings() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Alert variant="outlined" severity="error" sx={{ fontWeight: 500 }}>
-            <AlertTitle sx={{ fontWeight: 700 }}>
+          <Alert variant="outlined" severity="error">
+            <AlertTitle>
               {formatMessage('profileSettings.deleteMyAccount')}
             </AlertTitle>
 
