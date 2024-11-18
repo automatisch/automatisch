@@ -34,7 +34,6 @@ cd $CURRENT_DIR
 
 echo "Installing and linking dependencies..."
 yarn
-yarn lerna bootstrap
 
 echo "Migrating database..."
 cd packages/backend

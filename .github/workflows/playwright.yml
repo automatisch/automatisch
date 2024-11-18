@@ -59,7 +59,7 @@ jobs:
         with:
           node-version: 18
       - name: Install dependencies
-        run: yarn && yarn lerna bootstrap
+        run: yarn
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
       - name: Build Automatisch web

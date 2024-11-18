@@ -38,7 +38,7 @@ jobs:
           cache-dependency-path: yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - run: yarn --frozen-lockfile && yarn lerna bootstrap
+      - run: yarn --frozen-lockfile
       - run: cd packages/backend && yarn start
         env:
           ENCRYPTION_KEY: sample_encryption_key
@@ -58,7 +58,7 @@ jobs:
           cache-dependency-path: yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - run: yarn --frozen-lockfile && yarn lerna bootstrap
+      - run: yarn --frozen-lockfile
       - run: cd packages/backend && yarn start:worker
         env:
           ENCRYPTION_KEY: sample_encryption_key
@@ -78,7 +78,7 @@ jobs:
           cache-dependency-path: yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - run: yarn --frozen-lockfile && yarn lerna bootstrap
+      - run: yarn --frozen-lockfile
       - run: cd packages/web && yarn build
         env:
           CI: false

@@ -1,13 +1,11 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "0.10.0",
+  "packages": ["packages/*"],
+  "version": "0.14.0",
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "command": {
     "add": {
       "exact": true
     }
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
