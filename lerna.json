@@ -1,5 +1,10 @@
 {
-  "packages": ["packages/*"],
+  "packages": [
+    "packages/backend",
+    "packages/docs",
+    "packages/web",
+    "packages/e2e-tests"
+  ],
   "version": "0.14.0",
   "npmClient": "yarn",
   "command": {
