@@ -11,9 +11,11 @@ WORKDIR /automatisch
 # copy the app, note .dockerignore
 COPY . /automatisch
 
-RUN yarn
+RUN cd packages/web && yarn
 
 RUN cd packages/web && yarn build
+
+RUN cd packages/backend && yarn --production
 
 RUN \
   rm -rf /usr/local/share/.cache/ && \
