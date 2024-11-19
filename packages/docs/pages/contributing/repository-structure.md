@@ -1,6 +1,6 @@
 # Repository Structure
 
-We use `lerna` with `yarn workspaces` to manage the mono repository. We have the following packages:
+We manage a monorepo structure with the following packages:
 
 ```
 .
@@ -15,3 +15,5 @@ We use `lerna` with `yarn workspaces` to manage the mono repository. We have the
 - `docs` - The docs package contains the documentation website.
 - `e2e-tests` - The e2e-tests package contains the end-to-end tests for the internal usage.
 - `web` - The web package contains the frontend application of Automatisch.
+
+Each package is independently managed, and has its own package.json file to manage dependencies. This allows for better isolation and flexibility.
