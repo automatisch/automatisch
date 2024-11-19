@@ -58,13 +58,21 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies
+      - name: Install web dependencies
         run: yarn
+        working-directory: ./packages/web
+      - name: Install backend dependencies
+        run: yarn
+        working-directory: ./packages/backend
+      - name: Install e2e-tests dependencies
+        run: yarn
+        working-directory: ./packages/e2e-tests
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
+        working-directory: ./packages/e2e-tests
       - name: Build Automatisch web
-        working-directory: ./packages/web
         run: yarn build
+        working-directory: ./packages/web
         env:
           # Keep this until we clean up warnings in build processes
           CI: false
