@@ -29,6 +29,7 @@
     "@playwright/test": "^1.45.1"
   },
   "dependencies": {
+    "axios": "^1.6.0",
     "dotenv": "^16.3.1",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.3.0",
