@@ -28,6 +28,7 @@ import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
 import { createSubscription } from '../../test/factories/subscription.js';
 import { createUsageData } from '../../test/factories/usage-data.js';
+import Billing from '../helpers/billing/index.ee.js';
 
 describe('User model', () => {
   it('tableName should return correct name', () => {
@@ -1103,6 +1104,28 @@ describe('User model', () => {
       const user = await createUser();
 
       expect(() => user.getPlanAndUsage()).rejects.toThrow('NotFoundError');
+    });
+  });
+
+  describe('getInvoices', () => {
+    it('should return invoices for the current subscription', async () => {
+      const user = await createUser();
+      const subscription = await createSubscription({ userId: user.id });
+
+      const getInvoicesSpy = vi
+        .spyOn(Billing.paddleClient, 'getInvoices')
+        .mockResolvedValue('dummy-invoices');
+
+      expect(await user.getInvoices()).toBe('dummy-invoices');
+      expect(getInvoicesSpy).toHaveBeenCalledWith(
+        Number(subscription.paddleSubscriptionId)
+      );
+    });
+
+    it('should return empty array without any subscriptions', async () => {
+      const user = await createUser();
+
+      expect(await user.getInvoices()).toStrictEqual([]);
     });
   });
 });
