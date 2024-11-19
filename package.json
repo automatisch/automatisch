@@ -4,20 +4,9 @@
   "private": true,
   "scripts": {
     "start": "lerna run --stream --parallel --scope=@*/{web,backend} dev",
-    "start:web": "lerna run --stream --scope=@*/web dev",
-    "start:backend": "lerna run --stream --scope=@*/backend dev",
+    "start:web": "cd packages/web && yarn dev",
+    "start:backend": "cd packages/backend && yarn dev",
     "build:docs": "cd ./packages/docs && yarn install && yarn build"
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ],
-    "nohoist": [
-      "**/babel-loader",
-      "**/webpack",
-      "**/@automatisch/web",
-      "**/ajv"
-    ]
   },
   "devDependencies": {
     "eslint": "^8.13.0",
