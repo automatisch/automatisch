@@ -8,13 +8,6 @@
     "start:backend": "cd packages/backend && yarn dev",
     "build:docs": "cd ./packages/docs && yarn install && yarn build"
   },
-  "devDependencies": {
-    "eslint": "^8.13.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "lerna": "^8.0.0",
-    "prettier": "^2.5.1"
-  },
   "publishConfig": {
     "access": "public"
   }
