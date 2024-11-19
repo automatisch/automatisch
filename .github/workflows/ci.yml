@@ -57,11 +57,13 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: packages/backend/yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - run: yarn --frozen-lockfile
-      - run: cd packages/backend && yarn start:worker
+        working-directory: packages/backend
+      - run: yarn start:worker
+        working-directory: packages/backend
         env:
           ENCRYPTION_KEY: sample_encryption_key
           WEBHOOK_SECRET_KEY: sample_webhook_secret_key
