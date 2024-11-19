@@ -18,12 +18,13 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: packages/backend/yarn.lock
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - run: cd packages/backend
       - run: yarn --frozen-lockfile
+        working-directory: packages/backend
       - run: yarn lint
+        working-directory: packages/backend
       - run: echo "🍏 This job's status is ${{ job.status }}."
   start-backend-server:
     runs-on: ubuntu-latest
