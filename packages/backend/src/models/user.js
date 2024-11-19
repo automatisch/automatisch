@@ -212,6 +212,10 @@ class User extends Base {
     return `${appConfig.webAppUrl}/accept-invitation?token=${this.invitationToken}`;
   }
 
+  get ability() {
+    return userAbility(this);
+  }
+
   static async authenticate(email, password) {
     const user = await User.query().findOne({
       email: email?.toLowerCase() || null,
@@ -583,6 +587,21 @@ class User extends Base {
     return user;
   }
 
+  can(action, subject) {
+    const can = this.ability.can(action, subject);
+
+    if (!can) throw new NotAuthorizedError('The user is not authorized!');
+
+    const relevantRule = this.ability.relevantRuleFor(action, subject);
+
+    const conditions = relevantRule?.conditions || [];
+    const conditionMap = Object.fromEntries(
+      conditions.map((condition) => [condition, true])
+    );
+
+    return conditionMap;
+  }
+
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
 
@@ -633,33 +652,6 @@ class User extends Base {
     }
 
     return this;
-  }
-
-  get ability() {
-    return userAbility(this);
-  }
-
-  can(action, subject) {
-    const can = this.ability.can(action, subject);
-
-    if (!can) throw new NotAuthorizedError('The user is not authorized!');
-
-    const relevantRule = this.ability.relevantRuleFor(action, subject);
-
-    const conditions = relevantRule?.conditions || [];
-    const conditionMap = Object.fromEntries(
-      conditions.map((condition) => [condition, true])
-    );
-
-    return conditionMap;
-  }
-
-  cannot(action, subject) {
-    const cannot = this.ability.cannot(action, subject);
-
-    if (cannot) throw new NotAuthorizedError();
-
-    return cannot;
   }
 }
 

@@ -20,6 +20,7 @@ import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
 } from '../helpers/remove-job-configuration.js';
+import * as userAbilityModule from '../helpers/user-ability.js';
 import { createUser } from '../../test/factories/user.js';
 import { createConnection } from '../../test/factories/connection.js';
 import { createRole } from '../../test/factories/role.js';
@@ -216,6 +217,18 @@ describe('User model', () => {
     expect(user.acceptInvitationUrl).toBe(
       'https://automatisch.io/accept-invitation?token=invitation-token'
     );
+  });
+
+  it('ability should return userAbility for the user', () => {
+    const user = new User();
+    user.fullName = 'Sample user';
+
+    const userAbilitySpy = vi
+      .spyOn(userAbilityModule, 'default')
+      .mockReturnValue('user-ability');
+
+    expect(user.ability).toStrictEqual('user-ability');
+    expect(userAbilitySpy).toHaveBeenNthCalledWith(1, user);
   });
 
   describe('authenticate', () => {
@@ -1182,6 +1195,53 @@ describe('User model', () => {
           password: 'sample-password',
         })
       ).rejects.toThrowError('NotFoundError');
+    });
+  });
+
+  describe('can', () => {
+    it('should return conditions for the given action and subject of the user', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Connection',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(userWithRoleAndPermissions.can('read', 'Flow')).toStrictEqual({
+        isCreator: true,
+      });
+
+      expect(
+        userWithRoleAndPermissions.can('read', 'Connection')
+      ).toStrictEqual({});
+    });
+
+    it('should return not authorized error when the user is not permitted for the given action and subject', async () => {
+      const userRole = await createRole({ name: 'User' });
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(() => userWithRoleAndPermissions.can('read', 'Flow')).toThrowError(
+        'The user is not authorized!'
+      );
     });
   });
 });
