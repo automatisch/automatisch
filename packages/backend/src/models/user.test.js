@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { DateTime, Duration } from 'luxon';
 import appConfig from '../config/app.js';
+import * as licenseModule from '../helpers/license.ee.js';
 import Base from './base.js';
 import AccessToken from './access-token.js';
 import Config from './config.js';
@@ -1351,5 +1352,182 @@ describe('User model', () => {
       expect(user.password).not.toBe('new-password');
       expect(await user.login('new-password')).toBe(true);
     });
+  });
+
+  describe('createUsageData', () => {
+    it('should create usage data if Automatisch is a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
+
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      const usageData = await user.createUsageData();
+      const currentUsageData = await user.$relatedQuery('currentUsageData');
+
+      expect(usageData).toStrictEqual(currentUsageData);
+    });
+
+    it('should not create usage data if Automatisch is not a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      const usageData = await user.createUsageData();
+
+      expect(usageData).toBe(undefined);
+    });
+  });
+
+  describe('omitEnterprisePermissionsWithoutValidLicense', () => {
+    it('should return user as-is with valid license', async () => {
+      const userRole = await createRole({ name: 'User' });
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        roleId: userRole.id,
+      });
+
+      const readFlowPermission = await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'App',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Role',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Config',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'SamlAuthProvider',
+        action: 'read',
+        conditions: [],
+      });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(userWithRoleAndPermissions.permissions).toStrictEqual([
+        readFlowPermission,
+      ]);
+    });
+
+    it('should omit enterprise permissions without valid license', async () => {
+      vi.spyOn(licenseModule, 'hasValidLicense').mockResolvedValue(false);
+
+      const userRole = await createRole({ name: 'User' });
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        roleId: userRole.id,
+      });
+
+      const readFlowPermission = await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'App',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Role',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Config',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'SamlAuthProvider',
+        action: 'read',
+        conditions: [],
+      });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(userWithRoleAndPermissions.permissions).toStrictEqual([
+        readFlowPermission,
+      ]);
+    });
+  });
+
+  describe('$afterInsert', () => {
+    it('should call super.$afterInsert', async () => {
+      const superAfterInsertSpy = vi.spyOn(User.prototype, '$afterInsert');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(superAfterInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call createUsageData', async () => {
+      const createUsageDataSpy = vi.spyOn(User.prototype, 'createUsageData');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(createUsageDataSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  it('$afterFind should invoke omitEnterprisePermissionsWithoutValidLicense method', async () => {
+    const omitEnterprisePermissionsWithoutValidLicenseSpy = vi.spyOn(
+      User.prototype,
+      'omitEnterprisePermissionsWithoutValidLicense'
+    );
+
+    await createUser({
+      fullName: 'Sample user',
+      email: 'user@automatisch.io',
+    });
+
+    expect(
+      omitEnterprisePermissionsWithoutValidLicenseSpy
+    ).toHaveBeenCalledOnce();
   });
 });
