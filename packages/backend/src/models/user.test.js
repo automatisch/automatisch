@@ -1244,4 +1244,112 @@ describe('User model', () => {
       );
     });
   });
+
+  it('lowercaseEmail should lowercase the user email', () => {
+    const user = new User();
+    user.email = 'USER@AUTOMATISCH.IO';
+
+    user.lowercaseEmail();
+
+    expect(user.email).toBe('user@automatisch.io');
+  });
+
+  describe('$beforeInsert', () => {
+    it('should call super.$beforeInsert', async () => {
+      const superBeforeInsertSpy = vi
+        .spyOn(User.prototype, '$beforeInsert')
+        .mockResolvedValue();
+
+      await createUser();
+
+      expect(superBeforeInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should lowercase the user email', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'USER@AUTOMATISCH.IO',
+      });
+
+      expect(user.email).toBe('user@automatisch.io');
+    });
+
+    it('should generate password hash', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      expect(user.password).not.toBe('sample-password');
+      expect(await user.login('sample-password')).toBe(true);
+    });
+
+    it('should start trial period if Automatisch is a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
+
+      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(startTrialPeriodSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should not start trial period if Automatisch is not a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+
+      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(startTrialPeriodSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('$beforeUpdate', () => {
+    it('should call super.$beforeUpdate', async () => {
+      const superBeforeUpdateSpy = vi
+        .spyOn(User.prototype, '$beforeUpdate')
+        .mockResolvedValue();
+
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      await user.$query().patch({ fullName: 'Updated user name' });
+
+      expect(superBeforeUpdateSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should lowercase the user email if given', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      await user.$query().patchAndFetch({ email: 'NEW_EMAIL@AUTOMATISCH.IO' });
+
+      expect(user.email).toBe('new_email@automatisch.io');
+    });
+
+    it('should generate password hash', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      await user.$query().patchAndFetch({ password: 'new-password' });
+
+      expect(user.password).not.toBe('new-password');
+      expect(await user.login('new-password')).toBe(true);
+    });
+  });
 });
