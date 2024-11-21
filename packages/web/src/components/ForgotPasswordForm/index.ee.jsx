@@ -12,20 +12,17 @@ import useFormatMessage from 'hooks/useFormatMessage';
 export default function ForgotPasswordForm() {
   const formatMessage = useFormatMessage();
   const {
-    mutateAsync: forgotPassword,
+    mutate: forgotPassword,
     isPending: loading,
     isSuccess,
     isError,
     error,
   } = useForgotPassword();
 
-  const handleSubmit = async (values) => {
-    const { email } = values;
-    try {
-      await forgotPassword({
-        email,
-      });
-    } catch {}
+  const handleSubmit = ({ email }) => {
+    forgotPassword({
+      email,
+    });
   };
 
   return (
