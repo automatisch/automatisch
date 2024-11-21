@@ -856,4 +856,23 @@ describe('User model', () => {
       expect(user.password).toBe(undefined);
     });
   });
+
+  it('startTrialPeriod should assign trialExpiryDate 30 days from now', () => {
+    vi.useFakeTimers();
+
+    const date = DateTime.fromObject(
+      { year: 2024, month: 11, day: 14, hour: 16 },
+      { zone: 'UTC+0' }
+    );
+
+    vi.setSystemTime(date);
+
+    const user = new User();
+
+    user.startTrialPeriod();
+
+    expect(user.trialExpiryDate).toBe('2024-12-14');
+
+    vi.useRealTimers();
+  });
 });

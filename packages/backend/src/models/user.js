@@ -407,7 +407,7 @@ class User extends Base {
     }
   }
 
-  async startTrialPeriod() {
+  startTrialPeriod() {
     this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
   }
 
@@ -590,7 +590,7 @@ class User extends Base {
     await this.generateHash();
 
     if (appConfig.isCloud) {
-      await this.startTrialPeriod();
+      this.startTrialPeriod();
     }
   }
 
