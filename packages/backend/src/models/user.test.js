@@ -797,7 +797,11 @@ describe('User model', () => {
     it('should return truen when invitationTokenSentAt is within the next four hours', async () => {
       vi.useFakeTimers();
 
-      const date = new Date(2024, 10, 14, 14, 30, 0, 0);
+      const date = DateTime.fromObject(
+        { year: 2024, month: 11, day: 14, hour: 14, minute: 30 },
+        { zone: 'UTC+0' }
+      );
+
       vi.setSystemTime(date);
 
       const user = new User();
@@ -817,7 +821,11 @@ describe('User model', () => {
     it('should return false when invitationTokenSentAt is older than seventy two hours', async () => {
       vi.useFakeTimers();
 
-      const date = new Date(2024, 10, 14, 14, 30, 0, 0);
+      const date = DateTime.fromObject(
+        { year: 2024, month: 11, day: 14, hour: 14, minute: 30 },
+        { zone: 'UTC+0' }
+      );
+
       vi.setSystemTime(date);
 
       const user = new User();
