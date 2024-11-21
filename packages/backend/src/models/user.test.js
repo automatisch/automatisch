@@ -747,7 +747,11 @@ describe('User model', () => {
   it('sendInvitationEmail should generate invitation token and queue to send invitation email', async () => {
     vi.useFakeTimers();
 
-    const date = new Date(2024, 10, 12, 17, 10, 0, 0);
+    const date = DateTime.fromObject(
+      { year: 2024, month: 11, day: 12, hour: 17, minute: 10 },
+      { zone: 'UTC+0' }
+    );
+
     vi.setSystemTime(date);
 
     const user = await createUser();
