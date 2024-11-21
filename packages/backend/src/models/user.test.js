@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { Duration } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import appConfig from '../config/app.js';
 import Base from './base.js';
 import AccessToken from './access-token.js';
@@ -699,12 +699,16 @@ describe('User model', () => {
 
     vi.useRealTimers();
   });
-  
+
   describe('isResetPasswordTokenValid', () => {
     it('should return true when resetPasswordTokenSentAt is within the next four hours', async () => {
       vi.useFakeTimers();
 
-      const date = new Date(2024, 10, 12, 16, 30, 0, 0);
+      const date = DateTime.fromObject(
+        { year: 2024, month: 11, day: 12, hour: 16, minute: 30 },
+        { zone: 'UTC+0' }
+      );
+
       vi.setSystemTime(date);
 
       const user = new User();
@@ -724,7 +728,11 @@ describe('User model', () => {
     it('should return false when resetPasswordTokenSentAt is older than four hours', async () => {
       vi.useFakeTimers();
 
-      const date = new Date(2024, 10, 12, 16, 30, 0, 0);
+      const date = DateTime.fromObject(
+        { year: 2024, month: 11, day: 12, hour: 16, minute: 30 },
+        { zone: 'UTC+0' }
+      );
+
       vi.setSystemTime(date);
 
       const user = new User();
