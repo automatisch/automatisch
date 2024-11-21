@@ -41,8 +41,11 @@ jobs:
         with:
           node-version: 18
       - name: Install dependencies
-        run: cd packages/backend && yarn
+        run: yarn
+        working-directory: packages/backend
       - name: Copy .env-example.test file to .env.test
-        run: cd packages/backend && cp .env-example.test .env.test
+        run: cp .env-example.test .env.test
+        working-directory: packages/backend
       - name: Run tests
-        run: cd packages/backend && yarn test
+        run: yarn test
+        working-directory: packages/backend
