@@ -860,7 +860,11 @@ describe('User model', () => {
   it('startTrialPeriod should assign trialExpiryDate 30 days from now', () => {
     vi.useFakeTimers();
 
-    const date = new Date(2024, 10, 14, 16, 0, 0, 0);
+    const date = DateTime.fromObject(
+      { year: 2024, month: 11, day: 14, hour: 16 },
+      { zone: 'UTC+0' }
+    );
+
     vi.setSystemTime(date);
 
     const user = new User();
