@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import useAuthentication from 'hooks/useAuthentication';
@@ -11,7 +12,6 @@ import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCreateAccessToken from 'hooks/useCreateAccessToken';
-import { Alert } from '@mui/material';
 
 function LoginForm() {
   const isCloud = useCloud();
@@ -45,7 +45,7 @@ function LoginForm() {
 
   const renderError = () => {
     const errors = error?.response?.data?.errors?.general || [
-      formatMessage('loginForm.error'),
+      error?.message || formatMessage('loginForm.error'),
     ];
 
     return errors.map((error) => (
