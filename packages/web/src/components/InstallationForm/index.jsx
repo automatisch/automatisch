@@ -2,14 +2,18 @@ import * as React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Alert } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { enqueueSnackbar } from 'notistack';
 import { useQueryClient } from '@tanstack/react-query';
 import Link from '@mui/material/Link';
 
+import {
+  fieldHasError,
+  getFieldErrorMessage,
+  getGeneralErrorMessage,
+} from 'helpers/errors';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useInstallation from 'hooks/useInstallation';
 import * as URLS from 'config/urls';
@@ -23,7 +27,10 @@ const validationSchema = yup.object().shape({
     .trim()
     .email('installationForm.validateEmail')
     .required('installationForm.mandatoryInput'),
-  password: yup.string().required('installationForm.mandatoryInput'),
+  password: yup
+    .string()
+    .min(6, 'installationForm.passwordMinLength')
+    .required('installationForm.mandatoryInput'),
   confirmPassword: yup
     .string()
     .required('installationForm.mandatoryInput')
@@ -39,7 +46,12 @@ const initialValues = {
 
 function InstallationForm() {
   const formatMessage = useFormatMessage();
-  const install = useInstallation();
+  const {
+    mutate: install,
+    isSuccess,
+    isPending,
+    error: installationError,
+  } = useInstallation();
   const queryClient = useQueryClient();
 
   const handleOnRedirect = () => {
@@ -48,20 +60,49 @@ function InstallationForm() {
     });
   };
 
-  const handleSubmit = async (values) => {
-    const { fullName, email, password } = values;
-    try {
-      await install.mutateAsync({
-        fullName,
-        email,
-        password,
+  const handleSubmit = ({ fullName, email, password }) => {
+    install({
+      fullName,
+      email,
+      password,
+    });
+  };
+
+  const getInputErrorMessage = ({
+    fieldName,
+    fieldTranslationId,
+    formErrors,
+    touchedFields,
+  }) => {
+    const installationErrorMessage = getFieldErrorMessage({
+      fieldName,
+      error: installationError,
+    });
+
+    const formErrorMessage = formErrors?.[fieldName]?.message;
+
+    if (installationErrorMessage) {
+      return installationErrorMessage;
+    } else if (touchedFields?.[fieldName] && formErrorMessage) {
+      return formatMessage(formErrorMessage, {
+        inputName: formatMessage(fieldTranslationId),
       });
-    } catch (error) {
-      enqueueSnackbar(
-        error?.message || formatMessage('installationForm.error'),
-        {
-          variant: 'error',
-        },
+    }
+
+    return '';
+  };
+
+  const renderGeneralErrorAlert = () => {
+    const errorMessage = getGeneralErrorMessage({
+      error: installationError,
+      fallbackMessage: formatMessage('installationForm.error'),
+    });
+
+    if (errorMessage) {
+      return (
+        <Alert data-test="error-alert" severity="error" sx={{ mt: 2 }}>
+          {errorMessage}
+        </Alert>
       );
     }
   };
@@ -82,6 +123,7 @@ function InstallationForm() {
         {formatMessage('installationForm.title')}
       </Typography>
       <Form
+        noValidate
         defaultValues={initialValues}
         onSubmit={handleSubmit}
         resolver={yupResolver(validationSchema)}
@@ -95,18 +137,21 @@ function InstallationForm() {
               margin="dense"
               autoComplete="fullName"
               data-test="fullName-text-field"
-              error={touchedFields.fullName && !!errors?.fullName}
-              helperText={
-                touchedFields.fullName && errors?.fullName?.message
-                  ? formatMessage(errors?.fullName?.message, {
-                      inputName: formatMessage(
-                        'installationForm.fullNameFieldLabel',
-                      ),
-                    })
-                  : ''
+              error={
+                fieldHasError({
+                  error: installationError,
+                  fieldName: 'fullName',
+                }) ||
+                (touchedFields.fullName && !!errors?.fullName)
               }
+              helperText={getInputErrorMessage({
+                fieldName: 'fullName',
+                fieldTranslationId: 'installationForm.fullNameFieldLabel',
+                formErrors: errors,
+                touchedFields,
+              })}
               required
-              readOnly={install.isSuccess}
+              readOnly={isSuccess}
             />
             <TextField
               label={formatMessage('installationForm.emailFieldLabel')}
@@ -115,18 +160,21 @@ function InstallationForm() {
               margin="dense"
               autoComplete="email"
               data-test="email-text-field"
-              error={touchedFields.email && !!errors?.email}
-              helperText={
-                touchedFields.email && errors?.email?.message
-                  ? formatMessage(errors?.email?.message, {
-                      inputName: formatMessage(
-                        'installationForm.emailFieldLabel',
-                      ),
-                    })
-                  : ''
+              error={
+                fieldHasError({
+                  error: installationError,
+                  fieldName: 'email',
+                }) ||
+                (touchedFields.email && !!errors?.email)
               }
+              helperText={getInputErrorMessage({
+                fieldName: 'email',
+                fieldTranslationId: 'installationForm.emailFieldLabel',
+                formErrors: errors,
+                touchedFields,
+              })}
               required
-              readOnly={install.isSuccess}
+              readOnly={isSuccess}
             />
             <TextField
               label={formatMessage('installationForm.passwordFieldLabel')}
@@ -135,18 +183,21 @@ function InstallationForm() {
               margin="dense"
               type="password"
               data-test="password-text-field"
-              error={touchedFields.password && !!errors?.password}
-              helperText={
-                touchedFields.password && errors?.password?.message
-                  ? formatMessage(errors?.password?.message, {
-                      inputName: formatMessage(
-                        'installationForm.passwordFieldLabel',
-                      ),
-                    })
-                  : ''
+              error={
+                fieldHasError({
+                  error: installationError,
+                  fieldName: 'password',
+                }) ||
+                (touchedFields.password && !!errors?.password)
               }
+              helperText={getInputErrorMessage({
+                fieldName: 'password',
+                fieldTranslationId: 'installationForm.passwordFieldLabel',
+                formErrors: errors,
+                touchedFields,
+              })}
               required
-              readOnly={install.isSuccess}
+              readOnly={isSuccess}
             />
             <TextField
               label={formatMessage(
@@ -158,27 +209,44 @@ function InstallationForm() {
               type="password"
               data-test="repeat-password-text-field"
               error={touchedFields.confirmPassword && !!errors?.confirmPassword}
-              helperText={
-                touchedFields.confirmPassword &&
-                errors?.confirmPassword?.message
-                  ? formatMessage(errors?.confirmPassword?.message, {
-                      inputName: formatMessage(
-                        'installationForm.confirmPasswordFieldLabel',
-                      ),
-                    })
-                  : ''
-              }
+              helperText={getInputErrorMessage({
+                fieldName: 'confirmPassword',
+                fieldTranslationId:
+                  'installationForm.confirmPasswordFieldLabel',
+                formErrors: errors,
+                touchedFields,
+              })}
               required
-              readOnly={install.isSuccess}
+              readOnly={isSuccess}
             />
-
+            {renderGeneralErrorAlert()}
+            {isSuccess && (
+              <Alert
+                data-test="success-alert"
+                severity="success"
+                sx={{ mt: 2 }}
+              >
+                {formatMessage('installationForm.success', {
+                  link: (str) => (
+                    <Link
+                      component={RouterLink}
+                      to={URLS.LOGIN}
+                      onClick={handleOnRedirect}
+                      replace
+                    >
+                      {str}
+                    </Link>
+                  ),
+                })}
+              </Alert>
+            )}
             <LoadingButton
               type="submit"
               variant="contained"
               color="primary"
-              sx={{ boxShadow: 2, mt: 3 }}
-              loading={install.isPending}
-              disabled={install.isSuccess}
+              sx={{ boxShadow: 2, mt: 2 }}
+              loading={isPending}
+              disabled={isSuccess}
               fullWidth
               data-test="signUp-button"
             >
@@ -187,22 +255,6 @@ function InstallationForm() {
           </>
         )}
       />
-      {install.isSuccess && (
-        <Alert data-test="success-alert" severity="success" sx={{ mt: 3 }}>
-          {formatMessage('installationForm.success', {
-            link: (str) => (
-              <Link
-                component={RouterLink}
-                to={URLS.LOGIN}
-                onClick={handleOnRedirect}
-                replace
-              >
-                {str}
-              </Link>
-            ),
-          })}
-        </Alert>
-      )}
     </Paper>
   );
 }

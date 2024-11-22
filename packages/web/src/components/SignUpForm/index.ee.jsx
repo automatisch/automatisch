@@ -3,16 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Alert from '@mui/material/Alert';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import {
+  fieldHasError,
+  getFieldErrorMessage,
+  getGeneralErrorMessage,
+} from 'helpers/errors';
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCreateAccessToken from 'hooks/useCreateAccessToken';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useRegisterUser from 'hooks/useRegisterUser';
 
 const validationSchema = yup.object().shape({
@@ -22,7 +27,10 @@ const validationSchema = yup.object().shape({
     .trim()
     .email('signupForm.validateEmail')
     .required('signupForm.mandatoryInput'),
-  password: yup.string().required('signupForm.mandatoryInput'),
+  password: yup
+    .string()
+    .min(6, 'signupForm.passwordMinLength')
+    .required('signupForm.mandatoryInput'),
   confirmPassword: yup
     .string()
     .required('signupForm.mandatoryInput')
@@ -40,11 +48,16 @@ function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
   const formatMessage = useFormatMessage();
-  const enqueueSnackbar = useEnqueueSnackbar();
-  const { mutateAsync: registerUser, isPending: isRegisterUserPending } =
-    useRegisterUser();
-  const { mutateAsync: createAccessToken, isPending: loginLoading } =
-    useCreateAccessToken();
+  const {
+    mutateAsync: registerUser,
+    isPending: isRegisterUserPending,
+    error: registerUserError,
+  } = useRegisterUser();
+  const {
+    mutateAsync: createAccessToken,
+    isPending: loginLoading,
+    error: createAccessTokenError,
+  } = useCreateAccessToken();
 
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
@@ -66,28 +79,45 @@ function SignUpForm() {
       });
       const { token } = data;
       authentication.updateToken(token);
-    } catch (error) {
-      const errors = error?.response?.data?.errors
-        ? Object.values(error.response.data.errors)
-        : [];
+    } catch {}
+  };
 
-      if (errors.length) {
-        for (const [error] of errors) {
-          enqueueSnackbar(error, {
-            variant: 'error',
-            SnackbarProps: {
-              'data-test': 'snackbar-sign-up-error',
-            },
-          });
-        }
-      } else {
-        enqueueSnackbar(error?.message || formatMessage('signupForm.error'), {
-          variant: 'error',
-          SnackbarProps: {
-            'data-test': 'snackbar-sign-up-error',
-          },
-        });
-      }
+  const getInputErrorMessage = ({
+    fieldName,
+    fieldTranslationId,
+    formErrors,
+    touchedFields,
+  }) => {
+    const registerUserErrorMessage = getFieldErrorMessage({
+      fieldName,
+      error: registerUserError,
+    });
+
+    const formErrorMessage = formErrors?.[fieldName]?.message;
+
+    if (registerUserErrorMessage) {
+      return registerUserErrorMessage;
+    } else if (touchedFields[fieldName] && formErrorMessage) {
+      return formatMessage(formErrorMessage, {
+        inputName: formatMessage(fieldTranslationId),
+      });
+    }
+
+    return '';
+  };
+
+  const renderGeneralErrorAlert = (error) => {
+    const errorMessage = getGeneralErrorMessage({
+      error,
+      fallbackMessage: formatMessage('signupForm.error'),
+    });
+
+    if (errorMessage) {
+      return (
+        <Alert data-test="alert-sign-up-error" severity="error" sx={{ mt: 2 }}>
+          {errorMessage}
+        </Alert>
+      );
     }
   };
 
@@ -108,6 +138,7 @@ function SignUpForm() {
       </Typography>
 
       <Form
+        noValidate
         defaultValues={initialValues}
         onSubmit={handleSubmit}
         resolver={yupResolver(validationSchema)}
@@ -121,14 +152,20 @@ function SignUpForm() {
               margin="dense"
               autoComplete="fullName"
               data-test="fullName-text-field"
-              error={touchedFields.fullName && !!errors?.fullName}
-              helperText={
-                touchedFields.fullName && errors?.fullName?.message
-                  ? formatMessage(errors?.fullName?.message, {
-                      inputName: formatMessage('signupForm.fullNameFieldLabel'),
-                    })
-                  : ''
+              error={
+                fieldHasError({
+                  error: registerUserError,
+                  fieldName: 'fullName',
+                }) ||
+                (touchedFields.fullName && !!errors?.fullName)
               }
+              helperText={getInputErrorMessage({
+                fieldName: 'fullName',
+                fieldTranslationId: 'signupForm.fullNameFieldLabel',
+                formErrors: errors,
+                touchedFields,
+              })}
+              required
             />
 
             <TextField
@@ -138,14 +175,20 @@ function SignUpForm() {
               margin="dense"
               autoComplete="email"
               data-test="email-text-field"
-              error={touchedFields.email && !!errors?.email}
-              helperText={
-                touchedFields.email && errors?.email?.message
-                  ? formatMessage(errors?.email?.message, {
-                      inputName: formatMessage('signupForm.emailFieldLabel'),
-                    })
-                  : ''
+              error={
+                fieldHasError({
+                  error: registerUserError,
+                  fieldName: 'email',
+                }) ||
+                (touchedFields.email && !!errors?.email)
               }
+              helperText={getInputErrorMessage({
+                fieldName: 'email',
+                fieldTranslationId: 'signupForm.emailFieldLabel',
+                formErrors: errors,
+                touchedFields,
+              })}
+              required
             />
 
             <TextField
@@ -154,14 +197,20 @@ function SignUpForm() {
               fullWidth
               margin="dense"
               type="password"
-              error={touchedFields.password && !!errors?.password}
-              helperText={
-                touchedFields.password && errors?.password?.message
-                  ? formatMessage(errors?.password?.message, {
-                      inputName: formatMessage('signupForm.passwordFieldLabel'),
-                    })
-                  : ''
+              error={
+                fieldHasError({
+                  error: registerUserError,
+                  fieldName: 'password',
+                }) ||
+                (touchedFields.password && !!errors?.password)
               }
+              helperText={getInputErrorMessage({
+                fieldName: 'password',
+                fieldTranslationId: 'signupForm.passwordFieldLabel',
+                formErrors: errors,
+                touchedFields,
+              })}
+              required
             />
 
             <TextField
@@ -181,7 +230,12 @@ function SignUpForm() {
                     })
                   : ''
               }
+              required
             />
+
+            {renderGeneralErrorAlert(registerUserError)}
+
+            {renderGeneralErrorAlert(createAccessTokenError)}
 
             <LoadingButton
               type="submit"
