@@ -875,4 +875,46 @@ describe('User model', () => {
 
     vi.useRealTimers();
   });
+
+  describe('isAllowedToRunFlows', () => {
+    it('should return true when Automatisch is self hosted', async () => {
+      const user = new User();
+
+      vi.spyOn(appConfig, 'isSelfHosted', 'get').mockReturnValue(true);
+
+      expect(await user.isAllowedToRunFlows()).toBe(true);
+    });
+
+    it('should return true when the user is in trial', async () => {
+      const user = new User();
+
+      vi.spyOn(user, 'inTrial').mockResolvedValue(true);
+
+      expect(await user.isAllowedToRunFlows()).toBe(true);
+    });
+
+    it('should return true when the user has active subscription and within quota limits', async () => {
+      const user = new User();
+
+      vi.spyOn(user, 'hasActiveSubscription').mockResolvedValue(true);
+      vi.spyOn(user, 'withinLimits').mockResolvedValue(true);
+
+      expect(await user.isAllowedToRunFlows()).toBe(true);
+    });
+
+    it('should return false when the user has active subscription over quota limits', async () => {
+      const user = new User();
+
+      vi.spyOn(user, 'hasActiveSubscription').mockResolvedValue(true);
+      vi.spyOn(user, 'withinLimits').mockResolvedValue(false);
+
+      expect(await user.isAllowedToRunFlows()).toBe(false);
+    });
+
+    it('should return false otherwise', async () => {
+      const user = new User();
+
+      expect(await user.isAllowedToRunFlows()).toBe(false);
+    });
+  });
 });
