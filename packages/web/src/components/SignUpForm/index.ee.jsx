@@ -3,33 +3,52 @@ import { useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Alert from '@mui/material/Alert';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { getGeneralErrorMessage } from 'helpers/errors';
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCreateAccessToken from 'hooks/useCreateAccessToken';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useRegisterUser from 'hooks/useRegisterUser';
 
-const validationSchema = yup.object().shape({
-  fullName: yup.string().trim().required('signupForm.mandatoryInput'),
-  email: yup
-    .string()
-    .trim()
-    .email('signupForm.validateEmail')
-    .required('signupForm.mandatoryInput'),
-  password: yup.string().required('signupForm.mandatoryInput'),
-  confirmPassword: yup
-    .string()
-    .required('signupForm.mandatoryInput')
-    .oneOf([yup.ref('password')], 'signupForm.passwordsMustMatch'),
-});
+const getValidationSchema = (formatMessage) => {
+  const getMandatoryInputMessage = (inputNameId) =>
+    formatMessage('signupForm.mandatoryInput', {
+      inputName: formatMessage(inputNameId),
+    });
 
-const initialValues = {
+  return yup.object().shape({
+    fullName: yup
+      .string()
+      .trim()
+      .required(getMandatoryInputMessage('signupForm.fullNameFieldLabel')),
+    email: yup
+      .string()
+      .trim()
+      .required(getMandatoryInputMessage('signupForm.emailFieldLabel'))
+      .email(formatMessage('signupForm.validateEmail')),
+    password: yup
+      .string()
+      .required(getMandatoryInputMessage('signupForm.passwordFieldLabel'))
+      .min(6, formatMessage('signupForm.passwordMinLength')),
+    confirmPassword: yup
+      .string()
+      .required(
+        getMandatoryInputMessage('signupForm.confirmPasswordFieldLabel'),
+      )
+      .oneOf(
+        [yup.ref('password')],
+        formatMessage('signupForm.passwordsMustMatch'),
+      ),
+  });
+};
+
+const defaultValues = {
   fullName: '',
   email: '',
   password: '',
@@ -40,7 +59,6 @@ function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
   const formatMessage = useFormatMessage();
-  const enqueueSnackbar = useEnqueueSnackbar();
   const { mutateAsync: registerUser, isPending: isRegisterUserPending } =
     useRegisterUser();
   const { mutateAsync: createAccessToken, isPending: loginLoading } =
@@ -52,7 +70,7 @@ function SignUpForm() {
     }
   }, [authentication.isAuthenticated]);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, e, setError) => {
     try {
       const { fullName, email, password } = values;
       await registerUser({
@@ -67,25 +85,28 @@ function SignUpForm() {
       const { token } = data;
       authentication.updateToken(token);
     } catch (error) {
-      const errors = error?.response?.data?.errors
-        ? Object.values(error.response.data.errors)
-        : [];
+      const errors = error?.response?.data?.errors;
+      if (errors) {
+        const fieldNames = Object.keys(defaultValues);
+        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
+          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
+            setError(fieldName, {
+              type: 'fieldRequestError',
+              message: fieldErrors.join(', '),
+            });
+          }
+        });
+      }
 
-      if (errors.length) {
-        for (const [error] of errors) {
-          enqueueSnackbar(error, {
-            variant: 'error',
-            SnackbarProps: {
-              'data-test': 'snackbar-sign-up-error',
-            },
-          });
-        }
-      } else {
-        enqueueSnackbar(error?.message || formatMessage('signupForm.error'), {
-          variant: 'error',
-          SnackbarProps: {
-            'data-test': 'snackbar-sign-up-error',
-          },
+      const generalError = getGeneralErrorMessage({
+        error,
+        fallbackMessage: formatMessage('signupForm.error'),
+      });
+
+      if (generalError) {
+        setError('root.general', {
+          type: 'requestError',
+          message: generalError,
         });
       }
     }
@@ -108,11 +129,13 @@ function SignUpForm() {
       </Typography>
 
       <Form
-        defaultValues={initialValues}
+        automaticValidation={false}
+        noValidate
+        defaultValues={defaultValues}
         onSubmit={handleSubmit}
-        resolver={yupResolver(validationSchema)}
+        resolver={yupResolver(getValidationSchema(formatMessage))}
         mode="onChange"
-        render={({ formState: { errors, touchedFields } }) => (
+        render={({ formState: { errors } }) => (
           <>
             <TextField
               label={formatMessage('signupForm.fullNameFieldLabel')}
@@ -121,14 +144,9 @@ function SignUpForm() {
               margin="dense"
               autoComplete="fullName"
               data-test="fullName-text-field"
-              error={touchedFields.fullName && !!errors?.fullName}
-              helperText={
-                touchedFields.fullName && errors?.fullName?.message
-                  ? formatMessage(errors?.fullName?.message, {
-                      inputName: formatMessage('signupForm.fullNameFieldLabel'),
-                    })
-                  : ''
-              }
+              error={!!errors?.fullName}
+              helperText={errors?.fullName?.message}
+              required
             />
 
             <TextField
@@ -138,14 +156,9 @@ function SignUpForm() {
               margin="dense"
               autoComplete="email"
               data-test="email-text-field"
-              error={touchedFields.email && !!errors?.email}
-              helperText={
-                touchedFields.email && errors?.email?.message
-                  ? formatMessage(errors?.email?.message, {
-                      inputName: formatMessage('signupForm.emailFieldLabel'),
-                    })
-                  : ''
-              }
+              error={!!errors?.email}
+              helperText={errors?.email?.message}
+              required
             />
 
             <TextField
@@ -154,14 +167,9 @@ function SignUpForm() {
               fullWidth
               margin="dense"
               type="password"
-              error={touchedFields.password && !!errors?.password}
-              helperText={
-                touchedFields.password && errors?.password?.message
-                  ? formatMessage(errors?.password?.message, {
-                      inputName: formatMessage('signupForm.passwordFieldLabel'),
-                    })
-                  : ''
-              }
+              error={!!errors?.password}
+              helperText={errors?.password?.message}
+              required
             />
 
             <TextField
@@ -170,18 +178,20 @@ function SignUpForm() {
               fullWidth
               margin="dense"
               type="password"
-              error={touchedFields.confirmPassword && !!errors?.confirmPassword}
-              helperText={
-                touchedFields.confirmPassword &&
-                errors?.confirmPassword?.message
-                  ? formatMessage(errors?.confirmPassword?.message, {
-                      inputName: formatMessage(
-                        'signupForm.confirmPasswordFieldLabel',
-                      ),
-                    })
-                  : ''
-              }
+              error={!!errors?.confirmPassword}
+              helperText={errors?.confirmPassword?.message}
+              required
             />
+
+            {errors?.root?.general && (
+              <Alert
+                data-test="alert-sign-up-error"
+                severity="error"
+                sx={{ mt: 2 }}
+              >
+                {errors.root.general.message}
+              </Alert>
+            )}
 
             <LoadingButton
               type="submit"
