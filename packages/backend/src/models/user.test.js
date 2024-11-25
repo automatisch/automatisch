@@ -1154,4 +1154,34 @@ describe('User model', () => {
     expect(markInstallationCompletedSpy).toHaveBeenCalledOnce();
     expect(await adminUser.login('sample')).toBe(true);
   });
+
+  describe('registerUser', () => {
+    it('should register user with user role and given data', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      const user = await User.registerUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      expect(user).toMatchObject({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        roleId: userRole.id,
+      });
+
+      expect(await user.login('sample-password')).toBe(true);
+    });
+
+    it('should throw not found error when user role does not exist', async () => {
+      expect(() =>
+        User.registerUser({
+          fullName: 'Sample user',
+          email: 'user@automatisch.io',
+          password: 'sample-password',
+        })
+      ).rejects.toThrowError('NotFoundError');
+    });
+  });
 });
