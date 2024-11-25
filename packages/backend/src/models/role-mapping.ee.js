@@ -1,7 +1,7 @@
 import Base from './base.js';
 import SamlAuthProvider from './saml-auth-provider.ee.js';
 
-class SamlAuthProvidersRoleMapping extends Base {
+class RoleMapping extends Base {
   static tableName = 'role_mappings';
 
   static jsonSchema = {
@@ -28,4 +28,4 @@ class SamlAuthProvidersRoleMapping extends Base {
   });
 }
 
-export default SamlAuthProvidersRoleMapping;
+export default RoleMapping;

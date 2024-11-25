@@ -5,7 +5,7 @@ import appConfig from '../config/app.js';
 import axios from '../helpers/axios-with-proxy.js';
 import Base from './base.js';
 import Identity from './identity.ee.js';
-import SamlAuthProvidersRoleMapping from './saml-auth-providers-role-mapping.ee.js';
+import RoleMapping from './role-mapping.ee.js';
 
 class SamlAuthProvider extends Base {
   static tableName = 'saml_auth_providers';
@@ -53,9 +53,9 @@ class SamlAuthProvider extends Base {
         to: 'saml_auth_providers.id',
       },
     },
-    samlAuthProvidersRoleMappings: {
+    roleMappings: {
       relation: Base.HasManyRelation,
-      modelClass: SamlAuthProvidersRoleMapping,
+      modelClass: RoleMapping,
       join: {
         from: 'saml_auth_providers.id',
         to: 'role_mappings.saml_auth_provider_id',
@@ -134,25 +134,22 @@ class SamlAuthProvider extends Base {
 
   async updateRoleMappings(roleMappings) {
     return await SamlAuthProvider.transaction(async (trx) => {
-      await this.$relatedQuery('samlAuthProvidersRoleMappings', trx).delete();
+      await this.$relatedQuery('roleMappings', trx).delete();
 
       if (isEmpty(roleMappings)) {
         return [];
       }
 
-      const samlAuthProvidersRoleMappingsData = roleMappings.map(
-        (samlAuthProvidersRoleMapping) => ({
-          ...samlAuthProvidersRoleMapping,
-          samlAuthProviderId: this.id,
-        })
+      const roleMappingsData = roleMappings.map((roleMapping) => ({
+        ...roleMapping,
+        samlAuthProviderId: this.id,
+      }));
+
+      const newRoleMappings = await RoleMapping.query(trx).insertAndFetch(
+        roleMappingsData
       );
 
-      const samlAuthProvidersRoleMappings =
-        await SamlAuthProvidersRoleMapping.query(trx).insertAndFetch(
-          samlAuthProvidersRoleMappingsData
-        );
-
-      return samlAuthProvidersRoleMappings;
+      return newRoleMappings;
     });
   }
 }
