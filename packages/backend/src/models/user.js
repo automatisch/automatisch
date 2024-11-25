@@ -607,7 +607,35 @@ class User extends Base {
       this.email = this.email.toLowerCase();
     }
   }
-  g;
+
+  async createUsageData() {
+    if (appConfig.isCloud) {
+      return await this.$relatedQuery('usageData').insertAndFetch({
+        userId: this.id,
+        consumedTaskCount: 0,
+        nextResetAt: DateTime.now().plus({ days: 30 }).toISODate(),
+      });
+    }
+  }
+
+  async omitEnterprisePermissionsWithoutValidLicense() {
+    if (await hasValidLicense()) {
+      return this;
+    }
+
+    if (Array.isArray(this.permissions)) {
+      this.permissions = this.permissions.filter((permission) => {
+        const restrictedSubjects = [
+          'App',
+          'Role',
+          'SamlAuthProvider',
+          'Config',
+        ];
+
+        return !restrictedSubjects.includes(permission.subject);
+      });
+    }
+  }
 
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
@@ -631,32 +659,11 @@ class User extends Base {
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
 
-    if (appConfig.isCloud) {
-      await this.$relatedQuery('usageData').insert({
-        userId: this.id,
-        consumedTaskCount: 0,
-        nextResetAt: DateTime.now().plus({ days: 30 }).toISODate(),
-      });
-    }
+    await this.createUsageData();
   }
 
   async $afterFind() {
-    if (await hasValidLicense()) return this;
-
-    if (Array.isArray(this.permissions)) {
-      this.permissions = this.permissions.filter((permission) => {
-        const restrictedSubjects = [
-          'App',
-          'Role',
-          'SamlAuthProvider',
-          'Config',
-        ];
-
-        return !restrictedSubjects.includes(permission.subject);
-      });
-    }
-
-    return this;
+    await this.omitEnterprisePermissionsWithoutValidLicense();
   }
 }
 
