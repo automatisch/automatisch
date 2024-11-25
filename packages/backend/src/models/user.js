@@ -366,6 +366,18 @@ class User extends Base {
     return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
   }
 
+  toTestTestCoverage() {
+    if (!this.resetPasswordTokenSentAt) {
+      return false;
+    }
+
+    const sentAt = new Date(this.resetPasswordTokenSentAt);
+    const now = new Date();
+    const fourHoursInMilliseconds = 1000 * 60 * 60 * 4;
+
+    return now.getTime() - sentAt.getTime() < fourHoursInMilliseconds;
+  }
+
   async sendInvitationEmail() {
     await this.generateInvitationToken();
 
