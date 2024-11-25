@@ -31,7 +31,7 @@ describe('SamlAuthProvider model', () => {
         modelClass: SamlAuthProvidersRoleMapping,
         join: {
           from: 'saml_auth_providers.id',
-          to: 'saml_auth_providers_role_mappings.saml_auth_provider_id',
+          to: 'role_mappings.saml_auth_provider_id',
         },
       },
     };

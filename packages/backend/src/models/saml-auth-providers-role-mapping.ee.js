@@ -2,7 +2,7 @@ import Base from './base.js';
 import SamlAuthProvider from './saml-auth-provider.ee.js';
 
 class SamlAuthProvidersRoleMapping extends Base {
-  static tableName = 'saml_auth_providers_role_mappings';
+  static tableName = 'role_mappings';
 
   static jsonSchema = {
     type: 'object',
@@ -21,7 +21,7 @@ class SamlAuthProvidersRoleMapping extends Base {
       relation: Base.BelongsToOneRelation,
       modelClass: SamlAuthProvider,
       join: {
-        from: 'saml_auth_providers_role_mappings.saml_auth_provider_id',
+        from: 'role_mappings.saml_auth_provider_id',
         to: 'saml_auth_providers.id',
       },
     },

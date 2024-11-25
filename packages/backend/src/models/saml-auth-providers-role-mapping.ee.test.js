@@ -5,9 +5,7 @@ import Base from './base';
 
 describe('SamlAuthProvidersRoleMapping model', () => {
   it('tableName should return correct name', () => {
-    expect(SamlAuthProvidersRoleMapping.tableName).toBe(
-      'saml_auth_providers_role_mappings'
-    );
+    expect(SamlAuthProvidersRoleMapping.tableName).toBe('role_mappings');
   });
 
   it('jsonSchema should have the correct schema', () => {
@@ -22,7 +20,7 @@ describe('SamlAuthProvidersRoleMapping model', () => {
         relation: Base.BelongsToOneRelation,
         modelClass: SamlAuthProvider,
         join: {
-          from: 'saml_auth_providers_role_mappings.saml_auth_provider_id',
+          from: 'role_mappings.saml_auth_provider_id',
           to: 'saml_auth_providers.id',
         },
       },
