@@ -1,4 +1,5 @@
 import { vi, describe, it, expect } from 'vitest';
+import { v4 as uuidv4 } from 'uuid';
 import SamlAuthProvider from '../models/saml-auth-provider.ee';
 import RoleMapping from '../models/role-mapping.ee';
 import Identity from './identity.ee';
@@ -104,5 +105,42 @@ describe('SamlAuthProvider model', () => {
     };
 
     expect(samlAuthProvider.config).toStrictEqual(expectedConfig);
+  });
+
+  it('generateLogoutRequestBody should return a correctly encoded SAML logout request', () => {
+    vi.mock('uuid', () => ({
+      v4: vi.fn(),
+    }));
+
+    const samlAuthProvider = new SamlAuthProvider();
+
+    samlAuthProvider.entryPoint = 'https://example.com/saml';
+    samlAuthProvider.issuer = 'sample-issuer';
+
+    const mockUuid = '123e4567-e89b-12d3-a456-426614174000';
+    uuidv4.mockReturnValue(mockUuid);
+
+    const sessionId = 'test-session-id';
+
+    const logoutRequest = samlAuthProvider.generateLogoutRequestBody(sessionId);
+
+    const expectedLogoutRequest = `
+      <samlp:LogoutRequest
+          xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+          ID="${mockUuid}"
+          Version="2.0"
+          IssueInstant="${new Date().toISOString()}"
+          Destination="https://example.com/saml">
+
+          <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">sample-issuer</saml:Issuer>
+          <samlp:SessionIndex>test-session-id</samlp:SessionIndex>
+      </samlp:LogoutRequest>
+    `;
+
+    const expectedEncodedRequest = Buffer.from(expectedLogoutRequest).toString(
+      'base64'
+    );
+
+    expect(logoutRequest).toBe(expectedEncodedRequest);
   });
 });
