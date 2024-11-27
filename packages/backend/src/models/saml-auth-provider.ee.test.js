@@ -1,4 +1,4 @@
-import { vi, describe, it, expect } from 'vitest';
+import { vi, beforeEach, describe, it, expect } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
 import SamlAuthProvider from '../models/saml-auth-provider.ee';
 import RoleMapping from '../models/role-mapping.ee';
@@ -6,6 +6,9 @@ import axios from '../helpers/axios-with-proxy.js';
 import Identity from './identity.ee';
 import Base from './base';
 import appConfig from '../config/app';
+import { createSamlAuthProvider } from '../../test/factories/saml-auth-provider.ee.js';
+import { createRoleMapping } from '../../test/factories/role-mapping.js';
+import { createRole } from '../../test/factories/role.js';
 
 describe('SamlAuthProvider model', () => {
   it('tableName should return correct name', () => {
@@ -181,5 +184,48 @@ describe('SamlAuthProvider model', () => {
     );
 
     expect(response).toBe(mockResponse);
+  });
+
+  describe('updateRoleMappings', () => {
+    let samlAuthProvider;
+
+    beforeEach(async () => {
+      samlAuthProvider = await createSamlAuthProvider();
+    });
+
+    it('should remove all existing role mappings', async () => {
+      await createRoleMapping({
+        samlAuthProviderId: samlAuthProvider.id,
+        remoteRoleName: 'Admin',
+      });
+
+      await createRoleMapping({
+        samlAuthProviderId: samlAuthProvider.id,
+        remoteRoleName: 'User',
+      });
+
+      await samlAuthProvider.updateRoleMappings([]);
+
+      const roleMappings = await samlAuthProvider.$relatedQuery('roleMappings');
+      expect(roleMappings).toStrictEqual([]);
+    });
+
+    it('should return the updated role mappings when new ones are provided', async () => {
+      const adminRole = await createRole({ name: 'Admin' });
+      const userRole = await createRole({ name: 'User' });
+
+      const newRoleMappings = [
+        { remoteRoleName: 'Admin', roleId: adminRole.id },
+        { remoteRoleName: 'User', roleId: userRole.id },
+      ];
+
+      const result = await samlAuthProvider.updateRoleMappings(newRoleMappings);
+
+      const refetchedRoleMappings = await samlAuthProvider.$relatedQuery(
+        'roleMappings'
+      );
+
+      expect(result).toStrictEqual(refetchedRoleMappings);
+    });
   });
 });

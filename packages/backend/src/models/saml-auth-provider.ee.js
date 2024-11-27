@@ -133,24 +133,22 @@ class SamlAuthProvider extends Base {
   }
 
   async updateRoleMappings(roleMappings) {
-    return await SamlAuthProvider.transaction(async (trx) => {
-      await this.$relatedQuery('roleMappings', trx).delete();
+    await this.$relatedQuery('roleMappings').delete();
 
-      if (isEmpty(roleMappings)) {
-        return [];
-      }
+    if (isEmpty(roleMappings)) {
+      return [];
+    }
 
-      const roleMappingsData = roleMappings.map((roleMapping) => ({
-        ...roleMapping,
-        samlAuthProviderId: this.id,
-      }));
+    const roleMappingsData = roleMappings.map((roleMapping) => ({
+      ...roleMapping,
+      samlAuthProviderId: this.id,
+    }));
 
-      const newRoleMappings = await RoleMapping.query(trx).insertAndFetch(
-        roleMappingsData
-      );
+    const newRoleMappings = await RoleMapping.query().insertAndFetch(
+      roleMappingsData
+    );
 
-      return newRoleMappings;
-    });
+    return newRoleMappings;
   }
 }
 
