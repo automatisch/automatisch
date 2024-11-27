@@ -2,6 +2,7 @@ import { vi, describe, it, expect } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
 import SamlAuthProvider from '../models/saml-auth-provider.ee';
 import RoleMapping from '../models/role-mapping.ee';
+import axios from '../helpers/axios-with-proxy.js';
 import Identity from './identity.ee';
 import Base from './base';
 import appConfig from '../config/app';
@@ -142,5 +143,43 @@ describe('SamlAuthProvider model', () => {
     );
 
     expect(logoutRequest).toBe(expectedEncodedRequest);
+  });
+
+  it('terminateRemoteSession should send the correct POST request and return the response', async () => {
+    vi.mock('../helpers/axios-with-proxy.js', () => ({
+      default: {
+        post: vi.fn(),
+      },
+    }));
+
+    const samlAuthProvider = new SamlAuthProvider();
+
+    samlAuthProvider.entryPoint = 'https://example.com/saml';
+    samlAuthProvider.generateLogoutRequestBody = vi
+      .fn()
+      .mockReturnValue('mockEncodedLogoutRequest');
+
+    const sessionId = 'test-session-id';
+
+    const mockResponse = { data: 'Logout Successful' };
+    axios.post.mockResolvedValue(mockResponse);
+
+    const response = await samlAuthProvider.terminateRemoteSession(sessionId);
+
+    expect(samlAuthProvider.generateLogoutRequestBody).toHaveBeenCalledWith(
+      sessionId
+    );
+
+    expect(axios.post).toHaveBeenCalledWith(
+      'https://example.com/saml',
+      'SAMLRequest=mockEncodedLogoutRequest',
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    expect(response).toBe(mockResponse);
   });
 });
