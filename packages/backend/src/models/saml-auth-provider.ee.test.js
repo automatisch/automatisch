@@ -1,6 +1,6 @@
 import { vi, describe, it, expect } from 'vitest';
 import SamlAuthProvider from '../models/saml-auth-provider.ee';
-import SamlAuthProvidersRoleMapping from '../models/saml-auth-providers-role-mapping.ee';
+import RoleMapping from '../models/role-mapping.ee';
 import Identity from './identity.ee';
 import Base from './base';
 import appConfig from '../config/app';
@@ -26,12 +26,12 @@ describe('SamlAuthProvider model', () => {
           to: 'saml_auth_providers.id',
         },
       },
-      samlAuthProvidersRoleMappings: {
+      roleMappings: {
         relation: Base.HasManyRelation,
-        modelClass: SamlAuthProvidersRoleMapping,
+        modelClass: RoleMapping,
         join: {
           from: 'saml_auth_providers.id',
-          to: 'saml_auth_providers_role_mappings.saml_auth_provider_id',
+          to: 'role_mappings.saml_auth_provider_id',
         },
       },
     };

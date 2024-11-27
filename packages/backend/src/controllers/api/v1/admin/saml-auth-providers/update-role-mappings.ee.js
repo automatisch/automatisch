@@ -8,15 +8,14 @@ export default async (request, response) => {
     .findById(samlAuthProviderId)
     .throwIfNotFound();
 
-  const samlAuthProvidersRoleMappings =
-    await samlAuthProvider.updateRoleMappings(
-      samlAuthProvidersRoleMappingsParams(request)
-    );
+  const roleMappings = await samlAuthProvider.updateRoleMappings(
+    roleMappingsParams(request)
+  );
 
-  renderObject(response, samlAuthProvidersRoleMappings);
+  renderObject(response, roleMappings);
 };
 
-const samlAuthProvidersRoleMappingsParams = (request) => {
+const roleMappingsParams = (request) => {
   const roleMappings = request.body;
 
   return roleMappings.map(({ roleId, remoteRoleName }) => ({

@@ -1,28 +1,26 @@
 import { describe, it, expect } from 'vitest';
-import SamlAuthProvidersRoleMapping from '../models/saml-auth-providers-role-mapping.ee';
+import RoleMapping from './role-mapping.ee';
 import SamlAuthProvider from './saml-auth-provider.ee';
 import Base from './base';
 
-describe('SamlAuthProvidersRoleMapping model', () => {
+describe('RoleMapping model', () => {
   it('tableName should return correct name', () => {
-    expect(SamlAuthProvidersRoleMapping.tableName).toBe(
-      'saml_auth_providers_role_mappings'
-    );
+    expect(RoleMapping.tableName).toBe('role_mappings');
   });
 
   it('jsonSchema should have the correct schema', () => {
-    expect(SamlAuthProvidersRoleMapping.jsonSchema).toMatchSnapshot();
+    expect(RoleMapping.jsonSchema).toMatchSnapshot();
   });
 
   it('relationMappings should return correct associations', () => {
-    const relationMappings = SamlAuthProvidersRoleMapping.relationMappings();
+    const relationMappings = RoleMapping.relationMappings();
 
     const expectedRelations = {
       samlAuthProvider: {
         relation: Base.BelongsToOneRelation,
         modelClass: SamlAuthProvider,
         join: {
-          from: 'saml_auth_providers_role_mappings.saml_auth_provider_id',
+          from: 'role_mappings.saml_auth_provider_id',
           to: 'saml_auth_providers.id',
         },
       },

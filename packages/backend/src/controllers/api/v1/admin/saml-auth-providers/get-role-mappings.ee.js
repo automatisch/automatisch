@@ -7,7 +7,7 @@ export default async (request, response) => {
     .throwIfNotFound();
 
   const roleMappings = await samlAuthProvider
-    .$relatedQuery('samlAuthProvidersRoleMappings')
+    .$relatedQuery('roleMappings')
     .orderBy('remote_role_name', 'asc');
 
   renderObject(response, roleMappings);

@@ -66,8 +66,8 @@ function RoleMappings({ provider, providerLoading }) {
   const enqueueSnackbar = useEnqueueSnackbar();
 
   const {
-    mutateAsync: updateSamlAuthProvidersRoleMappings,
-    isPending: isUpdateSamlAuthProvidersRoleMappingsPending,
+    mutateAsync: updateRoleMappings,
+    isPending: isUpdateRoleMappingsPending,
   } = useAdminUpdateSamlAuthProviderRoleMappings(provider?.id);
 
   const { data, isLoading: isAdminSamlAuthProviderRoleMappingsLoading } =
@@ -79,7 +79,7 @@ function RoleMappings({ provider, providerLoading }) {
   const handleRoleMappingsUpdate = async (values) => {
     try {
       if (provider?.id) {
-        await updateSamlAuthProvidersRoleMappings(
+        await updateRoleMappings(
           values.roleMappings.map(({ roleId, remoteRoleName }) => ({
             roleId,
             remoteRoleName,
@@ -148,7 +148,7 @@ function RoleMappings({ provider, providerLoading }) {
             variant="contained"
             color="primary"
             sx={{ boxShadow: 2 }}
-            loading={isUpdateSamlAuthProvidersRoleMappingsPending}
+            loading={isUpdateRoleMappingsPending}
           >
             {formatMessage('roleMappingsForm.save')}
           </LoadingButton>

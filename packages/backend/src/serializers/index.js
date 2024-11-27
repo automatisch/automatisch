@@ -26,7 +26,7 @@ const serializers = {
   Permission: permissionSerializer,
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   SamlAuthProvider: samlAuthProviderSerializer,
-  SamlAuthProvidersRoleMapping: samlAuthProviderRoleMappingSerializer,
+  RoleMapping: samlAuthProviderRoleMappingSerializer,
   AppAuthClient: appAuthClientSerializer,
   AppConfig: appConfigSerializer,
   Flow: flowSerializer,
