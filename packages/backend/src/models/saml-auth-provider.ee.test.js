@@ -81,4 +81,28 @@ describe('SamlAuthProvider model', () => {
       'https://example.com/saml/logout'
     );
   });
+
+  it('config should return the correct configuration object', () => {
+    const samlAuthProvider = new SamlAuthProvider();
+
+    samlAuthProvider.certificate = 'sample-certificate';
+    samlAuthProvider.signatureAlgorithm = 'sha256';
+    samlAuthProvider.entryPoint = 'https://example.com/saml';
+    samlAuthProvider.issuer = 'sample-issuer';
+
+    vi.spyOn(appConfig, 'baseUrl', 'get').mockReturnValue(
+      'https://automatisch.io'
+    );
+
+    const expectedConfig = {
+      callbackUrl: 'https://automatisch.io/login/saml/sample-issuer/callback',
+      cert: 'sample-certificate',
+      entryPoint: 'https://example.com/saml',
+      issuer: 'sample-issuer',
+      signatureAlgorithm: 'sha256',
+      logoutUrl: 'https://example.com/saml',
+    };
+
+    expect(samlAuthProvider.config).toStrictEqual(expectedConfig);
+  });
 });
