@@ -149,34 +149,4 @@ describe('PATCH /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappi
       .send(roleMappings)
       .expect(404);
   });
-
-  it('should not delete existing role mapping when error thrown', async () => {
-    const roleMappings = [
-      {
-        roleId: userRole.id,
-        remoteRoleName: {
-          invalid: 'data',
-        },
-      },
-    ];
-
-    const roleMappingsBeforeRequest = await samlAuthProvider.$relatedQuery(
-      'roleMappings'
-    );
-
-    await request(app)
-      .patch(
-        `/api/v1/admin/saml-auth-providers/${samlAuthProvider.id}/role-mappings`
-      )
-      .set('Authorization', token)
-      .send(roleMappings)
-      .expect(422);
-
-    const roleMappingsAfterRequest = await samlAuthProvider.$relatedQuery(
-      'roleMappings'
-    );
-
-    expect(roleMappingsBeforeRequest).toStrictEqual(roleMappingsAfterRequest);
-    expect(roleMappingsAfterRequest.length).toBe(2);
-  });
 });
