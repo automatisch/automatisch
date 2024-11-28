@@ -207,76 +207,6 @@ describe('User model', () => {
     expect(virtualAttributes).toStrictEqual(expectedAttributes);
   });
 
-  it('acceptInvitationUrl should return accept invitation page URL with invitation token', async () => {
-    const user = new User();
-    user.invitationToken = 'invitation-token';
-
-    vi.spyOn(appConfig, 'webAppUrl', 'get').mockReturnValue(
-      'https://automatisch.io'
-    );
-
-    expect(user.acceptInvitationUrl).toBe(
-      'https://automatisch.io/accept-invitation?token=invitation-token'
-    );
-  });
-
-  it('ability should return userAbility for the user', () => {
-    const user = new User();
-    user.fullName = 'Sample user';
-
-    const userAbilitySpy = vi
-      .spyOn(userAbilityModule, 'default')
-      .mockReturnValue('user-ability');
-
-    expect(user.ability).toStrictEqual('user-ability');
-    expect(userAbilitySpy).toHaveBeenNthCalledWith(1, user);
-  });
-
-  describe('authenticate', () => {
-    it('should create and return the token for correct email and password', async () => {
-      const user = await createUser({
-        email: 'test-user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      const token = await User.authenticate(
-        'test-user@automatisch.io',
-        'sample-password'
-      );
-
-      const persistedToken = await AccessToken.query().findOne({
-        userId: user.id,
-      });
-
-      expect(token).toBe(persistedToken.token);
-    });
-
-    it('should return undefined for existing email and incorrect password', async () => {
-      await createUser({
-        email: 'test-user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      const token = await User.authenticate(
-        'test-user@automatisch.io',
-        'wrong-password'
-      );
-
-      expect(token).toBe(undefined);
-    });
-
-    it('should return undefined for non-existing email', async () => {
-      await createUser({
-        email: 'test-user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      const token = await User.authenticate('non-existing-user@automatisch.io');
-
-      expect(token).toBe(undefined);
-    });
-  });
-
   describe('authorizedFlows', () => {
     it('should return user flows with isCreator condition', async () => {
       const userRole = await createRole({ name: 'User' });
@@ -516,6 +446,76 @@ describe('User model', () => {
       expect(() => user.authorizedExecutions).toThrowError(
         'The user is not authorized!'
       );
+    });
+  });
+
+  it('acceptInvitationUrl should return accept invitation page URL with invitation token', async () => {
+    const user = new User();
+    user.invitationToken = 'invitation-token';
+
+    vi.spyOn(appConfig, 'webAppUrl', 'get').mockReturnValue(
+      'https://automatisch.io'
+    );
+
+    expect(user.acceptInvitationUrl).toBe(
+      'https://automatisch.io/accept-invitation?token=invitation-token'
+    );
+  });
+
+  it('ability should return userAbility for the user', () => {
+    const user = new User();
+    user.fullName = 'Sample user';
+
+    const userAbilitySpy = vi
+      .spyOn(userAbilityModule, 'default')
+      .mockReturnValue('user-ability');
+
+    expect(user.ability).toStrictEqual('user-ability');
+    expect(userAbilitySpy).toHaveBeenNthCalledWith(1, user);
+  });
+
+  describe('authenticate', () => {
+    it('should create and return the token for correct email and password', async () => {
+      const user = await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate(
+        'test-user@automatisch.io',
+        'sample-password'
+      );
+
+      const persistedToken = await AccessToken.query().findOne({
+        userId: user.id,
+      });
+
+      expect(token).toBe(persistedToken.token);
+    });
+
+    it('should return undefined for existing email and incorrect password', async () => {
+      await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate(
+        'test-user@automatisch.io',
+        'wrong-password'
+      );
+
+      expect(token).toBe(undefined);
+    });
+
+    it('should return undefined for non-existing email', async () => {
+      await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate('non-existing-user@automatisch.io');
+
+      expect(token).toBe(undefined);
     });
   });
 
@@ -1255,105 +1255,6 @@ describe('User model', () => {
     expect(user.email).toBe('user@automatisch.io');
   });
 
-  describe('$beforeInsert', () => {
-    it('should call super.$beforeInsert', async () => {
-      const superBeforeInsertSpy = vi
-        .spyOn(User.prototype, '$beforeInsert')
-        .mockResolvedValue();
-
-      await createUser();
-
-      expect(superBeforeInsertSpy).toHaveBeenCalledOnce();
-    });
-
-    it('should lowercase the user email', async () => {
-      const user = await createUser({
-        fullName: 'Sample user',
-        email: 'USER@AUTOMATISCH.IO',
-      });
-
-      expect(user.email).toBe('user@automatisch.io');
-    });
-
-    it('should generate password hash', async () => {
-      const user = await createUser({
-        fullName: 'Sample user',
-        email: 'user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      expect(user.password).not.toBe('sample-password');
-      expect(await user.login('sample-password')).toBe(true);
-    });
-
-    it('should start trial period if Automatisch is a cloud installation', async () => {
-      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
-
-      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
-
-      await createUser({
-        fullName: 'Sample user',
-        email: 'user@automatisch.io',
-      });
-
-      expect(startTrialPeriodSpy).toHaveBeenCalledOnce();
-    });
-
-    it('should not start trial period if Automatisch is not a cloud installation', async () => {
-      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
-
-      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
-
-      await createUser({
-        fullName: 'Sample user',
-        email: 'user@automatisch.io',
-      });
-
-      expect(startTrialPeriodSpy).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('$beforeUpdate', () => {
-    it('should call super.$beforeUpdate', async () => {
-      const superBeforeUpdateSpy = vi
-        .spyOn(User.prototype, '$beforeUpdate')
-        .mockResolvedValue();
-
-      const user = await createUser({
-        fullName: 'Sample user',
-        email: 'user@automatisch.io',
-      });
-
-      await user.$query().patch({ fullName: 'Updated user name' });
-
-      expect(superBeforeUpdateSpy).toHaveBeenCalledOnce();
-    });
-
-    it('should lowercase the user email if given', async () => {
-      const user = await createUser({
-        fullName: 'Sample user',
-        email: 'user@automatisch.io',
-      });
-
-      await user.$query().patchAndFetch({ email: 'NEW_EMAIL@AUTOMATISCH.IO' });
-
-      expect(user.email).toBe('new_email@automatisch.io');
-    });
-
-    it('should generate password hash', async () => {
-      const user = await createUser({
-        fullName: 'Sample user',
-        email: 'user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      await user.$query().patchAndFetch({ password: 'new-password' });
-
-      expect(user.password).not.toBe('new-password');
-      expect(await user.login('new-password')).toBe(true);
-    });
-  });
-
   describe('createUsageData', () => {
     it('should create usage data if Automatisch is a cloud installation', async () => {
       vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
@@ -1488,6 +1389,105 @@ describe('User model', () => {
       expect(userWithRoleAndPermissions.permissions).toStrictEqual([
         readFlowPermission,
       ]);
+    });
+  });
+
+  describe('$beforeInsert', () => {
+    it('should call super.$beforeInsert', async () => {
+      const superBeforeInsertSpy = vi
+        .spyOn(User.prototype, '$beforeInsert')
+        .mockResolvedValue();
+
+      await createUser();
+
+      expect(superBeforeInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should lowercase the user email', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'USER@AUTOMATISCH.IO',
+      });
+
+      expect(user.email).toBe('user@automatisch.io');
+    });
+
+    it('should generate password hash', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      expect(user.password).not.toBe('sample-password');
+      expect(await user.login('sample-password')).toBe(true);
+    });
+
+    it('should start trial period if Automatisch is a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
+
+      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(startTrialPeriodSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should not start trial period if Automatisch is not a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+
+      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(startTrialPeriodSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('$beforeUpdate', () => {
+    it('should call super.$beforeUpdate', async () => {
+      const superBeforeUpdateSpy = vi
+        .spyOn(User.prototype, '$beforeUpdate')
+        .mockResolvedValue();
+
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      await user.$query().patch({ fullName: 'Updated user name' });
+
+      expect(superBeforeUpdateSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should lowercase the user email if given', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      await user.$query().patchAndFetch({ email: 'NEW_EMAIL@AUTOMATISCH.IO' });
+
+      expect(user.email).toBe('new_email@automatisch.io');
+    });
+
+    it('should generate password hash', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      await user.$query().patchAndFetch({ password: 'new-password' });
+
+      expect(user.password).not.toBe('new-password');
+      expect(await user.login('new-password')).toBe(true);
     });
   });
 
