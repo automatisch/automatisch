@@ -305,14 +305,8 @@ class User extends Base {
       active: true,
     });
 
-    const repeatableJobs = await flowQueue.getRepeatableJobs();
-
     for (const flow of flows) {
-      const job = repeatableJobs.find((job) => job.id === flow.id);
-
-      if (job) {
-        await flowQueue.removeRepeatableByKey(job.key);
-      }
+      await flowQueue.removeRepeatableJobById(flow.id);
     }
 
     const executionIds = (

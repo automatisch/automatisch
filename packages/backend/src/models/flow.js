@@ -386,10 +386,7 @@ class Flow extends Base {
           }
         );
       } else {
-        const repeatableJobs = await flowQueue.getRepeatableJobs();
-        const job = repeatableJobs.find((job) => job.id === this.id);
-
-        await flowQueue.removeRepeatableByKey(job.key);
+        await flowQueue.removeRepeatableJobById(this.id);
       }
     }
 
