@@ -79,7 +79,7 @@ worker.on('failed', async (job, err) => {
   const flow = await Flow.query().findById(job.data.flowId);
 
   if (!flow) {
-    await flowQueue.removeRepeatableByKey(job.repeatJobKey);
+    await flowQueue.removeRepeatableJobByKey(job.repeatJobKey);
 
     const flowNotFoundErrorMessage = `
       JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has been deleted from Redis because flow was not found!

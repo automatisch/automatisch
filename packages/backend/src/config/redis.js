@@ -13,7 +13,7 @@ if (appConfig.redisSentinelHost) {
     {
       host: appConfig.redisSentinelHost,
       port: appConfig.redisSentinelPort,
-    }
+    },
   ];
 
   redisConfig.sentinelUsername = appConfig.redisSentinelUsername;

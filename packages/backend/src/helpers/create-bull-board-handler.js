@@ -12,7 +12,7 @@ import appConfig from '../config/app.js';
 const serverAdapter = new ExpressAdapter();
 
 const queues = [
-  new BullMQAdapter(flowQueue),
+  new BullMQAdapter(flowQueue.queue),
   new BullMQAdapter(triggerQueue),
   new BullMQAdapter(actionQueue),
   new BullMQAdapter(emailQueue),
