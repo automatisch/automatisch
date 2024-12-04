@@ -16,6 +16,7 @@ class AppConfig extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string' },
+      useOnlyPredefinedAuthClients: { type: 'boolean', default: false },
       connectionAllowed: { type: 'boolean', default: false },
       customConnectionAllowed: { type: 'boolean', default: false },
       shared: { type: 'boolean', default: false },
