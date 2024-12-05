@@ -1,5 +1,4 @@
 import { Worker } from 'bullmq';
-import process from 'node:process';
 
 import * as Sentry from '../helpers/sentry.ee.js';
 import redisConfig from '../config/redis.js';
@@ -12,7 +11,7 @@ import {
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
 } from '../helpers/remove-job-configuration.js';
 
-export const worker = new Worker(
+const triggerWorker = new Worker(
   'trigger',
   async (job) => {
     const { flowId, executionId, stepId, executionStep } = await processTrigger(
@@ -41,11 +40,11 @@ export const worker = new Worker(
   { connection: redisConfig }
 );
 
-worker.on('completed', (job) => {
+triggerWorker.on('completed', (job) => {
   logger.info(`JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has started!`);
 });
 
-worker.on('failed', (job, err) => {
+triggerWorker.on('failed', (job, err) => {
   const errorMessage = `
     JOB ID: ${job.id} - FLOW ID: ${job.data.flowId} has failed to start with ${err.message}
     \n ${err.stack}
@@ -60,6 +59,4 @@ worker.on('failed', (job, err) => {
   });
 });
 
-process.on('SIGTERM', async () => {
-  await worker.close();
-});
+export default triggerWorker;

@@ -1,20 +1,22 @@
 import * as Sentry from './helpers/sentry.ee.js';
-import appConfig from './config/app.js';
+import process from 'node:process';
 
 Sentry.init();
 
 import './config/orm.js';
 import './helpers/check-worker-readiness.js';
-import './workers/flow.js';
-import './workers/trigger.js';
-import './workers/action.js';
-import './workers/email.js';
-import './workers/delete-user.ee.js';
+import queues from './queues/index.js';
+import workers from './workers/index.js';
 
-if (appConfig.isCloud) {
-  import('./workers/remove-cancelled-subscriptions.ee.js');
-  import('./queues/remove-cancelled-subscriptions.ee.js');
-}
+process.on('SIGTERM', async () => {
+  for (const queue of queues) {
+    await queue.close();
+  }
+
+  for (const worker of workers) {
+    await worker.close();
+  }
+});
 
 import telemetry from './helpers/telemetry/index.js';
 

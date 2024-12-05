@@ -14,10 +14,6 @@ const removeCancelledSubscriptionsQueue = new Queue(
   redisConnection
 );
 
-process.on('SIGTERM', async () => {
-  await removeCancelledSubscriptionsQueue.close();
-});
-
 removeCancelledSubscriptionsQueue.on('error', (error) => {
   if (error.code === CONNECTION_REFUSED) {
     logger.error(

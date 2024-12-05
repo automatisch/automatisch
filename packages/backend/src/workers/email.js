@@ -1,5 +1,4 @@
 import { Worker } from 'bullmq';
-import process from 'node:process';
 
 import * as Sentry from '../helpers/sentry.ee.js';
 import redisConfig from '../config/redis.js';
@@ -16,7 +15,7 @@ const isAutomatischEmail = (email) => {
   return email.endsWith('@automatisch.io');
 };
 
-export const worker = new Worker(
+const emailWorker = new Worker(
   'email',
   async (job) => {
     const { email, subject, template, params } = job.data;
@@ -39,13 +38,13 @@ export const worker = new Worker(
   { connection: redisConfig }
 );
 
-worker.on('completed', (job) => {
+emailWorker.on('completed', (job) => {
   logger.info(
     `JOB ID: ${job.id} - ${job.data.subject} email sent to ${job.data.email}!`
   );
 });
 
-worker.on('failed', (job, err) => {
+emailWorker.on('failed', (job, err) => {
   const errorMessage = `
     JOB ID: ${job.id} - ${job.data.subject} email to ${job.data.email} has failed to send with ${err.message}
     \n ${err.stack}
@@ -60,6 +59,4 @@ worker.on('failed', (job, err) => {
   });
 });
 
-process.on('SIGTERM', async () => {
-  await worker.close();
-});
+export default emailWorker;
