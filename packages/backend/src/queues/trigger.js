@@ -11,10 +11,6 @@ const redisConnection = {
 
 const triggerQueue = new Queue('trigger', redisConnection);
 
-process.on('SIGTERM', async () => {
-  await triggerQueue.close();
-});
-
 triggerQueue.on('error', (error) => {
   if (error.code === CONNECTION_REFUSED) {
     logger.error(

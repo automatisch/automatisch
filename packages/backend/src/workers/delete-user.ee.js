@@ -1,5 +1,4 @@
 import { Worker } from 'bullmq';
-import process from 'node:process';
 
 import * as Sentry from '../helpers/sentry.ee.js';
 import redisConfig from '../config/redis.js';
@@ -8,7 +7,7 @@ import appConfig from '../config/app.js';
 import User from '../models/user.js';
 import ExecutionStep from '../models/execution-step.js';
 
-export const worker = new Worker(
+const deleteUserWorker = new Worker(
   'delete-user',
   async (job) => {
     const { id } = job.data;
@@ -46,13 +45,13 @@ export const worker = new Worker(
   { connection: redisConfig }
 );
 
-worker.on('completed', (job) => {
+deleteUserWorker.on('completed', (job) => {
   logger.info(
     `JOB ID: ${job.id} - The user with the ID of '${job.data.id}' has been deleted!`
   );
 });
 
-worker.on('failed', (job, err) => {
+deleteUserWorker.on('failed', (job, err) => {
   const errorMessage = `
     JOB ID: ${job.id} - The user with the ID of '${job.data.id}' has failed to be deleted! ${err.message}
     \n ${err.stack}
@@ -67,6 +66,4 @@ worker.on('failed', (job, err) => {
   });
 });
 
-process.on('SIGTERM', async () => {
-  await worker.close();
-});
+export default deleteUserWorker;

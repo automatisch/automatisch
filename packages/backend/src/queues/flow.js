@@ -11,10 +11,6 @@ const redisConnection = {
 
 const flowQueue = new Queue('flow', redisConnection);
 
-process.on('SIGTERM', async () => {
-  await flowQueue.close();
-});
-
 flowQueue.on('error', (error) => {
   if (error.code === CONNECTION_REFUSED) {
     logger.error(
