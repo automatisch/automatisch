@@ -46,7 +46,12 @@ function Form(props) {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} {...formProps}>
+      <form
+        onSubmit={methods.handleSubmit((data, event) =>
+          onSubmit?.(data, event, methods.setError),
+        )}
+        {...formProps}
+      >
         {render ? render(methods) : children}
       </form>
     </FormProvider>
