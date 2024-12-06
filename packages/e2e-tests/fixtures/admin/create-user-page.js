@@ -14,8 +14,12 @@ export class AdminCreateUserPage extends AuthenticatedPage {
     this.roleInput = page.getByTestId('role.id-autocomplete');
     this.createButton = page.getByTestId('create-button');
     this.pageTitle = page.getByTestId('create-user-title');
-    this.invitationEmailInfoAlert = page.getByTestId('invitation-email-info-alert');
-    this.acceptInvitationLink = page.getByTestId('invitation-email-info-alert').getByRole('link');
+    this.invitationEmailInfoAlert = page.getByTestId(
+      'invitation-email-info-alert'
+    );
+    this.acceptInvitationLink = page
+      .getByTestId('invitation-email-info-alert')
+      .getByRole('link');
   }
 
   seed(seed) {

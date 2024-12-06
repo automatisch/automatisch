@@ -3,13 +3,12 @@ on:
   push:
     branches:
       - main
-  # TODO: Add pull request after optimizing the total excecution time of the test suite.
-  # pull_request:
-  #   paths:
-  #     - 'packages/backend/**'
-  #     - 'packages/e2e-tests/**'
-  #     - 'packages/web/**'
-  #     - '!packages/backend/src/apps/**'
+  pull_request:
+    paths:
+      - 'packages/backend/**'
+      - 'packages/e2e-tests/**'
+      - 'packages/web/**'
+      - '!packages/backend/src/apps/**'
   workflow_dispatch:
 
 env:
@@ -56,27 +55,44 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - name: Install web dependencies
-        run: yarn
-        working-directory: ./packages/web
+          node-version: '18'
+          cache: 'yarn'
+          cache-dependency-path: |
+            packages/backend/yarn.lock
+            packages/web/yarn.lock
+            packages/e2e-tests/yarn.lock
       - name: Install backend dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
         working-directory: ./packages/backend
+      - name: Install web dependencies
+        run: yarn --frozen-lockfile
+        working-directory: ./packages/web
       - name: Install e2e-tests dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
         working-directory: ./packages/e2e-tests
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@playwright/test'])")" >> $GITHUB_ENV
+        working-directory: ./packages/e2e-tests
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
         working-directory: ./packages/e2e-tests
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Build Automatisch web
         run: yarn build
-        working-directory: ./packages/web
         env:
           # Keep this until we clean up warnings in build processes
           CI: false
+        working-directory: ./packages/web
       - name: Migrate database
         working-directory: ./packages/backend
         run: yarn db:migrate
@@ -116,6 +132,7 @@ jobs:
         env:
           LOGIN_EMAIL: user@automatisch.io
           LOGIN_PASSWORD: sample
+          BACKEND_APP_URL: http://localhost:3000
           BASE_URL: http://localhost:3000
           GITHUB_CLIENT_ID: 1c0417daf898adfbd99a
           GITHUB_CLIENT_SECRET: 3328fa814dd582ccd03dbe785cfd683fb8da92b3
