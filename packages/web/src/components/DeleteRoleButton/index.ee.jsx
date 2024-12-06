@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 
+import { getGeneralErrorMessage, getFieldErrorMessage } from 'helpers/errors';
 import Can from 'components/Can';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -15,7 +16,21 @@ function DeleteRoleButton(props) {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
 
-  const { mutateAsync: deleteRole } = useAdminDeleteRole(roleId);
+  const {
+    mutateAsync: deleteRole,
+    error: deleteRoleError,
+    reset: resetDeleteRole,
+  } = useAdminDeleteRole(roleId);
+
+  const roleErrorMessage = getFieldErrorMessage({
+    fieldName: 'role',
+    error: deleteRoleError,
+  });
+
+  const generalErrorMessage = getGeneralErrorMessage({
+    error: deleteRoleError,
+    fallbackMessage: formatMessage('deleteRoleButton.generalError'),
+  });
 
   const handleConfirm = React.useCallback(async () => {
     try {
@@ -28,23 +43,13 @@ function DeleteRoleButton(props) {
           'data-test': 'snackbar-delete-role-success',
         },
       });
-    } catch (error) {
-      const errors = Object.values(
-        error.response.data.errors || [['Failed while deleting!']],
-      );
-
-      for (const [error] of errors) {
-        enqueueSnackbar(error, {
-          variant: 'error',
-          SnackbarProps: {
-            'data-test': 'snackbar-delete-role-error',
-          },
-        });
-      }
-
-      throw new Error('Failed while deleting!');
-    }
+    } catch {}
   }, [deleteRole, enqueueSnackbar, formatMessage]);
+
+  const handleClose = () => {
+    setShowConfirmation(false);
+    resetDeleteRole();
+  };
 
   return (
     <>
@@ -65,11 +70,12 @@ function DeleteRoleButton(props) {
         open={showConfirmation}
         title={formatMessage('deleteRoleButton.title')}
         description={formatMessage('deleteRoleButton.description')}
-        onClose={() => setShowConfirmation(false)}
+        onClose={handleClose}
         onConfirm={handleConfirm}
         cancelButtonChildren={formatMessage('deleteRoleButton.cancel')}
         confirmButtonChildren={formatMessage('deleteRoleButton.confirm')}
         data-test="delete-role-modal"
+        errorMessage={roleErrorMessage || generalErrorMessage}
       />
     </>
   );
