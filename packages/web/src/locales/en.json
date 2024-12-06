@@ -245,6 +245,7 @@
   "deleteRoleButton.cancel": "Cancel",
   "deleteRoleButton.confirm": "Delete",
   "deleteRoleButton.successfullyDeleted": "The role has been deleted.",
+  "deleteRoleButton.generalError": "Failed while deleting!",
   "editRolePage.title": "Edit role",
   "createRolePage.title": "Create role",
   "roleForm.name": "Name",
