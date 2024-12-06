@@ -3,9 +3,10 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import MuiTextField from '@mui/material/TextField';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import Can from 'components/Can';
 import Container from 'components/Container';
@@ -16,10 +17,44 @@ import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
 import useAdminCreateUser from 'hooks/useAdminCreateUser';
+import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+import { getGeneralErrorMessage } from 'helpers/errors';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
+
+const getValidationSchema = (formatMessage, canUpdateRole) => {
+  const getMandatoryFieldMessage = (fieldTranslationId) =>
+    formatMessage('userForm.mandatoryInput', {
+      inputName: formatMessage(fieldTranslationId),
+    });
+
+  return yup.object().shape({
+    fullName: yup
+      .string()
+      .trim()
+      .required(getMandatoryFieldMessage('userForm.fullName')),
+    email: yup
+      .string()
+      .trim()
+      .email(formatMessage('userForm.validateEmail'))
+      .required(getMandatoryFieldMessage('userForm.email')),
+    ...(canUpdateRole
+      ? {
+          roleId: yup
+            .string()
+            .required(getMandatoryFieldMessage('userForm.role')),
+        }
+      : {}),
+  });
+};
+
+const defaultValues = {
+  fullName: '',
+  email: '',
+  roleId: '',
+};
 
 export default function CreateUser() {
   const formatMessage = useFormatMessage();
@@ -27,39 +62,49 @@ export default function CreateUser() {
     mutateAsync: createUser,
     isPending: isCreateUserPending,
     data: createdUser,
+    isSuccess: createUserSuccess,
   } = useAdminCreateUser();
   const { data: rolesData, loading: isRolesLoading } = useRoles();
   const roles = rolesData?.data;
-  const enqueueSnackbar = useEnqueueSnackbar();
   const queryClient = useQueryClient();
+  const currentUserAbility = useCurrentUserAbility();
+  const canUpdateRole = currentUserAbility.can('update', 'Role');
 
-  const handleUserCreation = async (userData) => {
+  const handleUserCreation = async (userData, e, setError) => {
     try {
       await createUser({
         fullName: userData.fullName,
         email: userData.email,
-        roleId: userData.role?.id,
+        roleId: userData.roleId,
       });
 
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
-
-      enqueueSnackbar(formatMessage('createUser.successfullyCreated'), {
-        variant: 'success',
-        persist: true,
-        SnackbarProps: {
-          'data-test': 'snackbar-create-user-success',
-        },
-      });
     } catch (error) {
-      enqueueSnackbar(formatMessage('createUser.error'), {
-        variant: 'error',
-        persist: true,
-        SnackbarProps: {
-          'data-test': 'snackbar-error',
-        },
+      const errors = error?.response?.data?.errors;
+
+      if (errors) {
+        const fieldNames = Object.keys(defaultValues);
+        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
+          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
+            setError(fieldName, {
+              type: 'fieldRequestError',
+              message: fieldErrors.join(', '),
+            });
+          }
+        });
+      }
+
+      const generalError = getGeneralErrorMessage({
+        error,
+        fallbackMessage: formatMessage('createUser.error'),
       });
 
-      throw new Error('Failed while creating!');
+      if (generalError) {
+        setError('root.general', {
+          type: 'requestError',
+          message: generalError,
+        });
+      }
     }
   };
 
@@ -73,74 +118,111 @@ export default function CreateUser() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Form onSubmit={handleUserCreation}>
-            <Stack direction="column" gap={2}>
-              <TextField
-                required={true}
-                name="fullName"
-                label={formatMessage('userForm.fullName')}
-                data-test="full-name-input"
-                fullWidth
-              />
-
-              <TextField
-                required={true}
-                name="email"
-                label={formatMessage('userForm.email')}
-                data-test="email-input"
-                fullWidth
-              />
-
-              <Can I="update" a="Role">
-                <ControlledAutocomplete
-                  name="role.id"
+          <Form
+            noValidate
+            onSubmit={handleUserCreation}
+            mode="onSubmit"
+            defaultValues={defaultValues}
+            resolver={yupResolver(
+              getValidationSchema(formatMessage, canUpdateRole),
+            )}
+            automaticValidation={false}
+            render={({ formState: { errors } }) => (
+              <Stack direction="column" gap={2}>
+                <TextField
+                  required={true}
+                  name="fullName"
+                  label={formatMessage('userForm.fullName')}
+                  data-test="full-name-input"
                   fullWidth
-                  disablePortal
-                  disableClearable={true}
-                  options={generateRoleOptions(roles)}
-                  renderInput={(params) => (
-                    <MuiTextField
-                      {...params}
-                      required
-                      label={formatMessage('userForm.role')}
-                    />
-                  )}
-                  loading={isRolesLoading}
+                  error={!!errors?.fullName}
+                  helperText={errors?.fullName?.message}
                 />
-              </Can>
 
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ boxShadow: 2 }}
-                loading={isCreateUserPending}
-                data-test="create-button"
-              >
-                {formatMessage('createUser.submit')}
-              </LoadingButton>
+                <TextField
+                  required={true}
+                  name="email"
+                  label={formatMessage('userForm.email')}
+                  data-test="email-input"
+                  fullWidth
+                  error={!!errors?.email}
+                  helperText={errors?.email?.message}
+                />
 
-              {createdUser && (
-                <Alert
-                  severity="info"
+                <Can I="update" a="Role">
+                  <ControlledAutocomplete
+                    name="roleId"
+                    fullWidth
+                    disablePortal
+                    disableClearable={true}
+                    options={generateRoleOptions(roles)}
+                    renderInput={(params) => (
+                      <MuiTextField
+                        {...params}
+                        required
+                        label={formatMessage('userForm.role')}
+                        error={!!errors?.roleId}
+                        helperText={errors?.roleId?.message}
+                      />
+                    )}
+                    loading={isRolesLoading}
+                    showHelperText={false}
+                  />
+                </Can>
+
+                {errors?.root?.general && (
+                  <Alert data-test="create-user-error-alert" severity="error">
+                    {errors?.root?.general?.message}
+                  </Alert>
+                )}
+
+                {createUserSuccess && (
+                  <Alert
+                    severity="success"
+                    data-test="create-user-success-alert"
+                  >
+                    {formatMessage('createUser.successfullyCreated')}
+                  </Alert>
+                )}
+
+                {createdUser && (
+                  <Alert
+                    severity="info"
+                    color="primary"
+                    data-test="invitation-email-info-alert"
+                    sx={{
+                      a: {
+                        wordBreak: 'break-all',
+                      },
+                    }}
+                  >
+                    {formatMessage('createUser.invitationEmailInfo', {
+                      link: () => (
+                        <a
+                          href={createdUser.data.acceptInvitationUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {createdUser.data.acceptInvitationUrl}
+                        </a>
+                      ),
+                    })}
+                  </Alert>
+                )}
+
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
                   color="primary"
-                  data-test="invitation-email-info-alert"
+                  sx={{ boxShadow: 2 }}
+                  loading={isCreateUserPending}
+                  data-test="create-button"
                 >
-                  {formatMessage('createUser.invitationEmailInfo', {
-                    link: () => (
-                      <a
-                        href={createdUser.data.acceptInvitationUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {createdUser.data.acceptInvitationUrl}
-                      </a>
-                    ),
-                  })}
-                </Alert>
-              )}
-            </Stack>
-          </Form>
+                  {formatMessage('createUser.submit')}
+                </LoadingButton>
+              </Stack>
+            )}
+          />
         </Grid>
       </Grid>
     </Container>
