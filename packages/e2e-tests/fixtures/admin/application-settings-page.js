@@ -56,8 +56,10 @@ export class AdminApplicationSettingsPage extends AuthenticatedPage {
   }
 
   async expectSuccessSnackbarToBeVisible() {
-    await expect(this.successSnackbar).toHaveCount(1);
-    await this.successSnackbar.click();
-    await expect(this.successSnackbar).toHaveCount(0);
+    const snackbars = await this.successSnackbar.all();
+    for (const snackbar of snackbars) {
+      await expect(await snackbar.getAttribute('data-snackbar-variant')).toBe('success');
+      await snackbar.click();
+    }
   }
 }

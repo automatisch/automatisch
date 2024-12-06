@@ -51,10 +51,20 @@ export class BasePage {
     };
   }
 
+  async closeSnackbar() {
+    await this.snackbar.click();
+  }
+
+  async closeSnackbarAndWaitUntilDetached() {
+    const snackbar = await this.snackbar;
+    await snackbar.click();
+    await snackbar.waitFor({ state: 'detached' });
+  }
+
   /**
    * Closes all snackbars, should be replaced later
    */
-  async closeSnackbar() {
+  async closeAllSnackbars() {
     const snackbars = await this.snackbar.all();
     for (const snackbar of snackbars) {
       await snackbar.click();
