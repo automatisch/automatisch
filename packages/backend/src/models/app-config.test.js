@@ -1,11 +1,9 @@
-import { vi, describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import Base from './base.js';
 import AppConfig from './app-config.js';
 import App from './app.js';
 import AppAuthClient from './app-auth-client.js';
-import { createAppConfig } from '../../test/factories/app-config.js';
-import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
 
 describe('AppConfig model', () => {
   it('tableName should return correct name', () => {
@@ -54,127 +52,5 @@ describe('AppConfig model', () => {
 
       expect(app).toStrictEqual(expectedApp);
     });
-  });
-
-  describe('computeAndAssignConnectionAllowedProperty', () => {
-    it('should call computeConnectionAllowedProperty and assign the result', async () => {
-      const appConfig = await createAppConfig();
-
-      const computeConnectionAllowedPropertySpy = vi
-        .spyOn(appConfig, 'computeConnectionAllowedProperty')
-        .mockResolvedValue(true);
-
-      await appConfig.computeAndAssignConnectionAllowedProperty();
-
-      expect(computeConnectionAllowedPropertySpy).toHaveBeenCalled();
-      expect(appConfig.connectionAllowed).toBe(true);
-    });
-  });
-
-  describe('computeConnectionAllowedProperty', () => {
-    it('should return true when app is enabled, shared and allows custom connection with an active app auth client', async () => {
-      await createAppAuthClient({
-        appKey: 'deepl',
-        active: true,
-      });
-
-      await createAppAuthClient({
-        appKey: 'deepl',
-        active: false,
-      });
-
-      const appConfig = await createAppConfig({
-        disabled: false,
-        customConnectionAllowed: true,
-        shared: true,
-        key: 'deepl',
-      });
-
-      const connectionAllowed =
-        await appConfig.computeConnectionAllowedProperty();
-
-      expect(connectionAllowed).toBe(true);
-    });
-
-    it('should return false if there is no active app auth client', async () => {
-      await createAppAuthClient({
-        appKey: 'deepl',
-        active: false,
-      });
-
-      const appConfig = await createAppConfig({
-        disabled: false,
-        customConnectionAllowed: true,
-        shared: true,
-        key: 'deepl',
-      });
-
-      const connectionAllowed =
-        await appConfig.computeConnectionAllowedProperty();
-
-      expect(connectionAllowed).toBe(false);
-    });
-
-    it('should return false if there is no app auth clients', async () => {
-      const appConfig = await createAppConfig({
-        disabled: false,
-        customConnectionAllowed: true,
-        shared: true,
-        key: 'deepl',
-      });
-
-      const connectionAllowed =
-        await appConfig.computeConnectionAllowedProperty();
-
-      expect(connectionAllowed).toBe(false);
-    });
-
-    it('should return false when app is disabled', async () => {
-      const appConfig = await createAppConfig({
-        disabled: true,
-        customConnectionAllowed: true,
-      });
-
-      const connectionAllowed =
-        await appConfig.computeConnectionAllowedProperty();
-
-      expect(connectionAllowed).toBe(false);
-    });
-
-    it(`should return false when app doesn't allow custom connection`, async () => {
-      const appConfig = await createAppConfig({
-        disabled: false,
-        customConnectionAllowed: false,
-      });
-
-      const connectionAllowed =
-        await appConfig.computeConnectionAllowedProperty();
-
-      expect(connectionAllowed).toBe(false);
-    });
-  });
-
-  it('$beforeInsert should call computeAndAssignConnectionAllowedProperty', async () => {
-    const computeAndAssignConnectionAllowedPropertySpy = vi
-      .spyOn(AppConfig.prototype, 'computeAndAssignConnectionAllowedProperty')
-      .mockResolvedValue(true);
-
-    await createAppConfig();
-
-    expect(computeAndAssignConnectionAllowedPropertySpy).toHaveBeenCalledOnce();
-  });
-
-  it('$beforeUpdate should call computeAndAssignConnectionAllowedProperty', async () => {
-    const appConfig = await createAppConfig();
-
-    const computeAndAssignConnectionAllowedPropertySpy = vi
-      .spyOn(AppConfig.prototype, 'computeAndAssignConnectionAllowedProperty')
-      .mockResolvedValue(true);
-
-    await appConfig.$query().patch({
-      key: 'deepl',
-    });
-
-    expect(computeAndAssignConnectionAllowedPropertySpy).toHaveBeenCalledOnce();
   });
 });

@@ -60,39 +60,26 @@ class AppAuthClient extends Base {
     return this.authDefaults ? true : false;
   }
 
-  async triggerAppConfigUpdate() {
-    const appConfig = await this.$relatedQuery('appConfig');
-
-    // This is a workaround to update connection allowed column for AppConfig
-    await appConfig?.$query().patch({
-      key: appConfig.key,
-      shared: appConfig.shared,
-      disabled: appConfig.disabled,
-    });
-  }
-
   // TODO: Make another abstraction like beforeSave instead of using
   // beforeInsert and beforeUpdate separately for the same operation.
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
+
     this.encryptData();
   }
 
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
-
-    await this.triggerAppConfigUpdate();
   }
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
+
     this.encryptData();
   }
 
   async $afterUpdate(opt, queryContext) {
     await super.$afterUpdate(opt, queryContext);
-
-    await this.triggerAppConfigUpdate();
   }
 
   async $afterFind() {

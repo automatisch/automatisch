@@ -34,10 +34,10 @@ function AdminApplicationCreateAuthClient(props) {
 
     if (!appConfigKey) {
       const { data: appConfigData } = await createAppConfig({
-        customConnectionAllowed: true,
-        shared: false,
+        useOnlyPredefinedAuthClients: false,
         disabled: false,
       });
+
       appConfigKey = appConfigData.key;
     }
 

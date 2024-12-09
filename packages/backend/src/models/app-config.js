@@ -39,39 +39,6 @@ class AppConfig extends Base {
 
     return await App.findOneByKey(this.key);
   }
-
-  async computeAndAssignConnectionAllowedProperty() {
-    this.connectionAllowed = await this.computeConnectionAllowedProperty();
-  }
-
-  async computeConnectionAllowedProperty() {
-    const appAuthClients = await this.$relatedQuery('appAuthClients');
-
-    const hasSomeActiveAppAuthClients =
-      appAuthClients?.some((appAuthClient) => appAuthClient.active) || false;
-
-    const conditions = [
-      hasSomeActiveAppAuthClients,
-      this.shared,
-      !this.disabled,
-    ];
-
-    const connectionAllowed = conditions.every(Boolean);
-
-    return connectionAllowed;
-  }
-
-  async $beforeInsert(queryContext) {
-    await super.$beforeInsert(queryContext);
-
-    await this.computeAndAssignConnectionAllowedProperty();
-  }
-
-  async $beforeUpdate(opt, queryContext) {
-    await super.$beforeUpdate(opt, queryContext);
-
-    await this.computeAndAssignConnectionAllowedProperty();
-  }
 }
 
 export default AppConfig;

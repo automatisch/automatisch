@@ -30,8 +30,7 @@ const countTranslation = (value) => (
 function AppConnectionRow(props) {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
-  const { id, key, formattedData, verified, createdAt, reconnectable } =
-    props.connection;
+  const { id, key, formattedData, verified, createdAt } = props.connection;
   const [verificationVisible, setVerificationVisible] = React.useState(false);
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -174,7 +173,6 @@ function AppConnectionRow(props) {
         <ConnectionContextMenu
           appKey={key}
           connection={props.connection}
-          disableReconnection={!reconnectable}
           onClose={handleClose}
           onMenuItemClick={onContextMenuAction}
           anchorEl={anchorEl}

@@ -47,7 +47,6 @@ describe('POST /api/v1/connections/:connectionId/reset', () => {
 
     const expectedPayload = resetConnectionMock({
       ...refetchedCurrentUserConnection,
-      reconnectable: refetchedCurrentUserConnection.reconnectable,
       formattedData: {
         screenName: 'Connection name',
       },

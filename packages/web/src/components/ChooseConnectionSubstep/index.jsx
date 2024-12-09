@@ -95,7 +95,8 @@ function ChooseConnectionSubstep(props) {
 
     if (
       !appConfig?.data ||
-      (!appConfig.data?.disabled && appConfig.data?.customConnectionAllowed)
+      (!appConfig.data?.disabled === false &&
+        appConfig.data?.useOnlyPredefinedAuthClients === false)
     ) {
       options.push({
         label: formatMessage('chooseConnectionSubstep.addNewConnection'),
@@ -103,12 +104,10 @@ function ChooseConnectionSubstep(props) {
       });
     }
 
-    if (appConfig?.data?.connectionAllowed) {
-      options.push({
-        label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
-        value: ADD_SHARED_CONNECTION_VALUE,
-      });
-    }
+    options.push({
+      label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
+      value: ADD_SHARED_CONNECTION_VALUE,
+    });
 
     return options;
   }, [data, formatMessage, appConfig?.data]);

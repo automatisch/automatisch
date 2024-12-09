@@ -18,6 +18,7 @@ import { generateExternalLink } from 'helpers/translationValues';
 import { Form } from './style';
 import useAppAuth from 'hooks/useAppAuth';
 import { useQueryClient } from '@tanstack/react-query';
+import { useWhatChanged } from '@simbathesailor/use-what-changed';
 
 function AddAppConnection(props) {
   const { application, connectionId, onClose } = props;
@@ -64,7 +65,7 @@ function AddAppConnection(props) {
 
       asyncAuthenticate();
     },
-    [appAuthClientId, authenticate],
+    [appAuthClientId, authenticate, key, navigate],
   );
 
   const handleClientClick = (appAuthClientId) =>

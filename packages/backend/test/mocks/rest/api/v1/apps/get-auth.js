@@ -4,6 +4,8 @@ const getAuthMock = (auth) => {
       fields: auth.fields,
       authenticationSteps: auth.authenticationSteps,
       reconnectionSteps: auth.reconnectionSteps,
+      sharedReconnectionSteps: auth.sharedReconnectionSteps,
+      sharedAuthenticationSteps: auth.sharedAuthenticationSteps,
     },
     meta: {
       count: 1,

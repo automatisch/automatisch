@@ -15,17 +15,7 @@ function AppAuthClientsDialog(props) {
 
   const formatMessage = useFormatMessage();
 
-  React.useEffect(
-    function autoAuthenticateSingleClient() {
-      if (appAuthClients?.data.length === 1) {
-        onClientClick(appAuthClients.data[0].id);
-      }
-    },
-    [appAuthClients?.data],
-  );
-
-  if (!appAuthClients?.data.length || appAuthClients?.data.length === 1)
-    return <React.Fragment />;
+  if (!appAuthClients?.data.length) return <React.Fragment />;
 
   return (
     <Dialog onClose={onClose} open={true}>

@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { Settings } from 'luxon';
+import { setUseWhatChange } from '@simbathesailor/use-what-changed';
 
 import ThemeProvider from 'components/ThemeProvider';
 import IntlProvider from 'components/IntlProvider';
@@ -13,6 +14,8 @@ import reportWebVitals from './reportWebVitals';
 
 // Sets the default locale to English for all luxon DateTime instances created afterwards.
 Settings.defaultLocale = 'en';
+
+setUseWhatChange(process.env.NODE_ENV === 'development');
 
 const container = document.getElementById('root');
 const root = createRoot(container);
