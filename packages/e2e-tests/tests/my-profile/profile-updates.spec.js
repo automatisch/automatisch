@@ -33,10 +33,7 @@ publicTest.describe('My Profile', () => {
           .getByRole('option', { name: 'Admin' })
           .click();
         await adminCreateUserPage.createButton.click();
-        const snackbar = await adminUsersPage.getSnackbarData(
-          'snackbar-create-user-success'
-        );
-        await expect(snackbar.variant).toBe('success');
+        await adminCreateUserPage.expectCreateUserSuccessAlertToBeVisible();
       });
 
       await publicTest.step('copy invitation link', async () => {
