@@ -218,12 +218,7 @@ test.describe('Role management page', () => {
         const row = await adminRolesPage.getRoleRowByName('Delete Role');
         const modal = await adminRolesPage.clickDeleteRole(row);
         await modal.deleteButton.click();
-        await adminRolesPage.snackbar.waitFor({
-          state: 'attached',
-        });
-        const snackbar = await adminRolesPage.getSnackbarData('snackbar-delete-role-error');
-        await expect(snackbar.variant).toBe('error');
-        await adminRolesPage.closeSnackbar();
+        await expect(modal.deleteAlert).toHaveCount(1);
         await modal.close();
       }
     );
@@ -318,7 +313,6 @@ test.describe('Role management page', () => {
       const row = await adminUsersPage.findUserPageWithEmail(
         'user-delete-role-test@automatisch.io'
       );
-      // await test.waitForTimeout(10000);
       const modal = await adminUsersPage.clickDeleteUser(row);
       await modal.deleteButton.click();
       await adminUsersPage.snackbar.waitFor({
@@ -335,15 +329,7 @@ test.describe('Role management page', () => {
       const row = await adminRolesPage.getRoleRowByName('Cannot Delete Role');
       const modal = await adminRolesPage.clickDeleteRole(row);
       await modal.deleteButton.click();
-      await adminRolesPage.snackbar.waitFor({
-        state: 'attached',
-      });
-      /*
-        * TODO: await snackbar - make assertions based on product
-        * decisions
-        const snackbar = await adminRolesPage.getSnackbarData();
-        await expect(snackbar.variant).toBe('...');
-        */
+      await expect(modal.deleteAlert).toHaveCount(1);
       await adminRolesPage.closeSnackbar();
     });
   });
