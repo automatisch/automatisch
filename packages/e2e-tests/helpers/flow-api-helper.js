@@ -6,6 +6,7 @@ export const createFlow = async (request, token) => {
     { headers: { Authorization: token } }
   );
   await expect(response.status()).toBe(201);
+
   return await response.json();
 };
 
@@ -15,6 +16,7 @@ export const getFlow = async (request, token, flowId) => {
     { headers: { Authorization: token } }
   );
   await expect(response.status()).toBe(200);
+
   return await response.json();
 };
 
@@ -38,6 +40,7 @@ export const updateFlowStep = async (request, token, stepId, requestBody) => {
     }
   );
   await expect(updateTriggerStepResponse.status()).toBe(200);
+
   return await updateTriggerStepResponse.json();
 };
 
@@ -60,10 +63,50 @@ export const publishFlow = async (request, token, flowId) => {
     }
   );
   await expect(publishFlowResponse.status()).toBe(200);
+
   return publishFlowResponse.json();
 };
 
 export const triggerFlow = async (request, url) => {
   const triggerFlowResponse = await request.get(url);
   await expect(triggerFlowResponse.status()).toBe(204);
+};
+
+export const addWebhookFlow = async (request, token) => {
+  let flow = await createFlow(request, token);
+  const flowId = flow.data.id;
+  await updateFlowName(request, token, flowId);
+  flow = await getFlow(request, token, flowId);
+  const flowSteps = flow.data.steps;
+
+  const triggerStepId = flowSteps.find((step) => step.type === 'trigger').id;
+  const actionStepId = flowSteps.find((step) => step.type === 'action').id;
+
+  const triggerStep = await updateFlowStep(request, token, triggerStepId, {
+    appKey: 'webhook',
+    key: 'catchRawWebhook',
+    parameters: {
+      workSynchronously: false,
+    },
+  });
+  await request.get(triggerStep.data.webhookUrl);
+  await testStep(request, token, triggerStepId);
+
+  await updateFlowStep(request, token, actionStepId, {
+    appKey: 'webhook',
+    key: 'respondWith',
+    parameters: {
+      statusCode: '200',
+      body: 'ok',
+      headers: [
+        {
+          key: '',
+          value: '',
+        },
+      ],
+    },
+  });
+  await testStep(request, token, actionStepId);
+
+  return flowId;
 };

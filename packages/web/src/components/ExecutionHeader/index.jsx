@@ -10,7 +10,7 @@ import { ExecutionPropType } from 'propTypes/propTypes';
 
 function ExecutionName(props) {
   return (
-    <Typography variant="h3" gutterBottom>
+    <Typography data-test="execution-name" variant="h3" gutterBottom>
       {props.name}
     </Typography>
   );
@@ -29,7 +29,7 @@ function ExecutionId(props) {
   );
   return (
     <Box sx={{ display: 'flex' }}>
-      <Typography variant="body2">
+      <Typography data-test="execution-id" variant="body2">
         {formatMessage('execution.id', { id })}
       </Typography>
     </Box>
@@ -47,7 +47,7 @@ function ExecutionDate(props) {
     <Tooltip
       title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}
     >
-      <Typography variant="body1" gutterBottom>
+      <Typography data-test="execution-created-at" variant="body1" gutterBottom>
         {relativeCreatedAt}
       </Typography>
     </Tooltip>
