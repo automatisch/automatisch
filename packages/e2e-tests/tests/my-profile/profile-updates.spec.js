@@ -1,57 +1,38 @@
+const { request } = require('@playwright/test');
 const { publicTest, expect } = require('../../fixtures/index');
-const { AdminUsersPage } = require('../../fixtures/admin/users-page');
 const { MyProfilePage } = require('../../fixtures/my-profile-page');
 const { LoginPage } = require('../../fixtures/login-page');
+const { addUser, acceptInvitation } = require('../../helpers/user-api-helper');
+const { getToken } = require('../../helpers/auth-api-helper');
 
 publicTest.describe('My Profile', () => {
   let testUser;
 
   publicTest.beforeEach(
-    async ({ acceptInvitationPage, adminCreateUserPage, loginPage, page }) => {
-      let acceptInvitationLink;
+    async ({ adminCreateUserPage, loginPage, page }) => {
+      let addUserResponse;
+      const apiRequest = await request.newContext();
 
       adminCreateUserPage.seed(
         Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER)
       );
       testUser = adminCreateUserPage.generateUser();
 
-      const adminUsersPage = new AdminUsersPage(page);
-      const myProfilePage = new MyProfilePage(page);
-
-      await publicTest.step('login as Admin', async () => {
-        await loginPage.login();
-        await expect(loginPage.page).toHaveURL('/flows');
-      });
-
       await publicTest.step('create new user', async () => {
-        await adminUsersPage.navigateTo();
-        await adminUsersPage.createUserButton.click();
-        await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
-        await adminCreateUserPage.emailInput.fill(testUser.email);
-        await adminCreateUserPage.roleInput.click();
-        await adminCreateUserPage.page
-          .getByRole('option', { name: 'Admin' })
-          .click();
-        await adminCreateUserPage.createButton.click();
-        const snackbar = await adminUsersPage.getSnackbarData(
-          'snackbar-create-user-success'
+        const tokenJsonResponse = await getToken(apiRequest);
+        addUserResponse = await addUser(
+          apiRequest,
+          tokenJsonResponse.data.token,
+          {
+            fullName: testUser.fullName,
+            email: testUser.email,
+          }
         );
-        await expect(snackbar.variant).toBe('success');
-      });
-
-      await publicTest.step('copy invitation link', async () => {
-        const invitationMessage =
-          await adminCreateUserPage.acceptInvitationLink;
-        acceptInvitationLink = await invitationMessage.getAttribute('href');
-      });
-
-      await publicTest.step('logout', async () => {
-        await myProfilePage.logout();
       });
 
       await publicTest.step('accept invitation', async () => {
-        await page.goto(acceptInvitationLink);
-        await acceptInvitationPage.acceptInvitation(LoginPage.defaultPassword);
+        let acceptToken = addUserResponse.data.acceptInvitationUrl.split('=')[1];
+        await acceptInvitation(apiRequest, {token:acceptToken, password:LoginPage.defaultPassword});
       });
 
       await publicTest.step('login as new Admin', async () => {
