@@ -118,7 +118,7 @@ describe('POST /api/v1/steps/:stepId/dynamic-fields', () => {
     const notExistingStepUUID = Crypto.randomUUID();
 
     await request(app)
-      .get(`/api/v1/steps/${notExistingStepUUID}/dynamic-fields`)
+      .post(`/api/v1/steps/${notExistingStepUUID}/dynamic-fields`)
       .set('Authorization', token)
       .expect(404);
   });
@@ -138,10 +138,11 @@ describe('POST /api/v1/steps/:stepId/dynamic-fields', () => {
       conditions: [],
     });
 
-    const step = await createStep({ appKey: null });
+    const step = await createStep();
+    await step.$query().patch({ appKey: null });
 
     await request(app)
-      .get(`/api/v1/steps/${step.id}/dynamic-fields`)
+      .post(`/api/v1/steps/${step.id}/dynamic-fields`)
       .set('Authorization', token)
       .expect(404);
   });
