@@ -87,14 +87,14 @@ describe('GET /api/v1/apps/:appKey/connections', () => {
 
   it('should return not found response for invalid connection UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'read',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
     });
 
     await request(app)
-      .get('/api/v1/connections/invalid-connection-id/connections')
+      .get('/api/v1/apps/invalid-connection-id/connections')
       .set('Authorization', token)
       .expect(404);
   });
