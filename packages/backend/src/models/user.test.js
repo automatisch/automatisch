@@ -996,21 +996,9 @@ describe('User model', () => {
 
       const user = await createUser();
 
-      const presentDate = DateTime.fromObject(
-        { year: 2024, month: 11, day: 17, hour: 11, minute: 30 },
-        { zone: 'UTC+0' }
-      );
-
-      vi.setSystemTime(presentDate);
-
       await user.startTrialPeriod();
 
-      const futureDate = DateTime.fromObject(
-        { year: 2025, month: 1, day: 1 },
-        { zone: 'UTC+0' }
-      );
-
-      vi.setSystemTime(futureDate);
+      vi.setSystemTime(DateTime.now().plus({ month: 1 }));
 
       const refetchedUser = await user.$query();
 
@@ -1118,7 +1106,9 @@ describe('User model', () => {
 
       const user = await createUser();
 
-      expect(() => user.getPlanAndUsage()).rejects.toThrow('NotFoundError');
+      await expect(() => user.getPlanAndUsage()).rejects.toThrow(
+        'NotFoundError'
+      );
     });
   });
 
@@ -1189,7 +1179,7 @@ describe('User model', () => {
     });
 
     it('should throw not found error when user role does not exist', async () => {
-      expect(() =>
+      await expect(() =>
         User.registerUser({
           fullName: 'Sample user',
           email: 'user@automatisch.io',
@@ -1257,6 +1247,8 @@ describe('User model', () => {
 
   describe('createUsageData', () => {
     it('should create usage data if Automatisch is a cloud installation', async () => {
+      vi.useFakeTimers();
+
       vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
 
       const user = await createUser({
@@ -1264,10 +1256,14 @@ describe('User model', () => {
         email: 'user@automatisch.io',
       });
 
+      vi.setSystemTime(DateTime.now().plus({ month: 1 }));
+
       const usageData = await user.createUsageData();
       const currentUsageData = await user.$relatedQuery('currentUsageData');
 
       expect(usageData).toStrictEqual(currentUsageData);
+
+      vi.useRealTimers();
     });
 
     it('should not create usage data if Automatisch is not a cloud installation', async () => {
