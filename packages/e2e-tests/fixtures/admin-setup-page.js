@@ -1,4 +1,4 @@
-import { BasePage } from "./base-page";
+import { BasePage } from './base-page';
 const { faker } = require('@faker-js/faker');
 const { expect } = require('@playwright/test');
 
@@ -6,16 +6,18 @@ export class AdminSetupPage extends BasePage {
   path = '/installation';
 
   /**
-  * @param {import('@playwright/test').Page} page
-  */
+   * @param {import('@playwright/test').Page} page
+   */
   constructor(page) {
     super(page);
 
     this.fullNameTextField = this.page.getByTestId('fullName-text-field');
     this.emailTextField = this.page.getByTestId('email-text-field');
     this.passwordTextField = this.page.getByTestId('password-text-field');
-    this.repeatPasswordTextField = this.page.getByTestId('repeat-password-text-field');
-    this.createAdminButton = this.page.getByTestId('signUp-button');
+    this.repeatPasswordTextField = this.page.getByTestId(
+      'repeat-password-text-field'
+    );
+    this.createAdminButton = this.page.getByTestId('installation-button');
     this.invalidFields = this.page.locator('p.Mui-error');
     this.successAlert = this.page.getByTestId('success-alert');
   }
@@ -46,7 +48,7 @@ export class AdminSetupPage extends BasePage {
     await this.repeatPasswordTextField.fill(testUser.wronglyRepeatedPassword);
   }
 
-  async submitAdminForm()  {
+  async submitAdminForm() {
     await this.createAdminButton.click();
   }
 
@@ -59,7 +61,10 @@ export class AdminSetupPage extends BasePage {
   }
 
   async expectSuccessMessageToContainLoginLink() {
-    await expect(await this.successAlert.locator('a')).toHaveAttribute('href', '/login');
+    await expect(await this.successAlert.locator('a')).toHaveAttribute(
+      'href',
+      '/login'
+    );
   }
 
   generateUser() {
@@ -69,7 +74,7 @@ export class AdminSetupPage extends BasePage {
       fullName: faker.person.fullName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
-      wronglyRepeatedPassword: faker.internet.password()
+      wronglyRepeatedPassword: faker.internet.password(),
     };
   }
-};
+}
