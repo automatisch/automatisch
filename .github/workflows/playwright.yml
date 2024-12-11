@@ -114,6 +114,7 @@ jobs:
       - name: Run Playwright tests
         working-directory: ./packages/e2e-tests
         env:
+          PORT: 3000
           LOGIN_EMAIL: user@automatisch.io
           LOGIN_PASSWORD: sample
           BASE_URL: http://localhost:3000
