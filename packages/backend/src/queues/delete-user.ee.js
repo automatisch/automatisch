@@ -11,10 +11,6 @@ const redisConnection = {
 
 const deleteUserQueue = new Queue('delete-user', redisConnection);
 
-process.on('SIGTERM', async () => {
-  await deleteUserQueue.close();
-});
-
 deleteUserQueue.on('error', (error) => {
   if (error.code === CONNECTION_REFUSED) {
     logger.error(
