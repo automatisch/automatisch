@@ -7,7 +7,6 @@ import AppAuthClient from './app-auth-client.js';
 import Base from './base.js';
 import appConfig from '../config/app.js';
 import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
-import { createAppConfig } from '../../test/factories/app-config.js';
 
 describe('AppAuthClient model', () => {
   it('tableName should return correct name', () => {
