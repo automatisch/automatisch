@@ -80,15 +80,21 @@ export default function Application() {
       key: 'addConnection',
       'data-test': 'add-connection-button',
       to: URLS.APP_ADD_CONNECTION(appKey, false),
-      disabled: !currentUserAbility.can('create', 'Connection'),
+      disabled:
+        !currentUserAbility.can('create', 'Connection') ||
+        appConfig?.data?.useOnlyPredefinedAuthClients === true ||
+        appConfig?.data?.disabled === true,
     };
 
     const addConnectionWithAuthClient = {
       label: formatMessage('app.addConnectionWithAuthClient'),
       key: 'addConnectionWithAuthClient',
-      'data-test': 'add-custom-connection-button',
+      'data-test': 'add-connection-with-auth-client-button',
       to: URLS.APP_ADD_CONNECTION(appKey, true),
-      disabled: !currentUserAbility.can('create', 'Connection'),
+      disabled:
+        !currentUserAbility.can('create', 'Connection') ||
+        appAuthClients?.data?.length === 0 ||
+        appConfig?.data?.disabled === true,
     };
 
     // means there is no app config. defaulting to custom connections only
@@ -96,14 +102,14 @@ export default function Application() {
       return [addCustomConnection];
     }
 
-    // means there is no app auth client. so we don't show the `addConnectionWithAuthClient`
-    if (appAuthClients?.data?.length === 0) {
-      return [addCustomConnection];
-    }
-
     // means only auth clients are allowed for connection creation
     if (appConfig?.data?.useOnlyPredefinedAuthClients === true) {
       return [addConnectionWithAuthClient];
+    }
+
+    // means there is no app auth client. so we don't show the `addConnectionWithAuthClient`
+    if (appAuthClients?.data?.length === 0) {
+      return [addCustomConnection];
     }
 
     return [addCustomConnection, addConnectionWithAuthClient];
@@ -159,9 +165,7 @@ export default function Application() {
                     <Can I="create" a="Connection" passThrough>
                       {(allowed) => (
                         <SplitButton
-                          disabled={
-                            !allowed || appConfig?.data?.disabled === true
-                          }
+                          disabled={!allowed}
                           options={connectionOptions}
                         />
                       )}
