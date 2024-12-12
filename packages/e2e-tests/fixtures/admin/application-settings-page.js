@@ -20,46 +20,54 @@ export class AdminApplicationSettingsPage extends AuthenticatedPage {
   }
 
   async allowCustomConnections() {
-    await expect(this.disableConnectionsSwitch).not.toBeChecked();
+    await expect(this.allowCustomConnectionsSwitch).not.toBeChecked();
     await this.allowCustomConnectionsSwitch.check();
+    await expect(this.allowCustomConnectionsSwitch).toBeChecked();
     await this.saveButton.click();
   }
 
   async allowSharedConnections() {
-    await expect(this.disableConnectionsSwitch).not.toBeChecked();
+    await expect(this.allowSharedConnectionsSwitch).not.toBeChecked();
     await this.allowSharedConnectionsSwitch.check();
+    await expect(this.allowSharedConnectionsSwitch).toBeChecked();
     await this.saveButton.click();
   }
 
   async disallowConnections() {
     await expect(this.disableConnectionsSwitch).not.toBeChecked();
     await this.disableConnectionsSwitch.check();
+    await expect(this.disableConnectionsSwitch).toBeChecked();
     await this.saveButton.click();
   }
 
   async disallowCustomConnections() {
-    await expect(this.disableConnectionsSwitch).toBeChecked();
+    await expect(this.allowCustomConnectionsSwitch).toBeChecked();
     await this.allowCustomConnectionsSwitch.uncheck();
+    await expect(this.allowCustomConnectionsSwitch).not.toBeChecked();
     await this.saveButton.click();
   }
 
   async disallowSharedConnections() {
-    await expect(this.disableConnectionsSwitch).toBeChecked();
+    await expect(this.allowSharedConnectionsSwitch).toBeChecked();
     await this.allowSharedConnectionsSwitch.uncheck();
+    await expect(this.allowSharedConnectionsSwitch).not.toBeChecked();
     await this.saveButton.click();
   }
 
   async allowConnections() {
     await expect(this.disableConnectionsSwitch).toBeChecked();
     await this.disableConnectionsSwitch.uncheck();
+    await expect(this.disableConnectionsSwitch).not.toBeChecked();
     await this.saveButton.click();
   }
 
   async expectSuccessSnackbarToBeVisible() {
     const snackbars = await this.successSnackbar.all();
     for (const snackbar of snackbars) {
-      await expect(await snackbar.getAttribute('data-snackbar-variant')).toBe('success');
-      await snackbar.click();
+      await expect(await snackbar.getAttribute('data-snackbar-variant')).toBe(
+        'success'
+      );
+      // await snackbar.click();
     }
   }
 }
