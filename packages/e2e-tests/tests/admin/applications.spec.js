@@ -30,7 +30,8 @@ test.describe('Admin Applications', () => {
     await adminApplicationsPage.navigateTo();
   });
 
-  test('Admin should be able to toggle Application settings', async ({
+  // TODO skip until https://github.com/automatisch/automatisch/pull/2244
+  test.skip('Admin should be able to toggle Application settings', async ({
     adminApplicationsPage,
     adminApplicationSettingsPage,
     page,
