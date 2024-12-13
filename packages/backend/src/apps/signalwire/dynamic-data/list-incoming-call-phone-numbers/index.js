@@ -1,6 +1,6 @@
 export default {
-  name: 'List incoming phone numbers',
-  key: 'listIncomingPhoneNumbers',
+  name: 'List incoming call phone numbers',
+  key: 'listIncomingCallPhoneNumbers',
 
   async run($) {
     let requestPath = `/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/IncomingPhoneNumbers`;
@@ -12,9 +12,9 @@ export default {
     do {
       const { data } = await $.http.get(requestPath);
 
-      const smsCapableIncomingPhoneNumbers = data.incoming_phone_numbers
+      const voiceCapableIncomingPhoneNumbers = data.incoming_phone_numbers
         .filter((incomingPhoneNumber) => {
-          return incomingPhoneNumber.capabilities.sms;
+          return incomingPhoneNumber.capabilities.voice;
         })
         .map((incomingPhoneNumber) => {
           const friendlyName = incomingPhoneNumber.friendly_name;
@@ -22,11 +22,12 @@ export default {
           const name = [friendlyName, phoneNumber].filter(Boolean).join(' - ');
 
           return {
-            value: phoneNumber,
+            value: incomingPhoneNumber.sid,
             name,
           };
         });
-      aggregatedResponse.data.push(...smsCapableIncomingPhoneNumbers);
+
+      aggregatedResponse.data.push(...voiceCapableIncomingPhoneNumbers);
 
       requestPath = data.next_page_uri;
     } while (requestPath);
