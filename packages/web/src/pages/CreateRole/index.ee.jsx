@@ -151,9 +151,7 @@ export default function CreateRole() {
             onSubmit={handleRoleCreation}
             defaultValues={defaultValues}
             noValidate
-            resolver={yupResolver(
-              getValidationSchema(formatMessage, defaultValues),
-            )}
+            resolver={yupResolver(getValidationSchema(formatMessage))}
             automaticValidation={false}
             render={({ formState: { errors } }) => (
               <Stack direction="column" gap={2}>
