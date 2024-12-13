@@ -116,6 +116,10 @@ class Step extends Base {
       return `/webhooks/flows/${this.flowId}/sync`;
     }
 
+    if (triggerCommand.workSynchronously) {
+      return `/webhooks/flows/${this.flowId}/sync`;
+    }
+
     return `/webhooks/flows/${this.flowId}`;
   }
 
