@@ -20,7 +20,7 @@ export default defineTrigger({
         arguments: [
           {
             name: 'key',
-            value: 'listIncomingPhoneNumbers',
+            value: 'listIncomingSmsPhoneNumbers',
           },
         ],
       },
