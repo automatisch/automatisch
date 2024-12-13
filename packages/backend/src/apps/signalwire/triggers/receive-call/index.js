@@ -6,6 +6,7 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 export default defineTrigger({
   name: 'Receive Call',
   key: 'receiveCall',
+  workSynchronously: true,
   type: 'webhook',
   description: 'Triggers when a new call is received.',
   arguments: [
