@@ -24,6 +24,7 @@ export class FlowEditorPage extends AuthenticatedPage {
     this.unpublishFlowButton = this.page.getByTestId('unpublish-flow-button');
     this.publishFlowButton = this.page.getByTestId('publish-flow-button');
     this.infoSnackbar = this.page.getByTestId('flow-cannot-edit-info-snackbar');
+    this.errorSnackbar = this.page.getByTestId('snackbar-error');
     this.trigger = this.page.getByLabel('Trigger on weekends?');
     this.stepCircularLoader = this.page.getByTestId('step-circular-loader');
     this.flowName = this.page.getByTestId('editableTypography');
@@ -32,16 +33,12 @@ export class FlowEditorPage extends AuthenticatedPage {
       .locator('input');
 
     this.flowStep = this.page.getByTestId('flow-step');
+    this.rssFeedUrl = this.page.getByTestId('parameters.feedUrl-text');
   }
 
   async createWebhookTrigger(workSynchronously) {
-    await this.appAutocomplete.click();
-    await this.page.getByRole('option', { name: 'Webhook' }).click();
+    this.chooseAppAndTrigger('Webhook', 'Catch raw webhook');
 
-    await expect(this.eventAutocomplete).toBeVisible();
-    await this.eventAutocomplete.click();
-    await this.page.getByRole('option', { name: 'Catch raw webhook' }).click();
-    await this.continueButton.click();
     await this.page
       .getByTestId('parameters.workSynchronously-autocomplete')
       .click();
@@ -69,6 +66,19 @@ export class FlowEditorPage extends AuthenticatedPage {
     return await webhookUrl.inputValue();
   }
 
+  async chooseAppAndTrigger(appName, triggerEvent) {
+    await expect(this.appAutocomplete).toHaveCount(1);
+    await this.appAutocomplete.click();
+    await this.page.getByRole('option', { name: appName }).click();
+    await expect(this.eventAutocomplete).toBeVisible();
+    await this.eventAutocomplete.click();
+    await Promise.all([
+      this.page.waitForResponse(resp => /(apps\/.*\/triggers\/.*\/substeps)/.test(resp.url()) && resp.status() === 200),
+      this.page.getByRole('option', { name: triggerEvent }).click(),
+    ]);
+    await this.continueButton.click();
+  }
+
   async chooseAppAndEvent(appName, eventName) {
     await expect(this.appAutocomplete).toHaveCount(1);
     await this.appAutocomplete.click();
@@ -87,5 +97,11 @@ export class FlowEditorPage extends AuthenticatedPage {
     await this.continueButton.click();
     await expect(this.testOutput).toBeVisible();
     await this.continueButton.click();
+  }
+
+  async dismissErrorSnackbar() {
+    await expect(this.errorSnackbar).toBeVisible();
+    await this.errorSnackbar.click();
+    await expect(this.errorSnackbar).toHaveCount(0);
   }
 }

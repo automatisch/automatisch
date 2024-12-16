@@ -1,5 +1,5 @@
 const { test, expect } = require('../../fixtures/index');
-const { pgPool } = require('../../fixtures/postgres-config');
+const { pgPool } = require('../../fixtures/postgres/postgres-config');
 
 test.describe('Admin Applications', () => {
   test.beforeAll(async () => {

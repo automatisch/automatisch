@@ -1,5 +1,5 @@
 const { publicTest, expect } = require('../../fixtures/index');
-const { pgPool } = require('../../fixtures/postgres-config');
+const { pgPool } = require('../../fixtures/postgres/postgres-config');
 const { DateTime } = require('luxon');
 
 publicTest.describe('Accept invitation page', () => {
