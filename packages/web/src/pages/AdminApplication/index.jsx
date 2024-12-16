@@ -87,6 +87,7 @@ export default function AdminApplication() {
                     component={Link}
                   />
                   <Tab
+                    data-test="auth-clients-tab"
                     label={formatMessage('adminApps.authClients')}
                     to={URLS.ADMIN_APP_AUTH_CLIENTS(appKey)}
                     value={URLS.ADMIN_APP_AUTH_CLIENTS_PATTERN}
