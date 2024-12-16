@@ -21,6 +21,7 @@ The following integrations are currently supported by Automatisch.
 - [Google Calendar](/apps/google-calendar/triggers)
 - [Google Drive](/apps/google-drive/triggers)
 - [Google Forms](/apps/google-forms/triggers)
+- [Google Gemini](/apps/google-gemini/actions)
 - [Google Sheets](/apps/google-sheets/triggers)
 - [Google Tasks](/apps/google-tasks/actions)
 - [HTTP Request](/apps/http-request/actions)
