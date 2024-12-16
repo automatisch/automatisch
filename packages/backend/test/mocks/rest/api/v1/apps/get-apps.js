@@ -6,6 +6,7 @@ const getAppsMock = (apps) => {
     name: app.name,
     primaryColor: app.primaryColor,
     supportsConnections: app.supportsConnections,
+    supportsOauthClients: app?.auth?.generateAuthUrl ? true : false,
   }));
 
   return {

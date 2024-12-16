@@ -12,6 +12,7 @@ describe('appSerializer', () => {
       iconUrl: app.iconUrl,
       authDocUrl: app.authDocUrl,
       supportsConnections: app.supportsConnections,
+      supportsOauthClients: app.auth.generateAuthUrl ? true : false,
       primaryColor: app.primaryColor,
     };
 
