@@ -68,7 +68,7 @@ function InstallationForm() {
     });
   };
 
-  const handleSubmit = async ({ fullName, email, password }, e, setError) => {
+  const handleSubmit = async ({ fullName, email, password }) => {
     try {
       await install({
         fullName,
@@ -77,29 +77,8 @@ function InstallationForm() {
       });
     } catch (error) {
       const errors = error?.response?.data?.errors;
-      if (errors) {
-        const fieldNames = Object.keys(defaultValues);
-        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
-          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
-            setError(fieldName, {
-              type: 'fieldRequestError',
-              message: fieldErrors.join(', '),
-            });
-          }
-        });
-      }
 
-      const generalError = getGeneralErrorMessage({
-        error,
-        fallbackMessage: formatMessage('installationForm.error'),
-      });
-
-      if (generalError) {
-        setError('root.general', {
-          type: 'requestError',
-          message: generalError,
-        });
-      }
+      throw errors;
     }
   };
 
