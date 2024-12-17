@@ -2,7 +2,6 @@ const createConnection = (connection) => {
   const connectionData = {
     id: connection.id,
     key: connection.key,
-    reconnectable: connection.reconnectable || true,
     appAuthClientId: connection.appAuthClientId,
     formattedData: connection.formattedData,
     verified: connection.verified || false,

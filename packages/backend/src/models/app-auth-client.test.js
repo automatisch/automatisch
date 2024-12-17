@@ -7,7 +7,6 @@ import AppAuthClient from './app-auth-client.js';
 import Base from './base.js';
 import appConfig from '../config/app.js';
 import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
-import { createAppConfig } from '../../test/factories/app-config.js';
 
 describe('AppAuthClient model', () => {
   it('tableName should return correct name', () => {
@@ -164,63 +163,6 @@ describe('AppAuthClient model', () => {
     });
   });
 
-  describe('triggerAppConfigUpdate', () => {
-    it('should trigger an update in related app config', async () => {
-      await createAppConfig({ key: 'gitlab' });
-
-      const appAuthClient = await createAppAuthClient({
-        appKey: 'gitlab',
-      });
-
-      const appConfigBeforeUpdateSpy = vi.spyOn(
-        AppConfig.prototype,
-        '$beforeUpdate'
-      );
-
-      await appAuthClient.triggerAppConfigUpdate();
-
-      expect(appConfigBeforeUpdateSpy).toHaveBeenCalledOnce();
-    });
-
-    it('should update related AppConfig after creating an instance', async () => {
-      const appConfig = await createAppConfig({
-        key: 'gitlab',
-        disabled: false,
-        shared: true,
-      });
-
-      await createAppAuthClient({
-        appKey: 'gitlab',
-        active: true,
-      });
-
-      const refetchedAppConfig = await appConfig.$query();
-
-      expect(refetchedAppConfig.connectionAllowed).toBe(true);
-    });
-
-    it('should update related AppConfig after updating an instance', async () => {
-      const appConfig = await createAppConfig({
-        key: 'gitlab',
-        disabled: false,
-        shared: true,
-      });
-
-      const appAuthClient = await createAppAuthClient({
-        appKey: 'gitlab',
-        active: false,
-      });
-
-      let refetchedAppConfig = await appConfig.$query();
-      expect(refetchedAppConfig.connectionAllowed).toBe(false);
-
-      await appAuthClient.$query().patchAndFetch({ active: true });
-
-      refetchedAppConfig = await appConfig.$query();
-      expect(refetchedAppConfig.connectionAllowed).toBe(true);
-    });
-  });
-
   it('$beforeInsert should call AppAuthClient.encryptData', async () => {
     const appAuthClientBeforeInsertSpy = vi.spyOn(
       AppAuthClient.prototype,
@@ -230,17 +172,6 @@ describe('AppAuthClient model', () => {
     await createAppAuthClient();
 
     expect(appAuthClientBeforeInsertSpy).toHaveBeenCalledOnce();
-  });
-
-  it('$afterInsert should call AppAuthClient.triggerAppConfigUpdate', async () => {
-    const appAuthClientAfterInsertSpy = vi.spyOn(
-      AppAuthClient.prototype,
-      'triggerAppConfigUpdate'
-    );
-
-    await createAppAuthClient();
-
-    expect(appAuthClientAfterInsertSpy).toHaveBeenCalledOnce();
   });
 
   it('$beforeUpdate should call AppAuthClient.encryptData', async () => {
@@ -254,19 +185,6 @@ describe('AppAuthClient model', () => {
     await appAuthClient.$query().patchAndFetch({ name: 'sample' });
 
     expect(appAuthClientBeforeUpdateSpy).toHaveBeenCalledOnce();
-  });
-
-  it('$afterUpdate should call AppAuthClient.triggerAppConfigUpdate', async () => {
-    const appAuthClient = await createAppAuthClient();
-
-    const appAuthClientAfterUpdateSpy = vi.spyOn(
-      AppAuthClient.prototype,
-      'triggerAppConfigUpdate'
-    );
-
-    await appAuthClient.$query().patchAndFetch({ name: 'sample' });
-
-    expect(appAuthClientAfterUpdateSpy).toHaveBeenCalledOnce();
   });
 
   it('$afterFind should call AppAuthClient.decryptData', async () => {

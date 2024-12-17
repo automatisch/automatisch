@@ -22,6 +22,7 @@ import useStepConnection from 'hooks/useStepConnection';
 import { useQueryClient } from '@tanstack/react-query';
 import useAppConnections from 'hooks/useAppConnections';
 import useTestConnection from 'hooks/useTestConnection';
+import useAppAuthClients from 'hooks/useAppAuthClients';
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -53,6 +54,7 @@ function ChooseConnectionSubstep(props) {
   const [showAddSharedConnectionDialog, setShowAddSharedConnectionDialog] =
     React.useState(false);
   const queryClient = useQueryClient();
+  const { data: appAuthClients } = useAppAuthClients(application.key);
 
   const { authenticate } = useAuthenticateApp({
     appKey: application.key,
@@ -93,25 +95,48 @@ function ChooseConnectionSubstep(props) {
       appWithConnections?.map((connection) => optionGenerator(connection)) ||
       [];
 
+    const addCustomConnection = {
+      label: formatMessage('chooseConnectionSubstep.addNewConnection'),
+      value: ADD_CONNECTION_VALUE,
+    };
+
+    const addConnectionWithAuthClient = {
+      label: formatMessage(
+        'chooseConnectionSubstep.addConnectionWithAuthClient',
+      ),
+      value: ADD_SHARED_CONNECTION_VALUE,
+    };
+
+    // means there is no app config. defaulting to custom connections only
+    if (!appConfig?.data) {
+      return options.concat([addCustomConnection]);
+    }
+
+    // app is disabled.
+    if (appConfig.data.disabled) return options;
+
+    // means only auth clients are allowed for connection creation and there is app auth client
     if (
-      !appConfig?.data ||
-      (!appConfig.data?.disabled && appConfig.data?.customConnectionAllowed)
+      appConfig.data.useOnlyPredefinedAuthClients === true &&
+      appAuthClients.data.length > 0
     ) {
-      options.push({
-        label: formatMessage('chooseConnectionSubstep.addNewConnection'),
-        value: ADD_CONNECTION_VALUE,
-      });
+      return options.concat([addConnectionWithAuthClient]);
     }
 
-    if (appConfig?.data?.connectionAllowed) {
-      options.push({
-        label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
-        value: ADD_SHARED_CONNECTION_VALUE,
-      });
+    // means there is no app auth client. so we don't show the `addConnectionWithAuthClient`
+    if (
+      appConfig.data.useOnlyPredefinedAuthClients === true &&
+      appAuthClients.data.length === 0
+    ) {
+      return options;
     }
 
-    return options;
-  }, [data, formatMessage, appConfig?.data]);
+    if (appAuthClients.data.length === 0) {
+      return options.concat([addCustomConnection]);
+    }
+
+    return options.concat([addCustomConnection, addConnectionWithAuthClient]);
+  }, [data, formatMessage, appConfig, appAuthClients]);
 
   const handleClientClick = async (appAuthClientId) => {
     try {
@@ -162,10 +187,7 @@ function ChooseConnectionSubstep(props) {
   const handleChange = React.useCallback(
     async (event, selectedOption) => {
       if (typeof selectedOption === 'object') {
-        // TODO: try to simplify type casting below.
-        const typedSelectedOption = selectedOption;
-        const option = typedSelectedOption;
-        const connectionId = option?.value;
+        const connectionId = selectedOption?.value;
 
         if (connectionId === ADD_CONNECTION_VALUE) {
           setShowAddConnectionDialog(true);

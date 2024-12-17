@@ -33,10 +33,6 @@ class Connection extends Base {
     },
   };
 
-  static get virtualAttributes() {
-    return ['reconnectable'];
-  }
-
   static relationMappings = () => ({
     user: {
       relation: Base.BelongsToOneRelation,
@@ -82,18 +78,6 @@ class Connection extends Base {
       },
     },
   });
-
-  get reconnectable() {
-    if (this.appAuthClientId) {
-      return this.appAuthClient.active;
-    }
-
-    if (this.appConfig) {
-      return !this.appConfig.disabled && this.appConfig.customConnectionAllowed;
-    }
-
-    return true;
-  }
 
   encryptData() {
     if (!this.eligibleForEncryption()) return;
@@ -144,19 +128,13 @@ class Connection extends Base {
         );
       }
 
-      if (!appConfig.customConnectionAllowed && this.formattedData) {
+      if (appConfig.useOnlyPredefinedAuthClients && this.formattedData) {
         throw new NotAuthorizedError(
           `New custom connections have been disabled for ${app.name}!`
         );
       }
 
-      if (!appConfig.shared && this.appAuthClientId) {
-        throw new NotAuthorizedError(
-          'The connection with the given app auth client is not allowed!'
-        );
-      }
-
-      if (appConfig.shared && !this.formattedData) {
+      if (!this.formattedData) {
         const authClient = await appConfig
           .$relatedQuery('appAuthClients')
           .findById(this.appAuthClientId)

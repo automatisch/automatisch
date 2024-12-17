@@ -1,10 +1,8 @@
 const appConfigSerializer = (appConfig) => {
   return {
     key: appConfig.key,
-    customConnectionAllowed: appConfig.customConnectionAllowed,
-    shared: appConfig.shared,
+    useOnlyPredefinedAuthClients: appConfig.useOnlyPredefinedAuthClients,
     disabled: appConfig.disabled,
-    connectionAllowed: appConfig.connectionAllowed,
     createdAt: appConfig.createdAt.getTime(),
     updatedAt: appConfig.updatedAt.getTime(),
   };

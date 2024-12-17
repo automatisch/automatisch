@@ -87,16 +87,10 @@ export default function AdminApplication() {
                     component={Link}
                   />
                   <Tab
+                    data-test="auth-clients-tab"
                     label={formatMessage('adminApps.authClients')}
                     to={URLS.ADMIN_APP_AUTH_CLIENTS(appKey)}
                     value={URLS.ADMIN_APP_AUTH_CLIENTS_PATTERN}
-                    component={Link}
-                  />
-                  <Tab
-                    label={formatMessage('adminApps.connections')}
-                    to={URLS.ADMIN_APP_CONNECTIONS(appKey)}
-                    value={URLS.ADMIN_APP_CONNECTIONS_PATTERN}
-                    disabled={!app.supportsConnections}
                     component={Link}
                   />
                 </Tabs>
@@ -110,10 +104,6 @@ export default function AdminApplication() {
                 <Route
                   path={`/auth-clients/*`}
                   element={<AdminApplicationAuthClients appKey={appKey} />}
-                />
-                <Route
-                  path={`/connections/*`}
-                  element={<div>App connections</div>}
                 />
                 <Route
                   path="/"

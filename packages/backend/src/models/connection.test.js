@@ -23,14 +23,6 @@ describe('Connection model', () => {
     expect(Connection.jsonSchema).toMatchSnapshot();
   });
 
-  it('virtualAttributes should return correct attributes', () => {
-    const virtualAttributes = Connection.virtualAttributes;
-
-    const expectedAttributes = ['reconnectable'];
-
-    expect(virtualAttributes).toStrictEqual(expectedAttributes);
-  });
-
   describe('relationMappings', () => {
     it('should return correct associations', () => {
       const relationMappings = Connection.relationMappings();
@@ -89,78 +81,6 @@ describe('Connection model', () => {
       relations.triggerSteps.filter({ where: whereSpy });
 
       expect(whereSpy).toHaveBeenCalledWith('type', '=', 'trigger');
-    });
-  });
-
-  describe('reconnectable', () => {
-    it('should return active status of app auth client when created via app auth client', async () => {
-      const appAuthClient = await createAppAuthClient({
-        active: true,
-        formattedAuthDefaults: {
-          clientId: 'sample-id',
-        },
-      });
-
-      const connection = await createConnection({
-        appAuthClientId: appAuthClient.id,
-        formattedData: {
-          token: 'sample-token',
-        },
-      });
-
-      const connectionWithAppAuthClient = await connection
-        .$query()
-        .withGraphFetched({
-          appAuthClient: true,
-        });
-
-      expect(connectionWithAppAuthClient.reconnectable).toBe(true);
-    });
-
-    it('should return true when app config is not disabled and allows custom connection', async () => {
-      const appConfig = await createAppConfig({
-        key: 'gitlab',
-        disabled: false,
-        customConnectionAllowed: true,
-      });
-
-      const connection = await createConnection({
-        key: appConfig.key,
-        formattedData: {
-          token: 'sample-token',
-        },
-      });
-
-      const connectionWithAppAuthClient = await connection
-        .$query()
-        .withGraphFetched({
-          appConfig: true,
-        });
-
-      expect(connectionWithAppAuthClient.reconnectable).toBe(true);
-    });
-
-    it('should return false when app config is disabled or does not allow custom connection', async () => {
-      const connection = await createConnection({
-        key: 'gitlab',
-        formattedData: {
-          token: 'sample-token',
-        },
-      });
-
-      await createAppConfig({
-        key: 'gitlab',
-        disabled: true,
-        customConnectionAllowed: false,
-      });
-
-      const connectionWithAppAuthClient = await connection
-        .$query()
-        .withGraphFetched({
-          appConfig: true,
-        });
-
-      expect(connectionWithAppAuthClient.reconnectable).toBe(false);
     });
   });
 
@@ -366,6 +286,7 @@ describe('Connection model', () => {
       );
     });
 
+    // TODO: update test case name
     it('should throw an error when app config does not allow custom connection with formatted data', async () => {
       vi.spyOn(Connection.prototype, 'getApp').mockResolvedValue({
         name: 'gitlab',
@@ -373,7 +294,7 @@ describe('Connection model', () => {
 
       vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue({
         disabled: false,
-        customConnectionAllowed: false,
+        useOnlyPredefinedAuthClients: true,
       });
 
       const connection = new Connection();
@@ -386,32 +307,10 @@ describe('Connection model', () => {
       );
     });
 
-    it('should throw an error when app config is not shared with app auth client', async () => {
-      vi.spyOn(Connection.prototype, 'getApp').mockResolvedValue({
-        name: 'gitlab',
-      });
-
-      vi.spyOn(Connection.prototype, 'getAppConfig').mockResolvedValue({
-        disabled: false,
-        shared: false,
-      });
-
-      const connection = new Connection();
-      connection.appAuthClientId = 'sample-id';
-
-      await expect(() =>
-        connection.checkEligibilityForCreation()
-      ).rejects.toThrow(
-        'The connection with the given app auth client is not allowed!'
-      );
-    });
-
     it('should apply app auth client auth defaults when creating with shared app auth client', async () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        customConnectionAllowed: true,
-        shared: true,
       });
 
       const appAuthClient = await createAppAuthClient({
