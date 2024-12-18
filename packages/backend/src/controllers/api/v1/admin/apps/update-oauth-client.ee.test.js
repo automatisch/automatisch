@@ -6,12 +6,12 @@ import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createRole } from '../../../../../../test/factories/role.js';
-import updateAppAuthClientMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/update-auth-client.js';
+import updateOAuthClientMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/update-oauth-client.js';
 import { createAppConfig } from '../../../../../../test/factories/app-config.js';
-import { createAppAuthClient } from '../../../../../../test/factories/app-auth-client.js';
+import { createOAuthClient } from '../../../../../../test/factories/oauth-client.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
-describe('PATCH /api/v1/admin/apps/:appKey/auth-clients', () => {
+describe('PATCH /api/v1/admin/apps/:appKey/oauth-clients', () => {
   let currentUser, adminRole, token;
 
   beforeEach(async () => {
@@ -27,8 +27,8 @@ describe('PATCH /api/v1/admin/apps/:appKey/auth-clients', () => {
     });
   });
 
-  it('should return updated entity for valid app auth client', async () => {
-    const appAuthClient = {
+  it('should return updated entity for valid oauth client', async () => {
+    const oauthClient = {
       active: true,
       appKey: 'gitlab',
       formattedAuthDefaults: {
@@ -39,33 +39,33 @@ describe('PATCH /api/v1/admin/apps/:appKey/auth-clients', () => {
       },
     };
 
-    const existingAppAuthClient = await createAppAuthClient({
+    const existingOAuthClient = await createOAuthClient({
       appKey: 'gitlab',
       name: 'First auth client',
     });
 
     const response = await request(app)
       .patch(
-        `/api/v1/admin/apps/gitlab/auth-clients/${existingAppAuthClient.id}`
+        `/api/v1/admin/apps/gitlab/oauth-clients/${existingOAuthClient.id}`
       )
       .set('Authorization', token)
-      .send(appAuthClient)
+      .send(oauthClient)
       .expect(200);
 
-    const expectedPayload = updateAppAuthClientMock({
-      ...existingAppAuthClient,
-      ...appAuthClient,
+    const expectedPayload = updateOAuthClientMock({
+      ...existingOAuthClient,
+      ...oauthClient,
     });
 
     expect(response.body).toMatchObject(expectedPayload);
   });
 
-  it('should return not found response for not existing app auth client', async () => {
-    const notExistingAppAuthClientId = Crypto.randomUUID();
+  it('should return not found response for not existing oauth client', async () => {
+    const notExistingOAuthClientId = Crypto.randomUUID();
 
     await request(app)
       .patch(
-        `/api/v1/admin/apps/gitlab/auth-clients/${notExistingAppAuthClientId}`
+        `/api/v1/admin/apps/gitlab/oauth-clients/${notExistingOAuthClientId}`
       )
       .set('Authorization', token)
       .expect(404);
@@ -73,27 +73,27 @@ describe('PATCH /api/v1/admin/apps/:appKey/auth-clients', () => {
 
   it('should return bad request response for invalid UUID', async () => {
     await request(app)
-      .patch('/api/v1/admin/apps/gitlab/auth-clients/invalidAuthClientUUID')
+      .patch('/api/v1/admin/apps/gitlab/oauth-clients/invalidAuthClientUUID')
       .set('Authorization', token)
       .expect(400);
   });
 
   it('should return HTTP 422 for invalid payload', async () => {
-    const appAuthClient = {
+    const oauthClient = {
       formattedAuthDefaults: 'invalid input',
     };
 
-    const existingAppAuthClient = await createAppAuthClient({
+    const existingOAuthClient = await createOAuthClient({
       appKey: 'gitlab',
       name: 'First auth client',
     });
 
     const response = await request(app)
       .patch(
-        `/api/v1/admin/apps/gitlab/auth-clients/${existingAppAuthClient.id}`
+        `/api/v1/admin/apps/gitlab/oauth-clients/${existingOAuthClient.id}`
       )
       .set('Authorization', token)
-      .send(appAuthClient)
+      .send(oauthClient)
       .expect(422);
 
     expect(response.body.meta.type).toBe('ModelValidation');

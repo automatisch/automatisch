@@ -2,7 +2,7 @@ import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 import App from './app.js';
 import AppConfig from './app-config.js';
-import AppAuthClient from './app-auth-client.js';
+import OAuthClient from './oauth-client.js';
 import Base from './base.js';
 import User from './user.js';
 import Step from './step.js';
@@ -24,7 +24,7 @@ class Connection extends Base {
       data: { type: 'string' },
       formattedData: { type: 'object' },
       userId: { type: 'string', format: 'uuid' },
-      appAuthClientId: { type: 'string', format: 'uuid' },
+      oauthClientId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean', default: false },
       draft: { type: 'boolean' },
       deletedAt: { type: 'string' },
@@ -69,12 +69,12 @@ class Connection extends Base {
         to: 'app_configs.key',
       },
     },
-    appAuthClient: {
+    oauthClient: {
       relation: Base.BelongsToOneRelation,
-      modelClass: AppAuthClient,
+      modelClass: OAuthClient,
       join: {
-        from: 'connections.app_auth_client_id',
-        to: 'app_auth_clients.id',
+        from: 'connections.oauth_client_id',
+        to: 'oauth_clients.id',
       },
     },
   });
@@ -136,8 +136,8 @@ class Connection extends Base {
 
       if (!this.formattedData) {
         const authClient = await appConfig
-          .$relatedQuery('appAuthClients')
-          .findById(this.appAuthClientId)
+          .$relatedQuery('oauthClients')
+          .findById(this.oauthClientId)
           .where({ active: true })
           .throwIfNotFound();
 
@@ -215,13 +215,13 @@ class Connection extends Base {
     return updatedConnection;
   }
 
-  async updateFormattedData({ formattedData, appAuthClientId }) {
-    if (appAuthClientId) {
-      const appAuthClient = await AppAuthClient.query()
-        .findById(appAuthClientId)
+  async updateFormattedData({ formattedData, oauthClientId }) {
+    if (oauthClientId) {
+      const oauthClient = await OAuthClient.query()
+        .findById(oauthClientId)
         .throwIfNotFound();
 
-      formattedData = appAuthClient.formattedAuthDefaults;
+      formattedData = oauthClient.formattedAuthDefaults;
     }
 
     return await this.$query().patchAndFetch({

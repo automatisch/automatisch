@@ -5,12 +5,12 @@ import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createRole } from '../../../../../../test/factories/role.js';
-import getAppAuthClientMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/get-auth-client.js';
-import { createAppAuthClient } from '../../../../../../test/factories/app-auth-client.js';
+import getOAuthClientMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/get-oauth-client.js';
+import { createOAuthClient } from '../../../../../../test/factories/oauth-client.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/admin/apps/:appKey/auth-clients/:appAuthClientId', () => {
-  let currentUser, adminRole, currentAppAuthClient, token;
+describe('GET /api/v1/admin/apps/:appKey/oauth-clients/:oauthClientId', () => {
+  let currentUser, adminRole, currentOAuthClient, token;
 
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
@@ -18,29 +18,29 @@ describe('GET /api/v1/admin/apps/:appKey/auth-clients/:appAuthClientId', () => {
     adminRole = await createRole({ name: 'Admin' });
     currentUser = await createUser({ roleId: adminRole.id });
 
-    currentAppAuthClient = await createAppAuthClient({
+    currentOAuthClient = await createOAuthClient({
       appKey: 'deepl',
     });
 
     token = await createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return specified app auth client', async () => {
+  it('should return specified oauth client', async () => {
     const response = await request(app)
-      .get(`/api/v1/admin/apps/deepl/auth-clients/${currentAppAuthClient.id}`)
+      .get(`/api/v1/admin/apps/deepl/oauth-clients/${currentOAuthClient.id}`)
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = getAppAuthClientMock(currentAppAuthClient);
+    const expectedPayload = getOAuthClientMock(currentOAuthClient);
     expect(response.body).toStrictEqual(expectedPayload);
   });
 
-  it('should return not found response for not existing app auth client ID', async () => {
-    const notExistingAppAuthClientUUID = Crypto.randomUUID();
+  it('should return not found response for not existing oauth client ID', async () => {
+    const notExistingOAuthClientUUID = Crypto.randomUUID();
 
     await request(app)
       .get(
-        `/api/v1/admin/apps/deepl/auth-clients/${notExistingAppAuthClientUUID}`
+        `/api/v1/admin/apps/deepl/oauth-clients/${notExistingOAuthClientUUID}`
       )
       .set('Authorization', token)
       .expect(404);
@@ -48,7 +48,7 @@ describe('GET /api/v1/admin/apps/:appKey/auth-clients/:appAuthClientId', () => {
 
   it('should return bad request response for invalid UUID', async () => {
     await request(app)
-      .get('/api/v1/admin/apps/deepl/auth-clients/invalidAppAuthClientUUID')
+      .get('/api/v1/admin/apps/deepl/oauth-clients/invalidOAuthClientUUID')
       .set('Authorization', token)
       .expect(400);
   });

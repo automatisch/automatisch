@@ -1,10 +1,10 @@
 import { renderObject } from '../../../../helpers/renderer.js';
-import AppAuthClient from '../../../../models/app-auth-client.js';
+import OAuthClient from '../../../../models/oauth-client.js';
 
 export default async (request, response) => {
-  const appAuthClients = await AppAuthClient.query()
+  const oauthClients = await OAuthClient.query()
     .where({ app_key: request.params.appKey, active: true })
     .orderBy('created_at', 'desc');
 
-  renderObject(response, appAuthClients);
+  renderObject(response, oauthClients);
 };

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import AppAuthClient from '../../src/models/app-auth-client';
+import OAuthClient from '../../src/models/oauth-client';
 
 const formattedAuthDefaults = {
   oAuthRedirectUrl: faker.internet.url(),
@@ -8,14 +8,14 @@ const formattedAuthDefaults = {
   clientSecret: faker.string.uuid(),
 };
 
-export const createAppAuthClient = async (params = {}) => {
+export const createOAuthClient = async (params = {}) => {
   params.name = params?.name || faker.person.fullName();
   params.appKey = params?.appKey || 'deepl';
   params.active = params?.active ?? true;
   params.formattedAuthDefaults =
     params?.formattedAuthDefaults || formattedAuthDefaults;
 
-  const appAuthClient = await AppAuthClient.query().insertAndFetch(params);
+  const oauthClient = await OAuthClient.query().insertAndFetch(params);
 
-  return appAuthClient;
+  return oauthClient;
 };

@@ -4,8 +4,8 @@ import appConfig from '../config/app.js';
 import Base from './base.js';
 import AppConfig from './app-config.js';
 
-class AppAuthClient extends Base {
-  static tableName = 'app_auth_clients';
+class OAuthClient extends Base {
+  static tableName = 'oauth_clients';
 
   static jsonSchema = {
     type: 'object',
@@ -27,7 +27,7 @@ class AppAuthClient extends Base {
       relation: Base.BelongsToOneRelation,
       modelClass: AppConfig,
       join: {
-        from: 'app_auth_clients.app_key',
+        from: 'oauth_clients.app_key',
         to: 'app_configs.key',
       },
     },
@@ -87,4 +87,4 @@ class AppAuthClient extends Base {
   }
 }
 
-export default AppAuthClient;
+export default OAuthClient;

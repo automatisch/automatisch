@@ -6,14 +6,14 @@ export default async (request, response) => {
     .findOne({ key: request.params.appKey })
     .throwIfNotFound();
 
-  const appAuthClient = await appConfig
-    .$relatedQuery('appAuthClients')
-    .insert(appAuthClientParams(request));
+  const oauthClient = await appConfig
+    .$relatedQuery('oauthClients')
+    .insert(oauthClientParams(request));
 
-  renderObject(response, appAuthClient, { status: 201 });
+  renderObject(response, oauthClient, { status: 201 });
 };
 
-const appAuthClientParams = (request) => {
+const oauthClientParams = (request) => {
   const { active, appKey, name, formattedAuthDefaults } = request.body;
 
   return {

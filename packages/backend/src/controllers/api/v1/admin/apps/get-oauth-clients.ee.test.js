@@ -4,11 +4,11 @@ import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createRole } from '../../../../../../test/factories/role.js';
-import getAuthClientsMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/get-auth-clients.js';
-import { createAppAuthClient } from '../../../../../../test/factories/app-auth-client.js';
+import getAdminOAuthClientsMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/get-oauth-clients.js';
+import { createOAuthClient } from '../../../../../../test/factories/oauth-client.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
-describe('GET /api/v1/admin/apps/:appKey/auth-clients', () => {
+describe('GET /api/v1/admin/apps/:appKey/oauth-clients', () => {
   let currentUser, adminRole, token;
 
   beforeEach(async () => {
@@ -20,23 +20,23 @@ describe('GET /api/v1/admin/apps/:appKey/auth-clients', () => {
     token = await createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return specified app auth client info', async () => {
-    const appAuthClientOne = await createAppAuthClient({
+  it('should return specified oauth client info', async () => {
+    const oauthClientOne = await createOAuthClient({
       appKey: 'deepl',
     });
 
-    const appAuthClientTwo = await createAppAuthClient({
+    const oauthClientTwo = await createOAuthClient({
       appKey: 'deepl',
     });
 
     const response = await request(app)
-      .get('/api/v1/admin/apps/deepl/auth-clients')
+      .get('/api/v1/admin/apps/deepl/oauth-clients')
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = getAuthClientsMock([
-      appAuthClientTwo,
-      appAuthClientOne,
+    const expectedPayload = getAdminOAuthClientsMock([
+      oauthClientTwo,
+      oauthClientOne,
     ]);
 
     expect(response.body).toStrictEqual(expectedPayload);

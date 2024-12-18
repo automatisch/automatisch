@@ -5,11 +5,11 @@ import app from '../../../../../app.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createRole } from '../../../../../../test/factories/role.js';
-import createAppAuthClientMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/create-auth-client.js';
+import createOAuthClientMock from '../../../../../../test/mocks/rest/api/v1/admin/apps/create-oauth-client.js';
 import { createAppConfig } from '../../../../../../test/factories/app-config.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
-describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
+describe('POST /api/v1/admin/apps/:appKey/oauth-clients', () => {
   let currentUser, adminRole, token;
 
   beforeEach(async () => {
@@ -26,7 +26,7 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
       key: 'gitlab',
     });
 
-    const appAuthClient = {
+    const oauthClient = {
       active: true,
       appKey: 'gitlab',
       name: 'First auth client',
@@ -39,17 +39,17 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
     };
 
     const response = await request(app)
-      .post('/api/v1/admin/apps/gitlab/auth-clients')
+      .post('/api/v1/admin/apps/gitlab/oauth-clients')
       .set('Authorization', token)
-      .send(appAuthClient)
+      .send(oauthClient)
       .expect(201);
 
-    const expectedPayload = createAppAuthClientMock(appAuthClient);
+    const expectedPayload = createOAuthClientMock(oauthClient);
     expect(response.body).toMatchObject(expectedPayload);
   });
 
   it('should return not found response for not existing app config', async () => {
-    const appAuthClient = {
+    const oauthClient = {
       active: true,
       appKey: 'gitlab',
       name: 'First auth client',
@@ -62,9 +62,9 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
     };
 
     await request(app)
-      .post('/api/v1/admin/apps/gitlab/auth-clients')
+      .post('/api/v1/admin/apps/gitlab/oauth-clients')
       .set('Authorization', token)
-      .send(appAuthClient)
+      .send(oauthClient)
       .expect(404);
   });
 
@@ -73,14 +73,14 @@ describe('POST /api/v1/admin/apps/:appKey/auth-clients', () => {
       key: 'gitlab',
     });
 
-    const appAuthClient = {
+    const oauthClient = {
       appKey: 'gitlab',
     };
 
     const response = await request(app)
-      .post('/api/v1/admin/apps/gitlab/auth-clients')
+      .post('/api/v1/admin/apps/gitlab/oauth-clients')
       .set('Authorization', token)
-      .send(appAuthClient)
+      .send(oauthClient)
       .expect(422);
 
     expect(response.body.meta.type).toStrictEqual('ModelValidation');
