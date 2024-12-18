@@ -13,7 +13,6 @@ describe('connectionSerializer', () => {
     const expectedPayload = {
       id: connection.id,
       key: connection.key,
-      reconnectable: connection.reconnectable,
       appAuthClientId: connection.appAuthClientId,
       formattedData: {
         screenName: connection.formattedData.screenName,

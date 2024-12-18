@@ -64,7 +64,7 @@ function AddAppConnection(props) {
 
       asyncAuthenticate();
     },
-    [appAuthClientId, authenticate],
+    [appAuthClientId, authenticate, key, navigate],
   );
 
   const handleClientClick = (appAuthClientId) =>

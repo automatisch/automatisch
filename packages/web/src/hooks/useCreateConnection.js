@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import api from 'helpers/api';
 
 export default function useCreateConnection(appKey) {
-  const query = useMutation({
+  const mutation = useMutation({
     mutationFn: async ({ appAuthClientId, formattedData }) => {
       const { data } = await api.post(`/v1/apps/${appKey}/connections`, {
         appAuthClientId,
@@ -14,5 +14,5 @@ export default function useCreateConnection(appKey) {
     },
   });
 
-  return query;
+  return mutation;
 }

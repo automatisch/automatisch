@@ -9,12 +9,18 @@ export class AdminApplicationAuthClientsPage extends AuthenticatedPage {
   constructor(page) {
     super(page);
 
-    this.authClientsTab = this.page.getByText('AUTH CLIENTS');
+    this.authClientsTab = this.page.getByTestId('auth-clients-tab');
     this.saveButton = this.page.getByTestId('submitButton');
-    this.successSnackbar = this.page.getByTestId('snackbar-save-admin-apps-settings-success');
+    this.successSnackbar = this.page.getByTestId(
+      'snackbar-save-admin-apps-settings-success'
+    );
     this.createFirstAuthClientButton = this.page.getByTestId('no-results');
-    this.createAuthClientButton = this.page.getByTestId('create-auth-client-button');
-    this.submitAuthClientFormButton = this.page.getByTestId('submit-auth-client-form');
+    this.createAuthClientButton = this.page.getByTestId(
+      'create-auth-client-button'
+    );
+    this.submitAuthClientFormButton = this.page.getByTestId(
+      'submit-auth-client-form'
+    );
     this.authClientEntry = this.page.getByTestId('auth-client');
   }
 
@@ -35,6 +41,8 @@ export class AdminApplicationAuthClientsPage extends AuthenticatedPage {
   }
 
   async authClientShouldBeVisible(authClientName) {
-    await expect(this.authClientEntry.filter({ hasText: authClientName })).toBeVisible();
+    await expect(
+      this.authClientEntry.filter({ hasText: authClientName })
+    ).toBeVisible();
   }
 }

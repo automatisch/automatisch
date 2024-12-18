@@ -10,6 +10,7 @@ import flowSerializer from './flow.js';
 import stepSerializer from './step.js';
 import connectionSerializer from './connection.js';
 import appSerializer from './app.js';
+import userAppSerializer from './user-app.js';
 import authSerializer from './auth.js';
 import triggerSerializer from './trigger.js';
 import actionSerializer from './action.js';
@@ -33,6 +34,7 @@ const serializers = {
   Step: stepSerializer,
   Connection: connectionSerializer,
   App: appSerializer,
+  UserApp: userAppSerializer,
   Auth: authSerializer,
   Trigger: triggerSerializer,
   Action: actionSerializer,

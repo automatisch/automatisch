@@ -211,7 +211,6 @@ export const ConnectionPropType = PropTypes.shape({
   flowCount: PropTypes.number,
   appData: AppPropType,
   createdAt: PropTypes.number,
-  reconnectable: PropTypes.bool,
   appAuthClientId: PropTypes.string,
 });
 
@@ -459,8 +458,7 @@ export const SamlAuthProviderRolePropType = PropTypes.shape({
 export const AppConfigPropType = PropTypes.shape({
   id: PropTypes.string,
   key: PropTypes.string,
-  customConnectionAllowed: PropTypes.bool,
-  connectionAllowed: PropTypes.bool,
+  useOnlyPredefinedAuthClients: PropTypes.bool,
   shared: PropTypes.bool,
   disabled: PropTypes.bool,
 });

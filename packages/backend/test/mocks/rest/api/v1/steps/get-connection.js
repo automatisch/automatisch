@@ -3,7 +3,6 @@ const getConnectionMock = async (connection) => {
     id: connection.id,
     key: connection.key,
     verified: connection.verified,
-    reconnectable: connection.reconnectable,
     appAuthClientId: connection.appAuthClientId,
     formattedData: {
       screenName: connection.formattedData.screenName,

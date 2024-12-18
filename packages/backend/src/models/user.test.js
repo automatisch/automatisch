@@ -376,7 +376,10 @@ describe('User model', () => {
       const anotherUserConnection = await createConnection();
 
       expect(
-        await userWithRoleAndPermissions.authorizedConnections
+        await userWithRoleAndPermissions.authorizedConnections.orderBy(
+          'created_at',
+          'asc'
+        )
       ).toStrictEqual([userConnection, anotherUserConnection]);
     });
 
