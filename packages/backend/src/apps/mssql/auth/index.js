@@ -1,0 +1,86 @@
+import verifyCredentials from './verify-credentials.js';
+import isStillVerified from './is-still-verified.js';
+
+export default {
+  fields: [
+    {
+      key: 'host',
+      label: 'Server',
+      type: 'string',
+      required: true,
+      readOnly: false,
+      value: 'localhost',
+      placeholder: null,
+      description: 'The hostname or IP address of the SQL Server.',
+      clickToCopy: false,
+    },
+    {
+      key: 'port',
+      label: 'Port',
+      type: 'string',
+      required: true,
+      readOnly: false,
+      value: '1433',
+      placeholder: null,
+      description: 'The port number SQL Server is listening on.',
+      clickToCopy: false,
+    },
+    {
+      key: 'enableSsl',
+      label: 'Enable SSL',
+      type: 'dropdown',
+      required: true,
+      readOnly: false,
+      value: 'false',
+      description: 'Enable SSL encryption for the connection.',
+      variables: false,
+      clickToCopy: false,
+      options: [
+        {
+          label: 'True',
+          value: 'true',
+        },
+        {
+          label: 'False',
+          value: 'false',
+        },
+      ],
+    },
+    {
+      key: 'database',
+      label: 'Database name',
+      type: 'string',
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: 'The name of the database to connect to.',
+      clickToCopy: false,
+    },
+    {
+      key: 'user',
+      label: 'Username',
+      type: 'string',
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: 'SQL Server authentication username.',
+      clickToCopy: false,
+    },
+    {
+      key: 'password',
+      label: 'Password',
+      type: 'string',
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: 'SQL Server authentication password.',
+      clickToCopy: false,
+    },
+  ],
+
+  verifyCredentials,
+  isStillVerified,
+};
