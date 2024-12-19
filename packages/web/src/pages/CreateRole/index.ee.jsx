@@ -19,7 +19,6 @@ import {
   getComputedPermissionsDefaultValues,
   getPermissions,
 } from 'helpers/computePermissions.ee';
-import { getGeneralErrorMessage } from 'helpers/errors';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminCreateRole from 'hooks/useAdminCreateRole';
 import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
@@ -65,6 +64,7 @@ export default function CreateRole() {
   const { mutateAsync: createRole, isPending: isCreateRolePending } =
     useAdminCreateRole();
   const { data: permissionCatalogData } = usePermissionCatalog();
+  const [permissionError, setPermissionError] = React.useState(null);
 
   const defaultValues = React.useMemo(
     () => ({
@@ -80,8 +80,9 @@ export default function CreateRole() {
     [permissionCatalogData],
   );
 
-  const handleRoleCreation = async (roleData, e, setError) => {
+  const handleRoleCreation = async (roleData) => {
     try {
+      setPermissionError(null);
       const permissions = getPermissions(roleData.computedPermissions);
 
       await createRole({
@@ -99,40 +100,13 @@ export default function CreateRole() {
 
       navigate(URLS.ROLES);
     } catch (error) {
-      const errors = error?.response?.data?.errors;
-
-      if (errors) {
-        const fieldNames = ['name', 'description'];
-        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
-          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
-            setError(fieldName, {
-              type: 'fieldRequestError',
-              message: fieldErrors.join(', '),
-            });
-          }
-        });
-      }
-
       const permissionError = getPermissionsErrorMessage(error);
-
       if (permissionError) {
-        setError('root.permissions', {
-          type: 'fieldRequestError',
-          message: permissionError,
-        });
+        setPermissionError(permissionError);
       }
 
-      const generalError = getGeneralErrorMessage({
-        error,
-        fallbackMessage: formatMessage('createRole.generalError'),
-      });
-
-      if (generalError) {
-        setError('root.general', {
-          type: 'requestError',
-          message: generalError,
-        });
-      }
+      const errors = error?.response?.data?.errors;
+      throw errors || error;
     }
   };
 
@@ -175,18 +149,18 @@ export default function CreateRole() {
 
                 <PermissionCatalogField name="computedPermissions" />
 
-                {errors?.root?.permissions && (
+                {permissionError && (
                   <Alert severity="error" data-test="create-role-error-alert">
                     <AlertTitle>
                       {formatMessage('createRole.permissionsError')}
                     </AlertTitle>
                     <pre>
-                      <code>{errors?.root?.permissions?.message}</code>
+                      <code>{permissionError}</code>
                     </pre>
                   </Alert>
                 )}
 
-                {errors?.root?.general && (
+                {errors?.root?.general && !permissionError && (
                   <Alert severity="error" data-test="create-role-error-alert">
                     {errors?.root?.general?.message}
                   </Alert>
