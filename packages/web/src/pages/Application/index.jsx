@@ -30,7 +30,7 @@ import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useApp from 'hooks/useApp';
-import useAppAuthClients from 'hooks/useAppAuthClients';
+import useOAuthClients from 'hooks/useOAuthClients';
 import Can from 'components/Can';
 import { AppPropType } from 'propTypes/propTypes';
 
@@ -63,7 +63,7 @@ export default function Application() {
   const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
   const { appKey } = useParams();
   const navigate = useNavigate();
-  const { data: appAuthClients } = useAppAuthClients(appKey);
+  const { data: appOAuthClients } = useOAuthClients(appKey);
 
   const { data, loading } = useApp(appKey);
   const app = data?.data || {};
@@ -86,14 +86,14 @@ export default function Application() {
         appConfig?.data?.disabled === true,
     };
 
-    const addConnectionWithAuthClient = {
-      label: formatMessage('app.addConnectionWithAuthClient'),
-      key: 'addConnectionWithAuthClient',
+    const addConnectionWithOAuthClient = {
+      label: formatMessage('app.addConnectionWithOAuthClient'),
+      key: 'addConnectionWithOAuthClient',
       'data-test': 'add-connection-with-auth-client-button',
       to: URLS.APP_ADD_CONNECTION(appKey, true),
       disabled:
         !currentUserAbility.can('create', 'Connection') ||
-        appAuthClients?.data?.length === 0 ||
+        appOAuthClients?.data?.length === 0 ||
         appConfig?.data?.disabled === true,
     };
 
@@ -102,18 +102,18 @@ export default function Application() {
       return [addCustomConnection];
     }
 
-    // means only auth clients are allowed for connection creation
+    // means only OAuth clients are allowed for connection creation
     if (appConfig?.data?.useOnlyPredefinedAuthClients === true) {
-      return [addConnectionWithAuthClient];
+      return [addConnectionWithOAuthClient];
     }
 
-    // means there is no app auth client. so we don't show the `addConnectionWithAuthClient`
-    if (appAuthClients?.data?.length === 0) {
+    // means there is no OAuth client. so we don't show the `addConnectionWithOAuthClient`
+    if (appOAuthClients?.data?.length === 0) {
       return [addCustomConnection];
     }
 
-    return [addCustomConnection, addConnectionWithAuthClient];
-  }, [appKey, appConfig, appAuthClients, currentUserAbility, formatMessage]);
+    return [addCustomConnection, addConnectionWithOAuthClient];
+  }, [appKey, appConfig, appOAuthClients, currentUserAbility, formatMessage]);
 
   if (loading) return null;
 

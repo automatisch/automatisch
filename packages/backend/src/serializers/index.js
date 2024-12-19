@@ -4,7 +4,7 @@ import permissionSerializer from './permission.js';
 import adminSamlAuthProviderSerializer from './admin-saml-auth-provider.ee.js';
 import samlAuthProviderSerializer from './saml-auth-provider.ee.js';
 import samlAuthProviderRoleMappingSerializer from './role-mapping.ee.js';
-import appAuthClientSerializer from './app-auth-client.js';
+import oauthClientSerializer from './oauth-client.js';
 import appConfigSerializer from './app-config.js';
 import flowSerializer from './flow.js';
 import stepSerializer from './step.js';
@@ -28,7 +28,7 @@ const serializers = {
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   SamlAuthProvider: samlAuthProviderSerializer,
   RoleMapping: samlAuthProviderRoleMappingSerializer,
-  AppAuthClient: appAuthClientSerializer,
+  OAuthClient: oauthClientSerializer,
   AppConfig: appConfigSerializer,
   Flow: flowSerializer,
   Step: stepSerializer,

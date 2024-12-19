@@ -88,8 +88,8 @@ const sharedAuthenticationStepsWithAuthUrl = [
         value: '{key}',
       },
       {
-        name: 'appAuthClientId',
-        value: '{appAuthClientId}',
+        name: 'oauthClientId',
+        value: '{oauthClientId}',
       },
     ],
   },

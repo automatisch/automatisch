@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createAppConfig } from '../../../../../test/factories/app-config.js';
-import { createAppAuthClient } from '../../../../../test/factories/app-auth-client.js';
+import { createOAuthClient } from '../../../../../test/factories/oauth-client.js';
 import { createUser } from '../../../../../test/factories/user.js';
 import { createPermission } from '../../../../../test/factories/permission.js';
 import { createRole } from '../../../../../test/factories/role.js';
@@ -267,7 +267,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
   });
 
   describe('with auth client enabled', async () => {
-    let appAuthClient;
+    let oauthClient;
 
     beforeEach(async () => {
       await createAppConfig({
@@ -276,7 +276,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
         useOnlyPredefinedAuthClients: false,
       });
 
-      appAuthClient = await createAppAuthClient({
+      oauthClient = await createOAuthClient({
         appKey: 'gitlab',
         active: true,
         formattedAuthDefaults: {
@@ -290,7 +290,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
 
     it('should return created connection', async () => {
       const connectionData = {
-        appAuthClientId: appAuthClient.id,
+        oauthClientId: oauthClient.id,
       };
 
       const response = await request(app)
@@ -338,7 +338,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
   });
 
   describe('with auth client disabled', async () => {
-    let appAuthClient;
+    let oauthClient;
 
     beforeEach(async () => {
       await createAppConfig({
@@ -347,7 +347,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
         useOnlyPredefinedAuthClients: false,
       });
 
-      appAuthClient = await createAppAuthClient({
+      oauthClient = await createOAuthClient({
         appKey: 'gitlab',
         active: false,
       });
@@ -355,7 +355,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
 
     it('should return with not authorized response', async () => {
       const connectionData = {
-        appAuthClientId: appAuthClient.id,
+        oauthClientId: oauthClient.id,
       };
 
       await request(app)

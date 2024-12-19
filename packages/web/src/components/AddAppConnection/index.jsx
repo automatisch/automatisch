@@ -9,7 +9,7 @@ import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { AppPropType } from 'propTypes/propTypes';
-import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
+import AppOAuthClientsDialog from 'components/OAuthClientsDialog/index.ee';
 import InputCreator from 'components/InputCreator';
 import * as URLS from 'config/urls';
 import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
@@ -31,12 +31,12 @@ function AddAppConnection(props) {
   const [inProgress, setInProgress] = React.useState(false);
   const hasConnection = Boolean(connectionId);
   const useShared = searchParams.get('shared') === 'true';
-  const appAuthClientId = searchParams.get('appAuthClientId') || undefined;
+  const oauthClientId = searchParams.get('oauthClientId') || undefined;
   const { authenticate } = useAuthenticateApp({
     appKey: key,
     connectionId,
-    appAuthClientId,
-    useShared: !!appAuthClientId,
+    oauthClientId,
+    useShared: !!oauthClientId,
   });
   const queryClient = useQueryClient();
 
@@ -52,8 +52,8 @@ function AddAppConnection(props) {
   }, []);
 
   React.useEffect(
-    function initiateSharedAuthenticationForGivenAuthClient() {
-      if (!appAuthClientId) return;
+    function initiateSharedAuthenticationForGivenOAuthClient() {
+      if (!oauthClientId) return;
 
       if (!authenticate) return;
 
@@ -64,13 +64,13 @@ function AddAppConnection(props) {
 
       asyncAuthenticate();
     },
-    [appAuthClientId, authenticate, key, navigate],
+    [oauthClientId, authenticate, key, navigate],
   );
 
-  const handleClientClick = (appAuthClientId) =>
-    navigate(URLS.APP_ADD_CONNECTION_WITH_AUTH_CLIENT_ID(key, appAuthClientId));
+  const handleClientClick = (oauthClientId) =>
+    navigate(URLS.APP_ADD_CONNECTION_WITH_OAUTH_CLIENT_ID(key, oauthClientId));
 
-  const handleAuthClientsDialogClose = () =>
+  const handleOAuthClientsDialogClose = () =>
     navigate(URLS.APP_CONNECTIONS(key));
 
   const submitHandler = React.useCallback(
@@ -104,14 +104,14 @@ function AddAppConnection(props) {
 
   if (useShared)
     return (
-      <AppAuthClientsDialog
+      <AppOAuthClientsDialog
         appKey={key}
-        onClose={handleAuthClientsDialogClose}
+        onClose={handleOAuthClientsDialogClose}
         onClientClick={handleClientClick}
       />
     );
 
-  if (appAuthClientId) return <React.Fragment />;
+  if (oauthClientId) return <React.Fragment />;
 
   return (
     <Dialog

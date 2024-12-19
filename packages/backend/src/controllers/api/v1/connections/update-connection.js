@@ -14,6 +14,6 @@ export default async (request, response) => {
 };
 
 const connectionParams = (request) => {
-  const { formattedData, appAuthClientId } = request.body;
-  return { formattedData, appAuthClientId };
+  const { formattedData, oauthClientId } = request.body;
+  return { formattedData, oauthClientId };
 };

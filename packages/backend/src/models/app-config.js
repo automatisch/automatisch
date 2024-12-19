@@ -1,5 +1,5 @@
 import App from './app.js';
-import AppAuthClient from './app-auth-client.js';
+import OAuthClient from './oauth-client.js';
 import Base from './base.js';
 
 class AppConfig extends Base {
@@ -24,12 +24,12 @@ class AppConfig extends Base {
   };
 
   static relationMappings = () => ({
-    appAuthClients: {
+    oauthClients: {
       relation: Base.HasManyRelation,
-      modelClass: AppAuthClient,
+      modelClass: OAuthClient,
       join: {
         from: 'app_configs.key',
-        to: 'app_auth_clients.app_key',
+        to: 'oauth_clients.app_key',
       },
     },
   });

@@ -4,8 +4,8 @@ const { insertAppConnection } = require('../../helpers/db-helpers');
 
 test.describe('Admin Applications', () => {
   test.beforeAll(async () => {
-    const deleteAppAuthClients = {
-      text: 'DELETE FROM app_auth_clients WHERE app_key in ($1, $2, $3, $4, $5, $6)',
+    const deleteOAuthClients = {
+      text: 'DELETE FROM oauth_clients WHERE app_key in ($1, $2, $3, $4, $5, $6)',
       values: [
         'carbone',
         'spotify',
@@ -29,10 +29,8 @@ test.describe('Admin Applications', () => {
     };
 
     try {
-      const deleteAppAuthClientsResult = await pgPool.query(
-        deleteAppAuthClients
-      );
-      expect(deleteAppAuthClientsResult.command).toBe('DELETE');
+      const deleteOAuthClientsResult = await pgPool.query(deleteOAuthClients);
+      expect(deleteOAuthClientsResult.command).toBe('DELETE');
       const deleteAppConfigsResult = await pgPool.query(deleteAppConfigs);
       expect(deleteAppConfigsResult.command).toBe('DELETE');
     } catch (err) {
@@ -73,7 +71,7 @@ test.describe('Admin Applications', () => {
   test('should allow only custom connections', async ({
     adminApplicationsPage,
     adminApplicationSettingsPage,
-    adminApplicationAuthClientsPage,
+    adminApplicationOAuthClientsPage,
     flowEditorPage,
     page,
   }) => {
@@ -97,9 +95,9 @@ test.describe('Admin Applications', () => {
       adminApplicationSettingsPage.disableConnectionsSwitch
     ).not.toBeChecked();
 
-    await adminApplicationAuthClientsPage.openAuthClientsTab();
+    await adminApplicationOAuthClientsPage.openAuthClientsTab();
     await expect(
-      adminApplicationAuthClientsPage.createFirstAuthClientButton
+      adminApplicationOAuthClientsPage.createFirstAuthClientButton
     ).toHaveCount(1);
 
     await page.goto('/');
@@ -119,9 +117,9 @@ test.describe('Admin Applications', () => {
     const newConnectionOption = page
       .getByRole('option')
       .filter({ hasText: 'Add new connection' });
-    const newSharedConnectionOption = page
+    const newOAuthConnectionOption = page
       .getByRole('option')
-      .filter({ hasText: 'Add new connection with auth client' });
+      .filter({ hasText: 'Add connection with OAuth client' });
     const existingConnection = page
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
@@ -129,13 +127,13 @@ test.describe('Admin Applications', () => {
     await expect(await existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toBeEnabled();
     await expect(newConnectionOption).toHaveCount(1);
-    await expect(newSharedConnectionOption).toHaveCount(0);
+    await expect(newOAuthConnectionOption).toHaveCount(0);
   });
 
   test('should allow only predefined connections and existing custom', async ({
     adminApplicationsPage,
     adminApplicationSettingsPage,
-    adminApplicationAuthClientsPage,
+    adminApplicationOAuthClientsPage,
     flowEditorPage,
     page,
   }) => {
@@ -155,8 +153,8 @@ test.describe('Admin Applications', () => {
     await adminApplicationSettingsPage.saveSettings();
     await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
 
-    await adminApplicationAuthClientsPage.openAuthClientsTab();
-    await adminApplicationAuthClientsPage.openFirstAuthClientCreateForm();
+    await adminApplicationOAuthClientsPage.openAuthClientsTab();
+    await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
     const authClientForm = page.getByTestId('auth-client-form');
     await authClientForm.locator(page.getByTestId('switch')).check();
     await authClientForm
@@ -168,8 +166,8 @@ test.describe('Admin Applications', () => {
     await authClientForm
       .locator(page.locator('[name="clientSecret"]'))
       .fill('spotifyClientSecret');
-    await adminApplicationAuthClientsPage.submitAuthClientForm();
-    await adminApplicationAuthClientsPage.authClientShouldBeVisible(
+    await adminApplicationOAuthClientsPage.submitAuthClientForm();
+    await adminApplicationOAuthClientsPage.authClientShouldBeVisible(
       'spotifyAuthClient'
     );
 
@@ -189,23 +187,23 @@ test.describe('Admin Applications', () => {
     const newConnectionOption = page
       .getByRole('option')
       .filter({ hasText: 'Add new connection' });
-    const newSharedConnectionOption = page
+    const newOAuthConnectionOption = page
       .getByRole('option')
-      .filter({ hasText: 'Add connection with auth client' });
+      .filter({ hasText: 'Add connection with OAuth client' });
     const existingConnection = page
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
 
     await expect(await existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toHaveCount(0);
-    await expect(newSharedConnectionOption).toBeEnabled();
-    await expect(newSharedConnectionOption).toHaveCount(1);
+    await expect(newOAuthConnectionOption).toBeEnabled();
+    await expect(newOAuthConnectionOption).toHaveCount(1);
   });
 
   test('should allow all connections', async ({
     adminApplicationsPage,
     adminApplicationSettingsPage,
-    adminApplicationAuthClientsPage,
+    adminApplicationOAuthClientsPage,
     flowEditorPage,
     page,
   }) => {
@@ -221,8 +219,8 @@ test.describe('Admin Applications', () => {
       adminApplicationSettingsPage.disableConnectionsSwitch
     ).not.toBeChecked();
 
-    await adminApplicationAuthClientsPage.openAuthClientsTab();
-    await adminApplicationAuthClientsPage.openFirstAuthClientCreateForm();
+    await adminApplicationOAuthClientsPage.openAuthClientsTab();
+    await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
     const authClientForm = page.getByTestId('auth-client-form');
     await authClientForm.locator(page.getByTestId('switch')).check();
     await authClientForm
@@ -234,8 +232,8 @@ test.describe('Admin Applications', () => {
     await authClientForm
       .locator(page.locator('[name="clientSecret"]'))
       .fill('redditClientSecret');
-    await adminApplicationAuthClientsPage.submitAuthClientForm();
-    await adminApplicationAuthClientsPage.authClientShouldBeVisible(
+    await adminApplicationOAuthClientsPage.submitAuthClientForm();
+    await adminApplicationOAuthClientsPage.authClientShouldBeVisible(
       'redditAuthClient'
     );
 
@@ -255,23 +253,23 @@ test.describe('Admin Applications', () => {
     const newConnectionOption = page
       .getByRole('option')
       .filter({ hasText: 'Add new connection' });
-    const newSharedConnectionOption = page
+    const newOAuthConnectionOption = page
       .getByRole('option')
-      .filter({ hasText: 'Add connection with auth client' });
+      .filter({ hasText: 'Add connection with OAuth client' });
     const existingConnection = page
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
 
     await expect(await existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toHaveCount(1);
-    await expect(newSharedConnectionOption).toBeEnabled();
-    await expect(newSharedConnectionOption).toHaveCount(1);
+    await expect(newOAuthConnectionOption).toBeEnabled();
+    await expect(newOAuthConnectionOption).toHaveCount(1);
   });
 
   test('should not allow new connections but existing custom', async ({
     adminApplicationsPage,
     adminApplicationSettingsPage,
-    adminApplicationAuthClientsPage,
+    adminApplicationOAuthClientsPage,
     flowEditorPage,
     page,
   }) => {
@@ -284,8 +282,8 @@ test.describe('Admin Applications', () => {
     await adminApplicationSettingsPage.saveSettings();
     await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
 
-    await adminApplicationAuthClientsPage.openAuthClientsTab();
-    await adminApplicationAuthClientsPage.openFirstAuthClientCreateForm();
+    await adminApplicationOAuthClientsPage.openAuthClientsTab();
+    await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
 
     const authClientForm = page.getByTestId('auth-client-form');
     await authClientForm.locator(page.getByTestId('switch')).check();
@@ -298,8 +296,8 @@ test.describe('Admin Applications', () => {
     await authClientForm
       .locator(page.locator('[name="clientSecret"]'))
       .fill('clickupClientSecret');
-    await adminApplicationAuthClientsPage.submitAuthClientForm();
-    await adminApplicationAuthClientsPage.authClientShouldBeVisible(
+    await adminApplicationOAuthClientsPage.submitAuthClientForm();
+    await adminApplicationOAuthClientsPage.authClientShouldBeVisible(
       'clickupAuthClient'
     );
 
@@ -319,22 +317,22 @@ test.describe('Admin Applications', () => {
     const newConnectionOption = page
       .getByRole('option')
       .filter({ hasText: 'Add new connection' });
-    const newSharedConnectionOption = page
+    const newOAuthConnectionOption = page
       .getByRole('option')
-      .filter({ hasText: 'Add connection with auth client' });
+      .filter({ hasText: 'Add connection with OAuth client' });
     const existingConnection = page
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
 
     await expect(await existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toHaveCount(0);
-    await expect(newSharedConnectionOption).toHaveCount(0);
+    await expect(newOAuthConnectionOption).toHaveCount(0);
   });
 
-  test('should not allow new connections but existing custom even if predefined auth clients are enabled', async ({
+  test('should not allow new connections but existing custom even if predefined OAuth clients are enabled', async ({
     adminApplicationsPage,
     adminApplicationSettingsPage,
-    adminApplicationAuthClientsPage,
+    adminApplicationOAuthClientsPage,
     flowEditorPage,
     page,
   }) => {
@@ -350,8 +348,8 @@ test.describe('Admin Applications', () => {
     await adminApplicationSettingsPage.saveSettings();
     await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
 
-    await adminApplicationAuthClientsPage.openAuthClientsTab();
-    await adminApplicationAuthClientsPage.openFirstAuthClientCreateForm();
+    await adminApplicationOAuthClientsPage.openAuthClientsTab();
+    await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
 
     const authClientForm = page.getByTestId('auth-client-form');
     await authClientForm.locator(page.getByTestId('switch')).check();
@@ -364,8 +362,8 @@ test.describe('Admin Applications', () => {
     await authClientForm
       .locator(page.locator('[name="clientSecret"]'))
       .fill('mailchimpClientSecret');
-    await adminApplicationAuthClientsPage.submitAuthClientForm();
-    await adminApplicationAuthClientsPage.authClientShouldBeVisible(
+    await adminApplicationOAuthClientsPage.submitAuthClientForm();
+    await adminApplicationOAuthClientsPage.authClientShouldBeVisible(
       'mailchimpAuthClient'
     );
 
@@ -389,9 +387,9 @@ test.describe('Admin Applications', () => {
     const newConnectionOption = page
       .getByRole('option')
       .filter({ hasText: 'Add new connection' });
-    const newSharedConnectionOption = page
+    const newOAuthConnectionOption = page
       .getByRole('option')
-      .filter({ hasText: 'Add new shared connection' });
+      .filter({ hasText: 'Add connection with OAuth client' });
     const noConnectionsOption = page
       .locator('.MuiAutocomplete-noOptions')
       .filter({ hasText: 'No options' });
@@ -399,6 +397,6 @@ test.describe('Admin Applications', () => {
     await expect(await existingConnection.count()).toBeGreaterThan(0);
     await expect(noConnectionsOption).toHaveCount(0);
     await expect(newConnectionOption).toHaveCount(0);
-    await expect(newSharedConnectionOption).toHaveCount(0);
+    await expect(newOAuthConnectionOption).toHaveCount(0);
   });
 });

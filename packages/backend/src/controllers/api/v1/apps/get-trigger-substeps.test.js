@@ -15,7 +15,7 @@ describe('GET /api/v1/apps/:appKey/triggers/:triggerKey/substeps', () => {
     exampleApp = await App.findOneByKey('github');
   });
 
-  it('should return the app auth info', async () => {
+  it('should return the trigger substeps info', async () => {
     const triggers = await App.findTriggersByKey('github');
     const exampleTrigger = triggers.find(
       (trigger) => trigger.key === 'newIssues'

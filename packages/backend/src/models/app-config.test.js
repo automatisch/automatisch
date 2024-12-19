@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import Base from './base.js';
 import AppConfig from './app-config.js';
 import App from './app.js';
-import AppAuthClient from './app-auth-client.js';
+import OAuthClient from './oauth-client.js';
 
 describe('AppConfig model', () => {
   it('tableName should return correct name', () => {
@@ -22,12 +22,12 @@ describe('AppConfig model', () => {
     const relationMappings = AppConfig.relationMappings();
 
     const expectedRelations = {
-      appAuthClients: {
+      oauthClients: {
         relation: Base.HasManyRelation,
-        modelClass: AppAuthClient,
+        modelClass: OAuthClient,
         join: {
           from: 'app_configs.key',
-          to: 'app_auth_clients.app_key',
+          to: 'oauth_clients.app_key',
         },
       },
     };

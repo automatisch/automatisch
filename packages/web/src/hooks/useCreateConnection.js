@@ -4,9 +4,9 @@ import api from 'helpers/api';
 
 export default function useCreateConnection(appKey) {
   const mutation = useMutation({
-    mutationFn: async ({ appAuthClientId, formattedData }) => {
+    mutationFn: async ({ oauthClientId, formattedData }) => {
       const { data } = await api.post(`/v1/apps/${appKey}/connections`, {
-        appAuthClientId,
+        oauthClientId,
         formattedData,
       });
 
