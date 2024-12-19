@@ -9,10 +9,20 @@ export default defineAction({
     {
       label: 'Node name',
       key: 'nodeName',
-      type: 'string',
-      required: false,
+      type: 'dropdown',
+      required: true,
       description: 'The name of the node to be added.',
       variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listVoiceXmlNodes',
+          },
+        ],
+      },
     },
     {
       label: 'Node value',
@@ -38,9 +48,23 @@ export default defineAction({
         {
           label: 'Attribute name',
           key: 'key',
-          type: 'string',
+          type: 'dropdown',
           required: false,
           variables: true,
+          source: {
+            type: 'query',
+            name: 'getDynamicData',
+            arguments: [
+              {
+                name: 'key',
+                value: 'listVoiceXmlNodeAttributes',
+              },
+              {
+                name: 'parameters.nodeName',
+                value: '{parameters.nodeName}',
+              },
+            ],
+          },
         },
         {
           label: 'Attribute value',
