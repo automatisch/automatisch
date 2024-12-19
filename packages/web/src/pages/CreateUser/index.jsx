@@ -18,7 +18,6 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
 import useAdminCreateUser from 'hooks/useAdminCreateUser';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
-import { getGeneralErrorMessage } from 'helpers/errors';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -70,7 +69,7 @@ export default function CreateUser() {
   const currentUserAbility = useCurrentUserAbility();
   const canUpdateRole = currentUserAbility.can('update', 'Role');
 
-  const handleUserCreation = async (userData, e, setError) => {
+  const handleUserCreation = async (userData) => {
     try {
       await createUser({
         fullName: userData.fullName,
@@ -81,30 +80,7 @@ export default function CreateUser() {
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
     } catch (error) {
       const errors = error?.response?.data?.errors;
-
-      if (errors) {
-        const fieldNames = Object.keys(defaultValues);
-        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
-          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
-            setError(fieldName, {
-              type: 'fieldRequestError',
-              message: fieldErrors.join(', '),
-            });
-          }
-        });
-      }
-
-      const generalError = getGeneralErrorMessage({
-        error,
-        fallbackMessage: formatMessage('createUser.error'),
-      });
-
-      if (generalError) {
-        setError('root.general', {
-          type: 'requestError',
-          message: generalError,
-        });
-      }
+      throw errors || error;
     }
   };
 
