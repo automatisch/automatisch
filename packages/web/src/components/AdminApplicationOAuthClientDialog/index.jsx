@@ -15,7 +15,7 @@ import Switch from 'components/Switch';
 import TextField from 'components/TextField';
 import { Form } from './style';
 
-function AdminApplicationAuthClientDialog(props) {
+function AdminApplicationOAuthClientDialog(props) {
   const {
     error,
     onClose,
@@ -52,12 +52,12 @@ function AdminApplicationAuthClientDialog(props) {
                 <>
                   <Switch
                     name="active"
-                    label={formatMessage('authClient.inputActive')}
+                    label={formatMessage('oauthClient.inputActive')}
                   />
                   <TextField
                     required={true}
                     name="name"
-                    label={formatMessage('authClient.inputName')}
+                    label={formatMessage('oauthClient.inputName')}
                     fullWidth
                   />
                   {authFields?.map((field) => (
@@ -72,7 +72,7 @@ function AdminApplicationAuthClientDialog(props) {
                     loading={submitting}
                     disabled={disabled || !isDirty}
                   >
-                    {formatMessage('authClient.buttonSubmit')}
+                    {formatMessage('oauthClient.buttonSubmit')}
                   </LoadingButton>
                 </>
               )}
@@ -84,7 +84,7 @@ function AdminApplicationAuthClientDialog(props) {
   );
 }
 
-AdminApplicationAuthClientDialog.propTypes = {
+AdminApplicationOAuthClientDialog.propTypes = {
   error: PropTypes.shape({
     message: PropTypes.string,
   }),
@@ -98,4 +98,4 @@ AdminApplicationAuthClientDialog.propTypes = {
   disabled: PropTypes.bool,
 };
 
-export default AdminApplicationAuthClientDialog;
+export default AdminApplicationOAuthClientDialog;

@@ -4,26 +4,26 @@ import { useParams } from 'react-router-dom';
 
 import { AppPropType } from 'propTypes/propTypes';
 import useFormatMessage from 'hooks/useFormatMessage';
-import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
-import useAdminAppAuthClient from 'hooks/useAdminAppAuthClient.ee';
-import useAdminUpdateAppAuthClient from 'hooks/useAdminUpdateAppAuthClient.ee';
+import AdminApplicationOAuthClientDialog from 'components/AdminApplicationOAuthClientDialog';
+import useAdminOAuthClient from 'hooks/useAdminOAuthClient.ee';
+import useAdminUpdateOAuthClient from 'hooks/useAdminUpdateOAuthClient.ee';
 import useAppAuth from 'hooks/useAppAuth';
 
-function AdminApplicationUpdateAuthClient(props) {
+function AdminApplicationUpdateOAuthClient(props) {
   const { application, onClose } = props;
   const formatMessage = useFormatMessage();
   const { clientId } = useParams();
 
-  const { data: adminAppAuthClient, isLoading: isAdminAuthClientLoading } =
-    useAdminAppAuthClient(application.key, clientId);
+  const { data: adminOAuthClient, isLoading: isAdminOAuthClientLoading } =
+    useAdminOAuthClient(application.key, clientId);
 
   const { data: auth } = useAppAuth(application.key);
 
   const {
-    mutateAsync: updateAppAuthClient,
-    isPending: isUpdateAppAuthClientPending,
-    error: updateAppAuthClientError,
-  } = useAdminUpdateAppAuthClient(application.key, clientId);
+    mutateAsync: updateOAuthClient,
+    isPending: isUpdateOAuthClientPending,
+    error: updateOAuthClientError,
+  } = useAdminUpdateOAuthClient(application.key, clientId);
 
   const authFields = auth?.data?.fields?.map((field) => ({
     ...field,
@@ -31,13 +31,13 @@ function AdminApplicationUpdateAuthClient(props) {
   }));
 
   const submitHandler = async (values) => {
-    if (!adminAppAuthClient) {
+    if (!adminOAuthClient) {
       return;
     }
 
     const { name, active, ...formattedAuthDefaults } = values;
 
-    await updateAppAuthClient({
+    await updateOAuthClient({
       name,
       active,
       formattedAuthDefaults,
@@ -64,31 +64,31 @@ function AdminApplicationUpdateAuthClient(props) {
 
   const defaultValues = useMemo(
     () => ({
-      name: adminAppAuthClient?.data?.name || '',
-      active: adminAppAuthClient?.data?.active || false,
+      name: adminOAuthClient?.data?.name || '',
+      active: adminOAuthClient?.data?.active || false,
       ...getAuthFieldsDefaultValues(),
     }),
-    [adminAppAuthClient, getAuthFieldsDefaultValues],
+    [adminOAuthClient, getAuthFieldsDefaultValues],
   );
 
   return (
-    <AdminApplicationAuthClientDialog
+    <AdminApplicationOAuthClientDialog
       onClose={onClose}
-      error={updateAppAuthClientError}
-      title={formatMessage('updateAuthClient.title')}
-      loading={isAdminAuthClientLoading}
+      error={updateOAuthClientError}
+      title={formatMessage('updateOAuthClient.title')}
+      loading={isAdminOAuthClientLoading}
       submitHandler={submitHandler}
       authFields={authFields}
-      submitting={isUpdateAppAuthClientPending}
+      submitting={isUpdateOAuthClientPending}
       defaultValues={defaultValues}
-      disabled={!adminAppAuthClient}
+      disabled={!adminOAuthClient}
     />
   );
 }
 
-AdminApplicationUpdateAuthClient.propTypes = {
+AdminApplicationUpdateOAuthClient.propTypes = {
   application: AppPropType.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default AdminApplicationUpdateAuthClient;
+export default AdminApplicationUpdateOAuthClient;

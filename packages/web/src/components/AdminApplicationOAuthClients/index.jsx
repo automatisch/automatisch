@@ -8,29 +8,30 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
+
+import NoResultFound from 'components/NoResultFound';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useAdminAppAuthClients from 'hooks/useAdminAppAuthClients';
-import NoResultFound from 'components/NoResultFound';
+import useAdminOAuthClients from 'hooks/useAdminOAuthClients';
 
-function AdminApplicationAuthClients(props) {
+function AdminApplicationOAuthClients(props) {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
-  const { data: appAuthClients, isLoading } = useAdminAppAuthClients(appKey);
+  const { data: appOAuthClients, isLoading } = useAdminOAuthClients(appKey);
 
   if (isLoading)
     return <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />;
 
-  if (!appAuthClients?.data.length) {
+  if (!appOAuthClients?.data.length) {
     return (
       <NoResultFound
         to={URLS.ADMIN_APP_AUTH_CLIENTS_CREATE(appKey)}
-        text={formatMessage('adminAppsAuthClients.noAuthClients')}
+        text={formatMessage('adminAppsOAuthClients.noOauthClients')}
       />
     );
   }
 
-  const sortedAuthClients = appAuthClients.data.slice().sort((a, b) => {
+  const sortedOAuthClients = appOAuthClients.data.slice().sort((a, b) => {
     if (a.id < b.id) {
       return -1;
     }
@@ -42,7 +43,7 @@ function AdminApplicationAuthClients(props) {
 
   return (
     <div>
-      {sortedAuthClients.map((client) => (
+      {sortedOAuthClients.map((client) => (
         <Card sx={{ mb: 1 }} key={client.id} data-test="auth-client">
           <CardActionArea
             component={Link}
@@ -59,8 +60,8 @@ function AdminApplicationAuthClients(props) {
                   variant={client?.active ? 'filled' : 'outlined'}
                   label={formatMessage(
                     client?.active
-                      ? 'adminAppsAuthClients.statusActive'
-                      : 'adminAppsAuthClients.statusInactive',
+                      ? 'adminAppsOAuthClients.statusActive'
+                      : 'adminAppsOAuthClients.statusInactive',
                   )}
                 />
               </Stack>
@@ -70,8 +71,13 @@ function AdminApplicationAuthClients(props) {
       ))}
       <Stack justifyContent="flex-end" direction="row">
         <Link to={URLS.ADMIN_APP_AUTH_CLIENTS_CREATE(appKey)}>
-          <Button variant="contained" sx={{ mt: 2 }} component="div" data-test="create-auth-client-button">
-            {formatMessage('createAuthClient.button')}
+          <Button
+            variant="contained"
+            sx={{ mt: 2 }}
+            component="div"
+            data-test="create-auth-client-button"
+          >
+            {formatMessage('createOAuthClient.button')}
           </Button>
         </Link>
       </Stack>
@@ -79,8 +85,8 @@ function AdminApplicationAuthClients(props) {
   );
 }
 
-AdminApplicationAuthClients.propTypes = {
+AdminApplicationOAuthClients.propTypes = {
   appKey: PropTypes.string.isRequired,
 };
 
-export default AdminApplicationAuthClients;
+export default AdminApplicationOAuthClients;

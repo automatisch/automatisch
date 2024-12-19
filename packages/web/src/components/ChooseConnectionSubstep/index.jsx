@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import * as React from 'react';
 
 import AddAppConnection from 'components/AddAppConnection';
-import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
+import AppOAuthClientsDialog from 'components/OAuthClientsDialog/index.ee';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import { EditorContext } from 'contexts/Editor';
@@ -22,7 +22,7 @@ import useStepConnection from 'hooks/useStepConnection';
 import { useQueryClient } from '@tanstack/react-query';
 import useAppConnections from 'hooks/useAppConnections';
 import useTestConnection from 'hooks/useTestConnection';
-import useAppAuthClients from 'hooks/useAppAuthClients';
+import useOAuthClients from 'hooks/useOAuthClients';
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -54,7 +54,7 @@ function ChooseConnectionSubstep(props) {
   const [showAddSharedConnectionDialog, setShowAddSharedConnectionDialog] =
     React.useState(false);
   const queryClient = useQueryClient();
-  const { data: appAuthClients } = useAppAuthClients(application.key);
+  const { data: appOAuthClients } = useOAuthClients(application.key);
 
   const { authenticate } = useAuthenticateApp({
     appKey: application.key,
@@ -100,9 +100,9 @@ function ChooseConnectionSubstep(props) {
       value: ADD_CONNECTION_VALUE,
     };
 
-    const addConnectionWithAuthClient = {
+    const addConnectionWithOAuthClient = {
       label: formatMessage(
-        'chooseConnectionSubstep.addConnectionWithAuthClient',
+        'chooseConnectionSubstep.addConnectionWithOAuthClient',
       ),
       value: ADD_SHARED_CONNECTION_VALUE,
     };
@@ -115,33 +115,33 @@ function ChooseConnectionSubstep(props) {
     // app is disabled.
     if (appConfig.data.disabled) return options;
 
-    // means only auth clients are allowed for connection creation and there is app auth client
+    // means only OAuth clients are allowed for connection creation and there is OAuth client
     if (
       appConfig.data.useOnlyPredefinedAuthClients === true &&
-      appAuthClients.data.length > 0
+      appOAuthClients.data.length > 0
     ) {
-      return options.concat([addConnectionWithAuthClient]);
+      return options.concat([addConnectionWithOAuthClient]);
     }
 
-    // means there is no app auth client. so we don't show the `addConnectionWithAuthClient`
+    // means there is no OAuth client. so we don't show the `addConnectionWithOAuthClient`
     if (
       appConfig.data.useOnlyPredefinedAuthClients === true &&
-      appAuthClients.data.length === 0
+      appOAuthClients.data.length === 0
     ) {
       return options;
     }
 
-    if (appAuthClients.data.length === 0) {
+    if (appOAuthClients.data.length === 0) {
       return options.concat([addCustomConnection]);
     }
 
-    return options.concat([addCustomConnection, addConnectionWithAuthClient]);
-  }, [data, formatMessage, appConfig, appAuthClients]);
+    return options.concat([addCustomConnection, addConnectionWithOAuthClient]);
+  }, [data, formatMessage, appConfig, appOAuthClients]);
 
-  const handleClientClick = async (appAuthClientId) => {
+  const handleClientClick = async (oauthClientId) => {
     try {
       const response = await authenticate?.({
-        appAuthClientId,
+        oauthClientId,
       });
       const connectionId = response?.createConnection.id;
 
@@ -292,7 +292,7 @@ function ChooseConnectionSubstep(props) {
       )}
 
       {application && showAddSharedConnectionDialog && (
-        <AppAuthClientsDialog
+        <AppOAuthClientsDialog
           appKey={application.key}
           onClose={() => setShowAddSharedConnectionDialog(false)}
           onClientClick={handleClientClick}

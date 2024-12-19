@@ -5,11 +5,11 @@ import { AppPropType } from 'propTypes/propTypes';
 import useAdminCreateAppConfig from 'hooks/useAdminCreateAppConfig';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useAdminCreateAppAuthClient from 'hooks/useAdminCreateAppAuthClient.ee';
-import AdminApplicationAuthClientDialog from 'components/AdminApplicationAuthClientDialog';
+import useAdminCreateOAuthClient from 'hooks/useAdminCreateOAuthClient.ee';
+import AdminApplicationOAuthClientDialog from 'components/AdminApplicationOAuthClientDialog';
 import useAppAuth from 'hooks/useAppAuth';
 
-function AdminApplicationCreateAuthClient(props) {
+function AdminApplicationCreateOAuthClient(props) {
   const { appKey, onClose } = props;
   const { data: auth } = useAppAuth(appKey);
   const formatMessage = useFormatMessage();
@@ -24,10 +24,10 @@ function AdminApplicationCreateAuthClient(props) {
   } = useAdminCreateAppConfig(props.appKey);
 
   const {
-    mutateAsync: createAppAuthClient,
-    isPending: isCreateAppAuthClientPending,
-    error: createAppAuthClientError,
-  } = useAdminCreateAppAuthClient(appKey);
+    mutateAsync: createOAuthClient,
+    isPending: isCreateOAuthClientPending,
+    error: createOAuthClientError,
+  } = useAdminCreateOAuthClient(appKey);
 
   const submitHandler = async (values) => {
     let appConfigKey = appConfig?.data?.key;
@@ -43,7 +43,7 @@ function AdminApplicationCreateAuthClient(props) {
 
     const { name, active, ...formattedAuthDefaults } = values;
 
-    await createAppAuthClient({
+    await createOAuthClient({
       appKey,
       name,
       active,
@@ -81,23 +81,23 @@ function AdminApplicationCreateAuthClient(props) {
   );
 
   return (
-    <AdminApplicationAuthClientDialog
+    <AdminApplicationOAuthClientDialog
       onClose={onClose}
-      error={createAppConfigError || createAppAuthClientError}
-      title={formatMessage('createAuthClient.title')}
+      error={createAppConfigError || createOAuthClientError}
+      title={formatMessage('createOAuthClient.title')}
       loading={isAppConfigLoading}
       submitHandler={submitHandler}
       authFields={auth?.data?.fields}
-      submitting={isCreateAppConfigPending || isCreateAppAuthClientPending}
+      submitting={isCreateAppConfigPending || isCreateOAuthClientPending}
       defaultValues={defaultValues}
     />
   );
 }
 
-AdminApplicationCreateAuthClient.propTypes = {
+AdminApplicationCreateOAuthClient.propTypes = {
   appKey: PropTypes.string.isRequired,
   application: AppPropType.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default AdminApplicationCreateAuthClient;
+export default AdminApplicationCreateOAuthClient;
