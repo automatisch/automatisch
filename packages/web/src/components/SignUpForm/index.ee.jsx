@@ -7,7 +7,6 @@ import Alert from '@mui/material/Alert';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { getGeneralErrorMessage } from 'helpers/errors';
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
 import Form from 'components/Form';
@@ -70,7 +69,7 @@ function SignUpForm() {
     }
   }, [authentication.isAuthenticated]);
 
-  const handleSubmit = async (values, e, setError) => {
+  const handleSubmit = async (values) => {
     try {
       const { fullName, email, password } = values;
       await registerUser({
@@ -86,29 +85,7 @@ function SignUpForm() {
       authentication.updateToken(token);
     } catch (error) {
       const errors = error?.response?.data?.errors;
-      if (errors) {
-        const fieldNames = Object.keys(defaultValues);
-        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
-          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
-            setError(fieldName, {
-              type: 'fieldRequestError',
-              message: fieldErrors.join(', '),
-            });
-          }
-        });
-      }
-
-      const generalError = getGeneralErrorMessage({
-        error,
-        fallbackMessage: formatMessage('signupForm.error'),
-      });
-
-      if (generalError) {
-        setError('root.general', {
-          type: 'requestError',
-          message: generalError,
-        });
-      }
+      throw errors || error;
     }
   };
 

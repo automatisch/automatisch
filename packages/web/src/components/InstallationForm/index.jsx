@@ -9,7 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useQueryClient } from '@tanstack/react-query';
 import Link from '@mui/material/Link';
 
-import { getGeneralErrorMessage } from 'helpers/errors';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useInstallation from 'hooks/useInstallation';
 import * as URLS from 'config/urls';
@@ -77,8 +76,7 @@ function InstallationForm() {
       });
     } catch (error) {
       const errors = error?.response?.data?.errors;
-
-      throw errors;
+      throw errors || error;
     }
   };
 
