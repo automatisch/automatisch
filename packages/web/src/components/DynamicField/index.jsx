@@ -17,6 +17,7 @@ function DynamicField(props) {
   const { control, setValue, getValues } = useFormContext();
   const fieldsValue = useWatch({ control, name });
   const editorContext = React.useContext(EditorContext);
+
   const createEmptyItem = React.useCallback(() => {
     return fields.reduce((previousValue, field) => {
       return {
@@ -26,6 +27,7 @@ function DynamicField(props) {
       };
     }, {});
   }, [fields]);
+
   const addItem = React.useCallback(() => {
     const values = getValues(name);
     if (!values) {
@@ -34,6 +36,7 @@ function DynamicField(props) {
       setValue(name, values.concat(createEmptyItem()));
     }
   }, [getValues, createEmptyItem]);
+
   const removeItem = React.useCallback(
     (index) => {
       if (fieldsValue.length === 1) return;
@@ -44,6 +47,7 @@ function DynamicField(props) {
     },
     [fieldsValue],
   );
+
   React.useEffect(
     function addInitialGroupWhenEmpty() {
       const fieldValues = getValues(name);
@@ -55,14 +59,17 @@ function DynamicField(props) {
     },
     [createEmptyItem, defaultValue],
   );
+
   return (
     <React.Fragment>
       <Typography variant="subtitle2">{label}</Typography>
-
-      {fieldsValue?.map((field, index) => (
+      {fieldsValue?.map?.((field, index) => (
         <Stack direction="row" spacing={2} key={`fieldGroup-${field.__id}`}>
           <Stack
-            direction={{ xs: 'column', sm: 'row' }}
+            direction={{
+              xs: 'column',
+              sm: fields.length > 2 ? 'column' : 'row',
+            }}
             spacing={{ xs: 2 }}
             sx={{
               display: 'flex',
@@ -75,6 +82,7 @@ function DynamicField(props) {
                 sx={{
                   display: 'flex',
                   flex: '1 0 0px',
+                  flexDirection: 'column',
                   minWidth: 0,
                 }}
                 key={`field-${field.__id}-${fieldSchemaIndex}`}
@@ -89,7 +97,6 @@ function DynamicField(props) {
               </Box>
             ))}
           </Stack>
-
           <IconButton
             size="small"
             edge="start"
@@ -100,7 +107,6 @@ function DynamicField(props) {
           </IconButton>
         </Stack>
       ))}
-
       <Stack direction="row" spacing={2}>
         <Stack spacing={{ xs: 2 }} sx={{ display: 'flex', flex: 1 }} />
 
@@ -113,7 +119,6 @@ function DynamicField(props) {
           <AddIcon />
         </IconButton>
       </Stack>
-
       <Typography variant="caption">{description}</Typography>
     </React.Fragment>
   );
