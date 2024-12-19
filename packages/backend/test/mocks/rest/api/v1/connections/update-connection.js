@@ -3,7 +3,7 @@ const updateConnectionMock = (connection) => {
     id: connection.id,
     key: connection.key,
     verified: connection.verified,
-    appAuthClientId: connection.appAuthClientId,
+    oauthClientId: connection.oauthClientId,
     formattedData: {
       screenName: connection.formattedData.screenName,
     },

@@ -4,8 +4,8 @@ const { insertAppConnection } = require('../../helpers/db-helpers');
 
 test.describe('Admin Applications', () => {
   test.beforeAll(async () => {
-    const deleteAppAuthClients = {
-      text: 'DELETE FROM app_auth_clients WHERE app_key in ($1, $2, $3, $4, $5, $6)',
+    const deleteOAuthClients = {
+      text: 'DELETE FROM oauth_clients WHERE app_key in ($1, $2, $3, $4, $5, $6)',
       values: [
         'carbone',
         'spotify',
@@ -29,10 +29,8 @@ test.describe('Admin Applications', () => {
     };
 
     try {
-      const deleteAppAuthClientsResult = await pgPool.query(
-        deleteAppAuthClients
-      );
-      expect(deleteAppAuthClientsResult.command).toBe('DELETE');
+      const deleteOAuthClientsResult = await pgPool.query(deleteOAuthClients);
+      expect(deleteOAuthClientsResult.command).toBe('DELETE');
       const deleteAppConfigsResult = await pgPool.query(deleteAppConfigs);
       expect(deleteAppConfigsResult.command).toBe('DELETE');
     } catch (err) {

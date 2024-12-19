@@ -7,8 +7,8 @@ import getAppsAction from '../../../controllers/api/v1/apps/get-apps.js';
 import getAuthAction from '../../../controllers/api/v1/apps/get-auth.js';
 import getConnectionsAction from '../../../controllers/api/v1/apps/get-connections.js';
 import getConfigAction from '../../../controllers/api/v1/apps/get-config.ee.js';
-import getAuthClientsAction from '../../../controllers/api/v1/apps/get-auth-clients.ee.js';
-import getAuthClientAction from '../../../controllers/api/v1/apps/get-auth-client.ee.js';
+import getOAuthClientsAction from '../../../controllers/api/v1/apps/get-oauth-clients.ee.js';
+import getOAuthClientAction from '../../../controllers/api/v1/apps/get-oauth-client.ee.js';
 import getTriggersAction from '../../../controllers/api/v1/apps/get-triggers.js';
 import getTriggerSubstepsAction from '../../../controllers/api/v1/apps/get-trigger-substeps.js';
 import getActionsAction from '../../../controllers/api/v1/apps/get-actions.js';
@@ -44,17 +44,17 @@ router.get(
 );
 
 router.get(
-  '/:appKey/auth-clients',
+  '/:appKey/oauth-clients',
   authenticateUser,
   checkIsEnterprise,
-  getAuthClientsAction
+  getOAuthClientsAction
 );
 
 router.get(
-  '/:appKey/auth-clients/:appAuthClientId',
+  '/:appKey/oauth-clients/:oauthClientId',
   authenticateUser,
   checkIsEnterprise,
-  getAuthClientAction
+  getOAuthClientAction
 );
 
 router.get('/:appKey/triggers', authenticateUser, getTriggersAction);

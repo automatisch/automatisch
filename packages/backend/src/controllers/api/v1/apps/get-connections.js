@@ -9,7 +9,7 @@ export default async (request, response) => {
     .select('connections.*')
     .withGraphFetched({
       appConfig: true,
-      appAuthClient: true,
+      oauthClient: true,
     })
     .fullOuterJoinRelated('steps')
     .where({

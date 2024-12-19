@@ -4,10 +4,10 @@ import api from 'helpers/api';
 
 export default function useUpdateConnection() {
   const query = useMutation({
-    mutationFn: async ({ connectionId, formattedData, appAuthClientId }) => {
+    mutationFn: async ({ connectionId, formattedData, oauthClientId }) => {
       const { data } = await api.patch(`/v1/connections/${connectionId}`, {
         formattedData,
-        appAuthClientId,
+        oauthClientId,
       });
 
       return data;
