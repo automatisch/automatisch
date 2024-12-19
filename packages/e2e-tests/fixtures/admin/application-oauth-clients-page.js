@@ -2,14 +2,14 @@ import { expect } from '@playwright/test';
 
 const { AuthenticatedPage } = require('../authenticated-page');
 
-export class AdminApplicationAuthClientsPage extends AuthenticatedPage {
+export class AdminApplicationOAuthClientsPage extends AuthenticatedPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {
     super(page);
 
-    this.authClientsTab = this.page.getByTestId('auth-clients-tab');
+    this.authClientsTab = this.page.getByTestId('oauth-clients-tab');
     this.saveButton = this.page.getByTestId('submitButton');
     this.successSnackbar = this.page.getByTestId(
       'snackbar-save-admin-apps-settings-success'
