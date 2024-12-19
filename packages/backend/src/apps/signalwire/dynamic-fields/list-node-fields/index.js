@@ -26,10 +26,20 @@ export default {
           {
             label: 'Node name',
             key: 'nodeName',
-            type: 'string',
+            type: 'dropdown',
             required: false,
             description: 'The name of the node to be added.',
             variables: true,
+            source: {
+              type: 'query',
+              name: 'getDynamicData',
+              arguments: [
+                {
+                  name: 'key',
+                  value: 'listVoiceXmlNodes',
+                },
+              ],
+            },
           },
           {
             label: 'Node value',
