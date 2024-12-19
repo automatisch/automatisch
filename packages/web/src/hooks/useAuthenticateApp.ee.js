@@ -13,7 +13,6 @@ import useCreateConnectionAuthUrl from './useCreateConnectionAuthUrl';
 import useUpdateConnection from './useUpdateConnection';
 import useResetConnection from './useResetConnection';
 import useVerifyConnection from './useVerifyConnection';
-import { useWhatChanged } from '@simbathesailor/use-what-changed';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -142,24 +141,6 @@ export default function useAuthenticateApp(payload) {
     resetConnection,
     verifyConnection,
   ]);
-
-  useWhatChanged(
-    [
-      steps,
-      appKey,
-      oauthClientId,
-      connectionId,
-      queryClient,
-      createConnection,
-      createConnectionAuthUrl,
-      updateConnection,
-      resetConnection,
-      verifyConnection,
-    ],
-    'steps, appKey, oauthClientId, connectionId, queryClient, createConnection, createConnectionAuthUrl, updateConnection, resetConnection, verifyConnection',
-    '',
-    'useAuthenticate',
-  );
 
   return {
     authenticate,
