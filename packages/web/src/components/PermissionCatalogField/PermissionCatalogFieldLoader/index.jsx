@@ -39,14 +39,14 @@ const PermissionCatalogFieldLoader = () => {
               {[...Array(5)].map((action, index) => (
                 <TableCell key={index} align="center">
                   <Typography variant="subtitle2">
-                    <ControlledCheckbox name="value" />
+                    <ControlledCheckbox name="value" disabled />
                   </Typography>
                 </TableCell>
               ))}
 
               <TableCell>
                 <Stack direction="row" gap={1} justifyContent="right">
-                  <IconButton color="info" size="small">
+                  <IconButton color="info" size="small" disabled>
                     <SettingsIcon />
                   </IconButton>
                 </Stack>

@@ -25,7 +25,8 @@ export default function CreateRole() {
   const enqueueSnackbar = useEnqueueSnackbar();
   const { mutateAsync: createRole, isPending: isCreateRolePending } =
     useAdminCreateRole();
-  const { data: permissionCatalogData } = usePermissionCatalog();
+  const { data: permissionCatalogData, isLoading: isPermissionCatalogLoading } =
+    usePermissionCatalog();
 
   const defaultValues = React.useMemo(
     () => ({
@@ -91,6 +92,7 @@ export default function CreateRole() {
                 label={formatMessage('roleForm.name')}
                 fullWidth
                 data-test="name-input"
+                disabled={isPermissionCatalogLoading}
               />
 
               <TextField
@@ -98,6 +100,7 @@ export default function CreateRole() {
                 label={formatMessage('roleForm.description')}
                 fullWidth
                 data-test="description-input"
+                disabled={isPermissionCatalogLoading}
               />
 
               <PermissionCatalogField name="computedPermissions" />
