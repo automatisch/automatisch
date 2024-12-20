@@ -211,7 +211,7 @@ export const ConnectionPropType = PropTypes.shape({
   flowCount: PropTypes.number,
   appData: AppPropType,
   createdAt: PropTypes.number,
-  appAuthClientId: PropTypes.string,
+  oauthClientId: PropTypes.string,
 });
 
 AppPropType.connection = PropTypes.arrayOf(ConnectionPropType);
@@ -463,7 +463,7 @@ export const AppConfigPropType = PropTypes.shape({
   disabled: PropTypes.bool,
 });
 
-export const AppAuthClientPropType = PropTypes.shape({
+export const OAuthClientPropType = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,
   appConfigKey: PropTypes.string,
