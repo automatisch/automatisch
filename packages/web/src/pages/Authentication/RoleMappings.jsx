@@ -4,7 +4,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -13,7 +13,6 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminSamlAuthProviderRoleMappings from 'hooks/useAdminSamlAuthProviderRoleMappings';
 import useAdminUpdateSamlAuthProviderRoleMappings from 'hooks/useAdminUpdateSamlAuthProviderRoleMappings';
 import RoleMappingsFieldArray from './RoleMappingsFieldsArray';
-import { getGeneralErrorMessage } from 'helpers/errors';
 
 function generateFormRoleMappings(roleMappings) {
   if (roleMappings?.length === 0) {
@@ -77,9 +76,11 @@ function RoleMappings({ provider, providerLoading }) {
     });
   const roleMappings = data?.data;
   const fieldNames = ['remoteRoleName', 'roleId'];
+  const [fieldErrors, setFieldErrors] = useState(null);
 
-  const handleRoleMappingsUpdate = async (values, e, setError) => {
+  const handleRoleMappingsUpdate = async (values) => {
     try {
+      setFieldErrors(null);
       if (provider?.id) {
         await updateRoleMappings(
           values.roleMappings.map(({ roleId, remoteRoleName }) => ({
@@ -93,25 +94,14 @@ function RoleMappings({ provider, providerLoading }) {
       if (errors) {
         Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
           if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
-            setError(`root.${fieldName}`, {
-              type: 'fieldRequestError',
-              message: `${fieldName}: ${fieldErrors.join(', ')}`,
-            });
+            setFieldErrors((prevErrors) => [
+              ...(prevErrors || []),
+              `${fieldName}: ${fieldErrors.join(', ')}`,
+            ]);
           }
         });
       }
-
-      const generalError = getGeneralErrorMessage({
-        error,
-        fallbackMessage: formatMessage('roleMappingsForm.error'),
-      });
-
-      if (generalError) {
-        setError('root.general', {
-          type: 'requestError',
-          message: generalError,
-        });
-      }
+      throw errors || error;
     }
   };
 
@@ -123,13 +113,21 @@ function RoleMappings({ provider, providerLoading }) {
   );
 
   const renderErrors = (errors) => {
-    const rootErrors = errors?.root;
-    if (rootErrors) {
-      return Object.values(rootErrors).map((error, index) => (
+    const generalError = errors?.root?.general?.message;
+    if (fieldErrors) {
+      return fieldErrors.map((error, index) => (
         <Alert key={index} data-test="error-alert" severity="error">
-          {error.message}
+          {error}
         </Alert>
       ));
+    }
+
+    if (generalError) {
+      return (
+        <Alert data-test="error-alert" severity="error">
+          {generalError}
+        </Alert>
+      );
     }
   };
 

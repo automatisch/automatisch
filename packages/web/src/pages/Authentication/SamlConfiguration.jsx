@@ -15,7 +15,6 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminCreateSamlAuthProvider from 'hooks/useAdminCreateSamlAuthProvider';
 import useAdminUpdateSamlAuthProvider from 'hooks/useAdminUpdateSamlAuthProvider';
 import useRoles from 'hooks/useRoles.ee';
-import { getGeneralErrorMessage } from 'helpers/errors';
 
 const defaultValues = {
   active: false,
@@ -119,7 +118,7 @@ function SamlConfiguration({ provider, providerLoading }) {
   const isSuccess =
     isCreateSamlAuthProviderSuccess || isUpdateSamlAuthProviderSuccess;
 
-  const handleSubmit = async (providerData, e, setError) => {
+  const handleSubmit = async (providerData) => {
     try {
       if (provider?.id) {
         await updateSamlAuthProvider(providerData);
@@ -128,29 +127,7 @@ function SamlConfiguration({ provider, providerLoading }) {
       }
     } catch (error) {
       const errors = error?.response?.data?.errors;
-      if (errors) {
-        const fieldNames = Object.keys(defaultValues);
-        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
-          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
-            setError(fieldName, {
-              type: 'fieldRequestError',
-              message: fieldErrors.join(', '),
-            });
-          }
-        });
-      }
-
-      const generalError = getGeneralErrorMessage({
-        error,
-        fallbackMessage: formatMessage('authenticationForm.error'),
-      });
-
-      if (generalError) {
-        setError('root.general', {
-          type: 'requestError',
-          message: generalError,
-        });
-      }
+      throw errors || error;
     }
   };
 
