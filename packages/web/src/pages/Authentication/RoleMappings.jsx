@@ -5,6 +5,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { useMemo } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Form from 'components/Form';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -23,13 +25,49 @@ function generateFormRoleMappings(roleMappings) {
   }));
 }
 
+const uniqueRemoteRoleName = (array, context, formatMessage) => {
+  const seen = new Set();
+  for (const [index, value] of array.entries()) {
+    if (seen.has(value.remoteRoleName)) {
+      const path = `${context.path}[${index}].remoteRoleName`;
+      return context.createError({
+        message: `${formatMessage('roleMappingsForm.remoteRoleName')} must be unique`,
+        path,
+      });
+    }
+    seen.add(value.remoteRoleName);
+  }
+  return true;
+};
+
+const getValidationSchema = (formatMessage) =>
+  yup.object({
+    roleMappings: yup
+      .array()
+      .of(
+        yup.object({
+          roleId: yup
+            .string()
+            .required(`${formatMessage('roleMappingsForm.role')} is required`),
+          remoteRoleName: yup
+            .string()
+            .required(
+              `${formatMessage('roleMappingsForm.remoteRoleName')} is required`,
+            ),
+        }),
+      )
+      .test('unique-remoteRoleName', '', (value, ctx) => {
+        return uniqueRemoteRoleName(value, ctx, formatMessage);
+      }),
+  });
+
 function RoleMappings({ provider, providerLoading }) {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
 
   const {
-    mutateAsync: updateSamlAuthProvidersRoleMappings,
-    isPending: isUpdateSamlAuthProvidersRoleMappingsPending,
+    mutateAsync: updateRoleMappings,
+    isPending: isUpdateRoleMappingsPending,
   } = useAdminUpdateSamlAuthProviderRoleMappings(provider?.id);
 
   const { data, isLoading: isAdminSamlAuthProviderRoleMappingsLoading } =
@@ -41,7 +79,7 @@ function RoleMappings({ provider, providerLoading }) {
   const handleRoleMappingsUpdate = async (values) => {
     try {
       if (provider?.id) {
-        await updateSamlAuthProvidersRoleMappings(
+        await updateRoleMappings(
           values.roleMappings.map(({ roleId, remoteRoleName }) => ({
             roleId,
             remoteRoleName,
@@ -94,7 +132,15 @@ function RoleMappings({ provider, providerLoading }) {
       <Typography variant="h3">
         {formatMessage('roleMappingsForm.title')}
       </Typography>
-      <Form defaultValues={defaultValues} onSubmit={handleRoleMappingsUpdate}>
+      <Form
+        defaultValues={defaultValues}
+        onSubmit={handleRoleMappingsUpdate}
+        resolver={yupResolver(getValidationSchema(formatMessage))}
+        mode="onSubmit"
+        reValidateMode="onChange"
+        noValidate
+        automaticValidation={false}
+      >
         <Stack direction="column" spacing={2}>
           <RoleMappingsFieldArray />
           <LoadingButton
@@ -102,7 +148,7 @@ function RoleMappings({ provider, providerLoading }) {
             variant="contained"
             color="primary"
             sx={{ boxShadow: 2 }}
-            loading={isUpdateSamlAuthProvidersRoleMappingsPending}
+            loading={isUpdateRoleMappingsPending}
           >
             {formatMessage('roleMappingsForm.save')}
           </LoadingButton>

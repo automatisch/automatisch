@@ -3,10 +3,6 @@
 exports[`Connection model > jsonSchema should have correct validations 1`] = `
 {
   "properties": {
-    "appAuthClientId": {
-      "format": "uuid",
-      "type": "string",
-    },
     "createdAt": {
       "type": "string",
     },
@@ -29,6 +25,10 @@ exports[`Connection model > jsonSchema should have correct validations 1`] = `
     "key": {
       "maxLength": 255,
       "minLength": 1,
+      "type": "string",
+    },
+    "oauthClientId": {
+      "format": "uuid",
       "type": "string",
     },
     "updatedAt": {

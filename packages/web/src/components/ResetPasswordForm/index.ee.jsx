@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -30,6 +31,8 @@ export default function ResetPasswordForm() {
     mutateAsync: resetPassword,
     isPending,
     isSuccess,
+    error,
+    isError,
   } = useResetPassword();
   const token = searchParams.get('token');
 
@@ -47,14 +50,23 @@ export default function ResetPasswordForm() {
         },
       });
       navigate(URLS.LOGIN);
-    } catch (error) {
-      enqueueSnackbar(
-        error?.message || formatMessage('resetPasswordForm.error'),
-        {
-          variant: 'error',
-        },
-      );
+    } catch {}
+  };
+
+  const renderError = () => {
+    if (!isError) {
+      return null;
     }
+
+    const errors = error?.response?.data?.errors?.general || [
+      error?.message || formatMessage('resetPasswordForm.error'),
+    ];
+
+    return errors.map((error) => (
+      <Alert severity="error" sx={{ mt: 2 }}>
+        {error}
+      </Alert>
+    ));
   };
 
   return (
@@ -96,7 +108,6 @@ export default function ResetPasswordForm() {
                   : ''
               }
             />
-
             <TextField
               label={formatMessage(
                 'resetPasswordForm.confirmPasswordFieldLabel',
@@ -117,7 +128,7 @@ export default function ResetPasswordForm() {
                   : ''
               }
             />
-
+            {renderError()}
             <LoadingButton
               type="submit"
               variant="contained"

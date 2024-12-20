@@ -212,6 +212,10 @@ class User extends Base {
     return `${appConfig.webAppUrl}/accept-invitation?token=${this.invitationToken}`;
   }
 
+  get ability() {
+    return userAbility(this);
+  }
+
   static async authenticate(email, password) {
     const user = await User.query().findOne({
       email: email?.toLowerCase() || null,
@@ -223,8 +227,8 @@ class User extends Base {
     }
   }
 
-  login(password) {
-    return bcrypt.compare(password, this.password);
+  async login(password) {
+    return await bcrypt.compare(password, this.password);
   }
 
   async generateResetPasswordToken() {
@@ -407,7 +411,7 @@ class User extends Base {
     }
   }
 
-  async startTrialPeriod() {
+  startTrialPeriod() {
     this.trialExpiryDate = DateTime.now().plus({ days: 30 }).toISODate();
   }
 
@@ -583,32 +587,30 @@ class User extends Base {
     return user;
   }
 
-  async $beforeInsert(queryContext) {
-    await super.$beforeInsert(queryContext);
+  can(action, subject) {
+    const can = this.ability.can(action, subject);
 
-    this.email = this.email.toLowerCase();
-    await this.generateHash();
+    if (!can) throw new NotAuthorizedError('The user is not authorized!');
 
-    if (appConfig.isCloud) {
-      await this.startTrialPeriod();
-    }
+    const relevantRule = this.ability.relevantRuleFor(action, subject);
+
+    const conditions = relevantRule?.conditions || [];
+    const conditionMap = Object.fromEntries(
+      conditions.map((condition) => [condition, true])
+    );
+
+    return conditionMap;
   }
 
-  async $beforeUpdate(opt, queryContext) {
-    await super.$beforeUpdate(opt, queryContext);
-
+  lowercaseEmail() {
     if (this.email) {
       this.email = this.email.toLowerCase();
     }
-
-    await this.generateHash();
   }
 
-  async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
-
+  async createUsageData() {
     if (appConfig.isCloud) {
-      await this.$relatedQuery('usageData').insert({
+      return await this.$relatedQuery('usageData').insertAndFetch({
         userId: this.id,
         consumedTaskCount: 0,
         nextResetAt: DateTime.now().plus({ days: 30 }).toISODate(),
@@ -616,8 +618,10 @@ class User extends Base {
     }
   }
 
-  async $afterFind() {
-    if (await hasValidLicense()) return this;
+  async omitEnterprisePermissionsWithoutValidLicense() {
+    if (await hasValidLicense()) {
+      return this;
+    }
 
     if (Array.isArray(this.permissions)) {
       this.permissions = this.permissions.filter((permission) => {
@@ -631,35 +635,35 @@ class User extends Base {
         return !restrictedSubjects.includes(permission.subject);
       });
     }
-
-    return this;
   }
 
-  get ability() {
-    return userAbility(this);
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    this.lowercaseEmail();
+    await this.generateHash();
+
+    if (appConfig.isCloud) {
+      this.startTrialPeriod();
+    }
   }
 
-  can(action, subject) {
-    const can = this.ability.can(action, subject);
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
 
-    if (!can) throw new NotAuthorizedError();
+    this.lowercaseEmail();
 
-    const relevantRule = this.ability.relevantRuleFor(action, subject);
-
-    const conditions = relevantRule?.conditions || [];
-    const conditionMap = Object.fromEntries(
-      conditions.map((condition) => [condition, true])
-    );
-
-    return conditionMap;
+    await this.generateHash();
   }
 
-  cannot(action, subject) {
-    const cannot = this.ability.cannot(action, subject);
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
 
-    if (cannot) throw new NotAuthorizedError();
+    await this.createUsageData();
+  }
 
-    return cannot;
+  async $afterFind() {
+    await this.omitEnterprisePermissionsWithoutValidLicense();
   }
 }
 

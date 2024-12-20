@@ -55,10 +55,9 @@ describe('PATCH /api/v1/connections/:connectionId', () => {
 
     const refetchedCurrentUserConnection = await currentUserConnection.$query();
 
-    const expectedPayload = updateConnectionMock({
-      ...refetchedCurrentUserConnection,
-      reconnectable: refetchedCurrentUserConnection.reconnectable,
-    });
+    const expectedPayload = updateConnectionMock(
+      refetchedCurrentUserConnection
+    );
 
     expect(response.body).toStrictEqual(expectedPayload);
   });

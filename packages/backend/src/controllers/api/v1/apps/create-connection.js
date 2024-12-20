@@ -9,18 +9,18 @@ export default async (request, response) => {
     .$query()
     .withGraphFetched({
       appConfig: true,
-      appAuthClient: true,
+      oauthClient: true,
     });
 
   renderObject(response, connectionWithAppConfigAndAuthClient, { status: 201 });
 };
 
 const connectionParams = (request) => {
-  const { appAuthClientId, formattedData } = request.body;
+  const { oauthClientId, formattedData } = request.body;
 
   return {
     key: request.params.appKey,
-    appAuthClientId,
+    oauthClientId,
     formattedData,
     verified: false,
   };

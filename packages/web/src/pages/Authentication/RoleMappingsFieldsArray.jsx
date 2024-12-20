@@ -55,6 +55,7 @@ function RoleMappingsFieldArray() {
                 label={formatMessage('roleMappingsForm.remoteRoleName')}
                 fullWidth
                 required
+                showError
               />
               <ControlledAutocomplete
                 name={`roleMappings.${index}.roleId`}
@@ -62,14 +63,17 @@ function RoleMappingsFieldArray() {
                 disablePortal
                 disableClearable
                 options={generateRoleOptions(roles)}
-                renderInput={(params) => (
+                renderInput={(params, { error }) => (
                   <MuiTextField
                     {...params}
                     label={formatMessage('roleMappingsForm.role')}
                     required
+                    error={!!error}
+                    helperText={error?.message}
                   />
                 )}
                 loading={isRolesLoading}
+                showHelperText={false}
               />
             </Stack>
             <IconButton

@@ -6,7 +6,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearIcon from '@mui/icons-material/Clear';
 import { ActionButtonsWrapper } from './style';
-import ClickAwayListener from '@mui/base/ClickAwayListener';
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import InputLabel from '@mui/material/InputLabel';
 import { createEditor } from 'slate';
 import { Editable, ReactEditor } from 'slate-react';

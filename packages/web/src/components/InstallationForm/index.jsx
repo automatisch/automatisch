@@ -188,7 +188,7 @@ function InstallationForm() {
         )}
       />
       {install.isSuccess && (
-        <Alert data-test="success-alert" severity="success" sx={{ mt: 3, fontWeight: 500 }}>
+        <Alert data-test="success-alert" severity="success" sx={{ mt: 3 }}>
           {formatMessage('installationForm.success', {
             link: (str) => (
               <Link

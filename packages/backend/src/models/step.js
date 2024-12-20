@@ -93,6 +93,14 @@ class Step extends Base {
     return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
   }
 
+  get isTrigger() {
+    return this.type === 'trigger';
+  }
+
+  get isAction() {
+    return this.type === 'action';
+  }
+
   async computeWebhookPath() {
     if (this.type === 'action') return null;
 
@@ -135,24 +143,6 @@ class Step extends Base {
     return webhookUrl;
   }
 
-  async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
-    Telemetry.stepCreated(this);
-  }
-
-  async $afterUpdate(opt, queryContext) {
-    await super.$afterUpdate(opt, queryContext);
-    Telemetry.stepUpdated(this);
-  }
-
-  get isTrigger() {
-    return this.type === 'trigger';
-  }
-
-  get isAction() {
-    return this.type === 'action';
-  }
-
   async getApp() {
     if (!this.appKey) return null;
 
@@ -170,12 +160,7 @@ class Step extends Base {
   }
 
   async getLastExecutionStep() {
-    const lastExecutionStep = await this.$relatedQuery('executionSteps')
-      .orderBy('created_at', 'desc')
-      .limit(1)
-      .first();
-
-    return lastExecutionStep;
+    return await this.$relatedQuery('lastExecutionStep');
   }
 
   async getNextStep() {
@@ -207,19 +192,18 @@ class Step extends Base {
   }
 
   async getSetupFields() {
-    let setupSupsteps;
+    let substeps;
 
     if (this.isTrigger) {
-      setupSupsteps = (await this.getTriggerCommand()).substeps;
+      substeps = (await this.getTriggerCommand()).substeps;
     } else {
-      setupSupsteps = (await this.getActionCommand()).substeps;
+      substeps = (await this.getActionCommand()).substeps;
     }
 
-    const existingArguments = setupSupsteps.find(
+    const setupSubstep = substeps.find(
       (substep) => substep.key === 'chooseTrigger'
-    ).arguments;
-
-    return existingArguments;
+    );
+    return setupSubstep.arguments;
   }
 
   async getSetupAndDynamicFields() {
@@ -326,23 +310,17 @@ class Step extends Base {
       .$relatedQuery('steps')
       .where('position', '>', this.position);
 
-    const nextStepQueries = nextSteps.map(async (nextStep) => {
-      await nextStep.$query().patch({
-        position: nextStep.position - 1,
-      });
-    });
-
-    await Promise.all(nextStepQueries);
+    await flow.updateStepPositionsFrom(this.position, nextSteps);
   }
 
   async updateFor(user, newStepData) {
-    const { connectionId, appKey, key, parameters } = newStepData;
+    const { appKey = this.appKey, connectionId, key, parameters } = newStepData;
 
-    if (connectionId && (appKey || this.appKey)) {
+    if (connectionId && appKey) {
       await user.authorizedConnections
         .findOne({
           id: connectionId,
-          key: appKey || this.appKey,
+          key: appKey,
         })
         .throwIfNotFound();
     }
@@ -356,8 +334,8 @@ class Step extends Base {
     }
 
     const updatedStep = await this.$query().patchAndFetch({
-      key: key,
-      appKey: appKey,
+      key,
+      appKey,
       connectionId: connectionId,
       parameters: parameters,
       status: 'incomplete',
@@ -366,6 +344,16 @@ class Step extends Base {
     await updatedStep.updateWebhookUrl();
 
     return updatedStep;
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+    Telemetry.stepCreated(this);
+  }
+
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
+    Telemetry.stepUpdated(this);
   }
 }
 

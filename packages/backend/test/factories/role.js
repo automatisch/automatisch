@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import Role from '../../src/models/role';
+import Role from '../../src/models/role.js';
 
 export const createRole = async (params = {}) => {
   const name = faker.lorem.word();

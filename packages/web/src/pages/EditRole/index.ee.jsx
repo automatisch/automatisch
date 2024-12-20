@@ -1,10 +1,10 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
-import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { merge } from 'lodash';
 
 import Container from 'components/Container';
 import Form from 'components/Form';
@@ -13,21 +13,26 @@ import PermissionCatalogField from 'components/PermissionCatalogField/index.ee';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
 import {
+  getComputedPermissionsDefaultValues,
   getPermissions,
   getRoleWithComputedPermissions,
 } from 'helpers/computePermissions.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminUpdateRole from 'hooks/useAdminUpdateRole';
 import useRole from 'hooks/useRole.ee';
+import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 
 export default function EditRole() {
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
   const { roleId } = useParams();
-  const { data, loading: isRoleLoading } = useRole({ roleId });
+  const { data: roleData, isLoading: isRoleLoading } = useRole({ roleId });
   const { mutateAsync: updateRole, isPending: isUpdateRolePending } =
     useAdminUpdateRole(roleId);
-  const role = data?.data;
+  const { data: permissionCatalogData, isLoading: isPermissionCatalogLoading } =
+    usePermissionCatalog();
+  const role = roleData?.data;
+  const permissionCatalog = permissionCatalogData?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
 
   const handleRoleUpdate = async (roleData) => {
@@ -52,7 +57,20 @@ export default function EditRole() {
     }
   };
 
-  const roleWithComputedPermissions = getRoleWithComputedPermissions(role);
+  const defaultValues = React.useMemo(() => {
+    const roleWithComputedPermissions = getRoleWithComputedPermissions(role);
+    const computedPermissionsDefaultValues =
+      getComputedPermissionsDefaultValues(permissionCatalog);
+
+    return {
+      ...roleWithComputedPermissions,
+      computedPermissions: merge(
+        {},
+        computedPermissionsDefaultValues,
+        roleWithComputedPermissions.computedPermissions,
+      ),
+    };
+  }, [role, permissionCatalog]);
 
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
@@ -64,43 +82,33 @@ export default function EditRole() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Form
-            defaultValues={roleWithComputedPermissions}
-            onSubmit={handleRoleUpdate}
-          >
+          <Form defaultValues={defaultValues} onSubmit={handleRoleUpdate}>
             <Stack direction="column" gap={2}>
-              {isRoleLoading && (
-                <>
-                  <Skeleton variant="rounded" height={55} />
-                  <Skeleton variant="rounded" height={55} />
-                </>
-              )}
-              {!isRoleLoading && role && (
-                <>
-                  <TextField
-                    disabled={role.isAdmin}
-                    required={true}
-                    name="name"
-                    label={formatMessage('roleForm.name')}
-                    data-test="name-input"
-                    fullWidth
-                  />
-
-                  <TextField
-                    disabled={role.isAdmin}
-                    name="description"
-                    label={formatMessage('roleForm.description')}
-                    data-test="description-input"
-                    fullWidth
-                  />
-                </>
-              )}
-
+              <TextField
+                disabled={
+                  role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
+                }
+                required={true}
+                name="name"
+                label={formatMessage('roleForm.name')}
+                data-test="name-input"
+                fullWidth
+              />
+              <TextField
+                disabled={
+                  role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
+                }
+                name="description"
+                label={formatMessage('roleForm.description')}
+                data-test="description-input"
+                fullWidth
+              />
               <PermissionCatalogField
                 name="computedPermissions"
                 disabled={role?.isAdmin}
+                syncIsCreator
+                loading={isRoleLoading}
               />
-
               <LoadingButton
                 type="submit"
                 variant="contained"

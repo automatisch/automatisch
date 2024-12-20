@@ -5,9 +5,11 @@ import Base from './base.js';
 import Step from './step.js';
 import Execution from './execution.js';
 import Telemetry from '../helpers/telemetry/index.js';
+import * as globalVariableModule from '../helpers/global-variable.js';
 import { createFlow } from '../../test/factories/flow.js';
 import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
+import { createExecutionStep } from '../../test/factories/execution-step.js';
 
 describe('Flow model', () => {
   it('tableName should return correct name', () => {
@@ -245,9 +247,193 @@ describe('Flow model', () => {
     });
   });
 
-  it.todo('createActionStep');
+  it('getStepById should return the step with the given ID from the flow', async () => {
+    const flow = await createFlow();
 
-  it.todo('delete');
+    const step = await createStep({ flowId: flow.id });
+
+    expect(await flow.getStepById(step.id)).toStrictEqual(step);
+  });
+
+  it('insertActionStepAtPosition should insert action step at given position', async () => {
+    const flow = await createFlow();
+
+    await flow.createInitialSteps();
+
+    const createdStep = await flow.insertActionStepAtPosition(2);
+
+    expect(createdStep).toMatchObject({
+      type: 'action',
+      position: 2,
+    });
+  });
+
+  it('getStepsAfterPosition should return steps after the given position', async () => {
+    const flow = await createFlow();
+
+    await flow.createInitialSteps();
+
+    await createStep({ flowId: flow.id });
+
+    expect(await flow.getStepsAfterPosition(1)).toMatchObject([
+      { position: 2 },
+      { position: 3 },
+    ]);
+  });
+
+  it('updateStepPositionsFrom', async () => {
+    const flow = await createFlow();
+
+    await createStep({ type: 'trigger', flowId: flow.id, position: 6 });
+    await createStep({ type: 'action', flowId: flow.id, position: 8 });
+    await createStep({ type: 'action', flowId: flow.id, position: 10 });
+
+    await flow.updateStepPositionsFrom(2, await flow.$relatedQuery('steps'));
+
+    expect(await flow.$relatedQuery('steps')).toMatchObject([
+      { position: 2, type: 'trigger' },
+      { position: 3, type: 'action' },
+      { position: 4, type: 'action' },
+    ]);
+  });
+
+  it('createStepAfter should create an action step after given step ID', async () => {
+    const flow = await createFlow();
+
+    const triggerStep = await createStep({ type: 'trigger', flowId: flow.id });
+    const actionStep = await createStep({ type: 'action', flowId: flow.id });
+
+    const createdStep = await flow.createStepAfter(triggerStep.id);
+
+    const refetchedActionStep = await actionStep.$query();
+
+    expect(createdStep).toMatchObject({ type: 'action', position: 2 });
+    expect(refetchedActionStep.position).toBe(3);
+  });
+
+  describe('unregisterWebhook', () => {
+    it('should unregister webhook on remote when supported', async () => {
+      const flow = await createFlow();
+      const triggerStep = await createStep({
+        flowId: flow.id,
+        appKey: 'typeform',
+        key: 'new-entry',
+        type: 'trigger',
+      });
+
+      const unregisterHookSpy = vi.fn().mockResolvedValue();
+
+      vi.spyOn(Step.prototype, 'getTriggerCommand').mockResolvedValue({
+        type: 'webhook',
+        unregisterHook: unregisterHookSpy,
+      });
+
+      const globalVariableSpy = vi
+        .spyOn(globalVariableModule, 'default')
+        .mockResolvedValue('global-variable');
+
+      await flow.unregisterWebhook();
+
+      expect(unregisterHookSpy).toHaveBeenCalledWith('global-variable');
+      expect(globalVariableSpy).toHaveBeenCalledWith({
+        flow,
+        step: triggerStep,
+        connection: undefined,
+        app: await triggerStep.getApp(),
+      });
+    });
+
+    it('should silently fail when unregistration fails', async () => {
+      const flow = await createFlow();
+      await createStep({
+        flowId: flow.id,
+        appKey: 'typeform',
+        key: 'new-entry',
+        type: 'trigger',
+      });
+
+      const unregisterHookSpy = vi.fn().mockRejectedValue(new Error());
+
+      vi.spyOn(Step.prototype, 'getTriggerCommand').mockResolvedValue({
+        type: 'webhook',
+        unregisterHook: unregisterHookSpy,
+      });
+
+      expect(await flow.unregisterWebhook()).toBe(undefined);
+      expect(unregisterHookSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should do nothing when trigger step is not webhook', async () => {
+      const flow = await createFlow();
+      await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+      });
+
+      const unregisterHookSpy = vi.fn().mockRejectedValue(new Error());
+
+      expect(await flow.unregisterWebhook()).toBe(undefined);
+      expect(unregisterHookSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  it('deleteExecutionSteps should delete related execution steps', async () => {
+    const flow = await createFlow();
+    const execution = await createExecution({ flowId: flow.id });
+    const firstExecutionStep = await createExecutionStep({
+      executionId: execution.id,
+    });
+    const secondExecutionStep = await createExecutionStep({
+      executionId: execution.id,
+    });
+
+    await flow.deleteExecutionSteps();
+
+    expect(await firstExecutionStep.$query()).toBe(undefined);
+    expect(await secondExecutionStep.$query()).toBe(undefined);
+  });
+
+  it('deleteExecutions should delete related executions', async () => {
+    const flow = await createFlow();
+    const firstExecution = await createExecution({ flowId: flow.id });
+    const secondExecution = await createExecution({ flowId: flow.id });
+
+    await flow.deleteExecutions();
+
+    expect(await firstExecution.$query()).toBe(undefined);
+    expect(await secondExecution.$query()).toBe(undefined);
+  });
+
+  it('deleteSteps should delete related steps', async () => {
+    const flow = await createFlow();
+    await flow.createInitialSteps();
+    await flow.deleteSteps();
+
+    expect(await flow.$relatedQuery('steps')).toStrictEqual([]);
+  });
+
+  it('delete should delete the flow with its relations', async () => {
+    const flow = await createFlow();
+
+    const unregisterWebhookSpy = vi
+      .spyOn(flow, 'unregisterWebhook')
+      .mockResolvedValue();
+    const deleteExecutionStepsSpy = vi
+      .spyOn(flow, 'deleteExecutionSteps')
+      .mockResolvedValue();
+    const deleteExecutionsSpy = vi
+      .spyOn(flow, 'deleteExecutions')
+      .mockResolvedValue();
+    const deleteStepsSpy = vi.spyOn(flow, 'deleteSteps').mockResolvedValue();
+
+    await flow.delete();
+
+    expect(unregisterWebhookSpy).toHaveBeenCalledOnce();
+    expect(deleteExecutionStepsSpy).toHaveBeenCalledOnce();
+    expect(deleteExecutionsSpy).toHaveBeenCalledOnce();
+    expect(deleteStepsSpy).toHaveBeenCalledOnce();
+    expect(await flow.$query()).toBe(undefined);
+  });
 
   it.todo('duplicateFor');
 
@@ -260,7 +446,33 @@ describe('Flow model', () => {
     expect(await flow.getTriggerStep()).toStrictEqual(triggerStep);
   });
 
-  it.todo('isPaused');
+  describe('isPaused', () => {
+    it('should return true when user.isAllowedToRunFlows returns false', async () => {
+      const flow = await createFlow();
+
+      const isAllowedToRunFlowsSpy = vi.fn().mockResolvedValue(false);
+      vi.spyOn(flow, '$relatedQuery').mockReturnValue({
+        withSoftDeleted: vi.fn().mockReturnThis(),
+        isAllowedToRunFlows: isAllowedToRunFlowsSpy,
+      });
+
+      expect(await flow.isPaused()).toBe(true);
+      expect(isAllowedToRunFlowsSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should return false when user.isAllowedToRunFlows returns true', async () => {
+      const flow = await createFlow();
+
+      const isAllowedToRunFlowsSpy = vi.fn().mockResolvedValue(true);
+      vi.spyOn(flow, '$relatedQuery').mockReturnValue({
+        withSoftDeleted: vi.fn().mockReturnThis(),
+        isAllowedToRunFlows: isAllowedToRunFlowsSpy,
+      });
+
+      expect(await flow.isPaused()).toBe(false);
+      expect(isAllowedToRunFlowsSpy).toHaveBeenCalledOnce();
+    });
+  });
 
   describe('throwIfHavingIncompleteSteps', () => {
     it('should throw validation error with incomplete steps', async () => {

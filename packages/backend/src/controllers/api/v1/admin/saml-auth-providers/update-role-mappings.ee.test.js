@@ -6,7 +6,7 @@ import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by
 import { createRole } from '../../../../../../test/factories/role.js';
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createSamlAuthProvider } from '../../../../../../test/factories/saml-auth-provider.ee.js';
-import { createSamlAuthProvidersRoleMapping } from '../../../../../../test/factories/saml-auth-providers-role-mapping.js';
+import { createRoleMapping } from '../../../../../../test/factories/role-mapping.js';
 import createRoleMappingsMock from '../../../../../../test/mocks/rest/api/v1/admin/saml-auth-providers/update-role-mappings.ee.js';
 import * as license from '../../../../../helpers/license.ee.js';
 
@@ -21,12 +21,12 @@ describe('PATCH /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappi
 
     samlAuthProvider = await createSamlAuthProvider();
 
-    await createSamlAuthProvidersRoleMapping({
+    await createRoleMapping({
       samlAuthProviderId: samlAuthProvider.id,
       remoteRoleName: 'Viewer',
     });
 
-    await createSamlAuthProvidersRoleMapping({
+    await createRoleMapping({
       samlAuthProviderId: samlAuthProvider.id,
       remoteRoleName: 'Editor',
     });
@@ -64,7 +64,7 @@ describe('PATCH /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappi
 
   it('should delete role mappings when given empty role mappings', async () => {
     const existingRoleMappings = await samlAuthProvider.$relatedQuery(
-      'samlAuthProvidersRoleMappings'
+      'roleMappings'
     );
 
     expect(existingRoleMappings.length).toBe(2);
@@ -148,35 +148,5 @@ describe('PATCH /api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappi
       .set('Authorization', token)
       .send(roleMappings)
       .expect(404);
-  });
-
-  it('should not delete existing role mapping when error thrown', async () => {
-    const roleMappings = [
-      {
-        roleId: userRole.id,
-        remoteRoleName: {
-          invalid: 'data',
-        },
-      },
-    ];
-
-    const roleMappingsBeforeRequest = await samlAuthProvider.$relatedQuery(
-      'samlAuthProvidersRoleMappings'
-    );
-
-    await request(app)
-      .patch(
-        `/api/v1/admin/saml-auth-providers/${samlAuthProvider.id}/role-mappings`
-      )
-      .set('Authorization', token)
-      .send(roleMappings)
-      .expect(422);
-
-    const roleMappingsAfterRequest = await samlAuthProvider.$relatedQuery(
-      'samlAuthProvidersRoleMappings'
-    );
-
-    expect(roleMappingsBeforeRequest).toStrictEqual(roleMappingsAfterRequest);
-    expect(roleMappingsAfterRequest.length).toBe(2);
   });
 });

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import useAuthentication from 'hooks/useAuthentication';
@@ -11,16 +12,18 @@ import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCreateAccessToken from 'hooks/useCreateAccessToken';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
 function LoginForm() {
   const isCloud = useCloud();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const enqueueSnackbar = useEnqueueSnackbar();
   const authentication = useAuthentication();
-  const { mutateAsync: createAccessToken, isPending: loading } =
-    useCreateAccessToken();
+  const {
+    mutateAsync: createAccessToken,
+    isPending: loading,
+    error,
+    isError,
+  } = useCreateAccessToken();
 
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
@@ -37,11 +40,19 @@ function LoginForm() {
       });
       const { token } = data;
       authentication.updateToken(token);
-    } catch (error) {
-      enqueueSnackbar(error?.message || formatMessage('loginForm.error'), {
-        variant: 'error',
-      });
-    }
+    } catch {}
+  };
+
+  const renderError = () => {
+    const errors = error?.response?.data?.errors?.general || [
+      error?.message || formatMessage('loginForm.error'),
+    ];
+
+    return errors.map((error) => (
+      <Alert severity="error" sx={{ mt: 2 }}>
+        {error}
+      </Alert>
+    ));
   };
 
   return (
@@ -93,6 +104,8 @@ function LoginForm() {
             {formatMessage('loginForm.forgotPasswordText')}
           </Link>
         )}
+
+        {isError && renderError()}
 
         <LoadingButton
           type="submit"

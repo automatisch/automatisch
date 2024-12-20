@@ -278,6 +278,20 @@ export const defaultTheme = createTheme({
         }),
       },
     },
+    MuiAlert: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          fontWeight: theme.typography.fontWeightRegular,
+        }),
+      },
+    },
+    MuiAlertTitle: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          fontWeight: theme.typography.fontWeightBold,
+        }),
+      },
+    },
   },
 });
 export const mationTheme = createTheme(

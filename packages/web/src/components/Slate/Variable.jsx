@@ -7,9 +7,9 @@ function Variable({ attributes, children, element, disabled }) {
   const focused = useFocused();
   const label = (
     <>
+      {children}
       <span style={{ fontWeight: 500 }}>{element.name}</span>:{' '}
       <span style={{ fontWeight: 300 }}>{element.sampleValue}</span>
-      {children}
     </>
   );
   return (
