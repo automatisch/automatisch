@@ -63,6 +63,7 @@ exports[`App model > list should have list of applications keys 1`] = `
   "twilio",
   "twitter",
   "typeform",
+  "virtualq",
   "vtiger-crm",
   "webhook",
   "wordpress",
