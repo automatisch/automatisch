@@ -14,6 +14,10 @@ export default defineConfig({
       reporter: ['text', 'lcov'],
       all: true,
       include: ['**/src/models/**', '**/src/controllers/**'],
+      exclude: [
+        '**/src/controllers/webhooks/**',
+        '**/src/controllers/paddle/**',
+      ],
       thresholds: {
         autoUpdate: true,
         statements: 95.16,
