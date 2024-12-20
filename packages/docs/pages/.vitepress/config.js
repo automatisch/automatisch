@@ -547,6 +547,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'VirtualQ',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/virtualq/actions' },
+            { text: 'Connection', link: '/apps/virtualq/connection' },
+          ],
+        },
+        {
           text: 'Vtiger CRM',
           collapsible: true,
           collapsed: true,
