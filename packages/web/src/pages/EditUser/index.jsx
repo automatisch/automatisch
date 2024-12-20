@@ -24,7 +24,6 @@ import useRoles from 'hooks/useRoles.ee';
 import useAdminUpdateUser from 'hooks/useAdminUpdateUser';
 import useAdminUser from 'hooks/useAdminUser';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
-import { getGeneralErrorMessage } from 'helpers/errors';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -76,7 +75,7 @@ export default function EditUser() {
   const currentUserAbility = useCurrentUserAbility();
   const canUpdateRole = currentUserAbility.can('update', 'Role');
 
-  const handleUserUpdate = async (userDataToUpdate, e, setError) => {
+  const handleUserUpdate = async (userDataToUpdate) => {
     try {
       await updateUser({
         fullName: userDataToUpdate.fullName,
@@ -96,29 +95,7 @@ export default function EditUser() {
     } catch (error) {
       const errors = error?.response?.data?.errors;
 
-      if (errors) {
-        const fieldNames = Object.keys(defaultValues);
-        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
-          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
-            setError(fieldName, {
-              type: 'fieldRequestError',
-              message: fieldErrors.join(', '),
-            });
-          }
-        });
-      }
-
-      const generalError = getGeneralErrorMessage({
-        error,
-        fallbackMessage: formatMessage('editUser.error'),
-      });
-
-      if (generalError) {
-        setError('root.general', {
-          type: 'requestError',
-          message: generalError,
-        });
-      }
+      throw errors || error;
     }
   };
 
