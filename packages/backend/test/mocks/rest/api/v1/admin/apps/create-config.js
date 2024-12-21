@@ -2,8 +2,7 @@ const createAppConfigMock = (appConfig) => {
   return {
     data: {
       key: appConfig.key,
-      customConnectionAllowed: appConfig.customConnectionAllowed,
-      shared: appConfig.shared,
+      useOnlyPredefinedAuthClients: appConfig.useOnlyPredefinedAuthClients,
       disabled: appConfig.disabled,
     },
     meta: {

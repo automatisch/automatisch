@@ -3,16 +3,8 @@
 exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
 {
   "properties": {
-    "connectionAllowed": {
-      "default": false,
-      "type": "boolean",
-    },
     "createdAt": {
       "type": "string",
-    },
-    "customConnectionAllowed": {
-      "default": false,
-      "type": "boolean",
     },
     "disabled": {
       "default": false,
@@ -25,12 +17,12 @@ exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
     "key": {
       "type": "string",
     },
-    "shared": {
-      "default": false,
-      "type": "boolean",
-    },
     "updatedAt": {
       "type": "string",
+    },
+    "useOnlyPredefinedAuthClients": {
+      "default": false,
+      "type": "boolean",
     },
   },
   "required": [

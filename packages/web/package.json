@@ -83,6 +83,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@simbathesailor/use-what-changed": "^2.0.0",
     "@tanstack/eslint-plugin-query": "^5.20.1",
     "@tanstack/react-query-devtools": "^5.24.1",
     "eslint-config-prettier": "^9.1.0",

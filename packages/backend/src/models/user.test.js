@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { DateTime, Duration } from 'luxon';
 import appConfig from '../config/app.js';
+import * as licenseModule from '../helpers/license.ee.js';
 import Base from './base.js';
 import AccessToken from './access-token.js';
 import Config from './config.js';
@@ -20,6 +21,7 @@ import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
 } from '../helpers/remove-job-configuration.js';
+import * as userAbilityModule from '../helpers/user-ability.js';
 import { createUser } from '../../test/factories/user.js';
 import { createConnection } from '../../test/factories/connection.js';
 import { createRole } from '../../test/factories/role.js';
@@ -205,64 +207,6 @@ describe('User model', () => {
     expect(virtualAttributes).toStrictEqual(expectedAttributes);
   });
 
-  it('acceptInvitationUrl should return accept invitation page URL with invitation token', async () => {
-    const user = new User();
-    user.invitationToken = 'invitation-token';
-
-    vi.spyOn(appConfig, 'webAppUrl', 'get').mockReturnValue(
-      'https://automatisch.io'
-    );
-
-    expect(user.acceptInvitationUrl).toBe(
-      'https://automatisch.io/accept-invitation?token=invitation-token'
-    );
-  });
-
-  describe('authenticate', () => {
-    it('should create and return the token for correct email and password', async () => {
-      const user = await createUser({
-        email: 'test-user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      const token = await User.authenticate(
-        'test-user@automatisch.io',
-        'sample-password'
-      );
-
-      const persistedToken = await AccessToken.query().findOne({
-        userId: user.id,
-      });
-
-      expect(token).toBe(persistedToken.token);
-    });
-
-    it('should return undefined for existing email and incorrect password', async () => {
-      await createUser({
-        email: 'test-user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      const token = await User.authenticate(
-        'test-user@automatisch.io',
-        'wrong-password'
-      );
-
-      expect(token).toBe(undefined);
-    });
-
-    it('should return undefined for non-existing email', async () => {
-      await createUser({
-        email: 'test-user@automatisch.io',
-        password: 'sample-password',
-      });
-
-      const token = await User.authenticate('non-existing-user@automatisch.io');
-
-      expect(token).toBe(undefined);
-    });
-  });
-
   describe('authorizedFlows', () => {
     it('should return user flows with isCreator condition', async () => {
       const userRole = await createRole({ name: 'User' });
@@ -432,7 +376,10 @@ describe('User model', () => {
       const anotherUserConnection = await createConnection();
 
       expect(
-        await userWithRoleAndPermissions.authorizedConnections
+        await userWithRoleAndPermissions.authorizedConnections.orderBy(
+          'created_at',
+          'asc'
+        )
       ).toStrictEqual([userConnection, anotherUserConnection]);
     });
 
@@ -502,6 +449,76 @@ describe('User model', () => {
       expect(() => user.authorizedExecutions).toThrowError(
         'The user is not authorized!'
       );
+    });
+  });
+
+  it('acceptInvitationUrl should return accept invitation page URL with invitation token', async () => {
+    const user = new User();
+    user.invitationToken = 'invitation-token';
+
+    vi.spyOn(appConfig, 'webAppUrl', 'get').mockReturnValue(
+      'https://automatisch.io'
+    );
+
+    expect(user.acceptInvitationUrl).toBe(
+      'https://automatisch.io/accept-invitation?token=invitation-token'
+    );
+  });
+
+  it('ability should return userAbility for the user', () => {
+    const user = new User();
+    user.fullName = 'Sample user';
+
+    const userAbilitySpy = vi
+      .spyOn(userAbilityModule, 'default')
+      .mockReturnValue('user-ability');
+
+    expect(user.ability).toStrictEqual('user-ability');
+    expect(userAbilitySpy).toHaveBeenNthCalledWith(1, user);
+  });
+
+  describe('authenticate', () => {
+    it('should create and return the token for correct email and password', async () => {
+      const user = await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate(
+        'test-user@automatisch.io',
+        'sample-password'
+      );
+
+      const persistedToken = await AccessToken.query().findOne({
+        userId: user.id,
+      });
+
+      expect(token).toBe(persistedToken.token);
+    });
+
+    it('should return undefined for existing email and incorrect password', async () => {
+      await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate(
+        'test-user@automatisch.io',
+        'wrong-password'
+      );
+
+      expect(token).toBe(undefined);
+    });
+
+    it('should return undefined for non-existing email', async () => {
+      await createUser({
+        email: 'test-user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      const token = await User.authenticate('non-existing-user@automatisch.io');
+
+      expect(token).toBe(undefined);
     });
   });
 
@@ -982,21 +999,9 @@ describe('User model', () => {
 
       const user = await createUser();
 
-      const presentDate = DateTime.fromObject(
-        { year: 2024, month: 11, day: 17, hour: 11, minute: 30 },
-        { zone: 'UTC+0' }
-      );
-
-      vi.setSystemTime(presentDate);
-
       await user.startTrialPeriod();
 
-      const futureDate = DateTime.fromObject(
-        { year: 2025, month: 1, day: 1 },
-        { zone: 'UTC+0' }
-      );
-
-      vi.setSystemTime(futureDate);
+      vi.setSystemTime(DateTime.now().plus({ month: 1 }));
 
       const refetchedUser = await user.$query();
 
@@ -1104,7 +1109,9 @@ describe('User model', () => {
 
       const user = await createUser();
 
-      expect(() => user.getPlanAndUsage()).rejects.toThrow('NotFoundError');
+      await expect(() => user.getPlanAndUsage()).rejects.toThrow(
+        'NotFoundError'
+      );
     });
   });
 
@@ -1175,7 +1182,7 @@ describe('User model', () => {
     });
 
     it('should throw not found error when user role does not exist', async () => {
-      expect(() =>
+      await expect(() =>
         User.registerUser({
           fullName: 'Sample user',
           email: 'user@automatisch.io',
@@ -1183,5 +1190,343 @@ describe('User model', () => {
         })
       ).rejects.toThrowError('NotFoundError');
     });
+  });
+
+  describe('can', () => {
+    it('should return conditions for the given action and subject of the user', async () => {
+      const userRole = await createRole({ name: 'User' });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: ['isCreator'],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Connection',
+        action: 'read',
+        conditions: [],
+      });
+
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(userWithRoleAndPermissions.can('read', 'Flow')).toStrictEqual({
+        isCreator: true,
+      });
+
+      expect(
+        userWithRoleAndPermissions.can('read', 'Connection')
+      ).toStrictEqual({});
+    });
+
+    it('should return not authorized error when the user is not permitted for the given action and subject', async () => {
+      const userRole = await createRole({ name: 'User' });
+      const user = await createUser({ roleId: userRole.id });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(() => userWithRoleAndPermissions.can('read', 'Flow')).toThrowError(
+        'The user is not authorized!'
+      );
+    });
+  });
+
+  it('lowercaseEmail should lowercase the user email', () => {
+    const user = new User();
+    user.email = 'USER@AUTOMATISCH.IO';
+
+    user.lowercaseEmail();
+
+    expect(user.email).toBe('user@automatisch.io');
+  });
+
+  describe('createUsageData', () => {
+    it('should create usage data if Automatisch is a cloud installation', async () => {
+      vi.useFakeTimers();
+
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
+
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      vi.setSystemTime(DateTime.now().plus({ month: 1 }));
+
+      const usageData = await user.createUsageData();
+      const currentUsageData = await user.$relatedQuery('currentUsageData');
+
+      expect(usageData).toStrictEqual(currentUsageData);
+
+      vi.useRealTimers();
+    });
+
+    it('should not create usage data if Automatisch is not a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      const usageData = await user.createUsageData();
+
+      expect(usageData).toBe(undefined);
+    });
+  });
+
+  describe('omitEnterprisePermissionsWithoutValidLicense', () => {
+    it('should return user as-is with valid license', async () => {
+      const userRole = await createRole({ name: 'User' });
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        roleId: userRole.id,
+      });
+
+      const readFlowPermission = await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'App',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Role',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Config',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'SamlAuthProvider',
+        action: 'read',
+        conditions: [],
+      });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(userWithRoleAndPermissions.permissions).toStrictEqual([
+        readFlowPermission,
+      ]);
+    });
+
+    it('should omit enterprise permissions without valid license', async () => {
+      vi.spyOn(licenseModule, 'hasValidLicense').mockResolvedValue(false);
+
+      const userRole = await createRole({ name: 'User' });
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        roleId: userRole.id,
+      });
+
+      const readFlowPermission = await createPermission({
+        roleId: userRole.id,
+        subject: 'Flow',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'App',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Role',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'Config',
+        action: 'read',
+        conditions: [],
+      });
+
+      await createPermission({
+        roleId: userRole.id,
+        subject: 'SamlAuthProvider',
+        action: 'read',
+        conditions: [],
+      });
+
+      const userWithRoleAndPermissions = await user
+        .$query()
+        .withGraphFetched({ role: true, permissions: true });
+
+      expect(userWithRoleAndPermissions.permissions).toStrictEqual([
+        readFlowPermission,
+      ]);
+    });
+  });
+
+  describe('$beforeInsert', () => {
+    it('should call super.$beforeInsert', async () => {
+      const superBeforeInsertSpy = vi
+        .spyOn(User.prototype, '$beforeInsert')
+        .mockResolvedValue();
+
+      await createUser();
+
+      expect(superBeforeInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should lowercase the user email', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'USER@AUTOMATISCH.IO',
+      });
+
+      expect(user.email).toBe('user@automatisch.io');
+    });
+
+    it('should generate password hash', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      expect(user.password).not.toBe('sample-password');
+      expect(await user.login('sample-password')).toBe(true);
+    });
+
+    it('should start trial period if Automatisch is a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
+
+      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(startTrialPeriodSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should not start trial period if Automatisch is not a cloud installation', async () => {
+      vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(false);
+
+      const startTrialPeriodSpy = vi.spyOn(User.prototype, 'startTrialPeriod');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(startTrialPeriodSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('$beforeUpdate', () => {
+    it('should call super.$beforeUpdate', async () => {
+      const superBeforeUpdateSpy = vi
+        .spyOn(User.prototype, '$beforeUpdate')
+        .mockResolvedValue();
+
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      await user.$query().patch({ fullName: 'Updated user name' });
+
+      expect(superBeforeUpdateSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should lowercase the user email if given', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      await user.$query().patchAndFetch({ email: 'NEW_EMAIL@AUTOMATISCH.IO' });
+
+      expect(user.email).toBe('new_email@automatisch.io');
+    });
+
+    it('should generate password hash', async () => {
+      const user = await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+        password: 'sample-password',
+      });
+
+      await user.$query().patchAndFetch({ password: 'new-password' });
+
+      expect(user.password).not.toBe('new-password');
+      expect(await user.login('new-password')).toBe(true);
+    });
+  });
+
+  describe('$afterInsert', () => {
+    it('should call super.$afterInsert', async () => {
+      const superAfterInsertSpy = vi.spyOn(User.prototype, '$afterInsert');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(superAfterInsertSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call createUsageData', async () => {
+      const createUsageDataSpy = vi.spyOn(User.prototype, 'createUsageData');
+
+      await createUser({
+        fullName: 'Sample user',
+        email: 'user@automatisch.io',
+      });
+
+      expect(createUsageDataSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  it('$afterFind should invoke omitEnterprisePermissionsWithoutValidLicense method', async () => {
+    const omitEnterprisePermissionsWithoutValidLicenseSpy = vi.spyOn(
+      User.prototype,
+      'omitEnterprisePermissionsWithoutValidLicense'
+    );
+
+    await createUser({
+      fullName: 'Sample user',
+      email: 'user@automatisch.io',
+    });
+
+    expect(
+      omitEnterprisePermissionsWithoutValidLicenseSpy
+    ).toHaveBeenCalledOnce();
   });
 });

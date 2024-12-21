@@ -1,16 +1,15 @@
+import { faker } from '@faker-js/faker';
 import { createRole } from './role.js';
+import RoleMapping from '../../src/models/role-mapping.ee.js';
 import { createSamlAuthProvider } from './saml-auth-provider.ee.js';
-import SamlAuthProviderRoleMapping from '../../src/models/saml-auth-providers-role-mapping.ee.js';
 
 export const createRoleMapping = async (params = {}) => {
-  params.roleId = params?.roleId || (await createRole()).id;
+  params.roleId = params.roleId || (await createRole()).id;
   params.samlAuthProviderId =
-    params?.samlAuthProviderId || (await createSamlAuthProvider()).id;
+    params.samlAuthProviderId || (await createSamlAuthProvider()).id;
+  params.remoteRoleName = params.remoteRoleName || faker.person.jobType();
 
-  params.remoteRoleName = params?.remoteRoleName || 'User';
+  const roleMapping = await RoleMapping.query().insertAndFetch(params);
 
-  const samlAuthProviderRoleMapping =
-    await SamlAuthProviderRoleMapping.query().insertAndFetch(params);
-
-  return samlAuthProviderRoleMapping;
+  return roleMapping;
 };

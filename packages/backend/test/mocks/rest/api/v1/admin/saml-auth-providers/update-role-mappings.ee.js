@@ -15,7 +15,7 @@ const createRoleMappingsMock = async (roleMappings) => {
       currentPage: null,
       isArray: true,
       totalPages: null,
-      type: 'SamlAuthProvidersRoleMapping',
+      type: 'RoleMapping',
     },
   };
 };

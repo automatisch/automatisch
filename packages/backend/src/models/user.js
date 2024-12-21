@@ -212,6 +212,10 @@ class User extends Base {
     return `${appConfig.webAppUrl}/accept-invitation?token=${this.invitationToken}`;
   }
 
+  get ability() {
+    return userAbility(this);
+  }
+
   static async authenticate(email, password) {
     const user = await User.query().findOne({
       email: email?.toLowerCase() || null,
@@ -583,62 +587,6 @@ class User extends Base {
     return user;
   }
 
-  async $beforeInsert(queryContext) {
-    await super.$beforeInsert(queryContext);
-
-    this.email = this.email.toLowerCase();
-    await this.generateHash();
-
-    if (appConfig.isCloud) {
-      this.startTrialPeriod();
-    }
-  }
-
-  async $beforeUpdate(opt, queryContext) {
-    await super.$beforeUpdate(opt, queryContext);
-
-    if (this.email) {
-      this.email = this.email.toLowerCase();
-    }
-
-    await this.generateHash();
-  }
-
-  async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
-
-    if (appConfig.isCloud) {
-      await this.$relatedQuery('usageData').insert({
-        userId: this.id,
-        consumedTaskCount: 0,
-        nextResetAt: DateTime.now().plus({ days: 30 }).toISODate(),
-      });
-    }
-  }
-
-  async $afterFind() {
-    if (await hasValidLicense()) return this;
-
-    if (Array.isArray(this.permissions)) {
-      this.permissions = this.permissions.filter((permission) => {
-        const restrictedSubjects = [
-          'App',
-          'Role',
-          'SamlAuthProvider',
-          'Config',
-        ];
-
-        return !restrictedSubjects.includes(permission.subject);
-      });
-    }
-
-    return this;
-  }
-
-  get ability() {
-    return userAbility(this);
-  }
-
   can(action, subject) {
     const can = this.ability.can(action, subject);
 
@@ -654,12 +602,68 @@ class User extends Base {
     return conditionMap;
   }
 
-  cannot(action, subject) {
-    const cannot = this.ability.cannot(action, subject);
+  lowercaseEmail() {
+    if (this.email) {
+      this.email = this.email.toLowerCase();
+    }
+  }
 
-    if (cannot) throw new NotAuthorizedError();
+  async createUsageData() {
+    if (appConfig.isCloud) {
+      return await this.$relatedQuery('usageData').insertAndFetch({
+        userId: this.id,
+        consumedTaskCount: 0,
+        nextResetAt: DateTime.now().plus({ days: 30 }).toISODate(),
+      });
+    }
+  }
 
-    return cannot;
+  async omitEnterprisePermissionsWithoutValidLicense() {
+    if (await hasValidLicense()) {
+      return this;
+    }
+
+    if (Array.isArray(this.permissions)) {
+      this.permissions = this.permissions.filter((permission) => {
+        const restrictedSubjects = [
+          'App',
+          'Role',
+          'SamlAuthProvider',
+          'Config',
+        ];
+
+        return !restrictedSubjects.includes(permission.subject);
+      });
+    }
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    this.lowercaseEmail();
+    await this.generateHash();
+
+    if (appConfig.isCloud) {
+      this.startTrialPeriod();
+    }
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    this.lowercaseEmail();
+
+    await this.generateHash();
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+
+    await this.createUsageData();
+  }
+
+  async $afterFind() {
+    await this.omitEnterprisePermissionsWithoutValidLicense();
   }
 }
 

@@ -30,7 +30,7 @@ const findOrCreateUserBySamlIdentity = async (
     : [mappedUser.role];
 
   const samlAuthProviderRoleMapping = await samlAuthProvider
-    .$relatedQuery('samlAuthProvidersRoleMappings')
+    .$relatedQuery('roleMappings')
     .whereIn('remote_role_name', mappedRoles)
     .limit(1)
     .first();

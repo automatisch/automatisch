@@ -8,7 +8,9 @@ const { AdminEditRolePage } = require('./edit-role-page');
 
 const { AdminApplicationsPage } = require('./applications-page');
 const { AdminApplicationSettingsPage } = require('./application-settings-page');
-const { AdminApplicationAuthClientsPage } = require('./application-auth-clients-page');
+const {
+  AdminApplicationOAuthClientsPage,
+} = require('./application-oauth-clients-page');
 
 export const adminFixtures = {
   adminUsersPage: async ({ page }, use) => {
@@ -35,8 +37,7 @@ export const adminFixtures = {
   adminApplicationSettingsPage: async ({ page }, use) => {
     await use(new AdminApplicationSettingsPage(page));
   },
-  adminApplicationAuthClientsPage: async ({ page }, use) => {
-    await use(new AdminApplicationAuthClientsPage(page));
-  }
+  adminApplicationOAuthClientsPage: async ({ page }, use) => {
+    await use(new AdminApplicationOAuthClientsPage(page));
+  },
 };
-

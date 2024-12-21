@@ -12,6 +12,7 @@
     "pretest": "APP_ENV=test node ./test/setup/prepare-test-env.js",
     "test": "APP_ENV=test vitest run",
     "test:watch": "APP_ENV=test vitest watch",
+    "test:coverage": "yarn test --coverage",
     "lint": "eslint .",
     "db:create": "node ./bin/database/create.js",
     "db:seed:user": "node ./bin/database/seed-user.js",
@@ -97,10 +98,11 @@
     "url": "https://github.com/automatisch/automatisch/issues"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.5",
     "node-gyp": "^10.1.0",
     "nodemon": "^2.0.13",
     "supertest": "^6.3.3",
-    "vitest": "^1.1.3"
+    "vitest": "^2.1.5"
   },
   "publishConfig": {
     "access": "public"

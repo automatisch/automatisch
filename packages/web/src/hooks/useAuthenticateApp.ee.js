@@ -13,6 +13,7 @@ import useCreateConnectionAuthUrl from './useCreateConnectionAuthUrl';
 import useUpdateConnection from './useUpdateConnection';
 import useResetConnection from './useResetConnection';
 import useVerifyConnection from './useVerifyConnection';
+import { useWhatChanged } from '@simbathesailor/use-what-changed';
 
 function getSteps(auth, hasConnection, useShared) {
   if (hasConnection) {
@@ -30,18 +31,20 @@ function getSteps(auth, hasConnection, useShared) {
 }
 
 export default function useAuthenticateApp(payload) {
-  const { appKey, appAuthClientId, connectionId, useShared = false } = payload;
+  const { appKey, oauthClientId, connectionId, useShared = false } = payload;
   const { data: auth } = useAppAuth(appKey);
   const queryClient = useQueryClient();
   const { mutateAsync: createConnection } = useCreateConnection(appKey);
   const { mutateAsync: createConnectionAuthUrl } = useCreateConnectionAuthUrl();
   const { mutateAsync: updateConnection } = useUpdateConnection();
   const { mutateAsync: resetConnection } = useResetConnection();
+  const { mutateAsync: verifyConnection } = useVerifyConnection();
   const [authenticationInProgress, setAuthenticationInProgress] =
     React.useState(false);
   const formatMessage = useFormatMessage();
-  const steps = getSteps(auth?.data, !!connectionId, useShared);
-  const { mutateAsync: verifyConnection } = useVerifyConnection();
+  const steps = React.useMemo(() => {
+    return getSteps(auth?.data, !!connectionId, useShared);
+  }, [auth, connectionId, useShared]);
 
   const authenticate = React.useMemo(() => {
     if (!steps?.length) return;
@@ -52,12 +55,11 @@ export default function useAuthenticateApp(payload) {
 
       const response = {
         key: appKey,
-        appAuthClientId: appAuthClientId || payload.appAuthClientId,
+        oauthClientId: oauthClientId || payload.oauthClientId,
         connectionId,
         fields,
       };
       let stepIndex = 0;
-
       while (stepIndex < steps?.length) {
         const step = steps[stepIndex];
         const variables = computeAuthStepVariables(step.arguments, response);
@@ -105,10 +107,10 @@ export default function useAuthenticateApp(payload) {
             response[step.name] = stepResponse;
           }
         } catch (err) {
-          console.log(err);
+          console.error(err);
           setAuthenticationInProgress(false);
 
-          queryClient.invalidateQueries({
+          await queryClient.invalidateQueries({
             queryKey: ['apps', appKey, 'connections'],
           });
 
@@ -126,19 +128,38 @@ export default function useAuthenticateApp(payload) {
 
       return response;
     };
+    // keep formatMessage out of it as it causes infinite loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     steps,
     appKey,
-    appAuthClientId,
+    oauthClientId,
     connectionId,
     queryClient,
-    formatMessage,
     createConnection,
     createConnectionAuthUrl,
     updateConnection,
     resetConnection,
     verifyConnection,
   ]);
+
+  useWhatChanged(
+    [
+      steps,
+      appKey,
+      oauthClientId,
+      connectionId,
+      queryClient,
+      createConnection,
+      createConnectionAuthUrl,
+      updateConnection,
+      resetConnection,
+      verifyConnection,
+    ],
+    'steps, appKey, oauthClientId, connectionId, queryClient, createConnection, createConnectionAuthUrl, updateConnection, resetConnection, verifyConnection',
+    '',
+    'useAuthenticate',
+  );
 
   return {
     authenticate,

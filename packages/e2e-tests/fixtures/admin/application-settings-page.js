@@ -8,66 +8,45 @@ export class AdminApplicationSettingsPage extends AuthenticatedPage {
   constructor(page) {
     super(page);
 
-    this.allowCustomConnectionsSwitch = this.page.locator(
-      '[name="customConnectionAllowed"]'
+    this.useOnlyPredefinedAuthClients = page.locator(
+      '[name="useOnlyPredefinedAuthClients"]'
     );
-    this.allowSharedConnectionsSwitch = this.page.locator('[name="shared"]');
-    this.disableConnectionsSwitch = this.page.locator('[name="disabled"]');
-    this.saveButton = this.page.getByTestId('submit-button');
-    this.successSnackbar = this.page.getByTestId(
+    this.disableConnectionsSwitch = page.locator('[name="disabled"]');
+    this.saveButton = page.getByTestId('submit-button');
+    this.successSnackbar = page.getByTestId(
       'snackbar-save-admin-apps-settings-success'
     );
   }
 
-  async allowCustomConnections() {
-    await expect(this.allowCustomConnectionsSwitch).not.toBeChecked();
-    await this.allowCustomConnectionsSwitch.check();
-    await expect(this.allowCustomConnectionsSwitch).toBeChecked();
-    await this.saveButton.click();
+  async allowUseOnlyPredefinedAuthClients() {
+    await expect(this.useOnlyPredefinedAuthClients).not.toBeChecked();
+    await this.useOnlyPredefinedAuthClients.check();
   }
 
-  async allowSharedConnections() {
-    await expect(this.allowSharedConnectionsSwitch).not.toBeChecked();
-    await this.allowSharedConnectionsSwitch.check();
-    await expect(this.allowSharedConnectionsSwitch).toBeChecked();
-    await this.saveButton.click();
+  async disallowUseOnlyPredefinedAuthClients() {
+    await expect(this.useOnlyPredefinedAuthClients).toBeChecked();
+    await this.useOnlyPredefinedAuthClients.uncheck();
+    await expect(this.useOnlyPredefinedAuthClients).not.toBeChecked();
   }
 
   async disallowConnections() {
     await expect(this.disableConnectionsSwitch).not.toBeChecked();
     await this.disableConnectionsSwitch.check();
-    await expect(this.disableConnectionsSwitch).toBeChecked();
-    await this.saveButton.click();
-  }
-
-  async disallowCustomConnections() {
-    await expect(this.allowCustomConnectionsSwitch).toBeChecked();
-    await this.allowCustomConnectionsSwitch.uncheck();
-    await expect(this.allowCustomConnectionsSwitch).not.toBeChecked();
-    await this.saveButton.click();
-  }
-
-  async disallowSharedConnections() {
-    await expect(this.allowSharedConnectionsSwitch).toBeChecked();
-    await this.allowSharedConnectionsSwitch.uncheck();
-    await expect(this.allowSharedConnectionsSwitch).not.toBeChecked();
-    await this.saveButton.click();
   }
 
   async allowConnections() {
     await expect(this.disableConnectionsSwitch).toBeChecked();
     await this.disableConnectionsSwitch.uncheck();
-    await expect(this.disableConnectionsSwitch).not.toBeChecked();
+  }
+
+  async saveSettings() {
     await this.saveButton.click();
   }
 
   async expectSuccessSnackbarToBeVisible() {
     const snackbars = await this.successSnackbar.all();
     for (const snackbar of snackbars) {
-      await expect(await snackbar.getAttribute('data-snackbar-variant')).toBe(
-        'success'
-      );
-      // await snackbar.click();
+      await expect(snackbar).toBeVisible();
     }
   }
 }
