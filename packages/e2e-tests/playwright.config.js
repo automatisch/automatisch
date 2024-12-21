@@ -43,9 +43,14 @@ module.exports = defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'db-restore',
+      testMatch: /.*\.teardown\.js/,
+    },
+    {
       name: 'setup',
       testMatch: /.*\.setup\.js/,
       teardown: 'teardown',
+      dependencies: ['db-restore'],
     },
     {
       name: 'teardown',
