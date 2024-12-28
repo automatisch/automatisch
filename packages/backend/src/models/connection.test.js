@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 import appConfig from '../config/app.js';
-import AppAuthClient from './app-auth-client.js';
+import OAuthClient from './oauth-client.js';
 import App from './app.js';
 import AppConfig from './app-config.js';
 import Base from './base.js';
@@ -12,7 +12,7 @@ import User from './user.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import { createConnection } from '../../test/factories/connection.js';
 import { createAppConfig } from '../../test/factories/app-config.js';
-import { createAppAuthClient } from '../../test/factories/app-auth-client.js';
+import { createOAuthClient } from '../../test/factories/oauth-client.js';
 
 describe('Connection model', () => {
   it('tableName should return correct name', () => {
@@ -61,12 +61,12 @@ describe('Connection model', () => {
             to: 'app_configs.key',
           },
         },
-        appAuthClient: {
+        oauthClient: {
           relation: Base.BelongsToOneRelation,
-          modelClass: AppAuthClient,
+          modelClass: OAuthClient,
           join: {
-            from: 'connections.app_auth_client_id',
-            to: 'app_auth_clients.id',
+            from: 'connections.oauth_client_id',
+            to: 'oauth_clients.id',
           },
         },
       };
@@ -307,13 +307,13 @@ describe('Connection model', () => {
       );
     });
 
-    it('should apply app auth client auth defaults when creating with shared app auth client', async () => {
+    it('should apply oauth client auth defaults when creating with shared oauth client', async () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
       });
 
-      const appAuthClient = await createAppAuthClient({
+      const oauthClient = await createOAuthClient({
         appKey: 'gitlab',
         active: true,
         formattedAuthDefaults: {
@@ -323,7 +323,7 @@ describe('Connection model', () => {
 
       const connection = await createConnection({
         key: 'gitlab',
-        appAuthClientId: appAuthClient.id,
+        oauthClientId: oauthClient.id,
         formattedData: null,
       });
 
@@ -559,22 +559,22 @@ describe('Connection model', () => {
   });
 
   describe('updateFormattedData', () => {
-    it('should extend connection data with app auth client auth defaults', async () => {
-      const appAuthClient = await createAppAuthClient({
+    it('should extend connection data with oauth client auth defaults', async () => {
+      const oauthClient = await createOAuthClient({
         formattedAuthDefaults: {
           clientId: 'sample-id',
         },
       });
 
       const connection = await createConnection({
-        appAuthClientId: appAuthClient.id,
+        oauthClientId: oauthClient.id,
         formattedData: {
           token: 'sample-token',
         },
       });
 
       const updatedConnection = await connection.updateFormattedData({
-        appAuthClientId: appAuthClient.id,
+        oauthClientId: oauthClient.id,
       });
 
       expect(updatedConnection.formattedData).toStrictEqual({

@@ -15,7 +15,7 @@ describe('GET /api/v1/apps/:appKey/actions/:actionKey/substeps', () => {
     exampleApp = await App.findOneByKey('github');
   });
 
-  it('should return the app auth info', async () => {
+  it('should return the action substeps info', async () => {
     const actions = await App.findActionsByKey('github');
     const exampleAction = actions.find(
       (action) => action.key === 'createIssue'

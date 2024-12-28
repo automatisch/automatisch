@@ -4,10 +4,10 @@ import { authorizeAdmin } from '../../../../helpers/authorization.js';
 import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
 import createConfigAction from '../../../../controllers/api/v1/admin/apps/create-config.ee.js';
 import updateConfigAction from '../../../../controllers/api/v1/admin/apps/update-config.ee.js';
-import getAuthClientsAction from '../../../../controllers/api/v1/admin/apps/get-auth-clients.ee.js';
-import getAuthClientAction from '../../../../controllers/api/v1/admin/apps/get-auth-client.ee.js';
-import createAuthClientAction from '../../../../controllers/api/v1/admin/apps/create-auth-client.ee.js';
-import updateAuthClientAction from '../../../../controllers/api/v1/admin/apps/update-auth-client.ee.js';
+import getOAuthClientsAction from '../../../../controllers/api/v1/admin/apps/get-oauth-clients.ee.js';
+import getOAuthClientAction from '../../../../controllers/api/v1/admin/apps/get-oauth-client.ee.js';
+import createOAuthClientAction from '../../../../controllers/api/v1/admin/apps/create-oauth-client.ee.js';
+import updateOAuthClientAction from '../../../../controllers/api/v1/admin/apps/update-oauth-client.ee.js';
 
 const router = Router();
 
@@ -28,35 +28,35 @@ router.patch(
 );
 
 router.get(
-  '/:appKey/auth-clients',
+  '/:appKey/oauth-clients',
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  getAuthClientsAction
+  getOAuthClientsAction
 );
 
 router.post(
-  '/:appKey/auth-clients',
+  '/:appKey/oauth-clients',
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  createAuthClientAction
+  createOAuthClientAction
 );
 
 router.get(
-  '/:appKey/auth-clients/:appAuthClientId',
+  '/:appKey/oauth-clients/:oauthClientId',
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  getAuthClientAction
+  getOAuthClientAction
 );
 
 router.patch(
-  '/:appKey/auth-clients/:appAuthClientId',
+  '/:appKey/oauth-clients/:oauthClientId',
   authenticateUser,
   authorizeAdmin,
   checkIsEnterprise,
-  updateAuthClientAction
+  updateOAuthClientAction
 );
 
 export default router;

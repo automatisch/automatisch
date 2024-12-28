@@ -13,7 +13,7 @@ describe('connectionSerializer', () => {
     const expectedPayload = {
       id: connection.id,
       key: connection.key,
-      appAuthClientId: connection.appAuthClientId,
+      oauthClientId: connection.oauthClientId,
       formattedData: {
         screenName: connection.formattedData.screenName,
       },

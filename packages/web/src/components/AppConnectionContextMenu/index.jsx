@@ -70,7 +70,7 @@ function ContextMenu(props) {
             to={URLS.APP_RECONNECT_CONNECTION(
               appKey,
               connection.id,
-              connection.appAuthClientId,
+              connection.oauthClientId,
             )}
             onClick={createActionHandler({ type: 'reconnect' })}
           >
