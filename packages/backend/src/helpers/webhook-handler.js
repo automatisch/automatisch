@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty.js';
 import Flow from '../models/flow.js';
 import { processTrigger } from '../services/trigger.js';
 import triggerQueue from '../queues/trigger.js';
+import { executeTrigger } from '../jobs/execute-trigger.js';
 import globalVariable from './global-variable.js';
 import QuotaExceededError from '../errors/quote-exceeded.js';
 import {
@@ -64,20 +65,7 @@ export default async (flowId, request, response) => {
       continue;
     }
 
-    const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
-
-    const jobOptions = {
-      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-    };
-
-    const jobPayload = {
-      flowId,
-      stepId: triggerStep.id,
-      triggerItem,
-    };
-
-    await triggerQueue.add(jobName, jobPayload, jobOptions);
+    await executeTrigger({ flowId, triggerStep, triggerItem });
   }
 
   return response.status(204);
