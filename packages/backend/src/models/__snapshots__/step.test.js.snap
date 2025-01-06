@@ -38,6 +38,14 @@ exports[`Step model > jsonSchema should have correct validations 1`] = `
         "null",
       ],
     },
+    "name": {
+      "maxLength": 255,
+      "minLength": 1,
+      "type": [
+        "string",
+        "null",
+      ],
+    },
     "parameters": {
       "type": "object",
     },
