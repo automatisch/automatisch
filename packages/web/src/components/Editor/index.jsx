@@ -27,6 +27,10 @@ function Editor(props) {
         connectionId: step.connection?.id,
       };
 
+      if (step.name) {
+        payload.name = step.name;
+      }
+
       if (step.appKey) {
         payload.appKey = step.appKey;
       }
