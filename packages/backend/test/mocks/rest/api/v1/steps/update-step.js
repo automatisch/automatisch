@@ -3,6 +3,7 @@ const updateStepMock = (step) => {
     id: step.id,
     type: step.type || 'action',
     key: step.key || null,
+    name: step.name || null,
     appKey: step.appKey || null,
     iconUrl: step.iconUrl || null,
     webhookUrl: step.webhookUrl || null,
