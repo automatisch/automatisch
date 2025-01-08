@@ -270,7 +270,7 @@ function FlowStep(props) {
               variant="body2"
               onConfirm={handleStepNameChange}
               prefixValue={`${step.position}. `}
-              disabledEditing={collapsed}
+              disabled={editorContext.readOnly || collapsed}
             >
               {step.name}
             </EditableTypography>
