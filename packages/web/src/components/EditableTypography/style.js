@@ -3,8 +3,7 @@ import MuiBox from '@mui/material/Box';
 import MuiTextField from '@mui/material/TextField';
 import { inputClasses } from '@mui/material/Input';
 
-const boxShouldForwardProp = (prop) =>
-  !['editing', 'disabledEditing'].includes(prop);
+const boxShouldForwardProp = (prop) => !['editing', 'disabled'].includes(prop);
 
 export const Box = styled(MuiBox, {
   shouldForwardProp: boxShouldForwardProp,
@@ -15,7 +14,7 @@ export const Box = styled(MuiBox, {
   max-width: 90%;
   height: 33px;
   align-items: center;
-  ${({ disabledEditing }) => !disabledEditing && 'cursor: pointer;'}
+  ${({ disabled }) => !disabled && 'cursor: pointer;'}
   ${({ editing }) => editing && 'border-bottom: 1px dashed #000;'}
 `;
 

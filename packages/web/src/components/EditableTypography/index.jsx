@@ -13,7 +13,7 @@ function EditableTypography(props) {
     iconPosition = 'start',
     iconSize = 'large',
     sx,
-    disabledEditing = false,
+    disabled = false,
     prefixValue = '',
     ...typographyProps
   } = props;
@@ -21,10 +21,10 @@ function EditableTypography(props) {
   const [editing, setEditing] = React.useState(false);
 
   const handleClick = React.useCallback(() => {
-    if (disabledEditing) return;
+    if (disabled) return;
 
     setEditing((editing) => !editing);
-  }, [disabledEditing]);
+  }, [disabled]);
 
   const handleTextFieldClick = React.useCallback((event) => {
     event.stopPropagation();
@@ -33,8 +33,9 @@ function EditableTypography(props) {
   const handleTextFieldKeyDown = React.useCallback(
     async (event) => {
       const target = event.target;
+      const eventKey = event.key;
 
-      if (event.key === 'Enter') {
+      if (eventKey === 'Enter') {
         if (target.value !== children) {
           await onConfirm(target.value);
         }
@@ -42,11 +43,11 @@ function EditableTypography(props) {
         setEditing(false);
       }
 
-      if (event.key === 'Escape') {
+      if (eventKey === 'Escape') {
         setEditing(false);
       }
     },
-    [children],
+    [children, onConfirm],
   );
 
   const handleTextFieldBlur = React.useCallback(
@@ -84,19 +85,14 @@ function EditableTypography(props) {
   }
 
   return (
-    <Box
-      sx={sx}
-      onClick={handleClick}
-      editing={editing}
-      disabledEditing={disabledEditing}
-    >
-      {iconPosition === 'start' && editing === false && (
+    <Box sx={sx} onClick={handleClick} editing={editing} disabled={disabled}>
+      {!disabled && iconPosition === 'start' && editing === false && (
         <EditIcon fontSize={iconSize} sx={{ mr: 1 }} />
       )}
 
       {component}
 
-      {iconPosition === 'end' && editing === false && (
+      {!disabled && iconPosition === 'end' && editing === false && (
         <EditIcon fontSize={iconSize} sx={{ ml: 1 }} />
       )}
     </Box>
@@ -105,7 +101,7 @@ function EditableTypography(props) {
 
 EditableTypography.propTypes = {
   children: PropTypes.string.isRequired,
-  disabledEditing: PropTypes.bool,
+  disabled: PropTypes.bool,
   iconPosition: PropTypes.oneOf(['start', 'end']),
   iconSize: PropTypes.oneOf(['small', 'large']),
   onConfirm: PropTypes.func,
