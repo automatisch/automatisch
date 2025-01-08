@@ -90,7 +90,7 @@ const EditorNew = ({ flow }) => {
         connectionId: step.connection?.id,
       };
 
-      if (step.name) {
+      if (step.name || step.keyLabel) {
         payload.name = step.name || step.keyLabel;
       }
 

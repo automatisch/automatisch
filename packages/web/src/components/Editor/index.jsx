@@ -27,8 +27,8 @@ function Editor(props) {
         connectionId: step.connection?.id,
       };
 
-      if (step.name) {
-        payload.name = step.name;
+      if (step.name || step.keyLabel) {
+        payload.name = step.name || step.keyLabel;
       }
 
       if (step.appKey) {
