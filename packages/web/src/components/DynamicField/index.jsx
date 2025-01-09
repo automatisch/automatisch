@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -78,13 +77,10 @@ function DynamicField(props) {
             }}
           >
             {fields.map((fieldSchema, fieldSchemaIndex) => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flex: '1 0 0px',
-                  flexDirection: 'column',
-                  minWidth: 0,
-                }}
+              <Stack
+                minWidth={0}
+                flex="1 0 0px"
+                spacing={2}
                 key={`field-${field.__id}-${fieldSchemaIndex}`}
               >
                 <InputCreator
@@ -94,7 +90,7 @@ function DynamicField(props) {
                   shouldUnregister={false}
                   stepId={stepId}
                 />
-              </Box>
+              </Stack>
             ))}
           </Stack>
           <IconButton
@@ -109,7 +105,6 @@ function DynamicField(props) {
       ))}
       <Stack direction="row" spacing={2}>
         <Stack spacing={{ xs: 2 }} sx={{ display: 'flex', flex: 1 }} />
-
         <IconButton
           size="small"
           edge="start"
