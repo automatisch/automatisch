@@ -91,15 +91,15 @@ function ChooseAppAndEventSubstep(props) {
   const onEventChange = React.useCallback(
     (event, selectedOption) => {
       if (typeof selectedOption === 'object') {
-        // TODO: try to simplify type casting below.
-        const typedSelectedOption = selectedOption;
-        const option = typedSelectedOption;
-        const eventKey = option?.value;
+        const eventKey = selectedOption?.value;
+        const eventLabel = selectedOption?.label;
+
         if (step.key !== eventKey) {
           onChange({
             step: {
               ...step,
               key: eventKey,
+              keyLabel: eventLabel,
             },
           });
         }
@@ -111,10 +111,8 @@ function ChooseAppAndEventSubstep(props) {
   const onAppChange = React.useCallback(
     (event, selectedOption) => {
       if (typeof selectedOption === 'object') {
-        // TODO: try to simplify type casting below.
-        const typedSelectedOption = selectedOption;
-        const option = typedSelectedOption;
-        const appKey = option?.value;
+        const appKey = selectedOption?.value;
+
         if (step.appKey !== appKey) {
           onChange({
             step: {
