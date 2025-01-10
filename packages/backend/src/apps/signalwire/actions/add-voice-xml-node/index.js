@@ -69,9 +69,27 @@ export default defineAction({
         {
           label: 'Attribute value',
           key: 'value',
-          type: 'string',
+          type: 'dropdown',
           required: false,
           variables: true,
+          source: {
+            type: 'query',
+            name: 'getDynamicData',
+            arguments: [
+              {
+                name: 'key',
+                value: 'listVoiceXmlNodeAttributeValues',
+              },
+              {
+                name: 'parameters.nodeName',
+                value: '{parameters.nodeName}',
+              },
+              {
+                name: 'parameters.attributes',
+                value: '{parameters.attributes}',
+              },
+            ],
+          },
         },
       ],
     },
