@@ -1,4 +1,5 @@
 import { ValidationError } from 'objection';
+import slugify from 'slugify';
 import Base from './base.js';
 import Step from './step.js';
 import User from './user.js';
@@ -7,6 +8,7 @@ import ExecutionStep from './execution-step.js';
 import globalVariable from '../helpers/global-variable.js';
 import logger from '../helpers/logger.js';
 import Telemetry from '../helpers/telemetry/index.js';
+import exportFlow from '../helpers/export-flow.js';
 import flowQueue from '../queues/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
@@ -424,6 +426,24 @@ class Flow extends Base {
         type: 'insufficientStepsError',
       });
     }
+  }
+
+  slugifyNameAsFilename() {
+    const slug = slugify(this.name, {
+      lower: true,
+      strict: true,
+      replacement: '-',
+    });
+
+    return `${slug}.json`;
+  }
+
+  async export() {
+    const exportedFlow = await exportFlow(this);
+    const exportedFlowAsString = JSON.stringify(exportedFlow, null, 2);
+    const slug = this.slugifyNameAsFilename();
+
+    return { exportedFlowAsString, slug };
   }
 
   async $beforeUpdate(opt, queryContext) {

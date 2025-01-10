@@ -23,7 +23,6 @@ const exportFlow = async (flow) => {
     })),
   };
 
-  console.log(JSON.stringify(exportedFlow, null, 2));
   return exportedFlow;
 };
 

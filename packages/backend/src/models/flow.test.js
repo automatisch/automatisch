@@ -10,6 +10,7 @@ import { createFlow } from '../../test/factories/flow.js';
 import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
 import { createExecutionStep } from '../../test/factories/execution-step.js';
+import * as exportFlow from '../helpers/export-flow.js';
 
 describe('Flow model', () => {
   it('tableName should return correct name', () => {
@@ -503,6 +504,69 @@ describe('Flow model', () => {
       });
 
       expect(await flow.throwIfHavingIncompleteSteps()).toBe(undefined);
+    });
+  });
+
+  describe('slugifyNameAsFilename', () => {
+    it('should generate a slug file name from flow name', async () => {
+      const flow = await createFlow({
+        name: 'My Flow Name',
+      });
+
+      const slug = flow.slugifyNameAsFilename();
+      expect(slug).toBe('my-flow-name.json');
+    });
+  });
+
+  describe('export', () => {
+    it('should call slugifyNameAsFilename method', async () => {
+      const flow = await createFlow({
+        name: 'My Flow Name',
+      });
+
+      const slugifyNameAsFilenameSpy = vi
+        .spyOn(flow, 'slugifyNameAsFilename')
+        .mockImplementation(() => 'my-flow-name.json');
+
+      await flow.export();
+
+      expect(slugifyNameAsFilenameSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should call exportFlow method', async () => {
+      const flow = await createFlow();
+
+      const exportFlowSpy = vi
+        .spyOn(exportFlow, 'default')
+        .mockImplementation(() => {});
+
+      await flow.export();
+
+      expect(exportFlowSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should return exportedFlowAsString and slug', async () => {
+      const flow = await createFlow();
+
+      const exportedFlowAsString = {
+        name: 'My Flow Name',
+      };
+
+      const slug = 'slug';
+
+      vi.spyOn(exportFlow, 'default').mockReturnValue(exportedFlowAsString);
+      vi.spyOn(flow, 'slugifyNameAsFilename').mockReturnValue(slug);
+
+      const expectedExportedFlowAsString = JSON.stringify(
+        exportedFlowAsString,
+        null,
+        2
+      );
+
+      expect(await flow.export()).toStrictEqual({
+        exportedFlowAsString: expectedExportedFlowAsString,
+        slug: 'slug',
+      });
     });
   });
 
