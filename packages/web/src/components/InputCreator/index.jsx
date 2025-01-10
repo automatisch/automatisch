@@ -162,6 +162,7 @@ function InputCreator(props) {
             required={required}
             disabled={disabled}
             shouldUnregister={shouldUnregister}
+            defaultValue={value}
           />
 
           {isDynamicFieldsLoading && !additionalFields?.length && (
