@@ -23,6 +23,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import useAppConnections from 'hooks/useAppConnections';
 import useTestConnection from 'hooks/useTestConnection';
 import useOAuthClients from 'hooks/useOAuthClients';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -55,6 +56,7 @@ function ChooseConnectionSubstep(props) {
     React.useState(false);
   const queryClient = useQueryClient();
   const { data: appOAuthClients } = useOAuthClients(application.key);
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const { authenticate } = useAuthenticateApp({
     appKey: application.key,
@@ -156,8 +158,10 @@ function ChooseConnectionSubstep(props) {
           },
         });
       }
-    } catch (err) {
-      // void
+    } catch (error) {
+      enqueueSnackbar(error?.message || formatMessage('genericError'), {
+        variant: 'error',
+      });
     } finally {
       setShowAddSharedConnectionDialog(false);
     }
