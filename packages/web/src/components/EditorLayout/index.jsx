@@ -72,6 +72,7 @@ export default function EditorLayout() {
               variant="body1"
               onConfirm={onFlowNameUpdate}
               noWrap
+              iconColor="action"
               sx={{ display: 'flex', flex: 1, maxWidth: '50vw', ml: 2 }}
             >
               {flow?.name}
