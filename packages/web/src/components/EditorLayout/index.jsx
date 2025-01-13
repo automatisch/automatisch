@@ -10,31 +10,50 @@ import Snackbar from '@mui/material/Snackbar';
 import { ReactFlowProvider } from 'reactflow';
 
 import { EditorProvider } from 'contexts/Editor';
-import EditableTypography from 'components/EditableTypography';
-import Container from 'components/Container';
-import Editor from 'components/Editor';
-import Can from 'components/Can';
-import useFormatMessage from 'hooks/useFormatMessage';
-import * as URLS from 'config/urls';
 import { TopBar } from './style';
+import * as URLS from 'config/urls';
+import Can from 'components/Can';
+import Container from 'components/Container';
+import EditableTypography from 'components/EditableTypography';
+import Editor from 'components/Editor';
+import EditorNew from 'components/EditorNew/EditorNew';
 import useFlow from 'hooks/useFlow';
+import useFormatMessage from 'hooks/useFormatMessage';
 import useUpdateFlow from 'hooks/useUpdateFlow';
 import useUpdateFlowStatus from 'hooks/useUpdateFlowStatus';
-import EditorNew from 'components/EditorNew/EditorNew';
+import useExportFlow from 'hooks/useExportFlow';
+import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
 const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
 
 export default function EditorLayout() {
   const { flowId } = useParams();
   const formatMessage = useFormatMessage();
+  const enqueueSnackbar = useEnqueueSnackbar();
   const { mutateAsync: updateFlow } = useUpdateFlow(flowId);
   const { mutateAsync: updateFlowStatus } = useUpdateFlowStatus(flowId);
+  const { mutateAsync: exportFlow } = useExportFlow(flowId);
+  const downloadJsonAsFile = useDownloadJsonAsFile();
   const { data, isLoading: isFlowLoading } = useFlow(flowId);
   const flow = data?.data;
 
   const onFlowNameUpdate = async (name) => {
     await updateFlow({
       name,
+    });
+  };
+
+  const onExportFlow = async (name) => {
+    const flowExport = await exportFlow();
+
+    downloadJsonAsFile({
+      contents: flowExport.data,
+      name: flowExport.data.name,
+    });
+
+    enqueueSnackbar(formatMessage('flowEditor.flowSuccessfullyExported'), {
+      variant: 'success',
     });
   };
 
@@ -79,7 +98,22 @@ export default function EditorLayout() {
           )}
         </Box>
 
-        <Box pr={1}>
+        <Box pr={1} display="flex" gap={1}>
+          <Can I="read" a="Flow" passThrough>
+            {(allowed) => (
+              <Button
+                disabled={!allowed || !flow}
+                variant="contained"
+                color="info"
+                size="small"
+                onClick={onExportFlow}
+                data-test="export-flow-button"
+              >
+                {formatMessage('flowEditor.export')}
+              </Button>
+            )}
+          </Can>
+
           <Can I="publish" a="Flow" passThrough>
             {(allowed) => (
               <Button
