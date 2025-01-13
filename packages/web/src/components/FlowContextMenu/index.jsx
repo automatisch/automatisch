@@ -12,6 +12,8 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useDuplicateFlow from 'hooks/useDuplicateFlow';
 import useDeleteFlow from 'hooks/useDeleteFlow';
+import useExportFlow from 'hooks/useExportFlow';
+import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
 
 function ContextMenu(props) {
   const { flowId, onClose, anchorEl, onDuplicateFlow, onDeleteFlow, appKey } =
@@ -20,7 +22,9 @@ function ContextMenu(props) {
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
   const { mutateAsync: duplicateFlow } = useDuplicateFlow(flowId);
-  const { mutateAsync: deleteFlow } = useDeleteFlow();
+  const { mutateAsync: deleteFlow } = useDeleteFlow(flowId);
+  const { mutateAsync: exportFlow } = useExportFlow(flowId);
+  const downloadJsonAsFile = useDownloadJsonAsFile();
 
   const onFlowDuplicate = React.useCallback(async () => {
     await duplicateFlow();
@@ -51,7 +55,7 @@ function ContextMenu(props) {
   ]);
 
   const onFlowDelete = React.useCallback(async () => {
-    await deleteFlow(flowId);
+    await deleteFlow();
 
     if (appKey) {
       await queryClient.invalidateQueries({
@@ -65,7 +69,30 @@ function ContextMenu(props) {
 
     onDeleteFlow?.();
     onClose();
-  }, [flowId, onClose, deleteFlow, queryClient, onDeleteFlow]);
+  }, [
+    deleteFlow,
+    appKey,
+    enqueueSnackbar,
+    formatMessage,
+    onDeleteFlow,
+    onClose,
+    queryClient,
+  ]);
+
+  const onFlowExport = React.useCallback(async () => {
+    const flowExport = await exportFlow();
+
+    downloadJsonAsFile({
+      contents: flowExport.data,
+      name: flowExport.data.name,
+    });
+
+    enqueueSnackbar(formatMessage('flow.successfullyExported'), {
+      variant: 'success',
+    });
+
+    onClose();
+  }, [exportFlow, downloadJsonAsFile, enqueueSnackbar, formatMessage, onClose]);
 
   return (
     <Menu
@@ -86,6 +113,14 @@ function ContextMenu(props) {
         {(allowed) => (
           <MenuItem disabled={!allowed} onClick={onFlowDuplicate}>
             {formatMessage('flow.duplicate')}
+          </MenuItem>
+        )}
+      </Can>
+
+      <Can I="read" a="Flow" passThrough>
+        {(allowed) => (
+          <MenuItem disabled={!allowed} onClick={onFlowExport}>
+            {formatMessage('flow.export')}
           </MenuItem>
         )}
       </Can>
