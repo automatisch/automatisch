@@ -507,65 +507,18 @@ describe('Flow model', () => {
     });
   });
 
-  describe('slugifyNameAsFilename', () => {
-    it('should generate a slug file name from flow name', async () => {
-      const flow = await createFlow({
-        name: 'My Flow Name',
-      });
-
-      const slug = flow.slugifyNameAsFilename();
-      expect(slug).toBe('my-flow-name.json');
-    });
-  });
-
   describe('export', () => {
-    it('should call slugifyNameAsFilename method', async () => {
-      const flow = await createFlow({
-        name: 'My Flow Name',
-      });
-
-      const slugifyNameAsFilenameSpy = vi
-        .spyOn(flow, 'slugifyNameAsFilename')
-        .mockImplementation(() => 'my-flow-name.json');
-
-      await flow.export();
-
-      expect(slugifyNameAsFilenameSpy).toHaveBeenCalledOnce();
-    });
-
-    it('should call exportFlow method', async () => {
-      const flow = await createFlow();
-
-      const exportFlowSpy = vi
-        .spyOn(exportFlow, 'default')
-        .mockImplementation(() => {});
-
-      await flow.export();
-
-      expect(exportFlowSpy).toHaveBeenCalledOnce();
-    });
-
-    it('should return exportedFlowAsString and slug', async () => {
+    it('should return exportedFlow', async () => {
       const flow = await createFlow();
 
       const exportedFlowAsString = {
         name: 'My Flow Name',
       };
 
-      const slug = 'slug';
-
       vi.spyOn(exportFlow, 'default').mockReturnValue(exportedFlowAsString);
-      vi.spyOn(flow, 'slugifyNameAsFilename').mockReturnValue(slug);
-
-      const expectedExportedFlowAsString = JSON.stringify(
-        exportedFlowAsString,
-        null,
-        2
-      );
 
       expect(await flow.export()).toStrictEqual({
-        exportedFlowAsString: expectedExportedFlowAsString,
-        slug: 'slug',
+        name: 'My Flow Name',
       });
     });
   });

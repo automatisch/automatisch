@@ -1,5 +1,4 @@
 import { ValidationError } from 'objection';
-import slugify from 'slugify';
 import Base from './base.js';
 import Step from './step.js';
 import User from './user.js';
@@ -428,22 +427,8 @@ class Flow extends Base {
     }
   }
 
-  slugifyNameAsFilename() {
-    const slug = slugify(this.name, {
-      lower: true,
-      strict: true,
-      replacement: '-',
-    });
-
-    return `${slug}.json`;
-  }
-
   async export() {
-    const exportedFlow = await exportFlow(this);
-    const exportedFlowAsString = JSON.stringify(exportedFlow, null, 2);
-    const slug = this.slugifyNameAsFilename();
-
-    return { exportedFlowAsString, slug };
+    return await exportFlow(this);
   }
 
   async $beforeUpdate(opt, queryContext) {

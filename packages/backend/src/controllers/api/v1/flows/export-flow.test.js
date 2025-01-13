@@ -67,20 +67,12 @@ describe('POST /api/v1/flows/:flowId/export', () => {
       .set('Authorization', token)
       .expect(201);
 
-    // Test headers for file attachment
-    expect(response.headers['content-disposition']).toContain(
-      'attachment; filename="name-your-flow.json"'
-    );
-    expect(response.headers['content-type']).toBe(
-      'application/json; charset=utf-8'
-    );
-
-    const expectedFileStructure = await exportFlowMock(currentUserFlow, [
+    const expectedPayload = await exportFlowMock(currentUserFlow, [
       triggerStep,
       actionStep,
     ]);
 
-    expect(response.body).toStrictEqual(expectedFileStructure);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should export the flow data of another user', async () => {
@@ -132,19 +124,12 @@ describe('POST /api/v1/flows/:flowId/export', () => {
       .set('Authorization', token)
       .expect(201);
 
-    expect(response.headers['content-disposition']).toStrictEqual(
-      'attachment; filename="name-your-flow.json"'
-    );
-    expect(response.headers['content-type']).toStrictEqual(
-      'application/json; charset=utf-8'
-    );
-
-    const expectedFileStructure = await exportFlowMock(anotherUserFlow, [
+    const expectedPayload = await exportFlowMock(anotherUserFlow, [
       triggerStep,
       actionStep,
     ]);
 
-    expect(response.body).toStrictEqual(expectedFileStructure);
+    expect(response.body).toStrictEqual(expectedPayload);
   });
 
   it('should return not found response for not existing flow UUID', async () => {
