@@ -13,7 +13,15 @@ export default defineConfig({
       reportsDirectory: './coverage',
       reporter: ['text', 'lcov'],
       all: true,
-      include: ['**/src/models/**', '**/src/controllers/**'],
+      include: [
+        '**/src/controllers/**',
+        '**/src/helpers/authentication.test.js',
+        '**/src/helpers/axios-with-proxy.test.js',
+        '**/src/helpers/compute-parameters.test.js',
+        '**/src/helpers/user-ability.test.js',
+        '**/src/models/**',
+        '**/src/serializers/**',
+      ],
       exclude: [
         '**/src/controllers/webhooks/**',
         '**/src/controllers/paddle/**',
