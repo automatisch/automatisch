@@ -1,6 +1,6 @@
 import { expect } from 'vitest';
 
-const duplicateFlowMock = async (flow, steps = []) => {
+const exportFlowMock = async (flow, steps = []) => {
   const data = {
     id: expect.any(String),
     name: flow.name,
@@ -26,7 +26,16 @@ const duplicateFlowMock = async (flow, steps = []) => {
     });
   }
 
-  return data;
+  return {
+    data: data,
+    meta: {
+      count: 1,
+      currentPage: null,
+      isArray: false,
+      totalPages: null,
+      type: 'Object',
+    },
+  };
 };
 
-export default duplicateFlowMock;
+export default exportFlowMock;
