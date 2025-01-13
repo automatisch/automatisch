@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import DownloadIcon from '@mui/icons-material/Download';
 import Snackbar from '@mui/material/Snackbar';
 import { ReactFlowProvider } from 'reactflow';
 
@@ -103,11 +104,12 @@ export default function EditorLayout() {
             {(allowed) => (
               <Button
                 disabled={!allowed || !flow}
-                variant="contained"
+                variant="outlined"
                 color="info"
                 size="small"
                 onClick={onExportFlow}
                 data-test="export-flow-button"
+                startIcon={<DownloadIcon />}
               >
                 {formatMessage('flowEditor.export')}
               </Button>
