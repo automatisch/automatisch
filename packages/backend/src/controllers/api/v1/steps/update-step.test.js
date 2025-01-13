@@ -35,6 +35,7 @@ describe('PATCH /api/v1/steps/:stepId', () => {
       connectionId: currentUserConnection.id,
       appKey: 'deepl',
       key: 'translateText',
+      name: 'Translate text',
     });
 
     await createPermission({
@@ -58,6 +59,7 @@ describe('PATCH /api/v1/steps/:stepId', () => {
         parameters: {
           text: 'Hello world!',
           targetLanguage: 'de',
+          name: 'Translate text - Updated step name',
         },
       })
       .expect(200);

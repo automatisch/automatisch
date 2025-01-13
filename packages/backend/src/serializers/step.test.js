@@ -16,6 +16,7 @@ describe('stepSerializer', () => {
       id: step.id,
       type: step.type,
       key: step.key,
+      name: step.name,
       appKey: step.appKey,
       iconUrl: step.iconUrl,
       webhookUrl: step.webhookUrl,

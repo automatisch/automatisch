@@ -3,6 +3,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
@@ -18,6 +19,7 @@ import { isEqual } from 'lodash';
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
+import EditableTypography from 'components/EditableTypography';
 import FlowSubstep from 'components/FlowSubstep';
 import ChooseAppAndEventSubstep from 'components/ChooseAppAndEventSubstep';
 import ChooseConnectionSubstep from 'components/ChooseConnectionSubstep';
@@ -106,16 +108,19 @@ function generateValidationSchema(substeps) {
 }
 
 function FlowStep(props) {
-  const { collapsed, onChange, onContinue, flowId } = props;
+  const { collapsed, onChange, onContinue, flowId, step } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
-  const step = props.step;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState(0);
   const useAppsOptions = {};
+
+  const stepTypeName = isTrigger
+    ? formatMessage('flowStep.triggerType')
+    : formatMessage('flowStep.actionType');
 
   if (isTrigger) {
     useAppsOptions.onlyWithTriggers = true;
@@ -183,6 +188,13 @@ function FlowStep(props) {
     }
   };
 
+  const handleStepNameChange = async (name) => {
+    await onChange({
+      ...step,
+      name,
+    });
+  };
+
   const stepValidationSchema = React.useMemo(
     () => generateValidationSchema(substeps),
     [substeps],
@@ -226,7 +238,7 @@ function FlowStep(props) {
       data-test="flow-step"
     >
       <Header collapsed={collapsed}>
-        <Stack direction="row" alignItems="center" gap={2}>
+        <Stack direction="row" alignItems="center" gap={3}>
           <AppIconWrapper>
             <AppIcon
               url={app?.iconUrl}
@@ -239,17 +251,30 @@ function FlowStep(props) {
             </AppIconStatusIconWrapper>
           </AppIconWrapper>
 
-          <div>
-            <Typography variant="caption">
-              {isTrigger
-                ? formatMessage('flowStep.triggerType')
-                : formatMessage('flowStep.actionType')}
+          <Stack direction="column" gap={0.5} sx={{ width: '100%' }}>
+            <Typography
+              component={Stack}
+              direction="row"
+              variant="stepApp"
+              alignItems="center"
+              gap={0.5}
+            >
+              <Chip label={stepTypeName} variant="stepType" size="small" />
+
+              {app?.name}
             </Typography>
 
-            <Typography variant="body2">
-              {step.position}. {app?.name}
-            </Typography>
-          </div>
+            <EditableTypography
+              iconPosition="end"
+              iconSize="small"
+              variant="body2"
+              onConfirm={handleStepNameChange}
+              prefixValue={`${step.position}. `}
+              disabled={editorContext.readOnly || collapsed}
+            >
+              {step.name}
+            </EditableTypography>
+          </Stack>
 
           <Box display="flex" flex={1} justifyContent="end">
             {/* as there are no other actions besides "delete step", we hide the context menu. */}
