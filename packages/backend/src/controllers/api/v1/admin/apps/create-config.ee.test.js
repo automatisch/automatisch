@@ -23,8 +23,7 @@ describe('POST /api/v1/admin/apps/:appKey/config', () => {
 
   it('should return created app config', async () => {
     const appConfig = {
-      customConnectionAllowed: true,
-      shared: true,
+      useOnlyPredefinedAuthClients: false,
       disabled: false,
     };
 
@@ -38,14 +37,14 @@ describe('POST /api/v1/admin/apps/:appKey/config', () => {
       ...appConfig,
       key: 'gitlab',
     });
+
     expect(response.body).toMatchObject(expectedPayload);
   });
 
   it('should return HTTP 422 for already existing app config', async () => {
     const appConfig = {
       key: 'gitlab',
-      customConnectionAllowed: true,
-      shared: true,
+      useOnlyPredefinedAuthClients: false,
       disabled: false,
     };
 

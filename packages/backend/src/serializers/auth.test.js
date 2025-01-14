@@ -10,6 +10,8 @@ describe('authSerializer', () => {
       fields: auth.fields,
       authenticationSteps: auth.authenticationSteps,
       reconnectionSteps: auth.reconnectionSteps,
+      sharedAuthenticationSteps: auth.sharedAuthenticationSteps,
+      sharedReconnectionSteps: auth.sharedReconnectionSteps,
     };
 
     expect(authSerializer(auth)).toStrictEqual(expectedPayload);

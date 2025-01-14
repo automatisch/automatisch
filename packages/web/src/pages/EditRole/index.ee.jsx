@@ -1,6 +1,5 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
-import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
@@ -30,7 +29,8 @@ export default function EditRole() {
   const { data: roleData, isLoading: isRoleLoading } = useRole({ roleId });
   const { mutateAsync: updateRole, isPending: isUpdateRolePending } =
     useAdminUpdateRole(roleId);
-  const { data: permissionCatalogData } = usePermissionCatalog();
+  const { data: permissionCatalogData, isLoading: isPermissionCatalogLoading } =
+    usePermissionCatalog();
   const role = roleData?.data;
   const permissionCatalog = permissionCatalogData?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
@@ -84,36 +84,30 @@ export default function EditRole() {
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
           <Form defaultValues={defaultValues} onSubmit={handleRoleUpdate}>
             <Stack direction="column" gap={2}>
-              {isRoleLoading && (
-                <>
-                  <Skeleton variant="rounded" height={55} />
-                  <Skeleton variant="rounded" height={55} />
-                </>
-              )}
-              {!isRoleLoading && role && (
-                <>
-                  <TextField
-                    disabled={role.isAdmin}
-                    required={true}
-                    name="name"
-                    label={formatMessage('roleForm.name')}
-                    data-test="name-input"
-                    fullWidth
-                  />
-
-                  <TextField
-                    disabled={role.isAdmin}
-                    name="description"
-                    label={formatMessage('roleForm.description')}
-                    data-test="description-input"
-                    fullWidth
-                  />
-                </>
-              )}
+              <TextField
+                disabled={
+                  role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
+                }
+                required={true}
+                name="name"
+                label={formatMessage('roleForm.name')}
+                data-test="name-input"
+                fullWidth
+              />
+              <TextField
+                disabled={
+                  role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
+                }
+                name="description"
+                label={formatMessage('roleForm.description')}
+                data-test="description-input"
+                fullWidth
+              />
               <PermissionCatalogField
                 name="computedPermissions"
                 disabled={role?.isAdmin}
                 syncIsCreator
+                loading={isRoleLoading}
               />
               <LoadingButton
                 type="submit"

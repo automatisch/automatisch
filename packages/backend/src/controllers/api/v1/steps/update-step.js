@@ -11,12 +11,13 @@ export default async (request, response) => {
 };
 
 const stepParams = (request) => {
-  const { connectionId, appKey, key, parameters } = request.body;
+  const { connectionId, appKey, key, name, parameters } = request.body;
 
   return {
     connectionId,
     appKey,
     key,
+    name,
     parameters,
   };
 };

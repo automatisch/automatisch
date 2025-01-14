@@ -35,9 +35,6 @@ export default defineTrigger({
     },
   ],
 
-  useSingletonWebhook: true,
-  singletonWebhookRefValueParameter: 'phoneNumberSid',
-
   async run($) {
     const dataItem = {
       raw: $.request.body,

@@ -46,9 +46,8 @@ function AdminApplicationSettings(props) {
 
   const defaultValues = useMemo(
     () => ({
-      customConnectionAllowed:
-        appConfig?.data?.customConnectionAllowed || false,
-      shared: appConfig?.data?.shared || false,
+      useOnlyPredefinedAuthClients:
+        appConfig?.data?.useOnlyPredefinedAuthClients || false,
       disabled: appConfig?.data?.disabled || false,
     }),
     [appConfig?.data],
@@ -62,21 +61,17 @@ function AdminApplicationSettings(props) {
         <Paper sx={{ p: 2, mt: 4 }}>
           <Stack spacing={2} direction="column">
             <Switch
-              name="customConnectionAllowed"
-              label={formatMessage('adminAppsSettings.customConnectionAllowed')}
+              name="useOnlyPredefinedAuthClients"
+              label={formatMessage(
+                'adminAppsSettings.useOnlyPredefinedAuthClients',
+              )}
               FormControlLabelProps={{
                 labelPlacement: 'start',
               }}
             />
+
             <Divider />
-            <Switch
-              name="shared"
-              label={formatMessage('adminAppsSettings.shared')}
-              FormControlLabelProps={{
-                labelPlacement: 'start',
-              }}
-            />
-            <Divider />
+
             <Switch
               name="disabled"
               label={formatMessage('adminAppsSettings.disabled')}
@@ -86,6 +81,7 @@ function AdminApplicationSettings(props) {
             />
             <Divider />
           </Stack>
+
           <Stack>
             <LoadingButton
               data-test="submit-button"

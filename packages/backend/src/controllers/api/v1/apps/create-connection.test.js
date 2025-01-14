@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../../../../app.js';
 import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id.js';
 import { createAppConfig } from '../../../../../test/factories/app-config.js';
-import { createAppAuthClient } from '../../../../../test/factories/app-auth-client.js';
+import { createOAuthClient } from '../../../../../test/factories/oauth-client.js';
 import { createUser } from '../../../../../test/factories/user.js';
 import { createPermission } from '../../../../../test/factories/permission.js';
 import { createRole } from '../../../../../test/factories/role.js';
@@ -155,7 +155,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        customConnectionAllowed: true,
+        useOnlyPredefinedAuthClients: false,
       });
     });
 
@@ -218,7 +218,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        customConnectionAllowed: false,
+        useOnlyPredefinedAuthClients: true,
       });
     });
 
@@ -266,17 +266,17 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
     });
   });
 
-  describe('with auth clients enabled', async () => {
-    let appAuthClient;
+  describe('with auth client enabled', async () => {
+    let oauthClient;
 
     beforeEach(async () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        shared: true,
+        useOnlyPredefinedAuthClients: false,
       });
 
-      appAuthClient = await createAppAuthClient({
+      oauthClient = await createOAuthClient({
         appKey: 'gitlab',
         active: true,
         formattedAuthDefaults: {
@@ -290,7 +290,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
 
     it('should return created connection', async () => {
       const connectionData = {
-        appAuthClientId: appAuthClient.id,
+        oauthClientId: oauthClient.id,
       };
 
       const response = await request(app)
@@ -308,19 +308,6 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
       });
 
       expect(response.body).toStrictEqual(expectedPayload);
-    });
-
-    it('should return not authorized response for appAuthClientId and formattedData together', async () => {
-      const connectionData = {
-        appAuthClientId: appAuthClient.id,
-        formattedData: {},
-      };
-
-      await request(app)
-        .post('/api/v1/apps/gitlab/connections')
-        .set('Authorization', token)
-        .send(connectionData)
-        .expect(403);
     });
 
     it('should return not found response for invalid app key', async () => {
@@ -349,31 +336,33 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
       });
     });
   });
-  describe('with auth clients disabled', async () => {
-    let appAuthClient;
+
+  describe('with auth client disabled', async () => {
+    let oauthClient;
 
     beforeEach(async () => {
       await createAppConfig({
         key: 'gitlab',
         disabled: false,
-        shared: false,
+        useOnlyPredefinedAuthClients: false,
       });
 
-      appAuthClient = await createAppAuthClient({
+      oauthClient = await createOAuthClient({
         appKey: 'gitlab',
+        active: false,
       });
     });
 
     it('should return with not authorized response', async () => {
       const connectionData = {
-        appAuthClientId: appAuthClient.id,
+        oauthClientId: oauthClient.id,
       };
 
       await request(app)
         .post('/api/v1/apps/gitlab/connections')
         .set('Authorization', token)
         .send(connectionData)
-        .expect(403);
+        .expect(404);
     });
 
     it('should return not found response for invalid app key', async () => {

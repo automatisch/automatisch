@@ -14,6 +14,7 @@ const updateFlowStatusMock = async (flow, steps = []) => {
       iconUrl: step.iconUrl,
       id: step.id,
       key: step.key,
+      name: step.name,
       parameters: step.parameters,
       position: step.position,
       status: step.status,

@@ -6,7 +6,6 @@ import {
   Navigate,
   Routes,
   useParams,
-  useSearchParams,
   useMatch,
   useNavigate,
 } from 'react-router-dom';
@@ -31,6 +30,7 @@ import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useApp from 'hooks/useApp';
+import useOAuthClients from 'hooks/useOAuthClients';
 import Can from 'components/Can';
 import { AppPropType } from 'propTypes/propTypes';
 
@@ -61,47 +61,59 @@ export default function Application() {
     end: false,
   });
   const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
-  const [searchParams] = useSearchParams();
   const { appKey } = useParams();
   const navigate = useNavigate();
+  const { data: appOAuthClients } = useOAuthClients(appKey);
 
   const { data, loading } = useApp(appKey);
   const app = data?.data || {};
 
   const { data: appConfig } = useAppConfig(appKey);
-  const connectionId = searchParams.get('connectionId') || undefined;
 
   const currentUserAbility = useCurrentUserAbility();
 
   const goToApplicationPage = () => navigate('connections');
 
   const connectionOptions = React.useMemo(() => {
-    const shouldHaveCustomConnection =
-      appConfig?.data?.connectionAllowed &&
-      appConfig?.data?.customConnectionAllowed;
+    const addCustomConnection = {
+      label: formatMessage('app.addConnection'),
+      key: 'addConnection',
+      'data-test': 'add-connection-button',
+      to: URLS.APP_ADD_CONNECTION(appKey, false),
+      disabled:
+        !currentUserAbility.can('create', 'Connection') ||
+        appConfig?.data?.useOnlyPredefinedAuthClients === true ||
+        appConfig?.data?.disabled === true,
+    };
 
-    const options = [
-      {
-        label: formatMessage('app.addConnection'),
-        key: 'addConnection',
-        'data-test': 'add-connection-button',
-        to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.data?.connectionAllowed),
-        disabled: !currentUserAbility.can('create', 'Connection'),
-      },
-    ];
+    const addConnectionWithOAuthClient = {
+      label: formatMessage('app.addConnectionWithOAuthClient'),
+      key: 'addConnectionWithOAuthClient',
+      'data-test': 'add-connection-with-auth-client-button',
+      to: URLS.APP_ADD_CONNECTION(appKey, true),
+      disabled:
+        !currentUserAbility.can('create', 'Connection') ||
+        appOAuthClients?.data?.length === 0 ||
+        appConfig?.data?.disabled === true,
+    };
 
-    if (shouldHaveCustomConnection) {
-      options.push({
-        label: formatMessage('app.addCustomConnection'),
-        key: 'addCustomConnection',
-        'data-test': 'add-custom-connection-button',
-        to: URLS.APP_ADD_CONNECTION(appKey),
-        disabled: !currentUserAbility.can('create', 'Connection'),
-      });
+    // means there is no app config. defaulting to custom connections only
+    if (!appConfig?.data) {
+      return [addCustomConnection];
     }
 
-    return options;
-  }, [appKey, appConfig?.data, currentUserAbility, formatMessage]);
+    // means only OAuth clients are allowed for connection creation
+    if (appConfig?.data?.useOnlyPredefinedAuthClients === true) {
+      return [addConnectionWithOAuthClient];
+    }
+
+    // means there is no OAuth client. so we don't show the `addConnectionWithOAuthClient`
+    if (appOAuthClients?.data?.length === 0) {
+      return [addCustomConnection];
+    }
+
+    return [addCustomConnection, addConnectionWithOAuthClient];
+  }, [appKey, appConfig, appOAuthClients, currentUserAbility, formatMessage]);
 
   if (loading) return null;
 
@@ -153,14 +165,7 @@ export default function Application() {
                     <Can I="create" a="Connection" passThrough>
                       {(allowed) => (
                         <SplitButton
-                          disabled={
-                            !allowed ||
-                            (appConfig?.data &&
-                              !appConfig?.data?.disabled &&
-                              !appConfig?.data?.connectionAllowed &&
-                              !appConfig?.data?.customConnectionAllowed) ||
-                            connectionOptions.every(({ disabled }) => disabled)
-                          }
+                          disabled={!allowed}
                           options={connectionOptions}
                         />
                       )}

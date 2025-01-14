@@ -123,8 +123,6 @@ export const RawTriggerPropType = PropTypes.shape({
   showWebhookUrl: PropTypes.bool,
   pollInterval: PropTypes.number,
   description: PropTypes.string,
-  useSingletonWebhook: PropTypes.bool,
-  singletonWebhookRefValueParameter: PropTypes.string,
   getInterval: PropTypes.func,
   run: PropTypes.func,
   testRun: PropTypes.func,
@@ -140,8 +138,6 @@ export const TriggerPropType = PropTypes.shape({
   showWebhookUrl: PropTypes.bool,
   pollInterval: PropTypes.number,
   description: PropTypes.string,
-  useSingletonWebhook: PropTypes.bool,
-  singletonWebhookRefValueParameter: PropTypes.string,
   getInterval: PropTypes.func,
   run: PropTypes.func,
   testRun: PropTypes.func,
@@ -211,8 +207,7 @@ export const ConnectionPropType = PropTypes.shape({
   flowCount: PropTypes.number,
   appData: AppPropType,
   createdAt: PropTypes.number,
-  reconnectable: PropTypes.bool,
-  appAuthClientId: PropTypes.string,
+  oauthClientId: PropTypes.string,
 });
 
 AppPropType.connection = PropTypes.arrayOf(ConnectionPropType);
@@ -459,13 +454,12 @@ export const SamlAuthProviderRolePropType = PropTypes.shape({
 export const AppConfigPropType = PropTypes.shape({
   id: PropTypes.string,
   key: PropTypes.string,
-  customConnectionAllowed: PropTypes.bool,
-  connectionAllowed: PropTypes.bool,
+  useOnlyPredefinedAuthClients: PropTypes.bool,
   shared: PropTypes.bool,
   disabled: PropTypes.bool,
 });
 
-export const AppAuthClientPropType = PropTypes.shape({
+export const OAuthClientPropType = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,
   appConfigKey: PropTypes.string,

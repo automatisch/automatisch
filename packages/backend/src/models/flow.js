@@ -7,6 +7,7 @@ import ExecutionStep from './execution-step.js';
 import globalVariable from '../helpers/global-variable.js';
 import logger from '../helpers/logger.js';
 import Telemetry from '../helpers/telemetry/index.js';
+import exportFlow from '../helpers/export-flow.js';
 import flowQueue from '../queues/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
@@ -424,6 +425,10 @@ class Flow extends Base {
         type: 'insufficientStepsError',
       });
     }
+  }
+
+  async export() {
+    return await exportFlow(this);
   }
 
   async $beforeUpdate(opt, queryContext) {

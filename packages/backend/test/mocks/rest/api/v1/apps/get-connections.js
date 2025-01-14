@@ -3,9 +3,8 @@ const getConnectionsMock = (connections) => {
     data: connections.map((connection) => ({
       id: connection.id,
       key: connection.key,
-      reconnectable: connection.reconnectable,
       verified: connection.verified,
-      appAuthClientId: connection.appAuthClientId,
+      oauthClientId: connection.oauthClientId,
       formattedData: {
         screenName: connection.formattedData.screenName,
       },

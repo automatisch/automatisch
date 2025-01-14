@@ -21,9 +21,9 @@ import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import AdminApplicationSettings from 'components/AdminApplicationSettings';
-import AdminApplicationAuthClients from 'components/AdminApplicationAuthClients';
-import AdminApplicationCreateAuthClient from 'components/AdminApplicationCreateAuthClient';
-import AdminApplicationUpdateAuthClient from 'components/AdminApplicationUpdateAuthClient';
+import AdminApplicationOAuthClients from 'components/AdminApplicationOAuthClients';
+import AdminApplicationCreateOAuthClient from 'components/AdminApplicationCreateOAuthClient';
+import AdminApplicationUpdateOAuthClient from 'components/AdminApplicationUpdateOAuthClient';
 import useApp from 'hooks/useApp';
 
 export default function AdminApplication() {
@@ -39,7 +39,7 @@ export default function AdminApplication() {
     path: URLS.ADMIN_APP_SETTINGS_PATTERN,
     end: false,
   });
-  const authClientsPathMatch = useMatch({
+  const oauthClientsPathMatch = useMatch({
     path: URLS.ADMIN_APP_AUTH_CLIENTS_PATTERN,
     end: false,
   });
@@ -49,7 +49,7 @@ export default function AdminApplication() {
 
   const app = data?.data || {};
 
-  const goToAuthClientsPage = () => navigate('auth-clients');
+  const goToAuthClientsPage = () => navigate('oauth-clients');
 
   if (loading) return null;
 
@@ -77,7 +77,7 @@ export default function AdminApplication() {
                   value={
                     settingsPathMatch?.pattern?.path ||
                     connectionsPathMatch?.pattern?.path ||
-                    authClientsPathMatch?.pattern?.path
+                    oauthClientsPathMatch?.pattern?.path
                   }
                 >
                   <Tab
@@ -87,16 +87,10 @@ export default function AdminApplication() {
                     component={Link}
                   />
                   <Tab
-                    label={formatMessage('adminApps.authClients')}
+                    data-test="oauth-clients-tab"
+                    label={formatMessage('adminApps.oauthClients')}
                     to={URLS.ADMIN_APP_AUTH_CLIENTS(appKey)}
                     value={URLS.ADMIN_APP_AUTH_CLIENTS_PATTERN}
-                    component={Link}
-                  />
-                  <Tab
-                    label={formatMessage('adminApps.connections')}
-                    to={URLS.ADMIN_APP_CONNECTIONS(appKey)}
-                    value={URLS.ADMIN_APP_CONNECTIONS_PATTERN}
-                    disabled={!app.supportsConnections}
                     component={Link}
                   />
                 </Tabs>
@@ -108,12 +102,8 @@ export default function AdminApplication() {
                   element={<AdminApplicationSettings appKey={appKey} />}
                 />
                 <Route
-                  path={`/auth-clients/*`}
-                  element={<AdminApplicationAuthClients appKey={appKey} />}
-                />
-                <Route
-                  path={`/connections/*`}
-                  element={<div>App connections</div>}
+                  path={`/oauth-clients/*`}
+                  element={<AdminApplicationOAuthClients appKey={appKey} />}
                 />
                 <Route
                   path="/"
@@ -128,9 +118,9 @@ export default function AdminApplication() {
       </Container>
       <Routes>
         <Route
-          path="/auth-clients/create"
+          path="/oauth-clients/create"
           element={
-            <AdminApplicationCreateAuthClient
+            <AdminApplicationCreateOAuthClient
               application={app}
               onClose={goToAuthClientsPage}
               appKey={appKey}
@@ -138,9 +128,9 @@ export default function AdminApplication() {
           }
         />
         <Route
-          path="/auth-clients/:clientId"
+          path="/oauth-clients/:clientId"
           element={
-            <AdminApplicationUpdateAuthClient
+            <AdminApplicationUpdateOAuthClient
               application={app}
               onClose={goToAuthClientsPage}
             />

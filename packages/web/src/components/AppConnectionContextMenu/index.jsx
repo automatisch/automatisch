@@ -11,14 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import Can from 'components/Can';
 
 function ContextMenu(props) {
-  const {
-    appKey,
-    connection,
-    onClose,
-    onMenuItemClick,
-    anchorEl,
-    disableReconnection,
-  } = props;
+  const { appKey, connection, onClose, onMenuItemClick, anchorEl } = props;
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
 
@@ -73,11 +66,11 @@ function ContextMenu(props) {
         {(allowed) => (
           <MenuItem
             component={Link}
-            disabled={!allowed || disableReconnection}
+            disabled={!allowed}
             to={URLS.APP_RECONNECT_CONNECTION(
               appKey,
               connection.id,
-              connection.appAuthClientId,
+              connection.oauthClientId,
             )}
             onClick={createActionHandler({ type: 'reconnect' })}
           >
@@ -109,7 +102,6 @@ ContextMenu.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]),
-  disableReconnection: PropTypes.bool.isRequired,
 };
 
 export default ContextMenu;

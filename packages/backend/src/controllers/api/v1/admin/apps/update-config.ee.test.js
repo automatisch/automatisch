@@ -24,17 +24,15 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
   it('should return updated app config', async () => {
     const appConfig = {
       key: 'gitlab',
-      customConnectionAllowed: true,
-      shared: true,
+      useOnlyPredefinedAuthClients: true,
       disabled: false,
     };
 
     await createAppConfig(appConfig);
 
     const newAppConfigValues = {
-      shared: false,
       disabled: true,
-      customConnectionAllowed: false,
+      useOnlyPredefinedAuthClients: false,
     };
 
     const response = await request(app)
@@ -53,9 +51,8 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
 
   it('should return not found response for unexisting app config', async () => {
     const appConfig = {
-      shared: false,
       disabled: true,
-      customConnectionAllowed: false,
+      useOnlyPredefinedAuthClients: false,
     };
 
     await request(app)
@@ -68,8 +65,7 @@ describe('PATCH /api/v1/admin/apps/:appKey/config', () => {
   it('should return HTTP 422 for invalid app config data', async () => {
     const appConfig = {
       key: 'gitlab',
-      customConnectionAllowed: true,
-      shared: true,
+      useOnlyPredefinedAuthClients: true,
       disabled: false,
     };
 

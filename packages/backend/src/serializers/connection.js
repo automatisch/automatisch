@@ -2,8 +2,7 @@ const connectionSerializer = (connection) => {
   return {
     id: connection.id,
     key: connection.key,
-    reconnectable: connection.reconnectable,
-    appAuthClientId: connection.appAuthClientId,
+    oauthClientId: connection.oauthClientId,
     formattedData: {
       screenName: connection.formattedData.screenName,
     },

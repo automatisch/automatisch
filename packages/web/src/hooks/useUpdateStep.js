@@ -6,19 +6,20 @@ export default function useUpdateStep() {
   const queryClient = useQueryClient();
 
   const query = useMutation({
-    mutationFn: async ({ id, appKey, key, connectionId, parameters }) => {
+    mutationFn: async ({ id, appKey, key, connectionId, name, parameters }) => {
       const { data } = await api.patch(`/v1/steps/${id}`, {
         appKey,
         key,
         connectionId,
+        name,
         parameters,
       });
 
       return data;
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['flows'],
       });
     },

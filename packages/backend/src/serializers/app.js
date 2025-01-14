@@ -6,6 +6,7 @@ const appSerializer = (app) => {
     primaryColor: app.primaryColor,
     authDocUrl: app.authDocUrl,
     supportsConnections: app.supportsConnections,
+    supportsOauthClients: app?.auth?.generateAuthUrl ? true : false,
   };
 
   if (app.connectionCount) {
