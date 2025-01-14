@@ -35,6 +35,7 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 | `APP_SECRET_KEY`             | string  |                    | Secret Key to authenticate the user                                                 |
 | `REDIS_HOST`                 | string  | `redis`            | Redis Host                                                                          |
 | `REDIS_PORT`                 | number  | `6379`             | Redis Port                                                                          |
+| `REDIS_DB`                   | number  |                    | Redis Database                                                                      |
 | `REDIS_USERNAME`             | string  |                    | Redis Username                                                                      |
 | `REDIS_PASSWORD`             | string  |                    | Redis Password                                                                      |
 | `REDIS_TLS`                  | boolean | `false`            | Redis TLS                                                                           |
