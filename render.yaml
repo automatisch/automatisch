@@ -12,7 +12,7 @@ services:
           name: automatisch-main
           type: web
           envVarKey: RENDER_EXTERNAL_HOSTNAME
-      - key: POSTGRES_HOST
+      - key: localhost
         fromDatabase:
           name: automatisch-database
           property: host
