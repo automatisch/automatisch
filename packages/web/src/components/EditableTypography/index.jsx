@@ -10,9 +10,8 @@ function EditableTypography(props) {
   const {
     children,
     onConfirm = noop,
-    iconPosition = 'start',
-    iconSize = 'large',
     sx,
+    iconColor = 'inherit',
     disabled = false,
     prefixValue = '',
     ...typographyProps
@@ -86,14 +85,10 @@ function EditableTypography(props) {
 
   return (
     <Box sx={sx} onClick={handleClick} editing={editing} disabled={disabled}>
-      {!disabled && iconPosition === 'start' && editing === false && (
-        <EditIcon fontSize={iconSize} sx={{ mr: 1 }} />
-      )}
-
       {component}
 
-      {!disabled && iconPosition === 'end' && editing === false && (
-        <EditIcon fontSize={iconSize} sx={{ ml: 1 }} />
+      {!disabled && editing === false && (
+        <EditIcon fontSize="small" color={iconColor} sx={{ ml: 1 }} />
       )}
     </Box>
   );
@@ -102,8 +97,7 @@ function EditableTypography(props) {
 EditableTypography.propTypes = {
   children: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
-  iconPosition: PropTypes.oneOf(['start', 'end']),
-  iconSize: PropTypes.oneOf(['small', 'large']),
+  iconColor: PropTypes.oneOf(['action', 'inherit']),
   onConfirm: PropTypes.func,
   prefixValue: PropTypes.string,
   sx: PropTypes.object,

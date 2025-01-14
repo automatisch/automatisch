@@ -10,6 +10,7 @@ import { createFlow } from '../../test/factories/flow.js';
 import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
 import { createExecutionStep } from '../../test/factories/execution-step.js';
+import * as exportFlow from '../helpers/export-flow.js';
 
 describe('Flow model', () => {
   it('tableName should return correct name', () => {
@@ -503,6 +504,22 @@ describe('Flow model', () => {
       });
 
       expect(await flow.throwIfHavingIncompleteSteps()).toBe(undefined);
+    });
+  });
+
+  describe('export', () => {
+    it('should return exportedFlow', async () => {
+      const flow = await createFlow();
+
+      const exportedFlowAsString = {
+        name: 'My Flow Name',
+      };
+
+      vi.spyOn(exportFlow, 'default').mockReturnValue(exportedFlowAsString);
+
+      expect(await flow.export()).toStrictEqual({
+        name: 'My Flow Name',
+      });
     });
   });
 
