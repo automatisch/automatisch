@@ -74,7 +74,7 @@ const addStaticSubsteps = (stepType, appData, step) => {
 
   computedStep.substeps = [];
 
-  if (appData.supportsConnections) {
+  if (appData.supportsConnections && step.supportsConnections !== false) {
     computedStep.substeps.push(chooseConnectionStep);
   }
 
