@@ -5,6 +5,7 @@ export default defineAction({
   name: 'Add voice XML node',
   key: 'addVoiceXmlNode',
   description: 'Add a voice XML node in the XML document',
+  supportsConnections: false,
   arguments: [
     {
       label: 'Node name',
