@@ -5,6 +5,7 @@ export default defineAction({
   name: 'Respond with voice XML',
   key: 'respondWithVoiceXml',
   description: 'Respond with defined voice XML document',
+  supportsConnections: false,
   arguments: [
     {
       label: 'Nodes',
