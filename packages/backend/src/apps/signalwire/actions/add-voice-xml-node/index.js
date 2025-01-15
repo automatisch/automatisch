@@ -87,7 +87,7 @@ export default defineAction({
               },
               {
                 name: 'parameters.attributeKey',
-                value: '{fieldsEntry.key}',
+                value: '{fieldsScope.key}',
               },
             ],
           },

@@ -23,8 +23,8 @@ function computeArguments(args, getValues, fieldEntryPaths) {
 
       const sanitizedFieldPath = value
         .replace(/{|}/g, '')
-        .replace('fieldsEntry.', `${fieldsEntryPath}.`)
-        .replace('outerFieldsEntry.', `${outerFieldsEntryPath}.`);
+        .replace('fieldsScope.', `${fieldsEntryPath}.`)
+        .replace('outerScope.', `${outerFieldsEntryPath}.`);
 
       const computedValue = getValues(sanitizedFieldPath);
 
