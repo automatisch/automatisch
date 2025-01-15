@@ -78,7 +78,7 @@ export default {
                     },
                     {
                       name: 'parameters.nodeName',
-                      value: '{outerFieldsEntry.nodeName}',
+                      value: '{outerScope.nodeName}',
                     },
                   ],
                 },
@@ -99,11 +99,11 @@ export default {
                     },
                     {
                       name: 'parameters.nodeName',
-                      value: '{outerFieldsEntry.nodeName}',
+                      value: '{outerScope.nodeName}',
                     },
                     {
                       name: 'parameters.attributeKey',
-                      value: '{fieldsEntry.key}',
+                      value: '{fieldsScope.key}',
                     },
                   ],
                 },
