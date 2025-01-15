@@ -219,10 +219,285 @@ export default {
       statusCallbackMethod: streamStatusCallbackMethodAttributeValues,
     };
 
+    // Node: Dial
+    const dialAnswerOnBridgeAttributeValues = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
+    const dialHangupOnStarAttributeValues = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
+    const dialMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const dialRecordAttributeValues = [
+      { name: 'Do Not Record', value: 'do-not-record' },
+      { name: 'Record from Answer', value: 'record-from-answer' },
+      { name: 'Record from Ringing', value: 'record-from-ringing' },
+      { name: 'Dual Channel from Answer', value: 'record-from-answer-dual' },
+      { name: 'Dual Channel from Ringing', value: 'record-from-ringing-dual' },
+    ];
+
+    const dialRecordingStatusCallbackEventAttributeValues = [
+      { name: 'Completed', value: 'completed' },
+      { name: 'In Progress', value: 'in-progress' },
+      { name: 'Absent', value: 'absent' },
+    ];
+
+    const dialRecordingStatusCallbackMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const dialRecordingTrackAttributeValues = [
+      { name: 'Inbound', value: 'inbound' },
+      { name: 'Outbound', value: 'outbound' },
+      { name: 'Both', value: 'both' },
+    ];
+
+    const dialRingToneAttributeValues = [
+      { name: 'Austria', value: 'at' },
+      { name: 'Australia', value: 'au' },
+      { name: 'Belgium', value: 'be' },
+      { name: 'Brazil', value: 'br' },
+      { name: 'Canada', value: 'ca' },
+      { name: 'China', value: 'cn' },
+      { name: 'Denmark', value: 'dk' },
+      { name: 'France', value: 'fr' },
+      { name: 'Germany', value: 'de' },
+      { name: 'United States', value: 'us' },
+      { name: 'United Kingdom', value: 'uk' },
+      { name: 'Japan', value: 'jp' },
+      // Add more ISO 3166-1 alpha-2 codes as needed
+    ];
+
+    const dialTrimAttributeValues = [
+      { name: 'Trim Silence', value: 'trim-silence' },
+      { name: 'Do Not Trim', value: 'do-not-trim' },
+    ];
+
+    const dial = {
+      answerOnBridge: dialAnswerOnBridgeAttributeValues,
+      hangupOnStar: dialHangupOnStarAttributeValues,
+      method: dialMethodAttributeValues,
+      record: dialRecordAttributeValues,
+      recordingStatusCallbackEvent:
+        dialRecordingStatusCallbackEventAttributeValues,
+      recordingStatusCallbackMethod:
+        dialRecordingStatusCallbackMethodAttributeValues,
+      recordingTrack: dialRecordingTrackAttributeValues,
+      ringTone: dialRingToneAttributeValues,
+      trim: dialTrimAttributeValues,
+    };
+
+    // Node: Enqueue
+    const enqueueMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const enqueueWaitUrlMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const enqueue = {
+      method: enqueueMethodAttributeValues,
+      waitUrlMethod: enqueueWaitUrlMethodAttributeValues,
+    };
+
+    // Node: Gather
+    const gatherActionOnEmptyResultAttributeValues = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
+    const gatherEnhancedAttributeValues = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
+    const gatherInputAttributeValues = [
+      { name: 'DTMF', value: 'dtmf' },
+      { name: 'Speech', value: 'speech' },
+      { name: 'DTMF and Speech', value: 'dtmf speech' },
+    ];
+
+    const gatherLanguageAttributeValues = [
+      { name: 'English (US)', value: 'en-US' },
+      { name: 'English (UK)', value: 'en-GB' },
+      { name: 'Spanish (Spain)', value: 'es-ES' },
+      { name: 'French (France)', value: 'fr-FR' },
+      { name: 'German (Germany)', value: 'de-DE' },
+    ];
+
+    const gatherMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const gatherProfanityFilterAttributeValues = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
+    const gatherSpeechModelAttributeValues = [
+      { name: 'Phone Call', value: 'phone_call' },
+      { name: 'Video', value: 'video' },
+      { name: 'Default', value: 'default' },
+    ];
+
+    const gatherSpeechTimeoutAttributeValues = [
+      { name: 'Auto', value: 'auto' },
+    ];
+
+    const gather = {
+      actionOnEmptyResult: gatherActionOnEmptyResultAttributeValues,
+      enhanced: gatherEnhancedAttributeValues,
+      input: gatherInputAttributeValues,
+      language: gatherLanguageAttributeValues,
+      method: gatherMethodAttributeValues,
+      profanityFilter: gatherProfanityFilterAttributeValues,
+      speechModel: gatherSpeechModelAttributeValues,
+      speechTimeout: gatherSpeechTimeoutAttributeValues,
+    };
+
+    // Node: Number
+    const numberMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const numberStatusCallbackEventAttributeValues = [
+      { name: 'Initiated', value: 'initiated' },
+      { name: 'Ringing', value: 'ringing' },
+      { name: 'Answered', value: 'answered' },
+      { name: 'Completed', value: 'completed' },
+    ];
+
+    const number = {
+      method: numberMethodAttributeValues,
+      statusCallbackEvent: numberStatusCallbackEventAttributeValues,
+    };
+
+    // Node: Queue
+    const queueMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const queue = {
+      method: queueMethodAttributeValues,
+    };
+
+    // Node: Record
+    const recordMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const recordPlayBeepAttributeValues = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
+    const recordTrimAttributeValues = [
+      { name: 'Trim Silence', value: 'trim-silence' },
+      { name: 'Do Not Trim', value: 'do-not-trim' },
+    ];
+
+    const recordRecordingStatusCallbackEventAttributeValues = [
+      { name: 'Completed', value: 'completed' },
+      { name: 'In Progress', value: 'in-progress' },
+      { name: 'Absent', value: 'absent' },
+    ];
+
+    const recordRecordingStatusCallbackMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const recordStorageUrlMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'PUT', value: 'PUT' },
+    ];
+
+    const recordTranscribeAttributeValues = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
+    const record = {
+      method: recordMethodAttributeValues,
+      playBeep: recordPlayBeepAttributeValues,
+      trim: recordTrimAttributeValues,
+      recordingStatusCallbackEvent:
+        recordRecordingStatusCallbackEventAttributeValues,
+      recordingStatusCallbackMethod:
+        recordRecordingStatusCallbackMethodAttributeValues,
+      storageUrlMethod: recordStorageUrlMethodAttributeValues,
+      transcribe: recordTranscribeAttributeValues,
+    };
+
+    // Node: Redirect
+    const redirectMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const redirect = {
+      method: redirectMethodAttributeValues,
+    };
+
+    // Node: Refer
+    const referMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const refer = {
+      method: referMethodAttributeValues,
+    };
+
+    // Node: Reject
+    const rejectReasonAttributeValues = [
+      { name: 'Busy', value: 'busy' },
+      { name: 'Rejected', value: 'rejected' },
+    ];
+
+    const reject = {
+      reason: rejectReasonAttributeValues,
+    };
+
+    // Node: Sms
+    const smsMethodAttributeValues = [
+      { name: 'POST', value: 'POST' },
+      { name: 'GET', value: 'GET' },
+    ];
+
+    const sms = {
+      method: smsMethodAttributeValues,
+    };
+
     const allNodeAttributeValues = {
       Conference: conference,
+      Dial: dial,
+      Enqueue: enqueue,
+      Gather: gather,
+      Number: number,
+      Queue: queue,
+      Record: record,
+      Redirect: redirect,
+      Refer: refer,
+      Reject: reject,
       Say: say,
       Sip: sip,
+      Sms: sms,
       Stream: stream,
     };
 
