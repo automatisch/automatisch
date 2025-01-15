@@ -7,15 +7,17 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import InputCreator from 'components/InputCreator';
-import { EditorContext } from 'contexts/Editor';
+
 import { FieldsPropType } from 'propTypes/propTypes';
+import DynamicFieldEntry from './DynamicFieldEntry';
+import { FieldEntryProvider } from 'contexts/FieldEntry';
+import useFieldEntryContext from 'hooks/useFieldEntryContext';
 
 function DynamicField(props) {
   const { label, description, fields, name, defaultValue, stepId } = props;
   const { control, setValue, getValues } = useFormContext();
   const fieldsValue = useWatch({ control, name });
-  const editorContext = React.useContext(EditorContext);
+  const fieldEntryContext = useFieldEntryContext();
 
   const createEmptyItem = React.useCallback(() => {
     return fields.reduce((previousValue, field) => {
@@ -60,7 +62,7 @@ function DynamicField(props) {
   );
 
   return (
-    <React.Fragment>
+    <FieldEntryProvider value={fieldEntryContext}>
       <Typography variant="subtitle2">{label}</Typography>
       {fieldsValue?.map?.((field, index) => (
         <Stack direction="row" spacing={2} key={`fieldGroup-${field.__id}`}>
@@ -76,22 +78,11 @@ function DynamicField(props) {
               minWidth: 0,
             }}
           >
-            {fields.map((fieldSchema, fieldSchemaIndex) => (
-              <Stack
-                minWidth={0}
-                flex="1 0 0px"
-                spacing={2}
-                key={`field-${field.__id}-${fieldSchemaIndex}`}
-              >
-                <InputCreator
-                  schema={fieldSchema}
-                  namePrefix={`${name}.${index}`}
-                  disabled={editorContext.readOnly}
-                  shouldUnregister={false}
-                  stepId={stepId}
-                />
-              </Stack>
-            ))}
+            <DynamicFieldEntry
+              fields={fields}
+              namePrefix={`${name}.${index}`}
+              stepId={stepId}
+            />
           </Stack>
           <IconButton
             size="small"
@@ -115,7 +106,7 @@ function DynamicField(props) {
         </IconButton>
       </Stack>
       <Typography variant="caption">{description}</Typography>
-    </React.Fragment>
+    </FieldEntryProvider>
   );
 }
 
