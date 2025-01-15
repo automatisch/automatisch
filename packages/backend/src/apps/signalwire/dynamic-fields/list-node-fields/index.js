@@ -65,16 +65,48 @@ export default {
               {
                 label: 'Attribute name',
                 key: 'key',
-                type: 'string',
+                type: 'dropdown',
                 required: false,
                 variables: true,
+                source: {
+                  type: 'query',
+                  name: 'getDynamicData',
+                  arguments: [
+                    {
+                      name: 'key',
+                      value: 'listVoiceXmlNodeAttributes',
+                    },
+                    {
+                      name: 'parameters.nodeName',
+                      value: '{outerFieldsEntry.nodeName}',
+                    },
+                  ],
+                },
               },
               {
                 label: 'Attribute value',
                 key: 'value',
-                type: 'string',
+                type: 'dropdown',
                 required: false,
                 variables: true,
+                source: {
+                  type: 'query',
+                  name: 'getDynamicData',
+                  arguments: [
+                    {
+                      name: 'key',
+                      value: 'listVoiceXmlNodeAttributeValues',
+                    },
+                    {
+                      name: 'parameters.nodeName',
+                      value: '{outerFieldsEntry.nodeName}',
+                    },
+                    {
+                      name: 'parameters.attributeKey',
+                      value: '{fieldsEntry.key}',
+                    },
+                  ],
+                },
               },
             ],
           },

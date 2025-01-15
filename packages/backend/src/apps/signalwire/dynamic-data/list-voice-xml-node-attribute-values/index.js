@@ -4,7 +4,7 @@ export default {
 
   async run($) {
     const nodeName = $.step.parameters.nodeName;
-    const attributeName = $.step.parameters.attributeName;
+    const attributeKey = $.step.parameters.attributeKey;
 
     // Node: Conference
     const conferenceMutedAttributeValues = [
@@ -92,17 +92,6 @@ export default {
       },
     ];
 
-    const conferenceStayAloneAttributeValues = [
-      {
-        name: 'Yes',
-        value: true,
-      },
-      {
-        name: 'No',
-        value: false,
-      },
-    ];
-
     const conferenceJitterBufferAttributeValues = [
       {
         name: 'Off',
@@ -126,7 +115,6 @@ export default {
       waitMethod: conferenceWaitMethodAttributeValues,
       record: conferenceRecordAttributeValues,
       trim: conferenceTrimAttributeValues,
-      stayAlone: conferenceStayAloneAttributeValues,
       jitterBuffer: conferenceJitterBufferAttributeValues,
     };
 
@@ -232,10 +220,10 @@ export default {
     };
 
     const allNodeAttributeValues = {
-      conference,
-      say,
-      sip,
-      stream,
+      Conference: conference,
+      Say: say,
+      Sip: sip,
+      Stream: stream,
     };
 
     if (!nodeName) return { data: [] };
@@ -244,7 +232,7 @@ export default {
 
     if (!selectedNodeAttributes) return { data: [] };
 
-    const selectedNodeAttributeValues = selectedNodeAttributes[attributeName];
+    const selectedNodeAttributeValues = selectedNodeAttributes[attributeKey];
 
     if (!selectedNodeAttributeValues) return { data: [] };
 

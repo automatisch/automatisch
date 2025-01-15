@@ -85,8 +85,8 @@ export default defineAction({
                 value: '{parameters.nodeName}',
               },
               {
-                name: 'parameters.attributes',
-                value: '{parameters.attributes}',
+                name: 'parameters.attributeKey',
+                value: '{fieldsEntry.key}',
               },
             ],
           },
@@ -111,10 +111,6 @@ export default defineAction({
           {
             name: 'key',
             value: 'listNodeFields',
-          },
-          {
-            name: 'nodeIndex',
-            value: 0,
           },
           {
             name: 'parameters.hasChildrenNodes',
