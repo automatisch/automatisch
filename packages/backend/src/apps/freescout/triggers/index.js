@@ -1,3 +1,3 @@
-import newActivity from './new-activity/index.js';
+import newEvent from './new-event/index.js';
 
-export default [newActivity];
+export default [newEvent];
