@@ -31,12 +31,6 @@ export default {
       { name: 'Wait URL', value: 'waitUrl' },
     ];
 
-    const connectAttributes = [
-      { name: 'Room', value: '<Room>' },
-      { name: 'Stream', value: '<Stream>' },
-      { name: 'Virtual Agent', value: '<VirtualAgent>' },
-    ];
-
     const dialAttributes = [
       { name: 'Action', value: 'action' },
       { name: 'Answer On Bridge', value: 'answerOnBridge' },
@@ -188,7 +182,6 @@ export default {
     ];
 
     if (nodeName === 'Conference') return { data: conferenceAttributes };
-    if (nodeName === 'Connect') return { data: connectAttributes };
     if (nodeName === 'Dial') return { data: dialAttributes };
     if (nodeName === 'Echo') return { data: echoAttributes };
     if (nodeName === 'Enqueue') return { data: enqueueAttributes };
