@@ -16,8 +16,11 @@ export const createStep = async (params = {}) => {
     params?.position || (lastStep?.position ? lastStep.position + 1 : 1);
 
   params.status = params?.status || 'completed';
-  params.appKey =
-    params?.appKey || (params.type === 'action' ? 'deepl' : 'webhook');
+
+  if (params.appKey !== null) {
+    params.appKey =
+      params?.appKey || (params.type === 'action' ? 'deepl' : 'webhook');
+  }
 
   params.parameters = params?.parameters || {};
 
