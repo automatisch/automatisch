@@ -4,17 +4,17 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 import webhookFilters from '../../common/webhook-filters.js';
 
 export default defineTrigger({
-  name: 'New activity',
+  name: 'New event',
   key: 'newActivity',
   type: 'webhook',
-  description: 'Triggers when a new activity occurs.',
+  description: 'Triggers when a new event occurs.',
   arguments: [
     {
-      label: 'Activity type',
-      key: 'filters',
+      label: 'Event type',
+      key: 'filter',
       type: 'dropdown',
       required: true,
-      description: 'Pick an activity type to receive events for.',
+      description: 'Pick an event type to receive events for.',
       variables: false,
       options: webhookFilters,
     },
