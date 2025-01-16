@@ -14,5 +14,5 @@ export default defineApp({
   authDocUrl: '{DOCS_URL}/apps/freescout/connection',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
-  triggers
+  triggers,
 });
