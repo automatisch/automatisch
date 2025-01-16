@@ -5,7 +5,7 @@ import webhookFilters from '../../common/webhook-filters.js';
 
 export default defineTrigger({
   name: 'New event',
-  key: 'newActivity',
+  key: 'newEvent',
   type: 'webhook',
   description: 'Triggers when a new event occurs.',
   arguments: [
@@ -52,7 +52,7 @@ export default defineTrigger({
 
     const response = await $.http.post(`/api/webhooks`, payload);
 
-    await $.flow.setRemoteWebhookId(`${response?.data?.id}`);
+    await $.flow.setRemoteWebhookId(response?.data?.id.toString());
   },
 
   async unregisterHook($) {

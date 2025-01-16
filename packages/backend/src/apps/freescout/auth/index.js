@@ -22,7 +22,7 @@ export default {
       required: true,
       readOnly: false,
       description: 'Your FreeScout instance URL.',
-      docUrl: 'https://automatisch.io/docs/gitlab#oauth-redirect-url',
+      docUrl: 'https://automatisch.io/docs/freescout#instance-url',
       clickToCopy: false,
     },
     {
@@ -34,7 +34,7 @@ export default {
       value: null,
       placeholder: null,
       description: 'FreeScout API key of your account.',
-      docUrl: 'https://automatisch.io/docs/openai#api-key',
+      docUrl: 'https://automatisch.io/docs/freescout#api-key',
       clickToCopy: false,
     },
   ],
