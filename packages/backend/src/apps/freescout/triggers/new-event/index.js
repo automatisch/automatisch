@@ -11,7 +11,7 @@ export default defineTrigger({
   arguments: [
     {
       label: 'Event type',
-      key: 'filter',
+      key: 'eventType',
       type: 'dropdown',
       required: true,
       description: 'Pick an event type to receive events for.',
@@ -47,12 +47,12 @@ export default defineTrigger({
   async registerHook($) {
     const payload = {
       url: $.webhookUrl,
-      events: [$.step.parameters.filter],
+      events: [$.step.parameters.eventType],
     };
 
-    const response = await $.http.post(`/api/webhooks`, payload);
+    const response = await $.http.post('/api/webhooks', payload);
 
-    await $.flow.setRemoteWebhookId(response?.data?.id.toString());
+    await $.flow.setRemoteWebhookId(response.data?.id?.toString());
   },
 
   async unregisterHook($) {
