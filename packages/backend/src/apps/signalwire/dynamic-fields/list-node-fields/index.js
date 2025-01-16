@@ -36,7 +36,11 @@ export default {
               arguments: [
                 {
                   name: 'key',
-                  value: 'listVoiceXmlNodes',
+                  value: 'listVoiceXmlChildrenNodes',
+                },
+                {
+                  name: 'parameters.parentNodeName',
+                  value: '{parameters.nodeName}',
                 },
               ],
             },
