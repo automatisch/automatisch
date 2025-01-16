@@ -5,7 +5,6 @@ export default async (request, response) => {
     .clone()
     .where('steps.id', request.params.stepId)
     .whereNotNull('steps.app_key')
-    .whereNotNull('steps.connection_id')
     .first()
     .throwIfNotFound();
 
