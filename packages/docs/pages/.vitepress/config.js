@@ -160,6 +160,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Freescout',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/freescout/triggers' },
+            { text: 'Connection', link: '/apps/freescout/connection' },
+          ],
+        },
+        {
           text: 'Ghost',
           collapsible: true,
           collapsed: true,
