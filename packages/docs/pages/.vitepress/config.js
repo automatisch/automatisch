@@ -51,6 +51,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Azure DevOps',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/azure-devops/triggers' },
+            { text: 'Actions', link: '/apps/azure-devops/actions' },
+            { text: 'Connection', link: '/apps/azure-devops/connection' },
+          ],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
