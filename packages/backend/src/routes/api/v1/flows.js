@@ -10,6 +10,7 @@ import createStepAction from '../../../controllers/api/v1/flows/create-step.js';
 import deleteFlowAction from '../../../controllers/api/v1/flows/delete-flow.js';
 import duplicateFlowAction from '../../../controllers/api/v1/flows/duplicate-flow.js';
 import exportFlowAction from '../../../controllers/api/v1/flows/export-flow.js';
+import importFlowAction from '../../../controllers/api/v1/flows/import-flow.js';
 
 const router = Router();
 
@@ -24,6 +25,8 @@ router.post(
   authorizeUser,
   exportFlowAction
 );
+
+router.post('/import', authenticateUser, authorizeUser, importFlowAction);
 
 router.patch(
   '/:flowId/status',

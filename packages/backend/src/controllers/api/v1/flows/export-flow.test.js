@@ -42,7 +42,7 @@ describe('POST /api/v1/flows/:flowId/export', () => {
       key: 'text',
       name: 'Text',
       parameters: {
-        input: `hello {{step.${triggerStep.id}.query.sample}} deneme`,
+        input: `hello {{step.${triggerStep.id}.query.sample}} world`,
         transform: 'capitalize',
       },
       position: 2,
@@ -99,7 +99,7 @@ describe('POST /api/v1/flows/:flowId/export', () => {
       key: 'text',
       name: 'Text',
       parameters: {
-        input: `hello {{step.${triggerStep.id}.query.sample}} deneme`,
+        input: `hello {{step.${triggerStep.id}.query.sample}} world`,
         transform: 'capitalize',
       },
       position: 2,
