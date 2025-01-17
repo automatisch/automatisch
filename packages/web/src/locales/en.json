@@ -239,7 +239,6 @@
   "editUser.status": "Status",
   "editUser.submit": "Update",
   "editUser.successfullyUpdated": "The user has been updated.",
-  "editUser.error": "Error while updating the user.",
   "userList.fullName": "Full name",
   "userList.email": "Email",
   "userList.role": "Role",

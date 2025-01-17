@@ -216,9 +216,7 @@ test.describe('User management page', () => {
       const editPageUrl = page.url();
       await adminEditUserPage.updateButton.click();
 
-      const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
-      await expect(snackbar.variant).toBe('error');
-      await adminUsersPage.closeSnackbar();
+      await expect(adminEditUserPage.fieldError).toHaveCount(1);
       await expect(page.url()).toBe(editPageUrl);
     });
   });
