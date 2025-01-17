@@ -1,6 +1,7 @@
 {
   "brandText": "Automatisch",
   "searchPlaceholder": "Search",
+  "genericError": "Something went wrong. Please try again.",
   "accountDropdownMenu.settings": "Settings",
   "accountDropdownMenu.adminSettings": "Admin",
   "accountDropdownMenu.logout": "Logout",
