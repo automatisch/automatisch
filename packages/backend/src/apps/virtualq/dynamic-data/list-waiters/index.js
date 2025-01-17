@@ -5,11 +5,11 @@ export default {
   async run($) {
     const response = await $.http.get('/v2/waiters');
 
-    const lines = response.data.data.map((line) => ({
-      value: line.id,
-      name: line.attributes.name,
+    const waiters = response.data.data.map((waiter) => ({
+      value: waiter.id,
+      name: waiter.attributes.name,
     }));
 
-    return { data: lines };
+    return { data: waiters };
   },
 };
