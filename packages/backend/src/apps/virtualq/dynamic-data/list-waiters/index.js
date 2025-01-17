@@ -7,7 +7,7 @@ export default {
 
     const waiters = response.data.data.map((waiter) => ({
       value: waiter.id,
-      name: waiter.attributes.name,
+      name: `${waiter.attributes.phone} @ ${waiter.attributes.line.name}`,
     }));
 
     return { data: waiters };
