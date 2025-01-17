@@ -117,6 +117,10 @@ const authorizationList = {
     action: 'update',
     subject: 'Flow',
   },
+  'POST /api/v1/flows/import': {
+    action: 'create',
+    subject: 'Flow',
+  },
   'POST /api/v1/flows/:flowId/steps': {
     action: 'update',
     subject: 'Flow',
