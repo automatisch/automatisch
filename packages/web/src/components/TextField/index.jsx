@@ -23,7 +23,7 @@ function TextField(props) {
   const {
     required,
     name,
-    defaultValue,
+    defaultValue = '',
     shouldUnregister = false,
     clickToCopy = false,
     readOnly = false,
@@ -38,7 +38,7 @@ function TextField(props) {
     <Controller
       rules={{ required }}
       name={name}
-      defaultValue={defaultValue || ''}
+      defaultValue={defaultValue}
       control={control}
       shouldUnregister={shouldUnregister}
       render={({

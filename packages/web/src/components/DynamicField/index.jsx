@@ -23,11 +23,28 @@ function DynamicField(props) {
     return fields.reduce((previousValue, field) => {
       return {
         ...previousValue,
-        [field.key]: '',
+        [field.key]: field.value ?? '',
         __id: uuidv4(),
       };
     }, {});
   }, [fields]);
+
+  const generateDefaultValue = React.useCallback(() => {
+    if (defaultValue?.length > 0) {
+      return defaultValue.map((item) => {
+        return fields.reduce((previousValue, field) => {
+          return {
+            ...previousValue,
+            // if field value is different than null or undefined - use it,
+            // otherwise use the parent default value
+            [field.key]: field.value ?? item[field.key] ?? '',
+          };
+        }, {});
+      });
+    } else {
+      return [createEmptyItem()];
+    }
+  }, [defaultValue, fields, createEmptyItem]);
 
   const addItem = React.useCallback(() => {
     const values = getValues(name);
@@ -52,13 +69,11 @@ function DynamicField(props) {
   React.useEffect(
     function addInitialGroupWhenEmpty() {
       const fieldValues = getValues(name);
-      if (!fieldValues && defaultValue) {
-        setValue(name, defaultValue);
-      } else if (!fieldValues) {
-        setValue(name, [createEmptyItem()]);
+      if (!fieldValues) {
+        setValue(name, generateDefaultValue());
       }
     },
-    [createEmptyItem, defaultValue],
+    [generateDefaultValue],
   );
 
   return (

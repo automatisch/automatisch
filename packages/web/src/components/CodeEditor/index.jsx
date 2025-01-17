@@ -14,7 +14,7 @@ function CodeEditor(props) {
     required,
     name,
     label,
-    defaultValue,
+    defaultValue = '',
     shouldUnregister = false,
     disabled,
     'data-test': dataTest,
@@ -39,7 +39,7 @@ function CodeEditor(props) {
     <Controller
       rules={{ required }}
       name={name}
-      defaultValue={defaultValue || ''}
+      defaultValue={defaultValue}
       control={control}
       shouldUnregister={shouldUnregister}
       render={({ field }) => (
