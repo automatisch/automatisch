@@ -18,11 +18,7 @@ import FileUploadInput from 'components/FileUploadInput';
 import useImportFlow from 'hooks/useImportFlow';
 
 function ImportFlowDialog(props) {
-  const {
-    onClose,
-    open = true,
-    'data-test': dataTest = 'import-flow-dialog',
-  } = props;
+  const { open = true, 'data-test': dataTest = 'import-flow-dialog' } = props;
 
   const [hasParsingError, setParsingError] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState(null);
@@ -72,6 +68,10 @@ function ImportFlowDialog(props) {
     fileReader.readAsText(selectedFile);
   };
 
+  const onClose = () => {
+    navigate('..');
+  };
+
   return (
     <Dialog open={open} onClose={onClose} data-test={dataTest}>
       <DialogTitle>{formatMessage('importFlowDialog.title')}</DialogTitle>
@@ -102,7 +102,7 @@ function ImportFlowDialog(props) {
       <DialogActions>
         <Button
           variant="outlined"
-          onClick={() => navigate('..')}
+          onClick={onClose}
           data-test="import-flow-dialog-close-button"
         >
           {formatMessage('importFlowDialog.close')}
@@ -150,7 +150,6 @@ function ImportFlowDialog(props) {
 }
 
 ImportFlowDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   'data-test': PropTypes.string,
 };
