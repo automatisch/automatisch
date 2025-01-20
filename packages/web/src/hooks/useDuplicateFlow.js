@@ -12,8 +12,8 @@ export default function useDuplicateFlow(flowId) {
       return data;
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['flows'],
       });
     },

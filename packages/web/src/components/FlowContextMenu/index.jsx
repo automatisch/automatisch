@@ -16,8 +16,7 @@ import useExportFlow from 'hooks/useExportFlow';
 import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
 
 function ContextMenu(props) {
-  const { flowId, onClose, anchorEl, onDuplicateFlow, onDeleteFlow, appKey } =
-    props;
+  const { flowId, onClose, anchorEl, onDuplicateFlow, appKey } = props;
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
@@ -67,14 +66,12 @@ function ContextMenu(props) {
       variant: 'success',
     });
 
-    onDeleteFlow?.();
     onClose();
   }, [
     deleteFlow,
     appKey,
     enqueueSnackbar,
     formatMessage,
-    onDeleteFlow,
     onClose,
     queryClient,
   ]);
@@ -143,7 +140,6 @@ ContextMenu.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]).isRequired,
-  onDeleteFlow: PropTypes.func,
   onDuplicateFlow: PropTypes.func,
   appKey: PropTypes.string,
 };

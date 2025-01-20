@@ -6,7 +6,6 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import debounce from 'lodash/debounce';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
@@ -27,7 +26,7 @@ import ImportFlowDialog from 'components/ImportFlowDialog';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import * as URLS from 'config/urls';
-import useLazyFlows from 'hooks/useLazyFlows';
+import useFlows from 'hooks/useFlows';
 
 export default function Flows() {
   const formatMessage = useFormatMessage();
@@ -35,21 +34,9 @@ export default function Flows() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const flowName = searchParams.get('flowName') || '';
-  const [isLoading, setIsLoading] = React.useState(true);
   const currentUserAbility = useCurrentUserAbility();
 
-  const {
-    data,
-    mutate: fetchFlows,
-    isSuccess,
-  } = useLazyFlows(
-    { flowName, page },
-    {
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  );
+  const { data, isSuccess, isLoading } = useFlows({ flowName, page });
 
   const flows = data?.data || [];
   const pageInfo = data?.meta;
@@ -76,25 +63,8 @@ export default function Flows() {
   const onDuplicateFlow = () => {
     if (pageInfo?.currentPage > 1) {
       navigate(getPathWithSearchParams(1, flowName));
-    } else {
-      fetchFlows();
     }
   };
-
-  const fetchData = React.useMemo(
-    () => debounce(fetchFlows, 300),
-    [fetchFlows],
-  );
-
-  React.useEffect(() => {
-    setIsLoading(true);
-
-    fetchData({ flowName, page });
-
-    return () => {
-      fetchData.cancel();
-    };
-  }, [fetchData, flowName, page]);
 
   React.useEffect(
     function redirectToLastPage() {
@@ -184,7 +154,6 @@ export default function Flows() {
                 key={flow.id}
                 flow={flow}
                 onDuplicateFlow={onDuplicateFlow}
-                onDeleteFlow={fetchFlows}
               />
             ))}
 
