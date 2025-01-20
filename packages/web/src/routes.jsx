@@ -38,7 +38,9 @@ function Routes() {
   const { isAuthenticated } = useAuthentication();
   const config = configData?.data;
 
-  const installed = isSuccess ? automatischInfo.data.installationCompleted : true;
+  const installed = isSuccess
+    ? automatischInfo.data.installationCompleted
+    : true;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,19 +70,10 @@ function Routes() {
       />
 
       <Route
-        path={URLS.FLOWS}
+        path={`${URLS.FLOWS}/*`}
         element={
           <Layout>
             <Flows />
-          </Layout>
-        }
-      />
-
-      <Route
-        path={URLS.FLOW_PATTERN}
-        element={
-          <Layout>
-            <Flow />
           </Layout>
         }
       />
@@ -186,6 +179,7 @@ function Routes() {
       <Route path={URLS.ADMIN_SETTINGS} element={<AdminSettingsLayout />}>
         {adminSettingsRoutes}
       </Route>
+
       <Route path="*" element={<NoResultFound />} />
     </ReactRouterRoutes>
   );

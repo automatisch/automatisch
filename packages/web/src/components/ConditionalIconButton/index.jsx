@@ -9,6 +9,7 @@ function ConditionalIconButton(props) {
   const { icon, ...buttonProps } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
+
   if (matchSmallScreens) {
     return (
       <IconButton
@@ -24,7 +25,8 @@ function ConditionalIconButton(props) {
       </IconButton>
     );
   }
-  return <Button {...buttonProps} />;
+
+  return <Button {...buttonProps} startIcon={icon} />;
 }
 
 ConditionalIconButton.propTypes = {
