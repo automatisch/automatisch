@@ -435,6 +435,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Seven',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/seven/triggers' },
+            { text: 'Actions', link: '/apps/seven/actions' },
+            { text: 'Connection', link: '/apps/seven/connection' },
+          ],
+        },
+        {
           text: 'SignalWire',
           collapsible: true,
           collapsed: true,
