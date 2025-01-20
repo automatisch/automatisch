@@ -1,9 +1,22 @@
 import Crypto from 'crypto';
 import Step from '../models/step.js';
+import { renderObjectionError } from './renderer.js';
 
-const importFlow = async (user, flowData) => {
-  const newFlowId = Crypto.randomUUID();
+const importFlow = async (user, flowData, response) => {
   const steps = flowData.steps || [];
+
+  // Validation: the first step must be a trigger
+  if (!steps.length || steps[0].type !== 'trigger') {
+    return renderObjectionError(response, {
+      statusCode: 422,
+      type: 'ValidationError',
+      data: {
+        steps: [{ message: 'The first step must be a trigger!' }],
+      },
+    });
+  }
+
+  const newFlowId = Crypto.randomUUID();
 
   const newFlow = await user.$relatedQuery('flows').insertAndFetch({
     id: newFlowId,

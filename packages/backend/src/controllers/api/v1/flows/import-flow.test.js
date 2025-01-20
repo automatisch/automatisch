@@ -325,4 +325,31 @@ describe('POST /api/v1/flows/import', () => {
       `{{step.${newTriggerStepId}.query.sample}}`
     );
   });
+
+  it('should throw an error in case there is no trigger step', async () => {
+    const currentUserFlow = await createFlow({ userId: currentUser.id });
+
+    await createPermission({
+      action: 'create',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    const importFlowData = {
+      id: currentUserFlow.id,
+      name: currentUserFlow.name,
+      steps: [],
+    };
+
+    const response = await request(app)
+      .post('/api/v1/flows/import')
+      .set('Authorization', token)
+      .send(importFlowData)
+      .expect(422);
+
+    expect(response.body.errors.steps).toStrictEqual([
+      'The first step must be a trigger!',
+    ]);
+  });
 });

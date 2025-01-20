@@ -1,11 +1,15 @@
 import { renderObject } from '../../../../helpers/renderer.js';
 import importFlow from '../../../../helpers/import-flow.js';
 
-export default async (request, response) => {
-  const flow = await importFlow(request.currentUser, flowParams(request));
+export default async function importFlowController(request, response) {
+  const flow = await importFlow(
+    request.currentUser,
+    flowParams(request),
+    response
+  );
 
   return renderObject(response, flow, { status: 201 });
-};
+}
 
 const flowParams = (request) => {
   return {
