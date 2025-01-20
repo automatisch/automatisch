@@ -15,37 +15,47 @@ export const APP = (appKey) => `/app/${appKey}`;
 export const APP_PATTERN = '/app/:appKey';
 export const APP_CONNECTIONS = (appKey) => `/app/${appKey}/connections`;
 export const APP_CONNECTIONS_PATTERN = '/app/:appKey/connections';
+
 export const APP_ADD_CONNECTION = (appKey, shared = false) =>
   `/app/${appKey}/connections/add?shared=${shared}`;
+
 export const APP_ADD_CONNECTION_WITH_OAUTH_CLIENT_ID = (
   appKey,
   oauthClientId,
 ) => `/app/${appKey}/connections/add?oauthClientId=${oauthClientId}`;
+
 export const APP_ADD_CONNECTION_PATTERN = '/app/:appKey/connections/add';
+
 export const APP_RECONNECT_CONNECTION = (
   appKey,
   connectionId,
   oauthClientId,
 ) => {
   const path = `/app/${appKey}/connections/${connectionId}/reconnect`;
+
   if (oauthClientId) {
     return `${path}?oauthClientId=${oauthClientId}`;
   }
+
   return path;
 };
+
 export const APP_RECONNECT_CONNECTION_PATTERN =
   '/app/:appKey/connections/:connectionId/reconnect';
-export const APP_FLOWS = (appKey) => `/app/${appKey}/flows`;
+
 export const APP_FLOWS_FOR_CONNECTION = (appKey, connectionId) =>
   `/app/${appKey}/flows?connectionId=${connectionId}`;
+
+export const APP_FLOWS = (appKey) => `/app/${appKey}/flows`;
 export const APP_FLOWS_PATTERN = '/app/:appKey/flows';
 export const EDITOR = '/editor';
 export const CREATE_FLOW = '/editor/create';
+export const IMPORT_FLOW = '/flows/import';
 export const FLOW_EDITOR = (flowId) => `/editor/${flowId}`;
 export const FLOWS = '/flows';
 // TODO: revert this back to /flows/:flowId once we have a proper single flow page
 export const FLOW = (flowId) => `/editor/${flowId}`;
-export const FLOW_PATTERN = '/flows/:flowId';
+export const FLOWS_PATTERN = '/flows/:flowId';
 export const SETTINGS = '/settings';
 export const SETTINGS_DASHBOARD = SETTINGS;
 export const PROFILE = 'profile';
@@ -73,16 +83,22 @@ export const ADMIN_APP_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey`;
 export const ADMIN_APP_SETTINGS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/settings`;
 export const ADMIN_APP_AUTH_CLIENTS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/oauth-clients`;
 export const ADMIN_APP_CONNECTIONS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/connections`;
+
 export const ADMIN_APP_CONNECTIONS = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/connections`;
+
 export const ADMIN_APP_SETTINGS = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/settings`;
+
 export const ADMIN_APP_AUTH_CLIENTS = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/oauth-clients`;
+
 export const ADMIN_APP_AUTH_CLIENT = (appKey, id) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/oauth-clients/${id}`;
+
 export const ADMIN_APP_AUTH_CLIENTS_CREATE = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/oauth-clients/create`;
+
 export const DASHBOARD = FLOWS;
 
 // External links and paths
