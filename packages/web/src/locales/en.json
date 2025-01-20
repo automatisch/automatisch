@@ -26,6 +26,7 @@
   "app.addConnectionWithOAuthClient": "Add connection with OAuth client",
   "app.reconnectConnection": "Reconnect connection",
   "app.createFlow": "Create flow",
+  "app.importFlow": "Import flow",
   "app.settings": "Settings",
   "app.connections": "Connections",
   "app.noConnections": "You don't have any connections yet.",
@@ -89,6 +90,7 @@
   "flowStep.triggerType": "Trigger",
   "flowStep.actionType": "Action",
   "flows.create": "Create flow",
+  "flows.import": "Import flow",
   "flows.title": "Flows",
   "flows.noFlows": "You don't have any flows yet.",
   "flowEditor.goBack": "Go back to flows",
@@ -317,5 +319,13 @@
   "oauthClient.inputActive": "Active",
   "updateOAuthClient.title": "Update OAuth client",
   "notFoundPage.title": "We can't seem to find a page you're looking for.",
-  "notFoundPage.button": "Back to home page"
+  "notFoundPage.button": "Back to home page",
+  "importFlowDialog.title": "Import flow",
+  "importFlowDialog.description": "You can import a flow by uploading the exported flow file below.",
+  "importFlowDialog.parsingError": "Something has gone wrong with parsing the selected file.",
+  "importFlowDialog.selectFile": "Select file",
+  "importFlowDialog.close": "Close",
+  "importFlowDialog.import": "Import",
+  "importFlowDialog.selectedFileInformation": "Selected file: {fileName}",
+  "importFlowDialog.successfullyImportedFlow": "The flow has been successfully imported. You can view it <link>here</link>."
 }
