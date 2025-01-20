@@ -16,13 +16,10 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import FileUploadInput from 'components/FileUploadInput';
 import useImportFlow from 'hooks/useImportFlow';
+import { getUnifiedErrorMessage } from 'helpers/errors';
 
 function ImportFlowDialog(props) {
-  const {
-    onClose,
-    open = true,
-    'data-test': dataTest = 'import-flow-dialog',
-  } = props;
+  const { open = true, 'data-test': dataTest = 'import-flow-dialog' } = props;
 
   const [hasParsingError, setParsingError] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState(null);
@@ -72,6 +69,10 @@ function ImportFlowDialog(props) {
     fileReader.readAsText(selectedFile);
   };
 
+  const onClose = () => {
+    navigate('..');
+  };
+
   return (
     <Dialog open={open} onClose={onClose} data-test={dataTest}>
       <DialogTitle>{formatMessage('importFlowDialog.title')}</DialogTitle>
@@ -99,10 +100,10 @@ function ImportFlowDialog(props) {
         </DialogContentText>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ mb: 1 }}>
         <Button
           variant="outlined"
-          onClick={() => navigate('..')}
+          onClick={onClose}
           data-test="import-flow-dialog-close-button"
         >
           {formatMessage('importFlowDialog.close')}
@@ -131,8 +132,10 @@ function ImportFlowDialog(props) {
         <Alert
           data-test="import-flow-dialog-generic-error-alert"
           severity="error"
+          sx={{ whiteSpace: 'pre-line' }}
         >
-          {error.data || formatMessage('genericError')}
+          {getUnifiedErrorMessage(error.response.data.errors) ||
+            formatMessage('genericError')}
         </Alert>
       )}
 
@@ -150,7 +153,6 @@ function ImportFlowDialog(props) {
 }
 
 ImportFlowDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   'data-test': PropTypes.string,
 };
