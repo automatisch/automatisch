@@ -16,6 +16,7 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import FileUploadInput from 'components/FileUploadInput';
 import useImportFlow from 'hooks/useImportFlow';
+import { getUnifiedErrorMessage } from 'helpers/errors';
 
 function ImportFlowDialog(props) {
   const { open = true, 'data-test': dataTest = 'import-flow-dialog' } = props;
@@ -99,7 +100,7 @@ function ImportFlowDialog(props) {
         </DialogContentText>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ mb: 1 }}>
         <Button
           variant="outlined"
           onClick={onClose}
@@ -131,8 +132,10 @@ function ImportFlowDialog(props) {
         <Alert
           data-test="import-flow-dialog-generic-error-alert"
           severity="error"
+          sx={{ whiteSpace: 'pre-line' }}
         >
-          {error.data || formatMessage('genericError')}
+          {getUnifiedErrorMessage(error.response.data.errors) ||
+            formatMessage('genericError')}
         </Alert>
       )}
 
