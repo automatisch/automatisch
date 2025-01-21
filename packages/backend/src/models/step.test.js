@@ -369,7 +369,46 @@ describe('Step model', () => {
   it.todo('getSetupAndDynamicFields');
   it.todo('createDynamicFields');
   it.todo('createDynamicData');
-  it.todo('updateWebhookUrl');
+
+  describe('updateWebhookUrl', () => {
+    it('should do nothing if step is an action', async () => {
+      const step = new Step();
+      step.type = 'action';
+
+      await step.updateWebhookUrl();
+
+      expect(step.webhookUrl).toBeNull();
+    });
+
+    it('should set webhookPath if step is a trigger', async () => {
+      const step = await createStep({
+        type: 'trigger',
+      });
+
+      vi.spyOn(Step.prototype, 'computeWebhookPath').mockResolvedValue(
+        '/webhooks/flows/flow-id'
+      );
+
+      const newStep = await step.updateWebhookUrl();
+
+      expect(step.webhookPath).toBe('/webhooks/flows/flow-id');
+      expect(newStep).toBe(step);
+    });
+
+    it('should return step itself after the update of webhook path', async () => {
+      const step = await createStep({
+        type: 'trigger',
+      });
+
+      vi.spyOn(Step.prototype, 'computeWebhookPath').mockResolvedValue(
+        '/webhooks/flows/flow-id'
+      );
+
+      const updatedStep = await step.updateWebhookUrl();
+
+      expect(updatedStep).toStrictEqual(step);
+    });
+  });
 
   describe('delete', () => {
     it('should delete the step and align the positions', async () => {
