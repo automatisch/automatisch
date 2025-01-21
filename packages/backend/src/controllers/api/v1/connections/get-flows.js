@@ -4,6 +4,7 @@ import paginateRest from '../../../../helpers/pagination-rest.js';
 export default async (request, response) => {
   const flowsQuery = request.currentUser.authorizedFlows
     .clone()
+    .distinct('flows.*')
     .joinRelated({
       steps: true,
     })
