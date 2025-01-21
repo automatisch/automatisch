@@ -1,4 +1,6 @@
 const cronTimes = {
+  everyNMinutes: (n) => `*/${n} * * * *`,
+  everyNMinutesExcludingWeekends: (n) => `*/${n} * * * 1-5`,
   everyHour: '0 * * * *',
   everyHourExcludingWeekends: '0 * * * 1-5',
   everyDayAt: (hour) => `0 ${hour} * * *`,

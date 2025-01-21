@@ -5,6 +5,7 @@ export default function defineTrigger(triggerDefinition) {
     triggerDefinition.pollInterval || triggerDefinition.type === 'webhook';
 
   const schedulerTriggers = [
+    'everyNMinutes',
     'everyHour',
     'everyDay',
     'everyWeek',
