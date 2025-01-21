@@ -1,6 +1,8 @@
 ---
 favicon: /favicons/scheduler.svg
 items:
+  - name: Every N minutes
+    desc: Triggers every N minutes.
   - name: Every hour
     desc: Triggers every hour.
   - name: Every day
