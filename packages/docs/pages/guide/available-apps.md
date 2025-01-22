@@ -31,6 +31,7 @@ The following integrations are currently supported by Automatisch.
 - [MailerLite](/apps/mailerlite/triggers)
 - [Mattermost](/apps/mattermost/actions)
 - [Miro](/apps/miro/actions)
+- [Mistral AI](/apps/mistral-ai/actions)
 - [Notion](/apps/notion/triggers)
 - [Ntfy](/apps/ntfy/actions)
 - [Odoo](/apps/odoo/actions)

@@ -314,6 +314,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Mistral AI',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/mistral-ai/actions' },
+            { text: 'Connection', link: '/apps/mistral-ai/connection' },
+          ],
+        },
+        {
           text: 'Notion',
           collapsible: true,
           collapsed: true,
