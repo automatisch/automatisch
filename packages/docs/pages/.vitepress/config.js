@@ -509,6 +509,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Together AI',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/together-ai/actions' },
+            { text: 'Connection', link: '/apps/together-ai/connection' },
+          ],
+        },
+        {
           text: 'Trello',
           collapsible: true,
           collapsed: true,
