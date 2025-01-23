@@ -318,6 +318,7 @@
   "oauthClient.inputName": "Name",
   "oauthClient.inputActive": "Active",
   "updateOAuthClient.title": "Update OAuth client",
+  "updateOAuthClient.success": "OAuth client successfully updated",
   "notFoundPage.title": "We can't seem to find a page you're looking for.",
   "notFoundPage.button": "Back to home page",
   "importFlowDialog.title": "Import flow",
