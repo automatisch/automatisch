@@ -360,6 +360,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Perplexity',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/perplexity/actions' },
+            { text: 'Connection', link: '/apps/perplexity/connection' },
+          ],
+        },
+        {
           text: 'Pipedrive',
           collapsible: true,
           collapsed: true,

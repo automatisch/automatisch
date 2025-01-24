@@ -36,6 +36,7 @@ The following integrations are currently supported by Automatisch.
 - [Ntfy](/apps/ntfy/actions)
 - [Odoo](/apps/odoo/actions)
 - [OpenAI](/apps/openai/actions)
+- [Perplexity](/apps/perplexity/actions)
 - [Pipedrive](/apps/pipedrive/triggers)
 - [Placetel](/apps/placetel/triggers)
 - [PostgreSQL](/apps/postgresql/actions)
