@@ -369,6 +369,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'OpenRouter',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/openrouter/actions' },
+            { text: 'Connection', link: '/apps/openrouter/connection' },
+          ],
+        },
+        {
           text: 'Perplexity',
           collapsible: true,
           collapsed: true,
