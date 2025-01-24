@@ -42,6 +42,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Anthropic',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/anthropic/actions' },
+            { text: 'Connection', link: '/apps/anthropic/connection' },
+          ],
+        },
+        {
           text: 'Appwrite',
           collapsible: true,
           collapsed: true,
