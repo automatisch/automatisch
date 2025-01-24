@@ -113,6 +113,7 @@ function TestSubstep(props) {
             <Box
               sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }}
               data-test="flow-test-substep-output"
+              className="nowheel"
             >
               <JSONViewer data={dataOut} />
             </Box>
