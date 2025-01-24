@@ -5,18 +5,21 @@ import LockIcon from '@mui/icons-material/LockPerson';
 import BrushIcon from '@mui/icons-material/Brush';
 import AppsIcon from '@mui/icons-material/Apps';
 import { Outlet } from 'react-router-dom';
-
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from 'react';
+
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import Can from 'components/Can';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+
+import Footer from './Footer';
 
 function createDrawerLinks({
   canReadRole,
@@ -103,7 +106,7 @@ function SettingsLayout() {
         onDrawerOpen={openDrawer}
         onDrawerClose={closeDrawer}
       />
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', flex: 1 }}>
         <Drawer
           links={drawerLinks}
           bottomLinks={drawerBottomLinks}
@@ -111,10 +114,11 @@ function SettingsLayout() {
           onOpen={openDrawer}
           onClose={closeDrawer}
         />
-        <Box sx={{ flex: 1 }}>
+        <Stack sx={{ flex: 1 }}>
           <Toolbar />
           <Outlet />
-        </Box>
+          <Footer />
+        </Stack>
       </Box>
     </Can>
   );

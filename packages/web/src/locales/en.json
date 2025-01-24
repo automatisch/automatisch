@@ -20,6 +20,7 @@
   "adminSettingsDrawer.userInterface": "User Interface",
   "adminSettingsDrawer.goBack": "Go to the dashboard",
   "adminSettingsDrawer.apps": "Applications",
+  "adminSettingsFooter.version": "Version {version}",
   "app.connectionCount": "{count} connections",
   "app.flowCount": "{count} flows",
   "app.addConnection": "Add connection",
