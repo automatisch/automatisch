@@ -82,7 +82,11 @@ export default async (flowId, request, response) => {
         break;
       }
 
-      if (actionStep.key === 'respondWith' && !response.headersSent) {
+      if (
+        (actionStep.key === 'respondWith' ||
+          actionStep.key === 'respondWithVoiceXml') &&
+        !response.headersSent
+      ) {
         const { headers, statusCode, body } = actionExecutionStep.dataOut;
 
         // we set the custom response headers

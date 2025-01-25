@@ -36,11 +36,7 @@ test.describe('User management page', () => {
       await adminCreateUserPage.invitationEmailInfoAlert.waitFor({
         state: 'attached',
       });
-
-      const snackbar = await adminUsersPage.getSnackbarData(
-        'snackbar-create-user-success'
-      );
-      await expect(snackbar.variant).toBe('success');
+      await adminCreateUserPage.expectCreateUserSuccessAlertToBeVisible();
       await adminUsersPage.navigateTo();
     });
     await test.step('Check the user exists with the expected properties', async () => {
@@ -65,6 +61,7 @@ test.describe('User management page', () => {
         'snackbar-edit-user-success'
       );
       await expect(snackbar.variant).toBe('success');
+      await adminUsersPage.closeSnackbar();
 
       await adminUsersPage.findUserPageWithEmail(user.email);
       userRow = await adminUsersPage.getUserRowByEmail(user.email);
@@ -82,6 +79,7 @@ test.describe('User management page', () => {
         'snackbar-delete-user-success'
       );
       await expect(snackbar.variant).toBe('success');
+      await adminUsersPage.closeSnackbar();
       await expect(userRow).not.toBeVisible(false);
     });
   });
@@ -92,7 +90,6 @@ test.describe('User management page', () => {
   }) => {
     adminCreateUserPage.seed(9100);
     const testUser = adminCreateUserPage.generateUser();
-
     await test.step('Create the test user', async () => {
       await adminUsersPage.navigateTo();
       await adminUsersPage.createUserButton.click();
@@ -103,10 +100,7 @@ test.describe('User management page', () => {
         .getByRole('option', { name: 'Admin' })
         .click();
       await adminCreateUserPage.createButton.click();
-      const snackbar = await adminUsersPage.getSnackbarData(
-        'snackbar-create-user-success'
-      );
-      await expect(snackbar.variant).toBe('success');
+      await adminCreateUserPage.expectCreateUserSuccessAlertToBeVisible();
     });
 
     await test.step('Delete the created user', async () => {
@@ -121,6 +115,7 @@ test.describe('User management page', () => {
       );
       await expect(snackbar).not.toBeNull();
       await expect(snackbar.variant).toBe('success');
+      await adminUsersPage.closeSnackbar();
       await expect(userRow).not.toBeVisible(false);
     });
 
@@ -133,8 +128,7 @@ test.describe('User management page', () => {
         .getByRole('option', { name: 'Admin' })
         .click();
       await adminCreateUserPage.createButton.click();
-      const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
-      await expect(snackbar.variant).toBe('error');
+      await expect(adminCreateUserPage.fieldError).toHaveCount(1);
     });
   });
 
@@ -155,10 +149,7 @@ test.describe('User management page', () => {
         .getByRole('option', { name: 'Admin' })
         .click();
       await adminCreateUserPage.createButton.click();
-      const snackbar = await adminUsersPage.getSnackbarData(
-        'snackbar-create-user-success'
-      );
-      await expect(snackbar.variant).toBe('success');
+      await adminCreateUserPage.expectCreateUserSuccessAlertToBeVisible();
     });
 
     await test.step('Create the user again', async () => {
@@ -174,8 +165,7 @@ test.describe('User management page', () => {
       await adminCreateUserPage.createButton.click();
 
       await expect(page.url()).toBe(createUserPageUrl);
-      const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
-      await expect(snackbar.variant).toBe('error');
+      await expect(adminCreateUserPage.fieldError).toHaveCount(1);
     });
   });
 
@@ -198,11 +188,7 @@ test.describe('User management page', () => {
         .getByRole('option', { name: 'Admin' })
         .click();
       await adminCreateUserPage.createButton.click();
-      const snackbar = await adminUsersPage.getSnackbarData(
-        'snackbar-create-user-success'
-      );
-      await expect(snackbar.variant).toBe('success');
-      await adminUsersPage.closeAllSnackbars();
+      await adminCreateUserPage.expectCreateUserSuccessAlertToBeVisible();
     });
 
     await test.step('Create the second user', async () => {
@@ -215,10 +201,7 @@ test.describe('User management page', () => {
         .getByRole('option', { name: 'Admin' })
         .click();
       await adminCreateUserPage.createButton.click();
-      const snackbar = await adminUsersPage.getSnackbarData(
-        'snackbar-create-user-success'
-      );
-      await expect(snackbar.variant).toBe('success');
+      await adminCreateUserPage.expectCreateUserSuccessAlertToBeVisible();
     });
 
     await test.step('Try editing the second user to have the email of the first user', async () => {
@@ -231,8 +214,7 @@ test.describe('User management page', () => {
       const editPageUrl = page.url();
       await adminEditUserPage.updateButton.click();
 
-      const snackbar = await adminUsersPage.getSnackbarData('snackbar-error');
-      await expect(snackbar.variant).toBe('error');
+      await expect(adminEditUserPage.fieldError).toHaveCount(1);
       await expect(page.url()).toBe(editPageUrl);
     });
   });

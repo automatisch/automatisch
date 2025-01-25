@@ -1,24 +1,38 @@
 import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
 import set from 'lodash/set';
+import first from 'lodash/first';
+import last from 'lodash/last';
 import { useMutation } from '@tanstack/react-query';
 import isEqual from 'lodash/isEqual';
 
 import api from 'helpers/api';
+import useFieldEntryContext from './useFieldEntryContext';
 
 const variableRegExp = /({.*?})/;
 
-function computeArguments(args, getValues) {
+function computeArguments(args, getValues, fieldEntryPaths) {
   const initialValue = {};
 
   return args.reduce((result, { name, value }) => {
     const isVariable = variableRegExp.test(value);
+
     if (isVariable) {
-      const sanitizedFieldPath = value.replace(/{|}/g, '');
+      const fieldsEntryPath = last(fieldEntryPaths);
+      const outerFieldsEntryPath = first(fieldEntryPaths);
+
+      const sanitizedFieldPath = value
+        .replace(/{|}/g, '')
+        .replace('fieldsScope.', `${fieldsEntryPath}.`)
+        .replace('outerScope.', `${outerFieldsEntryPath}.`);
+
       const computedValue = getValues(sanitizedFieldPath);
+
       if (computedValue === undefined)
         throw new Error(`The ${sanitizedFieldPath} field is required.`);
+
       set(result, name, computedValue);
+
       return result;
     }
 
@@ -52,7 +66,9 @@ function useDynamicData(stepId, schema) {
   });
 
   const { getValues } = useFormContext();
+  const { fieldEntryPaths } = useFieldEntryContext();
   const formValues = getValues();
+
   /**
    * Return `null` when even a field is missing value.
    *
@@ -62,23 +78,31 @@ function useDynamicData(stepId, schema) {
   const computedVariables = React.useMemo(() => {
     if (schema.type === 'dropdown' && schema.source) {
       try {
-        const variables = computeArguments(schema.source.arguments, getValues);
+        const variables = computeArguments(
+          schema.source.arguments,
+          getValues,
+          fieldEntryPaths,
+        );
+
         // if computed variables are the same, return the last computed variables.
         if (isEqual(variables, lastComputedVariables.current)) {
           return lastComputedVariables.current;
         }
+
         lastComputedVariables.current = variables;
+
         return variables;
       } catch (err) {
         return null;
       }
     }
+
     return null;
     /**
      * `formValues` is to trigger recomputation when form is updated.
      * `getValues` is for convenience as it supports paths for fields like `getValues('foo.bar.baz')`.
      */
-  }, [schema, formValues, getValues]);
+  }, [schema, formValues, getValues, fieldEntryPaths]);
 
   React.useEffect(() => {
     if (

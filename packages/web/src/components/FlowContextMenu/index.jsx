@@ -12,15 +12,18 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useDuplicateFlow from 'hooks/useDuplicateFlow';
 import useDeleteFlow from 'hooks/useDeleteFlow';
+import useExportFlow from 'hooks/useExportFlow';
+import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
 
 function ContextMenu(props) {
-  const { flowId, onClose, anchorEl, onDuplicateFlow, onDeleteFlow, appKey } =
-    props;
+  const { flowId, onClose, anchorEl, onDuplicateFlow, appKey } = props;
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
   const { mutateAsync: duplicateFlow } = useDuplicateFlow(flowId);
-  const { mutateAsync: deleteFlow } = useDeleteFlow();
+  const { mutateAsync: deleteFlow } = useDeleteFlow(flowId);
+  const { mutateAsync: exportFlow } = useExportFlow(flowId);
+  const downloadJsonAsFile = useDownloadJsonAsFile();
 
   const onFlowDuplicate = React.useCallback(async () => {
     await duplicateFlow();
@@ -51,7 +54,7 @@ function ContextMenu(props) {
   ]);
 
   const onFlowDelete = React.useCallback(async () => {
-    await deleteFlow(flowId);
+    await deleteFlow();
 
     if (appKey) {
       await queryClient.invalidateQueries({
@@ -63,9 +66,30 @@ function ContextMenu(props) {
       variant: 'success',
     });
 
-    onDeleteFlow?.();
     onClose();
-  }, [flowId, onClose, deleteFlow, queryClient, onDeleteFlow]);
+  }, [
+    deleteFlow,
+    appKey,
+    enqueueSnackbar,
+    formatMessage,
+    onClose,
+    queryClient,
+  ]);
+
+  const onFlowExport = React.useCallback(async () => {
+    const flowExport = await exportFlow();
+
+    downloadJsonAsFile({
+      contents: flowExport.data,
+      name: flowExport.data.name,
+    });
+
+    enqueueSnackbar(formatMessage('flow.successfullyExported'), {
+      variant: 'success',
+    });
+
+    onClose();
+  }, [exportFlow, downloadJsonAsFile, enqueueSnackbar, formatMessage, onClose]);
 
   return (
     <Menu
@@ -90,6 +114,14 @@ function ContextMenu(props) {
         )}
       </Can>
 
+      <Can I="read" a="Flow" passThrough>
+        {(allowed) => (
+          <MenuItem disabled={!allowed} onClick={onFlowExport}>
+            {formatMessage('flow.export')}
+          </MenuItem>
+        )}
+      </Can>
+
       <Can I="delete" a="Flow" passThrough>
         {(allowed) => (
           <MenuItem disabled={!allowed} onClick={onFlowDelete}>
@@ -108,7 +140,6 @@ ContextMenu.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]).isRequired,
-  onDeleteFlow: PropTypes.func,
   onDuplicateFlow: PropTypes.func,
   appKey: PropTypes.string,
 };

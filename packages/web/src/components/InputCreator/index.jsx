@@ -26,6 +26,7 @@ function InputCreator(props) {
     showOptionValue,
     shouldUnregister,
   } = props;
+
   const {
     key: name,
     label,
@@ -35,9 +36,11 @@ function InputCreator(props) {
     description,
     type,
   } = schema;
+
   const { data, loading } = useDynamicData(stepId, schema);
   const { data: additionalFieldsData, isLoading: isDynamicFieldsLoading } =
     useDynamicFields(stepId, schema);
+
   const additionalFields = additionalFieldsData?.data;
 
   const computedName = namePrefix ? `${namePrefix}.${name}` : name;
@@ -224,6 +227,7 @@ function InputCreator(props) {
       </React.Fragment>
     );
   }
+
   return <React.Fragment />;
 }
 

@@ -48,6 +48,34 @@ describe('POST /api/v1/admin/apps/:appKey/oauth-clients', () => {
     expect(response.body).toMatchObject(expectedPayload);
   });
 
+  it('should throw validation error for app that does not support oauth connections', async () => {
+    await createAppConfig({
+      key: 'deepl',
+    });
+
+    const oauthClient = {
+      active: true,
+      appKey: 'deepl',
+      name: 'First auth client',
+      formattedAuthDefaults: {
+        clientid: 'sample client ID',
+        clientSecret: 'sample client secret',
+        instanceUrl: 'https://deepl.com',
+        oAuthRedirectUrl: 'http://localhost:3001/app/deepl/connection/add',
+      },
+    };
+
+    const response = await request(app)
+      .post('/api/v1/admin/apps/deepl/oauth-clients')
+      .set('Authorization', token)
+      .send(oauthClient)
+      .expect(422);
+
+    expect(response.body.errors).toMatchObject({
+      app: ['This app does not support OAuth clients!'],
+    });
+  });
+
   it('should return not found response for not existing app config', async () => {
     const oauthClient = {
       active: true,

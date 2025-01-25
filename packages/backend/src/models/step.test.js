@@ -151,7 +151,62 @@ describe('Step model', () => {
     expect(step.isAction).toBe(true);
   });
 
-  describe.todo('computeWebhookPath');
+  describe('computeWebhookPath', () => {
+    it('should return null if step type is action', async () => {
+      const step = new Step();
+      step.type = 'action';
+
+      expect(await step.computeWebhookPath()).toBe(null);
+    });
+
+    it('should return null if triggerCommand is not found', async () => {
+      const step = new Step();
+      step.type = 'trigger';
+
+      vi.spyOn(step, 'getTriggerCommand').mockResolvedValue(null);
+
+      expect(await step.computeWebhookPath()).toBe(null);
+    });
+
+    it('should return null if triggerCommand type is not webhook', async () => {
+      const step = new Step();
+      step.type = 'trigger';
+
+      vi.spyOn(step, 'getTriggerCommand').mockResolvedValue({
+        type: 'not-webhook',
+      });
+
+      expect(await step.computeWebhookPath()).toBe(null);
+    });
+
+    it('should return synchronous webhook path if workSynchronously is true', async () => {
+      const step = new Step();
+      step.type = 'trigger';
+      step.flowId = 'flow-id';
+      step.parameters = { workSynchronously: true };
+
+      vi.spyOn(step, 'getTriggerCommand').mockResolvedValue({
+        type: 'webhook',
+      });
+
+      expect(await step.computeWebhookPath()).toBe(
+        '/webhooks/flows/flow-id/sync'
+      );
+    });
+
+    it('should return asynchronous webhook path if workSynchronously is false', async () => {
+      const step = new Step();
+      step.type = 'trigger';
+      step.flowId = 'flow-id';
+      step.parameters = { workSynchronously: false };
+
+      vi.spyOn(step, 'getTriggerCommand').mockResolvedValue({
+        type: 'webhook',
+      });
+
+      expect(await step.computeWebhookPath()).toBe('/webhooks/flows/flow-id');
+    });
+  });
 
   describe('getWebhookUrl', () => {
     it('should return absolute webhook URL when step type is trigger', async () => {
@@ -314,7 +369,46 @@ describe('Step model', () => {
   it.todo('getSetupAndDynamicFields');
   it.todo('createDynamicFields');
   it.todo('createDynamicData');
-  it.todo('updateWebhookUrl');
+
+  describe('updateWebhookUrl', () => {
+    it('should do nothing if step is an action', async () => {
+      const step = new Step();
+      step.type = 'action';
+
+      await step.updateWebhookUrl();
+
+      expect(step.webhookUrl).toBeNull();
+    });
+
+    it('should set webhookPath if step is a trigger', async () => {
+      const step = await createStep({
+        type: 'trigger',
+      });
+
+      vi.spyOn(Step.prototype, 'computeWebhookPath').mockResolvedValue(
+        '/webhooks/flows/flow-id'
+      );
+
+      const newStep = await step.updateWebhookUrl();
+
+      expect(step.webhookPath).toBe('/webhooks/flows/flow-id');
+      expect(newStep).toBe(step);
+    });
+
+    it('should return step itself after the update of webhook path', async () => {
+      const step = await createStep({
+        type: 'trigger',
+      });
+
+      vi.spyOn(Step.prototype, 'computeWebhookPath').mockResolvedValue(
+        '/webhooks/flows/flow-id'
+      );
+
+      const updatedStep = await step.updateWebhookUrl();
+
+      expect(updatedStep).toStrictEqual(step);
+    });
+  });
 
   describe('delete', () => {
     it('should delete the step and align the positions', async () => {

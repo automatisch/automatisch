@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import debounce from 'lodash/debounce';
+import {
+  Link,
+  useNavigate,
+  useSearchParams,
+  Routes,
+  Route,
+} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
+import UploadIcon from '@mui/icons-material/Upload';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
@@ -16,10 +22,11 @@ import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import SearchInput from 'components/SearchInput';
+import ImportFlowDialog from 'components/ImportFlowDialog';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import * as URLS from 'config/urls';
-import useLazyFlows from 'hooks/useLazyFlows';
+import useFlows from 'hooks/useFlows';
 
 export default function Flows() {
   const formatMessage = useFormatMessage();
@@ -27,21 +34,9 @@ export default function Flows() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const flowName = searchParams.get('flowName') || '';
-  const [isLoading, setIsLoading] = React.useState(true);
   const currentUserAbility = useCurrentUserAbility();
 
-  const {
-    data,
-    mutate: fetchFlows,
-    isSuccess,
-  } = useLazyFlows(
-    { flowName, page },
-    {
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  );
+  const { data, isSuccess, isLoading } = useFlows({ flowName, page });
 
   const flows = data?.data || [];
   const pageInfo = data?.meta;
@@ -68,25 +63,8 @@ export default function Flows() {
   const onDuplicateFlow = () => {
     if (pageInfo?.currentPage > 1) {
       navigate(getPathWithSearchParams(1, flowName));
-    } else {
-      fetchFlows();
     }
   };
-
-  const fetchData = React.useMemo(
-    () => debounce(fetchFlows, 300),
-    [fetchFlows],
-  );
-
-  React.useEffect(() => {
-    setIsLoading(true);
-
-    fetchData({ flowName, page });
-
-    return () => {
-      fetchData.cancel();
-    };
-  }, [fetchData, flowName, page]);
 
   React.useEffect(
     function redirectToLastPage() {
@@ -98,85 +76,119 @@ export default function Flows() {
   );
 
   return (
-    <Box sx={{ py: 3 }}>
-      <Container>
-        <Grid container sx={{ mb: [0, 3] }} columnSpacing={1.5} rowSpacing={3}>
-          <Grid container item xs sm alignItems="center" order={{ xs: 0 }}>
-            <PageTitle>{formatMessage('flows.title')}</PageTitle>
-          </Grid>
-
-          <Grid item xs={12} sm="auto" order={{ xs: 2, sm: 1 }}>
-            <SearchInput onChange={onSearchChange} defaultValue={flowName} />
-          </Grid>
-
+    <>
+      <Box sx={{ py: 3 }}>
+        <Container>
           <Grid
             container
-            item
-            xs="auto"
-            sm="auto"
-            alignItems="center"
-            order={{ xs: 1, sm: 2 }}
+            sx={{ mb: [0, 3] }}
+            columnSpacing={1.5}
+            rowSpacing={3}
           >
-            <Can I="create" a="Flow" passThrough>
-              {(allowed) => (
-                <ConditionalIconButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  component={Link}
-                  fullWidth
-                  disabled={!allowed}
-                  icon={<AddIcon />}
-                  to={URLS.CREATE_FLOW}
-                  data-test="create-flow-button"
-                >
-                  {formatMessage('flows.create')}
-                </ConditionalIconButton>
-              )}
-            </Can>
-          </Grid>
-        </Grid>
+            <Grid container item xs sm alignItems="center" order={{ xs: 0 }}>
+              <PageTitle>{formatMessage('flows.title')}</PageTitle>
+            </Grid>
 
-        <Divider sx={{ mt: [2, 0], mb: 2 }} />
-        {(isLoading || navigateToLastPage) && (
-          <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
-        )}
-        {!isLoading &&
-          flows?.map((flow) => (
-            <FlowRow
-              key={flow.id}
-              flow={flow}
-              onDuplicateFlow={onDuplicateFlow}
-              onDeleteFlow={fetchFlows}
-            />
-          ))}
-        {!isLoading && !navigateToLastPage && !hasFlows && (
-          <NoResultFound
-            text={formatMessage('flows.noFlows')}
-            {...(currentUserAbility.can('create', 'Flow') && {
-              to: URLS.CREATE_FLOW,
-            })}
-          />
-        )}
-        {!isLoading &&
-          !navigateToLastPage &&
-          pageInfo &&
-          pageInfo.totalPages > 1 && (
-            <Pagination
-              sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
-              page={pageInfo?.currentPage}
-              count={pageInfo?.totalPages}
-              renderItem={(item) => (
-                <PaginationItem
-                  component={Link}
-                  to={getPathWithSearchParams(item.page, flowName)}
-                  {...item}
-                />
-              )}
+            <Grid item xs={12} sm="auto" order={{ xs: 2, sm: 1 }}>
+              <SearchInput onChange={onSearchChange} defaultValue={flowName} />
+            </Grid>
+
+            <Grid
+              container
+              item
+              display="flex"
+              direction="row"
+              xs="auto"
+              sm="auto"
+              gap={1}
+              alignItems="center"
+              order={{ xs: 1, sm: 2 }}
+            >
+              <Can I="create" a="Flow" passThrough>
+                {(allowed) => (
+                  <ConditionalIconButton
+                    type="submit"
+                    variant="outlined"
+                    color="info"
+                    size="large"
+                    component={Link}
+                    disabled={!allowed}
+                    icon={<UploadIcon />}
+                    to={URLS.IMPORT_FLOW}
+                    data-test="import-flow-button"
+                  >
+                    {formatMessage('flows.import')}
+                  </ConditionalIconButton>
+                )}
+              </Can>
+
+              <Can I="create" a="Flow" passThrough>
+                {(allowed) => (
+                  <ConditionalIconButton
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    component={Link}
+                    disabled={!allowed}
+                    icon={<AddIcon />}
+                    to={URLS.CREATE_FLOW}
+                    data-test="create-flow-button"
+                  >
+                    {formatMessage('flows.create')}
+                  </ConditionalIconButton>
+                )}
+              </Can>
+            </Grid>
+          </Grid>
+
+          <Divider sx={{ mt: [2, 0], mb: 2 }} />
+
+          {(isLoading || navigateToLastPage) && (
+            <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
+          )}
+
+          {!isLoading &&
+            flows?.map((flow) => (
+              <FlowRow
+                key={flow.id}
+                flow={flow}
+                onDuplicateFlow={onDuplicateFlow}
+              />
+            ))}
+
+          {!isLoading && !navigateToLastPage && !hasFlows && (
+            <NoResultFound
+              text={formatMessage('flows.noFlows')}
+              {...(currentUserAbility.can('create', 'Flow') && {
+                to: URLS.CREATE_FLOW,
+              })}
             />
           )}
-      </Container>
-    </Box>
+
+          {!isLoading &&
+            !navigateToLastPage &&
+            pageInfo &&
+            pageInfo.totalPages > 1 && (
+              <Pagination
+                sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+                page={pageInfo?.currentPage}
+                count={pageInfo?.totalPages}
+                renderItem={(item) => (
+                  <PaginationItem
+                    component={Link}
+                    to={getPathWithSearchParams(item.page, flowName)}
+                    {...item}
+                  />
+                )}
+              />
+            )}
+        </Container>
+      </Box>
+
+      <Routes>
+        <Route path="/import" element={<ImportFlowDialog />} />
+      </Routes>
+    </>
   );
 }

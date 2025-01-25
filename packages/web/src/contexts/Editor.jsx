@@ -7,6 +7,7 @@ export const EditorContext = React.createContext({
 
 export const EditorProvider = (props) => {
   const { children, value } = props;
+
   return (
     <EditorContext.Provider value={value}>{children}</EditorContext.Provider>
   );
@@ -14,5 +15,7 @@ export const EditorProvider = (props) => {
 
 EditorProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  value: PropTypes.shape({ readOnly: PropTypes.bool.isRequired }).isRequired,
+  value: PropTypes.shape({
+    readOnly: PropTypes.bool.isRequired,
+  }).isRequired,
 };

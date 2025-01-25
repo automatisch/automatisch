@@ -8,40 +8,41 @@ const { getToken } = require('../../helpers/auth-api-helper');
 publicTest.describe('My Profile', () => {
   let testUser;
 
-  publicTest.beforeEach(
-    async ({ adminCreateUserPage, loginPage, page }) => {
-      let addUserResponse;
-      const apiRequest = await request.newContext();
+  publicTest.beforeEach(async ({ adminCreateUserPage, loginPage, page }) => {
+    let addUserResponse;
+    const apiRequest = await request.newContext();
 
-      adminCreateUserPage.seed(
-        Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER)
+    adminCreateUserPage.seed(
+      Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER)
+    );
+    testUser = adminCreateUserPage.generateUser();
+
+    await publicTest.step('create new user', async () => {
+      const tokenJsonResponse = await getToken(apiRequest);
+      addUserResponse = await addUser(
+        apiRequest,
+        tokenJsonResponse.data.token,
+        {
+          fullName: testUser.fullName,
+          email: testUser.email,
+        }
       );
-      testUser = adminCreateUserPage.generateUser();
+    });
 
-      await publicTest.step('create new user', async () => {
-        const tokenJsonResponse = await getToken(apiRequest);
-        addUserResponse = await addUser(
-          apiRequest,
-          tokenJsonResponse.data.token,
-          {
-            fullName: testUser.fullName,
-            email: testUser.email,
-          }
-        );
+    await publicTest.step('accept invitation', async () => {
+      let acceptToken = addUserResponse.data.acceptInvitationUrl.split('=')[1];
+      await acceptInvitation(apiRequest, {
+        token: acceptToken,
+        password: LoginPage.defaultPassword,
       });
+    });
 
-      await publicTest.step('accept invitation', async () => {
-        let acceptToken = addUserResponse.data.acceptInvitationUrl.split('=')[1];
-        await acceptInvitation(apiRequest, {token:acceptToken, password:LoginPage.defaultPassword});
-      });
-
-      await publicTest.step('login as new Admin', async () => {
-        await loginPage.login(testUser.email, LoginPage.defaultPassword);
-        await expect(loginPage.loginButton).not.toBeVisible();
-        await expect(page).toHaveURL('/flows');
-      });
-    }
-  );
+    await publicTest.step('login as new Admin', async () => {
+      await loginPage.login(testUser.email, LoginPage.defaultPassword);
+      await expect(loginPage.loginButton).not.toBeVisible();
+      await expect(page).toHaveURL('/flows');
+    });
+  });
 
   publicTest('user should be able to change own data', async ({ page }) => {
     const myProfilePage = new MyProfilePage(page);

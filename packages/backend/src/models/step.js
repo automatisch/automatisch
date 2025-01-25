@@ -1,5 +1,4 @@
 import { URL } from 'node:url';
-import get from 'lodash.get';
 import Base from './base.js';
 import App from './app.js';
 import Flow from './flow.js';
@@ -22,6 +21,7 @@ class Step extends Base {
       id: { type: 'string', format: 'uuid' },
       flowId: { type: 'string', format: 'uuid' },
       key: { type: ['string', 'null'] },
+      name: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       appKey: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
       connectionId: { type: ['string', 'null'], format: 'uuid' },
@@ -108,26 +108,15 @@ class Step extends Base {
 
     if (!triggerCommand) return null;
 
-    const { useSingletonWebhook, singletonWebhookRefValueParameter, type } =
-      triggerCommand;
-
-    const isWebhook = type === 'webhook';
+    const isWebhook = triggerCommand.type === 'webhook';
 
     if (!isWebhook) return null;
 
-    if (singletonWebhookRefValueParameter) {
-      const parameterValue = get(
-        this.parameters,
-        singletonWebhookRefValueParameter
-      );
-      return `/webhooks/connections/${this.connectionId}/${parameterValue}`;
-    }
-
-    if (useSingletonWebhook) {
-      return `/webhooks/connections/${this.connectionId}`;
-    }
-
     if (this.parameters.workSynchronously) {
+      return `/webhooks/flows/${this.flowId}/sync`;
+    }
+
+    if (triggerCommand.workSynchronously) {
       return `/webhooks/flows/${this.flowId}/sync`;
     }
 
@@ -314,7 +303,13 @@ class Step extends Base {
   }
 
   async updateFor(user, newStepData) {
-    const { appKey = this.appKey, connectionId, key, parameters } = newStepData;
+    const {
+      appKey = this.appKey,
+      name,
+      connectionId,
+      key,
+      parameters,
+    } = newStepData;
 
     if (connectionId && appKey) {
       await user.authorizedConnections
@@ -335,6 +330,7 @@ class Step extends Base {
 
     const updatedStep = await this.$query().patchAndFetch({
       key,
+      name,
       appKey,
       connectionId: connectionId,
       parameters: parameters,

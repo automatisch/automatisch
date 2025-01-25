@@ -9,6 +9,7 @@ export class DeleteRoleModal {
     this.modal = page.getByTestId('delete-role-modal');
     this.cancelButton = this.modal.getByTestId('confirmation-cancel-button');
     this.deleteButton = this.modal.getByTestId('confirmation-confirm-button');
+    this.deleteAlert = this.modal.getByTestId('confirmation-dialog-error-alert');
   }
 
   async close () {

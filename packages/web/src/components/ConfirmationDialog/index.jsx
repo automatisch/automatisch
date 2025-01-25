@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Alert from '@mui/material/Alert';
 
 function ConfirmationDialog(props) {
   const {
@@ -16,6 +17,7 @@ function ConfirmationDialog(props) {
     cancelButtonChildren,
     confirmButtonChildren,
     open = true,
+    errorMessage,
   } = props;
   const dataTest = props['data-test'];
   return (
@@ -44,6 +46,11 @@ function ConfirmationDialog(props) {
           </Button>
         )}
       </DialogActions>
+      {errorMessage && (
+        <Alert data-test="confirmation-dialog-error-alert" severity="error">
+          {errorMessage}
+        </Alert>
+      )}
     </Dialog>
   );
 }
@@ -57,6 +64,7 @@ ConfirmationDialog.propTypes = {
   confirmButtonChildren: PropTypes.node.isRequired,
   open: PropTypes.bool,
   'data-test': PropTypes.string,
+  errorMessage: PropTypes.string,
 };
 
 export default ConfirmationDialog;

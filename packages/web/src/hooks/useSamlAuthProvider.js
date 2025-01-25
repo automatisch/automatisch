@@ -4,7 +4,7 @@ import api from 'helpers/api';
 
 export default function useSamlAuthProvider({ samlAuthProviderId } = {}) {
   const query = useQuery({
-    queryKey: ['samlAuthProviders', samlAuthProviderId],
+    queryKey: ['admin', 'samlAuthProviders', samlAuthProviderId],
     queryFn: async ({ signal }) => {
       const { data } = await api.get(
         `/v1/admin/saml-auth-providers/${samlAuthProviderId}`,

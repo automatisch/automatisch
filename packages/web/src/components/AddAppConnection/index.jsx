@@ -14,6 +14,7 @@ import InputCreator from 'components/InputCreator';
 import * as URLS from 'config/urls';
 import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { generateExternalLink } from 'helpers/translationValues';
 import { Form } from './style';
 import useAppAuth from 'hooks/useAppAuth';
@@ -39,6 +40,7 @@ function AddAppConnection(props) {
     useShared: !!oauthClientId,
   });
   const queryClient = useQueryClient();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   React.useEffect(function relayProviderData() {
     if (window.opener) {
@@ -58,8 +60,14 @@ function AddAppConnection(props) {
       if (!authenticate) return;
 
       const asyncAuthenticate = async () => {
-        await authenticate();
-        navigate(URLS.APP_CONNECTIONS(key));
+        try {
+          await authenticate();
+          navigate(URLS.APP_CONNECTIONS(key));
+        } catch (error) {
+          enqueueSnackbar(error?.message || formatMessage('genericError'), {
+            variant: 'error',
+          });
+        }
       };
 
       asyncAuthenticate();

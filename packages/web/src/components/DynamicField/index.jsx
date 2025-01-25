@@ -4,19 +4,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import InputCreator from 'components/InputCreator';
-import { EditorContext } from 'contexts/Editor';
+
 import { FieldsPropType } from 'propTypes/propTypes';
+import DynamicFieldEntry from './DynamicFieldEntry';
+import { FieldEntryProvider } from 'contexts/FieldEntry';
+import useFieldEntryContext from 'hooks/useFieldEntryContext';
 
 function DynamicField(props) {
   const { label, description, fields, name, defaultValue, stepId } = props;
   const { control, setValue, getValues } = useFormContext();
   const fieldsValue = useWatch({ control, name });
-  const editorContext = React.useContext(EditorContext);
+  const fieldEntryContext = useFieldEntryContext();
+
   const createEmptyItem = React.useCallback(() => {
     return fields.reduce((previousValue, field) => {
       return {
@@ -26,6 +28,7 @@ function DynamicField(props) {
       };
     }, {});
   }, [fields]);
+
   const addItem = React.useCallback(() => {
     const values = getValues(name);
     if (!values) {
@@ -34,6 +37,7 @@ function DynamicField(props) {
       setValue(name, values.concat(createEmptyItem()));
     }
   }, [getValues, createEmptyItem]);
+
   const removeItem = React.useCallback(
     (index) => {
       if (fieldsValue.length === 1) return;
@@ -44,6 +48,7 @@ function DynamicField(props) {
     },
     [fieldsValue],
   );
+
   React.useEffect(
     function addInitialGroupWhenEmpty() {
       const fieldValues = getValues(name);
@@ -55,14 +60,17 @@ function DynamicField(props) {
     },
     [createEmptyItem, defaultValue],
   );
-  return (
-    <React.Fragment>
-      <Typography variant="subtitle2">{label}</Typography>
 
-      {fieldsValue?.map((field, index) => (
+  return (
+    <FieldEntryProvider value={fieldEntryContext}>
+      <Typography variant="subtitle2">{label}</Typography>
+      {fieldsValue?.map?.((field, index) => (
         <Stack direction="row" spacing={2} key={`fieldGroup-${field.__id}`}>
           <Stack
-            direction={{ xs: 'column', sm: 'row' }}
+            direction={{
+              xs: 'column',
+              sm: fields.length > 2 ? 'column' : 'row',
+            }}
             spacing={{ xs: 2 }}
             sx={{
               display: 'flex',
@@ -70,26 +78,12 @@ function DynamicField(props) {
               minWidth: 0,
             }}
           >
-            {fields.map((fieldSchema, fieldSchemaIndex) => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flex: '1 0 0px',
-                  minWidth: 0,
-                }}
-                key={`field-${field.__id}-${fieldSchemaIndex}`}
-              >
-                <InputCreator
-                  schema={fieldSchema}
-                  namePrefix={`${name}.${index}`}
-                  disabled={editorContext.readOnly}
-                  shouldUnregister={false}
-                  stepId={stepId}
-                />
-              </Box>
-            ))}
+            <DynamicFieldEntry
+              fields={fields}
+              namePrefix={`${name}.${index}`}
+              stepId={stepId}
+            />
           </Stack>
-
           <IconButton
             size="small"
             edge="start"
@@ -100,10 +94,8 @@ function DynamicField(props) {
           </IconButton>
         </Stack>
       ))}
-
       <Stack direction="row" spacing={2}>
         <Stack spacing={{ xs: 2 }} sx={{ display: 'flex', flex: 1 }} />
-
         <IconButton
           size="small"
           edge="start"
@@ -113,9 +105,8 @@ function DynamicField(props) {
           <AddIcon />
         </IconButton>
       </Stack>
-
       <Typography variant="caption">{description}</Typography>
-    </React.Fragment>
+    </FieldEntryProvider>
   );
 }
 

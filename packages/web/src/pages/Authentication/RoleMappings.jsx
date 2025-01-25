@@ -3,8 +3,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
-import { useMemo } from 'react';
+import Alert from '@mui/material/Alert';
+import { useMemo, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -63,11 +63,11 @@ const getValidationSchema = (formatMessage) =>
 
 function RoleMappings({ provider, providerLoading }) {
   const formatMessage = useFormatMessage();
-  const enqueueSnackbar = useEnqueueSnackbar();
 
   const {
     mutateAsync: updateRoleMappings,
     isPending: isUpdateRoleMappingsPending,
+    isSuccess: isUpdateRoleMappingsSuccess,
   } = useAdminUpdateSamlAuthProviderRoleMappings(provider?.id);
 
   const { data, isLoading: isAdminSamlAuthProviderRoleMappingsLoading } =
@@ -75,9 +75,12 @@ function RoleMappings({ provider, providerLoading }) {
       adminSamlAuthProviderId: provider?.id,
     });
   const roleMappings = data?.data;
+  const fieldNames = ['remoteRoleName', 'roleId'];
+  const [fieldErrors, setFieldErrors] = useState(null);
 
   const handleRoleMappingsUpdate = async (values) => {
     try {
+      setFieldErrors(null);
       if (provider?.id) {
         await updateRoleMappings(
           values.roleMappings.map(({ roleId, remoteRoleName }) => ({
@@ -85,29 +88,20 @@ function RoleMappings({ provider, providerLoading }) {
             remoteRoleName,
           })),
         );
-
-        enqueueSnackbar(formatMessage('roleMappingsForm.successfullySaved'), {
-          variant: 'success',
-          SnackbarProps: {
-            'data-test': 'snackbar-update-role-mappings-success',
-          },
-        });
       }
     } catch (error) {
-      const errors = Object.values(
-        error.response.data.errors || [['Failed while saving!']],
-      );
-
-      for (const [error] of errors) {
-        enqueueSnackbar(error, {
-          variant: 'error',
-          SnackbarProps: {
-            'data-test': 'snackbar-update-role-mappings-error',
-          },
+      const errors = error?.response?.data?.errors;
+      if (errors) {
+        Object.entries(errors).forEach(([fieldName, fieldErrors]) => {
+          if (fieldNames.includes(fieldName) && Array.isArray(fieldErrors)) {
+            setFieldErrors((prevErrors) => [
+              ...(prevErrors || []),
+              `${fieldName}: ${fieldErrors.join(', ')}`,
+            ]);
+          }
         });
       }
-
-      throw new Error('Failed while saving!');
+      throw errors || error;
     }
   };
 
@@ -117,6 +111,25 @@ function RoleMappings({ provider, providerLoading }) {
     }),
     [roleMappings],
   );
+
+  const renderErrors = (errors) => {
+    const generalError = errors?.root?.general?.message;
+    if (fieldErrors) {
+      return fieldErrors.map((error, index) => (
+        <Alert key={index} data-test="error-alert" severity="error">
+          {error}
+        </Alert>
+      ));
+    }
+
+    if (generalError) {
+      return (
+        <Alert data-test="error-alert" severity="error">
+          {generalError}
+        </Alert>
+      );
+    }
+  };
 
   if (
     providerLoading ||
@@ -140,27 +153,35 @@ function RoleMappings({ provider, providerLoading }) {
         reValidateMode="onChange"
         noValidate
         automaticValidation={false}
-      >
-        <Stack direction="column" spacing={2}>
-          <RoleMappingsFieldArray />
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ boxShadow: 2 }}
-            loading={isUpdateRoleMappingsPending}
-          >
-            {formatMessage('roleMappingsForm.save')}
-          </LoadingButton>
-        </Stack>
-      </Form>
+        render={({ formState: { errors, isDirty } }) => (
+          <Stack direction="column" spacing={2}>
+            <RoleMappingsFieldArray />
+            {renderErrors(errors)}
+            {isUpdateRoleMappingsSuccess && !isDirty && (
+              <Alert data-test="success-alert" severity="success">
+                {formatMessage('roleMappingsForm.successfullySaved')}
+              </Alert>
+            )}
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ boxShadow: 2 }}
+              loading={isUpdateRoleMappingsPending}
+              disabled={!isDirty}
+            >
+              {formatMessage('roleMappingsForm.save')}
+            </LoadingButton>
+          </Stack>
+        )}
+      />
     </>
   );
 }
 
 RoleMappings.propTypes = {
   provider: PropTypes.shape({
-    id: PropTypes.oneOf([PropTypes.number, PropTypes.string]).isRequired,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   }),
   providerLoading: PropTypes.bool,
 };
