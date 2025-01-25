@@ -3,7 +3,13 @@ const { test, expect } = require('../../fixtures/index');
 const {
   AddMattermostConnectionModal,
 } = require('../../fixtures/apps/mattermost/add-mattermost-connection-modal');
-const { createFlow, updateFlowName, getFlow, updateFlowStep, testStep } = require('../../helpers/flow-api-helper');
+const {
+  createFlow,
+  updateFlowName,
+  getFlow,
+  updateFlowStep,
+  testStep,
+} = require('../../helpers/flow-api-helper');
 const { getToken } = require('../../helpers/auth-api-helper');
 
 test.describe('Pop-up message on connections', () => {
@@ -17,7 +23,6 @@ test.describe('Pop-up message on connections', () => {
     await updateFlowName(apiRequest, token, flowId);
     flow = await getFlow(apiRequest, token, flowId);
     const flowSteps = flow.data.steps;
-
     const triggerStepId = flowSteps.find((step) => step.type === 'trigger').id;
     const actionStepId = flowSteps.find((step) => step.type === 'action').id;
 

@@ -281,7 +281,6 @@ test.describe('Role management page', () => {
       const modal = await adminRolesPage.clickDeleteRole(row);
       await modal.deleteButton.click();
       await expect(modal.deleteAlert).toHaveCount(1);
-      await adminRolesPage.closeSnackbar();
     });
   });
 });

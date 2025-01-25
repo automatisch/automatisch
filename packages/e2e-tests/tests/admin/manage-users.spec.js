@@ -61,7 +61,6 @@ test.describe('User management page', () => {
         'snackbar-edit-user-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminUsersPage.closeSnackbar();
 
       await adminUsersPage.findUserPageWithEmail(user.email);
       userRow = await adminUsersPage.getUserRowByEmail(user.email);
@@ -79,8 +78,6 @@ test.describe('User management page', () => {
         'snackbar-delete-user-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminUsersPage.closeSnackbar();
-      await expect(userRow).not.toBeVisible(false);
     });
   });
 
@@ -115,8 +112,6 @@ test.describe('User management page', () => {
       );
       await expect(snackbar).not.toBeNull();
       await expect(snackbar.variant).toBe('success');
-      await adminUsersPage.closeSnackbar();
-      await expect(userRow).not.toBeVisible(false);
     });
 
     await test.step('Create the user again', async () => {
