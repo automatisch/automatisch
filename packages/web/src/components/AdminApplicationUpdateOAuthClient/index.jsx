@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { AppPropType } from 'propTypes/propTypes';
 import useFormatMessage from 'hooks/useFormatMessage';
-import AdminApplicationOAuthClientDialog from 'components/AdminApplicationOAuthClientDialog';
+import AdminApplicationOAuthClientUpdateDialog from 'components/AdminApplicationOAuthClientUpdateDialog';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useAdminOAuthClient from 'hooks/useAdminOAuthClient.ee';
 import useAdminUpdateOAuthClient from 'hooks/useAdminUpdateOAuthClient.ee';
 import useAppAuth from 'hooks/useAppAuth';
@@ -13,40 +14,68 @@ function AdminApplicationUpdateOAuthClient(props) {
   const { application, onClose } = props;
   const formatMessage = useFormatMessage();
   const { clientId } = useParams();
+  const enqueueSnackbar = useEnqueueSnackbar();
+  const [defaultValues, setDefaultValues] = useState({
+    name: '',
+    active: false,
+  });
 
   const { data: adminOAuthClient, isLoading: isAdminOAuthClientLoading } =
     useAdminOAuthClient(application.key, clientId);
 
   const { data: auth } = useAppAuth(application.key);
 
-  const {
-    mutateAsync: updateOAuthClient,
-    isPending: isUpdateOAuthClientPending,
-    error: updateOAuthClientError,
-  } = useAdminUpdateOAuthClient(application.key, clientId);
+  const { mutateAsync: updateOAuthClient, error: updateOAuthClientError } =
+    useAdminUpdateOAuthClient(application.key, clientId);
+  const [basicDataUpdatePending, setBasicDataUpdatePending] = useState(false);
+  const [authDefaultsUpdatePending, setAuthDefaultsUpdatePending] =
+    useState(false);
 
-  const authFields = auth?.data?.fields?.map((field) => ({
-    ...field,
-    required: false,
-  }));
+  const authFields = auth?.data?.fields;
 
-  const submitHandler = async (values) => {
+  const handleUpdateAuthDefaults = async (values) => {
     if (!adminOAuthClient) {
       return;
     }
-
     const { name, active, ...formattedAuthDefaults } = values;
 
+    setAuthDefaultsUpdatePending(true);
+    await updateOAuthClient({
+      formattedAuthDefaults,
+    }).finally(() => {
+      setAuthDefaultsUpdatePending(false);
+    });
+    setDefaultValues((prev) => ({
+      name: prev.name,
+      active: prev.active,
+      ...formattedAuthDefaults,
+    }));
+
+    enqueueSnackbar(formatMessage('updateOAuthClient.success'), {
+      variant: 'success',
+    });
+  };
+
+  const handleUpdateBasicData = async (values) => {
+    if (!adminOAuthClient) {
+      return;
+    }
+    const { name, active } = values;
+
+    setBasicDataUpdatePending(true);
     await updateOAuthClient({
       name,
       active,
-      formattedAuthDefaults,
+    }).finally(() => {
+      setBasicDataUpdatePending(false);
     });
 
-    onClose();
+    enqueueSnackbar(formatMessage('updateOAuthClient.success'), {
+      variant: 'success',
+    });
   };
 
-  const getAuthFieldsDefaultValues = useCallback(() => {
+  const authFieldsDefaultValue = useMemo(() => {
     if (!authFields) {
       return {};
     }
@@ -62,24 +91,25 @@ function AdminApplicationUpdateOAuthClient(props) {
     return defaultValues;
   }, [auth?.fields]);
 
-  const defaultValues = useMemo(
-    () => ({
+  useEffect(() => {
+    setDefaultValues({
       name: adminOAuthClient?.data?.name || '',
       active: adminOAuthClient?.data?.active || false,
-      ...getAuthFieldsDefaultValues(),
-    }),
-    [adminOAuthClient, getAuthFieldsDefaultValues],
-  );
+      ...authFieldsDefaultValue,
+    });
+  }, [adminOAuthClient, authFieldsDefaultValue]);
 
   return (
-    <AdminApplicationOAuthClientDialog
+    <AdminApplicationOAuthClientUpdateDialog
       onClose={onClose}
       error={updateOAuthClientError}
       title={formatMessage('updateOAuthClient.title')}
       loading={isAdminOAuthClientLoading}
-      submitHandler={submitHandler}
+      submitAuthDefault={handleUpdateAuthDefaults}
+      submitBasicData={handleUpdateBasicData}
+      submittingBasicData={basicDataUpdatePending}
+      submittingAuthDefaults={authDefaultsUpdatePending}
       authFields={authFields}
-      submitting={isUpdateOAuthClientPending}
       defaultValues={defaultValues}
       disabled={!adminOAuthClient}
     />
