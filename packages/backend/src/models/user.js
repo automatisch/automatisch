@@ -20,6 +20,7 @@ import Permission from './permission.js';
 import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
+import Folder from './folder.js';
 import UsageData from './usage-data.ee.js';
 import Billing from '../helpers/billing/index.ee.js';
 import NotAuthorizedError from '../errors/not-authorized.js';
@@ -176,6 +177,14 @@ class User extends Base {
       join: {
         from: 'identities.user_id',
         to: 'users.id',
+      },
+    },
+    folders: {
+      relation: Base.HasManyRelation,
+      modelClass: Folder,
+      join: {
+        from: 'users.id',
+        to: 'folders.user_id',
       },
     },
   });

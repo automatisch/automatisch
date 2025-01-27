@@ -19,6 +19,7 @@ import executionStepSerializer from './execution-step.js';
 import subscriptionSerializer from './subscription.ee.js';
 import adminUserSerializer from './admin/user.js';
 import configSerializer from './config.js';
+import folderSerializer from './folder.js';
 
 const serializers = {
   AdminUser: adminUserSerializer,
@@ -42,6 +43,7 @@ const serializers = {
   ExecutionStep: executionStepSerializer,
   Subscription: subscriptionSerializer,
   Config: configSerializer,
+  Folder: folderSerializer,
 };
 
 export default serializers;
