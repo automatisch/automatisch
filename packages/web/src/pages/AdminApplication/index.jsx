@@ -31,18 +31,22 @@ export default function AdminApplication() {
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
+
   const connectionsPathMatch = useMatch({
     path: URLS.ADMIN_APP_CONNECTIONS_PATTERN,
     end: false,
   });
+
   const settingsPathMatch = useMatch({
     path: URLS.ADMIN_APP_SETTINGS_PATTERN,
     end: false,
   });
+
   const oauthClientsPathMatch = useMatch({
     path: URLS.ADMIN_APP_AUTH_CLIENTS_PATTERN,
     end: false,
   });
+
   const { appKey } = useParams();
 
   const { data, loading } = useApp(appKey);
@@ -86,13 +90,16 @@ export default function AdminApplication() {
                     value={URLS.ADMIN_APP_SETTINGS_PATTERN}
                     component={Link}
                   />
-                  <Tab
-                    data-test="oauth-clients-tab"
-                    label={formatMessage('adminApps.oauthClients')}
-                    to={URLS.ADMIN_APP_AUTH_CLIENTS(appKey)}
-                    value={URLS.ADMIN_APP_AUTH_CLIENTS_PATTERN}
-                    component={Link}
-                  />
+
+                  {app.supportsOauthClients && (
+                    <Tab
+                      data-test="oauth-clients-tab"
+                      label={formatMessage('adminApps.oauthClients')}
+                      to={URLS.ADMIN_APP_AUTH_CLIENTS(appKey)}
+                      value={URLS.ADMIN_APP_AUTH_CLIENTS_PATTERN}
+                      component={Link}
+                    />
+                  )}
                 </Tabs>
               </Box>
 
@@ -101,10 +108,14 @@ export default function AdminApplication() {
                   path={`/settings/*`}
                   element={<AdminApplicationSettings appKey={appKey} />}
                 />
-                <Route
-                  path={`/oauth-clients/*`}
-                  element={<AdminApplicationOAuthClients appKey={appKey} />}
-                />
+
+                {app.supportsOauthClients && (
+                  <Route
+                    path={`/oauth-clients/*`}
+                    element={<AdminApplicationOAuthClients appKey={appKey} />}
+                  />
+                )}
+
                 <Route
                   path="/"
                   element={
@@ -116,27 +127,31 @@ export default function AdminApplication() {
           </Grid>
         </Grid>
       </Container>
-      <Routes>
-        <Route
-          path="/oauth-clients/create"
-          element={
-            <AdminApplicationCreateOAuthClient
-              application={app}
-              onClose={goToAuthClientsPage}
-              appKey={appKey}
-            />
-          }
-        />
-        <Route
-          path="/oauth-clients/:clientId"
-          element={
-            <AdminApplicationUpdateOAuthClient
-              application={app}
-              onClose={goToAuthClientsPage}
-            />
-          }
-        />
-      </Routes>
+
+      {app.supportsOauthClients && (
+        <Routes>
+          <Route
+            path="/oauth-clients/create"
+            element={
+              <AdminApplicationCreateOAuthClient
+                application={app}
+                onClose={goToAuthClientsPage}
+                appKey={appKey}
+              />
+            }
+          />
+
+          <Route
+            path="/oauth-clients/:clientId"
+            element={
+              <AdminApplicationUpdateOAuthClient
+                application={app}
+                onClose={goToAuthClientsPage}
+              />
+            }
+          />
+        </Routes>
+      )}
     </>
   );
 }
