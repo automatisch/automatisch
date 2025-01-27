@@ -14,6 +14,7 @@ import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
+import Folder from './folder.js';
 import User from './user.js';
 import deleteUserQueue from '../queues/delete-user.ee.js';
 import emailQueue from '../queues/email.js';
@@ -151,6 +152,14 @@ describe('User model', () => {
           join: {
             from: 'identities.user_id',
             to: 'users.id',
+          },
+        },
+        folders: {
+          relation: Base.HasManyRelation,
+          modelClass: Folder,
+          join: {
+            from: 'users.id',
+            to: 'folders.user_id',
           },
         },
       };

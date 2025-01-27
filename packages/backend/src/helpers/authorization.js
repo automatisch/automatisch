@@ -133,6 +133,10 @@ const authorizationList = {
     action: 'create',
     subject: 'Connection',
   },
+  'POST /api/v1/folders/': {
+    action: 'create',
+    subject: 'Flow',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
