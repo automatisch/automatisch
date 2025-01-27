@@ -53,7 +53,7 @@ function ControlledAutocomplete(props) {
     <Controller
       rules={{ required }}
       name={name}
-      defaultValue={defaultValue || ''}
+      defaultValue={defaultValue}
       control={control}
       shouldUnregister={shouldUnregister}
       render={({
