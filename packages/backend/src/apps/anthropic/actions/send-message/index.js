@@ -6,7 +6,7 @@ const castFloatOrUndefined = (value) => {
 
 export default defineAction({
   name: 'Send message',
-  key: 'send Message',
+  key: 'sendMessage',
   description:
     'Sends a structured list of input messages with text content, and the model will generate the next message in the conversation.',
   arguments: [
