@@ -1,4 +1,5 @@
 import defineAction from '../../../../helpers/define-action.js';
+import isPlainObject from 'lodash/isPlainObject.js';
 
 export default defineAction({
   name: 'Create waiter',
@@ -97,6 +98,16 @@ export default defineAction({
       required: false,
       variables: true,
     },
+    {
+      label: 'Properties',
+      key: 'properties',
+      type: 'string',
+      required: false,
+      variables: false,
+      valueType: 'parse',
+      description: 'JSON for the additional properties.',
+      value: '{}',
+    },
   ],
   async run($) {
     const {
@@ -107,6 +118,7 @@ export default defineAction({
       appointment,
       appointmentTime,
       servicePhoneToCall,
+      properties = {},
     } = $.step.parameters;
 
     const body = {
@@ -119,12 +131,19 @@ export default defineAction({
           source,
           appointment,
           servicePhoneToCall,
+          properties,
         },
       },
     };
 
     if (appointment) {
       body.data.attributes.appointmentTime = appointmentTime;
+    }
+
+    if (!isPlainObject(properties)) {
+      throw new Error(
+        `The "properties" field must have a valid JSON. The current value: ${properties}`
+      );
     }
 
     const { data } = await $.http.post('/v2/waiters', body);
