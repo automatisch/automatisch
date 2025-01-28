@@ -137,6 +137,10 @@ const authorizationList = {
     action: 'create',
     subject: 'Flow',
   },
+  'PATCH /api/v1/folders/:folderId': {
+    action: 'create',
+    subject: 'Flow',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
