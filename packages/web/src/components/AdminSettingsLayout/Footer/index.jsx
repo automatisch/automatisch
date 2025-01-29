@@ -11,7 +11,7 @@ const Footer = () => {
 
   return (
     typeof version?.version === 'string' && (
-      <Box mt="auto">
+      <Box mt="auto" position="sticky" bottom={0}>
         <Box bgcolor="common.white" mt={4}>
           <Divider />
           <Typography
