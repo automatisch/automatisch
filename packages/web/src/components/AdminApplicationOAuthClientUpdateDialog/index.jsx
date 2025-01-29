@@ -28,7 +28,7 @@ function AdminApplicationOAuthClientUpdateDialog(props) {
     authFields,
     defaultValues,
     disabled = false,
-    submitAuthDefault,
+    submitAuthDefaults,
     submitBasicData,
     submittingBasicData,
     submittingAuthDefaults,
@@ -98,7 +98,7 @@ function AdminApplicationOAuthClientUpdateDialog(props) {
                   <Divider />
                   <Form
                     data-test="auth-client-form-update-auth-defaults"
-                    onSubmit={submitAuthDefault}
+                    onSubmit={submitAuthDefaults}
                     defaultValues={formattedAuthDefaults}
                     render={({ formState: { isDirty } }) => (
                       <>
@@ -136,7 +136,7 @@ AdminApplicationOAuthClientUpdateDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
-  submitAuthDefault: PropTypes.func.isRequired,
+  submitAuthDefaults: PropTypes.func.isRequired,
   submitBasicData: PropTypes.func.isRequired,
   authFields: PropTypes.arrayOf(FieldPropType),
   submittingBasicData: PropTypes.bool.isRequired,
