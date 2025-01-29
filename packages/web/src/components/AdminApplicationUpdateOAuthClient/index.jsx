@@ -105,7 +105,7 @@ function AdminApplicationUpdateOAuthClient(props) {
       error={updateOAuthClientError}
       title={formatMessage('updateOAuthClient.title')}
       loading={isAdminOAuthClientLoading}
-      submitAuthDefault={handleUpdateAuthDefaults}
+      submitAuthDefaults={handleUpdateAuthDefaults}
       submitBasicData={handleUpdateBasicData}
       submittingBasicData={basicDataUpdatePending}
       submittingAuthDefaults={authDefaultsUpdatePending}
