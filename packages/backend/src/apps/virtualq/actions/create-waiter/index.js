@@ -130,7 +130,7 @@ export default defineAction({
           channel,
           source,
           appointment,
-          servicePhoneToCall,
+          service_phone_to_call: servicePhoneToCall,
           properties,
         },
       },
