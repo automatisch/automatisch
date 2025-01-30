@@ -31,8 +31,6 @@ export const processFlow = async (options) => {
     const shouldNotConsiderAsError = shouldEarlyExit || shouldNotProcess;
 
     if (!shouldNotConsiderAsError) {
-      logger.error(error);
-
       if (error instanceof HttpError) {
         $.triggerOutput.error = error.details;
       } else {
@@ -42,6 +40,8 @@ export const processFlow = async (options) => {
           $.triggerOutput.error = { error: error.message };
         }
       }
+
+      logger.error(error);
     }
   }
 
