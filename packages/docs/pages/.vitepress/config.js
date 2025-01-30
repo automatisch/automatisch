@@ -60,6 +60,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Brave Search',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/brave-search/actions' },
+            { text: 'Connection', link: '/apps/brave-search/connection' },
+          ],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,
