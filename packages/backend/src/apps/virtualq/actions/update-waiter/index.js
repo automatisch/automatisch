@@ -50,7 +50,7 @@ export default defineAction({
       description: 'Used to find caller if 0 is used for waiter field',
     },
     {
-      label: 'EWT',
+      label: 'Estimated waiting time',
       key: 'serviceWaiterEwt',
       type: 'string',
       description: 'EWT as calculated by the service',
