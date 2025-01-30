@@ -1010,7 +1010,7 @@ describe('User model', () => {
 
       await user.startTrialPeriod();
 
-      vi.setSystemTime(DateTime.now().plus({ month: 1 }));
+      vi.setSystemTime(DateTime.now().plus({ month: 1, day: 1 }));
 
       const refetchedUser = await user.$query();
 
