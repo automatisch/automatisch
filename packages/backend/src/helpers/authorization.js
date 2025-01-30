@@ -145,6 +145,10 @@ const authorizationList = {
     action: 'create',
     subject: 'Flow',
   },
+  'GET /api/v1/folders/': {
+    action: 'read',
+    subject: 'Flow',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
