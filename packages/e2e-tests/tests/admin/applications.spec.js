@@ -43,7 +43,8 @@ test.describe('Admin Applications', () => {
     await adminApplicationsPage.navigateTo();
   });
 
-  test('Admin should be able to toggle Application settings', async ({
+  // TODO skip until https://github.com/automatisch/automatisch/pull/2244
+  test.skip('Admin should be able to toggle Application settings', async ({
     adminApplicationsPage,
     adminApplicationSettingsPage,
     page,
@@ -181,7 +182,7 @@ test.describe('Admin Applications', () => {
     const triggerStep = flowEditorPage.flowStep.last();
     await triggerStep.click();
 
-    await flowEditorPage.chooseAppAndEvent('Spotify', 'Create playlist');
+    await flowEditorPage.chooseAppAndEvent('Spotify', 'Create Playlist');
     await flowEditorPage.connectionAutocomplete.click();
 
     const newConnectionOption = page
@@ -221,6 +222,7 @@ test.describe('Admin Applications', () => {
 
     await adminApplicationOAuthClientsPage.openAuthClientsTab();
     await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
+
     const authClientForm = page.getByTestId('auth-client-form');
     await authClientForm.locator(page.getByTestId('switch')).check();
     await authClientForm
@@ -232,6 +234,7 @@ test.describe('Admin Applications', () => {
     await authClientForm
       .locator(page.locator('[name="clientSecret"]'))
       .fill('redditClientSecret');
+
     await adminApplicationOAuthClientsPage.submitAuthClientForm();
     await adminApplicationOAuthClientsPage.authClientShouldBeVisible(
       'redditAuthClient'

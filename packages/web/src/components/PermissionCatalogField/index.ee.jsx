@@ -32,7 +32,7 @@ const PermissionCatalogField = ({
     return <PermissionCatalogFieldLoader />;
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer data-test="permissions-catalog" component={Paper}>
       <Table>
         <TableHead>
           <TableRow>

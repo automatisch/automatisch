@@ -22,17 +22,14 @@ test.describe('Role management page', () => {
       await adminRolesPage.navigateTo();
       await adminRolesPage.createRoleButton.click();
       await adminCreateRolePage.isMounted();
+      await adminCreateRolePage.waitForPermissionsCatalogToVisible();
       await adminCreateRolePage.nameInput.fill('Create Edit Test');
       await adminCreateRolePage.descriptionInput.fill('Test description');
       await adminCreateRolePage.createButton.click();
-      await adminCreateRolePage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminCreateRolePage.getSnackbarData(
         'snackbar-create-role-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminCreateRolePage.closeSnackbar();
     });
 
     let roleRow =
@@ -55,14 +52,10 @@ test.describe('Role management page', () => {
       await adminEditRolePage.nameInput.fill('Create Update Test');
       await adminEditRolePage.descriptionInput.fill('Update test description');
       await adminEditRolePage.updateButton.click();
-      await adminEditRolePage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminEditRolePage.getSnackbarData(
         'snackbar-edit-role-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminEditRolePage.closeSnackbar();
     });
 
     roleRow =
@@ -87,14 +80,10 @@ test.describe('Role management page', () => {
         state: 'attached',
       });
       await deleteModal.deleteButton.click();
-      await adminRolesPage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminRolesPage.getSnackbarData(
         'snackbar-delete-role-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminRolesPage.closeSnackbar();
       await deleteModal.modal.waitFor({
         state: 'detached',
       });
@@ -169,16 +158,13 @@ test.describe('Role management page', () => {
     await test.step('Create a new role', async () => {
       await adminRolesPage.createRoleButton.click();
       await adminCreateRolePage.isMounted();
+      await adminCreateRolePage.waitForPermissionsCatalogToVisible();
       await adminCreateRolePage.nameInput.fill('Delete Role');
       await adminCreateRolePage.createButton.click();
-      await adminCreateRolePage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminCreateRolePage.getSnackbarData(
         'snackbar-create-role-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminCreateRolePage.closeSnackbar();
     });
 
     await test.step('Create a new user with the "Delete Role" role', async () => {
@@ -222,14 +208,10 @@ test.describe('Role management page', () => {
         .getByRole('option', { name: 'Admin' })
         .click();
       await adminEditUserPage.updateButton.click();
-      await adminEditUserPage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminEditUserPage.getSnackbarData(
         'snackbar-edit-user-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminEditUserPage.closeSnackbar();
     });
     await test.step('Delete the original role', async () => {
       await adminRolesPage.navigateTo();
@@ -237,14 +219,10 @@ test.describe('Role management page', () => {
       const modal = await adminRolesPage.clickDeleteRole(row);
       await expect(modal.modal).toBeVisible();
       await modal.deleteButton.click();
-      await adminRolesPage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminRolesPage.getSnackbarData(
         'snackbar-delete-role-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminRolesPage.closeSnackbar();
     });
   });
 
@@ -258,16 +236,13 @@ test.describe('Role management page', () => {
     await test.step('Create a new role', async () => {
       await adminRolesPage.createRoleButton.click();
       await adminCreateRolePage.isMounted();
+      await adminCreateRolePage.waitForPermissionsCatalogToVisible();
       await adminCreateRolePage.nameInput.fill('Cannot Delete Role');
       await adminCreateRolePage.createButton.click();
-      await adminCreateRolePage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminCreateRolePage.getSnackbarData(
         'snackbar-create-role-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminCreateRolePage.closeSnackbar();
     });
     await test.step('Create a new user with this role', async () => {
       await adminUsersPage.navigateTo();
@@ -287,6 +262,7 @@ test.describe('Role management page', () => {
       });
       await adminCreateUserPage.expectCreateUserSuccessAlertToBeVisible();
     });
+
     await test.step('Delete this user', async () => {
       await adminUsersPage.navigateTo();
       const row = await adminUsersPage.findUserPageWithEmail(
@@ -294,14 +270,10 @@ test.describe('Role management page', () => {
       );
       const modal = await adminUsersPage.clickDeleteUser(row);
       await modal.deleteButton.click();
-      await adminUsersPage.snackbar.waitFor({
-        state: 'attached',
-      });
       const snackbar = await adminUsersPage.getSnackbarData(
         'snackbar-delete-user-success'
       );
       await expect(snackbar.variant).toBe('success');
-      await adminUsersPage.closeSnackbar();
     });
     await test.step('Try deleting this role', async () => {
       await adminRolesPage.navigateTo();
@@ -309,7 +281,6 @@ test.describe('Role management page', () => {
       const modal = await adminRolesPage.clickDeleteRole(row);
       await modal.deleteButton.click();
       await expect(modal.deleteAlert).toHaveCount(1);
-      await adminRolesPage.closeSnackbar();
     });
   });
 });
@@ -327,16 +298,13 @@ test('Accessibility of role management page', async ({
     await adminRolesPage.navigateTo();
     await adminRolesPage.createRoleButton.click();
     await adminCreateRolePage.isMounted();
+    await adminCreateRolePage.waitForPermissionsCatalogToVisible();
     await adminCreateRolePage.nameInput.fill('Basic Test');
     await adminCreateRolePage.createButton.click();
-    await adminCreateRolePage.snackbar.waitFor({
-      state: 'attached',
-    });
     const snackbar = await adminCreateRolePage.getSnackbarData(
       'snackbar-create-role-success'
     );
     await expect(snackbar.variant).toBe('success');
-    await adminCreateRolePage.closeSnackbar();
   });
 
   await test.step('Create a new user with the basic role', async () => {
@@ -358,9 +326,7 @@ test('Accessibility of role management page', async ({
 
   await test.step('Logout and login to the basic role user', async () => {
     const acceptInvitationLink = await adminCreateUserPage.acceptInvitationLink;
-    console.log(acceptInvitationLink);
     const acceptInvitationUrl = await acceptInvitationLink.textContent();
-    console.log(acceptInvitationUrl);
     const acceptInvitatonToken = acceptInvitationUrl.split('?token=')[1];
 
     await page.getByTestId('profile-menu-button').click();
@@ -416,10 +382,10 @@ test('Accessibility of role management page', async ({
     await adminEditUserPage.roleInput.click();
     await adminEditUserPage.page.getByRole('option', { name: 'Admin' }).click();
     await adminEditUserPage.updateButton.click();
-    await adminEditUserPage.snackbar.waitFor({
-      state: 'attached',
-    });
-    await adminEditUserPage.closeSnackbar();
+    const snackbar = await adminEditUserPage.getSnackbarData(
+      'snackbar-edit-user-success'
+    );
+    await expect(snackbar.variant).toBe('success');
   });
 
   await test.step('Delete the role', async () => {
@@ -431,14 +397,10 @@ test('Accessibility of role management page', async ({
       state: 'attached',
     });
     await deleteModal.deleteButton.click();
-    await adminRolesPage.snackbar.waitFor({
-      state: 'attached',
-    });
     const snackbar = await adminRolesPage.getSnackbarData(
       'snackbar-delete-role-success'
     );
     await expect(snackbar.variant).toBe('success');
-    await adminRolesPage.closeSnackbar();
     await deleteModal.modal.waitFor({
       state: 'detached',
     });

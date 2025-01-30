@@ -95,7 +95,6 @@ export class AdminUsersPage extends AuthenticatedPage {
         });
       }
       const rowLocator = await this.getUserRowByEmail(email);
-      console.log('rowLocator.count', email, await rowLocator.count());
       if ((await rowLocator.count()) === 1) {
         return rowLocator;
       }

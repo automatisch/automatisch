@@ -1,3 +1,5 @@
+import { knexSnakeCaseMappers } from 'objection';
+
 const fileExtension = 'js';
 
 const knexConfig = {
@@ -7,7 +9,7 @@ const knexConfig = {
     user: process.env.POSTGRES_USERNAME,
     port: process.env.POSTGRES_PORT,
     password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DATABASE
+    database: process.env.POSTGRES_DATABASE,
   },
   searchPath: ['public'],
   pool: { min: 0, max: 20 },

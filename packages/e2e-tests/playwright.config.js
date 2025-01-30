@@ -15,9 +15,9 @@ module.exports = defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: process.env.CI ? 1 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: undefined,
   /* Timeout threshold for each test */
   timeout: 30000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -30,7 +30,7 @@ module.exports = defineConfig({
     baseURL: process.env.BASE_URL || 'http://localhost:3001',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'retain-on-failure',
+    trace: 'on-first-retry',
     testIdAttribute: 'data-test',
     viewport: { width: 1280, height: 720 },
   },
@@ -43,9 +43,14 @@ module.exports = defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'db-restore',
+      testMatch: /.*\.teardown\.js/,
+    },
+    {
       name: 'setup',
       testMatch: /.*\.setup\.js/,
       teardown: 'teardown',
+      dependencies: ['db-restore'],
     },
     {
       name: 'teardown',

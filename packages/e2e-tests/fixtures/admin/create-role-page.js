@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test';
+
 const { AuthenticatedPage } = require('../authenticated-page');
 const { RoleConditionsModal } = require('./role-conditions-modal');
 
@@ -16,6 +18,7 @@ export class AdminCreateRolePage extends AuthenticatedPage {
     this.executionRow = page.getByTestId('Execution-permission-row');
     this.flowRow = page.getByTestId('Flow-permission-row');
     this.pageTitle = page.getByTestId('create-role-title');
+    this.permissionsCatalog = page.getByTestId('permissions-catalog');
   }
 
   /**
@@ -103,5 +106,9 @@ export class AdminCreateRolePage extends AuthenticatedPage {
     } else {
       throw new Error(`${subject} does not have action ${action}`);
     }
+  }
+
+  async waitForPermissionsCatalogToVisible() {
+    await expect(this.permissionsCatalog).toBeVisible();
   }
 }
