@@ -95,7 +95,7 @@ function EditableTypography(props) {
 }
 
 EditableTypography.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.string,
   disabled: PropTypes.bool,
   iconColor: PropTypes.oneOf(['action', 'inherit']),
   onConfirm: PropTypes.func,
