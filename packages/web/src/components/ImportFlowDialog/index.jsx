@@ -134,7 +134,7 @@ function ImportFlowDialog(props) {
           severity="error"
           sx={{ whiteSpace: 'pre-line' }}
         >
-          {getUnifiedErrorMessage(error.response.data.errors) ||
+          {getUnifiedErrorMessage(error?.response?.data?.errors) ||
             formatMessage('genericError')}
         </Alert>
       )}

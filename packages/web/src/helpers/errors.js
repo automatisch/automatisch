@@ -29,6 +29,9 @@ export const getFieldErrorMessage = ({ fieldName, error }) => {
 };
 
 export const getUnifiedErrorMessage = (errors) => {
+  if (!errors) {
+    return null;
+  }
   return Object.values(errors)
     .flatMap((error) => error)
     .join('\n\r');
