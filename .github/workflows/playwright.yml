@@ -137,7 +137,7 @@ jobs:
           GITHUB_CLIENT_ID: 1c0417daf898adfbd99a
           GITHUB_CLIENT_SECRET: 3328fa814dd582ccd03dbe785cfd683fb8da92b3
         run: yarn test
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
