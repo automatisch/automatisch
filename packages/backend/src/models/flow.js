@@ -28,6 +28,7 @@ class Flow extends Base {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
       userId: { type: 'string', format: 'uuid' },
+      folderId: { type: ['string', 'null'], format: 'uuid' },
       remoteWebhookId: { type: 'string' },
       active: { type: 'boolean' },
       publishedAt: { type: 'string' },
