@@ -13,8 +13,9 @@ export class ExecutionDetailsPage extends AuthenticatedPage {
 
   async verifyExecutionData(flowId) {
     await expect(this.executionCreatedAt).toContainText(/\d+ seconds? ago/);
+    const executionIdFromUrl = this.page.url().split('/').pop();
     await expect(this.executionId).toHaveText(
-      /Execution ID: [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      `Execution ID: ${executionIdFromUrl}`
     );
     await expect(this.executionName).toHaveText(flowId);
   }
