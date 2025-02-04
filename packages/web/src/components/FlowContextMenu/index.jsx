@@ -1,22 +1,25 @@
-import PropTypes from 'prop-types';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useQueryClient } from '@tanstack/react-query';
+import PropTypes from 'prop-types';
 
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import Can from 'components/Can';
+import FlowFolderChangeDialog from 'components/FlowFolderChangeDialog';
 import * as URLS from 'config/urls';
-import useFormatMessage from 'hooks/useFormatMessage';
-import useDuplicateFlow from 'hooks/useDuplicateFlow';
 import useDeleteFlow from 'hooks/useDeleteFlow';
-import useExportFlow from 'hooks/useExportFlow';
 import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
+import useDuplicateFlow from 'hooks/useDuplicateFlow';
+import useExportFlow from 'hooks/useExportFlow';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 function ContextMenu(props) {
   const { flowId, onClose, anchorEl, onDuplicateFlow, appKey } = props;
+  const [showFlowFolderChangeDialog, setShowFlowFolderChangeDialog] =
+    React.useState(false);
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
@@ -91,45 +94,67 @@ function ContextMenu(props) {
     onClose();
   }, [exportFlow, downloadJsonAsFile, enqueueSnackbar, formatMessage, onClose]);
 
+  const onFlowFolderUpdate = React.useCallback(() => {
+    setShowFlowFolderChangeDialog(true);
+  }, []);
+
   return (
-    <Menu
-      open={true}
-      onClose={onClose}
-      hideBackdrop={false}
-      anchorEl={anchorEl}
-    >
-      <Can I="read" a="Flow" passThrough>
-        {(allowed) => (
-          <MenuItem disabled={!allowed} component={Link} to={URLS.FLOW(flowId)}>
-            {formatMessage('flow.view')}
-          </MenuItem>
-        )}
-      </Can>
+    <>
+      <Menu
+        open={true}
+        onClose={onClose}
+        hideBackdrop={false}
+        anchorEl={anchorEl}
+      >
+        <Can I="read" a="Flow" passThrough>
+          {(allowed) => (
+            <MenuItem
+              disabled={!allowed}
+              component={Link}
+              to={URLS.FLOW(flowId)}
+            >
+              {formatMessage('flow.view')}
+            </MenuItem>
+          )}
+        </Can>
 
-      <Can I="create" a="Flow" passThrough>
-        {(allowed) => (
-          <MenuItem disabled={!allowed} onClick={onFlowDuplicate}>
-            {formatMessage('flow.duplicate')}
-          </MenuItem>
-        )}
-      </Can>
+        <Can I="create" a="Flow" passThrough>
+          {(allowed) => (
+            <MenuItem disabled={!allowed} onClick={onFlowDuplicate}>
+              {formatMessage('flow.duplicate')}
+            </MenuItem>
+          )}
+        </Can>
 
-      <Can I="read" a="Flow" passThrough>
-        {(allowed) => (
-          <MenuItem disabled={!allowed} onClick={onFlowExport}>
-            {formatMessage('flow.export')}
-          </MenuItem>
-        )}
-      </Can>
+        <Can I="update" a="Flow" passThrough>
+          {(allowed) => (
+            <MenuItem disabled={!allowed} onClick={onFlowFolderUpdate}>
+              {formatMessage('flow.moveTo')}
+            </MenuItem>
+          )}
+        </Can>
 
-      <Can I="delete" a="Flow" passThrough>
-        {(allowed) => (
-          <MenuItem disabled={!allowed} onClick={onFlowDelete}>
-            {formatMessage('flow.delete')}
-          </MenuItem>
-        )}
-      </Can>
-    </Menu>
+        <Can I="read" a="Flow" passThrough>
+          {(allowed) => (
+            <MenuItem disabled={!allowed} onClick={onFlowExport}>
+              {formatMessage('flow.export')}
+            </MenuItem>
+          )}
+        </Can>
+
+        <Can I="delete" a="Flow" passThrough>
+          {(allowed) => (
+            <MenuItem disabled={!allowed} onClick={onFlowDelete}>
+              {formatMessage('flow.delete')}
+            </MenuItem>
+          )}
+        </Can>
+      </Menu>
+
+      {showFlowFolderChangeDialog && (
+        <FlowFolderChangeDialog flowId={flowId} onClose={onClose} />
+      )}
+    </>
   );
 }
 
