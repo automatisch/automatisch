@@ -40,6 +40,7 @@ exports[`App model > list should have list of applications keys 1`] = `
   "mattermost",
   "miro",
   "mistral-ai",
+  "monday",
   "notion",
   "ntfy",
   "odoo",
