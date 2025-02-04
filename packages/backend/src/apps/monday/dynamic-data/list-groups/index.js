@@ -6,7 +6,7 @@ export default {
     const groups = {
       data: [],
     };
-    const boardId = $.step.parameters.parameters.boardId;
+    const boardId = $.step.parameters.boardId;
 
     if (!boardId) {
       return groups;
@@ -26,7 +26,7 @@ export default {
 
     const { data } = await $.http.post('/', body);
 
-    if (data.data.boards[0].groups.length) {
+    if (data.data.boards[0]?.groups.length) {
       for (const group of data.data.boards[0].groups) {
         groups.data.push({
           value: group.id,
