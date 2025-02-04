@@ -3,10 +3,13 @@ import Flow from './flow.js';
 import User from './user.js';
 import Base from './base.js';
 import Step from './step.js';
+import Folder from './folder.js';
 import Execution from './execution.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import * as globalVariableModule from '../helpers/global-variable.js';
 import { createFlow } from '../../test/factories/flow.js';
+import { createUser } from '../../test/factories/user.js';
+import { createFolder } from '../../test/factories/folder.js';
 import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
 import { createExecutionStep } from '../../test/factories/execution-step.js';
@@ -67,6 +70,14 @@ describe('Flow model', () => {
           join: {
             from: 'flows.user_id',
             to: 'users.id',
+          },
+        },
+        folder: {
+          relation: Base.HasOneRelation,
+          modelClass: Folder,
+          join: {
+            from: 'flows.folder_id',
+            to: 'folders.id',
           },
         },
       };
@@ -472,6 +483,27 @@ describe('Flow model', () => {
 
       expect(await flow.isPaused()).toBe(false);
       expect(isAllowedToRunFlowsSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('updateFolder', () => {
+    it('should throw an error if the folder does not exist', async () => {
+      const user = await createUser();
+      const flow = await createFlow({ userId: user.id });
+      const nonExistentFolderId = 'non-existent-folder-id';
+
+      await expect(flow.updateFolder(nonExistentFolderId)).rejects.toThrow();
+    });
+
+    it('should return the flow with the updated folder', async () => {
+      const user = await createUser();
+      const flow = await createFlow({ userId: user.id });
+      const folder = await createFolder({ userId: user.id });
+
+      const updatedFlow = await flow.updateFolder(folder.id);
+
+      expect(updatedFlow.folder.id).toBe(folder.id);
+      expect(updatedFlow.folder.name).toBe(folder.name);
     });
   });
 

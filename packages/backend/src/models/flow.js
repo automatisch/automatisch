@@ -2,6 +2,7 @@ import { ValidationError } from 'objection';
 import Base from './base.js';
 import Step from './step.js';
 import User from './user.js';
+import Folder from './folder.js';
 import Execution from './execution.js';
 import ExecutionStep from './execution-step.js';
 import globalVariable from '../helpers/global-variable.js';
@@ -86,6 +87,14 @@ class Flow extends Base {
       join: {
         from: 'flows.user_id',
         to: 'users.id',
+      },
+    },
+    folder: {
+      relation: Base.HasOneRelation,
+      modelClass: Folder,
+      join: {
+        from: 'flows.folder_id',
+        to: 'folders.id',
       },
     },
   });
@@ -336,6 +345,23 @@ class Flow extends Base {
     const user = await this.$relatedQuery('user').withSoftDeleted();
     const allowedToRunFlows = await user.isAllowedToRunFlows();
     return allowedToRunFlows ? false : true;
+  }
+
+  async updateFolder(folderId) {
+    const user = await this.$relatedQuery('user');
+
+    const folder = await user
+      .$relatedQuery('folders')
+      .findOne({
+        id: folderId,
+      })
+      .throwIfNotFound();
+
+    await this.$query().patch({
+      folderId: folder.id,
+    });
+
+    return this.$query().withGraphFetched('folder');
   }
 
   async updateStatus(newActiveValue) {
