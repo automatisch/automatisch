@@ -13,6 +13,7 @@ export default {
           boards {
             id
             name
+            type
           }
         }
       `,
@@ -22,10 +23,12 @@ export default {
 
     if (data.data.boards?.length) {
       for (const board of data.data.boards) {
-        boards.data.push({
-          value: board.id,
-          name: board.name,
-        });
+        if (board.type === 'board') {
+          boards.data.push({
+            value: board.id,
+            name: board.name,
+          });
+        }
       }
     }
 
