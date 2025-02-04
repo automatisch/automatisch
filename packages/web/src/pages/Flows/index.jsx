@@ -16,6 +16,7 @@ import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 
 import Can from 'components/Can';
+import Folders from 'components/Folders';
 import FlowRow from 'components/FlowRow';
 import NoResultFound from 'components/NoResultFound';
 import ConditionalIconButton from 'components/ConditionalIconButton';
@@ -34,9 +35,10 @@ export default function Flows() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const flowName = searchParams.get('flowName') || '';
+  const folderId = searchParams.get('folderId');
   const currentUserAbility = useCurrentUserAbility();
 
-  const { data, isSuccess, isLoading } = useFlows({ flowName, page });
+  const { data, isSuccess, isLoading } = useFlows({ flowName, page, folderId });
 
   const flows = data?.data || [];
   const pageInfo = data?.meta;
@@ -50,11 +52,16 @@ export default function Flows() {
   const getPathWithSearchParams = (page, flowName) => {
     const searchParams = new URLSearchParams();
 
-    if (page > 1) {
-      searchParams.set('page', page);
+    if (folderId) {
+      searchParams.set('folderId', folderId);
     }
+
     if (flowName) {
       searchParams.set('flowName', flowName);
+    }
+
+    if (page > 1) {
+      searchParams.set('page', page);
     }
 
     return { search: searchParams.toString() };
@@ -144,45 +151,55 @@ export default function Flows() {
 
           <Divider sx={{ mt: [2, 0], mb: 2 }} />
 
-          {(isLoading || navigateToLastPage) && (
-            <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
-          )}
+          <Grid container columnSpacing={2}>
+            <Grid item xs={12} sm={3}>
+              <Folders />
+            </Grid>
 
-          {!isLoading &&
-            flows?.map((flow) => (
-              <FlowRow
-                key={flow.id}
-                flow={flow}
-                onDuplicateFlow={onDuplicateFlow}
-              />
-            ))}
+            <Grid item xs={12} sm={9}>
+              {(isLoading || navigateToLastPage) && (
+                <CircularProgress
+                  sx={{ display: 'block', margin: '20px auto' }}
+                />
+              )}
 
-          {!isLoading && !navigateToLastPage && !hasFlows && (
-            <NoResultFound
-              text={formatMessage('flows.noFlows')}
-              {...(currentUserAbility.can('create', 'Flow') && {
-                to: URLS.CREATE_FLOW,
-              })}
-            />
-          )}
+              {!isLoading &&
+                flows?.map((flow) => (
+                  <FlowRow
+                    key={flow.id}
+                    flow={flow}
+                    onDuplicateFlow={onDuplicateFlow}
+                  />
+                ))}
 
-          {!isLoading &&
-            !navigateToLastPage &&
-            pageInfo &&
-            pageInfo.totalPages > 1 && (
-              <Pagination
-                sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
-                page={pageInfo?.currentPage}
-                count={pageInfo?.totalPages}
-                renderItem={(item) => (
-                  <PaginationItem
-                    component={Link}
-                    to={getPathWithSearchParams(item.page, flowName)}
-                    {...item}
+              {!isLoading && !navigateToLastPage && !hasFlows && (
+                <NoResultFound
+                  text={formatMessage('flows.noFlows')}
+                  {...(currentUserAbility.can('create', 'Flow') && {
+                    to: URLS.CREATE_FLOW,
+                  })}
+                />
+              )}
+
+              {!isLoading &&
+                !navigateToLastPage &&
+                pageInfo &&
+                pageInfo.totalPages > 1 && (
+                  <Pagination
+                    sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+                    page={pageInfo?.currentPage}
+                    count={pageInfo?.totalPages}
+                    renderItem={(item) => (
+                      <PaginationItem
+                        component={Link}
+                        to={getPathWithSearchParams(item.page, flowName)}
+                        {...item}
+                      />
+                    )}
                   />
                 )}
-              />
-            )}
+            </Grid>
+          </Grid>
         </Container>
       </Box>
 
