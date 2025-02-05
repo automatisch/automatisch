@@ -36,6 +36,7 @@ The following integrations are currently supported by Automatisch.
 - [Mattermost](/apps/mattermost/actions)
 - [Miro](/apps/miro/actions)
 - [Mistral AI](/apps/mistral-ai/actions)
+- [Monday](/apps/monday/triggers)
 - [Notion](/apps/notion/triggers)
 - [Ntfy](/apps/ntfy/actions)
 - [Odoo](/apps/odoo/actions)

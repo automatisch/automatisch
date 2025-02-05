@@ -341,6 +341,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Monday',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/monday/triggers' },
+            { text: 'Actions', link: '/apps/monday/actions' },
+            { text: 'Connection', link: '/apps/monday/connection' },
+          ],
+        },
+        {
           text: 'Notion',
           collapsible: true,
           collapsed: true,
