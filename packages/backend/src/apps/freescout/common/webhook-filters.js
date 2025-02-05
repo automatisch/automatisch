@@ -41,11 +41,11 @@ const webhookFilters = [
   },
   {
     value: 'customer.created',
-    label: 'Customer create',
+    label: 'Customer created',
   },
   {
     value: 'customer.updated',
-    label: 'Customer update',
+    label: 'Customer updated',
   },
 ];
 
