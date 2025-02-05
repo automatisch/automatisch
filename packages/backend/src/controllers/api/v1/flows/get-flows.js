@@ -2,20 +2,14 @@ import { renderObject } from '../../../../helpers/renderer.js';
 import paginateRest from '../../../../helpers/pagination-rest.js';
 
 export default async (request, response) => {
-  const flowsQuery = request.currentUser.authorizedFlows
-    .clone()
-    .withGraphFetched({
-      steps: true,
-    })
-    .where((builder) => {
-      if (request.query.name) {
-        builder.where('flows.name', 'ilike', `%${request.query.name}%`);
-      }
-    })
-    .orderBy('active', 'desc')
-    .orderBy('updated_at', 'desc');
+  await request.currentUser.hasFolderAccess(request.body.folderId);
 
+  const flowsQuery = request.currentUser.getFlows(flowParams(request));
   const flows = await paginateRest(flowsQuery, request.query.page);
 
   renderObject(response, flows);
+};
+
+const flowParams = (request) => {
+  return { folderId: request.query.folderId, name: request.query.name };
 };
