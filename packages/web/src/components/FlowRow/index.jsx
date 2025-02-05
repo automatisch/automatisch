@@ -116,6 +116,7 @@ function FlowRow(props) {
       {anchorEl && (
         <FlowContextMenu
           flowId={flow.id}
+          folderId={flow.folder?.id}
           onClose={handleClose}
           anchorEl={anchorEl}
           onDuplicateFlow={onDuplicateFlow}
