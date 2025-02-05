@@ -8,7 +8,7 @@ export default defineTrigger({
 
   async run($) {
     const body = {
-      query: 'query { boards { id, name, type } }',
+      query: 'query { boards(order_by: created_at) { id, name, type } }',
     };
 
     const { data } = await $.http.post('/', body);
