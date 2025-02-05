@@ -8,7 +8,7 @@ export default defineTrigger({
 
   async run($) {
     const body = {
-      query: 'query { boards { id, name } }',
+      query: 'query { boards { id, name, type } }',
     };
 
     const { data } = await $.http.post('/', body);
@@ -18,12 +18,14 @@ export default defineTrigger({
     }
 
     for (const board of data.data.boards) {
-      $.pushTriggerItem({
-        raw: board,
-        meta: {
-          internalId: board.id,
-        },
-      });
+      if (board.type === 'board') {
+        $.pushTriggerItem({
+          raw: board,
+          meta: {
+            internalId: board.id,
+          },
+        });
+      }
     }
   },
 });
