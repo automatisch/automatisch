@@ -516,6 +516,35 @@ class User extends Base {
     return invoices;
   }
 
+  async hasFolderAccess(folderId) {
+    if (folderId && folderId !== 'null') {
+      await this.$relatedQuery('folders').findById(folderId).throwIfNotFound();
+    }
+
+    return true;
+  }
+
+  getFlows({ folderId, name }) {
+    return this.authorizedFlows
+      .clone()
+      .withGraphFetched({
+        steps: true,
+      })
+      .where((builder) => {
+        if (name) {
+          builder.where('flows.name', 'ilike', `%${name}%`);
+        }
+
+        if (folderId === 'null') {
+          builder.whereNull('flows.folder_id');
+        } else if (folderId) {
+          builder.where('flows.folder_id', folderId);
+        }
+      })
+      .orderBy('active', 'desc')
+      .orderBy('updated_at', 'desc');
+  }
+
   async getApps(name) {
     const connections = await this.authorizedConnections
       .clone()
