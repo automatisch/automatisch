@@ -8,7 +8,7 @@ export default defineTrigger({
 
   async run($) {
     const body = {
-      query: 'query { users {  id name } }',
+      query: 'query { users(newest_first: true) {  id name } }',
     };
 
     const { data } = await $.http.post('/', body);
@@ -17,7 +17,7 @@ export default defineTrigger({
       return;
     }
 
-    for (const user of data.data.users.reverse()) {
+    for (const user of data.data.users) {
       $.pushTriggerItem({
         raw: user,
         meta: {
