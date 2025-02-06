@@ -70,7 +70,25 @@ export const deserialize = (value, options, stepsWithVariables) => {
     ];
   }
 
-  if (value === null || value === undefined || value === '')
+  if (typeof value === 'number') {
+    return [
+      {
+        type: 'paragraph',
+        children: [{ text: value.toString(), value }],
+      },
+    ];
+  }
+
+  if (value === null) {
+    return [
+      {
+        type: 'paragraph',
+        children: [{ text: '', value }],
+      },
+    ];
+  }
+
+  if (value === undefined || value === '')
     return [
       {
         type: 'paragraph',
