@@ -323,6 +323,14 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Microsoft Teams',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Connection', link: '/apps/microsoft-teams/connection' },
+          ],
+        },
+        {
           text: 'Miro',
           collapsible: true,
           collapsed: true,
