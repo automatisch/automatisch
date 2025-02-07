@@ -7,7 +7,7 @@ export default defineApp({
   baseUrl: 'https://mail.google.com',
   apiBaseUrl: 'https://gmail.googleapis.com',
   iconUrl: '{BASE_URL}/apps/gmail/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/gmail/connection',
+  authDocUrl: '{DOCS_URL}/apps/gmail/connection',
   primaryColor: 'ea4335',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
