@@ -13,7 +13,7 @@ export default defineTrigger({
       type: 'dropdown',
       required: false,
       description:
-        "If you don't choose a label, this Zap will trigger for all emails, including Drafts.",
+        "If you don't choose a label, this event will be triggered for all emails, including Drafts.",
       variables: true,
       source: {
         type: 'query',
