@@ -3,6 +3,7 @@ import { authenticateUser } from '../../../helpers/authentication.js';
 import { authorizeUser } from '../../../helpers/authorization.js';
 import getFlowsAction from '../../../controllers/api/v1/flows/get-flows.js';
 import getFlowAction from '../../../controllers/api/v1/flows/get-flow.js';
+import getFolderAction from '../../../controllers/api/v1/flows/get-folder.js';
 import updateFlowAction from '../../../controllers/api/v1/flows/update-flow.js';
 import updateFlowStatusAction from '../../../controllers/api/v1/flows/update-flow-status.js';
 import updateFlowFolderAction from '../../../controllers/api/v1/flows/update-flow-folder.js';
@@ -17,6 +18,7 @@ const router = Router();
 
 router.get('/', authenticateUser, authorizeUser, getFlowsAction);
 router.get('/:flowId', authenticateUser, authorizeUser, getFlowAction);
+router.get('/:flowId/folder', authenticateUser, authorizeUser, getFolderAction);
 router.post('/', authenticateUser, authorizeUser, createFlowAction);
 router.patch('/:flowId', authenticateUser, authorizeUser, updateFlowAction);
 
