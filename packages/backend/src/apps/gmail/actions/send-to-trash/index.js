@@ -8,10 +8,20 @@ export default defineAction({
     {
       label: 'Message ID',
       key: 'messageId',
-      type: 'string',
+      type: 'dropdown',
       required: true,
       description: '',
       variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listMessages',
+          },
+        ],
+      },
     },
   ],
 
