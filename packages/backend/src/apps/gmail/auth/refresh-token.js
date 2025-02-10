@@ -12,7 +12,12 @@ const refreshToken = async ($) => {
 
   const { data } = await $.http.post(
     'https://oauth2.googleapis.com/token',
-    params.toString()
+    params.toString(),
+    {
+      additionalProperties: {
+        skipAddingAuthHeader: true,
+      },
+    }
   );
 
   await $.auth.set({
