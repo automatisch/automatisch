@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://bluesky.app',
   apiBaseUrl: 'https://bsky.social/xrpc',
-  primaryColor: '1185fd',
+  primaryColor: '#1185fd',
   beforeRequest: [addAuthHeader],
   auth,
   actions,
