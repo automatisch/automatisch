@@ -1,5 +1,8 @@
 const addAuthHeader = ($, requestConfig) => {
-  if ($.auth.data?.accessToken) {
+  if (
+    !requestConfig.additionalProperties?.skipAddingAuthHeader &&
+    $.auth.data?.accessToken
+  ) {
     requestConfig.headers.Authorization = `${$.auth.data.tokenType} ${$.auth.data.accessToken}`;
   }
 

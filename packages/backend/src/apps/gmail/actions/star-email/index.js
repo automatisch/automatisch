@@ -1,9 +1,9 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Send to trash',
-  key: 'sendToTrash',
-  description: 'Send an existing email message to the trash.',
+  name: 'Star an email',
+  key: 'starEmail',
+  description: 'Star an email message.',
   arguments: [
     {
       label: 'Message ID',
@@ -29,8 +29,13 @@ export default defineAction({
     const { messageId } = $.step.parameters;
     const userId = $.auth.data.userId;
 
+    const body = {
+      addLabelIds: ['STARRED'],
+    };
+
     const { data } = await $.http.post(
-      `/gmail/v1/users/${userId}/messages/${messageId}/trash`
+      `/gmail/v1/users/${userId}/messages/${messageId}/modify`,
+      body
     );
 
     $.setActionItem({
