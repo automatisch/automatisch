@@ -140,24 +140,6 @@ export default defineAction({
         ],
       },
     },
-    {
-      label: 'Label',
-      key: 'labelId',
-      type: 'dropdown',
-      required: false,
-      description: '',
-      variables: true,
-      source: {
-        type: 'query',
-        name: 'getDynamicData',
-        arguments: [
-          {
-            name: 'key',
-            value: 'listLabels',
-          },
-        ],
-      },
-    },
   ],
 
   async run($) {
@@ -172,7 +154,6 @@ export default defineAction({
       bodyType,
       emailBody,
       signature,
-      labelId,
     } = $.step.parameters;
     const userId = $.auth.data.userId;
 
@@ -218,7 +199,6 @@ export default defineAction({
     const base64EncodedEmailBody = Buffer.from(email).toString('base64');
 
     const body = {
-      labelIds: [labelId],
       raw: base64EncodedEmailBody,
     };
 
