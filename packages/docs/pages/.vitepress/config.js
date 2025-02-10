@@ -201,6 +201,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/gitea/triggers' },
+            { text: 'Actions', link: '/apps/gitea/actions' },
             { text: 'Connection', link: '/apps/gitea/connection' },
           ],
         },
