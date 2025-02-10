@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://monday.com',
   apiBaseUrl: 'https://api.monday.com/v2',
-  primaryColor: 'F62B54',
+  primaryColor: '#F62B54',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

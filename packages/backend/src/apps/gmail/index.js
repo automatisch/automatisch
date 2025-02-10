@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: 'https://gmail.googleapis.com',
   iconUrl: '{BASE_URL}/apps/gmail/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/gmail/connection',
-  primaryColor: 'ea4335',
+  primaryColor: '#ea4335',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,
