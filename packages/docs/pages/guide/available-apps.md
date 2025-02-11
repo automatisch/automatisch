@@ -20,6 +20,7 @@ The following integrations are currently supported by Automatisch.
 - [Formatter](/apps/formatter/actions)
 - [FreeScout](/apps/freescout/triggers)
 - [Ghost](/apps/ghost/triggers)
+- [Gitea](/apps/gitea/triggers)
 - [GitHub](/apps/github/triggers)
 - [GitLab](/apps/gitlab/triggers)
 - [Gmail](/apps/gmail/triggers)
