@@ -14,7 +14,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: '',
   apiBaseUrl: '',
-  primaryColor: '609926',
+  primaryColor: '#609926',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   triggers,
