@@ -353,5 +353,6 @@
   "flowFolderChangeDialog.description": "You can change the folder of the flow by submitting the form below.",
   "flowFolderChangeDialog.confirm": "Move",
   "flowFolderChangeDialog.uncategorizedFolder": "Uncategorized",
-  "flowFolderChangeDialog.successfullyUpdatedFolder": "The flow has been successfully moved to the new folder!"
+  "flowFolderChangeDialog.successfullyUpdatedFolder": "The flow has been successfully moved to the new folder!",
+  "flowFolder.uncategorized": "Uncategorized"
 }
