@@ -10,6 +10,7 @@ const performMathOperation = [
       { label: 'Add', value: 'add' },
       { label: 'Divide', value: 'divide' },
       { label: 'Make Negative', value: 'makeNegative' },
+      { label: 'Modulo', value: 'modulo' },
       { label: 'Multiply', value: 'multiply' },
       { label: 'Subtract', value: 'subtract' },
     ],
