@@ -17,6 +17,8 @@ const mathOperation = ($) => {
     return values.reduce((acc, curr) => multiply(acc, curr), 1);
   } else if (mathOperation === 'subtract') {
     return values.reduce((acc, curr) => subtract(acc, curr));
+  } else if (mathOperation === 'modulo') {
+    return values.reduce((acc, curr) => acc % curr);
   }
 };
 
