@@ -312,6 +312,7 @@ class Flow extends Base {
         .$relatedQuery('steps')
         .insert({
           key: step.key,
+          name: step.name,
           appKey: step.appKey,
           type: step.type,
           connectionId: step.connectionId,
