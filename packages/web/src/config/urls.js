@@ -47,6 +47,7 @@ export const APP_FLOWS_FOR_CONNECTION = (appKey, connectionId) =>
   `/app/${appKey}/flows?connectionId=${connectionId}`;
 
 export const APP_FLOWS = (appKey) => `/app/${appKey}/flows`;
+export const FOLDER_FLOWS = (folderId) => `/flows?folderId=${folderId}`;
 export const APP_FLOWS_PATTERN = '/app/:appKey/flows';
 export const EDITOR = '/editor';
 export const CREATE_FLOW = '/editor/create';

@@ -1,30 +1,32 @@
-import * as React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import DownloadIcon from '@mui/icons-material/Download';
+import Box from '@mui/material/Box';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import * as React from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { ReactFlowProvider } from 'reactflow';
 
-import { EditorProvider } from 'contexts/Editor';
-import { TopBar } from './style';
-import * as URLS from 'config/urls';
 import Can from 'components/Can';
 import Container from 'components/Container';
 import EditableTypography from 'components/EditableTypography';
 import Editor from 'components/Editor';
 import EditorNew from 'components/EditorNew/EditorNew';
+import * as URLS from 'config/urls';
+import { EditorProvider } from 'contexts/Editor';
+import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useExportFlow from 'hooks/useExportFlow';
 import useFlow from 'hooks/useFlow';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useUpdateFlow from 'hooks/useUpdateFlow';
 import useUpdateFlowStatus from 'hooks/useUpdateFlowStatus';
-import useExportFlow from 'hooks/useExportFlow';
-import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import FlowFolder from './FlowFolder';
+import { TopBar } from './style';
 
 const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
 
@@ -70,7 +72,7 @@ export default function EditorLayout() {
         px={1}
         className="mui-fixed"
       >
-        <Box display="flex" flex={1} alignItems="center">
+        <Box display="flex" flex={1} alignItems="center" justifyContent="start">
           <Tooltip
             placement="right"
             title={formatMessage('flowEditor.goBack')}
@@ -86,18 +88,24 @@ export default function EditorLayout() {
             </IconButton>
           </Tooltip>
 
-          {!isFlowLoading && (
-            <EditableTypography
-              data-test="editableTypography"
-              variant="body1"
-              onConfirm={onFlowNameUpdate}
-              noWrap
-              iconColor="action"
-              sx={{ display: 'flex', flex: 1, maxWidth: '50vw', ml: 2 }}
-            >
-              {flow?.name}
-            </EditableTypography>
-          )}
+          <Breadcrumbs aria-label="breadcrumb" sx={{ ml: 2 }}>
+            <FlowFolder flowId={flowId} />
+
+            {!isFlowLoading && (
+              <EditableTypography
+                data-test="editableTypography"
+                variant="body1"
+                onConfirm={onFlowNameUpdate}
+                noWrap
+                iconColor="action"
+                color="text.primary"
+                fontWeight={500}
+                sx={{ display: 'flex', flex: 1, maxWidth: '50vw' }}
+              >
+                {flow?.name}
+              </EditableTypography>
+            )}
+          </Breadcrumbs>
         </Box>
 
         <Box pr={1} display="flex" gap={1}>
