@@ -117,7 +117,7 @@ describe('POST /api/v1/flows/import', () => {
       key: 'text',
       name: 'Text',
       parameters: {
-        input: `hello {{step.${triggerStep.id}.query.sample}} world`,
+        input: `hello {{step.${triggerStep.id}.query.sample}} {{step.${triggerStep.id}.query.anotherSample}} world`,
         transform: 'capitalize',
       },
       position: 2,
@@ -171,7 +171,7 @@ describe('POST /api/v1/flows/import', () => {
     });
 
     expect(newActionParameters).toMatchObject({
-      input: `hello {{step.${newTriggerStepId}.query.sample}} world`,
+      input: `hello {{step.${newTriggerStepId}.query.sample}} {{step.${newTriggerStepId}.query.anotherSample}} world`,
       transform: 'capitalize',
     });
   });
