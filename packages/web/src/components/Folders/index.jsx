@@ -33,8 +33,11 @@ export default function Folders() {
   const navigate = useNavigate();
   const { data: folders } = useFolders();
 
-  const { mutateAsync: deleteFolder, error: deleteFolderError } =
-    useDeleteFolder();
+  const {
+    mutateAsync: deleteFolder,
+    error: deleteFolderError,
+    reset: resetDeleteFolder,
+  } = useDeleteFolder();
 
   const [showCreateFolderDialog, setShowCreateFolderDialog] =
     React.useState(false);
@@ -63,6 +66,12 @@ export default function Folders() {
     await deleteFolder(selectedFolderId);
 
     navigate({ search: allFlowsFolder });
+  };
+
+  const handleDeleteFolderClose = async () => {
+    setShowDeleteFolderDialog(false);
+
+    resetDeleteFolder();
   };
 
   const getFolderSearchParams = (folderId) => {
@@ -188,7 +197,7 @@ export default function Folders() {
         <ConfirmationDialog
           title={formatMessage('deleteFolderDialog.title')}
           description={formatMessage('deleteFolderDialog.description')}
-          onClose={() => setShowDeleteFolderDialog(false)}
+          onClose={handleDeleteFolderClose}
           onConfirm={handleDeleteFolderConfirmation}
           cancelButtonChildren={formatMessage('deleteFolderDialog.cancel')}
           confirmButtonChildren={formatMessage('deleteFolderDialog.confirm')}
