@@ -12,7 +12,11 @@ const refreshToken = async ($) => {
 
   const { data } = await $.http.post(
     'https://login.microsoftonline.com/common/oauth2/v2.0/token',
-    params.toString()
+    params.toString(), {
+      additionalProperties: {
+        skipAddingBaseUrl: true,
+      },
+    }
   );
 
   await $.auth.set({

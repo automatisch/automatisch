@@ -2,6 +2,7 @@ import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
 import auth from './auth/index.js';
 import triggers from './triggers/index.js';
+import setBaseUrl from './common/set-base-url.js';
 
 export default defineApp({
   name: 'OneDrive',
@@ -11,7 +12,7 @@ export default defineApp({
   authDocUrl: '{DOCS_URL}/apps/one-dirve/connection',
   primaryColor: '1FA463',
   supportsConnections: true,
-  beforeRequest: [addAuthHeader],
+  beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   triggers,
 });
