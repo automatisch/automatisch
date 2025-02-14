@@ -1,23 +1,23 @@
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
-  name: 'Get user activity',
-  key: 'getActivity',
+  name: 'Get recent items',
+  key: 'getRecentItems',
   pollInterval: 15,
-  description: 'Triggers when there are new user activities.',
+  description: 'Triggers when there are new items in OneDrive.',
 
   async run($) {
     let response;
 
     do {
-      let requestPath = `/ocs/v2.php/apps/activity/api/v2/activity`;
+      let requestPath = `/me/drive/recent`;
       response = await $.http.get(requestPath);
 
-      response.data.ocs.data.forEach((activity) => {
+      response.data.value.forEach((driveItem) => {
         const dataItem = {
-          raw: activity,
+          raw: driveItem,
           meta: {
-            internalId: `${activity.activity_id}`,
+            internalId: `${driveItem.id}`,
           },
         };
 
