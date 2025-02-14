@@ -22,7 +22,7 @@ export default {
       label: 'OAuth Redirect URL',
       type: 'string',
       required: true,
-      readOnly: true,
+      readOnly: false,
       value: '{WEB_APP_URL}/app/one-drive/connections/add',
       placeholder: null,
       description:

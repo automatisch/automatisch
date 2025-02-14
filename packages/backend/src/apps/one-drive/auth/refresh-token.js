@@ -11,7 +11,7 @@ const refreshToken = async ($) => {
   });
 
   const { data } = await $.http.post(
-    'https://oauth2.googleapis.com/token',
+    'https://login.microsoftonline.com/common/oauth2/v2.0/token',
     params.toString()
   );
 
