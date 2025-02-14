@@ -1,5 +1,6 @@
 import Base from './base.js';
 import User from './user.js';
+import Flow from './flow.js';
 
 class Folder extends Base {
   static tableName = 'folders';
@@ -24,7 +25,20 @@ class Folder extends Base {
         to: 'users.id',
       },
     },
+    flows: {
+      relation: Base.HasManyRelation,
+      modelClass: Flow,
+      join: {
+        from: 'folders.id',
+        to: 'flows.folder_id',
+      },
+    },
   });
+
+  async delete() {
+    await this.$relatedQuery('flows').patch({ folderId: null });
+    await this.$query().delete();
+  }
 }
 
 export default Folder;
