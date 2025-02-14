@@ -14,7 +14,7 @@ export default function useUpdateFlowFolder(flowId) {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['flows', flowId, 'folder'],
+        queryKey: ['flows'],
       });
     },
   });

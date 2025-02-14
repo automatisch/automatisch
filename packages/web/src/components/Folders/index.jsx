@@ -65,6 +65,8 @@ export default function Folders() {
   const handleDeleteFolderConfirmation = async () => {
     await deleteFolder(selectedFolderId);
 
+    setShowDeleteFolderDialog(false);
+
     navigate({ search: allFlowsFolder });
   };
 
