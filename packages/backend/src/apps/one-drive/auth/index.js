@@ -18,6 +18,18 @@ export default {
       clickToCopy: false,
     },
     {
+      key: 'oAuthRedirectUrl',
+      label: 'OAuth Redirect URL',
+      type: 'string',
+      required: true,
+      readOnly: true,
+      value: '{WEB_APP_URL}/app/one-drive/connections/add',
+      placeholder: null,
+      description:
+        'When asked to input a redirect URL in OneDrive, enter the URL above.',
+      clickToCopy: true,
+    },
+    {
       key: 'webUrl',
       label: 'OneDrive web URL',
       type: 'string',
@@ -49,7 +61,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Your application (client) secret',
+      description: 'Your OneDrive Application (client) secret',
       clickToCopy: false,
     },
   ],

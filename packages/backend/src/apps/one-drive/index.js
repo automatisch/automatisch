@@ -6,7 +6,9 @@ import triggers from './triggers/index.js';
 export default defineApp({
   name: 'OneDrive',
   key: 'one-drive',
-  iconUrl: '{BASE_URL}/apps/onedrive/assets/favicon.svg',
+  baseUrl: 'https://my.sharepoint.com',
+  iconUrl: '{BASE_URL}/apps/one-drive/assets/favicon.svg',
+  authDocUrl: '{DOCS_URL}/apps/one-dirve/connection',
   primaryColor: '1FA463',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],

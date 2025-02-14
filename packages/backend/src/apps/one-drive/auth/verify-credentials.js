@@ -1,6 +1,8 @@
 const verifyCredentials = async ($) => {
-  const webUrl = $.app.auth.fields.find((field) => field.key == 'webUrl');
-  const redirectUri = webUrl.value;
+  const oAuthRedirectUrl = $.app.auth.fields.find(
+    (field) => field.key == 'oAuthRedirectUrl'
+  );
+  const redirectUri = oAuthRedirectUrl.value;
   const { data } = await $.http.post(
     `https://login.microsoftonline.com/common/oauth2/v2.0/token`,
     {
@@ -9,7 +11,7 @@ const verifyCredentials = async ($) => {
       code: $.auth.data.code,
       grant_type: 'authorization_code',
       redirect_uri: redirectUri,
-    },
+    }
   );
 
   await $.auth.set({
