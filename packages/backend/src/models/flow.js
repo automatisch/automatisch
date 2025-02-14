@@ -351,17 +351,20 @@ class Flow extends Base {
   async updateFolder(folderId) {
     const user = await this.$relatedQuery('user');
 
+    if (folderId === null) {
+      return this.updateFolderReference(null);
+    }
+
     const folder = await user
       .$relatedQuery('folders')
-      .findOne({
-        id: folderId,
-      })
+      .findOne({ id: folderId })
       .throwIfNotFound();
 
-    await this.$query().patch({
-      folderId: folder.id,
-    });
+    return this.updateFolderReference(folder.id);
+  }
 
+  async updateFolderReference(folderId) {
+    await this.$query().patch({ folderId });
     return this.$query().withGraphFetched('folder');
   }
 

@@ -505,6 +505,37 @@ describe('Flow model', () => {
       expect(updatedFlow.folder.id).toBe(folder.id);
       expect(updatedFlow.folder.name).toBe(folder.name);
     });
+
+    it('should return the flow with null folder when folderId is null', async () => {
+      const user = await createUser();
+      const flow = await createFlow({ userId: user.id });
+
+      const updatedFlow = await flow.updateFolder(null);
+
+      expect(updatedFlow.folder).toBe(null);
+    });
+  });
+
+  describe('updateFolderReference', () => {
+    it('should update the folder reference and return the flow with the updated folder', async () => {
+      const user = await createUser();
+      const flow = await createFlow({ userId: user.id });
+      const folder = await createFolder({ userId: user.id });
+
+      const updatedFlow = await flow.updateFolderReference(folder.id);
+
+      expect(updatedFlow.folder.id).toBe(folder.id);
+      expect(updatedFlow.folder.name).toBe(folder.name);
+    });
+
+    it('should update the folder reference to null and return the flow with null folder', async () => {
+      const user = await createUser();
+      const flow = await createFlow({ userId: user.id });
+
+      const updatedFlow = await flow.updateFolderReference(null);
+
+      expect(updatedFlow.folder).toBe(null);
+    });
   });
 
   describe('throwIfHavingIncompleteSteps', () => {
