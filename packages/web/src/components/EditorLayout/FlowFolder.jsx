@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
@@ -11,7 +11,7 @@ export default function FlowFolder(props) {
   const { flowId } = props;
 
   const formatMessage = useFormatMessage();
-  const { data: folder, isLoading, isError } = useFlowFolder(flowId);
+  const { data: folder, isLoading } = useFlowFolder(flowId);
 
   const name = folder?.data?.name || formatMessage('flowFolder.uncategorized');
   const id = folder?.data?.id || 'null';
@@ -22,7 +22,6 @@ export default function FlowFolder(props) {
       to={URLS.FOLDER_FLOWS(id)}
       variant="body1"
       noWrap
-      iconColor="action"
       color="inherit"
     >
       {!isLoading && name}
