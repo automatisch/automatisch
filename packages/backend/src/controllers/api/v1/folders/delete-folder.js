@@ -4,7 +4,7 @@ export default async (request, response) => {
     .findById(request.params.folderId)
     .throwIfNotFound();
 
-  await folder.$query().delete();
+  await folder.delete();
 
   response.status(204).end();
 };
