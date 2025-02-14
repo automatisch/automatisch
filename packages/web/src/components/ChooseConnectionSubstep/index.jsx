@@ -34,7 +34,7 @@ const optionGenerator = (connection) => ({
 });
 
 const getOption = (options, connectionId) =>
-  options.find((connection) => connection.value === connectionId) || undefined;
+  options.find((connection) => connection.value === connectionId) || '';
 
 function ChooseConnectionSubstep(props) {
   const {
