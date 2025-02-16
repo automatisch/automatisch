@@ -12,7 +12,7 @@ export default defineApp({
   iconUrl: '{BASE_URL}/apps/vtiger-crm/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/vtiger-crm/connection',
   supportsConnections: true,
-  baseUrl: '',
+  baseUrl: 'https://www.vtiger.com',
   apiBaseUrl: '',
   primaryColor: '#39a86d',
   beforeRequest: [setBaseUrl, addAuthHeader],
