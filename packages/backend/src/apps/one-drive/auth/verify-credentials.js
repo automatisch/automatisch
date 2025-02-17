@@ -24,13 +24,10 @@ const verifyCredentials = async ($) => {
   await $.auth.set({
     accessToken: data.access_token,
     tokenType: data.token_type,
-  });
-
-  await $.auth.set({
     clientId: $.auth.data.clientId,
     clientSecret: $.auth.data.clientSecret,
+    code: data.code,
     scope: $.auth.data.scope,
-    idToken: data.id_token,
     expiresIn: data.expires_in,
     refreshToken: data.refresh_token,
   });
