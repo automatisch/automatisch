@@ -13,6 +13,9 @@ const refreshToken = async ($) => {
   const { data } = await $.http.post(
     'https://login.microsoftonline.com/common/oauth2/v2.0/token',
     params.toString(), {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
       additionalProperties: {
         skipAddingBaseUrl: true,
       },
@@ -22,7 +25,7 @@ const refreshToken = async ($) => {
   await $.auth.set({
     accessToken: data.access_token,
     expiresIn: data.expires_in,
-    scope: authScope.join(' '),
+    scope: data.scope,
     tokenType: data.token_type,
   });
 };
