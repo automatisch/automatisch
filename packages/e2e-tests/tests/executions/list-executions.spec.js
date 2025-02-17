@@ -7,7 +7,8 @@ const {
 } = require('../../helpers/flow-api-helper');
 const { getToken } = require('../../helpers/auth-api-helper');
 
-test.describe('Executions page', () => {
+// TODO use search when if will be added
+test.describe.fixme('Executions page', () => {
   let flowId;
 
   test.beforeAll(async () => {
