@@ -30,19 +30,6 @@ export default {
       clickToCopy: true,
     },
     {
-      key: 'webUrl',
-      label: 'OneDrive web URL',
-      type: 'string',
-      required: true,
-      readOnly: false,
-      value: null,
-      placeholder: null,
-      description: 'Your OneDrive web URL.',
-      docUrl:
-        'https://learn.microsoft.com/en-us/onedrive/developer/rest-api/?view=odsp-graph-online',
-      clickToCopy: true,
-    },
-    {
       key: 'clientId',
       label: 'Client Id',
       type: 'string',

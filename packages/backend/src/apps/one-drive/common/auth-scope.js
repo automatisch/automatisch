@@ -1,3 +1,3 @@
-const authScope = ['files.read.all'];
+const authScope = ['files.readwrite'];
 
 export default authScope;
