@@ -16,13 +16,16 @@ const refreshToken = async ($) => {
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
       },
+      additionalProperties: {
+        skipAddingAuthHeader: true,
+      },
     }
   );
 
   await $.auth.set({
     accessToken: data.access_token,
     expiresIn: data.expires_in,
-    scope: data.scope,
+    scope: authScope.join(' '),
     tokenType: data.token_type,
   });
 };
