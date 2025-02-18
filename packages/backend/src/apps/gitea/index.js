@@ -12,7 +12,7 @@ export default defineApp({
   iconUrl: '{BASE_URL}/apps/gitea/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/gitea/connection',
   supportsConnections: true,
-  baseUrl: '',
+  baseUrl: 'https://www.gitea.com',
   apiBaseUrl: '',
   primaryColor: '#609926',
   beforeRequest: [setBaseUrl, addAuthHeader],
