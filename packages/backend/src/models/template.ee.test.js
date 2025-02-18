@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import Template from './template.js';
+import Template from './template.ee.js';
 
 describe('Template model', () => {
   it('tableName should return correct name', () => {
