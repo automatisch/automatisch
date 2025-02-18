@@ -16,9 +16,6 @@ const refreshToken = async ($) => {
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      additionalProperties: {
-        skipAddingBaseUrl: true,
-      },
     }
   );
 
