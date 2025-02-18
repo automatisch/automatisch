@@ -402,4 +402,21 @@ test.describe('Admin Applications', () => {
     await expect(newConnectionOption).toHaveCount(0);
     await expect(newOAuthConnectionOption).toHaveCount(0);
   });
+
+  test('only disable option should be visible for non-OAuth integrations', async ({
+    adminApplicationsPage,
+    adminApplicationSettingsPage,
+    adminApplicationOAuthClientsPage,
+    page,
+  }) => {
+    await adminApplicationsPage.openApplication('RSS');
+    await expect(page.url()).toContain('/admin-settings/apps/rss/settings');
+
+    await expect(
+      adminApplicationSettingsPage.useOnlyPredefinedAuthClients
+    ).toHaveCount(0);
+    await expect(adminApplicationOAuthClientsPage.authClientsTab).toHaveCount(
+      0
+    );
+  });
 });
