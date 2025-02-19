@@ -1,8 +1,8 @@
-import verifyCredentials from './verify-credentials.js';
+import getDrive from '../common/get-drive.js';
 
 const isStillVerified = async ($) => {
-  await verifyCredentials($);
-  return true;
+  const drive = await getDrive($);
+  return !!drive.id;
 };
 
 export default isStillVerified;
