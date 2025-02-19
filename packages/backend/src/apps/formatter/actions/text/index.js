@@ -47,7 +47,7 @@ export default defineAction({
       key: 'transform',
       type: 'dropdown',
       required: true,
-      variables: true,
+      variables: false,
       options: [
         { label: 'Base64 to String', value: 'base64ToString' },
         { label: 'Capitalize', value: 'capitalize' },

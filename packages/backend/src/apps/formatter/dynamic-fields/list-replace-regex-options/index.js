@@ -12,7 +12,7 @@ export default {
         type: 'dropdown',
         required: true,
         description: 'Ignore case sensitivity.',
-        variables: true,
+        variables: false,
         options: [
           { label: 'Yes', value: true },
           { label: 'No', value: false },

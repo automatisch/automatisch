@@ -23,7 +23,7 @@ export default defineAction({
       key: 'transform',
       type: 'dropdown',
       required: true,
-      variables: true,
+      variables: false,
       options: [
         { label: 'Perform Math Operation', value: 'performMathOperation' },
         { label: 'Random Number', value: 'randomNumber' },
