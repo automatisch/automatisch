@@ -1,3 +1,4 @@
+import copyItem from './copy-item/index.js';
 import deleteItem from './delete-item/index.js';
 
-export default [deleteItem];
+export default [copyItem, deleteItem];
