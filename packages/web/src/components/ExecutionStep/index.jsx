@@ -37,7 +37,11 @@ function ExecutionStepId(props) {
 
   return (
     <Box sx={{ display: 'flex' }} gridArea="id">
-      <Typography variant="caption" fontWeight="bold">
+      <Typography
+        data-test="execution-step-id"
+        variant="caption"
+        fontWeight="bold"
+      >
         {formatMessage('executionStep.id', { id })}
       </Typography>
     </Box>
@@ -57,7 +61,11 @@ function ExecutionStepDate(props) {
     <Tooltip
       title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}
     >
-      <Typography variant="caption" gutterBottom>
+      <Typography
+        data-test="execution-step-executed-at"
+        variant="caption"
+        gutterBottom
+      >
         {formatMessage('executionStep.executedAt', {
           datetime: relativeCreatedAt,
         })}
@@ -131,12 +139,17 @@ function ExecutionStep(props) {
                 alignItems="center"
                 gap={0.5}
               >
-                <Chip label={stepTypeName} variant="stepType" size="small" />
+                <Chip
+                  data-test="step-type"
+                  label={stepTypeName}
+                  variant="stepType"
+                  size="small"
+                />
 
                 {app?.name}
               </Typography>
 
-              <Typography variant="body2">
+              <Typography data-test="step-position-and-name" variant="body2">
                 {step.position}. {step.name}
               </Typography>
             </Box>
@@ -164,7 +177,7 @@ function ExecutionStep(props) {
           </Tabs>
         </Box>
 
-        <TabPanel value={activeTabIndex} index={0}>
+        <TabPanel value={activeTabIndex} index={0} data-test="data-in-panel">
           <SearchableJSONViewer data={executionStep.dataIn} />
         </TabPanel>
 
