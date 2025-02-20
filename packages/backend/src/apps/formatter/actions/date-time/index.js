@@ -19,7 +19,7 @@ export default defineAction({
       key: 'transform',
       type: 'dropdown',
       required: true,
-      variables: true,
+      variables: false,
       options: [
         {
           label: 'Get current timestamp',

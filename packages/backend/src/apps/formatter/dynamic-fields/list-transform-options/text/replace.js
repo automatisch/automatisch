@@ -29,7 +29,7 @@ const replace = [
     type: 'dropdown',
     required: true,
     description: 'Use regex to search values.',
-    variables: true,
+    variables: false,
     value: false,
     options: [
       { label: 'Yes', value: true },

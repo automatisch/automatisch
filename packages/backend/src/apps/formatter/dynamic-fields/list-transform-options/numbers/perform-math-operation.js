@@ -5,7 +5,7 @@ const performMathOperation = [
     type: 'dropdown',
     required: true,
     description: 'The math operation to perform.',
-    variables: true,
+    variables: false,
     options: [
       { label: 'Add', value: 'add' },
       { label: 'Divide', value: 'divide' },
