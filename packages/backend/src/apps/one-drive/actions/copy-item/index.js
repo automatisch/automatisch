@@ -21,48 +21,52 @@ export default defineAction({
       variables: true,
       description: "Optional. The new name for the copy. If this isn't provided, the same name will be used as the original.",
     },
-    {
-      label: 'Parent reference',
-      key: 'parentReference',
-      type: 'dynamic',
-      required: false,
-      fields: [
-         {
-            label: 'Item ID',
-            key: 'itemId',
-            type: 'dropdown',
-            required: false,
-            variables: false,
-            source: {
-              type: 'query',
-              name: 'getDynamicData',
-              arguments: [
-                {
-                  name: 'key',
-                  value: 'listSharedItems',
-                },
-                {
-                  name: 'parameters.driveId',
-                  value: '{parameters.driveId}'
-                },
-                {
-                  name: 'parameters.itemId',
-                  value: '{parameters.itemId}',
-                },
-              ],
-            },
-          },
-      ],
-    },
+   //  {
+   //    label: 'Parent reference',
+   //    key: 'parentReference',
+   //    type: 'dynamic',
+   //    required: false,
+   //    fields: [
+   //       {
+   //          label: 'Item ID',
+   //          key: 'itemId',
+   //          type: 'dropdown',
+   //          required: false,
+   //          variables: false,
+   //          source: {
+   //            type: 'query',
+   //            name: 'getDynamicData',
+   //            arguments: [
+   //              {
+   //                name: 'key',
+   //                value: 'listChildren',
+   //              },
+   //              {
+   //                name: 'parameters.driveId',
+   //                value: '{parameters.driveId}'
+   //              },
+   //              {
+   //                name: 'parameters.itemId',
+   //                value: '{parameters.itemId}',
+   //              },
+   //            ],
+   //          },
+   //        },
+   //    ],
+   //  },
   ],
 
   async run($) {
     let response;
     const itemId = $.step.parameters.itemId;
     const name = $.step.parameters.name;
-    const body = {
-      name,
-    };
+    let body;
+    if (name != 'undefined' && name != '') {
+      body = {
+         name,
+       };   
+    }
+   
 
 
     let requestPath = `/me/drive/items/${itemId}/copy`;
