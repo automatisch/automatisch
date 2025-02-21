@@ -64,14 +64,14 @@ export default defineAction({
     const name = $.step.parameters.name;
     const driveId = $.step.parameters.driveId
     const parentId = $.step.parameters.parentItemId
-    let body;
-    if (name != 'undefined' && name != '') {
+    let body = {};
+    if (name) {
       body = {
          name,
        };   
     }
    
-    if (driveId != '' && driveId != 'undefined' && parentId != '' && parentId != 'undefined') {
+    if (driveId && parentId) {
       body['parentReference'] = {
          driveId,
          'id': parentId
