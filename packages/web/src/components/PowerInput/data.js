@@ -81,10 +81,7 @@ export const processStepWithExecutions = (steps) => {
     })
     .map((step, index) => ({
       id: step.id,
-      // TODO: replace with step.name once introduced
-      name: `${index + 1}. ${
-        (step.appKey || '').charAt(0)?.toUpperCase() + step.appKey?.slice(1)
-      }`,
+      name: `${index + 1}. ${step.name}`,
       output: process({
         data: step.executionSteps?.[0]?.dataOut || {},
         parentKey: `step.${step.id}`,

@@ -42,12 +42,30 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Anthropic',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/anthropic/actions' },
+            { text: 'Connection', link: '/apps/anthropic/connection' },
+          ],
+        },
+        {
           text: 'Appwrite',
           collapsible: true,
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/appwrite/triggers' },
             { text: 'Connection', link: '/apps/appwrite/connection' },
+          ],
+        },
+        {
+          text: 'Brave Search',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/brave-search/actions' },
+            { text: 'Connection', link: '/apps/brave-search/connection' },
           ],
         },
         {
@@ -178,6 +196,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Gitea',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/gitea/triggers' },
+            { text: 'Actions', link: '/apps/gitea/actions' },
+            { text: 'Connection', link: '/apps/gitea/connection' },
+          ],
+        },
+        {
           text: 'GitHub',
           collapsible: true,
           collapsed: true,
@@ -194,6 +222,16 @@ export default defineConfig({
           items: [
             { text: 'Triggers', link: '/apps/gitlab/triggers' },
             { text: 'Connection', link: '/apps/gitlab/connection' },
+          ],
+        },
+        {
+          text: 'Gmail',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/gmail/triggers' },
+            { text: 'Connection', link: '/apps/gmail/connection' },
+            { text: 'Actions', link: '/apps/gmail/actions' },
           ],
         },
         {
@@ -314,6 +352,25 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Mistral AI',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/mistral-ai/actions' },
+            { text: 'Connection', link: '/apps/mistral-ai/connection' },
+          ],
+        },
+        {
+          text: 'Monday',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/monday/triggers' },
+            { text: 'Actions', link: '/apps/monday/actions' },
+            { text: 'Connection', link: '/apps/monday/connection' },
+          ],
+        },
+        {
           text: 'Notion',
           collapsible: true,
           collapsed: true,
@@ -348,6 +405,24 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/openai/actions' },
             { text: 'Connection', link: '/apps/openai/connection' },
+          ],
+        },
+        {
+          text: 'OpenRouter',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/openrouter/actions' },
+            { text: 'Connection', link: '/apps/openrouter/connection' },
+          ],
+        },
+        {
+          text: 'Perplexity',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/perplexity/actions' },
+            { text: 'Connection', link: '/apps/perplexity/connection' },
           ],
         },
         {
@@ -516,6 +591,15 @@ export default defineConfig({
             { text: 'Triggers', link: '/apps/todoist/triggers' },
             { text: 'Actions', link: '/apps/todoist/actions' },
             { text: 'Connection', link: '/apps/todoist/connection' },
+          ],
+        },
+        {
+          text: 'Together AI',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/together-ai/actions' },
+            { text: 'Connection', link: '/apps/together-ai/connection' },
           ],
         },
         {

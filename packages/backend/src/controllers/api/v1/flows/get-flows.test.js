@@ -5,6 +5,7 @@ import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-us
 import { createUser } from '../../../../../test/factories/user';
 import { createFlow } from '../../../../../test/factories/flow';
 import { createStep } from '../../../../../test/factories/step';
+import { createFolder } from '../../../../../test/factories/folder';
 import { createPermission } from '../../../../../test/factories/permission';
 import getFlowsMock from '../../../../../test/mocks/rest/api/v1/flows/get-flows.js';
 
@@ -105,6 +106,251 @@ describe('GET /api/v1/flows', () => {
 
     const expectedPayload = await getFlowsMock(
       [anotherUserFlowTwo, anotherUserFlowOne],
+      [
+        triggerStepFlowOne,
+        actionStepFlowOne,
+        triggerStepFlowTwo,
+        actionStepFlowTwo,
+      ]
+    );
+
+    expect(response.body).toStrictEqual(expectedPayload);
+  });
+
+  it('should return the all flows data of the current user', async () => {
+    const folderOne = await createFolder({ userId: currentUser.id });
+
+    const currentUserFlowOne = await createFlow({
+      userId: currentUser.id,
+      folderId: folderOne.id,
+    });
+
+    const triggerStepFlowOne = await createStep({
+      flowId: currentUserFlowOne.id,
+      type: 'trigger',
+    });
+    const actionStepFlowOne = await createStep({
+      flowId: currentUserFlowOne.id,
+      type: 'action',
+    });
+
+    const folderTwo = await createFolder({ userId: currentUser.id });
+
+    const currentUserFlowTwo = await createFlow({
+      userId: currentUser.id,
+      folderId: folderTwo.id,
+    });
+
+    const triggerStepFlowTwo = await createStep({
+      flowId: currentUserFlowTwo.id,
+      type: 'trigger',
+    });
+
+    const actionStepFlowTwo = await createStep({
+      flowId: currentUserFlowTwo.id,
+      type: 'action',
+    });
+
+    const currentUserFlowThree = await createFlow({ userId: currentUser.id });
+
+    const triggerStepFlowThree = await createStep({
+      flowId: currentUserFlowThree.id,
+      type: 'trigger',
+    });
+
+    const actionStepFlowThree = await createStep({
+      flowId: currentUserFlowThree.id,
+      type: 'action',
+    });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    const response = await request(app)
+      .get('/api/v1/flows')
+      .set('Authorization', token)
+      .expect(200);
+
+    const expectedPayload = await getFlowsMock(
+      [currentUserFlowThree, currentUserFlowTwo, currentUserFlowOne],
+      [
+        triggerStepFlowOne,
+        actionStepFlowOne,
+        triggerStepFlowTwo,
+        actionStepFlowTwo,
+        triggerStepFlowThree,
+        actionStepFlowThree,
+      ]
+    );
+
+    expect(response.body).toStrictEqual(expectedPayload);
+  });
+
+  it('should return the uncategorized flows data of the current user', async () => {
+    const folderOne = await createFolder({ userId: currentUser.id });
+
+    const currentUserFlowOne = await createFlow({
+      userId: currentUser.id,
+      folderId: folderOne.id,
+    });
+
+    await createStep({
+      flowId: currentUserFlowOne.id,
+      type: 'trigger',
+    });
+
+    await createStep({
+      flowId: currentUserFlowOne.id,
+      type: 'action',
+    });
+
+    const folderTwo = await createFolder({ userId: currentUser.id });
+
+    const currentUserFlowTwo = await createFlow({
+      userId: currentUser.id,
+      folderId: folderTwo.id,
+    });
+
+    await createStep({
+      flowId: currentUserFlowTwo.id,
+      type: 'trigger',
+    });
+
+    await createStep({
+      flowId: currentUserFlowTwo.id,
+      type: 'action',
+    });
+
+    const currentUserFlowThree = await createFlow({
+      userId: currentUser.id,
+    });
+
+    const triggerStepFlowThree = await createStep({
+      flowId: currentUserFlowThree.id,
+      type: 'trigger',
+    });
+
+    const actionStepFlowThree = await createStep({
+      flowId: currentUserFlowThree.id,
+      type: 'action',
+    });
+
+    const currentUserFlowFour = await createFlow({ userId: currentUser.id });
+
+    const triggerStepFlowFour = await createStep({
+      flowId: currentUserFlowFour.id,
+      type: 'trigger',
+    });
+
+    const actionStepFlowFour = await createStep({
+      flowId: currentUserFlowFour.id,
+      type: 'action',
+    });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    const response = await request(app)
+      .get(`/api/v1/flows?folderId=null`)
+      .set('Authorization', token)
+      .expect(200);
+
+    const expectedPayload = await getFlowsMock(
+      [currentUserFlowFour, currentUserFlowThree],
+      [
+        triggerStepFlowThree,
+        actionStepFlowThree,
+        triggerStepFlowFour,
+        actionStepFlowFour,
+      ]
+    );
+
+    expect(response.body).toStrictEqual(expectedPayload);
+  });
+
+  it('should return the all flows data of the current user for specified folder', async () => {
+    const folderOne = await createFolder({ userId: currentUser.id });
+
+    const currentUserFlowOne = await createFlow({
+      userId: currentUser.id,
+      folderId: folderOne.id,
+    });
+
+    const triggerStepFlowOne = await createStep({
+      flowId: currentUserFlowOne.id,
+      type: 'trigger',
+    });
+    const actionStepFlowOne = await createStep({
+      flowId: currentUserFlowOne.id,
+      type: 'action',
+    });
+
+    const currentUserFlowTwo = await createFlow({
+      userId: currentUser.id,
+      folderId: folderOne.id,
+    });
+
+    const triggerStepFlowTwo = await createStep({
+      flowId: currentUserFlowTwo.id,
+      type: 'trigger',
+    });
+
+    const actionStepFlowTwo = await createStep({
+      flowId: currentUserFlowTwo.id,
+      type: 'action',
+    });
+
+    const folderTwo = await createFolder({ userId: currentUser.id });
+
+    const currentUserFlowThree = await createFlow({
+      userId: currentUser.id,
+      folderId: folderTwo.id,
+    });
+
+    await createStep({
+      flowId: currentUserFlowThree.id,
+      type: 'trigger',
+    });
+
+    await createStep({
+      flowId: currentUserFlowThree.id,
+      type: 'action',
+    });
+
+    const currentUserFlowFour = await createFlow({ userId: currentUser.id });
+
+    await createStep({
+      flowId: currentUserFlowFour.id,
+      type: 'trigger',
+    });
+
+    await createStep({
+      flowId: currentUserFlowFour.id,
+      type: 'action',
+    });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    const response = await request(app)
+      .get(`/api/v1/flows?folderId=${folderOne.id}`)
+      .set('Authorization', token)
+      .expect(200);
+
+    const expectedPayload = await getFlowsMock(
+      [currentUserFlowTwo, currentUserFlowOne],
       [
         triggerStepFlowOne,
         actionStepFlowOne,

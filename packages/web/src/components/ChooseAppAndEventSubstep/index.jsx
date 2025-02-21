@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useQueryClient } from '@tanstack/react-query';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -43,6 +44,7 @@ function ChooseAppAndEventSubstep(props) {
   } = props;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
+  const queryClient = useQueryClient();
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const useAppsOptions = {};
@@ -109,7 +111,7 @@ function ChooseAppAndEventSubstep(props) {
   );
 
   const onAppChange = React.useCallback(
-    (event, selectedOption) => {
+    async (event, selectedOption) => {
       if (typeof selectedOption === 'object') {
         const appKey = selectedOption?.value;
 
@@ -120,7 +122,11 @@ function ChooseAppAndEventSubstep(props) {
               key: '',
               appKey,
               parameters: {},
+              connection: { id: null },
             },
+          });
+          await queryClient.invalidateQueries({
+            queryKey: ['steps', step.id, 'connection'],
           });
         }
       }

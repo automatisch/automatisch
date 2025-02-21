@@ -20,6 +20,7 @@ import Permission from './permission.js';
 import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
+import Folder from './folder.js';
 import UsageData from './usage-data.ee.js';
 import Billing from '../helpers/billing/index.ee.js';
 import NotAuthorizedError from '../errors/not-authorized.js';
@@ -176,6 +177,14 @@ class User extends Base {
       join: {
         from: 'identities.user_id',
         to: 'users.id',
+      },
+    },
+    folders: {
+      relation: Base.HasManyRelation,
+      modelClass: Folder,
+      join: {
+        from: 'users.id',
+        to: 'folders.user_id',
       },
     },
   });
@@ -505,6 +514,35 @@ class User extends Base {
     );
 
     return invoices;
+  }
+
+  async hasFolderAccess(folderId) {
+    if (folderId && folderId !== 'null') {
+      await this.$relatedQuery('folders').findById(folderId).throwIfNotFound();
+    }
+
+    return true;
+  }
+
+  getFlows({ folderId, name }) {
+    return this.authorizedFlows
+      .clone()
+      .withGraphFetched({
+        steps: true,
+      })
+      .where((builder) => {
+        if (name) {
+          builder.where('flows.name', 'ilike', `%${name}%`);
+        }
+
+        if (folderId === 'null') {
+          builder.whereNull('flows.folder_id');
+        } else if (folderId) {
+          builder.where('flows.folder_id', folderId);
+        }
+      })
+      .orderBy('active', 'desc')
+      .orderBy('updated_at', 'desc');
   }
 
   async getApps(name) {

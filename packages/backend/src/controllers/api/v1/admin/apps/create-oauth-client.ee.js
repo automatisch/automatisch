@@ -6,9 +6,9 @@ export default async (request, response) => {
     .findOne({ key: request.params.appKey })
     .throwIfNotFound();
 
-  const oauthClient = await appConfig
-    .$relatedQuery('oauthClients')
-    .insert(oauthClientParams(request));
+  const oauthClient = await appConfig.createOAuthClient(
+    oauthClientParams(request)
+  );
 
   renderObject(response, oauthClient, { status: 201 });
 };

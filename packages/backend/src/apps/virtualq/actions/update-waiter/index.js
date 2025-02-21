@@ -1,4 +1,5 @@
 import defineAction from '../../../../helpers/define-action.js';
+import isPlainObject from 'lodash/isPlainObject.js';
 
 export default defineAction({
   name: 'Update waiter',
@@ -49,7 +50,7 @@ export default defineAction({
       description: 'Used to find caller if 0 is used for waiter field',
     },
     {
-      label: 'EWT',
+      label: 'Estimated waiting time',
       key: 'serviceWaiterEwt',
       type: 'string',
       description: 'EWT as calculated by the service',
@@ -104,6 +105,15 @@ export default defineAction({
       required: false,
       variables: true,
     },
+    {
+      label: 'Properties',
+      key: 'properties',
+      type: 'string',
+      required: false,
+      variables: false,
+      valueType: 'parse',
+      description: 'JSON for the additional properties.',
+    },
   ],
 
   async run($) {
@@ -117,6 +127,7 @@ export default defineAction({
       talkTime,
       agentId,
       servicePhoneToCall,
+      properties,
     } = $.step.parameters;
 
     const body = {
@@ -148,6 +159,16 @@ export default defineAction({
 
     if (waitTimeWhenUp) {
       body.data.attributes.wait_time_when_up = waitTimeWhenUp;
+    }
+
+    if (properties) {
+      if (!isPlainObject(properties)) {
+        throw new Error(
+          `The "properties" field must have a valid JSON. The current value: ${properties}`
+        );
+      }
+
+      body.data.attributes.properties = properties;
     }
 
     const { data } = await $.http.put(`/v2/waiters/${waiterId}`, body);

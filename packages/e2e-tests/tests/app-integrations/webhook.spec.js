@@ -12,7 +12,7 @@ test.describe('Webhook flow', () => {
   test('Create a new flow with a sync Webhook step then a Webhook step', async ({
     flowEditorPage,
     page,
-    request
+    request,
   }) => {
     await flowEditorPage.flowName.click();
     await flowEditorPage.flowNameInput.fill('syncWebhook');
@@ -23,10 +23,11 @@ test.describe('Webhook flow', () => {
     await expect(flowEditorPage.continueButton).toHaveCount(1);
     await expect(flowEditorPage.continueButton).not.toBeEnabled();
 
-    await page
-      .getByTestId('parameters.statusCode-power-input')
-      .locator('[contenteditable]')
-      .fill('200');
+    await expect(
+      page
+        .getByTestId('parameters.statusCode-power-input')
+        .locator('[contenteditable]')
+    ).toHaveText('200');
     await flowEditorPage.clickAway();
     await expect(flowEditorPage.continueButton).toHaveCount(1);
     await expect(flowEditorPage.continueButton).not.toBeEnabled();
@@ -36,7 +37,9 @@ test.describe('Webhook flow', () => {
       .locator('[contenteditable]')
       .fill('response from webhook');
     await flowEditorPage.clickAway();
-    await expect(page.getByTestId("parameters.headers.0.key-power-input")).toBeVisible();
+    await expect(
+      page.getByTestId('parameters.headers.0.key-power-input')
+    ).toBeVisible();
     await expect(flowEditorPage.continueButton).toBeEnabled();
     await flowEditorPage.continueButton.click();
 
@@ -52,7 +55,7 @@ test.describe('Webhook flow', () => {
   test('Create a new flow with an async Webhook step then a Webhook step', async ({
     flowEditorPage,
     page,
-    request
+    request,
   }) => {
     await flowEditorPage.flowName.click();
     await flowEditorPage.flowNameInput.fill('asyncWebhook');
@@ -75,7 +78,9 @@ test.describe('Webhook flow', () => {
       .locator('[contenteditable]')
       .fill('response from webhook');
     await flowEditorPage.clickAway();
-    await expect(page.getByTestId("parameters.headers.0.key-power-input")).toBeVisible();
+    await expect(
+      page.getByTestId('parameters.headers.0.key-power-input')
+    ).toBeVisible();
     await expect(flowEditorPage.continueButton).toBeEnabled();
     await flowEditorPage.continueButton.click();
 

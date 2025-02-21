@@ -37,7 +37,7 @@ function FlowRow(props) {
   const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { flow, onDuplicateFlow, onDeleteFlow, appKey } = props;
+  const { flow, onDuplicateFlow, appKey } = props;
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -116,9 +116,9 @@ function FlowRow(props) {
       {anchorEl && (
         <FlowContextMenu
           flowId={flow.id}
+          folderId={flow.folder?.id}
           onClose={handleClose}
           anchorEl={anchorEl}
-          onDeleteFlow={onDeleteFlow}
           onDuplicateFlow={onDuplicateFlow}
           appKey={appKey}
         />
@@ -129,7 +129,6 @@ function FlowRow(props) {
 
 FlowRow.propTypes = {
   flow: FlowPropType.isRequired,
-  onDeleteFlow: PropTypes.func,
   onDuplicateFlow: PropTypes.func,
   appKey: PropTypes.string,
 };

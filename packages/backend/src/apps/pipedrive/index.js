@@ -9,7 +9,7 @@ import dynamicData from './dynamic-data/index.js';
 export default defineApp({
   name: 'Pipedrive',
   key: 'pipedrive',
-  baseUrl: '',
+  baseUrl: 'https://www.pipedrive.com',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/pipedrive/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/pipedrive/connection',

@@ -2,6 +2,7 @@ import { ValidationError } from 'objection';
 import Base from './base.js';
 import Step from './step.js';
 import User from './user.js';
+import Folder from './folder.js';
 import Execution from './execution.js';
 import ExecutionStep from './execution-step.js';
 import globalVariable from '../helpers/global-variable.js';
@@ -28,6 +29,7 @@ class Flow extends Base {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
       userId: { type: 'string', format: 'uuid' },
+      folderId: { type: ['string', 'null'], format: 'uuid' },
       remoteWebhookId: { type: 'string' },
       active: { type: 'boolean' },
       publishedAt: { type: 'string' },
@@ -85,6 +87,14 @@ class Flow extends Base {
       join: {
         from: 'flows.user_id',
         to: 'users.id',
+      },
+    },
+    folder: {
+      relation: Base.HasOneRelation,
+      modelClass: Folder,
+      join: {
+        from: 'flows.folder_id',
+        to: 'folders.id',
       },
     },
   });
@@ -302,6 +312,7 @@ class Flow extends Base {
         .$relatedQuery('steps')
         .insert({
           key: step.key,
+          name: step.name,
           appKey: step.appKey,
           type: step.type,
           connectionId: step.connectionId,
@@ -335,6 +346,26 @@ class Flow extends Base {
     const user = await this.$relatedQuery('user').withSoftDeleted();
     const allowedToRunFlows = await user.isAllowedToRunFlows();
     return allowedToRunFlows ? false : true;
+  }
+
+  async updateFolder(folderId) {
+    const user = await this.$relatedQuery('user');
+
+    if (folderId === null) {
+      return this.updateFolderReference(null);
+    }
+
+    const folder = await user
+      .$relatedQuery('folders')
+      .findOne({ id: folderId })
+      .throwIfNotFound();
+
+    return this.updateFolderReference(folder.id);
+  }
+
+  async updateFolderReference(folderId) {
+    await this.$query().patch({ folderId });
+    return this.$query().withGraphFetched('folder');
   }
 
   async updateStatus(newActiveValue) {

@@ -19,7 +19,9 @@ function ConfirmationDialog(props) {
     open = true,
     errorMessage,
   } = props;
+
   const dataTest = props['data-test'];
+
   return (
     <Dialog open={open} onClose={onClose} data-test={dataTest}>
       {title && <DialogTitle>{title}</DialogTitle>}
@@ -46,6 +48,7 @@ function ConfirmationDialog(props) {
           </Button>
         )}
       </DialogActions>
+
       {errorMessage && (
         <Alert data-test="confirmation-dialog-error-alert" severity="error">
           {errorMessage}

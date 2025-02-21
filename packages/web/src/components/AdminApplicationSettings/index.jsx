@@ -12,18 +12,22 @@ import { Switch } from './style';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useAdminCreateAppConfig from 'hooks/useAdminCreateAppConfig';
 import useAdminUpdateAppConfig from 'hooks/useAdminUpdateAppConfig';
+import useApp from 'hooks/useApp';
 
-function AdminApplicationSettings(props) {
+function AdminApplicationSettings({ appKey }) {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
 
-  const { data: appConfig, isLoading: loading } = useAppConfig(props.appKey);
+  const { data: appData, loading: appLoading } = useApp(appKey);
+  const app = appData?.data || {};
+
+  const { data: appConfig, isLoading: loading } = useAppConfig(appKey);
 
   const { mutateAsync: createAppConfig, isPending: isCreateAppConfigPending } =
-    useAdminCreateAppConfig(props.appKey);
+    useAdminCreateAppConfig(appKey);
 
   const { mutateAsync: updateAppConfig, isPending: isUpdateAppConfigPending } =
-    useAdminUpdateAppConfig(props.appKey);
+    useAdminUpdateAppConfig(appKey);
 
   const handleSubmit = async (values) => {
     try {
@@ -46,11 +50,13 @@ function AdminApplicationSettings(props) {
 
   const defaultValues = useMemo(
     () => ({
-      useOnlyPredefinedAuthClients:
-        appConfig?.data?.useOnlyPredefinedAuthClients || false,
+      ...(app.supportsOauthClients && {
+        useOnlyPredefinedAuthClients:
+          appConfig?.data?.useOnlyPredefinedAuthClients || false,
+      }),
       disabled: appConfig?.data?.disabled || false,
     }),
-    [appConfig?.data],
+    [appConfig?.data, app.supportsOauthClients],
   );
 
   return (
@@ -60,17 +66,21 @@ function AdminApplicationSettings(props) {
       render={({ formState: { isDirty } }) => (
         <Paper sx={{ p: 2, mt: 4 }}>
           <Stack spacing={2} direction="column">
-            <Switch
-              name="useOnlyPredefinedAuthClients"
-              label={formatMessage(
-                'adminAppsSettings.useOnlyPredefinedAuthClients',
-              )}
-              FormControlLabelProps={{
-                labelPlacement: 'start',
-              }}
-            />
+            {app.supportsOauthClients && (
+              <>
+                <Switch
+                  name="useOnlyPredefinedAuthClients"
+                  label={formatMessage(
+                    'adminAppsSettings.useOnlyPredefinedAuthClients',
+                  )}
+                  FormControlLabelProps={{
+                    labelPlacement: 'start',
+                  }}
+                />
 
-            <Divider />
+                <Divider />
+              </>
+            )}
 
             <Switch
               name="disabled"
@@ -90,7 +100,7 @@ function AdminApplicationSettings(props) {
               color="primary"
               sx={{ boxShadow: 2, mt: 5 }}
               loading={isCreateAppConfigPending || isUpdateAppConfigPending}
-              disabled={!isDirty || loading}
+              disabled={!isDirty || loading || appLoading}
             >
               {formatMessage('adminAppsSettings.save')}
             </LoadingButton>

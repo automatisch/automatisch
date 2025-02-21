@@ -133,6 +133,30 @@ const authorizationList = {
     action: 'create',
     subject: 'Connection',
   },
+  'POST /api/v1/folders/': {
+    action: 'create',
+    subject: 'Flow',
+  },
+  'PATCH /api/v1/folders/:folderId': {
+    action: 'create',
+    subject: 'Flow',
+  },
+  'DELETE /api/v1/folders/:folderId': {
+    action: 'create',
+    subject: 'Flow',
+  },
+  'GET /api/v1/folders/': {
+    action: 'read',
+    subject: 'Flow',
+  },
+  'PATCH /api/v1/flows/:flowId/folder': {
+    action: 'update',
+    subject: 'Flow',
+  },
+  'GET /api/v1/flows/:flowId/folder': {
+    action: 'read',
+    subject: 'Flow',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {

@@ -1,5 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { DateTime, Duration } from 'luxon';
+import Crypto from 'crypto';
 import appConfig from '../config/app.js';
 import * as licenseModule from '../helpers/license.ee.js';
 import Base from './base.js';
@@ -14,6 +15,7 @@ import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import UsageData from './usage-data.ee.js';
+import Folder from './folder.js';
 import User from './user.js';
 import deleteUserQueue from '../queues/delete-user.ee.js';
 import emailQueue from '../queues/email.js';
@@ -31,6 +33,7 @@ import { createStep } from '../../test/factories/step.js';
 import { createExecution } from '../../test/factories/execution.js';
 import { createSubscription } from '../../test/factories/subscription.js';
 import { createUsageData } from '../../test/factories/usage-data.js';
+import { createFolder } from '../../test/factories/folder.js';
 import Billing from '../helpers/billing/index.ee.js';
 
 describe('User model', () => {
@@ -151,6 +154,14 @@ describe('User model', () => {
           join: {
             from: 'identities.user_id',
             to: 'users.id',
+          },
+        },
+        folders: {
+          relation: Base.HasManyRelation,
+          modelClass: Folder,
+          join: {
+            from: 'users.id',
+            to: 'folders.user_id',
           },
         },
       };
@@ -1001,7 +1012,7 @@ describe('User model', () => {
 
       await user.startTrialPeriod();
 
-      vi.setSystemTime(DateTime.now().plus({ month: 1 }));
+      vi.setSystemTime(DateTime.now().plus({ days: 31 }));
 
       const refetchedUser = await user.$query();
 
@@ -1133,7 +1144,112 @@ describe('User model', () => {
     it('should return empty array without any subscriptions', async () => {
       const user = await createUser();
 
-      expect(await user.getInvoices()).toStrictEqual([]);
+      expect(await user.getInvoices()).toEqual([]);
+    });
+  });
+
+  describe('hasFolderAccess', () => {
+    let currentUser, currentUserFolder;
+
+    beforeEach(async () => {
+      currentUser = await createUser();
+      currentUserFolder = await createFolder({ userId: currentUser.id });
+    });
+
+    it('should return true if the user has access to the folder', async () => {
+      const hasAccess = await currentUser.hasFolderAccess(currentUserFolder.id);
+      expect(hasAccess).toBe(true);
+    });
+
+    it('should throw an error if the user does not have access to the folder', async () => {
+      const anotherUser = await createUser();
+      const anotherUserFolder = await createFolder({ userId: anotherUser.id });
+
+      await expect(
+        currentUser.hasFolderAccess(anotherUserFolder.id)
+      ).rejects.toThrow();
+    });
+
+    it('should throw an error if the folder does not exist', async () => {
+      const nonExistingFolderUUID = Crypto.randomUUID();
+
+      await expect(
+        currentUser.hasFolderAccess(nonExistingFolderUUID)
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('getFlows', () => {
+    let currentUser, currentUserRole, folder, flowOne, flowTwo;
+
+    beforeEach(async () => {
+      currentUser = await createUser();
+      currentUserRole = await currentUser.$relatedQuery('role');
+
+      folder = await createFolder({ userId: currentUser.id });
+
+      flowOne = await createFlow({
+        userId: currentUser.id,
+        folderId: folder.id,
+        name: 'Flow One',
+      });
+
+      flowTwo = await createFlow({
+        userId: currentUser.id,
+        name: 'Flow Two',
+      });
+
+      await createPermission({
+        action: 'read',
+        subject: 'Flow',
+        roleId: currentUserRole.id,
+        conditions: ['isCreator'],
+      });
+
+      currentUser = await currentUser.$query().withGraphFetched({
+        role: true,
+        permissions: true,
+      });
+    });
+
+    it('should return flows filtered by folderId', async () => {
+      const flows = await currentUser.getFlows({ folderId: folder.id });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return flows filtered by name', async () => {
+      const flows = await currentUser.getFlows({ name: 'Flow Two' });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowTwo.id);
+    });
+
+    it('should return flows filtered by folderId and name', async () => {
+      const flows = await currentUser.getFlows({
+        folderId: folder.id,
+        name: 'Flow One',
+      });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return all flows if no filters are provided', async () => {
+      const flows = await currentUser.getFlows({});
+
+      expect(flows).toHaveLength(2);
+      expect(flows.map((flow) => flow.id)).toEqual(
+        expect.arrayContaining([flowOne.id, flowTwo.id])
+      );
+    });
+
+    it('should return uncategorized flows if the folderId is null', async () => {
+      const flows = await currentUser.getFlows({ folderId: 'null' });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowTwo.id);
     });
   });
 

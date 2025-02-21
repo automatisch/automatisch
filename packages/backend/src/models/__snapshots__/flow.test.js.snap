@@ -12,6 +12,13 @@ exports[`Flow model > jsonSchema should have correct validations 1`] = `
     "deletedAt": {
       "type": "string",
     },
+    "folderId": {
+      "format": "uuid",
+      "type": [
+        "string",
+        "null",
+      ],
+    },
     "id": {
       "format": "uuid",
       "type": "string",

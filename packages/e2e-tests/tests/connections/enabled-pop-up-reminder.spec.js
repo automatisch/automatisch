@@ -1,24 +1,60 @@
+const { request } = require('@playwright/test');
 const { test, expect } = require('../../fixtures/index');
-const {AddMattermostConnectionModal} = require('../../fixtures/apps/mattermost/add-mattermost-connection-modal');
+const {
+  AddMattermostConnectionModal,
+} = require('../../fixtures/apps/mattermost/add-mattermost-connection-modal');
+const {
+  createFlow,
+  updateFlowName,
+  getFlow,
+  updateFlowStep,
+  testStep,
+} = require('../../helpers/flow-api-helper');
+const { getToken } = require('../../helpers/auth-api-helper');
 
 test.describe('Pop-up message on connections', () => {
   test.beforeEach(async ({ flowEditorPage, page }) => {
-    await page.getByTestId('create-flow-button').click();
-    await page.waitForURL(
-      /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
-    );
-    await expect(page.getByTestId('flow-step')).toHaveCount(2);
+    const apiRequest = await request.newContext();
+    const tokenJsonResponse = await getToken(apiRequest);
+    const token = tokenJsonResponse.data.token;
 
-    await flowEditorPage.flowName.click();
-    await flowEditorPage.flowNameInput.fill('PopupFlow');
-    await flowEditorPage.createWebhookTrigger(true);
+    let flow = await createFlow(apiRequest, token);
+    const flowId = flow.data.id;
+    await updateFlowName(apiRequest, token, flowId);
+    flow = await getFlow(apiRequest, token, flowId);
+    const flowSteps = flow.data.steps;
+    const triggerStepId = flowSteps.find((step) => step.type === 'trigger').id;
+    const actionStepId = flowSteps.find((step) => step.type === 'action').id;
 
-    await flowEditorPage.chooseAppAndEvent('Mattermost', 'Send a message to channel');
-    await expect(flowEditorPage.continueButton).toHaveCount(1);
-    await expect(flowEditorPage.continueButton).not.toBeEnabled();
+    const triggerStep = await updateFlowStep(apiRequest, token, triggerStepId, {
+      appKey: 'webhook',
+      key: 'catchRawWebhook',
+      parameters: {
+        workSynchronously: false,
+      },
+    });
+    await apiRequest.get(triggerStep.data.webhookUrl);
+    await testStep(apiRequest, token, triggerStepId);
+
+    await updateFlowStep(apiRequest, token, actionStepId, {
+      appKey: 'mattermost',
+      key: 'sendMessageToChannel',
+    });
+    await testStep(apiRequest, token, actionStepId);
+
+    await page.reload();
+
+    const flowRow = await page.getByTestId('flow-row').filter({
+      hasText: flowId,
+    });
+    await flowRow.click();
+    const flowTriggerStep = await page.getByTestId('flow-step').nth(1);
+    await flowTriggerStep.click();
+    await page.getByText('Choose connection').click();
 
     await flowEditorPage.connectionAutocomplete.click();
-    await flowEditorPage.addNewConnectionItem.click();  });
+    await flowEditorPage.addNewConnectionItem.click();
+  });
 
   test('should show error to remind to enable pop-up on connection create', async ({
     page,
@@ -28,7 +64,7 @@ test.describe('Pop-up message on connections', () => {
     // Inject script to override window.open
     await page.evaluate(() => {
       // eslint-disable-next-line no-undef
-      window.open = function() {
+      window.open = function () {
         console.log('Popup blocked!');
         return null;
       };
@@ -37,8 +73,10 @@ test.describe('Pop-up message on connections', () => {
     await addMattermostConnectionModal.fillConnectionForm();
     await addMattermostConnectionModal.submitConnectionForm();
 
-    await expect(page.getByTestId("add-connection-error")).toHaveCount(1);
-    await expect(page.getByTestId("add-connection-error")).toHaveText('Make sure pop-ups are enabled in your browser.');
+    await expect(page.getByTestId('add-connection-error')).toHaveCount(1);
+    await expect(page.getByTestId('add-connection-error')).toHaveText(
+      'Make sure pop-ups are enabled in your browser.'
+    );
   });
 
   test('should not show pop-up error if pop-ups are enabled on connection create', async ({
@@ -51,13 +89,15 @@ test.describe('Pop-up message on connections', () => {
     await addMattermostConnectionModal.submitConnectionForm();
 
     const popup = await popupPromise;
-    await expect(popup.url()).toContain("mattermost");
-    await expect(page.getByTestId("add-connection-error")).toHaveCount(0);
+    await expect(popup.url()).toContain('mattermost');
+    await expect(page.getByTestId('add-connection-error')).toHaveCount(0);
 
     await test.step('Should show error on failed credentials verification', async () => {
       await popup.close();
-      await expect(page.getByTestId("add-connection-error")).toHaveCount(1);
-      await expect(page.getByTestId("add-connection-error")).toHaveText('Error occured while verifying credentials!');
+      await expect(page.getByTestId('add-connection-error')).toHaveCount(1);
+      await expect(page.getByTestId('add-connection-error')).toHaveText(
+        'Error occured while verifying credentials!'
+      );
     });
   });
 });
