@@ -5,7 +5,7 @@ export default {
    async run($) {
       let response;
       const driveId = $.step.parameters.driveId;
-      let requestPath = `/drives/${driveId}/children`;
+      let requestPath = `/drives/${driveId}/root/children`;
       response = await $.http.get(requestPath);
 
       const items = {

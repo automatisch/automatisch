@@ -8,7 +8,7 @@ export default {
     response = await $.http.get(requestPath);
 
     const drives = {
-      data: [{ value: null, name: 'My Google Drive' }],
+      data: [{ value: null, name: 'My OneDrive' }],
     };
 
     response.data.value.forEach((drive) => {

@@ -26,7 +26,7 @@ export default defineAction({
       key: 'driveId',
       type: 'dropdown',
       required: false,
-      variables: true,
+      variables: false,
       source: {
         type: 'query',
         name: 'getDynamicData',
@@ -43,7 +43,7 @@ export default defineAction({
       key: 'parentItemId',
       type: 'dropdown',
       required: false,
-      variables: true,
+      variables: false,
       dependsOn: ['parameters.driveId'],
       source: {
         type: 'query',
