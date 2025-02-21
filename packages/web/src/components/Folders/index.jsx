@@ -22,6 +22,7 @@ import EditFolderDialog from 'components/EditFolderDialog';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useFolders from 'hooks/useFolders';
 import useDeleteFolder from 'hooks/useDeleteFolder';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
 import { ListItemIcon } from './style';
 
@@ -32,6 +33,7 @@ export default function Folders() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data: folders } = useFolders();
+  const enqueueSnackbar = useEnqueueSnackbar();
 
   const {
     mutateAsync: deleteFolder,
@@ -68,6 +70,13 @@ export default function Folders() {
     setShowDeleteFolderDialog(false);
 
     navigate({ search: allFlowsFolder });
+
+    enqueueSnackbar(formatMessage('folders.successfullyDeleted'), {
+      variant: 'success',
+      SnackbarProps: {
+        'data-test': 'snackbar-delete-folder-success',
+      },
+    });
   };
 
   const handleDeleteFolderClose = async () => {
