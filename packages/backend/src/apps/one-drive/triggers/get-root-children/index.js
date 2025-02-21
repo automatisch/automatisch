@@ -9,20 +9,18 @@ export default defineTrigger({
   async run($) {
     let response;
 
-    do {
-      let requestPath = `/me/drive/root/children`;
-      response = await $.http.get(requestPath);
+   let requestPath = `/me/drive/root/children`;
+   response = await $.http.get(requestPath);
 
-      response.data.value.forEach((driveItem) => {
-        const dataItem = {
-          raw: driveItem,
-          meta: {
-            internalId: `${driveItem.id}`,
-          },
-        };
+   response.data.value.forEach((driveItem) => {
+      const dataItem = {
+         raw: driveItem,
+         meta: {
+         internalId: `${driveItem.id}`,
+         },
+      };
 
-        $.pushTriggerItem(dataItem);
-      });
-    } while (response.data.length >= 10);
+      $.pushTriggerItem(dataItem);
+   });
   },
 });
