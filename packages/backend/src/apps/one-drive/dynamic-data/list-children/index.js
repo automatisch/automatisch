@@ -13,7 +13,7 @@ export default {
       };
 
       response.data.value.forEach((driveItem) => {
-         drives.data.push({
+         items.data.push({
             value: driveItem.id,
             name: driveItem.name,
          });
