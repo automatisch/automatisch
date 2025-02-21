@@ -7,16 +7,20 @@ export default {
     let requestPath = `/me/drives`;
     response = await $.http.get(requestPath);
 
-    response.data.value.forEach((drive) => {
-      const dataItem = {
-        raw: drive,
-        meta: {
-          internalId: `${drive.id}`,
-        },
-      };
+    const drives = {
+      data: [{ value: null, name: 'My Google Drive' }],
+    };
 
-      $.pushTriggerItem(dataItem);
+    response.data.value.forEach((drive) => {
+
+      drives.data.push({
+         value: drive.id,
+         name: drive.name,
+       });
+
     });
+
+    return drives
   },
 
 };

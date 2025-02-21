@@ -8,17 +8,19 @@ export default {
      let requestPath = `/me/drives/sharedWithMe`;
      response = await $.http.get(requestPath);
  
-     response.data.value.forEach((driveItem) => {
-       const dataItem = {
-         raw: driveItem,
-         meta: {
-           internalId: `${driveItem.id}`,
-         },
-       };
- 
-       $.pushTriggerItem(dataItem);
-     });
+      const items = {
+         data: [{ value: null, name: 'Files shared with Me' }],
+      };
+
+
+      response.data.value.forEach((driveItem) => {
+         drives.data.push({
+            value: driveItem.id,
+            name: driveItem.name,
+         });
+      });
+
+      return items
    },
- 
  };
  

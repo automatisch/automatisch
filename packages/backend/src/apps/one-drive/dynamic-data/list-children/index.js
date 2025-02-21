@@ -3,20 +3,23 @@ export default {
    key: 'listChildren',
  
    async run($) {
-     let response;
-     let requestPath = `/me/drive/root/children`;
-     response = await $.http.get(requestPath);
- 
-     response.data.value.forEach((driveItem) => {
-       const dataItem = {
-         raw: driveItem,
-         meta: {
-           internalId: `${driveItem.id}`,
-         },
-       };
- 
-       $.pushTriggerItem(dataItem);
-     });
+      let response;
+      const driveId = $.step.parameters.driveId;
+      let requestPath = `/drives/${driveId}/children`;
+      response = await $.http.get(requestPath);
+
+      const items = {
+         data: [{ value: null, name: 'My files' }],
+      };
+
+      response.data.value.forEach((driveItem) => {
+         drives.data.push({
+            value: driveItem.id,
+            name: driveItem.name,
+         });
+      });
+
+      return items
    },
  
  };

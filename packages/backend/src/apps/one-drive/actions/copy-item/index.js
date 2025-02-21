@@ -18,48 +18,52 @@ export default defineAction({
       key: 'name',
       type: 'string',
       required: false,
-      variables: true,
+      variables: false,
       description: "Optional. The new name for the copy. If this isn't provided, the same name will be used as the original.",
     },
-   //  {
-   //    label: 'Parent reference',
-   //    key: 'parentReference',
-   //    type: 'dynamic',
-   //    required: false,
-   //    fields: [
-   //       {
-   //          label: 'Item ID',
-   //          key: 'itemId',
-   //          type: 'dropdown',
-   //          required: false,
-   //          variables: false,
-   //          source: {
-   //            type: 'query',
-   //            name: 'getDynamicData',
-   //            arguments: [
-   //              {
-   //                name: 'key',
-   //                value: 'listChildren',
-   //              },
-   //              {
-   //                name: 'parameters.driveId',
-   //                value: '{parameters.driveId}'
-   //              },
-   //              {
-   //                name: 'parameters.itemId',
-   //                value: '{parameters.itemId}',
-   //              },
-   //            ],
-   //          },
-   //        },
-   //    ],
-   //  },
+    {
+      label: 'Drive ID',
+      key: 'driveId',
+      type: 'dropdown',
+      required: false,
+      variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listMyDrives',
+          },
+        ],
+      },
+    },
+   {
+      label: 'Parent Item ID',
+      key: 'parentItemId',
+      type: 'dropdown',
+      required: false,
+      variables: true,
+      dependsOn: ['parameters.driveId'],
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listChildren',
+          },
+        ],
+      },
+    },
   ],
 
   async run($) {
     let response;
     const itemId = $.step.parameters.itemId;
     const name = $.step.parameters.name;
+    const driveId = $.step.parameters.driveId
+    const parentId = $.step.parameters.parentItemId
     let body;
     if (name != 'undefined' && name != '') {
       body = {
@@ -67,7 +71,12 @@ export default defineAction({
        };   
     }
    
-
+    if (driveId != '' && driveId != 'undefined' && parentId != '' && parentId != 'undefined') {
+      body['parentReference'] = {
+         driveId,
+         'id': parentId
+      };
+    }
 
     let requestPath = `/me/drive/items/${itemId}/copy`;
     response = await $.http.post(requestPath, body);
