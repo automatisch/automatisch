@@ -62,16 +62,15 @@ export default function EditFolderDialog(props) {
       <DialogContent>
         <DialogContentText>
           {formatMessage('editFolderDialog.description')}
-
-          <TextField
-            sx={{ mt: 2 }}
-            value={folderName}
-            onKeyDown={handleTextFieldKeyDown}
-            onChange={handleTextFieldChange}
-            label={formatMessage('editFolderDialog.folderNameInputLabel')}
-            fullWidth
-          />
         </DialogContentText>
+        <TextField
+          sx={{ mt: 2 }}
+          value={folderName}
+          onKeyDown={handleTextFieldKeyDown}
+          onChange={handleTextFieldChange}
+          label={formatMessage('editFolderDialog.folderNameInputLabel')}
+          fullWidth
+        />
       </DialogContent>
 
       <DialogActions sx={{ mb: 1 }}>
@@ -80,7 +79,6 @@ export default function EditFolderDialog(props) {
           onClick={handleUpdateFolder}
           data-test="edit-folder-dialog-update-button"
           startIcon={<SaveIcon />}
-          Save
         >
           {formatMessage('editFolderDialog.update')}
         </Button>
