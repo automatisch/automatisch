@@ -27,9 +27,16 @@ const addAuthHeader = ($, requestConfig) => {
   );
 
   requestConfig.headers.Authorization = authHeader.Authorization;
-  requestConfig.headers[
-    'User-Agent'
-  ] = `web:automatisch:${appConfig.version}`;
+  const screenName = $.auth.data?.screenName;
+  if (screenName) {
+    requestConfig.headers[
+      'User-Agent'
+    ] = `web:automatisch:${appConfig.version} (by ${screenName})`;
+  } else {
+    requestConfig.headers[
+      'User-Agent'
+    ] = `web:automatisch:${appConfig.version}`;
+  }
 
   return requestConfig;
 };
