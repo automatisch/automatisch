@@ -59,16 +59,15 @@ export default function CreateFolderDialog(props) {
       <DialogContent>
         <DialogContentText>
           {formatMessage('createFolderDialog.description')}
-
-          <TextField
-            sx={{ mt: 2 }}
-            value={folderName}
-            onKeyDown={handleTextFieldKeyDown}
-            onChange={handleTextFieldChange}
-            label={formatMessage('createFolderDialog.folderNameInputLabel')}
-            fullWidth
-          />
         </DialogContentText>
+        <TextField
+          sx={{ mt: 2 }}
+          value={folderName}
+          onKeyDown={handleTextFieldKeyDown}
+          onChange={handleTextFieldChange}
+          label={formatMessage('createFolderDialog.folderNameInputLabel')}
+          fullWidth
+        />
       </DialogContent>
 
       <DialogActions sx={{ mb: 1 }}>
