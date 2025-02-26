@@ -17,6 +17,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 export default function FileUploadInput(props) {
+  const { onChange, children, ...rest } = props;
   return (
     <Button
       component="label"
@@ -24,10 +25,11 @@ export default function FileUploadInput(props) {
       variant="contained"
       tabIndex={-1}
       startIcon={<AttachFileIcon />}
+      {...rest}
     >
-      {props.children}
+      {children}
 
-      <VisuallyHiddenInput type="file" onChange={props.onChange} />
+      <VisuallyHiddenInput type="file" onChange={onChange} />
     </Button>
   );
 }
