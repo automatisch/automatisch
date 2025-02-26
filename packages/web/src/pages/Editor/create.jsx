@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import * as URLS from 'config/urls';
@@ -10,21 +10,39 @@ import Box from '@mui/material/Box';
 export default function CreateFlow() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const { mutateAsync: createFlow, isError } = useCreateFlow();
+
+  const { templateId } = useParams();
+
+  const { mutateAsync: createFlow, isCreateFlowError } = useCreateFlow();
+  const { mutateAsync: createFlowFromTemplate, isCreateFlowFromTemplateError } =
+    useCreateFlow();
+
+  const navigateToEditor = (flowId) =>
+    navigate(URLS.FLOW_EDITOR(flowId), { replace: true });
 
   React.useEffect(() => {
     async function initiate() {
+      if (templateId) {
+        const response = await createFlowFromTemplate(templateId);
+
+        const flowId = response.data?.id;
+
+        navigateToEditor(flowId);
+
+        return;
+      }
+
       const response = await createFlow();
 
       const flowId = response.data?.id;
 
-      navigate(URLS.FLOW_EDITOR(flowId), { replace: true });
+      navigateToEditor(flowId);
     }
 
     initiate();
-  }, [createFlow, navigate]);
+  }, [createFlow, navigate, templateId]);
 
-  if (isError) {
+  if (isCreateFlowError || isCreateFlowFromTemplateError) {
     return null;
   }
 
@@ -40,6 +58,7 @@ export default function CreateFlow() {
       }}
     >
       <CircularProgress size={16} thickness={7.5} />
+
       <Typography variant="body2">
         {formatMessage('createFlow.creating')}
       </Typography>
