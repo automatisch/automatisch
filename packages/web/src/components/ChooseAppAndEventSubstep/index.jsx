@@ -102,6 +102,7 @@ function ChooseAppAndEventSubstep(props) {
               ...step,
               key: eventKey,
               keyLabel: eventLabel,
+              parameters: {},
             },
           });
         }
