@@ -11,7 +11,7 @@ export default defineApp({
   baseUrl: 'https://graph.microsoft.com/v1.0',
   apiBaseUrl: 'https://graph.microsoft.com/v1.0',
   iconUrl: '{BASE_URL}/apps/one-drive/assets/favicon.svg',
-  authDocUrl: '{DOCS_URL}/apps/one-dirve/connection',
+  authDocUrl: '{DOCS_URL}/apps/one-drive/connection',
   primaryColor: '1FA463',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
