@@ -334,6 +334,7 @@
   "folders.allFlows": "All flows",
   "folders.unassignedFlows": "Uncategorized flows",
   "folders.createNew": "New folder",
+  "folders.successfullyDeleted": "The folder has been deleted.",
   "createFolderDialog.title": "Create folder",
   "createFolderDialog.create": "Create",
   "createFolderDialog.description": "You can create a new folder by submitting the form below.",
