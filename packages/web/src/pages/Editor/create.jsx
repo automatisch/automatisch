@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import * as URLS from 'config/urls';
@@ -10,21 +10,26 @@ import Box from '@mui/material/Box';
 export default function CreateFlow() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
-  const { mutateAsync: createFlow, isError } = useCreateFlow();
+  const [searchParams] = useSearchParams();
+  const { mutateAsync: createFlow, isCreateFlowError } = useCreateFlow();
+
+  const navigateToEditor = (flowId) =>
+    navigate(URLS.FLOW_EDITOR(flowId), { replace: true });
 
   React.useEffect(() => {
     async function initiate() {
-      const response = await createFlow();
+      const templateId = searchParams.get('templateId');
+      const response = await createFlow({ templateId });
 
       const flowId = response.data?.id;
 
-      navigate(URLS.FLOW_EDITOR(flowId), { replace: true });
+      navigateToEditor(flowId);
     }
 
     initiate();
-  }, [createFlow, navigate]);
+  }, [createFlow, navigate, searchParams]);
 
-  if (isError) {
+  if (isCreateFlowError) {
     return null;
   }
 
@@ -40,6 +45,7 @@ export default function CreateFlow() {
       }}
     >
       <CircularProgress size={16} thickness={7.5} />
+
       <Typography variant="body2">
         {formatMessage('createFlow.creating')}
       </Typography>

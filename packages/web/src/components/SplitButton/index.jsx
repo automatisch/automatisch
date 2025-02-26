@@ -24,9 +24,6 @@ export default function SplitButton(props) {
   };
 
   const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
     setOpen(false);
   };
 
@@ -43,6 +40,7 @@ export default function SplitButton(props) {
           data-test={selectedOption['data-test']}
           component={Link}
           to={selectedOption.to}
+          startIcon={selectedOption.startIcon}
           sx={{
             // Link component causes style loss in ButtonGroup
             borderRadius: 0,
@@ -105,7 +103,8 @@ SplitButton.propTypes = {
       key: PropTypes.string.isRequired,
       'data-test': PropTypes.string.isRequired,
       to: PropTypes.string.isRequired,
-      disabled: PropTypes.bool.isRequired,
+      disabled: PropTypes.bool,
+      startIcon: PropTypes.node,
     }).isRequired,
   ).isRequired,
   disabled: PropTypes.bool,

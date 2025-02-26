@@ -12,6 +12,10 @@ import * as URLS from 'config/urls';
 import Can from 'components/Can';
 import AdminApplications from 'pages/AdminApplications';
 import AdminApplication from 'pages/AdminApplication';
+import AdminTemplates from 'pages/AdminTemplates';
+import AdminCreateTemplate from 'pages/AdminCreateTemplate';
+import AdminUpdateTemplate from 'pages/AdminUpdateTemplate';
+
 // TODO: consider introducing redirections to `/` as fallback
 export default (
   <>
@@ -105,6 +109,33 @@ export default (
       element={
         <Can I="update" a="App">
           <AdminApplication />
+        </Can>
+      }
+    />
+
+    <Route
+      path={`${URLS.ADMIN_TEMPLATES}/*`}
+      element={
+        <Can I="update" a="Config">
+          <AdminTemplates />
+        </Can>
+      }
+    />
+
+    <Route
+      path={`${URLS.ADMIN_CREATE_TEMPLATE_PATTERN}/*`}
+      element={
+        <Can I="update" a="Config">
+          <AdminCreateTemplate />
+        </Can>
+      }
+    />
+
+    <Route
+      path={`${URLS.ADMIN_UPDATE_TEMPLATE_PATTERN}/*`}
+      element={
+        <Can I="update" a="Config">
+          <AdminUpdateTemplate />
         </Can>
       }
     />

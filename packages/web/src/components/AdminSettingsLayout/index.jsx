@@ -22,6 +22,7 @@ import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import Footer from './Footer';
 
 function createDrawerLinks({
+  canCreateFlows,
   canReadRole,
   canReadUser,
   canUpdateConfig,
@@ -69,7 +70,16 @@ function createDrawerLinks({
           dataTest: 'apps-drawer-link',
         }
       : null,
+    canUpdateConfig
+      ? {
+          Icon: AppsIcon,
+          primary: 'adminSettingsDrawer.templates',
+          to: URLS.ADMIN_TEMPLATES,
+          dataTest: 'templates-drawer-link',
+        }
+      : null,
   ].filter(Boolean);
+
   return items;
 }
 
@@ -81,7 +91,9 @@ function SettingsLayout() {
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
+
   const drawerLinks = createDrawerLinks({
+    canCreateFlows: currentUserAbility.can('create', 'Flow'),
     canReadUser: currentUserAbility.can('read', 'User'),
     canReadRole: currentUserAbility.can('read', 'Role'),
     canUpdateConfig: currentUserAbility.can('update', 'Config'),
@@ -91,6 +103,7 @@ function SettingsLayout() {
       currentUserAbility.can('create', 'SamlAuthProvider'),
     canUpdateApp: currentUserAbility.can('update', 'App'),
   });
+
   const drawerBottomLinks = [
     {
       Icon: ArrowBackIosNewIcon,
@@ -99,6 +112,7 @@ function SettingsLayout() {
       dataTest: 'go-back-drawer-link',
     },
   ];
+
   return (
     <Can I="read" a="User">
       <AppBar
@@ -106,6 +120,7 @@ function SettingsLayout() {
         onDrawerOpen={openDrawer}
         onDrawerClose={closeDrawer}
       />
+
       <Box sx={{ display: 'flex', flex: 1 }}>
         <Drawer
           links={drawerLinks}
@@ -114,6 +129,7 @@ function SettingsLayout() {
           onOpen={openDrawer}
           onClose={closeDrawer}
         />
+
         <Stack sx={{ flex: 1 }}>
           <Toolbar />
           <Outlet />

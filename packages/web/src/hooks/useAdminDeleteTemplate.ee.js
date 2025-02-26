@@ -2,21 +2,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useCreateFlow() {
+export default function useAdminDeleteTemplate(templateId) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async ({ templateId }) => {
-      const { data } = await api.post('/v1/flows', null, {
-        params: { templateId },
-      });
+    mutationFn: async () => {
+      const { data } = await api.delete(`/v1/admin/templates/${templateId}`);
 
       return data;
     },
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['flows'],
+        queryKey: ['admin', 'templates'],
       });
     },
   });
