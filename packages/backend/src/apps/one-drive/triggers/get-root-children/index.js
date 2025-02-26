@@ -12,7 +12,7 @@ export default defineTrigger({
    let requestPath = `/me/drive/root/children`;
    response = await $.http.get(requestPath);
 
-   response.data.value.forEach((driveItem) => {
+   for await (const driveItem of response.data.value) {
       const dataItem = {
          raw: driveItem,
          meta: {
@@ -21,6 +21,6 @@ export default defineTrigger({
       };
 
       $.pushTriggerItem(dataItem);
-   });
+   }
   },
 });
