@@ -2,10 +2,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
-
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Can from 'components/Can';
 import FlowFolderChangeDialog from 'components/FlowFolderChangeDialog';
@@ -13,13 +11,17 @@ import * as URLS from 'config/urls';
 import useDeleteFlow from 'hooks/useDeleteFlow';
 import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
 import useDuplicateFlow from 'hooks/useDuplicateFlow';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useExportFlow from 'hooks/useExportFlow';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 function ContextMenu(props) {
   const { flowId, onClose, anchorEl, onDuplicateFlow, appKey } = props;
+
   const [showFlowFolderChangeDialog, setShowFlowFolderChangeDialog] =
     React.useState(false);
+
+  const navigate = useNavigate();
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
@@ -55,6 +57,10 @@ function ContextMenu(props) {
     onDuplicateFlow,
     formatMessage,
   ]);
+
+  const onCreateTemplate = React.useCallback(async () => {
+    navigate(URLS.ADMIN_CREATE_TEMPLATE(flowId));
+  }, [flowId]);
 
   const onFlowDelete = React.useCallback(async () => {
     await deleteFlow();
@@ -122,6 +128,14 @@ function ContextMenu(props) {
           {(allowed) => (
             <MenuItem disabled={!allowed} onClick={onFlowDuplicate}>
               {formatMessage('flow.duplicate')}
+            </MenuItem>
+          )}
+        </Can>
+
+        <Can I="create" a="Flow" passThrough>
+          {(allowed) => (
+            <MenuItem disabled={!allowed} onClick={onCreateTemplate}>
+              {formatMessage('flow.createTemplateFromFlow')}
             </MenuItem>
           )}
         </Can>

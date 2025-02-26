@@ -1,33 +1,35 @@
+import AddIcon from '@mui/icons-material/Add';
+import UploadIcon from '@mui/icons-material/Upload';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
 import * as React from 'react';
 import {
   Link,
+  Route,
+  Routes,
   useNavigate,
   useSearchParams,
-  Routes,
-  Route,
 } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import AddIcon from '@mui/icons-material/Add';
-import UploadIcon from '@mui/icons-material/Upload';
-import CircularProgress from '@mui/material/CircularProgress';
-import Divider from '@mui/material/Divider';
-import Pagination from '@mui/material/Pagination';
-import PaginationItem from '@mui/material/PaginationItem';
 
 import Can from 'components/Can';
-import Folders from 'components/Folders';
-import FlowRow from 'components/FlowRow';
-import NoResultFound from 'components/NoResultFound';
+import FlowsButtons from 'components/FlowsButtons';
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
+import FlowRow from 'components/FlowRow';
+import Folders from 'components/Folders';
+import ImportFlowDialog from 'components/ImportFlowDialog';
+import NoResultFound from 'components/NoResultFound';
 import PageTitle from 'components/PageTitle';
 import SearchInput from 'components/SearchInput';
-import ImportFlowDialog from 'components/ImportFlowDialog';
-import useFormatMessage from 'hooks/useFormatMessage';
-import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+import TemplatesDialog from 'components/TemplatesDialog/index.ee';
 import * as URLS from 'config/urls';
+import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import useFlows from 'hooks/useFlows';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 export default function Flows() {
   const formatMessage = useFormatMessage();
@@ -96,7 +98,7 @@ export default function Flows() {
               <PageTitle>{formatMessage('flows.title')}</PageTitle>
             </Grid>
 
-            <Grid item xs={12} sm="auto" order={{ xs: 2, sm: 1 }}>
+            <Grid item xs={12} md="auto" order={{ xs: 2, md: 1 }}>
               <SearchInput onChange={onSearchChange} defaultValue={flowName} />
             </Grid>
 
@@ -109,51 +111,19 @@ export default function Flows() {
               sm="auto"
               gap={1}
               alignItems="center"
-              order={{ xs: 1, sm: 2 }}
+              order={{ xs: 1 }}
             >
-              <Can I="create" a="Flow" passThrough>
-                {(allowed) => (
-                  <ConditionalIconButton
-                    type="submit"
-                    variant="outlined"
-                    color="info"
-                    size="large"
-                    component={Link}
-                    disabled={!allowed}
-                    icon={<UploadIcon />}
-                    to={URLS.IMPORT_FLOW}
-                    data-test="import-flow-button"
-                  >
-                    {formatMessage('flows.import')}
-                  </ConditionalIconButton>
-                )}
-              </Can>
-
-              <Can I="create" a="Flow" passThrough>
-                {(allowed) => (
-                  <ConditionalIconButton
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    component={Link}
-                    disabled={!allowed}
-                    icon={<AddIcon />}
-                    to={URLS.CREATE_FLOW}
-                    data-test="create-flow-button"
-                  >
-                    {formatMessage('flows.create')}
-                  </ConditionalIconButton>
-                )}
-              </Can>
+              <FlowsButtons />
             </Grid>
           </Grid>
 
           <Divider sx={{ mt: [2, 0], mb: 2 }} />
 
-          <Grid container columnSpacing={2}>
+          <Grid container columnSpacing={2} rowSpacing={2}>
             <Grid item xs={12} sm={3}>
               <Folders />
+
+              <Divider sx={{ mt: { xs: 2 }, display: { sm: 'none' } }} />
             </Grid>
 
             <Grid item xs={12} sm={9}>
@@ -205,6 +175,7 @@ export default function Flows() {
 
       <Routes>
         <Route path="/import" element={<ImportFlowDialog />} />
+        <Route path="/templates" element={<TemplatesDialog />} />
       </Routes>
     </>
   );
