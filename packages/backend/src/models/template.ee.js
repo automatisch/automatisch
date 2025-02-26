@@ -17,7 +17,7 @@ class Template extends Base {
     },
   };
 
-  static async create(name, flowId) {
+  static async create({ name, flowId }) {
     const flow = await Flow.query().findById(flowId).throwIfNotFound();
     const flowData = await flow.export();
 

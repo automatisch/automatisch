@@ -19,7 +19,7 @@ describe('Template model', () => {
       const templateName = 'Test Template';
 
       await expect(
-        Template.create(templateName, nonExistentFlowId)
+        Template.create({ name: templateName, flowId: nonExistentFlowId })
       ).rejects.toThrowError('NotFoundError');
     });
 
@@ -27,7 +27,10 @@ describe('Template model', () => {
       const flow = await createFlow();
       const templateName = 'Test Template';
 
-      const template = await Template.create(templateName, flow.id);
+      const template = await Template.create({
+        name: templateName,
+        flowId: flow.id,
+      });
 
       expect(template.name).toStrictEqual(templateName);
     });
@@ -54,7 +57,10 @@ describe('Template model', () => {
       });
 
       const templateName = 'Test Template';
-      const template = await Template.create(templateName, flow.id);
+      const template = await Template.create({
+        name: templateName,
+        flowId: flow.id,
+      });
 
       const exportedFlowData = await flow.export();
 
