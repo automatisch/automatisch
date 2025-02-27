@@ -4,6 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import FormHelperText from '@mui/material/FormHelperText';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
+import { Option } from './style';
 
 const getOption = (options, value) =>
   options.find((option) => option.value === value) || null;
@@ -95,19 +96,27 @@ function ControlledAutocomplete(props) {
             ref={ref}
             data-test={`${name}-autocomplete`}
             renderOption={(optionProps, option) => (
-              <li
+              <Option
                 {...optionProps}
                 key={option.value?.toString()}
-                style={{ flexDirection: 'column', alignItems: 'start' }}
+                showOptionValue={showOptionValue}
               >
-                <Typography>{option.label}</Typography>
+                <Typography
+                  variant={showOptionValue ? 'subtitle1' : 'body1'}
+                  {...(showOptionValue && { sx: { fontWeight: 700 } })}
+                >
+                  {option.label}
+                </Typography>
 
                 {showOptionValue && typeof option.value === 'string' && (
-                  <Typography variant="caption">{option.value}</Typography>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    {option.value}
+                  </Typography>
                 )}
-              </li>
+              </Option>
             )}
             renderInput={(params) => renderInput(params, fieldState)}
+            {...(showOptionValue && { ListboxProps: { sx: { p: 0 } } })}
           />
           {showHelperText && (
             <FormHelperText
