@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { FlowPropType } from 'propTypes/propTypes';
 import ReactFlow, { useNodesState, useEdgesState } from 'reactflow';
 import 'reactflow/dist/style.css';
+import { debounce } from 'lodash';
 
 import useCreateStep from 'hooks/useCreateStep';
 import useUpdateStep from 'hooks/useUpdateStep';
@@ -108,11 +109,10 @@ const EditorNew = ({ flow }) => {
   );
 
   const onAddStep = useCallback(
-    async (previousStepId) => {
+    debounce(async (previousStepId) => {
       const { data: createdStep } = await createStep({ previousStepId });
-
       createdStepIdRef.current = createdStep.id;
-    },
+    }, 300),
     [createStep],
   );
 
