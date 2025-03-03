@@ -6,6 +6,7 @@ import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
 import createTemplateAction from '../../../../controllers/api/v1/admin/templates/create-template.ee.js';
 import getTemplatesAction from '../../../../controllers/api/v1/admin/templates/get-templates.ee.js';
 import updateTemplateAction from '../../../../controllers/api/v1/admin/templates/update-template.ee.js';
+import deleteTemplateAction from '../../../../controllers/api/v1/admin/templates/delete-template.ee.js';
 
 const router = Router();
 
@@ -31,6 +32,14 @@ router.patch(
   authorizeAdmin,
   checkIsEnterprise,
   updateTemplateAction
+);
+
+router.delete(
+  '/:templateId',
+  authenticateUser,
+  authorizeAdmin,
+  checkIsEnterprise,
+  deleteTemplateAction
 );
 
 export default router;
