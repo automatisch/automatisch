@@ -27,6 +27,7 @@ describe('GET /api/v1/automatisch/config', () => {
       palettePrimaryLight: '#4286FF',
       palettePrimaryMain: '#0059F7',
       title: 'Sample Title',
+      enableTemplates: true,
     });
 
     const response = await request(app)
