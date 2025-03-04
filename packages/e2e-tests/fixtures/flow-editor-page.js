@@ -12,12 +12,16 @@ export class FlowEditorPage extends AuthenticatedPage {
     super(page);
 
     this.appAutocomplete = this.page.getByTestId('choose-app-autocomplete');
+    this.appAutocompleteInput = this.appAutocomplete.locator('input');
     this.eventAutocomplete = this.page.getByTestId('choose-event-autocomplete');
+    this.eventAutocompleteInput = this.eventAutocomplete.locator('input');
     this.continueButton = this.page.getByTestId('flow-substep-continue-button');
     this.testAndContinueButton = this.page.getByText('Test & Continue');
     this.connectionAutocomplete = this.page.getByTestId(
       'choose-connection-autocomplete'
     );
+    this.connectionAutocompleteInput =
+      this.connectionAutocomplete.locator('input');
     this.addNewConnectionItem = this.page.getByText('Add new connection');
     this.testOutput = this.page.getByTestId('flow-test-substep-output');
     this.hasNoOutput = this.page.getByTestId('flow-test-substep-no-output');
@@ -32,6 +36,9 @@ export class FlowEditorPage extends AuthenticatedPage {
       .locator('input');
 
     this.flowStep = this.page.getByTestId('flow-step');
+    this.goBackButton = this.page.getByTestId('editor-go-back-button');
+    this.exportFlowButton = page.getByTestId('export-flow-button');
+    this.stepName = page.getByTestId('step-name');
   }
 
   async createWebhookTrigger(workSynchronously) {
@@ -76,7 +83,11 @@ export class FlowEditorPage extends AuthenticatedPage {
     await expect(this.eventAutocomplete).toBeVisible();
     await this.eventAutocomplete.click();
     await Promise.all([
-      this.page.waitForResponse(resp => /(apps\/.*\/actions\/.*\/substeps)/.test(resp.url()) && resp.status() === 200),
+      this.page.waitForResponse(
+        (resp) =>
+          /(apps\/.*\/actions\/.*\/substeps)/.test(resp.url()) &&
+          resp.status() === 200
+      ),
       this.page.getByRole('option', { name: eventName }).click(),
     ]);
     await this.continueButton.click();
