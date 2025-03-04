@@ -37,7 +37,7 @@ const Item = (props) => {
           title: 'Property name',
           sx: { fontWeight: 700 },
         }}
-        secondary={suboption.value}
+        secondary={typeof suboption.value === 'string' ? suboption.value : ''}
         secondaryTypographyProps={{
           variant: 'subtitle2',
           title: 'Sample value',
