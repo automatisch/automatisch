@@ -112,3 +112,28 @@ export const addWebhookFlow = async (request, token) => {
 
   return flowId;
 };
+
+export const createConnection = async (
+  request,
+  token,
+  appName,
+  requestBody
+) => {
+  const response = await request.post(
+    `${process.env.BACKEND_APP_URL}/api/v1/apps/${appName}/connections`,
+    { headers: { Authorization: token }, data: requestBody }
+  );
+  await expect(response.status()).toBe(201);
+
+  return await response.json();
+};
+
+export const verifyConnection = async (request, token, connectionId) => {
+  const response = await request.post(
+    `${process.env.BACKEND_APP_URL}/api/v1/connections/${connectionId}/verify`,
+    { headers: { Authorization: token } }
+  );
+  await expect(response.status()).toBe(200);
+
+  return await response.json();
+};
