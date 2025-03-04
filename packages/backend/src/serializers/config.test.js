@@ -14,6 +14,7 @@ describe('configSerializer', () => {
       id: config.id,
       disableFavicon: config.disableFavicon,
       disableNotificationsPage: config.disableNotificationsPage,
+      enableTemplates: config.enableTemplates,
       logoSvgData: config.logoSvgData,
       palettePrimaryDark: config.palettePrimaryDark,
       palettePrimaryMain: config.palettePrimaryMain,

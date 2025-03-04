@@ -15,6 +15,7 @@ const configMock = (config) => {
       palettePrimaryLight: config.palettePrimaryLight,
       installationCompleted: config.installationCompleted || false,
       title: config.title,
+      enableTemplates: config.enableTemplates,
     },
     meta: {
       count: 1,

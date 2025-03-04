@@ -5,6 +5,7 @@ const configSerializer = (config) => {
     createdAt: config.createdAt.getTime(),
     disableFavicon: config.disableFavicon,
     disableNotificationsPage: config.disableNotificationsPage,
+    enableTemplates: config.enableTemplates,
     additionalDrawerLink: config.additionalDrawerLink,
     additionalDrawerLinkIcon: config.additionalDrawerLinkIcon,
     additionalDrawerLinkText: config.additionalDrawerLinkText,

@@ -6,6 +6,12 @@ exports[`Config model > jsonSchema should have correct validations 1`] = `
     "createdAt": {
       "type": "string",
     },
+    "enableTemplates": {
+      "type": [
+        "boolean",
+        "null",
+      ],
+    },
     "id": {
       "format": "uuid",
       "type": "string",
