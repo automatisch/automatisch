@@ -11,6 +11,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import UploadIcon from '@mui/icons-material/Upload';
+import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -80,24 +82,27 @@ function ImportFlowDialog(props) {
       <DialogContent>
         <DialogContentText>
           {formatMessage('importFlowDialog.description')}
-
-          <Stack direction="row" alignItems="center" spacing={2} mt={4}>
-            <FileUploadInput
-              onChange={handleFileSelection}
-              data-test="import-flow-dialog-button"
-            >
-              {formatMessage('importFlowDialog.selectFile')}
-            </FileUploadInput>
-
-            {selectedFile && (
-              <Typography>
-                {formatMessage('importFlowDialog.selectedFileInformation', {
-                  fileName: selectedFile.name,
-                })}
-              </Typography>
-            )}
-          </Stack>
         </DialogContentText>
+        <Stack direction="row" alignItems="center" spacing={2} mt={4}>
+          <FileUploadInput
+            onChange={handleFileSelection}
+            data-test="import-flow-dialog-button"
+            sx={{ flexShrink: 0 }}
+          >
+            {formatMessage('importFlowDialog.selectFile')}
+          </FileUploadInput>
+
+          {selectedFile && (
+            <Box overflow="hidden">
+              <Typography>
+                {formatMessage('importFlowDialog.selectedFileInformation')}
+              </Typography>
+              <Tooltip title={selectedFile.name}>
+                <Typography noWrap>{selectedFile.name}</Typography>
+              </Tooltip>
+            </Box>
+          )}
+        </Stack>
       </DialogContent>
 
       <DialogActions sx={{ mb: 1 }}>

@@ -329,7 +329,7 @@
   "importFlowDialog.selectFile": "Select file",
   "importFlowDialog.close": "Close",
   "importFlowDialog.import": "Import",
-  "importFlowDialog.selectedFileInformation": "Selected file: {fileName}",
+  "importFlowDialog.selectedFileInformation": "Selected file:",
   "importFlowDialog.successfullyImportedFlow": "The flow has been successfully imported. You can view it <link>here</link>.",
   "folders.allFlows": "All flows",
   "folders.unassignedFlows": "Uncategorized flows",
