@@ -33,6 +33,10 @@ const authorizationList = {
     action: 'delete',
     subject: 'Flow',
   },
+  'GET /api/v1/templates/': {
+    action: 'create',
+    subject: 'Flow',
+  },
   'GET /api/v1/steps/:stepId/connection': {
     action: 'read',
     subject: 'Flow',
