@@ -102,7 +102,7 @@ function ControlledAutocomplete(props) {
               >
                 <Typography>{option.label}</Typography>
 
-                {showOptionValue && (
+                {showOptionValue && typeof option.value === 'string' && (
                   <Typography variant="caption">{option.value}</Typography>
                 )}
               </li>
