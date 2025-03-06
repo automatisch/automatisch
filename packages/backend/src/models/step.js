@@ -9,6 +9,7 @@ import appConfig from '../config/app.js';
 import globalVariable from '../helpers/global-variable.js';
 import computeParameters from '../helpers/compute-parameters.js';
 import testRun from '../services/test-run.js';
+import { generateIconUrl } from '../helpers/generate-icon-url.js';
 
 class Step extends Base {
   static tableName = 'steps';
@@ -88,9 +89,7 @@ class Step extends Base {
   }
 
   get iconUrl() {
-    if (!this.appKey) return null;
-
-    return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
+    return generateIconUrl(this.appKey);
   }
 
   get isTrigger() {
