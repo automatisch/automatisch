@@ -3,6 +3,7 @@ import roleSerializer from './role.js';
 import permissionSerializer from './permission.js';
 import adminSamlAuthProviderSerializer from './admin-saml-auth-provider.ee.js';
 import adminTemplateSerializer from './admin/template.ee.js';
+import templateSerializer from './template.ee.js';
 import samlAuthProviderSerializer from './saml-auth-provider.ee.js';
 import samlAuthProviderRoleMappingSerializer from './role-mapping.ee.js';
 import oauthClientSerializer from './oauth-client.js';
@@ -29,6 +30,7 @@ const serializers = {
   Permission: permissionSerializer,
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   AdminTemplate: adminTemplateSerializer,
+  Template: templateSerializer,
   SamlAuthProvider: samlAuthProviderSerializer,
   RoleMapping: samlAuthProviderRoleMappingSerializer,
   OAuthClient: oauthClientSerializer,
