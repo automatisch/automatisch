@@ -18,6 +18,7 @@ exports[`App model > list should have list of applications keys 1`] = `
   "disqus",
   "dropbox",
   "filter",
+  "firebase",
   "flickr",
   "flowers-software",
   "formatter",
