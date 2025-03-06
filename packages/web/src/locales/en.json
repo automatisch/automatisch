@@ -257,6 +257,7 @@
   "deleteRoleButton.successfullyDeleted": "The role has been deleted.",
   "deleteRoleButton.generalError": "Failed while deleting!",
   "editRolePage.title": "Edit role",
+  "editRolePage.permissionsError": "Permissions are invalid.",
   "createRolePage.title": "Create role",
   "roleForm.name": "Name",
   "roleForm.description": "Description",
