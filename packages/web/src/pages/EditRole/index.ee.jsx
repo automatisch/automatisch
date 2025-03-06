@@ -5,6 +5,10 @@ import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { merge } from 'lodash';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Container from 'components/Container';
 import Form from 'components/Form';
@@ -22,6 +26,40 @@ import useAdminUpdateRole from 'hooks/useAdminUpdateRole';
 import useRole from 'hooks/useRole.ee';
 import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 
+const getValidationSchema = (formatMessage) => {
+  const getMandatoryFieldMessage = (fieldTranslationId) =>
+    formatMessage('roleForm.mandatoryInput', {
+      inputName: formatMessage(fieldTranslationId),
+    });
+
+  return yup.object().shape({
+    name: yup
+      .string()
+      .trim()
+      .required(getMandatoryFieldMessage('roleForm.name')),
+    description: yup.string().trim(),
+  });
+};
+
+const getPermissionsErrorMessage = (error) => {
+  const errors = error?.response?.data?.errors;
+
+  if (errors) {
+    const permissionsErrors = Object.keys(errors)
+      .filter((key) => key.startsWith('permissions'))
+      .reduce((obj, key) => {
+        obj[key] = errors[key];
+        return obj;
+      }, {});
+
+    if (Object.keys(permissionsErrors).length > 0) {
+      return JSON.stringify(permissionsErrors, null, 2);
+    }
+  }
+
+  return null;
+};
+
 export default function EditRole() {
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
@@ -34,9 +72,11 @@ export default function EditRole() {
   const role = roleData?.data;
   const permissionCatalog = permissionCatalogData?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
+  const [permissionError, setPermissionError] = React.useState(null);
 
   const handleRoleUpdate = async (roleData) => {
     try {
+      setPermissionError(null);
       const newPermissions = getPermissions(roleData.computedPermissions);
       await updateRole({
         name: roleData.name,
@@ -53,7 +93,13 @@ export default function EditRole() {
 
       navigate(URLS.ROLES);
     } catch (error) {
-      throw new Error('Failed while updating!');
+      const permissionError = getPermissionsErrorMessage(error);
+      if (permissionError) {
+        setPermissionError(permissionError);
+      }
+
+      const errors = error?.response?.data?.errors;
+      throw errors || error;
     }
   };
 
@@ -82,46 +128,72 @@ export default function EditRole() {
         </Grid>
 
         <Grid item xs={12} justifyContent="flex-end" sx={{ pt: 5 }}>
-          <Form defaultValues={defaultValues} onSubmit={handleRoleUpdate}>
-            <Stack direction="column" gap={2}>
-              <TextField
-                disabled={
-                  role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
-                }
-                required={true}
-                name="name"
-                label={formatMessage('roleForm.name')}
-                data-test="name-input"
-                fullWidth
-              />
-              <TextField
-                disabled={
-                  role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
-                }
-                name="description"
-                label={formatMessage('roleForm.description')}
-                data-test="description-input"
-                fullWidth
-              />
-              <PermissionCatalogField
-                name="computedPermissions"
-                disabled={role?.isAdmin}
-                syncIsCreator
-                loading={isRoleLoading}
-              />
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ boxShadow: 2 }}
-                loading={isUpdateRolePending}
-                disabled={role?.isAdmin || isRoleLoading}
-                data-test="update-button"
-              >
-                {formatMessage('editRole.submit')}
-              </LoadingButton>
-            </Stack>
-          </Form>
+          <Form
+            noValidate
+            defaultValues={defaultValues}
+            onSubmit={handleRoleUpdate}
+            resolver={yupResolver(getValidationSchema(formatMessage))}
+            automaticValidation={false}
+            render={({ formState: { errors } }) => (
+              <Stack direction="column" gap={2}>
+                <TextField
+                  disabled={
+                    role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
+                  }
+                  required
+                  name="name"
+                  label={formatMessage('roleForm.name')}
+                  data-test="name-input"
+                  fullWidth
+                  error={!!errors?.name}
+                  helperText={errors?.name?.message}
+                />
+                <TextField
+                  disabled={
+                    role?.isAdmin || isRoleLoading || isPermissionCatalogLoading
+                  }
+                  name="description"
+                  label={formatMessage('roleForm.description')}
+                  data-test="description-input"
+                  fullWidth
+                  error={!!errors?.description}
+                  helperText={errors?.description?.message}
+                />
+                <PermissionCatalogField
+                  name="computedPermissions"
+                  disabled={role?.isAdmin}
+                  syncIsCreator
+                  loading={isRoleLoading}
+                />
+                {permissionError && (
+                  <Alert severity="error" data-test="edit-role-error-alert">
+                    <AlertTitle>
+                      {formatMessage('editRolePage.permissionsError')}
+                    </AlertTitle>
+                    <pre>
+                      <code>{permissionError}</code>
+                    </pre>
+                  </Alert>
+                )}
+                {errors?.root?.general && !permissionError && (
+                  <Alert severity="error" data-test="edit-role-error-alert">
+                    {errors?.root?.general?.message}
+                  </Alert>
+                )}
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ boxShadow: 2 }}
+                  loading={isUpdateRolePending}
+                  disabled={role?.isAdmin || isRoleLoading}
+                  data-test="update-button"
+                >
+                  {formatMessage('editRole.submit')}
+                </LoadingButton>
+              </Stack>
+            )}
+          />
         </Grid>
       </Grid>
     </Container>
