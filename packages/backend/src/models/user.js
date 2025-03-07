@@ -703,6 +703,14 @@ class User extends Base {
   async $afterFind() {
     await this.omitEnterprisePermissionsWithoutValidLicense();
   }
+
+  async createEmptyFlow() {
+    const flow = await this.$relatedQuery('flows').insertAndFetch({
+      name: 'Name your flow',
+    });
+
+    return await flow.createInitialSteps();
+  }
 }
 
 export default User;
