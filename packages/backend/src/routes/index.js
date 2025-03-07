@@ -16,6 +16,7 @@ import adminAppsRouter from './api/v1/admin/apps.ee.js';
 import adminConfigRouter from './api/v1/admin/config.ee.js';
 import adminSamlAuthProvidersRouter from './api/v1/admin/saml-auth-providers.ee.js';
 import adminTemplatesRouter from './api/v1/admin/templates.ee.js';
+import templatesRouter from './api/v1/templates.ee.js';
 import rolesRouter from './api/v1/admin/roles.ee.js';
 import permissionsRouter from './api/v1/admin/permissions.ee.js';
 import adminUsersRouter from './api/v1/admin/users.ee.js';
@@ -44,6 +45,7 @@ router.use('/api/v1/admin/roles', rolesRouter);
 router.use('/api/v1/admin/permissions', permissionsRouter);
 router.use('/api/v1/admin/saml-auth-providers', adminSamlAuthProvidersRouter);
 router.use('/api/v1/admin/templates', adminTemplatesRouter);
+router.use('/api/v1/templates', templatesRouter);
 router.use('/api/v1/installation/users', installationUsersRouter);
 router.use('/api/v1/folders', foldersRouter);
 

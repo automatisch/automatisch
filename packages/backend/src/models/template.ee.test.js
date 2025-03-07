@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Crypto from 'crypto';
 import Template from './template.ee.js';
 import { createFlow } from '../../test/factories/flow';
 import { createStep } from '../../test/factories/step';
+import appConfig from '../config/app.js';
 
 describe('Template model', () => {
   it('tableName should return correct name', () => {
@@ -73,6 +74,98 @@ describe('Template model', () => {
           position: step.position,
           type: step.type,
         })),
+      });
+    });
+  });
+
+  describe('getFlowDataWithIconUrls', () => {
+    beforeEach(() => {
+      vi.spyOn(appConfig, 'baseUrl', 'get').mockReturnValue(
+        'https://automatisch.io'
+      );
+    });
+
+    it('should add iconUrl to each step in flowData', () => {
+      const template = new Template();
+      template.flowData = {
+        id: 'flow-id',
+        name: 'Test Flow',
+        steps: [
+          {
+            id: 'step-1',
+            appKey: 'webhook',
+            type: 'trigger',
+          },
+          {
+            id: 'step-2',
+            appKey: 'formatter',
+            type: 'action',
+          },
+        ],
+      };
+
+      const result = template.getFlowDataWithIconUrls();
+
+      expect(result.steps[0].iconUrl).toBe(
+        'https://automatisch.io/apps/webhook/assets/favicon.svg'
+      );
+      expect(result.steps[1].iconUrl).toBe(
+        'https://automatisch.io/apps/formatter/assets/favicon.svg'
+      );
+    });
+
+    it('should handle steps with null appKey', () => {
+      const template = new Template();
+      template.flowData = {
+        id: 'flow-id',
+        name: 'Test Flow',
+        steps: [
+          {
+            id: 'step-1',
+            appKey: null,
+            type: 'trigger',
+          },
+        ],
+      };
+
+      const result = template.getFlowDataWithIconUrls();
+
+      expect(result.steps[0].iconUrl).toBeNull();
+    });
+
+    it('should preserve all other flowData properties', () => {
+      const template = new Template();
+      template.flowData = {
+        id: 'flow-id',
+        name: 'Test Flow',
+        customField: 'test',
+        steps: [
+          {
+            id: 'step-1',
+            appKey: 'webhook',
+            type: 'trigger',
+            position: 1,
+            parameters: { test: true },
+          },
+        ],
+      };
+
+      const result = template.getFlowDataWithIconUrls();
+
+      expect(result).toEqual({
+        id: 'flow-id',
+        name: 'Test Flow',
+        customField: 'test',
+        steps: [
+          {
+            id: 'step-1',
+            appKey: 'webhook',
+            type: 'trigger',
+            position: 1,
+            parameters: { test: true },
+            iconUrl: 'https://automatisch.io/apps/webhook/assets/favicon.svg',
+          },
+        ],
       });
     });
   });
