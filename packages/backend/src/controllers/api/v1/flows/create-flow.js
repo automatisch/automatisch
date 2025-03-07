@@ -1,7 +1,12 @@
 import { renderObject } from '../../../../helpers/renderer.js';
 
 export default async (request, response) => {
-  const flow = await request.currentUser.createEmptyFlow();
+  const flow = !request.query.templateId
+    ? await request.currentUser.createEmptyFlow()
+    : await request.currentUser.createFlowFromTemplate(
+        request.query.templateId,
+        response
+      );
 
-  renderObject(response, flow, { status: 201 });
+  return renderObject(response, flow, { status: 201 });
 };

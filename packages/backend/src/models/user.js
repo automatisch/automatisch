@@ -22,9 +22,10 @@ import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import Folder from './folder.js';
 import UsageData from './usage-data.ee.js';
+import Template from './template.ee.js';
 import Billing from '../helpers/billing/index.ee.js';
 import NotAuthorizedError from '../errors/not-authorized.js';
-
+import importFlow from '../helpers/import-flow.js';
 import deleteUserQueue from '../queues/delete-user.ee.js';
 import flowQueue from '../queues/flow.js';
 import emailQueue from '../queues/email.js';
@@ -710,6 +711,16 @@ class User extends Base {
     });
 
     return await flow.createInitialSteps();
+  }
+
+  async createFlowFromTemplate(templateId, response) {
+    const template = await Template.query()
+      .findById(templateId)
+      .throwIfNotFound();
+
+    const flow = await importFlow(this, template.flowData, response);
+
+    return flow;
   }
 }
 
