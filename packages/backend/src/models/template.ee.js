@@ -1,5 +1,6 @@
 import Base from './base.js';
 import Flow from './flow.js';
+import { generateIconUrl } from '../helpers/generate-icon-url.js';
 
 class Template extends Base {
   static tableName = 'templates';
@@ -22,6 +23,18 @@ class Template extends Base {
     const flowData = await flow.export();
 
     return this.query().insertAndFetch({ name, flowData });
+  }
+
+  getFlowDataWithIconUrls() {
+    if (!this.flowData) return null;
+
+    return {
+      ...this.flowData,
+      steps: this.flowData.steps?.map((step) => ({
+        ...step,
+        iconUrl: generateIconUrl(step.appKey),
+      })),
+    };
   }
 }
 

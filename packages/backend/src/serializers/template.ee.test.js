@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import templateSerializer from './template.ee.js';
 import { createTemplate } from '../../test/factories/template.js';
-
 describe('templateSerializer', () => {
   let template;
 
@@ -13,7 +12,7 @@ describe('templateSerializer', () => {
     const expectedPayload = {
       id: template.id,
       name: template.name,
-      flowData: template.flowData,
+      flowData: template.getFlowDataWithIconUrls(),
       createdAt: template.createdAt.getTime(),
       updatedAt: template.updatedAt.getTime(),
     };
