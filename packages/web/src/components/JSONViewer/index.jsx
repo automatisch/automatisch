@@ -46,7 +46,7 @@ function JSONViewer(props) {
     <JSONTree
       hideRoot
       data={data}
-      shouldExpandNode={() => true}
+      shouldExpandNode={(keyPath) => keyPath.length === 1}
       invertTheme={false}
       theme={theme}
     />
