@@ -1,11 +1,11 @@
 import { renderObject } from '../../../../helpers/renderer.js';
 
 export default async (request, response) => {
-  const flow = await request.currentUser.$relatedQuery('flows').insertAndFetch({
-    name: 'Name your flow',
-  });
+  const { templateId } = request.query;
 
-  await flow.createInitialSteps();
+  const flow = templateId
+    ? await request.currentUser.createFlowFromTemplate(templateId)
+    : await request.currentUser.createEmptyFlow();
 
   renderObject(response, flow, { status: 201 });
 };

@@ -34,7 +34,9 @@ import { createExecution } from '../../test/factories/execution.js';
 import { createSubscription } from '../../test/factories/subscription.js';
 import { createUsageData } from '../../test/factories/usage-data.js';
 import { createFolder } from '../../test/factories/folder.js';
+import { createTemplate } from '../../test/factories/template.js';
 import Billing from '../helpers/billing/index.ee.js';
+import Template from './template.ee.js';
 
 describe('User model', () => {
   it('tableName should return correct name', () => {
@@ -1504,6 +1506,61 @@ describe('User model', () => {
       expect(userWithRoleAndPermissions.permissions).toStrictEqual([
         readFlowPermission,
       ]);
+    });
+  });
+
+  describe('createEmptyFlow', () => {
+    it('should create a flow with default name', async () => {
+      const user = await createUser();
+      const flow = await user.createEmptyFlow();
+
+      expect(flow.name).toBe('Name your flow');
+      expect(flow.userId).toBe(user.id);
+    });
+
+    it('should call createInitialSteps on the created flow', async () => {
+      const user = await createUser();
+      const createInitialStepsSpy = vi.spyOn(
+        Flow.prototype,
+        'createInitialSteps'
+      );
+
+      await user.createEmptyFlow();
+
+      expect(createInitialStepsSpy).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('createFlowFromTemplate', () => {
+    let user, template;
+
+    beforeEach(async () => {
+      user = await createUser();
+      template = await createTemplate();
+    });
+
+    it('should throw an error if template is not found', async () => {
+      const nonExistentTemplateId = Crypto.randomUUID();
+
+      await expect(
+        user.createFlowFromTemplate(nonExistentTemplateId)
+      ).rejects.toThrow('NotFoundError');
+    });
+
+    it('should call Flow.import with the correct parameters', async () => {
+      vi.spyOn(Template.query(), 'findById').mockImplementation(() => ({
+        throwIfNotFound: () => template,
+      }));
+
+      const importSpy = vi.spyOn(Flow, 'import').mockResolvedValue({
+        id: Crypto.randomUUID(),
+        name: template.flowData.name,
+        steps: [],
+      });
+
+      await user.createFlowFromTemplate(template.id);
+
+      expect(importSpy).toHaveBeenCalledWith(user, template.flowData);
     });
   });
 
