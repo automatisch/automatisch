@@ -1,10 +1,12 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import mergeWith from 'lodash/mergeWith';
 import * as React from 'react';
 
+import Switch from 'components/Switch';
 import ColorInput from 'components/ColorInput';
 import Container from 'components/Container';
 import Form from 'components/Form';
@@ -29,6 +31,16 @@ const defaultValues = {
   palettePrimaryMain: primaryMainColor,
   palettePrimaryDark: primaryDarkColor,
   palettePrimaryLight: primaryLightColor,
+  logoSvgData: '',
+  enableFooter: false,
+  footerLogoSvgData: '',
+  footerCopyrightText: '',
+  footerBackgroundColor: '#FFFFFF',
+  footerTextColor: '#000000',
+  footerDocsUrl: '',
+  footerTosUrl: '',
+  footerPrivacyPolicyUrl: '',
+  footerImprintUrl: '',
 };
 
 const mergeIfGiven = (oldValue, newValue) => {
@@ -51,13 +63,24 @@ export default function UserInterface() {
   const handleUserInterfaceUpdate = async (uiData) => {
     try {
       const input = {
-        title: uiData.title,
-        palettePrimaryMain: getPrimaryMainColor(uiData.palettePrimaryMain),
+        enableFooter: uiData.enableFooter,
+        footerBackgroundColor: uiData.footerBackgroundColor,
+        footerCopyrightText: uiData.footerCopyrightText,
+        footerDocsUrl: uiData.footerDocsUrl,
+        footerImprintUrl: uiData.footerImprintUrl,
+        footerLogoSvgData: uiData.footerLogoSvgData,
+        footerPrivacyPolicyUrl: uiData.footerPrivacyPolicyUrl,
+        footerTextColor: uiData.footerTextColor,
+        footerTosUrl: uiData.footerTosUrl,
+        logoSvgData: uiData.logoSvgData,
         palettePrimaryDark: getPrimaryDarkColor(uiData.palettePrimaryDark),
         palettePrimaryLight: getPrimaryLightColor(uiData.palettePrimaryLight),
-        logoSvgData: uiData.logoSvgData,
+        palettePrimaryMain: getPrimaryMainColor(uiData.palettePrimaryMain),
+        title: uiData.title,
       };
+
       await updateConfig(input);
+
       enqueueSnackbar(formatMessage('userInterfacePage.successfullyUpdated'), {
         variant: 'success',
         SnackbarProps: {
@@ -92,6 +115,10 @@ export default function UserInterface() {
               defaultValues={configWithDefaults}
             >
               <Stack direction="column" gap={2}>
+                <Typography variant="h4" gutterBottom={true}>
+                  {formatMessage('userInterfacePage.generalTitle')}
+                </Typography>
+
                 <TextField
                   name="title"
                   label={formatMessage('userInterfacePage.titleFieldLabel')}
@@ -131,6 +158,89 @@ export default function UserInterface() {
                   multiline
                   fullWidth
                   data-test="logo-svg-data-text-field"
+                />
+
+                <Typography variant="h4" gutterBottom={true} mt={3}>
+                  {formatMessage('userInterfacePage.footerTitle')}
+                </Typography>
+
+                <Switch
+                  name="enableFooter"
+                  label={formatMessage('userInterfacePage.enableFooterLabel')}
+                />
+
+                <TextField
+                  name="footerLogoSvgData"
+                  label={formatMessage(
+                    'userInterfacePage.footerLogoSvgDataFieldLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="footer-logo-svg-data-text-field"
+                />
+
+                <TextField
+                  name="footerCopyrightText"
+                  label={formatMessage(
+                    'userInterfacePage.footerCopyrightTextFieldLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="footer-copyright-text-field"
+                />
+
+                <ColorInput
+                  name="footerBackgroundColor"
+                  label={formatMessage(
+                    'userInterfacePage.footerBackgroundColorLabel',
+                  )}
+                  fullWidth
+                  data-test="footer-background-color-input"
+                />
+
+                <ColorInput
+                  name="footerTextColor"
+                  label={formatMessage(
+                    'userInterfacePage.footerTextColorLabel',
+                  )}
+                  fullWidth
+                  data-test="footer-text-color-input"
+                />
+
+                <TextField
+                  name="footerDocsUrl"
+                  label={formatMessage('userInterfacePage.footerDocsUrlLabel')}
+                  multiline
+                  fullWidth
+                  data-test="logo-docs-text-field"
+                />
+
+                <TextField
+                  name="footerTosUrl"
+                  label={formatMessage('userInterfacePage.footerTosUrlLabel')}
+                  multiline
+                  fullWidth
+                  data-test="logo-tos-url-text-field"
+                />
+
+                <TextField
+                  name="footerPrivacyPolicyUrl"
+                  label={formatMessage(
+                    'userInterfacePage.footerPrivacyPolicyUrlLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="logo-privacy-policy-url-text-field"
+                />
+
+                <TextField
+                  name="footerImprintUrl"
+                  label={formatMessage(
+                    'userInterfacePage.footerImprintUrlLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="logo-imprint-url-text-field"
                 />
 
                 <LoadingButton

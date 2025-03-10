@@ -5,13 +5,13 @@ import Typography from '@mui/material/Typography';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useVersion from 'hooks/useVersion';
 
-const Footer = () => {
+const AdminSettingsLayoutFooter = () => {
   const version = useVersion();
   const formatMessage = useFormatMessage();
 
   return (
     typeof version?.version === 'string' && (
-      <Box mt="auto" position="sticky" bottom={0}>
+      <Box mt="auto" position="sticky" bottom={0} zIndex={99}>
         <Box bgcolor="common.white" mt={4}>
           <Divider />
           <Typography
@@ -32,4 +32,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default AdminSettingsLayoutFooter;

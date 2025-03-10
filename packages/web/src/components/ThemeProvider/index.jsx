@@ -37,6 +37,18 @@ const customizeTheme = (theme, config) => {
     config.palettePrimaryDark,
   );
 
+  overrideIfGiven(
+    shallowDefaultTheme,
+    'palette.footer.main',
+    config.footerBackgroundColor,
+  );
+
+  overrideIfGiven(
+    shallowDefaultTheme,
+    'palette.footer.text',
+    config.footerTextColor,
+  );
+
   return shallowDefaultTheme;
 };
 

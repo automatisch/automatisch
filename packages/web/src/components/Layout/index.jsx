@@ -19,6 +19,8 @@ import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 
+import Footer from './Footer';
+
 const additionalDrawerLinkIcons = {
   Security: SecurityIcon,
   ArrowBackIosNew: ArrowBackIosNewIcon,
@@ -141,6 +143,7 @@ function PublicLayout({ children }) {
         <Stack flex={1}>
           <Toolbar />
           {children}
+          <Footer />
         </Stack>
       </Box>
     </>
