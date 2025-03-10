@@ -9,6 +9,7 @@ import globalVariable from '../helpers/global-variable.js';
 import logger from '../helpers/logger.js';
 import Telemetry from '../helpers/telemetry/index.js';
 import exportFlow from '../helpers/export-flow.js';
+import importFlow from '../helpers/import-flow.js';
 import flowQueue from '../queues/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
@@ -38,6 +39,10 @@ class Flow extends Base {
       updatedAt: { type: 'string' },
     },
   };
+
+  static async import(user, flowData) {
+    return importFlow(user, flowData);
+  }
 
   static relationMappings = () => ({
     steps: {
