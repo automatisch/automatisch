@@ -265,6 +265,7 @@ function FlowStep(props) {
             </Typography>
 
             <EditableTypography
+              data-test="step-name"
               variant="body2"
               onConfirm={handleStepNameChange}
               prefixValue={`${step.position}. `}

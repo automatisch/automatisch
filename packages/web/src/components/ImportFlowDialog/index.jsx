@@ -93,12 +93,14 @@ function ImportFlowDialog(props) {
           </FileUploadInput>
 
           {selectedFile && (
-            <Box overflow="hidden">
+            <Box data-test="file-name-wrapper" overflow="hidden">
               <Typography>
                 {formatMessage('importFlowDialog.selectedFileInformation')}
               </Typography>
               <Tooltip title={selectedFile.name}>
-                <Typography noWrap>{selectedFile.name}</Typography>
+                <Typography data-test="file-name" noWrap>
+                  {selectedFile.name}
+                </Typography>
               </Tooltip>
             </Box>
           )}

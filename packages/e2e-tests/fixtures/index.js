@@ -10,6 +10,7 @@ const { AcceptInvitation } = require('./accept-invitation-page');
 const { adminFixtures } = require('./admin');
 const { AdminSetupPage } = require('./admin-setup-page');
 const { AdminCreateUserPage } = require('./admin/create-user-page');
+const { FlowsPage } = require('./flows-page');
 
 exports.test = test.extend({
   page: async ({ page }, use) => {
@@ -35,6 +36,9 @@ exports.test = test.extend({
   },
   flowEditorPage: async ({ page }, use) => {
     await use(new FlowEditorPage(page));
+  },
+  flowsPage: async ({ page }, use) => {
+    await use(new FlowsPage(page));
   },
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));
