@@ -11,6 +11,15 @@ export default async (request, response) => {
 
 const configParams = (request) => {
   const {
+    enableFooter,
+    footerBackgroundColor,
+    footerCopyrightText,
+    footerDocsLink,
+    footerImprintLink,
+    footerLogoSvgData,
+    footerPrivacyPolicyLink,
+    footerTextColor,
+    footerTosLink,
     logoSvgData,
     palettePrimaryDark,
     palettePrimaryLight,
@@ -19,6 +28,15 @@ const configParams = (request) => {
   } = request.body;
 
   return {
+    enableFooter,
+    footerBackgroundColor,
+    footerCopyrightText,
+    footerDocsLink,
+    footerImprintLink,
+    footerLogoSvgData,
+    footerPrivacyPolicyLink,
+    footerTextColor,
+    footerTosLink,
     logoSvgData,
     palettePrimaryDark,
     palettePrimaryLight,

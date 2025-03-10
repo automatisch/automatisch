@@ -6,9 +6,60 @@ exports[`Config model > jsonSchema should have correct validations 1`] = `
     "createdAt": {
       "type": "string",
     },
+    "enableFooter": {
+      "type": "boolean",
+    },
     "enableTemplates": {
       "type": [
         "boolean",
+        "null",
+      ],
+    },
+    "footerBackgroundColor": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerCopyrightText": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerDocsLink": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerImprintLink": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerLogoSvgData": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerPrivacyPolicyLink": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerTextColor": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerTosLink": {
+      "type": [
+        "string",
         "null",
       ],
     },

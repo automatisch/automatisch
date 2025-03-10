@@ -28,6 +28,15 @@ describe('GET /api/v1/automatisch/config', () => {
       palettePrimaryMain: '#0059F7',
       title: 'Sample Title',
       enableTemplates: true,
+      enableFooter: true,
+      footerLogoSvgData: '<svg>Sample Footer Logo</svg>',
+      footerCopyrightText: '© AB Software GmbH',
+      footerBackgroundColor: '#FFFFFF',
+      footerTextColor: '#000000',
+      footerDocsLink: 'https://automatisch.io/docs',
+      footerTosLink: 'https://automatisch.io/terms',
+      footerPrivacyPolicyLink: 'https://automatisch.io/privacy',
+      footerImprintLink: 'https://automatisch.io/imprint',
     });
 
     const response = await request(app)
@@ -41,6 +50,16 @@ describe('GET /api/v1/automatisch/config', () => {
       additionalDrawerLink: 'link',
       additionalDrawerLinkIcon: 'icon',
       additionalDrawerLinkText: 'text',
+      enableTemplates: true,
+      enableFooter: true,
+      footerLogoSvgData: '<svg>Sample Footer Logo</svg>',
+      footerCopyrightText: '© AB Software GmbH',
+      footerBackgroundColor: '#FFFFFF',
+      footerTextColor: '#000000',
+      footerDocsLink: 'https://automatisch.io/docs',
+      footerTosLink: 'https://automatisch.io/terms',
+      footerPrivacyPolicyLink: 'https://automatisch.io/privacy',
+      footerImprintLink: 'https://automatisch.io/imprint',
     });
 
     expect(response.body).toStrictEqual(expectedPayload);

@@ -15,6 +15,15 @@ const configSerializer = (config) => {
     palettePrimaryLight: config.palettePrimaryLight,
     installationCompleted: config.installationCompleted,
     title: config.title,
+    enableFooter: config.enableFooter,
+    footerLogoSvgData: config.footerLogoSvgData,
+    footerCopyrightText: config.footerCopyrightText,
+    footerBackgroundColor: config.footerBackgroundColor,
+    footerTextColor: config.footerTextColor,
+    footerDocsLink: config.footerDocsLink,
+    footerTosLink: config.footerTosLink,
+    footerPrivacyPolicyLink: config.footerPrivacyPolicyLink,
+    footerImprintLink: config.footerImprintLink,
   };
 };
 
