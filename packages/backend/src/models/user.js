@@ -680,7 +680,9 @@ class User extends Base {
       name: 'Name your flow',
     });
 
-    return await flow.createInitialSteps();
+    await flow.createInitialSteps();
+
+    return flow;
   }
 
   async $beforeInsert(queryContext) {
