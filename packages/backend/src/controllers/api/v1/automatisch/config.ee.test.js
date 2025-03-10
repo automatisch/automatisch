@@ -33,10 +33,10 @@ describe('GET /api/v1/automatisch/config', () => {
       footerCopyrightText: '© AB Software GmbH',
       footerBackgroundColor: '#FFFFFF',
       footerTextColor: '#000000',
-      footerDocsLink: 'https://automatisch.io/docs',
-      footerTosLink: 'https://automatisch.io/terms',
-      footerPrivacyPolicyLink: 'https://automatisch.io/privacy',
-      footerImprintLink: 'https://automatisch.io/imprint',
+      footerDocsUrl: 'https://automatisch.io/docs',
+      footerTosUrl: 'https://automatisch.io/terms',
+      footerPrivacyPolicyUrl: 'https://automatisch.io/privacy',
+      footerImprintUrl: 'https://automatisch.io/imprint',
     });
 
     const response = await request(app)
@@ -56,10 +56,10 @@ describe('GET /api/v1/automatisch/config', () => {
       footerCopyrightText: '© AB Software GmbH',
       footerBackgroundColor: '#FFFFFF',
       footerTextColor: '#000000',
-      footerDocsLink: 'https://automatisch.io/docs',
-      footerTosLink: 'https://automatisch.io/terms',
-      footerPrivacyPolicyLink: 'https://automatisch.io/privacy',
-      footerImprintLink: 'https://automatisch.io/imprint',
+      footerDocsUrl: 'https://automatisch.io/docs',
+      footerTosUrl: 'https://automatisch.io/terms',
+      footerPrivacyPolicyUrl: 'https://automatisch.io/privacy',
+      footerImprintUrl: 'https://automatisch.io/imprint',
     });
 
     expect(response.body).toStrictEqual(expectedPayload);

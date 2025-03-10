@@ -22,28 +22,28 @@ const LayoutFooter = () => {
   const links = [
     {
       key: 'docs',
-      show: !!config.data.footerDocsLink,
-      href: config.data.footerDocsLink,
+      show: !!config.data.footerDocsUrl,
+      href: config.data.footerDocsUrl,
       text: formatMessage('footer.docsLinkText'),
     },
     {
       key: 'terms-of-services',
-      show: !!config.data.footerTosLink,
-      href: config.data.footerTosLink,
+      show: !!config.data.footerTosUrl,
+      href: config.data.footerTosUrl,
       text: formatMessage('footer.tosLinkText'),
     },
 
     {
       key: 'privacy-policy',
-      show: !!config.data.footerPrivacyPolicyLink,
-      href: config.data.footerPrivacyPolicyLink,
+      show: !!config.data.footerPrivacyPolicyUrl,
+      href: config.data.footerPrivacyPolicyUrl,
       text: formatMessage('footer.privacyPolicyLinkText'),
     },
 
     {
       key: 'imprint',
-      show: !!config.data.footerImprintLink,
-      href: config.data.footerImprintLink,
+      show: !!config.data.footerImprintUrl,
+      href: config.data.footerImprintUrl,
       text: formatMessage('footer.imprintLinkText'),
     },
     ,

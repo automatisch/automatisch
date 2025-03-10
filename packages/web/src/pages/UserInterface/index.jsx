@@ -37,10 +37,10 @@ const defaultValues = {
   footerCopyrightText: '',
   footerBackgroundColor: '#FFFFFF',
   footerTextColor: '#000000',
-  footerDocsLink: '',
-  footerTosLink: '',
-  footerPrivacyPolicyLink: '',
-  footerImprintLink: '',
+  footerDocsUrl: '',
+  footerTosUrl: '',
+  footerPrivacyPolicyUrl: '',
+  footerImprintUrl: '',
 };
 
 const mergeIfGiven = (oldValue, newValue) => {
@@ -66,12 +66,12 @@ export default function UserInterface() {
         enableFooter: uiData.enableFooter,
         footerBackgroundColor: uiData.footerBackgroundColor,
         footerCopyrightText: uiData.footerCopyrightText,
-        footerDocsLink: uiData.footerDocsLink,
-        footerImprintLink: uiData.footerImprintLink,
+        footerDocsUrl: uiData.footerDocsUrl,
+        footerImprintUrl: uiData.footerImprintUrl,
         footerLogoSvgData: uiData.footerLogoSvgData,
-        footerPrivacyPolicyLink: uiData.footerPrivacyPolicyLink,
+        footerPrivacyPolicyUrl: uiData.footerPrivacyPolicyUrl,
         footerTextColor: uiData.footerTextColor,
-        footerTosLink: uiData.footerTosLink,
+        footerTosUrl: uiData.footerTosUrl,
         logoSvgData: uiData.logoSvgData,
         palettePrimaryDark: getPrimaryDarkColor(uiData.palettePrimaryDark),
         palettePrimaryLight: getPrimaryLightColor(uiData.palettePrimaryLight),
@@ -208,39 +208,39 @@ export default function UserInterface() {
                 />
 
                 <TextField
-                  name="footerDocsLink"
-                  label={formatMessage('userInterfacePage.footerDocsLinkLabel')}
+                  name="footerDocsUrl"
+                  label={formatMessage('userInterfacePage.footerDocsUrlLabel')}
                   multiline
                   fullWidth
                   data-test="logo-docs-text-field"
                 />
 
                 <TextField
-                  name="footerTosLink"
-                  label={formatMessage('userInterfacePage.footerTosLinkLabel')}
+                  name="footerTosUrl"
+                  label={formatMessage('userInterfacePage.footerTosUrlLabel')}
                   multiline
                   fullWidth
-                  data-test="logo-tos-text-field"
+                  data-test="logo-tos-url-text-field"
                 />
 
                 <TextField
-                  name="footerPrivacyPolicyLink"
+                  name="footerPrivacyPolicyUrl"
                   label={formatMessage(
-                    'userInterfacePage.footerPrivacyPolicyLinkLabel',
+                    'userInterfacePage.footerPrivacyPolicyUrlLabel',
                   )}
                   multiline
                   fullWidth
-                  data-test="logo-privacy-policy-text-field"
+                  data-test="logo-privacy-policy-url-text-field"
                 />
 
                 <TextField
-                  name="footerImprintLink"
+                  name="footerImprintUrl"
                   label={formatMessage(
-                    'userInterfacePage.footerImprintLinkLabel',
+                    'userInterfacePage.footerImprintUrlLabel',
                   )}
                   multiline
                   fullWidth
-                  data-test="logo-imprint-text-field"
+                  data-test="logo-imprint-url-text-field"
                 />
 
                 <LoadingButton

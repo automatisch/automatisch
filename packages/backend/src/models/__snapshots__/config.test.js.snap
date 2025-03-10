@@ -27,13 +27,13 @@ exports[`Config model > jsonSchema should have correct validations 1`] = `
         "null",
       ],
     },
-    "footerDocsLink": {
+    "footerDocsUrl": {
       "type": [
         "string",
         "null",
       ],
     },
-    "footerImprintLink": {
+    "footerImprintUrl": {
       "type": [
         "string",
         "null",
@@ -45,7 +45,7 @@ exports[`Config model > jsonSchema should have correct validations 1`] = `
         "null",
       ],
     },
-    "footerPrivacyPolicyLink": {
+    "footerPrivacyPolicyUrl": {
       "type": [
         "string",
         "null",
@@ -57,7 +57,7 @@ exports[`Config model > jsonSchema should have correct validations 1`] = `
         "null",
       ],
     },
-    "footerTosLink": {
+    "footerTosUrl": {
       "type": [
         "string",
         "null",

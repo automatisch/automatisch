@@ -29,10 +29,10 @@ describe('PATCH /api/v1/admin/config', () => {
     const footerCopyrightText = '© AB Software GmbH';
     const footerBackgroundColor = '#FFFFFF';
     const footerTextColor = '#000000';
-    const footerDocsLink = 'https://automatisch.io/docs';
-    const footerTosLink = 'https://automatisch.io/terms';
-    const footerPrivacyPolicyLink = 'https://automatisch.io/privacy';
-    const footerImprintLink = 'https://automatisch.io/imprint';
+    const footerDocsUrl = 'https://automatisch.io/docs';
+    const footerTosUrl = 'https://automatisch.io/terms';
+    const footerPrivacyPolicyUrl = 'https://automatisch.io/privacy';
+    const footerImprintUrl = 'https://automatisch.io/imprint';
 
     const footerLogoSvgData =
       '<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="white" /><text x="10" y="40" font-family="Arial" font-size="40" fill="black">Sample Footer Logo</text></svg>';
@@ -50,10 +50,10 @@ describe('PATCH /api/v1/admin/config', () => {
       footerCopyrightText,
       footerBackgroundColor,
       footerTextColor,
-      footerDocsLink,
-      footerTosLink,
-      footerPrivacyPolicyLink,
-      footerImprintLink,
+      footerDocsUrl,
+      footerTosUrl,
+      footerPrivacyPolicyUrl,
+      footerImprintUrl,
       footerLogoSvgData,
     };
 

@@ -20,10 +20,10 @@ const configSerializer = (config) => {
     footerCopyrightText: config.footerCopyrightText,
     footerBackgroundColor: config.footerBackgroundColor,
     footerTextColor: config.footerTextColor,
-    footerDocsLink: config.footerDocsLink,
-    footerTosLink: config.footerTosLink,
-    footerPrivacyPolicyLink: config.footerPrivacyPolicyLink,
-    footerImprintLink: config.footerImprintLink,
+    footerDocsUrl: config.footerDocsUrl,
+    footerTosUrl: config.footerTosUrl,
+    footerPrivacyPolicyUrl: config.footerPrivacyPolicyUrl,
+    footerImprintUrl: config.footerImprintUrl,
   };
 };
 
