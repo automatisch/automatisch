@@ -1507,6 +1507,28 @@ describe('User model', () => {
     });
   });
 
+  describe('createEmptyFlow', () => {
+    it('should create a flow with default name', async () => {
+      const user = await createUser();
+      const flow = await user.createEmptyFlow();
+
+      expect(flow.name).toBe('Name your flow');
+      expect(flow.userId).toBe(user.id);
+    });
+
+    it('should call createInitialSteps on the created flow', async () => {
+      const user = await createUser();
+      const createInitialStepsSpy = vi.spyOn(
+        Flow.prototype,
+        'createInitialSteps'
+      );
+
+      await user.createEmptyFlow();
+
+      expect(createInitialStepsSpy).toHaveBeenCalledOnce();
+    });
+  });
+
   describe('$beforeInsert', () => {
     it('should call super.$beforeInsert', async () => {
       const superBeforeInsertSpy = vi

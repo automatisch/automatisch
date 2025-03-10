@@ -675,6 +675,14 @@ class User extends Base {
     }
   }
 
+  async createEmptyFlow() {
+    const flow = await this.$relatedQuery('flows').insertAndFetch({
+      name: 'Name your flow',
+    });
+
+    return await flow.createInitialSteps();
+  }
+
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
 

@@ -40,10 +40,6 @@ class Flow extends Base {
     },
   };
 
-  static async import(user, flowData) {
-    return importFlow(user, flowData);
-  }
-
   static relationMappings = () => ({
     steps: {
       relation: Base.HasManyRelation,
@@ -103,6 +99,10 @@ class Flow extends Base {
       },
     },
   });
+
+  static async import(user, flowData) {
+    return importFlow(user, flowData);
+  }
 
   static async populateStatusProperty(flows) {
     const referenceFlow = flows[0];
