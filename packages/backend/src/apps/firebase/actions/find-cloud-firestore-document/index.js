@@ -6,6 +6,24 @@ export default defineAction({
   description: 'Finds a document within a collection.',
   arguments: [
     {
+      label: 'Databse name',
+      key: 'databaseName',
+      type: 'dropdown',
+      required: true,
+      description: '',
+      variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listProjectDatabases',
+          },
+        ],
+      },
+    },
+    {
       label: 'Collection',
       key: 'collectionId',
       type: 'dropdown',
@@ -34,11 +52,10 @@ export default defineAction({
   ],
 
   async run($) {
-    const projectId = $.auth.data.projectId;
-    const { collectionId, documentId } = $.step.parameters;
+    const { collectionId, documentId, databaseName } = $.step.parameters;
 
     const { data } = await $.http.get(
-      `/v1/projects/${projectId}/databases/(default)/documents/${collectionId}/${documentId}`,
+      `/v1/${databaseName}/documents/${collectionId}/${documentId}`,
       {
         additionalProperties: {
           setFirestoreBaseUrl: true,

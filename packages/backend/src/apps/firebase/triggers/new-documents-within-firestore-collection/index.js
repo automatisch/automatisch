@@ -8,6 +8,24 @@ export default defineTrigger({
     'Triggers when a new document is added within a Cloud Firestore collection.',
   arguments: [
     {
+      label: 'Databse name',
+      key: 'databaseName',
+      type: 'dropdown',
+      required: true,
+      description: '',
+      variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listProjectDatabases',
+          },
+        ],
+      },
+    },
+    {
       label: 'Collection',
       key: 'collectionId',
       type: 'dropdown',
@@ -28,8 +46,7 @@ export default defineTrigger({
   ],
 
   async run($) {
-    const projectId = $.auth.data.projectId;
-    const collectionId = $.step.parameters.collectionId;
+    const { collectionId, databaseName } = $.step.parameters;
     const params = {
       pageSize: 100,
       pageToken: undefined,
@@ -37,7 +54,7 @@ export default defineTrigger({
 
     do {
       const { data } = await $.http.get(
-        `/v1/projects/${projectId}/databases/(default)/documents/${collectionId}`,
+        `/v1/${databaseName}/documents/${collectionId}`,
         {
           params,
           additionalProperties: {

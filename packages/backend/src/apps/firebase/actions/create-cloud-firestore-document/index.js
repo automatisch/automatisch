@@ -6,6 +6,24 @@ export default defineAction({
   description: 'Creates a new document within a Cloud Firestore collection.',
   arguments: [
     {
+      label: 'Databse name',
+      key: 'databaseName',
+      type: 'dropdown',
+      required: true,
+      description: '',
+      variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listProjectDatabases',
+          },
+        ],
+      },
+    },
+    {
       label: 'Collection',
       key: 'collectionId',
       type: 'dropdown',
@@ -71,9 +89,13 @@ export default defineAction({
   ],
 
   async run($) {
-    const projectId = $.auth.data.projectId;
-    const { collectionId, documentId, documentData, convertNumerics } =
-      $.step.parameters;
+    const {
+      collectionId,
+      documentId,
+      documentData,
+      convertNumerics,
+      databaseName,
+    } = $.step.parameters;
 
     const documentDataObject = documentData.reduce((result, entry) => {
       const key = entry.key?.toLowerCase();
@@ -100,7 +122,7 @@ export default defineAction({
     };
 
     const { data } = await $.http.post(
-      `/v1/projects/${projectId}/databases/(default)/documents/${collectionId}?documentId=${documentId}`,
+      `/v1/${databaseName}/documents/${collectionId}?documentId=${documentId}`,
       body,
       {
         additionalProperties: {
