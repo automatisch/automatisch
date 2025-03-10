@@ -1,14 +1,12 @@
 import Crypto from 'crypto';
 import Step from '../models/step.js';
-import { renderObjectionError } from './renderer.js';
+import { ValidationError } from 'objection';
 
-const importFlow = async (user, flowData, response) => {
+const importFlow = async (user, flowData) => {
   const steps = flowData.steps || [];
 
-  // Validation: the first step must be a trigger
   if (!steps.length || steps[0].type !== 'trigger') {
-    return renderObjectionError(response, {
-      statusCode: 422,
+    throw new ValidationError({
       type: 'ValidationError',
       data: {
         steps: [{ message: 'The first step must be a trigger!' }],
