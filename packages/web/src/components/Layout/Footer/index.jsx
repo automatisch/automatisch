@@ -19,6 +19,8 @@ const LayoutFooter = () => {
   const { data: config, isPending: isConfigPending } = useAutomatischConfig();
   const formatMessage = useFormatMessage();
 
+  if (config?.data.enableFooter !== true) return null;
+
   const links = [
     {
       key: 'docs',
@@ -48,9 +50,6 @@ const LayoutFooter = () => {
     },
     ,
   ];
-
-  if (config.data.enableFooter !== true) return null;
-
   return (
     <Box mt="auto" position="sticky" bottom={0}>
       <Box bgcolor="common.white" mt={4}>
