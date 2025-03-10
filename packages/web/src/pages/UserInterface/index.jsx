@@ -176,7 +176,7 @@ export default function UserInterface() {
                   )}
                   multiline
                   fullWidth
-                  data-test="logo-svg-data-text-field"
+                  data-test="footer-logo-svg-data-text-field"
                 />
 
                 <TextField
@@ -186,7 +186,7 @@ export default function UserInterface() {
                   )}
                   multiline
                   fullWidth
-                  data-test="logo-svg-data-text-field"
+                  data-test="footer-copyright-text-field"
                 />
 
                 <ColorInput
@@ -212,7 +212,7 @@ export default function UserInterface() {
                   label={formatMessage('userInterfacePage.footerDocsLinkLabel')}
                   multiline
                   fullWidth
-                  data-test="logo-svg-data-text-field"
+                  data-test="logo-docs-text-field"
                 />
 
                 <TextField
@@ -220,7 +220,7 @@ export default function UserInterface() {
                   label={formatMessage('userInterfacePage.footerTosLinkLabel')}
                   multiline
                   fullWidth
-                  data-test="logo-svg-data-text-field"
+                  data-test="logo-tos-text-field"
                 />
 
                 <TextField
@@ -230,7 +230,7 @@ export default function UserInterface() {
                   )}
                   multiline
                   fullWidth
-                  data-test="logo-svg-data-text-field"
+                  data-test="logo-privacy-policy-text-field"
                 />
 
                 <TextField
@@ -240,7 +240,7 @@ export default function UserInterface() {
                   )}
                   multiline
                   fullWidth
-                  data-test="logo-svg-data-text-field"
+                  data-test="logo-imprint-text-field"
                 />
 
                 <LoadingButton
