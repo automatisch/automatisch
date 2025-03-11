@@ -11,23 +11,10 @@ export default defineTrigger({
       label: 'Folder',
       key: 'folderPath',
       type: 'string',
-      required: true,
+      required: false,
       description:
-        'Enter the folder path that you want to follow, like /TextFiles or /Documents/Taxes.',
+        'Enter the folder path that you want to follow, like /TextFiles or /Documents/Taxes. Leave empty for the root directory.',
       variables: true,
-    },
-    {
-      label: 'Include File Contents?',
-      key: 'includeFileContents',
-      type: 'dropdown',
-      required: true,
-      description:
-        'Please be advised that files exceeding 100MB in size may result in an error. To prevent errors and exclude file contents, set this option to NO.',
-      variables: true,
-      options: [
-        { label: 'No', value: false },
-        { label: 'Yes', value: true },
-      ],
     },
   ],
 

@@ -28,8 +28,8 @@ export default defineAction({
   async run($) {
     const filePath = $.step.parameters.filePath;
     const newName = $.step.parameters.newName;
-    const fileObject = path.parse(filePath);
-    const newPath = path.format({
+    const fileObject = path.posix.parse(filePath);
+    const newPath = path.posix.format({
       dir: fileObject.dir,
       ext: fileObject.ext,
       name: newName,

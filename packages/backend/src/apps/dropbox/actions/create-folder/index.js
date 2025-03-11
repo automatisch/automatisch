@@ -29,7 +29,7 @@ export default defineAction({
   async run($) {
     const parentFolder = $.step.parameters.parentFolder;
     const folderName = $.step.parameters.folderName;
-    const folderPath = path.join(parentFolder, folderName);
+    const folderPath = path.posix.join(parentFolder, folderName);
 
     const response = await $.http.post('/2/files/create_folder_v2', {
       path: folderPath,

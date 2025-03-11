@@ -11,9 +11,9 @@ export default defineTrigger({
       label: 'Folder',
       key: 'folderPath',
       type: 'string',
-      required: true,
+      required: false,
       description:
-        'Enter the folder path that you want to follow, like /TextFiles or /Documents/Taxes.',
+        'Enter the folder path that you want to follow, like /TextFiles or /Documents/Taxes. Leave empty for the root directory.',
       variables: true,
     },
   ],

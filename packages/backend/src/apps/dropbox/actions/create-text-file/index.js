@@ -16,8 +16,8 @@ export default defineAction({
       variables: true,
     },
     {
-      label: 'Folder Name',
-      key: 'folderName',
+      label: 'File Name',
+      key: 'fileName',
       type: 'string',
       required: true,
       description:
@@ -39,7 +39,7 @@ export default defineAction({
       required: true,
       description:
         'Overwrite this file (if one of the same name exists) or not.',
-      variables: true,
+      variables: false,
       options: [
         { label: 'False', value: false },
         { label: 'True', value: true },
@@ -51,8 +51,8 @@ export default defineAction({
     const fileContent = $.step.parameters.fileContent;
     const overwrite = $.step.parameters.overwrite;
     const parentFolder = $.step.parameters.parentFolder;
-    const folderName = $.step.parameters.folderName;
-    const folderPath = path.join(parentFolder, folderName);
+    const fileName = $.step.parameters.fileName;
+    const filePath = path.posix.join(parentFolder, fileName);
 
     const headers = {
       Authorization: `Bearer ${$.auth.data.accessToken}`,
@@ -61,7 +61,7 @@ export default defineAction({
         autorename: false,
         mode: overwrite ? 'overwrite' : 'add',
         mute: false,
-        path: `${folderPath}.txt`,
+        path: `${filePath}.txt`,
         strict_conflict: false,
       }),
     };
