@@ -1,4 +1,5 @@
 import oauthClient from './oauth-client.js';
+import appConfig from '../../../config/app.js';
 
 const addAuthHeader = ($, requestConfig) => {
   const { url, method, data, params } = requestConfig;
@@ -26,6 +27,16 @@ const addAuthHeader = ($, requestConfig) => {
   );
 
   requestConfig.headers.Authorization = authHeader.Authorization;
+  const screenName = $.auth.data?.screenName;
+  if (screenName) {
+    requestConfig.headers[
+      'User-Agent'
+    ] = `web:automatisch:${appConfig.version} (by ${screenName})`;
+  } else {
+    requestConfig.headers[
+      'User-Agent'
+    ] = `web:automatisch:${appConfig.version}`;
+  }
 
   return requestConfig;
 };
