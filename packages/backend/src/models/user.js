@@ -525,7 +525,13 @@ class User extends Base {
     return true;
   }
 
-  getFlows({ folderId, name }) {
+  async getFolderIds() {
+    const folders = await this.$relatedQuery('folders').select('id');
+
+    return folders.map((folder) => folder.id);
+  }
+
+  getFlows({ folderId, name }, ownedFolderIds) {
     return this.authorizedFlows
       .clone()
       .withGraphFetched({
@@ -537,7 +543,9 @@ class User extends Base {
         }
 
         if (folderId === 'null') {
-          builder.whereNull('flows.folder_id');
+          builder
+            .whereNull('flows.folder_id')
+            .orWhereNotIn('flows.folder_id', ownedFolderIds);
         } else if (folderId) {
           builder.where('flows.folder_id', folderId);
         }
