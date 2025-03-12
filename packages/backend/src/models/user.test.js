@@ -1181,7 +1181,7 @@ describe('User model', () => {
     });
   });
 
-  describe.only('getFlows', () => {
+  describe('getFlows', () => {
     let currentUser,
       currentUserRole,
       anotherUser,
