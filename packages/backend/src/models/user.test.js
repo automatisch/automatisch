@@ -1186,7 +1186,6 @@ describe('User model', () => {
       currentUserRole,
       anotherUser,
       folder,
-      anotherUserFolder,
       flowOne,
       flowTwo,
       flowThree;
@@ -1198,7 +1197,7 @@ describe('User model', () => {
       anotherUser = await createUser();
 
       folder = await createFolder({ userId: currentUser.id });
-      anotherUserFolder = await createFolder({ userId: anotherUser.id });
+      await createFolder({ userId: anotherUser.id });
 
       flowOne = await createFlow({
         userId: currentUser.id,
