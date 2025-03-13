@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import SearchIcon from '@mui/icons-material/Search';
 import useFormatMessage from 'hooks/useFormatMessage';
 
-export default function SearchInput({ onChange, defaultValue = '' }) {
+export default function SearchInput({ onChange, defaultValue = '', value }) {
   const formatMessage = useFormatMessage();
   return (
     <FormControl variant="outlined" fullWidth>
@@ -16,6 +16,7 @@ export default function SearchInput({ onChange, defaultValue = '' }) {
       </InputLabel>
 
       <OutlinedInput
+        value={value}
         defaultValue={defaultValue}
         id="search-input"
         type="text"
@@ -36,4 +37,5 @@ export default function SearchInput({ onChange, defaultValue = '' }) {
 SearchInput.propTypes = {
   onChange: PropTypes.func,
   defaultValue: PropTypes.string,
+  value: PropTypes.string,
 };

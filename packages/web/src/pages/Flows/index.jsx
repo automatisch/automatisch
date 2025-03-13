@@ -37,6 +37,7 @@ export default function Flows() {
   const flowName = searchParams.get('flowName') || '';
   const folderId = searchParams.get('folderId');
   const currentUserAbility = useCurrentUserAbility();
+  const [searchValue, setSearchValue] = React.useState(flowName);
 
   const { data, isSuccess, isLoading } = useFlows({ flowName, page, folderId });
 
@@ -45,9 +46,17 @@ export default function Flows() {
   const hasFlows = flows?.length;
   const navigateToLastPage = isSuccess && !hasFlows && page > 1;
 
-  const onSearchChange = React.useCallback((event) => {
-    setSearchParams({ flowName: event.target.value });
-  }, []);
+  const onSearchChange = React.useCallback(
+    (event) => {
+      const value = event.target.value;
+      setSearchValue(value);
+      setSearchParams({
+        flowName: value,
+        ...(folderId && { folderId }),
+      });
+    },
+    [folderId, setSearchParams],
+  );
 
   const getPathWithSearchParams = (page, flowName) => {
     const searchParams = new URLSearchParams();
@@ -82,6 +91,15 @@ export default function Flows() {
     [navigateToLastPage],
   );
 
+  React.useEffect(
+    function resetSearchValue() {
+      if (!searchParams.has('flowName')) {
+        setSearchValue('');
+      }
+    },
+    [searchParams],
+  );
+
   return (
     <>
       <Box sx={{ py: 3 }}>
@@ -97,7 +115,7 @@ export default function Flows() {
             </Grid>
 
             <Grid item xs={12} sm="auto" order={{ xs: 2, sm: 1 }}>
-              <SearchInput onChange={onSearchChange} defaultValue={flowName} />
+              <SearchInput onChange={onSearchChange} value={searchValue} />
             </Grid>
 
             <Grid
