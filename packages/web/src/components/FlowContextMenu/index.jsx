@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import Can from 'components/Can';
 import FlowFolderChangeDialog from 'components/FlowFolderChangeDialog';
@@ -17,6 +17,7 @@ import useExportFlow from 'hooks/useExportFlow';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 function ContextMenu(props) {
+  const location = useLocation();
   const { flowId, onClose, anchorEl, onDuplicateFlow, appKey } = props;
   const [showFlowFolderChangeDialog, setShowFlowFolderChangeDialog] =
     React.useState(false);
@@ -112,6 +113,9 @@ function ContextMenu(props) {
               disabled={!allowed}
               component={Link}
               to={URLS.FLOW(flowId)}
+              state={{
+                from: `${location.pathname}${location.search}${location.hash}`,
+              }}
             >
               {formatMessage('flow.view')}
             </MenuItem>
