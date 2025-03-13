@@ -121,9 +121,17 @@
   --announcement-bar-height: 50px;
 }
 
+.dark .VPTeamMembersItem .avatar {
+  background-color: var(--vp-c-white);
+}
+
 .VPTeamMembersItem .avatar-img {
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: initial;
+  max-width: 65%;
+  max-height: 65%;
 }
 
 header.VPNav {
