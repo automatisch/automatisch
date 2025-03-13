@@ -16,6 +16,7 @@ import trimWhitespace from './transformers/trim-whitespace.js';
 import useDefaultValue from './transformers/use-default-value.js';
 import parseStringifiedJson from './transformers/parse-stringified-json.js';
 import createUuid from './transformers/create-uuid.js';
+import extractAll from './transformers/extract-all.js';
 
 const transformers = {
   base64ToString,
@@ -34,6 +35,7 @@ const transformers = {
   useDefaultValue,
   parseStringifiedJson,
   createUuid,
+  extractAll,
 };
 
 export default defineAction({
@@ -55,10 +57,7 @@ export default defineAction({
         { label: 'Convert Markdown to HTML', value: 'markdownToHtml' },
         { label: 'Create UUID', value: 'createUuid' },
         { label: 'Encode URI', value: 'encodeUri' },
-        {
-          label: 'Encode URI Component',
-          value: 'encodeUriComponent',
-        },
+        { label: 'Encode URI Component', value: 'encodeUriComponent' },
         { label: 'Extract Email Address', value: 'extractEmailAddress' },
         { label: 'Extract Number', value: 'extractNumber' },
         { label: 'Lowercase', value: 'lowercase' },
@@ -68,6 +67,7 @@ export default defineAction({
         { label: 'String to Base64', value: 'stringToBase64' },
         { label: 'Trim Whitespace', value: 'trimWhitespace' },
         { label: 'Use Default Value', value: 'useDefaultValue' },
+        { label: 'Extract All Matching', value: 'extractAll' },
       ],
       additionalFields: {
         type: 'query',
