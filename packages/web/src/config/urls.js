@@ -51,6 +51,7 @@ export const FOLDER_FLOWS = (folderId) => `/flows?folderId=${folderId}`;
 export const APP_FLOWS_PATTERN = '/app/:appKey/flows';
 export const EDITOR = '/editor';
 export const CREATE_FLOW = '/editor/create';
+export const VIEW_TEMPLATES = '/flows/templates';
 export const IMPORT_FLOW = '/flows/import';
 export const FLOW_EDITOR = (flowId) => `/editor/${flowId}`;
 export const FLOWS = '/flows';
@@ -84,6 +85,12 @@ export const ADMIN_APP_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey`;
 export const ADMIN_APP_SETTINGS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/settings`;
 export const ADMIN_APP_AUTH_CLIENTS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/oauth-clients`;
 export const ADMIN_APP_CONNECTIONS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/connections`;
+export const ADMIN_TEMPLATES = `${ADMIN_SETTINGS}/templates`;
+export const ADMIN_CREATE_TEMPLATE_PATTERN = `${ADMIN_SETTINGS}/templates/create/:flowId`;
+export const ADMIN_UPDATE_TEMPLATE_PATTERN = `${ADMIN_SETTINGS}/templates/update/:templateId`;
+
+export const CREATE_FLOW_FROM_TEMPLATE = (templateId) =>
+  `/editor/create?templateId=${templateId}`;
 
 export const ADMIN_APP_CONNECTIONS = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/connections`;
@@ -99,6 +106,12 @@ export const ADMIN_APP_AUTH_CLIENT = (appKey, id) =>
 
 export const ADMIN_APP_AUTH_CLIENTS_CREATE = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/oauth-clients/create`;
+
+export const ADMIN_CREATE_TEMPLATE = (flowId) =>
+  `${ADMIN_SETTINGS}/templates/create/${flowId}`;
+
+export const ADMIN_UPDATE_TEMPLATE = (templateId) =>
+  `${ADMIN_SETTINGS}/templates/update/${templateId}`;
 
 export const DASHBOARD = FLOWS;
 

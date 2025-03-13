@@ -4,7 +4,7 @@ const getTemplatesMock = async (templates) => {
     name: template.name,
     createdAt: template.createdAt.getTime(),
     updatedAt: template.updatedAt.getTime(),
-    flowData: template.flowData,
+    flowData: template.getFlowDataWithIconUrls(),
   }));
 
   return {

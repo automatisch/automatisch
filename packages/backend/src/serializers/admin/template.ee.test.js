@@ -13,7 +13,7 @@ describe('adminTemplateSerializer', () => {
     const expectedPayload = {
       id: template.id,
       name: template.name,
-      flowData: template.flowData,
+      flowData: template.getFlowDataWithIconUrls(),
       createdAt: template.createdAt.getTime(),
       updatedAt: template.updatedAt.getTime(),
     };

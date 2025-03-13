@@ -11,6 +11,7 @@ export default async (request, response) => {
 
 const configParams = (request) => {
   const {
+    enableTemplates,
     enableFooter,
     footerBackgroundColor,
     footerCopyrightText,
@@ -28,6 +29,7 @@ const configParams = (request) => {
   } = request.body;
 
   return {
+    enableTemplates,
     enableFooter,
     footerBackgroundColor,
     footerCopyrightText,

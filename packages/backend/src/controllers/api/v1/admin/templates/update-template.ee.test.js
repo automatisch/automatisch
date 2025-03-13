@@ -35,6 +35,7 @@ describe('PATCH /api/v1/admin/templates/:templateId', () => {
 
     const expectedPayload = await updateTemplateMock({
       ...refetchedTemplate,
+      flowData: refetchedTemplate.getFlowDataWithIconUrls(),
       name: updatedName,
     });
 
