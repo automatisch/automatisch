@@ -16,5 +16,10 @@ export default async (request, response) => {
 };
 
 const flowParams = (request) => {
-  return { folderId: request.query.folderId, name: request.query.name };
+  return {
+    folderId: request.query.folderId,
+    name: request.query.name,
+    status: request.query.status,
+    onlyOwnedFlows: request.query.onlyOwnedFlows,
+  };
 };

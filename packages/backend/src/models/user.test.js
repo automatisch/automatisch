@@ -1258,6 +1258,16 @@ describe('User model', () => {
       expect(flows[0].id).toBe(flowOne.id);
     });
 
+    it('should return flows filtered by onlyOwnedFlows', async () => {
+      const flows = await currentUser.getFlows({ onlyOwnedFlows: true }, [
+        folder.id,
+      ]);
+
+      expect(flows).toHaveLength(2);
+      expect(flows[0].id).toBe(flowOne.id);
+      expect(flows[1].id).toBe(flowTwo.id);
+    });
+
     it('should return flows with specific folder ID', async () => {
       const flows = await currentUser.getFlows({ folderId: folder.id }, [
         folder.id,
@@ -1309,6 +1319,21 @@ describe('User model', () => {
       expect(flows.map((flow) => flow.id)).toEqual(
         expect.arrayContaining([flowTwo.id, flowThree.id])
       );
+    });
+
+    it('should return specified flows with all filters together', async () => {
+      const flows = await currentUser.getFlows(
+        {
+          folderId: folder.id,
+          name: 'Flow One',
+          status: 'published',
+          onlyOwnedFlows: true,
+        },
+        [folder.id]
+      );
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
     });
   });
 
