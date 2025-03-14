@@ -531,7 +531,7 @@ class User extends Base {
     return folders.map((folder) => folder.id);
   }
 
-  getFlows({ folderId, name }, ownedFolderIds) {
+  getFlows({ folderId, name, status }, ownedFolderIds) {
     return this.authorizedFlows
       .clone()
       .withGraphFetched({
@@ -540,6 +540,12 @@ class User extends Base {
       .where((builder) => {
         if (name) {
           builder.where('flows.name', 'ilike', `%${name}%`);
+        }
+
+        if (status === 'published') {
+          builder.where('flows.active', true);
+        } else if (status === 'draft') {
+          builder.where('flows.active', false);
         }
 
         if (folderId === 'null') {
