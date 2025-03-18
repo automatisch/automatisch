@@ -1202,11 +1202,13 @@ describe('User model', () => {
       flowOne = await createFlow({
         userId: currentUser.id,
         folderId: folder.id,
+        active: true,
         name: 'Flow One',
       });
 
       flowTwo = await createFlow({
         userId: currentUser.id,
+        active: false,
         name: 'Flow Two',
       });
 
@@ -1235,6 +1237,35 @@ describe('User model', () => {
 
       expect(flows).toHaveLength(1);
       expect(flows[0].id).toBe(flowTwo.id);
+    });
+
+    it('should return flows filtered by status', async () => {
+      const flows = await currentUser.getFlows({ status: 'published' }, [
+        folder.id,
+      ]);
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return flows filtered by name and status', async () => {
+      const flows = await currentUser.getFlows(
+        { name: 'Flow One', status: 'published' },
+        [folder.id]
+      );
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return flows filtered by onlyOwnedFlows', async () => {
+      const flows = await currentUser.getFlows({ onlyOwnedFlows: true }, [
+        folder.id,
+      ]);
+
+      expect(flows).toHaveLength(2);
+      expect(flows[0].id).toBe(flowOne.id);
+      expect(flows[1].id).toBe(flowTwo.id);
     });
 
     it('should return flows with specific folder ID', async () => {
@@ -1288,6 +1319,21 @@ describe('User model', () => {
       expect(flows.map((flow) => flow.id)).toEqual(
         expect.arrayContaining([flowTwo.id, flowThree.id])
       );
+    });
+
+    it('should return specified flows with all filters together', async () => {
+      const flows = await currentUser.getFlows(
+        {
+          folderId: folder.id,
+          name: 'Flow One',
+          status: 'published',
+          onlyOwnedFlows: true,
+        },
+        [folder.id]
+      );
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
     });
   });
 
