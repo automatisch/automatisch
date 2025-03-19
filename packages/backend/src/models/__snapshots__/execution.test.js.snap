@@ -20,6 +20,13 @@ exports[`Execution model > jsonSchema should have correct validations 1`] = `
     "internalId": {
       "type": "string",
     },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+      ],
+      "type": "string",
+    },
     "testRun": {
       "default": false,
       "type": "boolean",

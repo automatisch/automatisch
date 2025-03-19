@@ -19,22 +19,9 @@ describe('executionSerializer', () => {
     const expectedPayload = {
       id: execution.id,
       testRun: execution.testRun,
+      status: execution.status,
       createdAt: execution.createdAt.getTime(),
       updatedAt: execution.updatedAt.getTime(),
-    };
-
-    expect(executionSerializer(execution)).toStrictEqual(expectedPayload);
-  });
-
-  it('should return the execution data with status', async () => {
-    execution.status = 'success';
-
-    const expectedPayload = {
-      id: execution.id,
-      testRun: execution.testRun,
-      createdAt: execution.createdAt.getTime(),
-      updatedAt: execution.updatedAt.getTime(),
-      status: 'success',
     };
 
     expect(executionSerializer(execution)).toStrictEqual(expectedPayload);
