@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,6 +24,8 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useFolders from 'hooks/useFolders';
 import useDeleteFolder from 'hooks/useDeleteFolder';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import objectifyUrlSearchParams from 'helpers/objectifyUrlSearchParams';
+import useFlowFilters from 'hooks/useFlowFilters';
 
 import { ListItemIcon } from './style';
 
@@ -34,6 +37,8 @@ export default function Folders() {
   const navigate = useNavigate();
   const { data: folders } = useFolders();
   const enqueueSnackbar = useEnqueueSnackbar();
+
+  const { enhanceExistingSearchParams } = useFlowFilters();
 
   const {
     mutateAsync: deleteFolder,
@@ -53,8 +58,8 @@ export default function Folders() {
     (folder) => folder.id === selectedFolderId,
   );
 
-  const allFlowsFolder = new URLSearchParams().toString();
-  const unassignedFlowsFolder = new URLSearchParams('folderId=null').toString();
+  const allFlowsFolder = enhanceExistingSearchParams('folderId', undefined);
+  const unassignedFlowsFolder = enhanceExistingSearchParams('folderId', 'null');
 
   const allFlowsFolderSelected = selectedFolderId === null;
   const unassignedFlowsFolderSelected = selectedFolderId === 'null'; // intendedly stringified
@@ -86,9 +91,7 @@ export default function Folders() {
   };
 
   const getFolderSearchParams = (folderId) => {
-    const searchParams = new URLSearchParams(`folderId=${folderId}`);
-
-    return searchParams.toString();
+    return enhanceExistingSearchParams('folderId', folderId).toString();
   };
 
   const generateFolderItem = (folder) => {
@@ -148,10 +151,7 @@ export default function Folders() {
 
   return (
     <>
-      <Box
-        component={Card}
-        //   sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-      >
+      <Box component={Card}>
         <List component="nav" aria-label="static folders">
           <ListItemButton
             component={Link}
