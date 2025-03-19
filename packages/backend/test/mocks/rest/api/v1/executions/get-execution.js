@@ -2,6 +2,7 @@ const getExecutionMock = async (execution, flow, steps) => {
   const data = {
     id: execution.id,
     testRun: execution.testRun,
+    status: execution.status,
     createdAt: execution.createdAt.getTime(),
     updatedAt: execution.updatedAt.getTime(),
     flow: {

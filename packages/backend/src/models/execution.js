@@ -14,6 +14,7 @@ class Execution extends Base {
       flowId: { type: 'string', format: 'uuid' },
       testRun: { type: 'boolean', default: false },
       internalId: { type: 'string' },
+      status: { type: 'string', enum: ['success', 'failure'] },
       deletedAt: { type: 'string' },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
