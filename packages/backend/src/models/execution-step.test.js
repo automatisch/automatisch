@@ -149,4 +149,32 @@ describe('ExecutionStep model', () => {
       expect(increaseUsageCountSpy).toHaveBeenCalledOnce();
     });
   });
+
+  describe('updateExecutionStatus', () => {
+    it('should update execution status to failure when step status is failure', async () => {
+      const execution = await createExecution();
+      const executionStep = await createExecutionStep({
+        executionId: execution.id,
+        status: 'failure',
+      });
+
+      await executionStep.updateExecutionStatus();
+
+      const updatedExecution = await execution.$query();
+      expect(updatedExecution.status).toBe('failure');
+    });
+
+    it('should update execution status to success when step status is success', async () => {
+      const execution = await createExecution();
+      const executionStep = await createExecutionStep({
+        executionId: execution.id,
+        status: 'success',
+      });
+
+      await executionStep.updateExecutionStatus();
+
+      const updatedExecution = await execution.$query();
+      expect(updatedExecution.status).toBe('success');
+    });
+  });
 });
