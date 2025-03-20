@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import Can from 'components/Can';
 import FlowFolderChangeDialog from 'components/FlowFolderChangeDialog';
@@ -17,6 +17,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useIsCurrentUserAdmin from 'hooks/useIsCurrentUserAdmin';
 
 function ContextMenu(props) {
+  const location = useLocation();
   const { flowId, onClose, anchorEl, onDuplicateFlow, appKey } = props;
 
   const [showFlowFolderChangeDialog, setShowFlowFolderChangeDialog] =
@@ -120,6 +121,9 @@ function ContextMenu(props) {
               disabled={!allowed}
               component={Link}
               to={URLS.FLOW(flowId)}
+              state={{
+                from: `${location.pathname}${location.search}${location.hash}`,
+              }}
             >
               {formatMessage('flow.view')}
             </MenuItem>
