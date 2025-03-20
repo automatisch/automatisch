@@ -566,6 +566,27 @@ class User extends Base {
       .orderBy('updated_at', 'desc');
   }
 
+  getExecutions({ name }) {
+    return this.authorizedExecutions
+      .clone()
+      .withSoftDeleted()
+      .joinRelated({
+        flow: true,
+      })
+      .withGraphFetched({
+        flow: {
+          steps: true,
+        },
+      })
+      .where((builder) => {
+        builder.withSoftDeleted();
+        if (name) {
+          builder.where('flow.name', 'ilike', `%${name}%`);
+        }
+      })
+      .orderBy('created_at', 'desc');
+  }
+
   async getApps(name) {
     const connections = await this.authorizedConnections
       .clone()
