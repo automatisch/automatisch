@@ -1,23 +1,25 @@
-const paginate = async (query, limit, offset) => {
-  if (limit < 1 || limit > 100) {
-    throw new Error('Limit must be between 1 and 100');
+const paginateRest = async (query, page) => {
+  const pageSize = 10;
+
+  page = parseInt(page, 10);
+
+  if (isNaN(page) || page < 1) {
+    page = 1;
   }
 
   const [records, count] = await Promise.all([
-    query.limit(limit).offset(offset),
+    query.limit(pageSize).offset((page - 1) * pageSize),
     query.resultSize(),
   ]);
 
   return {
     pageInfo: {
-      currentPage: Math.ceil(offset / limit + 1),
-      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      totalPages: Math.ceil(count / pageSize),
     },
     totalCount: count,
-    edges: records.map((record) => ({
-      node: record,
-    })),
+    records,
   };
 };
 
-export default paginate;
+export default paginateRest;
