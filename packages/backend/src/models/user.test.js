@@ -1337,6 +1337,91 @@ describe('User model', () => {
     });
   });
 
+  describe('getExecutions', () => {
+    let currentUser,
+      currentUserRole,
+      anotherUser,
+      flow,
+      executionOne,
+      executionTwo,
+      executionThree;
+
+    beforeEach(async () => {
+      currentUser = await createUser();
+      currentUserRole = await currentUser.$relatedQuery('role');
+
+      anotherUser = await createUser();
+
+      flow = await createFlow({
+        userId: currentUser.id,
+        name: 'Test Flow',
+      });
+
+      const anotherUserFlow = await createFlow({
+        userId: anotherUser.id,
+        name: 'Another User Flow',
+      });
+
+      executionOne = await createExecution({
+        flowId: flow.id,
+        testRun: false,
+      });
+
+      executionTwo = await createExecution({
+        flowId: flow.id,
+        testRun: true,
+      });
+
+      executionThree = await createExecution({
+        flowId: anotherUserFlow.id,
+        testRun: false,
+      });
+
+      await createPermission({
+        action: 'read',
+        subject: 'Execution',
+        roleId: currentUserRole.id,
+        conditions: [],
+      });
+
+      currentUser = await currentUser.$query().withGraphFetched({
+        role: true,
+        permissions: true,
+      });
+    });
+
+    it('should return executions filtered by name', async () => {
+      const executions = await currentUser.getExecutions({ name: 'Test Flow' });
+
+      expect(executions).toHaveLength(2);
+
+      expect(executions[0].id).toBe(executionTwo.id);
+      expect(executions[1].id).toBe(executionOne.id);
+    });
+
+    it('should return all executions when no filter is applied', async () => {
+      const executions = await currentUser.getExecutions({});
+
+      expect(executions.length).toBeGreaterThanOrEqual(3);
+
+      expect(executions.some((e) => e.id === executionOne.id)).toBe(true);
+      expect(executions.some((e) => e.id === executionTwo.id)).toBe(true);
+      expect(executions.some((e) => e.id === executionThree.id)).toBe(true);
+    });
+
+    it('should include flow and steps in the returned executions', async () => {
+      const step = await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+      });
+
+      const executions = await currentUser.getExecutions({ name: 'Test Flow' });
+
+      expect(executions[0].flow.id).toBe(flow.id);
+      expect(executions[0].flow.steps[0].id).toBe(step.id);
+    });
+  });
+
   it.todo('getApps');
 
   it('createAdmin should create admin with given data and mark the installation completed', async () => {
