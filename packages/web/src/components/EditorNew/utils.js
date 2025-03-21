@@ -1,6 +1,5 @@
-import { INVISIBLE_NODE_ID, NODE_TYPES } from './constants';
-
-export const generateEdgeId = (sourceId, targetId) => `${sourceId}-${targetId}`;
+import Dagre from '@dagrejs/dagre';
+import { NODE_TYPES } from './constants';
 
 export const updatedCollapsedNodes = (nodes, openStepId) => {
   return nodes.map((node) => {
@@ -17,72 +16,50 @@ export const updatedCollapsedNodes = (nodes, openStepId) => {
   });
 };
 
-export const generateInitialNodes = (flow) => {
-  const newNodes = flow.steps.map((step, index) => {
-    const collapsed = index !== 0;
+const edgeLaidOut = (edge, nodes) => {
+  const sourceNode = nodes.find((node) => node.id === edge.source);
+  const targetNodeNode = nodes.find((node) => node.id === edge.target);
 
-    return {
-      id: step.id,
-      type: NODE_TYPES.FLOW_STEP,
-      position: {
-        x: 0,
-        y: 0,
-      },
-      zIndex: collapsed ? 0 : 1,
-      data: {
-        collapsed,
-        laidOut: false,
-      },
-    };
-  });
-
-  return [
-    ...newNodes,
-    {
-      id: INVISIBLE_NODE_ID,
-      type: NODE_TYPES.INVISIBLE,
-      position: {
-        x: 0,
-        y: 0,
-      },
-    },
-  ];
+  return Boolean(sourceNode?.measured && targetNodeNode?.measured);
 };
 
-export const generateInitialEdges = (flow) => {
-  const newEdges = flow.steps
-    .map((step, i) => {
-      const sourceId = step.id;
-      const targetId = flow.steps[i + 1]?.id;
-      if (targetId) {
-        return {
-          id: generateEdgeId(sourceId, targetId),
-          source: sourceId,
-          target: targetId,
-          type: 'addNodeEdge',
-          data: {
-            laidOut: false,
-          },
-        };
-      }
-      return null;
-    })
-    .filter((edge) => !!edge);
+export const getLaidOutElements = (nodes, edges) => {
+  const graph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+  graph.setGraph({
+    rankdir: 'TB',
+    marginy: 60,
+    ranksep: 64,
+  });
+  edges.forEach((edge) => graph.setEdge(edge.source, edge.target));
+  nodes.forEach((node) =>
+    graph.setNode(node.id, {
+      ...node,
+      width: node.measured?.width ?? 0,
+      height: node.measured?.height ?? 0,
+    }),
+  );
 
-  const lastStep = flow.steps[flow.steps.length - 1];
+  Dagre.layout(graph);
 
-  return lastStep
-    ? [
-        ...newEdges,
-        {
-          id: generateEdgeId(lastStep.id, INVISIBLE_NODE_ID),
-          source: lastStep.id,
-          target: INVISIBLE_NODE_ID,
-          type: 'addNodeEdge',
-          data: {
-            laidOut: false,
-          },
-        },
-      ]
-    : newEdges;
+  return {
+    nodes: nodes.map((node) => {
+      const position = graph.node(node.id);
+      // We are shifting the dagre node position (anchor=center center) to the top left
+      // so it matches the React Flow node anchor point (top left).
+      const x = position.x - (node.measured?.width ?? 0) / 2;
+      const y = position.y - (node.measured?.height ?? 0) / 2;
+
+      return {
+        ...node,
+        position: { x, y },
+        ...(node.type === NODE_TYPES.FLOW_STEP
+          ? { data: { ...node.data, laidOut: node.measured ? true : false } }
+          : {}),
+      };
+    }),
+    edges: edges.map((edge) => ({
+      ...edge,
+      data: { ...edge.data, laidOut: edgeLaidOut(edge, nodes) },
+    })),
+  };
 };

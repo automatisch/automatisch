@@ -44,6 +44,8 @@ import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
 import useActionSubsteps from 'hooks/useActionSubsteps';
 import useStepWithTestExecutions from 'hooks/useStepWithTestExecutions';
 
+const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
 
@@ -108,7 +110,7 @@ function generateValidationSchema(substeps) {
 }
 
 function FlowStep(props) {
-  const { collapsed, onChange, onContinue, flowId, step } = props;
+  const { collapsed, onChange, onContinue, onDelete, flowId, step } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -290,7 +292,11 @@ function FlowStep(props) {
         </Stack>
       </Header>
 
-      <Collapse in={!collapsed} unmountOnExit>
+      <Collapse
+        in={!collapsed}
+        unmountOnExit
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+      >
         <Content>
           <List>
             <StepExecutionsProvider value={stepWithTestExecutionsData}>
@@ -378,6 +384,7 @@ function FlowStep(props) {
           stepId={step.id}
           deletable={!isTrigger}
           onClose={onContextMenuClose}
+          onDelete={onDelete}
           anchorEl={anchorEl}
           flowId={flowId}
         />
@@ -393,6 +400,7 @@ FlowStep.propTypes = {
   onClose: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onContinue: PropTypes.func,
+  onDelete: PropTypes.func,
   flowId: PropTypes.string.isRequired,
 };
 

@@ -11,6 +11,8 @@ import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 
+const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+
 function FlowSubstep(props) {
   const {
     substep,
@@ -34,7 +36,11 @@ function FlowSubstep(props) {
         title={name}
         valid={validationStatus}
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={expanded}
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+        unmountOnExit
+      >
         <ListItem
           sx={{
             pt: 2,

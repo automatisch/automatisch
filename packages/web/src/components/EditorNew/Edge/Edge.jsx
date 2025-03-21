@@ -1,9 +1,9 @@
-import { EdgeLabelRenderer, getStraightPath } from 'reactflow';
+import { EdgeLabelRenderer, getStraightPath } from '@xyflow/react';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
+
 import { EdgesContext } from '../EditorNew';
 
 export default function Edge({
@@ -14,7 +14,7 @@ export default function Edge({
   source,
   data: { laidOut },
 }) {
-  const { stepCreationInProgress, flowActive, onAddStep } =
+  const { flowActive, onStepAdd, isCreateStepPending } =
     useContext(EdgesContext);
 
   const [edgePath, labelX, labelY] = getStraightPath({
@@ -28,7 +28,7 @@ export default function Edge({
     <>
       <EdgeLabelRenderer>
         <IconButton
-          onClick={() => onAddStep(source)}
+          onClick={() => onStepAdd(source)}
           color="primary"
           sx={{
             position: 'absolute',
@@ -36,7 +36,7 @@ export default function Edge({
             pointerEvents: 'all',
             visibility: laidOut ? 'visible' : 'hidden',
           }}
-          disabled={stepCreationInProgress || flowActive}
+          disabled={isCreateStepPending || flowActive}
         >
           <AddIcon />
         </IconButton>

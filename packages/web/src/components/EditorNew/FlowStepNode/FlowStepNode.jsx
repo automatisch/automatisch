@@ -1,15 +1,22 @@
-import { Handle, Position } from 'reactflow';
+import { useContext } from 'react';
+import { Handle, Position } from '@xyflow/react';
 import PropTypes from 'prop-types';
 
 import FlowStep from 'components/FlowStep';
 
-import { NodeWrapper, NodeInnerWrapper } from './style.js';
-import { useContext } from 'react';
 import { NodesContext } from '../EditorNew.jsx';
+import { NodeWrapper, NodeInnerWrapper } from './style.js';
 
 function FlowStepNode({ data: { collapsed, laidOut }, id }) {
-  const { openNextStep, onStepOpen, onStepClose, onStepChange, flowId, steps } =
-    useContext(NodesContext);
+  const {
+    openNextStep,
+    onStepOpen,
+    onStepClose,
+    onStepChange,
+    onStepDelete,
+    flowId,
+    steps,
+  } = useContext(NodesContext);
 
   const step = steps.find(({ id: stepId }) => stepId === id);
 
@@ -36,6 +43,7 @@ function FlowStepNode({ data: { collapsed, laidOut }, id }) {
             onChange={onStepChange}
             flowId={flowId}
             onContinue={() => openNextStep(step.id)}
+            onDelete={onStepDelete}
           />
         )}
         <Handle

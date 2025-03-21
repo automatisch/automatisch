@@ -9,7 +9,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import { useQueryClient } from '@tanstack/react-query';
 
 function FlowStepContextMenu(props) {
-  const { stepId, onClose, anchorEl, deletable, flowId } = props;
+  const { stepId, onClose, onDelete, anchorEl, deletable, flowId } = props;
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
   const { mutateAsync: deleteStep } = useDeleteStep();
@@ -21,8 +21,9 @@ function FlowStepContextMenu(props) {
       await deleteStep(stepId);
 
       await queryClient.invalidateQueries({ queryKey: ['flows', flowId] });
+      onDelete?.(stepId);
     },
-    [deleteStep, stepId, queryClient, flowId],
+    [deleteStep, onDelete, stepId, queryClient, flowId],
   );
 
   return (
@@ -44,6 +45,7 @@ function FlowStepContextMenu(props) {
 FlowStepContextMenu.propTypes = {
   stepId: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
   anchorEl: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),

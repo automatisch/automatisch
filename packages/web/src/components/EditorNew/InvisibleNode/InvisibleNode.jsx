@@ -1,4 +1,4 @@
-import { Handle, Position } from 'reactflow';
+import { Handle, Position } from '@xyflow/react';
 import { Box } from '@mui/material';
 
 // This node is used for adding an edge with add node button after the last flow step node

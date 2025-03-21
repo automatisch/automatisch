@@ -18,6 +18,8 @@ import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
 import useActions from 'hooks/useActions';
 
+const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+
 const optionGenerator = (app) => ({
   label: app.name,
   value: app.key,
@@ -145,7 +147,11 @@ function ChooseAppAndEventSubstep(props) {
         title={name}
         valid={valid}
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={expanded}
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+        unmountOnExit
+      >
         <ListItem
           sx={{
             pt: 2,

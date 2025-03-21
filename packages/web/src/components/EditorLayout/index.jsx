@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { ReactFlowProvider } from 'reactflow';
+import { ReactFlowProvider } from '@xyflow/react';
 
 import Can from 'components/Can';
 import Container from 'components/Container';

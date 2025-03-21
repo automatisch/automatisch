@@ -16,6 +16,8 @@ import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import { useQueryClient } from '@tanstack/react-query';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 
+const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+
 function TestSubstep(props) {
   const {
     substep,
@@ -74,7 +76,11 @@ function TestSubstep(props) {
   return (
     <React.Fragment>
       <FlowSubstepTitle expanded={expanded} onClick={onToggle} title={name} />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={expanded}
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+        unmountOnExit
+      >
         <ListItem
           sx={{
             pt: 2,
