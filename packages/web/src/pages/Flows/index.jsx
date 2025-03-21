@@ -16,6 +16,7 @@ import {
 } from 'react-router-dom';
 
 import Can from 'components/Can';
+import FlowFilters from 'components/FlowFilters';
 import FlowsButtons from 'components/FlowsButtons';
 import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
@@ -38,10 +39,18 @@ export default function Flows() {
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const flowName = searchParams.get('flowName') || '';
   const folderId = searchParams.get('folderId');
+  const status = searchParams.get('status');
+  const onlyOwnedFlows = searchParams.get('onlyOwnedFlows');
   const currentUserAbility = useCurrentUserAbility();
   const [searchValue, setSearchValue] = React.useState(flowName);
 
-  const { data, isSuccess, isLoading } = useFlows({ flowName, page, folderId });
+  const { data, isSuccess, isLoading } = useFlows({
+    flowName,
+    page,
+    folderId,
+    status,
+    onlyOwnedFlows,
+  });
 
   const flows = data?.data || [];
   const pageInfo = data?.meta;
@@ -51,13 +60,17 @@ export default function Flows() {
   const onSearchChange = React.useCallback(
     (event) => {
       const value = event.target.value;
+
       setSearchValue(value);
+
       setSearchParams({
         flowName: value,
         ...(folderId && { folderId }),
+        ...(onlyOwnedFlows && { onlyOwnedFlows }),
+        ...(status && { status }),
       });
     },
-    [folderId, setSearchParams],
+    [folderId, setSearchParams, onlyOwnedFlows, status],
   );
 
   const getPathWithSearchParams = (page, flowName) => {
@@ -145,6 +158,8 @@ export default function Flows() {
             </Grid>
 
             <Grid item xs={12} sm={9}>
+              <FlowFilters />
+
               {(isLoading || navigateToLastPage) && (
                 <CircularProgress
                   sx={{ display: 'block', margin: '20px auto' }}

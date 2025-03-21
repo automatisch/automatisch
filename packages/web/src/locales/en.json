@@ -385,5 +385,14 @@
   "adminCreateTemplate.titleFieldLabel": "Template name",
   "adminCreateTemplate.submit": "Create",
   "adminTemplateContextMenu.delete": "Delete",
-  "adminTemplateContextMenu.successfullyDeleted": "The template has been deleted."
+  "adminTemplateContextMenu.successfullyDeleted": "The template has been deleted.",
+  "flowFilters.hideFilters": "Hide filters",
+  "flowFilters.showFilters": "Show Filters",
+  "flowFilters.flowsFilterLabel": "Flows",
+  "flowFilters.flowsFilterAllOption": "All",
+  "flowFilters.flowsFilterOnlyMineOption": "Only mine",
+  "flowFilters.statusFilterLabel": "Status",
+  "flowFilters.statusFilterAnyOption": "All",
+  "flowFilters.statusFilterPublishedOption": "Published",
+  "flowFilters.statusFilterDraftOption": "Draft"
 }
