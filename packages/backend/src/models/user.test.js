@@ -1186,6 +1186,7 @@ describe('User model', () => {
       currentUserRole,
       anotherUser,
       folder,
+      anotherUserFolder,
       flowOne,
       flowTwo,
       flowThree;
@@ -1197,7 +1198,7 @@ describe('User model', () => {
       anotherUser = await createUser();
 
       folder = await createFolder({ userId: currentUser.id });
-      await createFolder({ userId: anotherUser.id });
+      anotherUserFolder = await createFolder({ userId: anotherUser.id });
 
       flowOne = await createFlow({
         userId: currentUser.id,
@@ -1215,6 +1216,7 @@ describe('User model', () => {
       flowThree = await createFlow({
         userId: anotherUser.id,
         name: 'Flow Three',
+        folderId: anotherUserFolder.id,
       });
 
       await createPermission({
@@ -1266,6 +1268,16 @@ describe('User model', () => {
       expect(flows).toHaveLength(2);
       expect(flows[0].id).toBe(flowOne.id);
       expect(flows[1].id).toBe(flowTwo.id);
+    });
+
+    it('should return flows filtered by onlyOwnedFlows with null folderId', async () => {
+      const flows = await currentUser.getFlows(
+        { onlyOwnedFlows: true, folderId: 'null' },
+        [folder.id]
+      );
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowTwo.id);
     });
 
     it('should return flows with specific folder ID', async () => {
