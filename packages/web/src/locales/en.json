@@ -395,5 +395,13 @@
   "flowFilters.statusFilterLabel": "Status",
   "flowFilters.statusFilterAnyOption": "All",
   "flowFilters.statusFilterPublishedOption": "Published",
-  "flowFilters.statusFilterDraftOption": "Draft"
+  "flowFilters.statusFilterDraftOption": "Draft",
+  "executionFilters.hideFilters": "Hide filters",
+  "executionFilters.showFilters": "Show Filters",
+  "executionFilters.statusFilterLabel": "Status",
+  "executionFilters.statusFilterAnyOption": "All",
+  "executionFilters.statusFilterSuccessfulOption": "Successful",
+  "executionFilters.statusFilterFailedOption": "Failed",
+  "executionFilters.startDateLabel": "Start Date",
+  "executionFilters.endDateLabel": "End Date"
 }
