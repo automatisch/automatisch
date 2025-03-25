@@ -553,9 +553,11 @@ class User extends Base {
         }
 
         if (folderId === 'null') {
-          builder
-            .whereNull('flows.folder_id')
-            .orWhereNotIn('flows.folder_id', ownedFolderIds);
+          builder.where((builder) => {
+            builder
+              .whereNull('flows.folder_id')
+              .orWhereNotIn('flows.folder_id', ownedFolderIds);
+          });
         } else if (folderId) {
           builder.where('flows.folder_id', folderId);
         }
