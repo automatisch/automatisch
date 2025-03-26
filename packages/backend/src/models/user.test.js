@@ -1377,16 +1377,19 @@ describe('User model', () => {
       executionOne = await createExecution({
         flowId: flow.id,
         testRun: false,
+        status: 'success',
       });
 
       executionTwo = await createExecution({
         flowId: flow.id,
         testRun: true,
+        status: 'failure',
       });
 
       executionThree = await createExecution({
         flowId: anotherUserFlow.id,
         testRun: false,
+        status: 'success',
       });
 
       await createPermission({
@@ -1409,6 +1412,13 @@ describe('User model', () => {
 
       expect(executions[0].id).toBe(executionTwo.id);
       expect(executions[1].id).toBe(executionOne.id);
+    });
+
+    it('should return executions filtered by status', async () => {
+      const executions = await currentUser.getExecutions({ status: 'failure' });
+
+      expect(executions).toHaveLength(1);
+      expect(executions[0].id).toBe(executionTwo.id);
     });
 
     it('should return all executions when no filter is applied', async () => {

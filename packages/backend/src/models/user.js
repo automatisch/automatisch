@@ -566,7 +566,7 @@ class User extends Base {
       .orderBy('updated_at', 'desc');
   }
 
-  getExecutions({ name }) {
+  getExecutions({ name, status }) {
     return this.authorizedExecutions
       .clone()
       .withSoftDeleted()
@@ -580,8 +580,15 @@ class User extends Base {
       })
       .where((builder) => {
         builder.withSoftDeleted();
+
         if (name) {
           builder.where('flow.name', 'ilike', `%${name}%`);
+        }
+
+        if (status === 'success') {
+          builder.where('executions.status', 'success');
+        } else if (status === 'failure') {
+          builder.where('executions.status', 'failure');
         }
       })
       .orderBy('created_at', 'desc');
