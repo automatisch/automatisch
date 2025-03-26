@@ -65,7 +65,10 @@ const process = ({ data, parentKey, index, parentLabel = '' }) => {
       {
         label,
         value,
-        sampleValue,
+        sampleValue:
+          typeof sampleValue === 'string'
+            ? sampleValue
+            : JSON.stringify(sampleValue),
       },
     ];
   });
