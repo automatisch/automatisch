@@ -4,7 +4,7 @@ import {
   mongoQueryMatcher,
 } from '@casl/ability';
 
-// Must be kept in sync with `packages/web/src/helpers/userAbility.ts`!
+// Must be kept in sync with `packages/web/src/helpers/userAbility.js`!
 export default function userAbility(user) {
   const permissions = user?.permissions;
   const role = user?.role;
