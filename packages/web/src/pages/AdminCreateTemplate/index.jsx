@@ -1,6 +1,5 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
-import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -10,8 +9,6 @@ import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
 import useFlow from 'hooks/useFlow';
-import useAutomatischConfig from 'hooks/useAutomatischConfig';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminCreateTemplate from 'hooks/useAdminCreateTemplate.ee';
 

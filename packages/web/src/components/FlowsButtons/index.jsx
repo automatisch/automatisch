@@ -1,43 +1,20 @@
 import AddIcon from '@mui/icons-material/Add';
 import UploadIcon from '@mui/icons-material/Upload';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Pagination from '@mui/material/Pagination';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import PaginationItem from '@mui/material/PaginationItem';
 import * as React from 'react';
-import {
-  Link,
-  Route,
-  Routes,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import Can from 'components/Can';
-import ConditionalIconButton from 'components/ConditionalIconButton';
-import Container from 'components/Container';
-import FlowRow from 'components/FlowRow';
-import Folders from 'components/Folders';
-import ImportFlowDialog from 'components/ImportFlowDialog';
 import SplitButton from 'components/SplitButton';
-import NoResultFound from 'components/NoResultFound';
-import PageTitle from 'components/PageTitle';
-import SearchInput from 'components/SearchInput';
-import TemplatesDialog from 'components/TemplatesDialog/index.ee';
+
 import * as URLS from 'config/urls';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
-import useFlows from 'hooks/useFlows';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 
 export default function FlowsButtons() {
   const formatMessage = useFormatMessage();
-  const navigate = useNavigate();
   const currentUserAbility = useCurrentUserAbility();
   const theme = useTheme();
   const { data: config } = useAutomatischConfig();
