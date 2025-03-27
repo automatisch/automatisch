@@ -1380,11 +1380,17 @@ describe('User model', () => {
         status: 'success',
       });
 
+      // sleep for 10 milliseconds to make sure the created_at values are different
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
       executionTwo = await createExecution({
         flowId: flow.id,
         testRun: true,
         status: 'failure',
       });
+
+      // sleep for 10 milliseconds to make sure the created_at values are different
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       executionThree = await createExecution({
         flowId: anotherUserFlow.id,
@@ -1419,6 +1425,17 @@ describe('User model', () => {
 
       expect(executions).toHaveLength(1);
       expect(executions[0].id).toBe(executionTwo.id);
+    });
+
+    it('should return executions filtered by startDateTime and endDateTime', async () => {
+      const executions = await currentUser.getExecutions({
+        startDateTime: executionOne.createdAt,
+        endDateTime: executionTwo.createdAt,
+      });
+
+      expect(executions).toHaveLength(2);
+      expect(executions[0].id).toBe(executionTwo.id);
+      expect(executions[1].id).toBe(executionOne.id);
     });
 
     it('should return all executions when no filter is applied', async () => {
