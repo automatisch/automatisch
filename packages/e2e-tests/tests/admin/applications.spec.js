@@ -54,7 +54,7 @@ test.describe('Admin Applications', () => {
 
     await adminApplicationSettingsPage.allowUseOnlyPredefinedAuthClients();
     await adminApplicationSettingsPage.saveSettings();
-    await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
+    await adminApplicationSettingsPage.expectOnlyOneSuccessSnackbarToBeVisible();
     await adminApplicationSettingsPage.disallowConnections();
     await adminApplicationSettingsPage.saveSettings();
     await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
@@ -63,7 +63,7 @@ test.describe('Admin Applications', () => {
 
     await adminApplicationSettingsPage.disallowUseOnlyPredefinedAuthClients();
     await adminApplicationSettingsPage.saveSettings();
-    await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
+    await adminApplicationSettingsPage.expectOnlyOneSuccessSnackbarToBeVisible();
     await adminApplicationSettingsPage.allowConnections();
     await adminApplicationSettingsPage.saveSettings();
     await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
@@ -88,6 +88,7 @@ test.describe('Admin Applications', () => {
     await expect(page.url()).toContain(
       '/admin-settings/apps/google-drive/settings'
     );
+    await expect(adminApplicationSettingsPage.pageTitle).toBeVisible();
 
     await expect(
       adminApplicationSettingsPage.useOnlyPredefinedAuthClients
@@ -142,6 +143,7 @@ test.describe('Admin Applications', () => {
 
     await adminApplicationsPage.openApplication('Spotify');
     await expect(page.url()).toContain('/admin-settings/apps/spotify/settings');
+    await expect(adminApplicationSettingsPage.pageTitle).toBeVisible();
 
     await expect(
       adminApplicationSettingsPage.useOnlyPredefinedAuthClients
@@ -152,7 +154,7 @@ test.describe('Admin Applications', () => {
 
     await adminApplicationSettingsPage.allowUseOnlyPredefinedAuthClients();
     await adminApplicationSettingsPage.saveSettings();
-    await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
+    await adminApplicationSettingsPage.expectOnlyOneSuccessSnackbarToBeVisible();
 
     await adminApplicationOAuthClientsPage.openAuthClientsTab();
     await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
@@ -212,6 +214,7 @@ test.describe('Admin Applications', () => {
 
     await adminApplicationsPage.openApplication('Reddit');
     await expect(page.url()).toContain('/admin-settings/apps/reddit/settings');
+    await expect(adminApplicationSettingsPage.pageTitle).toBeVisible();
 
     await expect(
       adminApplicationSettingsPage.useOnlyPredefinedAuthClients
@@ -281,9 +284,10 @@ test.describe('Admin Applications', () => {
     await adminApplicationsPage.openApplication('ClickUp');
     await expect(page.url()).toContain('/admin-settings/apps/clickup/settings');
 
+    await expect(adminApplicationSettingsPage.pageTitle).toBeVisible();
     await adminApplicationSettingsPage.disallowConnections();
     await adminApplicationSettingsPage.saveSettings();
-    await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
+    await adminApplicationSettingsPage.expectOnlyOneSuccessSnackbarToBeVisible();
 
     await adminApplicationOAuthClientsPage.openAuthClientsTab();
     await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
@@ -345,11 +349,12 @@ test.describe('Admin Applications', () => {
     await expect(page.url()).toContain(
       '/admin-settings/apps/mailchimp/settings'
     );
+    await expect(adminApplicationSettingsPage.pageTitle).toBeVisible();
 
     await adminApplicationSettingsPage.allowUseOnlyPredefinedAuthClients();
     await adminApplicationSettingsPage.disallowConnections();
     await adminApplicationSettingsPage.saveSettings();
-    await adminApplicationSettingsPage.expectSuccessSnackbarToBeVisible();
+    await adminApplicationSettingsPage.expectOnlyOneSuccessSnackbarToBeVisible();
 
     await adminApplicationOAuthClientsPage.openAuthClientsTab();
     await adminApplicationOAuthClientsPage.openFirstAuthClientCreateForm();
@@ -411,6 +416,7 @@ test.describe('Admin Applications', () => {
   }) => {
     await adminApplicationsPage.openApplication('RSS');
     await expect(page.url()).toContain('/admin-settings/apps/rss/settings');
+    await expect(adminApplicationSettingsPage.pageTitle).toBeVisible();
 
     await expect(
       adminApplicationSettingsPage.useOnlyPredefinedAuthClients

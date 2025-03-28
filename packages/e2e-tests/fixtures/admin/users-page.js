@@ -27,6 +27,11 @@ export class AdminUsersPage extends AuthenticatedPage {
     await this.profileMenuButton.click();
     await this.adminMenuItem.click();
     await this.isMounted();
+    await Promise.all([
+      this.page.waitForResponse(
+        (resp) => resp.url().includes('/admin/users') && resp.status() === 200
+      ),
+    ]);
     if (await this.usersLoader.isVisible()) {
       await this.usersLoader.waitFor({
         state: 'detached',

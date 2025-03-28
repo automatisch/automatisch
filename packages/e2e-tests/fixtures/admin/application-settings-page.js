@@ -43,6 +43,10 @@ export class AdminApplicationSettingsPage extends AuthenticatedPage {
     await this.saveButton.click();
   }
 
+  async expectOnlyOneSuccessSnackbarToBeVisible() {
+    await expect(this.successSnackbar).toBeVisible();
+  }
+
   async expectSuccessSnackbarToBeVisible() {
     const snackbars = await this.successSnackbar.all();
     for (const snackbar of snackbars) {
