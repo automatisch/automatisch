@@ -23,11 +23,15 @@ function AdminUpdateTemplatePage() {
     error: templateError,
   } = useAdminTemplate(templateId);
 
-  const { mutateAsync: updateTemplate, isPending } =
-    useAdminUpdateTemplate(templateId);
+  const {
+    mutateAsync: updateTemplate,
+    isPending: isUpdateTemplatePending,
+    isError: isUpdateTemplateError,
+    error: updateTemplateError,
+  } = useAdminUpdateTemplate(templateId);
 
   const handleFormSubmit = async (data) => {
-    updateTemplate(data);
+    await updateTemplate(data);
   };
 
   return (
@@ -54,7 +58,7 @@ function AdminUpdateTemplatePage() {
                   variant="contained"
                   color="primary"
                   sx={{ boxShadow: 2 }}
-                  loading={isPending}
+                  loading={isUpdateTemplatePending}
                   data-test="update-button"
                   disabled={!template}
                 >
@@ -63,9 +67,11 @@ function AdminUpdateTemplatePage() {
               </Stack>
             </Form>
           )}
-          {isTemplateError && (
+          {(isTemplateError || isUpdateTemplateError) && (
             <Alert severity="error" sx={{ mt: 3 }}>
-              {templateError?.message || formatMessage('genericError')}
+              {templateError?.message ||
+                updateTemplateError?.message ||
+                formatMessage('genericError')}
             </Alert>
           )}
         </Grid>
