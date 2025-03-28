@@ -3,20 +3,16 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
-import { DateTime } from 'luxon';
 import IconButton from '@mui/material/IconButton';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 import FlowAppIcons from 'components/FlowAppIcons';
 import AdminTemplateContextMenu from 'components/AdminTemplateContextMenu';
-import useFormatMessage from 'hooks/useFormatMessage';
-import * as URLS from 'config/urls';
 import { Apps, CardContent, ContextMenu, Title, Typography } from './style';
 import { FlowPropType } from 'propTypes/propTypes';
 import useIsCurrentUserAdmin from 'hooks/useIsCurrentUserAdmin';
 
 function TemplateItem(props) {
-  const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isCurrentUserAdmin = useIsCurrentUserAdmin();

@@ -1,23 +1,16 @@
-import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as URLS from 'config/urls';
-import { getUnifiedErrorMessage } from 'helpers/errors';
 import useTemplates from 'hooks/useTemplates.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import TemplateItem from './TemplateItem/TemplateItem.ee';
-import NoResultFound from 'components/NoResultFound';
 
 export default function TemplatesDialog(props) {
   const { open = true } = props;

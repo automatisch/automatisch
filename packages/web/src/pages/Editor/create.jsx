@@ -11,27 +11,30 @@ export default function CreateFlow() {
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const [searchParams] = useSearchParams();
-  const { mutateAsync: createFlow, isCreateFlowError } = useCreateFlow();
+  const {
+    mutateAsync: createFlow,
+    isError,
+    isPending,
+    error,
+  } = useCreateFlow();
 
   const navigateToEditor = (flowId) =>
     navigate(URLS.FLOW_EDITOR(flowId), { replace: true });
 
   React.useEffect(() => {
     async function initiate() {
-      const templateId = searchParams.get('templateId');
-      const response = await createFlow({ templateId });
+      try {
+        const templateId = searchParams.get('templateId');
+        const response = await createFlow({ templateId });
 
-      const flowId = response.data?.id;
+        const flowId = response.data?.id;
 
-      navigateToEditor(flowId);
+        navigateToEditor(flowId);
+      } catch {}
     }
 
     initiate();
   }, [createFlow, navigate, searchParams]);
-
-  if (isCreateFlowError) {
-    return null;
-  }
 
   return (
     <Box
@@ -44,11 +47,19 @@ export default function CreateFlow() {
         gap: 2,
       }}
     >
-      <CircularProgress size={16} thickness={7.5} />
-
-      <Typography variant="body2">
-        {formatMessage('createFlow.creating')}
-      </Typography>
+      {isPending && (
+        <>
+          <CircularProgress size={16} thickness={7.5} />
+          <Typography variant="body2">
+            {formatMessage('createFlow.creating')}
+          </Typography>{' '}
+        </>
+      )}
+      {isError && (
+        <Typography variant="body2">
+          {error?.message || formatMessage('genericError')}
+        </Typography>
+      )}
     </Box>
   );
 }

@@ -1,44 +1,37 @@
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 
 import Can from 'components/Can';
-import FlowFolderChangeDialog from 'components/FlowFolderChangeDialog';
-import * as URLS from 'config/urls';
 import useAdminDeleteTemplate from 'hooks/useAdminDeleteTemplate.ee';
-import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
-import useDuplicateFlow from 'hooks/useDuplicateFlow';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
-import useExportFlow from 'hooks/useExportFlow';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useIsCurrentUserAdmin from 'hooks/useIsCurrentUserAdmin';
 
 function AdminTemplateContextMenu(props) {
   const { templateId, onClose, anchorEl } = props;
 
-  const [showFlowFolderChangeDialog, setShowFlowFolderChangeDialog] =
-    React.useState(false);
-
-  const navigate = useNavigate();
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
-  const isCurrentUserAdmin = useIsCurrentUserAdmin();
   const { mutateAsync: deleteTemplate } = useAdminDeleteTemplate(templateId);
 
   const onTemplateDelete = React.useCallback(async () => {
-    await deleteTemplate();
+    try {
+      await deleteTemplate();
 
-    enqueueSnackbar(
-      formatMessage('adminTemplateContextMenu.successfullyDeleted'),
-      {
-        variant: 'success',
-      },
-    );
+      enqueueSnackbar(
+        formatMessage('adminTemplateContextMenu.successfullyDeleted'),
+        {
+          variant: 'success',
+        },
+      );
 
-    onClose();
+      onClose();
+    } catch (error) {
+      enqueueSnackbar(error?.message || formatMessage('genericError'), {
+        variant: 'error',
+      });
+    }
   }, [deleteTemplate, enqueueSnackbar, formatMessage, onClose]);
 
   return (
