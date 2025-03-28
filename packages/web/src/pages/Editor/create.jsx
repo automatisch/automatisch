@@ -13,7 +13,6 @@ export default function CreateFlow() {
   const [searchParams] = useSearchParams();
   const {
     mutateAsync: createFlow,
-    isCreateFlowError,
     isError,
     isPending,
     error,
@@ -36,10 +35,6 @@ export default function CreateFlow() {
 
     initiate();
   }, [createFlow, navigate, searchParams]);
-
-  if (isCreateFlowError) {
-    return null;
-  }
 
   return (
     <Box
