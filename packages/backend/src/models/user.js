@@ -566,7 +566,7 @@ class User extends Base {
       .orderBy('updated_at', 'desc');
   }
 
-  getExecutions({ name, status }) {
+  getExecutions({ name, status, startDateTime, endDateTime }) {
     return this.authorizedExecutions
       .clone()
       .withSoftDeleted()
@@ -589,6 +589,22 @@ class User extends Base {
           builder.where('executions.status', 'success');
         } else if (status === 'failure') {
           builder.where('executions.status', 'failure');
+        }
+
+        if (startDateTime) {
+          const startDate = DateTime.fromMillis(Number(startDateTime));
+
+          if (startDate.isValid) {
+            builder.where('executions.created_at', '>=', startDate.toISO());
+          }
+        }
+
+        if (endDateTime) {
+          const endDate = DateTime.fromMillis(Number(endDateTime));
+
+          if (endDate.isValid) {
+            builder.where('executions.created_at', '<=', endDate.toISO());
+          }
         }
       })
       .orderBy('created_at', 'desc');

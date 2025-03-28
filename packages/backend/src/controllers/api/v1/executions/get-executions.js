@@ -15,5 +15,7 @@ const executionParams = (request) => {
   return {
     name: request.query.name,
     status: request.query.status,
+    startDateTime: request.query.startDateTime,
+    endDateTime: request.query.endDateTime,
   };
 };
