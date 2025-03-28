@@ -25,6 +25,8 @@ import useTestConnection from 'hooks/useTestConnection';
 import useOAuthClients from 'hooks/useOAuthClients';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 
+const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
 
@@ -240,7 +242,11 @@ function ChooseConnectionSubstep(props) {
         title={name}
         valid={isTestConnectionPending ? null : stepConnection?.verified}
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={expanded}
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+        unmountOnExit
+      >
         <ListItem
           sx={{
             pt: 2,
