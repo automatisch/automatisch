@@ -591,13 +591,15 @@ class User extends Base {
           builder.where('executions.status', 'failure');
         }
 
-        if (startDateTime && endDateTime) {
+        if (startDateTime) {
           const startDate = DateTime.fromMillis(Number(startDateTime));
 
           if (startDate.isValid) {
             builder.where('executions.created_at', '>=', startDate.toISO());
           }
+        }
 
+        if (endDateTime) {
           const endDate = DateTime.fromMillis(Number(endDateTime));
 
           if (endDate.isValid) {
