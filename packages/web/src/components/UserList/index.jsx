@@ -24,7 +24,7 @@ import { TablePagination } from './style';
 export default function UserList() {
   const formatMessage = useFormatMessage();
   const [page, setPage] = React.useState(0);
-  const { data: usersData, isLoading } = useAdminUsers(page + 1);
+  const { data: usersData, isFetching } = useAdminUsers(page + 1);
   const users = usersData?.data;
   const { count } = usersData?.meta || {};
 
@@ -78,14 +78,14 @@ export default function UserList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {isLoading && (
+            {isFetching && (
               <ListLoader
                 data-test="users-list-loader"
                 rowsNumber={3}
                 columnsNumber={2}
               />
             )}
-            {!isLoading &&
+            {!isFetching &&
               users.map((user) => (
                 <TableRow
                   key={user.id}
@@ -112,7 +112,11 @@ export default function UserList() {
 
                   <TableCell>
                     <Typography variant="subtitle2" data-test="user-status">
-                      <Chip label={user.status} variant="outlined" color={user.status === 'active' ? 'success' : 'warning'} />
+                      <Chip
+                        label={user.status}
+                        variant="outlined"
+                        color={user.status === 'active' ? 'success' : 'warning'}
+                      />
                     </Typography>
                   </TableCell>
 
@@ -136,7 +140,7 @@ export default function UserList() {
                 </TableRow>
               ))}
           </TableBody>
-          {!isLoading && typeof count === 'number' && (
+          {!isFetching && typeof count === 'number' && (
             <TableFooter>
               <TableRow>
                 <TablePagination
