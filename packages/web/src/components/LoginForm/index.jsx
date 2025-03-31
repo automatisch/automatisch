@@ -56,15 +56,12 @@ function LoginForm() {
   };
 
   return (
-    <Paper sx={{ px: 2, py: 4 }}>
+    <Paper sx={{ p: 3, borderRadius: '0.625rem' }}>
       <Typography
-        variant="h3"
+        variant="h5"
         align="center"
         data-test="login-form-title"
         sx={{
-          borderBottom: '1px solid',
-          borderColor: (theme) => theme.palette.text.disabled,
-          pb: 2,
           mb: 2,
         }}
         gutterBottom
@@ -74,8 +71,8 @@ function LoginForm() {
 
       <Form onSubmit={handleSubmit}>
         <TextField
-          label={formatMessage('loginForm.emailFieldLabel')}
           name="email"
+          placeholder="mail@example.com"
           required
           fullWidth
           margin="dense"
@@ -84,7 +81,6 @@ function LoginForm() {
         />
 
         <TextField
-          label={formatMessage('loginForm.passwordFieldLabel')}
           name="password"
           type="password"
           required

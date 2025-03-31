@@ -4,9 +4,9 @@ import { cardActionAreaClasses } from '@mui/material/CardActionArea';
 
 const referenceTheme = createTheme();
 
-export const primaryMainColor = '#0059F7';
+export const primaryMainColor = '#0085c8';
 export const primaryLightColor = '#4286FF';
-export const primaryDarkColor = '#001F52';
+export const primaryDarkColor = '#1a91ce';
 
 export const defaultTheme = createTheme({
   palette: {
@@ -58,7 +58,7 @@ export const defaultTheme = createTheme({
     },
     background: {
       paper: '#fff',
-      default: '#FAFAFA',
+      default: '#f1f5f9',
     },
     footer: {
       main: '#FFFFFF',
@@ -70,93 +70,71 @@ export const defaultTheme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Inter',
+      'ui-sans-serif',
+      'system-ui',
+      '-apple-system',
+      'BlinkMacSystemFont',
       '"Segoe UI"',
       'Roboto',
       '"Helvetica Neue"',
       'Arial',
+      '"Noto Sans"',
       'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+      '"Noto Color Emoji"',
     ].join(','),
     h1: {
-      fontSize: referenceTheme.typography.pxToRem(72),
-      lineHeight: 1.11,
+      fontSize: referenceTheme.typography.pxToRem(48), // text-5xl
+      lineHeight: 1.2,
       fontWeight: 700,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(48),
-      },
     },
     h2: {
-      fontSize: referenceTheme.typography.pxToRem(48),
-      lineHeight: 1.16,
+      fontSize: referenceTheme.typography.pxToRem(36), // text-4xl
+      lineHeight: 1.25,
       fontWeight: 700,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(24),
-      },
     },
     h3: {
-      fontSize: referenceTheme.typography.pxToRem(32),
-      lineHeight: 1.16,
+      fontSize: referenceTheme.typography.pxToRem(30), // text-3xl
+      lineHeight: 1.3,
       fontWeight: 700,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(24),
-      },
     },
     h4: {
-      fontSize: referenceTheme.typography.pxToRem(32),
-      lineHeight: 1.3,
-      fontWeight: 700,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(16),
-      },
+      fontSize: referenceTheme.typography.pxToRem(24), // text-2xl
+      lineHeight: 1.375,
+      fontWeight: 600,
     },
     h5: {
-      fontSize: referenceTheme.typography.pxToRem(24),
-      lineHeight: 1.3,
-      fontWeight: 400,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(16),
-      },
+      fontSize: referenceTheme.typography.pxToRem(20), // text-xl
+      lineHeight: 1.5,
+      fontWeight: 600,
     },
     h6: {
-      fontSize: referenceTheme.typography.pxToRem(20),
-      lineHeight: 1.2,
+      fontSize: referenceTheme.typography.pxToRem(18), // text-lg
+      lineHeight: 1.625,
       fontWeight: 500,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(20),
-      },
     },
     subtitle1: {
-      fontSize: referenceTheme.typography.pxToRem(14),
-      lineHeight: 1.71,
-      fontWeight: 400,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(14),
-      },
+      fontSize: referenceTheme.typography.pxToRem(14), // text-sm
+      lineHeight: 1.43,
+      fontWeight: 500,
       textTransform: 'uppercase',
     },
     subtitle2: {
-      fontSize: referenceTheme.typography.pxToRem(14),
-      lineHeight: 1.14,
+      fontSize: referenceTheme.typography.pxToRem(14), // text-sm
+      lineHeight: 1.43,
       fontWeight: 400,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(14),
-      },
     },
     body1: {
-      fontSize: referenceTheme.typography.pxToRem(16),
+      fontSize: referenceTheme.typography.pxToRem(14), // text-base
       lineHeight: 1.5,
       fontWeight: 400,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(16),
-      },
     },
     body2: {
-      fontSize: referenceTheme.typography.pxToRem(16),
-      lineHeight: 1.5,
-      fontWeight: 700,
-      [referenceTheme.breakpoints.down('sm')]: {
-        fontSize: referenceTheme.typography.pxToRem(16),
-      },
+      fontSize: referenceTheme.typography.pxToRem(14), // text-sm
+      lineHeight: 1.43,
+      fontWeight: 400,
     },
     button: {
       fontSize: referenceTheme.typography.pxToRem(16),
@@ -171,6 +149,51 @@ export const defaultTheme = createTheme({
     },
   },
   components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px', // rounded corners
+          backgroundColor: '#fff',
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#DFE3EA', // soft gray-blue border
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#DFE3EA', // no change on hover
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#DFE3EA', // keep it soft on focus too
+            borderWidth: '1px', // maintain the same border width
+            boxShadow: '0 0 0 1px #0085c8', // optional subtle outline
+          },
+          input: {
+            padding: '8px 12px', // adjust spacing
+            fontSize: '1rem', // font size
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          color: '#4B5B70', // text color (matches placeholder)
+          fontSize: '1rem',
+          '&::placeholder': {
+            color: '#6B7A90',
+            opacity: 1, // show full opacity
+          },
+        },
+      },
+    },
+    // MuiOutlinedInput: {
+    //   styleOverrides: {
+    //     root: {
+    //       '&:hover .MuiOutlinedInput-notchedOutline': {
+    //         borderColor: '#C2C2C2',
+    //         paddingLeft: '2.5rem',
+    //       },
+    //     },
+    //   },
+    // },
     MuiAppBar: {
       styleOverrides: {
         root: ({ theme }) => ({

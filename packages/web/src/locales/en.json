@@ -164,7 +164,7 @@
   "signupForm.passwordsMustMatch": "Passwords must match.",
   "signupForm.passwordMinLength": "Password must be at least 6 characters long.",
   "signupForm.mandatoryInput": "{inputName} is required.",
-  "loginForm.title": "Login",
+  "loginForm.title": "Welcome back!",
   "loginForm.emailFieldLabel": "Email",
   "loginForm.passwordFieldLabel": "Password",
   "loginForm.forgotPasswordText": "Forgot password?",
