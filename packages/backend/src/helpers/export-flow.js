@@ -33,7 +33,7 @@ const updateParameters = (parameters, stepIdMap) => {
   let updatedParameters = stringifiedParameters;
 
   Object.entries(stepIdMap).forEach(([oldStepId, newStepId]) => {
-    updatedParameters = updatedParameters.replace(
+    updatedParameters = updatedParameters.replaceAll(
       `{{step.${oldStepId}.`,
       `{{step.${newStepId}.`
     );
