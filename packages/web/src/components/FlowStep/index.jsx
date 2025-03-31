@@ -176,9 +176,12 @@ function FlowStep(props) {
       ? triggerSubstepsData
       : actionSubstepsData || [];
 
-  const handleChange = React.useCallback(({ step }) => {
-    onChange(step);
-  }, []);
+  const handleChange = React.useCallback(
+    async ({ step }) => {
+      await onChange(step);
+    },
+    [onChange],
+  );
 
   const expandNextStep = React.useCallback(() => {
     setCurrentSubstep((currentSubstep) => (currentSubstep ?? 0) + 1);
