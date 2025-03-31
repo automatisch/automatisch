@@ -88,7 +88,6 @@ test.describe('User management page', () => {
     adminCreateUserPage.seed(9100);
     const testUser = adminCreateUserPage.generateUser();
     await test.step('Create the test user', async () => {
-      await adminUsersPage.navigateTo();
       await adminUsersPage.createUserButton.click();
       await adminCreateUserPage.fullNameInput.fill(testUser.fullName);
       await adminCreateUserPage.emailInput.fill(testUser.email);
@@ -174,7 +173,6 @@ test.describe('User management page', () => {
     const user1 = adminCreateUserPage.generateUser();
     const user2 = adminCreateUserPage.generateUser();
     await test.step('Create the first user', async () => {
-      await adminUsersPage.navigateTo();
       await adminUsersPage.createUserButton.click();
       await adminCreateUserPage.fullNameInput.fill(user1.fullName);
       await adminCreateUserPage.emailInput.fill(user1.email);
