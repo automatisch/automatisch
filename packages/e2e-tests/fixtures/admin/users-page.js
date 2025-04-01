@@ -25,12 +25,12 @@ export class AdminUsersPage extends AuthenticatedPage {
 
   async navigateTo() {
     await this.profileMenuButton.click();
-    await this.adminMenuItem.click();
-    await this.isMounted();
     await Promise.all([
       this.page.waitForResponse(
         (resp) => resp.url().includes('/admin/users') && resp.status() === 200
       ),
+      this.adminMenuItem.click(),
+      this.isMounted(),
     ]);
     if (await this.usersLoader.isVisible()) {
       await this.usersLoader.waitFor({
