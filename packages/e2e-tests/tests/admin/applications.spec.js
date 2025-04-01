@@ -126,7 +126,7 @@ test.describe('Admin Applications', () => {
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
 
-    await expect(await existingConnection.count()).toBeGreaterThan(0);
+    await expect.poll(() => existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toBeEnabled();
     await expect(newConnectionOption).toHaveCount(1);
     await expect(newOAuthConnectionOption).toHaveCount(0);
@@ -197,7 +197,7 @@ test.describe('Admin Applications', () => {
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
 
-    await expect(await existingConnection.count()).toBeGreaterThan(0);
+    await expect.poll(() => existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toHaveCount(0);
     await expect(newOAuthConnectionOption).toBeEnabled();
     await expect(newOAuthConnectionOption).toHaveCount(1);
@@ -266,7 +266,7 @@ test.describe('Admin Applications', () => {
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
 
-    await expect(await existingConnection.count()).toBeGreaterThan(0);
+    await expect.poll(() => existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toHaveCount(1);
     await expect(newOAuthConnectionOption).toBeEnabled();
     await expect(newOAuthConnectionOption).toHaveCount(1);
@@ -331,7 +331,7 @@ test.describe('Admin Applications', () => {
       .getByRole('option')
       .filter({ hasText: 'Unnamed' });
 
-    await expect(await existingConnection.count()).toBeGreaterThan(0);
+    await expect.poll(() => existingConnection.count()).toBeGreaterThan(0);
     await expect(newConnectionOption).toHaveCount(0);
     await expect(newOAuthConnectionOption).toHaveCount(0);
   });
@@ -402,7 +402,7 @@ test.describe('Admin Applications', () => {
       .locator('.MuiAutocomplete-noOptions')
       .filter({ hasText: 'No options' });
 
-    await expect(await existingConnection.count()).toBeGreaterThan(0);
+    await expect.poll(() => existingConnection.count()).toBeGreaterThan(0);
     await expect(noConnectionsOption).toHaveCount(0);
     await expect(newConnectionOption).toHaveCount(0);
     await expect(newOAuthConnectionOption).toHaveCount(0);
