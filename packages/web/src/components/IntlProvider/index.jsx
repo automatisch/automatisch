@@ -6,7 +6,7 @@ import englishMessages from 'locales/en.json';
 const IntlProvider = ({ children }) => {
   return (
     <BaseIntlProvider
-      locale={navigator.language}
+      locale={navigator.language.split('-')[0]}
       defaultLocale="en"
       messages={englishMessages}
     >
