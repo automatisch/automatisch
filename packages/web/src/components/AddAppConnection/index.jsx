@@ -15,6 +15,7 @@ import * as URLS from 'config/urls';
 import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useAppConfig from 'hooks/useAppConfig.ee';
 import { generateExternalLink } from 'helpers/translationValues';
 import { Form } from './style';
 import useAppAuth from 'hooks/useAppAuth';
@@ -41,6 +42,7 @@ function AddAppConnection(props) {
   });
   const queryClient = useQueryClient();
   const enqueueSnackbar = useEnqueueSnackbar();
+  const { data: appConfig } = useAppConfig(key);
 
   React.useEffect(function relayProviderData() {
     if (window.opener) {
@@ -170,7 +172,7 @@ function AddAppConnection(props) {
               color="primary"
               sx={{ boxShadow: 2 }}
               loading={inProgress}
-              disabled={!authenticate}
+              disabled={!authenticate || appConfig?.data?.disabled === true}
               data-test="create-connection-button"
             >
               {formatMessage('addAppConnection.submit')}

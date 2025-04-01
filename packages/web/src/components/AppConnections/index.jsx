@@ -5,6 +5,7 @@ import AppConnectionRow from 'components/AppConnectionRow';
 import NoResultFound from 'components/NoResultFound';
 import Can from 'components/Can';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useAppConfig from 'hooks/useAppConfig.ee';
 import * as URLS from 'config/urls';
 import useAppConnections from 'hooks/useAppConnections';
 
@@ -12,6 +13,8 @@ function AppConnections(props) {
   const { appKey } = props;
   const formatMessage = useFormatMessage();
   const { data } = useAppConnections(appKey);
+  const { data: appConfig } = useAppConfig(appKey);
+
   const appConnections = data?.data || [];
   const hasConnections = appConnections?.length;
 
@@ -22,7 +25,10 @@ function AppConnections(props) {
           <NoResultFound
             text={formatMessage('app.noConnections')}
             data-test="connections-no-results"
-            {...(allowed && { to: URLS.APP_ADD_CONNECTION(appKey) })}
+            {...(allowed &&
+              !appConfig?.data?.disabled && {
+                to: URLS.APP_ADD_CONNECTION(appKey),
+              })}
           />
         )}
       </Can>
