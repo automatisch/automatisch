@@ -43,4 +43,22 @@ describe('flowSerializer', () => {
 
     expect(flowSerializer(flow)).toMatchObject(expectedPayload);
   });
+
+  describe('isOwner', () => {
+    it('should not be defined by default', async () => {
+      expect(flowSerializer(flow)).not.toHaveProperty('isOwner');
+    });
+
+    it('should return true if the flow is owned by the current user', async () => {
+      flow.isOwner = true;
+
+      expect(flowSerializer(flow)).toMatchObject({ isOwner: true });
+    });
+
+    it('should return false if the flow is owned by another user', async () => {
+      flow.isOwner = false;
+
+      expect(flowSerializer(flow)).toMatchObject({ isOwner: false });
+    });
+  });
 });

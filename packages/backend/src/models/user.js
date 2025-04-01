@@ -537,6 +537,8 @@ class User extends Base {
       .withGraphFetched({
         steps: true,
       })
+      .select('flows.*')
+      .select(Flow.raw('flows.user_id = ? as "isOwner"', [this.id]))
       .where((builder) => {
         if (name) {
           builder.where('flows.name', 'ilike', `%${name}%`);
