@@ -371,6 +371,7 @@
   "flowFolderChangeDialog.uncategorizedFolder": "Uncategorized",
   "flowFolderChangeDialog.successfullyUpdatedFolder": "The flow has been successfully moved to the new folder!",
   "flowFolder.uncategorized": "Uncategorized",
+  "flowFolder.cannotMoveFlow": "A flow can only be moved to a folder by the flow owner.",
   "footer.docsLinkText": "Documentation",
   "footer.tosLinkText": "Terms of Service",
   "footer.privacyPolicyLinkText": "Privacy",
