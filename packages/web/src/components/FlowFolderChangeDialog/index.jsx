@@ -14,7 +14,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import * as React from 'react';
 
 import useFlow from 'hooks/useFlow';
-import useCurrentUser from 'hooks/useCurrentUser';
 import useFolders from 'hooks/useFolders';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useFlowFolder from 'hooks/useFlowFolder';
@@ -29,11 +28,8 @@ function FlowFolderChangeDialog(props) {
     useFlowFolder(flowId);
   const { data: flowData, isPending: isFlowPending } = useFlow(flowId);
   const flow = flowData?.data;
-  const { data: userData, isPending: isCurrentUserPending } = useCurrentUser();
-  const currentUser = userData?.data;
 
   const [selectedFolder, setSelectedFolder] = React.useState(null);
-  const [canMoveFlow, setCanMoveFlow] = React.useState(false);
 
   const uncategorizedFolder = { id: null, name: 'Uncategorized' };
 
@@ -59,16 +55,6 @@ function FlowFolderChangeDialog(props) {
       setSelectedFolder(flowFolder.data?.id || null);
     },
     [flowFolder],
-  );
-
-  React.useEffect(
-    function updateCanMoveFlow() {
-      if (flow?.user_id && currentUser?.id) {
-        // TODO: flow.user_id is currently unavailable, preventing this from running. Remove this comment once it becomes available.
-        setCanMoveFlow(flow.user_id === currentUser.id);
-      }
-    },
-    [currentUser?.id, flow?.user_id],
   );
 
   return (
@@ -105,13 +91,8 @@ function FlowFolderChangeDialog(props) {
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => option.name}
             loading={isFoldersLoading || isFlowFolderLoading}
-            disabled={
-              isFoldersLoading ||
-              isFlowFolderLoading ||
-              isCurrentUserPending ||
-              isFlowPending
-            }
-            readOnly={!canMoveFlow}
+            disabled={isFoldersLoading || isFlowFolderLoading || isFlowPending}
+            readOnly={!flow?.isOwner}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -139,13 +120,13 @@ function FlowFolderChangeDialog(props) {
           onClick={handleConfirm}
           data-test="flow-folder-change-dialog-confirm-button"
           loading={isUpdateFlowFolderPending}
-          disabled={!canMoveFlow}
+          disabled={!flow?.isOwner}
         >
           {formatMessage('flowFolderChangeDialog.confirm')}
         </LoadingButton>
       </DialogActions>
 
-      {!canMoveFlow && (
+      {!flow?.isOwner && (
         <Alert severity="info">
           {formatMessage('flowFolder.cannotMoveFlow')}
         </Alert>
