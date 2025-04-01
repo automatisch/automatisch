@@ -73,7 +73,7 @@ export default function EditUser() {
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
   const currentUserAbility = useCurrentUserAbility();
-  const canUpdateRole = currentUserAbility.can('update', 'Role');
+  const canUpdateRole = currentUserAbility.can('manage', 'Role');
 
   const handleUserUpdate = async (userDataToUpdate) => {
     try {

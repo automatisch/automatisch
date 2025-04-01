@@ -81,7 +81,7 @@ export default function Application() {
       'data-test': 'add-connection-button',
       to: URLS.APP_ADD_CONNECTION(appKey, false),
       disabled:
-        !currentUserAbility.can('create', 'Connection') ||
+        !currentUserAbility.can('manage', 'Connection') ||
         appConfig?.data?.useOnlyPredefinedAuthClients === true ||
         appConfig?.data?.disabled === true,
     };
@@ -92,7 +92,7 @@ export default function Application() {
       'data-test': 'add-connection-with-auth-client-button',
       to: URLS.APP_ADD_CONNECTION(appKey, true),
       disabled:
-        !currentUserAbility.can('create', 'Connection') ||
+        !currentUserAbility.can('manage', 'Connection') ||
         appOAuthClients?.data?.length === 0 ||
         appConfig?.data?.disabled === true,
     };

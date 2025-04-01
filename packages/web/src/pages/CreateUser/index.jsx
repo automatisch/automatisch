@@ -67,7 +67,7 @@ export default function CreateUser() {
   const roles = rolesData?.data;
   const queryClient = useQueryClient();
   const currentUserAbility = useCurrentUserAbility();
-  const canUpdateRole = currentUserAbility.can('update', 'Role');
+  const canUpdateRole = currentUserAbility.can('manage', 'Role');
 
   const handleUserCreation = async (userData) => {
     try {

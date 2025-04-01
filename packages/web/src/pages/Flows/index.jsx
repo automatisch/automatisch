@@ -168,7 +168,7 @@ export default function Flows() {
               {!isLoading && !navigateToLastPage && !hasFlows && (
                 <NoResultFound
                   text={formatMessage('flows.noFlows')}
-                  {...(currentUserAbility.can('create', 'Flow') && {
+                  {...(currentUserAbility.can('manage', 'Flow') && {
                     to: URLS.CREATE_FLOW,
                   })}
                 />
