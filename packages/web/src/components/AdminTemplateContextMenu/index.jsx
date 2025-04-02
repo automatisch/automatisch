@@ -41,7 +41,7 @@ function AdminTemplateContextMenu(props) {
       hideBackdrop={false}
       anchorEl={anchorEl}
     >
-      <Can I="delete" a="Flow" passThrough>
+      <Can I="manage" a="Flow" passThrough>
         {(allowed) => (
           <MenuItem disabled={!allowed} onClick={onTemplateDelete}>
             {formatMessage('adminTemplateContextMenu.delete')}

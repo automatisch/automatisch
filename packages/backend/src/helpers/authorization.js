@@ -22,19 +22,19 @@ const authorizationList = {
     subject: 'Flow',
   },
   'POST /api/v1/flows/': {
-    action: 'create',
+    action: 'manage',
     subject: 'Flow',
   },
   'PATCH /api/v1/flows/:flowId': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'DELETE /api/v1/flows/:flowId': {
-    action: 'delete',
+    action: 'manage',
     subject: 'Flow',
   },
   'GET /api/v1/templates/': {
-    action: 'create',
+    action: 'manage',
     subject: 'Flow',
   },
   'GET /api/v1/steps/:stepId/connection': {
@@ -42,23 +42,23 @@ const authorizationList = {
     subject: 'Flow',
   },
   'PATCH /api/v1/steps/:stepId': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/steps/:stepId/test': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'GET /api/v1/steps/:stepId/previous-steps': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/steps/:stepId/dynamic-fields': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/steps/:stepId/dynamic-data': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'GET /api/v1/connections/:connectionId/flows': {
@@ -66,11 +66,11 @@ const authorizationList = {
     subject: 'Flow',
   },
   'POST /api/v1/connections/:connectionId/test': {
-    action: 'update',
+    action: 'manage',
     subject: 'Connection',
   },
   'POST /api/v1/connections/:connectionId/verify': {
-    action: 'create',
+    action: 'manage',
     subject: 'Connection',
   },
   'GET /api/v1/apps/:appKey/flows': {
@@ -94,59 +94,59 @@ const authorizationList = {
     subject: 'Execution',
   },
   'DELETE /api/v1/steps/:stepId': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'PATCH /api/v1/connections/:connectionId': {
-    action: 'update',
+    action: 'manage',
     subject: 'Connection',
   },
   'DELETE /api/v1/connections/:connectionId': {
-    action: 'delete',
+    action: 'manage',
     subject: 'Connection',
   },
   'POST /api/v1/connections/:connectionId/reset': {
-    action: 'create',
+    action: 'manage',
     subject: 'Connection',
   },
   'PATCH /api/v1/flows/:flowId/status': {
-    action: 'publish',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/flows/:flowId/duplicate': {
-    action: 'create',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/flows/:flowId/export': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/flows/import': {
-    action: 'create',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/flows/:flowId/steps': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'POST /api/v1/apps/:appKey/connections': {
-    action: 'create',
+    action: 'manage',
     subject: 'Connection',
   },
   'POST /api/v1/connections/:connectionId/auth-url': {
-    action: 'create',
+    action: 'manage',
     subject: 'Connection',
   },
   'POST /api/v1/folders/': {
-    action: 'create',
+    action: 'manage',
     subject: 'Flow',
   },
   'PATCH /api/v1/folders/:folderId': {
-    action: 'create',
+    action: 'manage',
     subject: 'Flow',
   },
   'DELETE /api/v1/folders/:folderId': {
-    action: 'create',
+    action: 'manage',
     subject: 'Flow',
   },
   'GET /api/v1/folders/': {
@@ -154,7 +154,7 @@ const authorizationList = {
     subject: 'Flow',
   },
   'PATCH /api/v1/flows/:flowId/folder': {
-    action: 'update',
+    action: 'manage',
     subject: 'Flow',
   },
   'GET /api/v1/flows/:flowId/folder': {

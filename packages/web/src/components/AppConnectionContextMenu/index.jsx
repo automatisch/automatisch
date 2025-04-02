@@ -51,7 +51,7 @@ function ContextMenu(props) {
         )}
       </Can>
 
-      <Can I="update" a="Connection" passThrough>
+      <Can I="manage" a="Connection" passThrough>
         {(allowed) => (
           <MenuItem
             onClick={createActionHandler({ type: 'test' })}
@@ -62,7 +62,7 @@ function ContextMenu(props) {
         )}
       </Can>
 
-      <Can I="create" a="Connection" passThrough>
+      <Can I="manage" a="Connection" passThrough>
         {(allowed) => (
           <MenuItem
             component={Link}
@@ -79,7 +79,7 @@ function ContextMenu(props) {
         )}
       </Can>
 
-      <Can I="delete" a="Connection" passThrough>
+      <Can I="manage" a="Connection" passThrough>
         {(allowed) => (
           <MenuItem
             onClick={createActionHandler({ type: 'delete' })}
