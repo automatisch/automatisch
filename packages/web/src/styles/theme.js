@@ -69,6 +69,7 @@ export const defaultTheme = createTheme({
     borderRadius: 4,
   },
   typography: {
+    fontSize: referenceTheme.typography.pxToRem(14), // text-base
     fontFamily: [
       'ui-sans-serif',
       'system-ui',
@@ -167,7 +168,7 @@ export const defaultTheme = createTheme({
           },
           input: {
             padding: '8px 12px', // adjust spacing
-            fontSize: '1rem', // font size
+            fontSize: referenceTheme.typography.pxToRem(14), // text-base
           },
         },
       },
@@ -184,16 +185,6 @@ export const defaultTheme = createTheme({
         },
       },
     },
-    // MuiOutlinedInput: {
-    //   styleOverrides: {
-    //     root: {
-    //       '&:hover .MuiOutlinedInput-notchedOutline': {
-    //         borderColor: '#C2C2C2',
-    //         paddingLeft: '2.5rem',
-    //       },
-    //     },
-    //   },
-    // },
     MuiAppBar: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -219,11 +210,13 @@ export const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
-        },
-        sizeLarge: {
-          padding: '14px 22px',
+          fontSize: referenceTheme.typography.pxToRem(14),
+          borderRadius: '8px', // rounded corners
         },
         sizeMedium: {
+          padding: '8px 16px', // Match input
+        },
+        sizeLarge: {
           padding: '10px 16px',
         },
         sizeSmall: {
