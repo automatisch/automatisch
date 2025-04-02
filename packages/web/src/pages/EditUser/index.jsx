@@ -169,7 +169,7 @@ export default function EditUser() {
                     helperText={errors?.email?.message}
                   />
 
-                  <Can I="update" a="Role">
+                  <Can I="manage" a="Role">
                     <ControlledAutocomplete
                       name="roleId"
                       fullWidth

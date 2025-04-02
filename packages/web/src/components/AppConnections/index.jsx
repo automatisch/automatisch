@@ -20,7 +20,7 @@ function AppConnections(props) {
 
   if (!hasConnections) {
     return (
-      <Can I="create" a="Connection" passThrough>
+      <Can I="manage" a="Connection" passThrough>
         {(allowed) => (
           <NoResultFound
             text={formatMessage('app.noConnections')}

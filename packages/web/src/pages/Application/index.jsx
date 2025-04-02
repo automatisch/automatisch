@@ -139,7 +139,7 @@ export default function Application() {
                 <Route
                   path={`${URLS.FLOWS}/*`}
                   element={
-                    <Can I="create" a="Flow" passThrough>
+                    <Can I="manage" a="Flow" passThrough>
                       {(allowed) => (
                         <ConditionalIconButton
                           type="submit"
@@ -162,7 +162,7 @@ export default function Application() {
                 <Route
                   path={`${URLS.CONNECTIONS}/*`}
                   element={
-                    <Can I="create" a="Connection" passThrough>
+                    <Can I="manage" a="Connection" passThrough>
                       {(allowed) => (
                         <SplitButton
                           disabled={!allowed}
@@ -248,7 +248,7 @@ export default function Application() {
         <Route
           path="/connections/add"
           element={
-            <Can I="create" a="Connection">
+            <Can I="manage" a="Connection">
               <AddAppConnection
                 onClose={goToApplicationPage}
                 application={app}
@@ -260,7 +260,7 @@ export default function Application() {
         <Route
           path="/connections/:connectionId/reconnect"
           element={
-            <Can I="create" a="Connection">
+            <Can I="manage" a="Connection">
               <ReconnectConnection
                 application={app}
                 onClose={goToApplicationPage}
