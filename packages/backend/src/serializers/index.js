@@ -31,6 +31,7 @@ const serializers = {
   Permission: permissionSerializer,
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   AdminTemplate: adminTemplateSerializer,
+  AdminApiToken: adminApiTokenSerializer,
   Template: templateSerializer,
   SamlAuthProvider: samlAuthProviderSerializer,
   RoleMapping: samlAuthProviderRoleMappingSerializer,

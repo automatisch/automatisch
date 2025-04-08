@@ -9,6 +9,8 @@ class ApiToken extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       token: { type: 'string', minLength: 32 },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
