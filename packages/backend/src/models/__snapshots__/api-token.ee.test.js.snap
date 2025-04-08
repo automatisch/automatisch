@@ -12,9 +12,6 @@ exports[`ApiToken model > jsonSchema should have correct validations 1`] = `
       "type": "string",
     },
   },
-  "required": [
-    "token",
-  ],
   "type": "object",
 }
 `;
