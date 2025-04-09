@@ -19,7 +19,7 @@
     "db:drop": "node ./bin/database/drop.js",
     "db:migration:create": "knex migrate:make",
     "db:rollback": "knex migrate:rollback",
-    "db:migrate": "node ./bin/database/convert-migrations.js && knex migrate:latest"
+    "db:migrate": "knex migrate:latest"
   },
   "dependencies": {
     "@bull-board/express": "^3.10.1",
