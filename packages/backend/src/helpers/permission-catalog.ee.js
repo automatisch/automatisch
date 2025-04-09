@@ -22,14 +22,14 @@ const permissionCatalog = {
   ],
   actions: [
     {
-      label: 'Manage',
-      key: 'manage',
-      subjects: [Connection.key, Flow.key],
-    },
-    {
       label: 'Read',
       key: 'read',
       subjects: [Connection.key, Execution.key, Flow.key],
+    },
+    {
+      label: 'Manage',
+      key: 'manage',
+      subjects: [Connection.key, Flow.key],
     },
   ],
   subjects: [Connection, Flow, Execution],
