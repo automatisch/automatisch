@@ -9,7 +9,7 @@ describe('adminApiTokenSerializer', () => {
     apiToken = await createApiToken();
   });
 
-  it('should return flow data', async () => {
+  it('should return api token data', async () => {
     const expectedPayload = {
       id: apiToken.id,
       token: apiToken.token,
