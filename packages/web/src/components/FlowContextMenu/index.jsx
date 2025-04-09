@@ -150,7 +150,11 @@ function ContextMenu(props) {
 
         <Can I="manage" a="Flow" passThrough>
           {(allowed) => (
-            <MenuItem disabled={!allowed} onClick={onFlowFolderUpdate}>
+            <MenuItem
+              data-test="move-to"
+              disabled={!allowed}
+              onClick={onFlowFolderUpdate}
+            >
               {formatMessage('flow.moveTo')}
             </MenuItem>
           )}
@@ -166,7 +170,11 @@ function ContextMenu(props) {
 
         <Can I="manage" a="Flow" passThrough>
           {(allowed) => (
-            <MenuItem disabled={!allowed} onClick={onFlowDelete}>
+            <MenuItem
+              data-test="delete-flow"
+              disabled={!allowed}
+              onClick={onFlowDelete}
+            >
               {formatMessage('flow.delete')}
             </MenuItem>
           )}

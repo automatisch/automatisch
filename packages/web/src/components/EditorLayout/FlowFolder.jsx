@@ -18,6 +18,7 @@ export default function FlowFolder(props) {
 
   return (
     <Typography
+      data-test="folder-name"
       component={Link}
       to={URLS.FOLDER_FLOWS(id)}
       variant="body1"
