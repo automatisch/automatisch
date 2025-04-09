@@ -29,7 +29,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -65,7 +65,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -98,7 +98,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -121,7 +121,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -144,7 +144,7 @@ describe('PATCH /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

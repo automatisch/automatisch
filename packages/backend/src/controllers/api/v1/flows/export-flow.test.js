@@ -56,7 +56,7 @@ describe('POST /api/v1/flows/:flowId/export', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -113,7 +113,7 @@ describe('POST /api/v1/flows/:flowId/export', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -141,7 +141,7 @@ describe('POST /api/v1/flows/:flowId/export', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -167,7 +167,7 @@ describe('POST /api/v1/flows/:flowId/export', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -188,7 +188,7 @@ describe('POST /api/v1/flows/:flowId/export', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

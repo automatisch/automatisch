@@ -69,7 +69,7 @@ describe('POST /api/v1/steps/:stepId/test', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -140,7 +140,7 @@ describe('POST /api/v1/steps/:stepId/test', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -165,7 +165,7 @@ describe('POST /api/v1/steps/:stepId/test', () => {
 
   it('should return not found response for not existing step UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -188,7 +188,7 @@ describe('POST /api/v1/steps/:stepId/test', () => {
 
   it('should return bad request response for invalid step UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],

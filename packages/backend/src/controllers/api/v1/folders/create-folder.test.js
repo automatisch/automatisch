@@ -18,7 +18,7 @@ describe('POST /api/v1/folders', () => {
 
   it('should return created flow', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

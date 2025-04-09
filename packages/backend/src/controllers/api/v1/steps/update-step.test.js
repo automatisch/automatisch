@@ -46,7 +46,7 @@ describe('PATCH /api/v1/steps/:stepId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUser.roleId,
       conditions: ['isCreator'],
@@ -96,7 +96,7 @@ describe('PATCH /api/v1/steps/:stepId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUser.roleId,
       conditions: [],
@@ -145,7 +145,7 @@ describe('PATCH /api/v1/steps/:stepId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUser.roleId,
       conditions: ['isCreator'],
@@ -169,7 +169,7 @@ describe('PATCH /api/v1/steps/:stepId', () => {
 
   it('should return not found response for not existing step UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUser.roleId,
       conditions: [],
@@ -192,7 +192,7 @@ describe('PATCH /api/v1/steps/:stepId', () => {
 
   it('should return bad request response for invalid step UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUser.roleId,
       conditions: [],

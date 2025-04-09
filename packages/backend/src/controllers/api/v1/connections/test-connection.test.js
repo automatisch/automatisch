@@ -32,7 +32,7 @@ describe('POST /api/v1/connections/:connectionId/test', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -63,7 +63,7 @@ describe('POST /api/v1/connections/:connectionId/test', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: [],
@@ -88,7 +88,7 @@ describe('POST /api/v1/connections/:connectionId/test', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -109,7 +109,7 @@ describe('POST /api/v1/connections/:connectionId/test', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
