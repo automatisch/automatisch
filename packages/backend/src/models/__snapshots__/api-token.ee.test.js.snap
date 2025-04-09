@@ -3,6 +3,9 @@
 exports[`ApiToken model > jsonSchema should have correct validations 1`] = `
 {
   "properties": {
+    "createdAt": {
+      "type": "string",
+    },
     "id": {
       "format": "uuid",
       "type": "string",
@@ -11,10 +14,10 @@ exports[`ApiToken model > jsonSchema should have correct validations 1`] = `
       "minLength": 32,
       "type": "string",
     },
+    "updatedAt": {
+      "type": "string",
+    },
   },
-  "required": [
-    "token",
-  ],
   "type": "object",
 }
 `;
