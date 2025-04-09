@@ -1,7 +1,4 @@
-import SettingsIcon from '@mui/icons-material/Settings';
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,13 +9,11 @@ import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 
-import ControlledCheckbox from 'components/ControlledCheckbox';
 import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import AllEntitiesPermissions from './AllEntitiesPermissions';
 import ConditionField from './OwnEntitiesPermission';
 import PermissionCatalogFieldLoader from './PermissionCatalogFieldLoader';
-import PermissionSettings from './PermissionSettings.ee';
 
 const PermissionCatalogField = ({
   name = 'permissions',
@@ -30,7 +25,6 @@ const PermissionCatalogField = ({
   const { data, isLoading: isPermissionCatalogLoading } =
     usePermissionCatalog();
   const permissionCatalog = data?.data;
-  const [dialogName, setDialogName] = React.useState();
 
   if (isPermissionCatalogLoading || loading)
     return <PermissionCatalogFieldLoader />;
