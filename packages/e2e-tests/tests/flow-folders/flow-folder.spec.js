@@ -97,6 +97,9 @@ test.describe('Folders', () => {
           hasText: 'uncategorizedFlow',
         })
         .click();
+      await expect(page).toHaveURL(
+        /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
+      );
       await expect(flowEditorPage.folderName).toContainText('newFolder');
       await flowEditorPage.goBackButton.click();
 
@@ -143,6 +146,9 @@ test.describe('Folders', () => {
           hasText: 'uncategorizedFlow',
         })
         .click();
+      await expect(page).toHaveURL(
+        /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
+      );
       await expect(flowEditorPage.folderName).toContainText('newFolder2');
       await flowEditorPage.goBackButton.click();
     });
@@ -165,6 +171,9 @@ test.describe('Folders', () => {
           hasText: 'uncategorizedFlow',
         })
         .click();
+      await expect(page).toHaveURL(
+        /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
+      );
       await expect(flowEditorPage.folderName).toContainText('Uncategorized');
       await flowEditorPage.goBackButton.click();
     });
@@ -321,6 +330,9 @@ test.describe('Folders', () => {
           hasText: flowId,
         })
         .click();
+      await expect(page).toHaveURL(
+        /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
+      );
       await expect(flowEditorPage.folderName).toContainText('Uncategorized');
       await flowEditorPage.goBackButton.click();
     });
