@@ -119,28 +119,19 @@ test.describe('Folders', () => {
       ).toHaveCount(0);
     });
 
-    await test.step('should be able to add a folder with the same name', async () => {
-      await flowsPage.addNewFolderButton.click();
-      await createFolderDialog.folderNameInput.fill('newFolder');
-      await createFolderDialog.createButton.click();
-      await expect(createFolderDialog.successAlert).toHaveCount(1);
-      await createFolderDialog.closeDialog.click();
-      await expect(flowsPage.userFolders.getByText('newFolder')).toHaveCount(2);
-    });
-
     await test.step('should be able to update a folder', async () => {
-      await expect(flowsPage.userFolders.getByText('newFolder2')).toHaveCount(
-        0
-      );
+      await expect(
+        flowsPage.userFolders.getByText('updatedFolderName')
+      ).toHaveCount(0);
       await flowsPage.userFolders.getByText('newFolder').first().click();
       await flowsPage.editFolder.click();
-      await updateFolderDialog.folderNameInput.fill('newFolder2');
+      await updateFolderDialog.folderNameInput.fill('updatedFolderName');
       await updateFolderDialog.updateButton.click();
       await expect(updateFolderDialog.successAlert).toHaveCount(1);
       await updateFolderDialog.closeDialog.click();
-      await expect(flowsPage.userFolders.getByText('newFolder2')).toHaveCount(
-        1
-      );
+      await expect(
+        flowsPage.userFolders.getByText('updatedFolderName')
+      ).toHaveCount(1);
       await flowsPage.flowRow
         .filter({
           hasText: 'uncategorizedFlow',
@@ -149,22 +140,24 @@ test.describe('Folders', () => {
       await expect(page).toHaveURL(
         /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
       );
-      await expect(flowEditorPage.folderName).toContainText('newFolder2');
+      await expect(flowEditorPage.folderName).toContainText(
+        'updatedFolderName'
+      );
       await flowEditorPage.goBackButton.click();
     });
 
     await test.step('should be able to delete a folder with a flow', async () => {
-      await expect(flowsPage.userFolders.getByText('newFolder2')).toHaveCount(
-        1
-      );
+      await expect(
+        flowsPage.userFolders.getByText('updatedFolderName')
+      ).toHaveCount(1);
 
       await flowsPage.deleteFolder.click();
       await deleteFolderDialog.cancelButton.click();
       await flowsPage.deleteFolder.click();
       await deleteFolderDialog.deleteButton.click();
-      await expect(flowsPage.userFolders.getByText('newFolder2')).toHaveCount(
-        0
-      );
+      await expect(
+        flowsPage.userFolders.getByText('updatedFolderName')
+      ).toHaveCount(0);
       await expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1);
       await flowsPage.flowRow
         .filter({
@@ -247,6 +240,31 @@ test.describe('Folders', () => {
     await flowsPage.userFolders.getByText('newFolder').click();
     await flowsPage.createFlowButton.click();
     await expect(flowEditorPage.folderName).toContainText('newFolder');
+  });
+
+  test('should be able to add a folder with the same name', async ({
+    flowsPage,
+    page,
+  }) => {
+    const createFolderDialog = new CreateFolderDialog(page);
+
+    await flowsPage.addNewFolderButton.click();
+    await createFolderDialog.folderNameInput.fill('sameNameFolder');
+    await createFolderDialog.createButton.click();
+    await expect(createFolderDialog.successAlert).toHaveCount(1);
+    await createFolderDialog.closeDialog.click();
+    await expect(flowsPage.userFolders.getByText('sameNameFolder')).toHaveCount(
+      1
+    );
+
+    await flowsPage.addNewFolderButton.click();
+    await createFolderDialog.folderNameInput.fill('sameNameFolder');
+    await createFolderDialog.createButton.click();
+    await expect(createFolderDialog.successAlert).toHaveCount(1);
+    await createFolderDialog.closeDialog.click();
+    await expect(flowsPage.userFolders.getByText('sameNameFolder')).toHaveCount(
+      2
+    );
   });
 
   test('non-owner folder visibility', async ({
