@@ -164,6 +164,10 @@ test.describe('Folders', () => {
       await flowsPage.deleteFolder.click();
       await Promise.all([
         page.waitForResponse(
+          (resp) =>
+            /(\/flows\?name=.*)/.test(resp.url()) && resp.status() === 200
+        ),
+        page.waitForResponse(
           (resp) => /(\/folders\/.*)/.test(resp.url()) && resp.status() === 204
         ),
         deleteFolderDialog.deleteButton.click(),
@@ -172,6 +176,9 @@ test.describe('Folders', () => {
         ).toHaveCount(0),
         expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1),
       ]);
+      await expect(page).toHaveURL(
+        /\/flows\?flowName=[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
+      );
 
       await flowsPage.flowRow
         .filter({
