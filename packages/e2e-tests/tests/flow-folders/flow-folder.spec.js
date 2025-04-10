@@ -128,8 +128,14 @@ test.describe('Folders', () => {
       await flowsPage.userFolders.getByText('newFolder').first().click();
       await flowsPage.editFolder.click();
       await updateFolderDialog.folderNameInput.fill('updatedFolderName');
-      await updateFolderDialog.updateButton.click();
-      await expect(updateFolderDialog.successAlert).toHaveCount(1);
+      await Promise.all([
+        page.waitForResponse(
+          (resp) => /(\/folders\/.*)/.test(resp.url()) && resp.status() === 200
+        ),
+        updateFolderDialog.updateButton.click(),
+        expect(updateFolderDialog.successAlert).toHaveCount(1),
+      ]);
+
       await updateFolderDialog.closeDialog.click();
       await expect(
         flowsPage.userFolders.getByText('updatedFolderName')
@@ -156,11 +162,17 @@ test.describe('Folders', () => {
       await flowsPage.deleteFolder.click();
       await deleteFolderDialog.cancelButton.click();
       await flowsPage.deleteFolder.click();
-      await deleteFolderDialog.deleteButton.click();
-      await expect(
-        flowsPage.userFolders.getByText('updatedFolderName')
-      ).toHaveCount(0);
-      await expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1);
+      await Promise.all([
+        page.waitForResponse(
+          (resp) => /(\/folders\/.*)/.test(resp.url()) && resp.status() === 204
+        ),
+        deleteFolderDialog.deleteButton.click(),
+        expect(
+          flowsPage.userFolders.getByText('updatedFolderName')
+        ).toHaveCount(0),
+        expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1),
+      ]);
+
       await flowsPage.flowRow
         .filter({
           hasText: flowName,
