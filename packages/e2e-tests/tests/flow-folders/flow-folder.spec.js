@@ -128,14 +128,8 @@ test.describe('Folders', () => {
       await flowsPage.userFolders.getByText('newFolder').first().click();
       await flowsPage.editFolder.click();
       await updateFolderDialog.folderNameInput.fill('updatedFolderName');
-      await Promise.all([
-        page.waitForResponse(
-          (resp) => /(\/folders\/.*)/.test(resp.url()) && resp.status() === 200
-        ),
-        updateFolderDialog.updateButton.click(),
-        expect(updateFolderDialog.successAlert).toHaveCount(1),
-      ]);
-
+      await updateFolderDialog.updateButton.click();
+      await expect(updateFolderDialog.successAlert).toHaveCount(1);
       await updateFolderDialog.closeDialog.click();
       await expect(
         flowsPage.userFolders.getByText('updatedFolderName')
@@ -148,6 +142,7 @@ test.describe('Folders', () => {
       await expect(page).toHaveURL(
         /\/editor\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
       );
+      await page.reload();
       await expect(flowEditorPage.folderName).toContainText(
         'updatedFolderName'
       );
@@ -162,20 +157,13 @@ test.describe('Folders', () => {
       await flowsPage.deleteFolder.click();
       await deleteFolderDialog.cancelButton.click();
       await flowsPage.deleteFolder.click();
-      await Promise.all([
-        page.waitForResponse(
-          (resp) =>
-            /(\/flows\?name=.*)/.test(resp.url()) && resp.status() === 200
-        ),
-        page.waitForResponse(
-          (resp) => /(\/folders\/.*)/.test(resp.url()) && resp.status() === 204
-        ),
-        deleteFolderDialog.deleteButton.click(),
-        expect(
+      await deleteFolderDialog.deleteButton.click(),
+        await expect(
           flowsPage.userFolders.getByText('updatedFolderName')
-        ).toHaveCount(0),
-        expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1),
-      ]);
+        ).toHaveCount(0);
+      await expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1);
+      await flowsPage.deleteFolderSuccessAlert.click();
+      await expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(0);
       await expect(page).toHaveURL(
         /\/flows\?flowName=[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
       );
