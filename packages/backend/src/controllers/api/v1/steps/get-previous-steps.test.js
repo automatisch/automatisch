@@ -54,7 +54,7 @@ describe('GET /api/v1/steps/:stepId/previous-steps', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -108,7 +108,7 @@ describe('GET /api/v1/steps/:stepId/previous-steps', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -129,7 +129,7 @@ describe('GET /api/v1/steps/:stepId/previous-steps', () => {
 
   it('should return not found response for not existing step UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -152,7 +152,7 @@ describe('GET /api/v1/steps/:stepId/previous-steps', () => {
 
   it('should return bad request response for invalid UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],

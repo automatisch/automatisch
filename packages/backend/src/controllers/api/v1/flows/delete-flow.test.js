@@ -28,7 +28,7 @@ describe('DELETE /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'delete',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -52,7 +52,7 @@ describe('DELETE /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'delete',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -73,7 +73,7 @@ describe('DELETE /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'delete',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -96,7 +96,7 @@ describe('DELETE /api/v1/flows/:flowId', () => {
     });
 
     await createPermission({
-      action: 'delete',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

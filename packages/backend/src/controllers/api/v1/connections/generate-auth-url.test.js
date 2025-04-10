@@ -14,7 +14,7 @@ describe('POST /api/v1/connections/:connectionId/auth-url', () => {
     currentUser = await createUser();
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUser.roleId,
       conditions: ['isCreator'],

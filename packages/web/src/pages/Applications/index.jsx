@@ -53,7 +53,7 @@ export default function Applications() {
             alignItems="center"
             order={{ xs: 1, sm: 2 }}
           >
-            <Can I="create" a="Connection" passThrough>
+            <Can I="manage" a="Connection" passThrough>
               {(allowed) => (
                 <ConditionalIconButton
                   type="submit"
@@ -84,7 +84,7 @@ export default function Applications() {
         )}
 
         {!isLoading && !hasApps && (
-          <Can I="create" a="Connection" passThrough>
+          <Can I="manage" a="Connection" passThrough>
             {(allowed) => (
               <NoResultFound
                 text={formatMessage('apps.noConnections')}

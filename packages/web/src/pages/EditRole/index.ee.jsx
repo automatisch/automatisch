@@ -78,6 +78,7 @@ export default function EditRole() {
     try {
       setPermissionError(null);
       const newPermissions = getPermissions(roleData.computedPermissions);
+
       await updateRole({
         name: roleData.name,
         description: roleData.description,

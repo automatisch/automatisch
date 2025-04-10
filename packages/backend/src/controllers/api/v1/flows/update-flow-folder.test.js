@@ -45,7 +45,7 @@ describe('PATCH /api/v1/flows/:flowId/folder', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -77,7 +77,7 @@ describe('PATCH /api/v1/flows/:flowId/folder', () => {
     const anotherUserFlow = await createFlow({ userId: anotherUser.id });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -96,7 +96,7 @@ describe('PATCH /api/v1/flows/:flowId/folder', () => {
     const anotherUserFolder = await createFolder({ userId: anotherUser.id });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -111,7 +111,7 @@ describe('PATCH /api/v1/flows/:flowId/folder', () => {
 
   it('should return not found response for not existing flow UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -130,7 +130,7 @@ describe('PATCH /api/v1/flows/:flowId/folder', () => {
     const flow = await createFlow({ userId: currentUser.id });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -147,7 +147,7 @@ describe('PATCH /api/v1/flows/:flowId/folder', () => {
 
   it('should return bad request response for invalid flow UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
     });
@@ -160,7 +160,7 @@ describe('PATCH /api/v1/flows/:flowId/folder', () => {
 
   it('should return bad request response for invalid folder UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
     });

@@ -126,7 +126,7 @@ export default function EditorLayout() {
             )}
           </Can>
 
-          <Can I="publish" a="Flow" passThrough>
+          <Can I="manage" a="Flow" passThrough>
             {(allowed) => (
               <Button
                 disabled={!allowed || !flow}

@@ -403,5 +403,7 @@
   "executionFilters.statusFilterSuccessfulOption": "Successful",
   "executionFilters.statusFilterFailedOption": "Failed",
   "executionFilters.startDateLabel": "Start Date",
-  "executionFilters.endDateLabel": "End Date"
+  "executionFilters.endDateLabel": "End Date",
+  "permissionCatalogField.ownEntitiesLabel": "(own entities)",
+  "permissionCatalogField.allEntitiesLabel": "(all entities)"
 }

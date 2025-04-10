@@ -53,7 +53,7 @@ function DeleteRoleButton(props) {
 
   return (
     <>
-      <Can I="delete" a="Role" passThrough>
+      <Can I="manage" a="Role" passThrough>
         {(allowed) => (
           <IconButton
             disabled={!allowed || disabled}

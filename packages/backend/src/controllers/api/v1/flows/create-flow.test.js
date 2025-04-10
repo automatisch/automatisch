@@ -20,7 +20,7 @@ describe('POST /api/v1/flows', () => {
 
   it('should create an empty flow when no templateId is provided', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -42,7 +42,7 @@ describe('POST /api/v1/flows', () => {
 
   it('should create a flow from template when templateId is provided', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

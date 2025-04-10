@@ -37,7 +37,7 @@ function AppFlows(props) {
 
   if (!hasFlows) {
     return (
-      <Can I="create" a="Flow" passThrough>
+      <Can I="manage" a="Flow" passThrough>
         {(allowed) => (
           <NoResultFound
             text={formatMessage('app.noFlows')}

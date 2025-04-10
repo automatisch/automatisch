@@ -130,7 +130,7 @@ function ContextMenu(props) {
           )}
         </Can>
 
-        <Can I="create" a="Flow" passThrough>
+        <Can I="manage" a="Flow" passThrough>
           {(allowed) => (
             <MenuItem disabled={!allowed} onClick={onFlowDuplicate}>
               {formatMessage('flow.duplicate')}
@@ -139,7 +139,7 @@ function ContextMenu(props) {
         </Can>
 
         {isCurrentUserAdmin && (
-          <Can I="create" a="Flow" passThrough>
+          <Can I="manage" a="Flow" passThrough>
             {(allowed) => (
               <MenuItem disabled={!allowed} onClick={onCreateTemplate}>
                 {formatMessage('flow.createTemplateFromFlow')}
@@ -148,7 +148,7 @@ function ContextMenu(props) {
           </Can>
         )}
 
-        <Can I="update" a="Flow" passThrough>
+        <Can I="manage" a="Flow" passThrough>
           {(allowed) => (
             <MenuItem disabled={!allowed} onClick={onFlowFolderUpdate}>
               {formatMessage('flow.moveTo')}
@@ -164,7 +164,7 @@ function ContextMenu(props) {
           )}
         </Can>
 
-        <Can I="delete" a="Flow" passThrough>
+        <Can I="manage" a="Flow" passThrough>
           {(allowed) => (
             <MenuItem disabled={!allowed} onClick={onFlowDelete}>
               {formatMessage('flow.delete')}

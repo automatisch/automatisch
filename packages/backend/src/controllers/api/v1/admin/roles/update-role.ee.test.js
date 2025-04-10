@@ -74,7 +74,7 @@ describe('PATCH /api/v1/admin/roles/:roleId', () => {
 
   it('should return the updated role with sanitized permissions', async () => {
     const validPermission = {
-      action: 'create',
+      action: 'manage',
       subject: 'Connection',
       conditions: ['isCreator'],
     };

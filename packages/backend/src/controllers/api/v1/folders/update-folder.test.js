@@ -22,7 +22,7 @@ describe('PATCH /api/v1/folders/:folderId', () => {
     const currentUserFolder = await createFolder({ userId: currentUser.id });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
     });
@@ -47,7 +47,7 @@ describe('PATCH /api/v1/folders/:folderId', () => {
 
   it('should return not found response for not existing folder UUID', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
     });
@@ -62,7 +62,7 @@ describe('PATCH /api/v1/folders/:folderId', () => {
 
   it('should return bad request response for invalid UUID', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
     });
@@ -77,7 +77,7 @@ describe('PATCH /api/v1/folders/:folderId', () => {
     const currentUserFolder = await createFolder({ userId: currentUser.id });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
     });

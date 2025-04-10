@@ -15,14 +15,7 @@ describe('DELETE /api/v1/connections/:connectionId', () => {
     currentUserRole = await currentUser.$relatedQuery('role');
 
     await createPermission({
-      action: 'delete',
-      subject: 'Connection',
-      roleId: currentUserRole.id,
-      conditions: ['isCreator'],
-    });
-
-    await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

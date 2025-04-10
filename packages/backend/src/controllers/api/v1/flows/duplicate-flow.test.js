@@ -48,7 +48,7 @@ describe('POST /api/v1/flows/:flowId/duplicate', () => {
     });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -106,7 +106,7 @@ describe('POST /api/v1/flows/:flowId/duplicate', () => {
     });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -143,7 +143,7 @@ describe('POST /api/v1/flows/:flowId/duplicate', () => {
     });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -169,7 +169,7 @@ describe('POST /api/v1/flows/:flowId/duplicate', () => {
     });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -190,7 +190,7 @@ describe('POST /api/v1/flows/:flowId/duplicate', () => {
     });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

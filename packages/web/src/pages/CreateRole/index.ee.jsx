@@ -73,9 +73,6 @@ export default function CreateRole() {
       description: '',
       computedPermissions: getComputedPermissionsDefaultValues(
         permissionCatalogData?.data,
-        {
-          isCreator: true,
-        },
       ),
     }),
     [permissionCatalogData],

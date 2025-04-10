@@ -14,10 +14,10 @@ describe('Permission model', () => {
   it('filter should return only valid permissions based on permission catalog', () => {
     const permissions = [
       { action: 'read', subject: 'Flow', conditions: ['isCreator'] },
-      { action: 'delete', subject: 'Connection', conditions: [] },
-      { action: 'publish', subject: 'Flow', conditions: ['isCreator'] },
-      { action: 'update', subject: 'Execution', conditions: [] }, // Invalid subject
-      { action: 'read', subject: 'Execution', conditions: ['invalid'] }, // Invalid condition
+      { action: 'manage', subject: 'Connection', conditions: [] },
+      { action: 'manage', subject: 'Flow', conditions: ['isCreator'] },
+      { action: 'manage', subject: 'Execution', conditions: [] }, // Invalid subject
+      { action: 'manage', subject: 'Execution', conditions: ['invalid'] }, // Invalid condition
       { action: 'invalid', subject: 'Execution', conditions: [] }, // Invalid action
     ];
 
@@ -25,15 +25,15 @@ describe('Permission model', () => {
 
     expect(result).toStrictEqual([
       { action: 'read', subject: 'Flow', conditions: ['isCreator'] },
-      { action: 'delete', subject: 'Connection', conditions: [] },
-      { action: 'publish', subject: 'Flow', conditions: ['isCreator'] },
+      { action: 'manage', subject: 'Connection', conditions: [] },
+      { action: 'manage', subject: 'Flow', conditions: ['isCreator'] },
     ]);
   });
 
   describe('findAction', () => {
     it('should return action from permission catalog', () => {
-      const action = Permission.findAction('create');
-      expect(action.key).toStrictEqual('create');
+      const action = Permission.findAction('manage');
+      expect(action.key).toStrictEqual('manage');
     });
 
     it('should return undefined for invalid actions', () => {
@@ -45,7 +45,7 @@ describe('Permission model', () => {
   describe('isSubjectValid', () => {
     it('should return true for valid subjects', () => {
       const validAction = permissionCatalog.actions.find(
-        (action) => action.key === 'create'
+        (action) => action.key === 'manage'
       );
 
       const validSubject = Permission.isSubjectValid('Connection', validAction);
@@ -54,7 +54,7 @@ describe('Permission model', () => {
 
     it('should return false for invalid subjects', () => {
       const validAction = permissionCatalog.actions.find(
-        (action) => action.key === 'create'
+        (action) => action.key === 'manage'
       );
 
       const invalidSubject = Permission.isSubjectValid(

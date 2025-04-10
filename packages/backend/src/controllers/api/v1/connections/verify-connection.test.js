@@ -26,7 +26,7 @@ describe('POST /api/v1/connections/:connectionId/verify', () => {
     });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -54,7 +54,7 @@ describe('POST /api/v1/connections/:connectionId/verify', () => {
     const notExistingConnectionUUID = Crypto.randomUUID();
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -68,7 +68,7 @@ describe('POST /api/v1/connections/:connectionId/verify', () => {
 
   it('should return bad request response for invalid UUID', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],

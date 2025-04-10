@@ -22,7 +22,7 @@ describe('POST /api/v1/apps/:appKey/connections', () => {
     });
 
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Connection',
       roleId: role.id,
     });

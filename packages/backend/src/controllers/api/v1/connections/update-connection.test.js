@@ -34,7 +34,7 @@ describe('PATCH /api/v1/connections/:connectionId', () => {
     const currentUserConnection = await createConnection(connectionData);
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -72,7 +72,7 @@ describe('PATCH /api/v1/connections/:connectionId', () => {
     });
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: [],
@@ -88,7 +88,7 @@ describe('PATCH /api/v1/connections/:connectionId', () => {
     const notExistingConnectionUUID = Crypto.randomUUID();
 
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
@@ -102,7 +102,7 @@ describe('PATCH /api/v1/connections/:connectionId', () => {
 
   it('should return bad request response for invalid UUID', async () => {
     await createPermission({
-      action: 'update',
+      action: 'manage',
       subject: 'Connection',
       roleId: currentUserRole.id,
       conditions: ['isCreator'],
