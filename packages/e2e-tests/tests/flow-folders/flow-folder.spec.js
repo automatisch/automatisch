@@ -15,6 +15,7 @@ const { getToken } = require('../../helpers/auth-api-helper');
 const { addUser, acceptInvitation } = require('../../helpers/user-api-helper');
 const { addFolder } = require('../../helpers/folder-api-helper');
 const { createFlow, updateFlowName } = require('../../helpers/flow-api-helper');
+import Crypto from 'crypto';
 
 test.describe('Folders', () => {
   test('owner folder lifecycle', async ({
@@ -26,25 +27,26 @@ test.describe('Folders', () => {
     const updateFolderDialog = new UpdateFolderDialog(page);
     const folderMoveToDialog = new MoveFolderDialog(page);
     const deleteFolderDialog = new DeleteFolderDialog(page);
+    const flowName = Crypto.randomUUID();
 
     await test.step('new flow should be in uncategorized folder', async () => {
       await flowsPage.createFlowButton.click();
       await flowEditorPage.flowName.click();
-      await flowEditorPage.flowNameInput.fill('uncategorizedFlow');
+      await flowEditorPage.flowNameInput.fill(flowName);
       await flowEditorPage.flowStep.first().click();
       await flowEditorPage.goBackButton.click();
       await expect(page).toHaveURL('/flows');
-      await flowsPage.searchInput.fill('uncategorizedFlow');
+      await flowsPage.searchInput.fill(flowName);
       await expect(
         flowsPage.flowRow.filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
       ).toHaveCount(1);
       await flowsPage.uncategorizedFlowsFolder.click();
-      await flowsPage.searchInput.fill('uncategorizedFlow');
+      await flowsPage.searchInput.fill(flowName);
       await expect(
         flowsPage.flowRow.filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
       ).toHaveCount(1);
     });
@@ -71,7 +73,7 @@ test.describe('Folders', () => {
       await flowsPage.allFlowsFolder.click();
       await flowsPage.flowRow
         .filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
         .getByRole('button')
         .click();
@@ -86,15 +88,15 @@ test.describe('Folders', () => {
 
     await test.step('flow should be visible in the new folder and in all flows folder', async () => {
       await flowsPage.userFolders.getByText('newFolder').click();
-      await flowsPage.searchInput.fill('uncategorizedFlow');
+      await flowsPage.searchInput.fill(flowName);
       await expect(
         flowsPage.flowRow.filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
       ).toHaveCount(1);
       await flowsPage.flowRow
         .filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
         .click();
       await expect(page).toHaveURL(
@@ -104,17 +106,17 @@ test.describe('Folders', () => {
       await flowEditorPage.goBackButton.click();
 
       await flowsPage.allFlowsFolder.click();
-      await flowsPage.searchInput.fill('uncategorizedFlow');
+      await flowsPage.searchInput.fill(flowName);
       await expect(
         flowsPage.flowRow.filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
       ).toHaveCount(1);
       await flowsPage.uncategorizedFlowsFolder.click();
-      await flowsPage.searchInput.fill('uncategorizedFlow');
+      await flowsPage.searchInput.fill(flowName);
       await expect(
         flowsPage.flowRow.filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
       ).toHaveCount(0);
     });
@@ -134,7 +136,7 @@ test.describe('Folders', () => {
       ).toHaveCount(1);
       await flowsPage.flowRow
         .filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
         .click();
       await expect(page).toHaveURL(
@@ -161,7 +163,7 @@ test.describe('Folders', () => {
       await expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1);
       await flowsPage.flowRow
         .filter({
-          hasText: 'uncategorizedFlow',
+          hasText: flowName,
         })
         .click();
       await expect(page).toHaveURL(
