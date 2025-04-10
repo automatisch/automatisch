@@ -59,6 +59,7 @@ function FlowFolderChangeDialog(props) {
       <DialogTitle>{formatMessage('flowFolderChangeDialog.title')}</DialogTitle>
 
       <IconButton
+        data-test="close-dialog"
         aria-label="close"
         onClick={onClose}
         sx={{
@@ -78,6 +79,7 @@ function FlowFolderChangeDialog(props) {
 
         <FormControl fullWidth>
           <Autocomplete
+            data-test="move-to-folder-name"
             value={
               folders?.data.find((folder) => folder.id === selectedFolder) ||
               uncategorizedFolder
