@@ -4,6 +4,7 @@ import permissionSerializer from './permission.js';
 import adminSamlAuthProviderSerializer from './admin-saml-auth-provider.ee.js';
 import adminTemplateSerializer from './admin/template.ee.js';
 import adminApiTokenSerializer from './admin/api-token.ee.js';
+import adminApiTokenFullSerializer from './admin/api-token-full.ee.js';
 import templateSerializer from './template.ee.js';
 import samlAuthProviderSerializer from './saml-auth-provider.ee.js';
 import samlAuthProviderRoleMappingSerializer from './role-mapping.ee.js';
@@ -32,6 +33,7 @@ const serializers = {
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   AdminTemplate: adminTemplateSerializer,
   AdminApiToken: adminApiTokenSerializer,
+  AdminApiTokenFull: adminApiTokenFullSerializer,
   Template: templateSerializer,
   SamlAuthProvider: samlAuthProviderSerializer,
   RoleMapping: samlAuthProviderRoleMappingSerializer,
