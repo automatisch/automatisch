@@ -5,7 +5,7 @@ export default async (request, response) => {
   const apiToken = await ApiToken.query().insertAndFetch({});
 
   renderObject(response, apiToken, {
-    serializer: 'AdminApiToken',
+    serializer: 'AdminApiTokenFull',
     status: 201,
   });
 };
