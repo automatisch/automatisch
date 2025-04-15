@@ -93,15 +93,15 @@ function SettingsLayout() {
   const closeDrawer = () => setDrawerOpen(false);
 
   const drawerLinks = createDrawerLinks({
-    canCreateFlows: currentUserAbility.can('create', 'Flow'),
+    canCreateFlows: currentUserAbility.can('manage', 'Flow'),
     canReadUser: currentUserAbility.can('read', 'User'),
     canReadRole: currentUserAbility.can('read', 'Role'),
-    canUpdateConfig: currentUserAbility.can('update', 'Config'),
-    canManageSamlAuthProvider:
-      currentUserAbility.can('read', 'SamlAuthProvider') &&
-      currentUserAbility.can('update', 'SamlAuthProvider') &&
-      currentUserAbility.can('create', 'SamlAuthProvider'),
-    canUpdateApp: currentUserAbility.can('update', 'App'),
+    canUpdateConfig: currentUserAbility.can('manage', 'Config'),
+    canManageSamlAuthProvider: currentUserAbility.can(
+      'manage',
+      'SamlAuthProvider',
+    ),
+    canUpdateApp: currentUserAbility.can('manage', 'App'),
   });
 
   const drawerBottomLinks = [

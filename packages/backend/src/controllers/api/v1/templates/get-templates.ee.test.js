@@ -24,7 +24,7 @@ describe('GET /api/v1/templates', () => {
 
   it('should return templates when templates are enabled and user has create flow permission', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],
@@ -45,7 +45,7 @@ describe('GET /api/v1/templates', () => {
 
   it('should return 403 when templates are disabled', async () => {
     await createPermission({
-      action: 'create',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUserRole.id,
       conditions: [],

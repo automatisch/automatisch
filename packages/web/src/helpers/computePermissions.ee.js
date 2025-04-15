@@ -6,10 +6,8 @@ export function getRoleWithComputedPermissions(role) {
       [permission.subject]: {
         ...(computedPermissions[permission.subject] || {}),
         [permission.action]: {
-          conditions: Object.fromEntries(
-            permission.conditions.map((condition) => [condition, true]),
-          ),
-          value: true,
+          allEntities: permission.conditions.includes('isCreator') === false,
+          ownEntities: true,
         },
       },
     }),
@@ -28,15 +26,19 @@ export function getPermissions(computedPermissions) {
     (permissions, computedPermissionEntry) => {
       const [subject, actionsWithConditions] = computedPermissionEntry;
       for (const action in actionsWithConditions) {
-        const { value: permitted, conditions = {} } =
-          actionsWithConditions[action];
-        if (permitted) {
+        const { ownEntities, allEntities } = actionsWithConditions[action];
+
+        if (ownEntities && !allEntities) {
           permissions.push({
             action,
             subject,
-            conditions: Object.entries(conditions)
-              .filter(([, enabled]) => enabled)
-              .map(([condition]) => condition),
+            conditions: ['isCreator'],
+          });
+        } else if (ownEntities && allEntities) {
+          permissions.push({
+            action,
+            subject,
+            conditions: [],
           });
         }
       }
@@ -46,17 +48,8 @@ export function getPermissions(computedPermissions) {
   );
 }
 
-export const getComputedPermissionsDefaultValues = (
-  data,
-  conditionsInitialValues,
-) => {
+export const getComputedPermissionsDefaultValues = (data) => {
   if (!data) return {};
-
-  const conditions = {};
-  data.conditions.forEach((condition) => {
-    conditions[condition.key] =
-      conditionsInitialValues?.[condition.key] || false;
-  });
 
   const result = {};
 
@@ -69,8 +62,8 @@ export const getComputedPermissionsDefaultValues = (
 
       if (action.subjects.includes(subjectKey)) {
         result[subjectKey][actionKey] = {
-          value: false,
-          conditions: { ...conditions },
+          ownEntities: false,
+          allEntities: false,
         };
       }
     });

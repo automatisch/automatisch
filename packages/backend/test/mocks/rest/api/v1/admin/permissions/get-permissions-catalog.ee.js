@@ -2,29 +2,14 @@ const getPermissionsCatalogMock = async () => {
   const data = {
     actions: [
       {
-        key: 'create',
-        label: 'Create',
-        subjects: ['Connection', 'Flow'],
-      },
-      {
         key: 'read',
         label: 'Read',
         subjects: ['Connection', 'Execution', 'Flow'],
       },
       {
-        key: 'update',
-        label: 'Update',
+        key: 'manage',
+        label: 'Manage',
         subjects: ['Connection', 'Flow'],
-      },
-      {
-        key: 'delete',
-        label: 'Delete',
-        subjects: ['Connection', 'Flow'],
-      },
-      {
-        key: 'publish',
-        label: 'Publish',
-        subjects: ['Flow'],
       },
     ],
     conditions: [

@@ -19,7 +19,7 @@ export default function FlowsButtons() {
   const theme = useTheme();
   const { data: config } = useAutomatischConfig();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
-  const canCreateFlow = currentUserAbility.can('create', 'Flow');
+  const canCreateFlow = currentUserAbility.can('manage', 'Flow');
   const enableTemplates = config?.data.enableTemplates === true;
 
   const createFlowButtonData = {

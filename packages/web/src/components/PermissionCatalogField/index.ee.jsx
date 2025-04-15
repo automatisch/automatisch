@@ -1,8 +1,4 @@
-import PropTypes from 'prop-types';
-import SettingsIcon from '@mui/icons-material/Settings';
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,12 +6,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 import * as React from 'react';
 
 import usePermissionCatalog from 'hooks/usePermissionCatalog.ee';
-import PermissionSettings from './PermissionSettings.ee';
+import useFormatMessage from 'hooks/useFormatMessage';
+import AllEntitiesPermissions from './AllEntitiesPermissions';
+import ConditionField from './OwnEntitiesPermission';
 import PermissionCatalogFieldLoader from './PermissionCatalogFieldLoader';
-import ActionField from './ActionField';
 
 const PermissionCatalogField = ({
   name = 'permissions',
@@ -23,10 +21,10 @@ const PermissionCatalogField = ({
   syncIsCreator = false,
   loading = false,
 }) => {
+  const formatMessage = useFormatMessage();
   const { data, isLoading: isPermissionCatalogLoading } =
     usePermissionCatalog();
   const permissionCatalog = data?.data;
-  const [dialogName, setDialogName] = React.useState();
 
   if (isPermissionCatalogLoading || loading)
     return <PermissionCatalogFieldLoader />;
@@ -39,24 +37,44 @@ const PermissionCatalogField = ({
             <TableCell component="th" />
 
             {permissionCatalog?.actions.map((action) => (
-              <TableCell component="th" key={action.key}>
-                <Typography
-                  component="div"
-                  variant="subtitle1"
-                  align="center"
-                  sx={{
-                    color: 'text.secondary',
-                    fontWeight: 700,
-                  }}
-                >
-                  {action.label}
-                </Typography>
-              </TableCell>
-            ))}
+              <React.Fragment key={action.key}>
+                <TableCell component="th" key={action.key}>
+                  <Typography
+                    component="div"
+                    variant="subtitle2"
+                    align="center"
+                    sx={{
+                      color: 'text.secondary',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {action.label}{' '}
+                    {formatMessage('permissionCatalogField.ownEntitiesLabel')}
+                  </Typography>
+                </TableCell>
 
-            <TableCell component="th" />
+                <TableCell
+                  component="th"
+                  key={`${action.key}-isCreator-condition`}
+                >
+                  <Typography
+                    component="div"
+                    variant="subtitle2"
+                    align="center"
+                    sx={{
+                      color: 'text.secondary',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {action.label}{' '}
+                    {formatMessage('permissionCatalogField.allEntitiesLabel')}
+                  </Typography>
+                </TableCell>
+              </React.Fragment>
+            ))}
           </TableRow>
         </TableHead>
+
         <TableBody>
           {permissionCatalog?.subjects.map((subject) => (
             <TableRow
@@ -71,44 +89,43 @@ const PermissionCatalogField = ({
               </TableCell>
 
               {permissionCatalog?.actions.map((action) => (
-                <TableCell key={`${subject.key}.${action.key}`} align="center">
-                  <Typography variant="subtitle2" component="div">
-                    {action.subjects.includes(subject.key) && (
-                      <ActionField
-                        action={action}
-                        subject={subject}
-                        disabled={disabled}
-                        name={name}
-                        syncIsCreator={syncIsCreator}
-                      />
-                    )}
-                    {!action.subjects.includes(subject.key) && '-'}
-                  </Typography>
-                </TableCell>
-              ))}
-
-              <TableCell>
-                <Stack direction="row" gap={1} justifyContent="right">
-                  <IconButton
-                    color="info"
-                    size="small"
-                    onClick={() => setDialogName(subject.key)}
-                    disabled={disabled}
-                    data-test="permission-settings-button"
+                <React.Fragment key={`${subject.key}.${action.key}`}>
+                  <TableCell
+                    key={`${subject.key}.${action.key}-isCreator-condition`}
+                    align="center"
                   >
-                    <SettingsIcon />
-                  </IconButton>
+                    <Typography variant="subtitle2" component="div">
+                      {action.subjects.includes(subject.key) && (
+                        <ConditionField
+                          action={action}
+                          subject={subject}
+                          disabled={disabled}
+                          name={name}
+                        />
+                      )}
+                      {!action.subjects.includes(subject.key) && '-'}
+                    </Typography>
+                  </TableCell>
 
-                  <PermissionSettings
-                    open={dialogName === subject.key}
-                    onClose={() => setDialogName('')}
-                    fieldPrefix={`${name}.${subject.key}`}
-                    subject={subject.key}
-                    actions={permissionCatalog?.actions}
-                    conditions={permissionCatalog?.conditions}
-                  />
-                </Stack>
-              </TableCell>
+                  <TableCell
+                    key={`${subject.key}.${action.key}`}
+                    align="center"
+                  >
+                    <Typography variant="subtitle2" component="div">
+                      {action.subjects.includes(subject.key) && (
+                        <AllEntitiesPermissions
+                          action={action}
+                          subject={subject}
+                          disabled={disabled}
+                          name={name}
+                          syncIsCreator={syncIsCreator}
+                        />
+                      )}
+                      {!action.subjects.includes(subject.key) && '-'}
+                    </Typography>
+                  </TableCell>
+                </React.Fragment>
+              ))}
             </TableRow>
           ))}
         </TableBody>
@@ -116,6 +133,7 @@ const PermissionCatalogField = ({
     </TableContainer>
   );
 };
+
 PermissionCatalogField.propTypes = {
   name: PropTypes.string,
   disabled: PropTypes.bool,

@@ -166,7 +166,7 @@ describe('Role model', () => {
         description: 'Updated description',
         permissions: [
           {
-            action: 'update',
+            action: 'manage',
             subject: 'Flow',
             conditions: [],
           },
