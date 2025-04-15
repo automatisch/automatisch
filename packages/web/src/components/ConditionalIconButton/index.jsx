@@ -18,6 +18,7 @@ function ConditionalIconButton(props) {
         size={buttonProps.size}
         component={buttonProps.component}
         to={buttonProps.to}
+        onClick={buttonProps.onClick}
         disabled={buttonProps.disabled}
         data-test={buttonProps['data-test']}
       >

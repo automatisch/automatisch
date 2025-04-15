@@ -4,6 +4,7 @@ import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 
 function Can(props) {
   const currentUserAbility = useCurrentUserAbility();
+
   return <OriginalCan ability={currentUserAbility} {...props} />;
 }
 

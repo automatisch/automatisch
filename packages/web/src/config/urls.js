@@ -88,6 +88,7 @@ export const ADMIN_APP_CONNECTIONS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/con
 export const ADMIN_TEMPLATES = `${ADMIN_SETTINGS}/templates`;
 export const ADMIN_CREATE_TEMPLATE_PATTERN = `${ADMIN_SETTINGS}/templates/create/:flowId`;
 export const ADMIN_UPDATE_TEMPLATE_PATTERN = `${ADMIN_SETTINGS}/templates/update/:templateId`;
+export const ADMIN_API_TOKENS = `${ADMIN_SETTINGS}/api-tokens`;
 
 export const CREATE_FLOW_FROM_TEMPLATE = (templateId) =>
   `/editor/create?templateId=${templateId}`;
