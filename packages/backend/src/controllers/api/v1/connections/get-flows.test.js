@@ -66,8 +66,7 @@ describe('GET /api/v1/connections/:connectionId/flows', () => {
 
     const expectedPayload = await getFlowsMock(
       [currentUserFlowOne],
-      [triggerStepFlowOne, actionStepFlowOne],
-      currentUser.id
+      [triggerStepFlowOne, actionStepFlowOne]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -121,8 +120,7 @@ describe('GET /api/v1/connections/:connectionId/flows', () => {
 
     const expectedPayload = await getFlowsMock(
       [anotherUserFlowOne],
-      [triggerStepFlowOne, actionStepFlowOne],
-      currentUser.id
+      [triggerStepFlowOne, actionStepFlowOne]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
