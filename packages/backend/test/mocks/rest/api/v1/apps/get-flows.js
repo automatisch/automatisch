@@ -1,4 +1,4 @@
-const getFlowsMock = async (flows, steps, currentUserId) => {
+const getFlowsMock = async (flows, steps) => {
   const data = flows.map((flow) => {
     const flowSteps = steps.filter((step) => step.flowId === flow.id);
 
@@ -7,7 +7,6 @@ const getFlowsMock = async (flows, steps, currentUserId) => {
       id: flow.id,
       name: flow.name,
       status: flow.active ? 'published' : 'draft',
-      isOwner: flow.userId === currentUserId,
       createdAt: flow.createdAt.getTime(),
       updatedAt: flow.updatedAt.getTime(),
       steps: flowSteps.map((step) => ({
