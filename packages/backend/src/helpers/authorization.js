@@ -118,7 +118,7 @@ const authorizationList = {
     subject: 'Flow',
   },
   'POST /api/v1/flows/:flowId/export': {
-    action: 'manage',
+    action: 'read',
     subject: 'Flow',
   },
   'POST /api/v1/flows/import': {
