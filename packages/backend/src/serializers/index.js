@@ -26,6 +26,7 @@ import templateSerializer from './template.ee.js';
 import triggerSerializer from './trigger.js';
 import userAppSerializer from './user-app.js';
 import userSerializer from './user.js';
+import formSerializer from './form.ee.js';
 
 const serializers = {
   Action: actionSerializer,
@@ -34,6 +35,7 @@ const serializers = {
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   AdminTemplate: adminTemplateSerializer,
   AdminUser: adminUserSerializer,
+  Form: formSerializer,
   App: appSerializer,
   AppConfig: appConfigSerializer,
   Auth: authSerializer,
