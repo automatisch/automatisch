@@ -19,5 +19,9 @@ export default function userAbility(user) {
     return new PureAbility([], options);
   }
 
+  if (role.isAdmin) {
+    return new PureAbility([{ subject: 'all', action: 'manage' }], options);
+  }
+
   return new PureAbility(permissions, options);
 }

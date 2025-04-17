@@ -12,3 +12,5 @@ export const generateExternalLink = (link) => (str) => (
     {str}
   </Link>
 );
+
+export const makeBold = (str) => <strong>{str}</strong>;
