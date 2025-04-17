@@ -24,6 +24,7 @@ import subscriptionSerializer from './subscription.ee.js';
 import adminUserSerializer from './admin/user.js';
 import configSerializer from './config.js';
 import folderSerializer from './folder.js';
+import formSerializer from './form.ee.js';
 
 const serializers = {
   AdminUser: adminUserSerializer,
@@ -40,6 +41,7 @@ const serializers = {
   OAuthClient: oauthClientSerializer,
   AppConfig: appConfigSerializer,
   Flow: flowSerializer,
+  Form: formSerializer,
   Step: stepSerializer,
   Connection: connectionSerializer,
   App: appSerializer,

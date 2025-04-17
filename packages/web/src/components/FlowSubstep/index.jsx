@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { EditorContext } from 'contexts/Editor';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
@@ -21,6 +22,7 @@ function FlowSubstep(props) {
     onCollapse,
     onSubmit,
     step,
+    flowId,
   } = props;
   const { name, arguments: args } = substep;
   const editorContext = React.useContext(EditorContext);
@@ -50,6 +52,18 @@ function FlowSubstep(props) {
             position: 'relative',
           }}
         >
+          {step.appKey === 'forms' && (
+            <Alert severity="info" sx={{ mb: 2, width: '100%' }}>
+              You may preview the form at{' '}
+              <a
+                href={new URL(`/forms/${flowId}`, window.location.href).href}
+                target="_blank"
+              >
+                {new URL(`/forms/${flowId}`, window.location.href).href}
+              </a>
+              .
+            </Alert>
+          )}
           {!!args?.length && (
             <Stack width="100%" spacing={2}>
               {args.map((argument) => (

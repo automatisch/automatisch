@@ -80,8 +80,9 @@ const globalVariable = async (options) => {
       $.triggerOutput.data.push(triggerItem);
 
       const isWebhookApp = app.key === 'webhook';
+      const isFormsApp = app.key === 'forms';
 
-      if ($.execution.testRun && !isWebhookApp) {
+      if ($.execution.testRun && !isWebhookApp && !isFormsApp) {
         // early exit after receiving one item as it is enough for test execution
         throw new EarlyExitError();
       }
