@@ -1333,23 +1333,6 @@ describe('User model', () => {
       );
     });
 
-    it('should return isOwner false if the flow is owned by another user', async () => {
-      const anotherUser = await createUser();
-
-      await createFlow({
-        userId: anotherUser.id,
-        folderId: folder.id,
-        active: true,
-        name: 'Another User Flow One',
-      });
-
-      const flows = await currentUser.getFlows({ onlyOwnedFlows: false }, [
-        folder.id,
-      ]);
-
-      expect(flows[0].isOwner).toBe(false);
-    });
-
     it('should return specified flows with all filters together', async () => {
       const flows = await currentUser.getFlows(
         {

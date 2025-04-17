@@ -1,9 +1,10 @@
-const getFlowMock = async (flow, steps = []) => {
+const getFlowMock = async (flow, steps = [], currentUserId) => {
   const data = {
     active: flow.active,
     id: flow.id,
     name: flow.name,
     status: flow.active ? 'published' : 'draft',
+    isOwner: flow.userId === currentUserId,
     createdAt: flow.createdAt.getTime(),
     updatedAt: flow.updatedAt.getTime(),
   };
