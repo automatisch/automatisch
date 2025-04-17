@@ -2,7 +2,7 @@ const { expect } = require('../fixtures/index');
 
 export const createFlow = async (request, token) => {
   const response = await request.post(
-    `${process.env.BACKEND_APP_URL}/api/v1/flows`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/flows`,
     { headers: { Authorization: token } }
   );
   await expect(response.status()).toBe(201);
@@ -12,7 +12,7 @@ export const createFlow = async (request, token) => {
 
 export const getFlow = async (request, token, flowId) => {
   const response = await request.get(
-    `${process.env.BACKEND_APP_URL}/api/v1/flows/${flowId}`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/flows/${flowId}`,
     { headers: { Authorization: token } }
   );
   await expect(response.status()).toBe(200);
@@ -22,7 +22,7 @@ export const getFlow = async (request, token, flowId) => {
 
 export const updateFlowName = async (request, token, flowId) => {
   const updateFlowNameResponse = await request.patch(
-    `${process.env.BACKEND_APP_URL}/api/v1/flows/${flowId}`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/flows/${flowId}`,
     {
       headers: { Authorization: token },
       data: { name: flowId },
@@ -33,7 +33,7 @@ export const updateFlowName = async (request, token, flowId) => {
 
 export const updateFlowStep = async (request, token, stepId, requestBody) => {
   const updateTriggerStepResponse = await request.patch(
-    `${process.env.BACKEND_APP_URL}/api/v1/steps/${stepId}`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/steps/${stepId}`,
     {
       headers: { Authorization: token },
       data: requestBody,
@@ -46,7 +46,7 @@ export const updateFlowStep = async (request, token, stepId, requestBody) => {
 
 export const testStep = async (request, token, stepId) => {
   const testTriggerStepResponse = await request.post(
-    `${process.env.BACKEND_APP_URL}/api/v1/steps/${stepId}/test`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/steps/${stepId}/test`,
     {
       headers: { Authorization: token },
     }
@@ -56,7 +56,7 @@ export const testStep = async (request, token, stepId) => {
 
 export const publishFlow = async (request, token, flowId) => {
   const publishFlowResponse = await request.patch(
-    `${process.env.BACKEND_APP_URL}/api/v1/flows/${flowId}/status`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/flows/${flowId}/status`,
     {
       headers: { Authorization: token },
       data: { active: true },
@@ -120,7 +120,7 @@ export const createConnection = async (
   requestBody
 ) => {
   const response = await request.post(
-    `${process.env.BACKEND_APP_URL}/api/v1/apps/${appName}/connections`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/apps/${appName}/connections`,
     { headers: { Authorization: token }, data: requestBody }
   );
   await expect(response.status()).toBe(201);
@@ -130,7 +130,7 @@ export const createConnection = async (
 
 export const verifyConnection = async (request, token, connectionId) => {
   const response = await request.post(
-    `${process.env.BACKEND_APP_URL}/api/v1/connections/${connectionId}/verify`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/connections/${connectionId}/verify`,
     { headers: { Authorization: token } }
   );
   await expect(response.status()).toBe(200);

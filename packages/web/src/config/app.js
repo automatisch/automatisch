@@ -16,7 +16,7 @@ const computeUrl = (url, backendUrl) => {
 
 const config = {
   baseUrl: process.env.REACT_APP_BASE_URL,
-  restApiUrl: computeUrl('/api', backendUrl),
+  restApiUrl: computeUrl('/internal/api', backendUrl),
   supportEmailAddress: 'support@automatisch.io',
 };
 

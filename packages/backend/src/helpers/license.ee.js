@@ -17,7 +17,7 @@ const getLicense = async () => {
     return false;
   }
 
-  const url = 'https://license.automatisch.io/api/v1/licenses/verify';
+  const url = 'https://license.automatisch.io/internal/api/v1/licenses/verify';
   const cachedResponse = memoryCache.get(url);
 
   if (cachedResponse) {
