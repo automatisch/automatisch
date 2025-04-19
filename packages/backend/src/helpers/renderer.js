@@ -12,6 +12,19 @@ const totalCount = (object) =>
   isPaginated(object) ? object.totalCount : isArray(object) ? object.length : 1;
 
 const renderObject = (response, object, options) => {
+  if (object === null || object === undefined) {
+    return response.status(200).json({
+      data: null,
+      meta: {
+        type: 'Object',
+        count: 0,
+        isArray: false,
+        currentPage: null,
+        totalPages: null,
+      },
+    });
+  }
+
   let data = isPaginated(object) ? object.records : object;
 
   const type = isPaginated(object)

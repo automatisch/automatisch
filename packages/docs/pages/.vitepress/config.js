@@ -151,6 +151,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Facebook',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/facebook/actions' },
+            { text: 'Connection', link: '/apps/facebook/connection' },
+          ],
+        },
+        {
           text: 'Filter',
           collapsible: true,
           collapsed: true,

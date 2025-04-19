@@ -26,6 +26,15 @@ import foldersRouter from './api/v1/folders.js';
 
 const router = Router();
 
+// Add a home route for testing
+router.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Automatisch API is running',
+    status: 'ok',
+    timestamp: new Date().toISOString()
+  });
+});
+
 router.use('/webhooks', webhooksRouter);
 router.use('/paddle', paddleRouter);
 router.use('/healthcheck', healthcheckRouter);
