@@ -2,12 +2,12 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../helpers/create-auth-token-by-user-id';
-import { createUser } from '../../../../../test/factories/user';
-import { createFlow } from '../../../../../test/factories/flow';
-import { createStep } from '../../../../../test/factories/step';
-import { createPermission } from '../../../../../test/factories/permission';
-import createDynamicFieldsMock from '../../../../../test/mocks/rest/internal/api/v1/steps/create-dynamic-fields';
+import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id';
+import { createUser } from '../../../../../../test/factories/user';
+import { createFlow } from '../../../../../../test/factories/flow';
+import { createStep } from '../../../../../../test/factories/step';
+import { createPermission } from '../../../../../../test/factories/permission';
+import createDynamicFieldsMock from '../../../../../../test/mocks/rest/internal/api/v1/steps/create-dynamic-fields';
 
 describe('POST /internal/api/v1/steps/:stepId/dynamic-fields', () => {
   let currentUser, currentUserRole, token;
