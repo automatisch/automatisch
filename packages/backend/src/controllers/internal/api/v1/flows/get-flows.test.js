@@ -61,8 +61,7 @@ describe('GET /internal/api/v1/flows', () => {
         actionStepFlowOne,
         triggerStepFlowTwo,
         actionStepFlowTwo,
-      ],
-      currentUser.id
+      ]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -112,8 +111,7 @@ describe('GET /internal/api/v1/flows', () => {
         actionStepFlowOne,
         triggerStepFlowTwo,
         actionStepFlowTwo,
-      ],
-      currentUser.id
+      ]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -186,8 +184,7 @@ describe('GET /internal/api/v1/flows', () => {
         actionStepFlowTwo,
         triggerStepFlowThree,
         actionStepFlowThree,
-      ],
-      currentUser.id
+      ]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -273,8 +270,7 @@ describe('GET /internal/api/v1/flows', () => {
         actionStepFlowThree,
         triggerStepFlowFour,
         actionStepFlowFour,
-      ],
-      currentUser.id
+      ]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -360,8 +356,7 @@ describe('GET /internal/api/v1/flows', () => {
         actionStepFlowOne,
         triggerStepFlowTwo,
         actionStepFlowTwo,
-      ],
-      currentUser.id
+      ]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
