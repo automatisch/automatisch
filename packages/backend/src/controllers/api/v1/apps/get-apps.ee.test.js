@@ -11,6 +11,7 @@ describe('GET /api/v1/apps', () => {
 
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
+
     token = (await createApiToken()).token;
     apps = await App.findAll();
   });
