@@ -1,5 +1,5 @@
-import Execution from '../../src/models/execution';
-import { createFlow } from './flow';
+import Execution from '../../src/models/execution.js';
+import { createFlow } from './flow.js';
 
 export const createExecution = async (params = {}) => {
   params.flowId = params?.flowId || (await createFlow()).id;

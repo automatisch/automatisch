@@ -1,4 +1,4 @@
-import { createRole } from './role';
+import { createRole } from './role.js';
 import SamlAuthProvider from '../../src/models/saml-auth-provider.ee.js';
 
 export const createSamlAuthProvider = async (params = {}) => {

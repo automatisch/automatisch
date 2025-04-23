@@ -1,6 +1,6 @@
-import Template from '../../src/models/template.ee';
-import { createFlow } from './flow';
-import { createStep } from './step';
+import Template from '../../src/models/template.ee.js';
+import { createFlow } from './flow.js';
+import { createStep } from './step.js';
 
 export const createTemplate = async (params = {}) => {
   params.name = params?.name || 'Sample template name!';

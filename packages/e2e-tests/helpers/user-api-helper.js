@@ -2,7 +2,7 @@ const { expect } = require('../fixtures/index');
 
 export const addUser = async (apiRequest, token, request) => {
   const addUserResponse = await apiRequest.post(
-    `${process.env.BACKEND_APP_URL}/api/v1/admin/users`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/admin/users`,
     {
       headers: { Authorization: token },
       data: request,
@@ -15,7 +15,7 @@ export const addUser = async (apiRequest, token, request) => {
 
 export const acceptInvitation = async (apiRequest, request) => {
   const acceptInvitationResponse = await apiRequest.post(
-    `${process.env.BACKEND_APP_URL}/api/v1/users/invitation`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/users/invitation`,
     {
       data: request,
     }

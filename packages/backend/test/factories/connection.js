@@ -1,6 +1,6 @@
-import appConfig from '../../src/config/app';
+import appConfig from '../../src/config/app.js';
 import { AES } from 'crypto-js';
-import Connection from '../../src/models/connection';
+import Connection from '../../src/models/connection.js';
 
 export const createConnection = async (params = {}) => {
   params.key = params?.key || 'deepl';
