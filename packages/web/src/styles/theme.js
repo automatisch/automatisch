@@ -276,6 +276,15 @@ export const defaultTheme = createTheme({
         }),
       },
     },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          '&&': {
+            paddingRight: theme.spacing(3),
+          },
+        }),
+      },
+    },
     MuiDialogTitle: {
       styleOverrides: {
         root: ({ theme }) => ({

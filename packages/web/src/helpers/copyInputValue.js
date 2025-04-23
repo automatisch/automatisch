@@ -1,4 +1,5 @@
-import copy from 'clipboard-copy';
+import copyValue from './copyValue';
+
 export default function copyInputValue(element) {
-  copy(element.value);
+  copyValue(element.value);
 }
