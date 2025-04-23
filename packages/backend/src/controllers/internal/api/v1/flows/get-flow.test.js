@@ -36,10 +36,11 @@ describe('GET /internal/api/v1/flows/:flowId', () => {
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = await getFlowMock(currentUserflow, [
-      triggerStep,
-      actionStep,
-    ]);
+    const expectedPayload = await getFlowMock(
+      currentUserflow,
+      [triggerStep, actionStep],
+      currentUser.id
+    );
 
     expect(response.body).toStrictEqual(expectedPayload);
   });
@@ -62,10 +63,11 @@ describe('GET /internal/api/v1/flows/:flowId', () => {
       .set('Authorization', token)
       .expect(200);
 
-    const expectedPayload = await getFlowMock(anotherUserFlow, [
-      triggerStep,
-      actionStep,
-    ]);
+    const expectedPayload = await getFlowMock(
+      anotherUserFlow,
+      [triggerStep, actionStep],
+      currentUser.id
+    );
 
     expect(response.body).toStrictEqual(expectedPayload);
   });

@@ -6,7 +6,7 @@ import { createUser } from '../../../../../../test/factories/user.js';
 import { createFlow } from '../../../../../../test/factories/flow.js';
 import { createStep } from '../../../../../../test/factories/step.js';
 import { createPermission } from '../../../../../../test/factories/permission.js';
-import getFlowsMock from '../../../../../../test/mocks/rest/internal/api/v1/apps/get-flows.js';
+import getFlowsMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/get-flows.js';
 
 describe('GET /internal/api/v1/apps/:appKey/flows', () => {
   let currentUser, currentUserRole, token;
@@ -59,8 +59,7 @@ describe('GET /internal/api/v1/apps/:appKey/flows', () => {
 
     const expectedPayload = await getFlowsMock(
       [currentUserFlowOne],
-      [triggerStepFlowOne, actionStepFlowOne],
-      currentUser.id
+      [triggerStepFlowOne, actionStepFlowOne]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -108,8 +107,7 @@ describe('GET /internal/api/v1/apps/:appKey/flows', () => {
 
     const expectedPayload = await getFlowsMock(
       [anotherUserFlowOne],
-      [triggerStepFlowOne, actionStepFlowOne],
-      currentUser.id
+      [triggerStepFlowOne, actionStepFlowOne]
     );
 
     expect(response.body).toStrictEqual(expectedPayload);

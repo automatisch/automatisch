@@ -6,7 +6,7 @@ import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by
 import { createUser } from '../../../../../../test/factories/user.js';
 import { createFlow } from '../../../../../../test/factories/flow.js';
 import { createPermission } from '../../../../../../test/factories/permission.js';
-import getFlowMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/get-flow.js';
+import updateFlowMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/update-flow.js';
 
 describe('PATCH /internal/api/v1/flows/:flowId', () => {
   let currentUser, currentUserRole, token;
@@ -45,7 +45,7 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
 
     const refetchedCurrentUserFlow = await currentUserFlow.$query();
 
-    const expectedPayload = await getFlowMock({
+    const expectedPayload = await updateFlowMock({
       ...refetchedCurrentUserFlow,
       name: 'Updated flow',
     });
@@ -81,7 +81,7 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
 
     const refetchedAnotherUserFlow = await anotherUserFlow.$query();
 
-    const expectedPayload = await getFlowMock({
+    const expectedPayload = await updateFlowMock({
       ...refetchedAnotherUserFlow,
       name: 'Updated flow',
     });
