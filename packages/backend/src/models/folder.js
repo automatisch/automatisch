@@ -7,6 +7,8 @@ class Folder extends Base {
 
   static jsonSchema = {
     type: 'object',
+    required: ['name'],
+
     properties: {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },

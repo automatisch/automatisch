@@ -16,7 +16,7 @@ describe('POST /internal/api/v1/folders', () => {
     token = await createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should return created flow', async () => {
+  it('should return created folder', async () => {
     await createPermission({
       action: 'manage',
       subject: 'Flow',
