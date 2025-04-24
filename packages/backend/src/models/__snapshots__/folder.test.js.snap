@@ -22,6 +22,9 @@ exports[`Folder model > jsonSchema should have correct validations 1`] = `
       "type": "string",
     },
   },
+  "required": [
+    "name",
+  ],
   "type": "object",
 }
 `;
