@@ -15,7 +15,7 @@ const getFoldersMock = async (folders) => {
       currentPage: null,
       isArray: true,
       totalPages: null,
-      type: 'Folder',
+      type: folders.length ? 'Folder' : 'Object',
     },
   };
 };
