@@ -8,6 +8,7 @@ const publicUserInvitationSerializer = (user) => {
     updatedAt: user.updatedAt.getTime(),
     status: user.status,
     fullName: user.fullName,
+    acceptInvitationUrl: user.acceptInvitationUrl,
   };
 
   if (user.role) {

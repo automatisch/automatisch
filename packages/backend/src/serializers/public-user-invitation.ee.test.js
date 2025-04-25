@@ -22,6 +22,7 @@ describe('publicUserInvitation', () => {
       id: user.id,
       status: user.status,
       updatedAt: user.updatedAt.getTime(),
+      acceptInvitationUrl: user.acceptInvitationUrl,
     };
 
     expect(publicUserInvitationSerializer(user)).toStrictEqual(expectedPayload);
