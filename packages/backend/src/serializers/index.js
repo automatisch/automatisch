@@ -16,6 +16,7 @@ import folderSerializer from './folder.js';
 import oauthClientSerializer from './oauth-client.js';
 import permissionSerializer from './permission.js';
 import publicTemplateSerializer from './public-template.ee.js';
+import publicUserInvitationSerializer from './public-user-invitation.ee.js';
 import samlAuthProviderRoleMappingSerializer from './role-mapping.ee.js';
 import roleSerializer from './role.js';
 import samlAuthProviderSerializer from './saml-auth-provider.ee.js';
@@ -45,6 +46,7 @@ const serializers = {
   OAuthClient: oauthClientSerializer,
   Permission: permissionSerializer,
   PublicTemplate: publicTemplateSerializer,
+  PublicUserInvitation: publicUserInvitationSerializer,
   Role: roleSerializer,
   RoleMapping: samlAuthProviderRoleMappingSerializer,
   SamlAuthProvider: samlAuthProviderSerializer,
