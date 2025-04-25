@@ -467,6 +467,38 @@ class Flow extends Base {
     return await exportFlow(this);
   }
 
+  static find({ folderId, name, status, userId }) {
+    return this.query()
+      .withGraphFetched({
+        steps: true,
+      })
+      .where((builder) => {
+        if (name) {
+          builder.where('flows.name', 'ilike', `%${name}%`);
+        }
+
+        if (status === 'published') {
+          builder.where('flows.active', true);
+        } else if (status === 'draft') {
+          builder.where('flows.active', false);
+        }
+
+        if (userId) {
+          builder.where('flows.user_id', userId);
+        }
+
+        if (folderId === 'null') {
+          builder.where((builder) => {
+            builder.whereNull('flows.folder_id');
+          });
+        } else if (folderId) {
+          builder.where('flows.folder_id', folderId);
+        }
+      })
+      .orderBy('active', 'desc')
+      .orderBy('updated_at', 'desc');
+  }
+
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
 
