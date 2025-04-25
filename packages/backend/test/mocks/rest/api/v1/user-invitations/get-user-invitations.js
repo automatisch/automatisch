@@ -19,6 +19,7 @@ const getUserInvitationsAction = async (users, roles) => {
         : null,
       status: user.status,
       updatedAt: user.updatedAt.getTime(),
+      acceptInvitationUrl: user.acceptInvitationUrl,
     };
   });
 
