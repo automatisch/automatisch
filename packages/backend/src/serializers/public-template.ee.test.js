@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import templateSerializer from './template.ee.js';
-import { createTemplate } from '../../../test/factories/template.js';
+import { createTemplate } from '../../test/factories/template.js';
 
-describe('adminTemplateSerializer', () => {
+describe('publicTemplateSerializer', () => {
   let template;
 
   beforeEach(async () => {
