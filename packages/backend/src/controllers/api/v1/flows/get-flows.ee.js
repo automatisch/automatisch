@@ -15,6 +15,6 @@ const flowParams = (request) => {
     folderId: request.query.folderId,
     name: request.query.name,
     status: request.query.status,
-    onlyOwnedFlows: request.query.onlyOwnedFlows,
+    userId: request.query.userId,
   };
 };

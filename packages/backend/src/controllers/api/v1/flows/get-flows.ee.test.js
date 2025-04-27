@@ -10,12 +10,12 @@ import app from '../../../../app.js';
 import * as license from '../../../../helpers/license.ee.js';
 
 describe('GET /api/v1/flows', () => {
-  let currentUser, token;
+  let user, token;
 
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-    currentUser = await createUser();
+    user = await createUser();
     token = (await createApiToken()).token;
   });
 
@@ -61,65 +61,53 @@ describe('GET /api/v1/flows', () => {
   });
 
   it('should return all flows data of the given user', async () => {
-    const folderOne = await createFolder({ userId: currentUser.id });
+    const folderOne = await createFolder({ userId: user.id });
 
-    const currentUserFlowOne = await createFlow({
-      userId: currentUser.id,
+    const userFlowOne = await createFlow({
+      userId: user.id,
       folderId: folderOne.id,
     });
 
     const triggerStepFlowOne = await createStep({
-      flowId: currentUserFlowOne.id,
+      flowId: userFlowOne.id,
       type: 'trigger',
     });
     const actionStepFlowOne = await createStep({
-      flowId: currentUserFlowOne.id,
+      flowId: userFlowOne.id,
       type: 'action',
     });
 
-    const folderTwo = await createFolder({ userId: currentUser.id });
+    const folderTwo = await createFolder({ userId: user.id });
 
-    const currentUserFlowTwo = await createFlow({
-      userId: currentUser.id,
+    const userFlowTwo = await createFlow({
+      userId: user.id,
       folderId: folderTwo.id,
     });
 
     const triggerStepFlowTwo = await createStep({
-      flowId: currentUserFlowTwo.id,
+      flowId: userFlowTwo.id,
       type: 'trigger',
     });
 
     const actionStepFlowTwo = await createStep({
-      flowId: currentUserFlowTwo.id,
+      flowId: userFlowTwo.id,
       type: 'action',
     });
 
-    const currentUserFlowThree = await createFlow({ userId: currentUser.id });
-
-    const triggerStepFlowThree = await createStep({
-      flowId: currentUserFlowThree.id,
-      type: 'trigger',
-    });
-
-    const actionStepFlowThree = await createStep({
-      flowId: currentUserFlowThree.id,
-      type: 'action',
-    });
+    await createFlow();
 
     const response = await request(app)
-      .get('/api/v1/flows?userId=' + currentUser.id)
+      .get(`/api/v1/flows?userId=${user.id}`)
       .set('x-api-token', token)
       .expect(200);
 
     const expectedPayload = await getFlowsMock(
-      [currentUserFlowThree, currentUserFlowTwo, currentUserFlowOne],
+      [userFlowTwo, userFlowOne],
       [
         triggerStepFlowOne,
         actionStepFlowOne,
         triggerStepFlowTwo,
         actionStepFlowTwo,
-        triggerStepFlowThree,
-        actionStepFlowThree,
       ]
     );
 
@@ -129,59 +117,59 @@ describe('GET /api/v1/flows', () => {
   it('should return all uncategorized flows data', async () => {
     const folderOne = await createFolder();
 
-    const currentUserFlowOne = await createFlow({
-      userId: currentUser.id,
+    const userFlowOne = await createFlow({
+      userId: user.id,
       folderId: folderOne.id,
     });
 
     await createStep({
-      flowId: currentUserFlowOne.id,
+      flowId: userFlowOne.id,
       type: 'trigger',
     });
 
     await createStep({
-      flowId: currentUserFlowOne.id,
+      flowId: userFlowOne.id,
       type: 'action',
     });
 
     const folderTwo = await createFolder();
 
-    const currentUserFlowTwo = await createFlow({
-      userId: currentUser.id,
+    const userFlowTwo = await createFlow({
+      userId: user.id,
       folderId: folderTwo.id,
     });
 
     await createStep({
-      flowId: currentUserFlowTwo.id,
+      flowId: userFlowTwo.id,
       type: 'trigger',
     });
 
     await createStep({
-      flowId: currentUserFlowTwo.id,
+      flowId: userFlowTwo.id,
       type: 'action',
     });
 
-    const currentUserFlowThree = await createFlow();
+    const userFlowThree = await createFlow();
 
     const triggerStepFlowThree = await createStep({
-      flowId: currentUserFlowThree.id,
+      flowId: userFlowThree.id,
       type: 'trigger',
     });
 
     const actionStepFlowThree = await createStep({
-      flowId: currentUserFlowThree.id,
+      flowId: userFlowThree.id,
       type: 'action',
     });
 
-    const currentUserFlowFour = await createFlow();
+    const userFlowFour = await createFlow();
 
     const triggerStepFlowFour = await createStep({
-      flowId: currentUserFlowFour.id,
+      flowId: userFlowFour.id,
       type: 'trigger',
     });
 
     const actionStepFlowFour = await createStep({
-      flowId: currentUserFlowFour.id,
+      flowId: userFlowFour.id,
       type: 'action',
     });
 
@@ -191,7 +179,7 @@ describe('GET /api/v1/flows', () => {
       .expect(200);
 
     const expectedPayload = await getFlowsMock(
-      [currentUserFlowFour, currentUserFlowThree],
+      [userFlowFour, userFlowThree],
       [
         triggerStepFlowThree,
         actionStepFlowThree,
@@ -204,73 +192,73 @@ describe('GET /api/v1/flows', () => {
   });
 
   it('should return all flows data of the given user for specified folder', async () => {
-    const folderOne = await createFolder({ userId: currentUser.id });
+    const folderOne = await createFolder({ userId: user.id });
 
-    const currentUserFlowOne = await createFlow({
-      userId: currentUser.id,
+    const userFlowOne = await createFlow({
+      userId: user.id,
       folderId: folderOne.id,
     });
 
     const triggerStepFlowOne = await createStep({
-      flowId: currentUserFlowOne.id,
+      flowId: userFlowOne.id,
       type: 'trigger',
     });
     const actionStepFlowOne = await createStep({
-      flowId: currentUserFlowOne.id,
+      flowId: userFlowOne.id,
       type: 'action',
     });
 
-    const currentUserFlowTwo = await createFlow({
-      userId: currentUser.id,
+    const userFlowTwo = await createFlow({
+      userId: user.id,
       folderId: folderOne.id,
     });
 
     const triggerStepFlowTwo = await createStep({
-      flowId: currentUserFlowTwo.id,
+      flowId: userFlowTwo.id,
       type: 'trigger',
     });
 
     const actionStepFlowTwo = await createStep({
-      flowId: currentUserFlowTwo.id,
+      flowId: userFlowTwo.id,
       type: 'action',
     });
 
-    const folderTwo = await createFolder({ userId: currentUser.id });
+    const folderTwo = await createFolder({ userId: user.id });
 
-    const currentUserFlowThree = await createFlow({
-      userId: currentUser.id,
+    const userFlowThree = await createFlow({
+      userId: user.id,
       folderId: folderTwo.id,
     });
 
     await createStep({
-      flowId: currentUserFlowThree.id,
+      flowId: userFlowThree.id,
       type: 'trigger',
     });
 
     await createStep({
-      flowId: currentUserFlowThree.id,
+      flowId: userFlowThree.id,
       type: 'action',
     });
 
-    const currentUserFlowFour = await createFlow({ userId: currentUser.id });
+    const userFlowFour = await createFlow({ userId: user.id });
 
     await createStep({
-      flowId: currentUserFlowFour.id,
+      flowId: userFlowFour.id,
       type: 'trigger',
     });
 
     await createStep({
-      flowId: currentUserFlowFour.id,
+      flowId: userFlowFour.id,
       type: 'action',
     });
 
     const response = await request(app)
-      .get(`/api/v1/flows?userId=${currentUser.id}&folderId=${folderOne.id}`)
+      .get(`/api/v1/flows?userId=${user.id}&folderId=${folderOne.id}`)
       .set('x-api-token', token)
       .expect(200);
 
     const expectedPayload = await getFlowsMock(
-      [currentUserFlowTwo, currentUserFlowOne],
+      [userFlowTwo, userFlowOne],
       [
         triggerStepFlowOne,
         actionStepFlowOne,
