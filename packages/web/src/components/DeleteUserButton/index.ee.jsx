@@ -39,7 +39,9 @@ function DeleteUserButton(props) {
           'data-test': 'snackbar-delete-user-success',
         },
       });
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   }, [deleteUser]);
 
   const handleClose = () => {

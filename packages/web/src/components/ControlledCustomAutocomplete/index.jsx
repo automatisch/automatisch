@@ -89,7 +89,7 @@ function ControlledCustomAutocomplete(props) {
   };
 
   const resizeObserver = React.useMemo(function syncCustomOptionsPosition() {
-    return new ResizeObserver(() => {
+    return new window.ResizeObserver(() => {
       forceUpdate();
     });
   }, []);

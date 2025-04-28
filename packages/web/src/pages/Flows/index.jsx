@@ -73,7 +73,7 @@ export default function Flows() {
   const getPathWithSearchParams = (page) => {
     const searchParamsObject = objectifyUrlSearchParams(searchParams);
 
-    const newSearchParams = new URLSearchParams({
+    const newSearchParams = new window.URLSearchParams({
       ...searchParamsObject,
       page,
     });

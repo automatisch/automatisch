@@ -3,7 +3,6 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,7 +23,6 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useFolders from 'hooks/useFolders';
 import useDeleteFolder from 'hooks/useDeleteFolder';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
-import objectifyUrlSearchParams from 'helpers/objectifyUrlSearchParams';
 import useFlowFilters from 'hooks/useFlowFilters';
 
 import { ListItemIcon } from './style';

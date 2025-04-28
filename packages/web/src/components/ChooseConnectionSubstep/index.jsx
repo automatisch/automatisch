@@ -24,8 +24,9 @@ import useAppConnections from 'hooks/useAppConnections';
 import useTestConnection from 'hooks/useTestConnection';
 import useOAuthClients from 'hooks/useOAuthClients';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import appConfig from 'config/app.js';
 
-const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';

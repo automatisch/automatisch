@@ -10,8 +10,9 @@ import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
+import appConfig from 'config/app.js';
 
-const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 function FlowSubstep(props) {
   const {

@@ -24,7 +24,6 @@ import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import Footer from './Footer';
 
 function createDrawerLinks({
-  canCreateFlows,
   canReadRole,
   canReadUser,
   canUpdateConfig,

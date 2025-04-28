@@ -55,10 +55,10 @@ function ImportFlowDialog(props) {
     }
   };
 
-  const handleImportFlow = (event) => {
+  const handleImportFlow = () => {
     if (!selectedFile) return;
 
-    const fileReader = new FileReader();
+    const fileReader = new window.FileReader();
 
     fileReader.onload = async function readFileLoaded(e) {
       const flowData = parseFlowFile(e.target.result);
