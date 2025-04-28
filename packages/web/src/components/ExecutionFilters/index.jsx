@@ -7,20 +7,16 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography,
   useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { DateTime } from 'luxon';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
-import Can from 'components/Can';
 import DatePickerInput from 'components/DatePickerInput';
 import useExecutionFilters from 'hooks/useExecutionFilters';
 import useFormatMessage from 'hooks/useFormatMessage';
 
-export default function ExecutionFilters({ onFilterChange }) {
+export default function ExecutionFilters() {
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

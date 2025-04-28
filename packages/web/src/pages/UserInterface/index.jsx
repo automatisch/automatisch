@@ -87,7 +87,7 @@ export default function UserInterface() {
           'data-test': 'snackbar-update-user-interface-success',
         },
       });
-    } catch (error) {
+    } catch {
       throw new Error('Failed while updating!');
     }
   };

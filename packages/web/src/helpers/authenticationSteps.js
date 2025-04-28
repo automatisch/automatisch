@@ -1,6 +1,8 @@
 const parseUrlSearchParams = (event) => {
-  const searchParams = new URLSearchParams(event.data.payload.search);
-  const hashParams = new URLSearchParams(event.data.payload.hash.substring(1));
+  const searchParams = new window.URLSearchParams(event.data.payload.search);
+  const hashParams = new window.URLSearchParams(
+    event.data.payload.hash.substring(1),
+  );
   const searchParamsObject = getObjectOfEntries(searchParams.entries());
   const hashParamsObject = getObjectOfEntries(hashParams.entries());
 
@@ -33,9 +35,9 @@ export const processPopupMessage = (popup) => {
     let closeCheckIntervalId;
 
     if (popup) {
-      closeCheckIntervalId = setInterval(() => {
+      closeCheckIntervalId = window.setInterval(() => {
         if (popup.closed) {
-          clearInterval(closeCheckIntervalId);
+          window.clearInterval(closeCheckIntervalId);
 
           reject({ message: 'Error occured while verifying credentials!' });
         }
@@ -51,7 +53,7 @@ export const processPopupMessage = (popup) => {
       window.removeEventListener('message', messageHandler);
 
       if (closeCheckIntervalId) {
-        clearInterval(closeCheckIntervalId);
+        window.clearInterval(closeCheckIntervalId);
       }
 
       resolve(data);

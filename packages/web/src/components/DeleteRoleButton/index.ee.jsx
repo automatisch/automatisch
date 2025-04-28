@@ -43,7 +43,9 @@ function DeleteRoleButton(props) {
           'data-test': 'snackbar-delete-role-success',
         },
       });
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   }, [deleteRole, enqueueSnackbar, formatMessage]);
 
   const handleClose = () => {

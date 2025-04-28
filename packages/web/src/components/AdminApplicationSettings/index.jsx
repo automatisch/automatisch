@@ -43,7 +43,7 @@ function AdminApplicationSettings({ appKey }) {
           'data-test': 'snackbar-save-admin-apps-settings-success',
         },
       });
-    } catch (error) {
+    } catch {
       throw new Error('Failed while saving!');
     }
   };

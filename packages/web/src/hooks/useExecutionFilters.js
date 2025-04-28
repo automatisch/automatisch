@@ -1,8 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
-import api from 'helpers/api';
 import objectifyUrlSearchParams from 'helpers/objectifyUrlSearchParams';
 
 export default function useExecutionFilters() {
@@ -21,7 +19,8 @@ export default function useExecutionFilters() {
   const endDateTime = parseInt(endDateTimeString, 10);
 
   const filterByStatus = (status) => {
-    setSearchParams((current) => {
+    setSearchParams(() => {
+      // eslint-disable-next-line no-unused-vars
       const { status: currentStatus, ...rest } = searchParamsObject;
 
       if (status) {
@@ -35,7 +34,8 @@ export default function useExecutionFilters() {
   const filterByStartDateTime = (startDateTime) => {
     const startDateTimeString = startDateTime?.toMillis();
 
-    setSearchParams((current) => {
+    setSearchParams(() => {
+      // eslint-disable-next-line no-unused-vars
       const { startDateTime: currentStartDateTime, ...rest } =
         searchParamsObject;
 
@@ -50,7 +50,8 @@ export default function useExecutionFilters() {
   const filterByEndDateTime = (endDateTime) => {
     const endDateTimeString = endDateTime?.endOf('day').toMillis();
 
-    setSearchParams((current) => {
+    setSearchParams(() => {
+      // eslint-disable-next-line no-unused-vars
       const { endDateTime: currentEndDateTime, ...rest } = searchParamsObject;
 
       if (endDateTimeString) {
@@ -65,13 +66,14 @@ export default function useExecutionFilters() {
     const searchParamsObject = objectifyUrlSearchParams(searchParams);
 
     if (value === undefined) {
+      // eslint-disable-next-line no-unused-vars
       const { [key]: keyToRemove, ...remainingSearchParams } =
         searchParamsObject;
 
-      return new URLSearchParams(remainingSearchParams).toString();
+      return new window.URLSearchParams(remainingSearchParams).toString();
     }
 
-    return new URLSearchParams({
+    return new window.URLSearchParams({
       ...searchParamsObject,
       [key]: value,
     }).toString();

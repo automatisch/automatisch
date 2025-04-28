@@ -87,7 +87,7 @@ function Form(props) {
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(async (data, event) => {
+        onSubmit={methods.handleSubmit(async (data) => {
           try {
             return await onSubmit?.(data);
           } catch (errors) {

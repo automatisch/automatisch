@@ -28,11 +28,10 @@ const getPartialArray = (array, length = array.length) => {
   return array.slice(0, length);
 };
 
-const renderItemFactory =
-  ({ onSuggestionClick }) =>
-  (props) => (
-    <SuggestionItem {...props} onSuggestionClick={onSuggestionClick} />
-  );
+const renderItemFactory = ({ onSuggestionClick }) =>
+  function RenderItem(props) {
+    return <SuggestionItem {...props} onSuggestionClick={onSuggestionClick} />;
+  };
 
 const Suggestions = (props) => {
   const formatMessage = useFormatMessage();

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ReactComponent as MationLogoSvg } from './assets/mation-logo.svg';
+import MationLogoSvg from './assets/mation-logo.svg';
 
 const MationLogo = () => {
-  return <MationLogoSvg />;
+  return <img src={MationLogoSvg} alt="Mation Logo" />;
 };
 
 export default MationLogo;
