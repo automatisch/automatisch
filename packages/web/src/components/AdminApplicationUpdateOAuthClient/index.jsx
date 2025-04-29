@@ -39,11 +39,10 @@ function AdminApplicationUpdateOAuthClient(props) {
     }
 
     setAuthDefaultsUpdatePending(true);
-    await updateOAuthClient({
-      ...values.formattedAuthDefaults,
-    }).finally(() => {
+    await updateOAuthClient(values.formattedAuthDefaults).finally(() => {
       setAuthDefaultsUpdatePending(false);
     });
+
     setDefaultValues((prev) => ({
       name: prev.name,
       active: prev.active,

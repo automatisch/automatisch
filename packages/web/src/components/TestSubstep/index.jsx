@@ -26,7 +26,6 @@ function TestSubstep(props) {
     onExpand,
     onCollapse,
     onContinue,
-
     step,
     showWebhookUrl = false,
     flowId,

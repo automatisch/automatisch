@@ -11,7 +11,6 @@ export default defineConfig(() => {
     },
     build: {
       outDir: 'build',
-      sourcemap: 'inline',
     },
     plugins: [
       react({
@@ -20,12 +19,21 @@ export default defineConfig(() => {
           plugins: ['@emotion/babel-plugin'],
         },
       }),
-      eslint({
-        eslintPath: require.resolve('eslint'),
-        cache: false,
-        include: ['src/**/*.js', 'src/**/*.jsx'],
-        exclude: ['node_modules'],
-      }),
+      {
+        ...eslint({
+          include: ['src/**/*.js', 'src/**/*.jsx'],
+        }),
+        apply: 'build',
+      },
+      {
+        ...eslint({
+          include: ['src/**/*.js', 'src/**/*.jsx'],
+          failOnWarning: false,
+          failOnError: false,
+        }),
+        apply: 'serve',
+        enforce: 'post',
+      },
     ],
     resolve: {
       alias: {
