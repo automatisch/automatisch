@@ -389,9 +389,91 @@ test.describe('Folders', () => {
     });
   });
 
-  test.skip('non-owner should not reassing folder of different user', async ({
+  test('non-owner should not reassign folder of different user', async ({
     page,
+    flowsPage,
+    adminCreateUserPage,
   }) => {
-    // TODO feature is wip https://github.com/automatisch/automatisch/pull/2420
+    const folderMoveToDialog = new MoveFolderDialog(page);
+    const apiRequest = await request.newContext();
+    const tokenJsonResponse = await getToken(apiRequest);
+    let userTokenJsonResponse;
+    let flowId;
+
+    await test.step('add another user', async () => {
+      adminCreateUserPage.seed(
+        Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER)
+      );
+      const testUser = adminCreateUserPage.generateUser();
+
+      const addUserResponse = await addUser(
+        apiRequest,
+        tokenJsonResponse.data.token,
+        {
+          fullName: testUser.fullName,
+          email: testUser.email,
+        }
+      );
+
+      const acceptToken =
+        addUserResponse.data.acceptInvitationUrl.split('=')[1];
+      await acceptInvitation(apiRequest, {
+        token: acceptToken,
+        password: 'alamakota',
+      });
+      userTokenJsonResponse = await getToken(
+        apiRequest,
+        testUser.email,
+        'alamakota'
+      );
+    });
+
+    await test.step('add folder as an another user', async () => {
+      await addFolder(
+        apiRequest,
+        userTokenJsonResponse.data.token,
+        'anotherUserFolder'
+      );
+    });
+
+    await test.step('add flow as an another user', async () => {
+      const flow = await createFlow(
+        apiRequest,
+        userTokenJsonResponse.data.token
+      );
+      flowId = flow.data.id;
+      await updateFlowName(
+        apiRequest,
+        userTokenJsonResponse.data.token,
+        flowId
+      );
+      await page.reload();
+    });
+
+    await test.step("should not be able to move another user's flow", async () => {
+      await flowsPage.allFlowsFolder.click();
+      await flowsPage.searchInput.fill(flowId);
+      await expect(
+        flowsPage.flowRow.filter({
+          hasText: flowId,
+        })
+      ).toHaveCount(1);
+
+      await flowsPage.flowRow
+        .filter({
+          hasText: flowId,
+        })
+        .getByRole('button')
+        .click();
+      await flowsPage.moveTo.click();
+
+      await expect(
+        page.getByText(
+          'A flow can only be moved to a folder by the flow owner.'
+        )
+      ).toHaveCount(1);
+
+      await expect(folderMoveToDialog.moveButton).toBeDisabled();
+    });
   });
 });
