@@ -100,7 +100,7 @@ test.describe('User management page', () => {
     });
 
     await test.step('Delete the created user', async () => {
-      await adminUsersPage.navigateTo();
+      await adminUsersPage.navigateToAndWaitForUsers();
       await adminUsersPage.findUserPageWithEmail(testUser.email);
       const userRow = await adminUsersPage.getUserRowByEmail(testUser.email);
       await adminUsersPage.clickDeleteUser(userRow);
@@ -198,7 +198,7 @@ test.describe('User management page', () => {
     });
 
     await test.step('Try editing the second user to have the email of the first user', async () => {
-      await adminUsersPage.navigateTo();
+      await adminUsersPage.navigateToAndWaitForUsers();
       await adminUsersPage.findUserPageWithEmail(user2.email);
       let userRow = await adminUsersPage.getUserRowByEmail(user2.email);
       await adminUsersPage.clickEditUser(userRow);

@@ -110,6 +110,7 @@ export default function Folders() {
         secondaryAction={
           <Stack direction="row" gap={1}>
             <IconButton
+              data-test="edit-folder"
               edge="end"
               aria-label="edit"
               onClick={() => setShowEditFolderDialog(true)}
@@ -117,6 +118,7 @@ export default function Folders() {
               <EditIcon />
             </IconButton>
             <IconButton
+              data-test="delete-folder"
               edge="end"
               aria-label="delete"
               onClick={() => setShowDeleteFolderDialog(true)}
@@ -154,6 +156,7 @@ export default function Folders() {
       <Box component={Card}>
         <List component="nav" aria-label="static folders">
           <ListItemButton
+            data-test="all-flows-folder"
             component={Link}
             to={{ search: allFlowsFolder }}
             selected={allFlowsFolderSelected}
@@ -166,6 +169,7 @@ export default function Folders() {
           </ListItemButton>
 
           <ListItemButton
+            data-test="uncategorized-flows-folder"
             component={Link}
             to={{ search: unassignedFlowsFolder }}
             selected={unassignedFlowsFolderSelected}
@@ -180,10 +184,17 @@ export default function Folders() {
 
         <Divider />
 
-        <List component="nav" aria-label="user folders">
+        <List
+          component="nav"
+          aria-label="user folders"
+          data-test="user-folders"
+        >
           {folders?.data?.map((folder) => generateFolderItem(folder))}
 
-          <ListItemButton onClick={() => setShowCreateFolderDialog(true)}>
+          <ListItemButton
+            data-test="add-folder-button"
+            onClick={() => setShowCreateFolderDialog(true)}
+          >
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
@@ -212,6 +223,7 @@ export default function Folders() {
           onConfirm={handleDeleteFolderConfirmation}
           cancelButtonChildren={formatMessage('deleteFolderDialog.cancel')}
           confirmButtonChildren={formatMessage('deleteFolderDialog.confirm')}
+          data-test="delete-folder-modal"
           errorMessage={generalErrorMessage}
         />
       )}
