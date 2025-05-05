@@ -29,10 +29,35 @@ describe('GET /api/v1/users', () => {
       fullName: 'User 2',
     });
 
+    await createUser({
+      fullName: 'User 3',
+      status: 'invited',
+    });
+
     token = (await createApiToken()).token;
   });
 
   it('should return users data', async () => {
+    const response = await request(app)
+      .get('/api/v1/users')
+      .set('x-api-token', token)
+      .expect(200);
+
+    const expectedResponsePayload = await getUsersMock(
+      [userOne, userTwo],
+      [userOneRole, userTwoRole]
+    );
+
+    expect(response.body).toStrictEqual(expectedResponsePayload);
+  });
+
+  it('should return users data without soft deleted users', async () => {
+    const user = await createUser({
+      fullName: 'User 3',
+    });
+
+    await user.$query().delete();
+
     const response = await request(app)
       .get('/api/v1/users')
       .set('x-api-token', token)
