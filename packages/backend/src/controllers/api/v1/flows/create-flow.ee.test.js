@@ -9,7 +9,7 @@ import { createUser } from '../../../../../test/factories/user.js';
 import createFlowMock from '../../../../../test/mocks/rest/api/v1/users/create-flow.js';
 import * as license from '../../../../helpers/license.ee.js';
 
-describe('POST /api/v1/users/:userId/flows', () => {
+describe('POST /api/v1/flows', () => {
   let user, token;
 
   beforeEach(async () => {
@@ -21,8 +21,11 @@ describe('POST /api/v1/users/:userId/flows', () => {
 
   it('should create an empty flow when no templateId is provided for the given user', async () => {
     const response = await request(app)
-      .post(`/api/v1/users/${user.id}/flows`)
+      .post('/api/v1/flows')
       .set('x-api-token', token)
+      .send({
+        userId: user.id,
+      })
       .expect(201);
 
     const refetchedFlow = await user
@@ -40,9 +43,12 @@ describe('POST /api/v1/users/:userId/flows', () => {
     });
 
     const response = await request(app)
-      .post(`/api/v1/users/${user.id}/flows`)
-      .query({ templateId: template.id })
+      .post('/api/v1/flows')
       .set('x-api-token', token)
+      .send({
+        templateId: template.id,
+        userId: user.id,
+      })
       .expect(201);
 
     expect(response.body.data.name).toBe(template.flowData.name);
@@ -50,8 +56,11 @@ describe('POST /api/v1/users/:userId/flows', () => {
 
   it('should return an error when an invalid templateId is provided', async () => {
     await request(app)
-      .post(`/api/v1/users/${user.id}/flows`)
-      .query({ templateId: 'invalid-template-id' })
+      .post('/api/v1/flows')
+      .send({
+        userId: user.id,
+        templateId: 'invalid-template-id',
+      })
       .set('x-api-token', token)
       .expect(400);
   });
@@ -60,15 +69,19 @@ describe('POST /api/v1/users/:userId/flows', () => {
     const notExistingUserId = Crypto.randomUUID();
 
     await request(app)
-      .get(`/api/v1/users/${notExistingUserId}/folders`)
+      .post('/api/v1/flows')
       .set('x-api-token', token)
+      .send({ userId: notExistingUserId })
       .expect(404);
   });
 
   it('should return bad request response for invalid user UUID', async () => {
     await request(app)
-      .get(`/api/v1/users/invalidUserUUID/folders`)
+      .post('/api/v1/flows')
       .set('x-api-token', token)
+      .send({
+        userId: 'invalidUserUUID',
+      })
       .expect(400);
   });
 });
