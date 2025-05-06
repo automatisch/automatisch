@@ -3,22 +3,11 @@ import { useFormContext } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import ControlledCheckbox from 'components/ControlledCheckbox';
 
-const AllEntitiesPermissions = ({
-  action,
-  subject,
-  disabled,
-  name,
-  syncIsCreator,
-}) => {
-  const { getValues, formState, resetField } = useFormContext();
+const AllEntitiesPermissions = ({ action, subject, disabled, name }) => {
+  const { getValues, resetField } = useFormContext();
 
   const fieldName = `${name}.${subject.key}.${action.key}.allEntities`;
-  const defaultValue =
-    formState.defaultValues?.[name]?.[subject.key]?.[action.key].allEntities;
   const ownEntitiesFieldName = `${name}.${subject.key}.${action.key}.ownEntities`;
-  const ownEntitiesFieldTouched =
-    formState.touchedFields?.[name]?.[subject.key]?.[action.key]
-      ?.ownEntities === true;
 
   const currentValue = getValues(fieldName);
 
@@ -27,16 +16,6 @@ const AllEntitiesPermissions = ({
       resetField(ownEntitiesFieldName, { defaultValue: true });
     }
   }, [ownEntitiesFieldName, currentValue]);
-
-  const handleSyncIsCreator = (newValue) => {
-    if (syncIsCreator && defaultValue === false && !ownEntitiesFieldTouched) {
-      resetField(ownEntitiesFieldName, { defaultValue: newValue });
-    }
-
-    if (newValue === true) {
-      resetField(ownEntitiesFieldName, { defaultValue: true });
-    }
-  };
 
   return (
     <ControlledCheckbox

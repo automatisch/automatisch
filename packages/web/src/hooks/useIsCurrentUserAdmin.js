@@ -1,4 +1,3 @@
-import userAbility from 'helpers/userAbility';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 export default function useIsCurrentUserAdmin() {

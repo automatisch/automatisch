@@ -1,7 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
 
-import api from 'helpers/api';
 import objectifyUrlSearchParams from 'helpers/objectifyUrlSearchParams';
 
 export default function useFlowFilters() {
@@ -14,7 +12,8 @@ export default function useFlowFilters() {
     searchParamsObject.onlyOwnedFlows === 'true' || undefined;
 
   const filterByStatus = (status) => {
-    setSearchParams((current) => {
+    setSearchParams(() => {
+      // eslint-disable-next-line no-unused-vars
       const { status: currentStatus, ...rest } = searchParamsObject;
 
       if (status) {
@@ -26,7 +25,8 @@ export default function useFlowFilters() {
   };
 
   const filterByOwnership = (onlyOwnedFlows) => {
-    setSearchParams((current) => {
+    setSearchParams(() => {
+      // eslint-disable-next-line no-unused-vars
       const { onlyOwnedFlows: currentOnlyOwnedFlows, ...rest } =
         searchParamsObject;
 
@@ -42,13 +42,14 @@ export default function useFlowFilters() {
     const searchParamsObject = objectifyUrlSearchParams(searchParams);
 
     if (value === undefined) {
+      // eslint-disable-next-line no-unused-vars
       const { [key]: keyToRemove, ...remainingSearchParams } =
         searchParamsObject;
 
-      return new URLSearchParams(remainingSearchParams).toString();
+      return new window.URLSearchParams(remainingSearchParams).toString();
     }
 
-    return new URLSearchParams({
+    return new window.URLSearchParams({
       ...searchParamsObject,
       [key]: value,
     }).toString();

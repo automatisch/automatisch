@@ -6,19 +6,17 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography,
   useMediaQuery,
   Collapse,
 } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useTheme } from '@mui/material/styles';
 
-import Can from 'components/Can';
 import useCurrentUserRuleConditions from 'hooks/useCurrentUserRuleConditions';
 import useFlowFilters from 'hooks/useFlowFilters';
 import useFormatMessage from 'hooks/useFormatMessage';
 
-export default function FlowFilters({ onFilterChange }) {
+export default function FlowFilters() {
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

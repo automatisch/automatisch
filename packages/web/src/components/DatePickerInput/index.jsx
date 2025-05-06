@@ -4,8 +4,6 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import useFormatMessage from 'hooks/useFormatMessage';
-
 export default function DatePickerInput({
   onChange,
   defaultValue = '',
@@ -15,7 +13,6 @@ export default function DatePickerInput({
   maxDate,
 }) {
   const intl = useIntl();
-  const formatMessage = useFormatMessage();
 
   const props = {
     label,

@@ -39,7 +39,9 @@ function DeleteApiTokenButton(props) {
           },
         },
       );
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   }, [deleteApiToken]);
 
   const handleClose = () => {

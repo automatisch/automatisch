@@ -10,7 +10,7 @@ const appendTrailingSlash = (url) => {
   }
 
   return url;
-}
+};
 
 /**
  * Per instance, there may be different documentation. However, the paths are assumed the same.
@@ -18,10 +18,12 @@ const appendTrailingSlash = (url) => {
  */
 export default function useDocsUrl(path) {
   const { data: automatischInfo } = useAutomatischInfo();
-  const docsUrlWithTrailingSlash = appendTrailingSlash(automatischInfo?.docsUrl);
+  const docsUrlWithTrailingSlash = appendTrailingSlash(
+    automatischInfo?.docsUrl,
+  );
   const docsUrl = docsUrlWithTrailingSlash || 'https://automatisch.io/docs/';
 
-  const absoluteUrl = new URL(path, docsUrl).toString();
+  const absoluteUrl = new window.URL(path, docsUrl).toString();
 
   return absoluteUrl;
 }

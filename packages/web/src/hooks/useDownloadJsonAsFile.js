@@ -12,11 +12,11 @@ export default function useDownloadJsonAsFile() {
         replacement: '-',
       });
 
-      const fileBlob = new Blob([stringifiedContents], {
+      const fileBlob = new window.Blob([stringifiedContents], {
         type: 'application/json',
       });
 
-      const fileObjectUrl = URL.createObjectURL(fileBlob);
+      const fileObjectUrl = window.URL.createObjectURL(fileBlob);
 
       const temporaryDownloadLink = document.createElement('a');
       temporaryDownloadLink.href = fileObjectUrl;

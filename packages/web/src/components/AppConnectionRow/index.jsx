@@ -43,7 +43,7 @@ function AppConnectionRow(props) {
       { connectionId: id },
       {
         onSettled: () => {
-          setTimeout(() => setVerificationVisible(false), 3000);
+          window.setTimeout(() => setVerificationVisible(false), 3000);
         },
       },
     );

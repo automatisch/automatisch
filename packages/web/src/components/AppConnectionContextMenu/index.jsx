@@ -100,7 +100,7 @@ ContextMenu.propTypes = {
   onMenuItemClick: PropTypes.func.isRequired,
   anchorEl: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    PropTypes.shape({ current: PropTypes.instanceOf(window.Element) }),
   ]),
 };
 

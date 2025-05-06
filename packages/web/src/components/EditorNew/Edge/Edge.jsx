@@ -17,7 +17,7 @@ export default function Edge({
   const { flowActive, onStepAdd, isCreateStepPending } =
     useContext(EdgesContext);
 
-  const [edgePath, labelX, labelY] = getStraightPath({
+  const [, labelX, labelY] = getStraightPath({
     sourceX,
     sourceY,
     targetX,

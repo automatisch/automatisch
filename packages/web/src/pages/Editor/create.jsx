@@ -30,7 +30,9 @@ export default function CreateFlow() {
         const flowId = response.data?.id;
 
         navigateToEditor(flowId);
-      } catch {}
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     initiate();
