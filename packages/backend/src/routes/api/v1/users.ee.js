@@ -4,6 +4,7 @@ import getFoldersAction from '../../../controllers/api/v1/users/get-folders.ee.j
 import getUserAction from '../../../controllers/api/v1/users/get-user.ee.js';
 import deleteUserAction from '../../../controllers/api/v1/users/delete-user.ee.js';
 import getUsersAction from '../../../controllers/api/v1/users/get-users.ee.js';
+import deleteFolderAction from '../../../controllers/api/v1/users/delete-folder.ee.js';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.get('/:userId', getUserAction);
 router.delete('/:userId', deleteUserAction);
 router.get('/:userId/folders', getFoldersAction);
 router.post('/:userId/folders', createFolderAction);
+router.delete('/:userId/folders/:folderId', deleteFolderAction);
 
 export default router;
