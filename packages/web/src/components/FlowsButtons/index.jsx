@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import SplitButton from 'components/SplitButton';
 
@@ -14,6 +14,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 
 export default function FlowsButtons() {
+  const location = useLocation();
   const formatMessage = useFormatMessage();
   const currentUserAbility = useCurrentUserAbility();
   const theme = useTheme();
@@ -69,7 +70,7 @@ export default function FlowsButtons() {
         component={Link}
         disabled={!canCreateFlow}
         startIcon={<UploadIcon />}
-        to={URLS.IMPORT_FLOW}
+        to={{ pathname: URLS.IMPORT_FLOW, search: location.search }}
         data-test="import-flow-button"
       >
         {formatMessage('flows.importFlow')}
