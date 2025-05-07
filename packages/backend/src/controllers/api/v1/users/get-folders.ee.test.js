@@ -5,7 +5,7 @@ import app from '../../../../app.js';
 import { createApiToken } from '../../../../../test/factories/api-token.js';
 import { createUser } from '../../../../../test/factories/user.js';
 import { createFolder } from '../../../../../test/factories/folder.js';
-import getFoldersMock from '../../../../../test/mocks/rest/api/v1/folders/get-folders.js';
+import getFoldersMock from '../../../../../test/mocks/rest/api/v1/users/get-folders.js';
 import * as license from '../../../../helpers/license.ee.js';
 
 describe('GET /api/v1/users/:userId/folders', () => {
