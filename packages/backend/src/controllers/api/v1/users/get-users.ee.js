@@ -4,6 +4,7 @@ import User from '../../../../models/user.js';
 
 export default async (request, response) => {
   const usersQuery = User.query()
+    .where({ status: 'active' })
     .withGraphFetched({
       role: true,
     })
