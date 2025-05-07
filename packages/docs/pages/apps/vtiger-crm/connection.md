@@ -8,6 +8,6 @@ This page explains the steps you need to follow to set up the Vtiger CRM connect
 2. Go to **My Preferences** of your account.
 3. Copy **Access Key** value from Vtiger CRM to Automatisch.
 4. Fill **Username** field as your Vtiger CRM account email on Automatisch.
-5. Fill **Domain** field as if your dashboard url is `https://acmeco.od1.vtiger.com`, paste `acmeco.od1` to the field on Automatisch.
+5. Fill **Instance URL** field on Automatisch.
 6. Click **Submit** button on Automatisch.
 7. Congrats! Vtiger CRM connection is created.
