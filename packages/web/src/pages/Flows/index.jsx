@@ -13,10 +13,10 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
-import FlowFilters from 'components/FlowFilters';
-import FlowsButtons from 'components/FlowsButtons';
 import Container from 'components/Container';
+import FlowFilters from 'components/FlowFilters';
 import FlowRow from 'components/FlowRow';
+import FlowsButtons from 'components/FlowsButtons';
 import Folders from 'components/Folders';
 import ImportFlowDialog from 'components/ImportFlowDialog';
 import NoResultFound from 'components/NoResultFound';
@@ -24,10 +24,10 @@ import PageTitle from 'components/PageTitle';
 import SearchInput from 'components/SearchInput';
 import TemplatesDialog from 'components/TemplatesDialog/index.ee';
 import * as URLS from 'config/urls';
+import objectifyUrlSearchParams from 'helpers/objectifyUrlSearchParams';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import useFlows from 'hooks/useFlows';
 import useFormatMessage from 'hooks/useFormatMessage';
-import objectifyUrlSearchParams from 'helpers/objectifyUrlSearchParams';
 
 export default function Flows() {
   const formatMessage = useFormatMessage();
