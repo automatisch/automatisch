@@ -10,5 +10,3 @@ RUN apt-get update && apt-get install -y libnss3-tools curl && \
     chmod +x mkcert-v*-linux-amd64 && \
     mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert && \
     mkcert -install
-
-RUN mkcert automatisch.io "*.automatisch.io" localhost 127.0.0.1 ::1
