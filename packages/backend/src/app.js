@@ -42,6 +42,7 @@ app.use(
     },
   })
 );
+
 app.use(
   express.urlencoded({
     extended: true,
@@ -51,6 +52,7 @@ app.use(
     },
   })
 );
+
 app.use(cors(corsOptions));
 
 configurePassport(app);
