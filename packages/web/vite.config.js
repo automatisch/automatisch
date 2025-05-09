@@ -19,7 +19,7 @@ export default defineConfig(() => {
           plugins: ['@emotion/babel-plugin'],
         },
       }),
-      {
+      process.env.APP_ENV !== 'test' && {
         ...eslint({
           include: ['src/**/*.js', 'src/**/*.jsx'],
         }),
@@ -34,7 +34,7 @@ export default defineConfig(() => {
         apply: 'serve',
         enforce: 'post',
       },
-    ],
+    ].filter(Boolean),
     resolve: {
       alias: {
         components: path.resolve(__dirname, './src/components'),

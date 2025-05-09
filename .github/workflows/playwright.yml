@@ -88,7 +88,7 @@ jobs:
         working-directory: ./packages/e2e-tests
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Build Automatisch web
-        run: yarn build
+        run: APP_ENV=test yarn build
         env:
           # Keep this until we clean up warnings in build processes
           CI: false
