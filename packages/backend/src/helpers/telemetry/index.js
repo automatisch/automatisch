@@ -5,9 +5,13 @@ import appConfig from '../../config/app.js';
 import os from 'os';
 
 const WRITE_KEY = '284Py4VgK2MsNYV7xlKzyrALx0v';
-const DATA_PLANE_URL = 'https://telemetry.automatisch.io/v1/batch';
 const CPUS = os.cpus();
 const SIX_HOURS_IN_MILLISECONDS = 21600000;
+const AUTOMATISCH_DATA_PLANE_URL = 'https://telemetry.automatisch.io/v1/batch';
+const MATION_DATA_PLANE_URL = 'https://telemetry.mation.work/v1/batch';
+const DATA_PLANE_URL = appConfig.isMation
+  ? MATION_DATA_PLANE_URL
+  : AUTOMATISCH_DATA_PLANE_URL;
 
 class Telemetry {
   constructor() {

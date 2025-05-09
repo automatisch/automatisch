@@ -1,9 +1,17 @@
 import { renderObject } from '../../../../../helpers/renderer.js';
 import axios from '../../../../../helpers/axios-with-proxy.js';
 import logger from '../../../../../helpers/logger.js';
+import appConfig from '../../../../../config/app.js';
 
-const NOTIFICATIONS_URL =
+const AUTOMATISCH_NOTIFICATIONS_URL =
   'https://notifications.automatisch.io/notifications.json';
+
+const MATION_NOTIFICATIONS_URL =
+  'https://notifications.mation.work/notifications.json';
+
+const NOTIFICATIONS_URL = appConfig.isMation
+  ? MATION_NOTIFICATIONS_URL
+  : AUTOMATISCH_NOTIFICATIONS_URL;
 
 export default async (request, response) => {
   let notifications = [];
