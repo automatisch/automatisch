@@ -1,6 +1,15 @@
 import App from '../../../../models/app.js';
 import { renderObject } from '../../../../helpers/renderer.js';
 
+/**
+ * @openapi
+ * /v1/apps:
+ *   get:
+ *     summary: Retrieve all apps
+ *     description: Returns a list of all available apps in Automatisch.
+ *     tags:
+ *       - Apps
+ */
 export default async (request, response) => {
   let apps = await App.findAll(request.query.name);
 
