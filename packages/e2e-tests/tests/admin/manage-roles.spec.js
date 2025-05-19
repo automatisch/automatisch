@@ -195,7 +195,7 @@ test.describe('Role management page', () => {
     });
 
     await test.step('Change the role the user has', async () => {
-      await adminUsersPage.navigateTo();
+      await adminUsersPage.navigateToAndWaitForUsers();
       await adminUsersPage.usersLoader.waitFor({
         state: 'detached',
       });
@@ -264,7 +264,7 @@ test.describe('Role management page', () => {
     });
 
     await test.step('Delete this user', async () => {
-      await adminUsersPage.navigateTo();
+      await adminUsersPage.navigateToAndWaitForUsers();
       const row = await adminUsersPage.findUserPageWithEmail(
         'user-delete-role-test@automatisch.io'
       );

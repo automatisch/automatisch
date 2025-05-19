@@ -39,6 +39,7 @@ export class FlowEditorPage extends AuthenticatedPage {
     this.goBackButton = this.page.getByTestId('editor-go-back-button');
     this.exportFlowButton = page.getByTestId('export-flow-button');
     this.stepName = page.getByTestId('step-name');
+    this.folderName = page.getByTestId('folder-name');
   }
 
   async createWebhookTrigger(workSynchronously) {
