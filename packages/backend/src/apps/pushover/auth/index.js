@@ -11,8 +11,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description:
-        'Screen name of your connection to be used on Automatisch UI.',
+      description: 'Screen name of your connection to be shown in the UI.',
       clickToCopy: false,
     },
     {
