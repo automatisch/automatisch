@@ -9,7 +9,6 @@ title: API Docs
   hideServers
   hidePathsSummary
   hideInfo
-  spec-url="http://localhost:3000/api/openapi.json"
 />
 
 <script setup>
