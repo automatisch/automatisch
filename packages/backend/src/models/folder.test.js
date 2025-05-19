@@ -54,6 +54,20 @@ describe('Folder model', () => {
       expect(refetchedFlow.folderId).toBe(null);
     });
 
+    it('should set folderId to null for all related soft-deleted flows before deleting the folder', async () => {
+      const user = await createUser();
+
+      const folder = await createFolder({ userId: user.id });
+      const flow = await createFlow({ folderId: folder.id, userId: user.id });
+
+      await flow.$query().delete();
+
+      await folder.delete();
+
+      const refetchedFlow = await flow.$query().withSoftDeleted();
+      expect(refetchedFlow.folderId).toBe(null);
+    });
+
     it('should delete the folder', async () => {
       const user = await createUser();
       const folder = await createFolder({ userId: user.id });

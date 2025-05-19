@@ -38,7 +38,10 @@ class Folder extends Base {
   });
 
   async delete() {
-    await this.$relatedQuery('flows').patch({ folderId: null });
+    await this.$relatedQuery('flows')
+      .withSoftDeleted()
+      .patch({ folderId: null });
+
     await this.$query().delete();
   }
 }
