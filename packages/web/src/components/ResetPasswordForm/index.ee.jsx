@@ -50,7 +50,9 @@ export default function ResetPasswordForm() {
         },
       });
       navigate(URLS.LOGIN);
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const renderError = () => {
@@ -63,7 +65,7 @@ export default function ResetPasswordForm() {
     ];
 
     return errors.map((error) => (
-      <Alert severity="error" sx={{ mt: 2 }}>
+      <Alert key={error} severity="error" sx={{ mt: 2 }}>
         {error}
       </Alert>
     ));

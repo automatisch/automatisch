@@ -20,7 +20,7 @@ function CodeEditor(props) {
     'data-test': dataTest,
   } = props;
 
-  const handleEditorOnMount = (editor, monaco) => {
+  const handleEditorOnMount = (editor) => {
     editorRef.current = editor;
 
     editor.onDidContentSizeChange((event) => {

@@ -9,7 +9,7 @@ describe('adminTemplateSerializer', () => {
     template = await createTemplate();
   });
 
-  it('should return flow data', async () => {
+  it('should return template data', async () => {
     const expectedPayload = {
       id: template.id,
       name: template.name,

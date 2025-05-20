@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Flow from './flow.js';
 import User from './user.js';
 import Base from './base.js';
@@ -611,6 +611,132 @@ describe('Flow model', () => {
       });
 
       expect(await flow.throwIfHavingLessThanTwoSteps()).toBe(undefined);
+    });
+  });
+
+  describe('find', () => {
+    let userOne,
+      userTwo,
+      userOneFolder,
+      userTwoFolder,
+      flowOne,
+      flowTwo,
+      flowThree;
+
+    beforeEach(async () => {
+      userOne = await createUser();
+      userTwo = await createUser();
+
+      userOneFolder = await createFolder({ userId: userOne.id });
+      userTwoFolder = await createFolder({ userId: userTwo.id });
+
+      flowOne = await createFlow({
+        userId: userOne.id,
+        folderId: userOneFolder.id,
+        active: true,
+        name: 'Flow One',
+      });
+
+      flowTwo = await createFlow({
+        userId: userOne.id,
+        active: false,
+        name: 'Flow Two',
+      });
+
+      flowThree = await createFlow({
+        userId: userTwo.id,
+        name: 'Flow Three',
+        folderId: userTwoFolder.id,
+      });
+    });
+
+    it('should return flows filtered by name', async () => {
+      const flows = await Flow.find({ name: 'Flow Two' });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowTwo.id);
+    });
+
+    it('should return flows filtered by published status', async () => {
+      const flows = await Flow.find({ status: 'published' });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return flows filtered by draft status', async () => {
+      const flows = await Flow.find({ status: 'draft' });
+
+      expect(flows).toHaveLength(2);
+      expect(flows[1].id).toBe(flowTwo.id);
+      expect(flows[0].id).toBe(flowThree.id);
+    });
+
+    it('should return flows filtered by name and status', async () => {
+      const flows = await Flow.find({ name: 'Flow One', status: 'published' });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return flows filtered by userId', async () => {
+      const flows = await Flow.find({ userId: userOne.id });
+
+      expect(flows).toHaveLength(2);
+      expect(flows[0].id).toBe(flowOne.id);
+      expect(flows[1].id).toBe(flowTwo.id);
+    });
+
+    it('should return flows filtered by onlyOwnedFlows with null folderId', async () => {
+      const flows = await Flow.find({ onlyOwnedFlows: true, folderId: 'null' });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowTwo.id);
+    });
+
+    it('should return flows with specific folder ID', async () => {
+      const flows = await Flow.find({ folderId: userOneFolder.id });
+
+      expect(flows.length).toBe(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return flows filtered by folderId and name', async () => {
+      const flows = await Flow.find({
+        folderId: userOneFolder.id,
+        name: 'Flow One',
+      });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
+    });
+
+    it('should return all flows if no filters are provided', async () => {
+      const flows = await Flow.find({});
+
+      expect(flows).toHaveLength(3);
+      expect(flows.map((flow) => flow.id)).toEqual(
+        expect.arrayContaining([flowOne.id, flowTwo.id, flowThree.id])
+      );
+    });
+
+    it('should return uncategorized flows if the folderId is null', async () => {
+      const flows = await Flow.find({ folderId: 'null' });
+
+      expect(flows).toHaveLength(1);
+      expect(flows.map((flow) => flow.id)).toEqual([flowTwo.id]);
+    });
+
+    it('should return specified flows with all filters together', async () => {
+      const flows = await Flow.find({
+        folderId: userOneFolder.id,
+        name: 'Flow One',
+        status: 'published',
+        onlyOwnedFlows: true,
+      });
+
+      expect(flows).toHaveLength(1);
+      expect(flows[0].id).toBe(flowOne.id);
     });
   });
 

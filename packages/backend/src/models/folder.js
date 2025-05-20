@@ -7,6 +7,8 @@ class Folder extends Base {
 
   static jsonSchema = {
     type: 'object',
+    required: ['name'],
+
     properties: {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
@@ -36,7 +38,10 @@ class Folder extends Base {
   });
 
   async delete() {
-    await this.$relatedQuery('flows').patch({ folderId: null });
+    await this.$relatedQuery('flows')
+      .withSoftDeleted()
+      .patch({ folderId: null });
+
     await this.$query().delete();
   }
 }

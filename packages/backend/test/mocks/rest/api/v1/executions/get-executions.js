@@ -1,4 +1,4 @@
-const getExecutionsMock = async (executions, flow, steps) => {
+const getExecutionsMock = async (executions) => {
   const data = executions.map((execution) => ({
     id: execution.id,
     testRun: execution.testRun,
@@ -6,13 +6,13 @@ const getExecutionsMock = async (executions, flow, steps) => {
     updatedAt: execution.updatedAt.getTime(),
     status: 'success',
     flow: {
-      id: flow.id,
-      name: flow.name,
-      active: flow.active,
-      status: flow.active ? 'published' : 'draft',
-      createdAt: flow.createdAt.getTime(),
-      updatedAt: flow.updatedAt.getTime(),
-      steps: steps.map((step) => ({
+      id: execution.flow.id,
+      name: execution.flow.name,
+      active: execution.flow.active,
+      status: execution.flow.active ? 'published' : 'draft',
+      createdAt: execution.flow.createdAt.getTime(),
+      updatedAt: execution.flow.updatedAt.getTime(),
+      steps: execution.flow.steps.map((step) => ({
         id: step.id,
         type: step.type,
         key: step.key,

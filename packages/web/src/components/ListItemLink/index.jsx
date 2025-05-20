@@ -15,7 +15,7 @@ function ListItemLink(props) {
       React.forwardRef(function InLineLink(linkProps, ref) {
         try {
           // challenge the link to check if it's absolute URL
-          new URL(to); // should throw an error if it's not an absolute URL
+          new window.URL(to); // should throw an error if it's not an absolute URL
           return (
             <a
               {...linkProps}

@@ -43,8 +43,9 @@ import useActions from 'hooks/useActions';
 import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
 import useActionSubsteps from 'hooks/useActionSubsteps';
 import useStepWithTestExecutions from 'hooks/useStepWithTestExecutions';
+import appConfig from 'config/app.js';
 
-const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;

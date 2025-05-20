@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const EditorWrapper = styled(Stack)(({ theme }) => ({
+export const EditorWrapper = styled(Stack)(() => ({
   flexGrow: 1,
   '& > div': {
     flexGrow: 1,

@@ -37,18 +37,17 @@ function AdminApplicationUpdateOAuthClient(props) {
     if (!adminOAuthClient) {
       return;
     }
-    const { name, active, ...formattedAuthDefaults } = values;
 
     setAuthDefaultsUpdatePending(true);
-    await updateOAuthClient({
-      formattedAuthDefaults,
-    }).finally(() => {
+
+    await updateOAuthClient(values.formattedAuthDefaults).finally(() => {
       setAuthDefaultsUpdatePending(false);
     });
+
     setDefaultValues((prev) => ({
       name: prev.name,
       active: prev.active,
-      ...formattedAuthDefaults,
+      ...values.formattedAuthDefaults,
     }));
 
     enqueueSnackbar(formatMessage('updateOAuthClient.success'), {

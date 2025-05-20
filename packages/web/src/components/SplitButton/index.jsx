@@ -23,7 +23,7 @@ export default function SplitButton(props) {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event) => {
+  const handleClose = () => {
     setOpen(false);
   };
 

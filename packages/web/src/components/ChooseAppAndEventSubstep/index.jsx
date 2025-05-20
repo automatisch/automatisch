@@ -17,8 +17,9 @@ import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
 import useActions from 'hooks/useActions';
+import appConfig from 'config/app.js';
 
-const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 const optionGenerator = (app) => ({
   label: app.name,

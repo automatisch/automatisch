@@ -44,6 +44,7 @@ export default function CreateFolderDialog(props) {
       <DialogTitle>{formatMessage('createFolderDialog.title')}</DialogTitle>
 
       <IconButton
+        data-test="close-dialog"
         aria-label="close"
         onClick={onClose}
         sx={{
@@ -61,6 +62,7 @@ export default function CreateFolderDialog(props) {
           {formatMessage('createFolderDialog.description')}
         </DialogContentText>
         <TextField
+          data-test="new-folder-name"
           sx={{ mt: 2 }}
           value={folderName}
           onKeyDown={handleTextFieldKeyDown}

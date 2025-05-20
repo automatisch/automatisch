@@ -4,6 +4,8 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import LockIcon from '@mui/icons-material/LockPerson';
 import BrushIcon from '@mui/icons-material/Brush';
 import AppsIcon from '@mui/icons-material/Apps';
+import PinIcon from '@mui/icons-material/Pin';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Outlet } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -22,12 +24,12 @@ import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 import Footer from './Footer';
 
 function createDrawerLinks({
-  canCreateFlows,
   canReadRole,
   canReadUser,
   canUpdateConfig,
   canManageSamlAuthProvider,
   canUpdateApp,
+  canManageApiTokens,
 }) {
   const items = [
     canReadUser
@@ -72,10 +74,18 @@ function createDrawerLinks({
       : null,
     canUpdateConfig
       ? {
-          Icon: AppsIcon,
+          Icon: ContentCopyIcon,
           primary: 'adminSettingsDrawer.templates',
           to: URLS.ADMIN_TEMPLATES,
           dataTest: 'templates-drawer-link',
+        }
+      : null,
+    canManageApiTokens
+      ? {
+          Icon: PinIcon,
+          primary: 'adminSettingsDrawer.apiTokens',
+          to: URLS.ADMIN_API_TOKENS,
+          dataTest: 'api-tokens-drawer-link',
         }
       : null,
   ].filter(Boolean);
@@ -102,6 +112,7 @@ function SettingsLayout() {
       'SamlAuthProvider',
     ),
     canUpdateApp: currentUserAbility.can('manage', 'App'),
+    canManageApiTokens: currentUserAbility.can('manage', 'ApiToken'),
   });
 
   const drawerBottomLinks = [

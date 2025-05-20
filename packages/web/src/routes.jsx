@@ -15,7 +15,6 @@ import Application from 'pages/Application';
 import Executions from 'pages/Executions';
 import Execution from 'pages/Execution';
 import Flows from 'pages/Flows';
-import Flow from 'pages/Flow';
 import Login from 'pages/Login';
 import AcceptInvitation from 'pages/AcceptInvitation';
 import LoginCallback from 'pages/LoginCallback';

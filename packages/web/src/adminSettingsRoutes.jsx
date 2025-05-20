@@ -15,6 +15,7 @@ import AdminApplication from 'pages/AdminApplication';
 import AdminTemplates from 'pages/AdminTemplates';
 import AdminCreateTemplate from 'pages/AdminCreateTemplate';
 import AdminUpdateTemplate from 'pages/AdminUpdateTemplate';
+import AdminApiTokensPage from 'pages/AdminApiTokens';
 
 // TODO: consider introducing redirections to `/` as fallback
 export default (
@@ -136,6 +137,15 @@ export default (
       element={
         <Can I="manage" a="Config">
           <AdminUpdateTemplate />
+        </Can>
+      }
+    />
+
+    <Route
+      path={`${URLS.ADMIN_API_TOKENS}/*`}
+      element={
+        <Can I="manage" a="ApiToken">
+          <AdminApiTokensPage />
         </Can>
       }
     />

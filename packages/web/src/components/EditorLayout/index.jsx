@@ -27,8 +27,9 @@ import useUpdateFlow from 'hooks/useUpdateFlow';
 import useUpdateFlowStatus from 'hooks/useUpdateFlowStatus';
 import FlowFolder from './FlowFolder';
 import { TopBar } from './style';
+import appConfig from 'config/app.js';
 
-const useNewFlowEditor = process.env.REACT_APP_USE_NEW_FLOW_EDITOR === 'true';
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 export default function EditorLayout() {
   const { flowId } = useParams();
@@ -48,7 +49,7 @@ export default function EditorLayout() {
     });
   };
 
-  const onExportFlow = async (name) => {
+  const onExportFlow = async () => {
     const flowExport = await exportFlow();
 
     downloadJsonAsFile({

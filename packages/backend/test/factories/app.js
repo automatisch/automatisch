@@ -62,7 +62,7 @@ export const createDynamicArgument = (params = {}) => {
         key: 'value',
         required: true,
         variables: true,
-      }
+      },
     ],
     ...params,
     type: 'dynamic',

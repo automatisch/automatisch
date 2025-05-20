@@ -4,10 +4,10 @@ import api from 'helpers/api';
 import React from 'react';
 
 export default function useLazyApps({ appName } = {}, { onSuccess } = {}) {
-  const abortControllerRef = React.useRef(new AbortController());
+  const abortControllerRef = React.useRef(new window.AbortController());
 
   React.useEffect(() => {
-    abortControllerRef.current = new AbortController();
+    abortControllerRef.current = new window.AbortController();
 
     return () => {
       abortControllerRef.current?.abort();

@@ -2,13 +2,10 @@ import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useVersion from 'hooks/useVersion';
 
 const LogoImage = styled('img')(() => ({
   maxWidth: 'auto',
@@ -16,7 +13,7 @@ const LogoImage = styled('img')(() => ({
 }));
 
 const LayoutFooter = () => {
-  const { data: config, isPending: isConfigPending } = useAutomatischConfig();
+  const { data: config } = useAutomatischConfig();
   const formatMessage = useFormatMessage();
 
   if (config?.data.enableFooter !== true) return null;
@@ -34,22 +31,20 @@ const LayoutFooter = () => {
       href: config.data.footerTosUrl,
       text: formatMessage('footer.tosLinkText'),
     },
-
     {
       key: 'privacy-policy',
       show: !!config.data.footerPrivacyPolicyUrl,
       href: config.data.footerPrivacyPolicyUrl,
       text: formatMessage('footer.privacyPolicyLinkText'),
     },
-
     {
       key: 'imprint',
       show: !!config.data.footerImprintUrl,
       href: config.data.footerImprintUrl,
       text: formatMessage('footer.imprintLinkText'),
     },
-    ,
   ];
+
   return (
     <Box mt="auto" position="sticky" bottom={0}>
       <Box bgcolor="common.white" mt={4}>

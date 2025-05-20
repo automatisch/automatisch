@@ -1,30 +1,31 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useNavigate, Link } from 'react-router-dom';
+import UploadIcon from '@mui/icons-material/Upload';
 import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Typography from '@mui/material/Typography';
-import UploadIcon from '@mui/icons-material/Upload';
+import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
-import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
+import * as React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import * as URLS from 'config/urls';
-import useFormatMessage from 'hooks/useFormatMessage';
 import FileUploadInput from 'components/FileUploadInput';
-import useImportFlow from 'hooks/useImportFlow';
+import * as URLS from 'config/urls';
 import { getUnifiedErrorMessage } from 'helpers/errors';
+import useFormatMessage from 'hooks/useFormatMessage';
+import useImportFlow from 'hooks/useImportFlow';
 
 function ImportFlowDialog(props) {
   const { open = true, 'data-test': dataTest = 'import-flow-dialog' } = props;
 
   const [hasParsingError, setParsingError] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
 
@@ -55,10 +56,10 @@ function ImportFlowDialog(props) {
     }
   };
 
-  const handleImportFlow = (event) => {
+  const handleImportFlow = () => {
     if (!selectedFile) return;
 
-    const fileReader = new FileReader();
+    const fileReader = new window.FileReader();
 
     fileReader.onload = async function readFileLoaded(e) {
       const flowData = parseFlowFile(e.target.result);
@@ -72,7 +73,7 @@ function ImportFlowDialog(props) {
   };
 
   const onClose = () => {
-    navigate('..');
+    navigate({ pathname: URLS.FLOWS, search: location.search });
   };
 
   return (

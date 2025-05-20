@@ -61,7 +61,7 @@ function AdminTemplates() {
             defaultValues={{ enableTemplates: config?.data.enableTemplates }}
             noValidate
             automaticValidation={false}
-            render={({ formState: { errors, isDirty } }) => (
+            render={() => (
               <Switch
                 name="enableTemplates"
                 disabled={isUpdateConfigPending}

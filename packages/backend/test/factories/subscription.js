@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { createUser } from './user';
+import { createUser } from './user.js';
 import Subscription from '../../src/models/subscription.ee.js';
 
 export const createSubscription = async (params = {}) => {

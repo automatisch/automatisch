@@ -25,9 +25,6 @@ export default function Executions() {
   const navigate = useNavigate();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
   const name = searchParams.get('name') || '';
-  const status = searchParams.get('status');
-  const startDateTime = searchParams.get('startDateTime');
-  const endDateTime = searchParams.get('endDateTime');
   const [searchValue, setSearchValue] = React.useState(name);
 
   const {
@@ -61,7 +58,7 @@ export default function Executions() {
   const getPathWithSearchParams = (page) => {
     const searchParamsObject = objectifyUrlSearchParams(searchParams);
 
-    const newSearchParams = new URLSearchParams({
+    const newSearchParams = new window.URLSearchParams({
       ...searchParamsObject,
       page,
     });

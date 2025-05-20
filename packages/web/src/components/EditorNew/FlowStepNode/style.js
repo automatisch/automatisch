@@ -8,7 +8,7 @@ export const NodeWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0, 2.5),
 }));
 
-export const NodeInnerWrapper = styled(Box)(({ theme }) => ({
+export const NodeInnerWrapper = styled(Box)(() => ({
   maxWidth: 900,
   flex: 1,
 }));

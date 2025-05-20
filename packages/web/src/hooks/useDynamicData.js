@@ -92,7 +92,7 @@ function useDynamicData(stepId, schema) {
         lastComputedVariables.current = variables;
 
         return variables;
-      } catch (err) {
+      } catch {
         return null;
       }
     }
