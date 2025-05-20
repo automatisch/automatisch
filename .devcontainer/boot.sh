@@ -39,7 +39,8 @@ rm -rf .env
 
 echo "
 PORT=$WEB_PORT
-REACT_APP_BACKEND_URL=http://localhost:$BACKEND_PORT
+VITE_BACKEND_URL=http://localhost:$BACKEND_PORT
+VITE_BASE_URL=http://localhost:$PORT
 " >> .env
 
 echo "Installing web dependencies..."
