@@ -88,6 +88,10 @@
  * VitePress: Custom fix
  * -------------------------------------------------------------------------- */
 
+:root {
+  --vp-sidebar-width: 300px;
+}
+
 /*
   Use lighter colors for links in dark mode for a11y.
   Also specify some classes twice to have higher specificity
