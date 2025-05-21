@@ -5,7 +5,6 @@ import cloneDeep from 'lodash/cloneDeep.js';
 import addAuthenticationSteps from './add-authentication-steps.js';
 import addReconnectionSteps from './add-reconnection-steps.js';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { hasValidLicense } from './license.ee.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -17,7 +16,7 @@ const apps = fs
     const indexPath = join(__dirname, '../apps', dirent.name, 'index.js');
     const indexEePath = join(__dirname, '../apps', dirent.name, 'index.ee.js');
 
-    if (fs.existsSync(indexEePath) && hasValidLicense()) {
+    if (fs.existsSync(indexEePath)) {
       apps[dirent.name] = import(pathToFileURL(indexEePath));
     } else {
       apps[dirent.name] = import(pathToFileURL(indexPath));

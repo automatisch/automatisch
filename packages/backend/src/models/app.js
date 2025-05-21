@@ -21,6 +21,7 @@ class App {
 
       for (const dir of directories) {
         const appData = await getApp(dir, true);
+
         if (!appData.enterprise) {
           nonEnterpriseApps.push(dir);
         }
