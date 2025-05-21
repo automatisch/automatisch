@@ -3,26 +3,46 @@ import path, { join } from 'path';
 import { fileURLToPath } from 'url';
 import appInfoConverter from '../helpers/app-info-converter.js';
 import getApp from '../helpers/get-app.js';
+import { hasValidLicense } from '../helpers/license.ee.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class App {
   static folderPath = join(__dirname, '../apps');
 
-  static list = fs
-    .readdirSync(this.folderPath)
-    .filter((file) => fs.statSync(join(this.folderPath, file)).isDirectory());
+  static async list() {
+    const directories = fs
+      .readdirSync(this.folderPath)
+      .filter((file) => fs.statSync(join(this.folderPath, file)).isDirectory());
+
+    if (!(await hasValidLicense())) {
+      // Filter out enterprise apps if no valid license
+      const nonEnterpriseApps = [];
+
+      for (const dir of directories) {
+        const appData = await getApp(dir, true);
+
+        if (!appData.enterprise) {
+          nonEnterpriseApps.push(dir);
+        }
+      }
+
+      return nonEnterpriseApps;
+    }
+
+    return directories;
+  }
 
   static async findAll(name, stripFuncs = true) {
+    const appList = await this.list();
+
     if (!name)
       return Promise.all(
-        this.list.map(
-          async (name) => await this.findOneByName(name, stripFuncs)
-        )
+        appList.map(async (name) => await this.findOneByName(name, stripFuncs))
       );
 
     return Promise.all(
-      this.list
+      appList
         .filter((app) => app.includes(name.toLowerCase()))
         .map((name) => this.findOneByName(name, stripFuncs))
     );

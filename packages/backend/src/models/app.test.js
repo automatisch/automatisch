@@ -1,23 +1,38 @@
 import { describe, it, expect, vi } from 'vitest';
-
 import App from './app.js';
 import * as getAppModule from '../helpers/get-app.js';
 import * as appInfoConverterModule from '../helpers/app-info-converter.js';
+import * as licenseModule from '../helpers/license.ee.js';
 
 describe('App model', () => {
   it('folderPath should return correct path', () => {
     expect(App.folderPath.endsWith('/packages/backend/src/apps')).toBe(true);
   });
 
-  it('list should have list of applications keys', () => {
-    expect(App.list).toMatchSnapshot();
+  describe('list', () => {
+    it('should list all applications including enterprise ones when license is valid', async () => {
+      vi.spyOn(licenseModule, 'hasValidLicense').mockResolvedValue(true);
+      const appList = await App.list();
+
+      expect(appList).toMatchSnapshot();
+      expect(appList).toContain('forms');
+    });
+
+    it('should exclude enterprise apps when license is not valid', async () => {
+      vi.spyOn(licenseModule, 'hasValidLicense').mockResolvedValue(false);
+      const appList = await App.list();
+
+      expect(appList).toMatchSnapshot();
+      expect(appList).not.toContain('forms');
+    });
   });
 
   describe('findAll', () => {
     it('should return all applications', async () => {
       const apps = await App.findAll();
+      const appList = await App.list();
 
-      expect(apps.length).toBe(App.list.length);
+      expect(apps.length).toBe(appList.length);
     });
 
     it('should return matching applications when name argument is given', async () => {

@@ -15,6 +15,7 @@ export const APP = (appKey) => `/app/${appKey}`;
 export const APP_PATTERN = '/app/:appKey';
 export const APP_CONNECTIONS = (appKey) => `/app/${appKey}/connections`;
 export const APP_CONNECTIONS_PATTERN = '/app/:appKey/connections';
+export const FORM_FLOW_PATTERN = '/forms/:flowId';
 
 export const APP_ADD_CONNECTION = (appKey, shared = false) =>
   `/app/${appKey}/connections/add?shared=${shared}`;

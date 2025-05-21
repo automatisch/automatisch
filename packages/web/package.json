@@ -12,6 +12,7 @@
     "@hookform/resolvers": "^2.8.8",
     "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.11.9",
+    "@mui/joy": "^5.0.0-beta.52",
     "@mui/lab": "^5.0.0-alpha.120",
     "@mui/material": "^5.11.10",
     "@mui/x-date-pickers": "^7.28.0",
