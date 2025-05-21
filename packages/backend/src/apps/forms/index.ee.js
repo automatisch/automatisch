@@ -1,5 +1,5 @@
 import defineApp from '../../helpers/define-app.js';
-import triggers from './triggers/index.js';
+import triggers from './triggers/index.ee.js';
 
 export default defineApp({
   name: 'Forms',
