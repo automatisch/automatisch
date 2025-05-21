@@ -1,11 +1,10 @@
-import stepSerializer from './step.js';
 import slugify from 'slugify';
 
 const formSerializer = (form) => {
   const formData = {
     id: form.id,
     name: form.name,
-    fields: form.steps[0].parameters.fields.map((parameter) => ({
+    fields: form?.steps[0]?.parameters?.fields?.map((parameter) => ({
       fieldKey: slugify(parameter.fieldName, {
         lower: true,
         strict: true,
