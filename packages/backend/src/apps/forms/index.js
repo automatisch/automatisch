@@ -7,6 +7,7 @@ export default defineApp({
   iconUrl: '{BASE_URL}/apps/forms/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/forms/connection',
   supportsConnections: false,
+  enterprise: true,
   baseUrl: '',
   apiBaseUrl: '',
   primaryColor: '#0059F7',
