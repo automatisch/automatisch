@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import getFormAction from '../../../../controllers/api/v1/forms/get-form.ee.js';
-import useCreateFormSubmission from '../../../../controllers/api/v1/forms/create-form-submission.ee.js';
+import getFormAction from '../../../../controllers/internal/api/v1/forms/get-form.ee.js';
+import useCreateFormSubmission from '../../../../controllers/internal/api/v1/forms/create-form-submission.ee.js';
 
 const router = Router();
 
