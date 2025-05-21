@@ -1,4 +1,4 @@
-import { renderObject } from '../../../../helpers/renderer.js';
+import { renderObject, renderError } from '../../../../helpers/renderer.js';
 import Flow from '../../../../models/flow.js';
 
 export default async (request, response) => {
@@ -11,7 +11,7 @@ export default async (request, response) => {
   const triggerStep = await form.getTriggerStep();
 
   if (triggerStep.appKey !== 'forms') {
-    throw new Error('Invalid trigger step');
+    return renderError(response, [{ general: ['Invalid trigger step'] }], 400);
   }
 
   renderObject(response, form, { serializer: 'Form' });
