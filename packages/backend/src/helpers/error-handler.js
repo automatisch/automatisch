@@ -19,19 +19,26 @@ import {
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (error, request, response, next) => {
   if (error.message === 'Not Found' || error instanceof NotFoundError) {
+    logger.http(request.method + ' ' + request.url + ' ' + 404);
     response.status(404).end();
+    return;
   }
 
   if (notFoundAppError(error)) {
+    logger.http(request.method + ' ' + request.url + ' ' + 404);
     response.status(404).end();
+    return;
   }
 
   if (error instanceof ValidationError) {
+    logger.http(request.method + ' ' + request.url + ' ' + 422);
     renderObjectionError(response, error, 422);
+    return;
   }
 
   if (error instanceof UniqueViolationError) {
     renderUniqueViolationError(response, error);
+    return;
   }
 
   if (error instanceof ForeignKeyViolationError) {
