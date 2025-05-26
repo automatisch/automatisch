@@ -188,6 +188,14 @@ class User extends Base {
         to: 'folders.user_id',
       },
     },
+    forms: {
+      relation: Base.HasManyRelation,
+      modelClass: Form,
+      join: {
+        from: 'users.id',
+        to: 'forms.user_id',
+      },
+    },
   });
 
   static get virtualAttributes() {
