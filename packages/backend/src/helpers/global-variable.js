@@ -12,6 +12,7 @@ const globalVariable = async (options) => {
     execution,
     request,
     testRun = false,
+    currentUser,
   } = options;
 
   const isTrigger = step?.isTrigger;
@@ -57,6 +58,9 @@ const globalVariable = async (options) => {
       exit: () => {
         throw new EarlyExitError();
       },
+    },
+    forms: {
+      getAll: async () => await currentUser.$relatedQuery('forms'),
     },
     getLastExecutionStep: async () =>
       (await step?.getLastExecutionStep())?.toJSON(),

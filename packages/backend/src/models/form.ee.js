@@ -11,6 +11,7 @@ class Form extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
+      fields: { type: 'array' },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
     },
