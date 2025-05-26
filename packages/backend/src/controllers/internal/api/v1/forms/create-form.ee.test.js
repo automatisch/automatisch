@@ -1,50 +1,42 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
-import Crypto from 'crypto';
 import app from '../../../../../app.js';
 import { createUser } from '../../../../../../test/factories/user.js';
-import { createForm } from '../../../../../../test/factories/form.js';
 import { createPermission } from '../../../../../../test/factories/permission.js';
 import * as license from '../../../../../helpers/license.ee.js';
-import getFormMock from '../../../../../../test/mocks/rest/internal/api/v1/forms/get-form.js';
+import createFormMock from '../../../../../../test/mocks/rest/internal/api/v1/forms/create-form.js';
 import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
 
-describe('GET /internal/api/v1/forms/:formId', () => {
-  let currentUser, token, form;
+describe('POST /internal/api/v1/forms', () => {
+  let currentUser, token;
 
   beforeEach(async () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
     currentUser = await createUser();
-    form = await createForm({ userId: currentUser.id });
 
     token = await createAuthTokenByUserId(currentUser.id);
 
     await createPermission({
-      action: 'read',
+      action: 'manage',
       subject: 'Flow',
       roleId: currentUser.roleId,
-      conditions: ['isCreator'],
     });
   });
 
   it('should return form data when trigger step is forms', async () => {
     const response = await request(app)
-      .get(`/internal/api/v1/forms/${form.id}`)
+      .post('/internal/api/v1/forms')
       .set('Authorization', token)
-      .expect(200);
+      .send({ name: 'Test Form' })
+      .expect(201);
 
-    const expectedPayload = getFormMock(form);
+    const refetchedForm = await currentUser
+      .$relatedQuery('forms')
+      .findById(response.body.data.id);
+
+    const expectedPayload = createFormMock(refetchedForm);
 
     expect(response.body).toStrictEqual(expectedPayload);
-  });
-
-  it('should return 404 for non-existent form', async () => {
-    const nonExistentFormId = Crypto.randomUUID();
-
-    await request(app)
-      .get(`/internal/api/v1/forms/${nonExistentFormId}`)
-      .set('Authorization', token)
-      .expect(404);
   });
 });
