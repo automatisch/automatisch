@@ -2,11 +2,11 @@ const getFormMock = (flow, formStep) => {
   const data = {
     id: flow.id,
     name: flow.name,
-    fields: formStep?.parameters?.fields?.map((field) => ({
-      fieldKey: field.fieldKey,
-      fieldName: field.fieldName,
-      fieldType: field.fieldType,
-    })),
+    // fields: formStep?.parameters?.fields?.map((field) => ({
+    //   fieldKey: field.fieldKey,
+    //   fieldName: field.fieldName,
+    //   fieldType: field.fieldType,
+    // })),
   };
 
   return {
@@ -16,7 +16,7 @@ const getFormMock = (flow, formStep) => {
       currentPage: null,
       isArray: false,
       totalPages: null,
-      type: 'Flow',
+      type: 'Form',
     },
   };
 };
