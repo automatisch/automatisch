@@ -267,6 +267,43 @@ describe('Flow model', () => {
     expect(await flow.getStepById(step.id)).toStrictEqual(step);
   });
 
+  describe.only('getPublicForm', () => {
+    it('should return the public form', async () => {
+      const flow = await createFlow();
+      const form = await createForm({ userId: flow.userId });
+
+      const triggerStep = await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+        parameters: {
+          formId: form.id,
+        },
+      });
+
+      const publicForm = await flow.getPublicForm();
+
+      expect(publicForm).toMatchObject({
+        id: form.id,
+        name: form.name,
+        webhookUrl: triggerStep.getWebhookUrl(),
+      });
+    });
+
+    it('should throw an error if the trigger step has no form', async () => {
+      const flow = await createFlow();
+
+      await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+        parameters: {
+          formId: Crypto.randomUUID(),
+        },
+      });
+
+      await expect(flow.getPublicForm()).rejects.toThrow();
+    });
+  });
+
   it('insertActionStepAtPosition should insert action step at given position', async () => {
     const flow = await createFlow();
 

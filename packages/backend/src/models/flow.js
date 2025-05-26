@@ -173,6 +173,21 @@ class Flow extends Base {
     return await this.$relatedQuery('steps').findById(stepId).throwIfNotFound();
   }
 
+  async getPublicForm() {
+    const triggerStep = await this.getTriggerStep();
+
+    const form = await Form.query()
+      .findOne({ id: triggerStep.parameters.formId })
+      .throwIfNotFound();
+
+    const computedForm = {
+      ...form,
+      webhookUrl: await triggerStep.getWebhookUrl(),
+    };
+
+    return computedForm;
+  }
+
   async insertActionStepAtPosition(position) {
     return await this.$relatedQuery('steps').insertAndFetch({
       type: 'action',
