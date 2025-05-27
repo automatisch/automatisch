@@ -28,7 +28,7 @@ describe('GET /internal/api/v1/forms/:formId', () => {
     });
   });
 
-  it('should return form data when trigger step is forms', async () => {
+  it('should return form data', async () => {
     const response = await request(app)
       .get(`/internal/api/v1/forms/${form.id}`)
       .set('Authorization', token)

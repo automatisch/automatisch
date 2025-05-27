@@ -165,6 +165,10 @@ const authorizationList = {
     action: 'read',
     subject: 'Flow',
   },
+  'GET /internal/api/v1/forms/': {
+    action: 'read',
+    subject: 'Flow',
+  },
   'POST /internal/api/v1/forms/': {
     action: 'manage',
     subject: 'Flow',
