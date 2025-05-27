@@ -3,6 +3,8 @@ const formSerializer = (form) => {
     id: form.id,
     name: form.name,
     fields: form.fields,
+    createdAt: form.createdAt.getTime(),
+    updatedAt: form.updatedAt.getTime(),
   };
 
   return formData;

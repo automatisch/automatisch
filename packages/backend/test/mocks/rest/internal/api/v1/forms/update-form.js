@@ -1,4 +1,4 @@
-const getFormMock = (form) => {
+const updateFormMock = async (form) => {
   const data = {
     id: form.id,
     name: form.name,
@@ -8,7 +8,7 @@ const getFormMock = (form) => {
   };
 
   return {
-    data,
+    data: data,
     meta: {
       count: 1,
       currentPage: null,
@@ -19,4 +19,4 @@ const getFormMock = (form) => {
   };
 };
 
-export default getFormMock;
+export default updateFormMock;
