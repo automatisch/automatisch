@@ -177,6 +177,10 @@ const authorizationList = {
     action: 'manage',
     subject: 'Flow',
   },
+  'DELETE /internal/api/v1/forms/:formId': {
+    action: 'manage',
+    subject: 'Flow',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
