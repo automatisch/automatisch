@@ -1,5 +1,3 @@
-import { renderObject } from '../../../../../helpers/renderer.js';
-
 export default async (request, response) => {
   const form = await request.currentUser
     .$relatedQuery('forms')
@@ -8,5 +6,7 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
-  renderObject(response, form);
+  await form.$query().delete();
+
+  response.status(204).end();
 };

@@ -240,11 +240,18 @@ class Step extends Base {
     return dynamicFields;
   }
 
-  async createDynamicData(dynamicDataKey, parameters) {
+  async createDynamicData(dynamicDataKey, parameters, currentUser) {
     const connection = await this.$relatedQuery('connection');
     const flow = await this.$relatedQuery('flow');
     const app = await this.getApp();
-    const $ = await globalVariable({ connection, app, flow, step: this });
+
+    const $ = await globalVariable({
+      connection,
+      app,
+      flow,
+      step: this,
+      currentUser,
+    });
 
     const command = app.dynamicData.find((data) => data.key === dynamicDataKey);
 

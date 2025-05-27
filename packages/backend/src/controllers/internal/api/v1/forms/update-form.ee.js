@@ -8,5 +8,10 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
+  await form.$query().patchAndFetch({
+    name: request.body.name,
+    fields: request.body.fields,
+  });
+
   renderObject(response, form);
 };

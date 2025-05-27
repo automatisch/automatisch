@@ -21,6 +21,7 @@ import Role from './role.js';
 import Step from './step.js';
 import Subscription from './subscription.ee.js';
 import Folder from './folder.js';
+import Form from './form.ee.js';
 import UsageData from './usage-data.ee.js';
 import Template from './template.ee.js';
 import Billing from '../helpers/billing/index.ee.js';
@@ -186,6 +187,14 @@ class User extends Base {
       join: {
         from: 'users.id',
         to: 'folders.user_id',
+      },
+    },
+    forms: {
+      relation: Base.HasManyRelation,
+      modelClass: Form,
+      join: {
+        from: 'users.id',
+        to: 'forms.user_id',
       },
     },
   });

@@ -1,18 +1,10 @@
-import slugify from 'slugify';
-
 const formSerializer = (form) => {
   const formData = {
     id: form.id,
     name: form.name,
-    fields: form?.steps[0]?.parameters?.fields?.map((parameter) => ({
-      fieldKey: slugify(parameter.fieldName, {
-        lower: true,
-        strict: true,
-        replacement: '-',
-      }),
-      fieldName: parameter.fieldName,
-      fieldType: parameter.fieldType,
-    })),
+    fields: form.fields,
+    createdAt: form.createdAt.getTime(),
+    updatedAt: form.updatedAt.getTime(),
   };
 
   return formData;

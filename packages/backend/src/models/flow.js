@@ -5,6 +5,7 @@ import User from './user.js';
 import Folder from './folder.js';
 import Execution from './execution.js';
 import ExecutionStep from './execution-step.js';
+import Form from './form.ee.js';
 import globalVariable from '../helpers/global-variable.js';
 import logger from '../helpers/logger.js';
 import Telemetry from '../helpers/telemetry/index.js';
@@ -171,6 +172,21 @@ class Flow extends Base {
 
   async getStepById(stepId) {
     return await this.$relatedQuery('steps').findById(stepId).throwIfNotFound();
+  }
+
+  async getPublicForm() {
+    const triggerStep = await this.getTriggerStep();
+
+    const form = await Form.query()
+      .findOne({ id: triggerStep.parameters.formId })
+      .throwIfNotFound();
+
+    const computedForm = {
+      ...form,
+      webhookUrl: await triggerStep.getWebhookUrl(),
+    };
+
+    return computedForm;
   }
 
   async insertActionStepAtPosition(position) {
