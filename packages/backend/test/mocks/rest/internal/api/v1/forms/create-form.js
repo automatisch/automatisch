@@ -2,11 +2,9 @@ const createFormMock = (form) => {
   const data = {
     id: form.id,
     name: form.name,
-    // fields: formStep?.parameters?.fields?.map((field) => ({
-    //   fieldKey: field.fieldKey,
-    //   fieldName: field.fieldName,
-    //   fieldType: field.fieldType,
-    // })),
+    fields: form.fields,
+    createdAt: form.createdAt.getTime(),
+    updatedAt: form.updatedAt.getTime(),
   };
 
   return {
