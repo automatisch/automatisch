@@ -11,6 +11,7 @@ import NoResultFound from 'components/NotFound';
 import PublicLayout from 'components/PublicLayout';
 import AdminSettingsLayout from 'components/AdminSettingsLayout';
 import Applications from 'pages/Applications';
+import FormFlow from 'pages/FormFlow';
 import Application from 'pages/Application';
 import Executions from 'pages/Executions';
 import Execution from 'pages/Execution';
@@ -174,6 +175,8 @@ function Routes() {
       />
 
       <Route path={URLS.SETTINGS}>{settingsRoutes}</Route>
+
+      <Route path={URLS.FORM_FLOW_PATTERN} element={<FormFlow />} />
 
       <Route path={URLS.ADMIN_SETTINGS} element={<AdminSettingsLayout />}>
         {adminSettingsRoutes}

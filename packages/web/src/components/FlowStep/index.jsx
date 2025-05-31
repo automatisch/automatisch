@@ -369,6 +369,7 @@ function FlowStep(props) {
                             onSubmit={expandNextStep}
                             onChange={handleChange}
                             step={step}
+                            flowId={flowId}
                           />
                         )}
                     </Form>

@@ -21,6 +21,7 @@ import permissionsRouter from './v1/admin/permissions.ee.js';
 import adminUsersRouter from './v1/admin/users.ee.js';
 import installationUsersRouter from './v1/installation/users.js';
 import foldersRouter from './v1/folders.js';
+import formsRouter from './v1/forms.ee.js';
 
 const router = Router();
 
@@ -45,5 +46,6 @@ router.use('/v1/admin/api-tokens', adminApiTokensRouter);
 router.use('/v1/templates', templatesRouter);
 router.use('/v1/installation/users', installationUsersRouter);
 router.use('/v1/folders', foldersRouter);
+router.use('/v1/forms', formsRouter);
 
 export default router;

@@ -13,9 +13,14 @@ const apps = fs
   .reduce((apps, dirent) => {
     if (!dirent.isDirectory()) return apps;
 
-    apps[dirent.name] = import(
-      pathToFileURL(join(__dirname, '../apps', dirent.name, 'index.js'))
-    );
+    const indexPath = join(__dirname, '../apps', dirent.name, 'index.js');
+    const indexEePath = join(__dirname, '../apps', dirent.name, 'index.ee.js');
+
+    if (fs.existsSync(indexEePath)) {
+      apps[dirent.name] = import(pathToFileURL(indexEePath));
+    } else {
+      apps[dirent.name] = import(pathToFileURL(indexPath));
+    }
 
     return apps;
   }, {});
@@ -85,10 +90,8 @@ const addStaticSubsteps = (stepType, appData, step) => {
       arguments: step.arguments,
     });
   }
-
   computedStep.substeps.push(testStep(stepType));
 
   return computedStep;
 };
-
 export default getApp;
