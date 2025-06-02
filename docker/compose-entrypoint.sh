@@ -22,5 +22,25 @@ if [[ -z "${WEBHOOK_SECRET_KEY}" ]]; then
 fi
 
 echo "Environment variables have been set!"
+echo "Now running sh /entrypoint.sh functions from this script"
 
-sh /entrypoint.sh
+cd /automatisch/packages/backend
+if [ "$APP_ENV" = "development" ]; then
+  if [ -n "$WORKER" ]; then
+    yarn worker
+  else
+    yarn db:migrate
+    yarn db:seed:user
+    yarn dev
+    cd /automatisch/packages/web
+    yarn dev
+  fi
+else
+  if [ -n "$WORKER" ]; then
+    yarn start:worker
+  else
+    yarn db:migrate
+    yarn db:seed:user
+    yarn start
+  fi
+fi
