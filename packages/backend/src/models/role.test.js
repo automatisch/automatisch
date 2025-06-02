@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
-import Role from './role';
-import Base from './base.js';
-import Permission from './permission.js';
-import User from './user.js';
-import { createRole } from '../../test/factories/role.js';
-import { createPermission } from '../../test/factories/permission.js';
-import { createUser } from '../../test/factories/user.js';
-import { createSamlAuthProvider } from '../../test/factories/saml-auth-provider.ee.js';
+import Role from '@/models/role.js';
+import Base from '@/models/base.js';
+import Permission from '@/models/permission.js';
+import User from '@/models/user.js';
+import { createRole } from '@/factories/role.js';
+import { createPermission } from '@/factories/permission.js';
+import { createUser } from '@/factories/user.js';
+import { createSamlAuthProvider } from '@/factories/saml-auth-provider.ee.js';
 
 describe('Role model', () => {
   it('tableName should return correct name', () => {

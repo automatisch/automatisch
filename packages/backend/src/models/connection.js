@@ -1,15 +1,15 @@
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
-import App from './app.js';
-import AppConfig from './app-config.js';
-import OAuthClient from './oauth-client.js';
-import Base from './base.js';
-import User from './user.js';
-import Step from './step.js';
-import appConfig from '../config/app.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import globalVariable from '../helpers/global-variable.js';
-import NotAuthorizedError from '../errors/not-authorized.js';
+import App from '@/models/app.js';
+import AppConfig from '@/models/app-config.js';
+import OAuthClient from '@/models/oauth-client.js';
+import Base from '@/models/base.js';
+import User from '@/models/user.js';
+import Step from '@/models/step.js';
+import appConfig from '@/config/app.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import globalVariable from '@/helpers/global-variable.js';
+import NotAuthorizedError from '@/errors/not-authorized.js';
 
 class Connection extends Base {
   static tableName = 'connections';

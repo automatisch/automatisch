@@ -1,6 +1,6 @@
-import Base from './base.js';
-import Flow from './flow.js';
-import { generateIconUrl } from '../helpers/generate-icon-url.js';
+import Base from '@/models/base.js';
+import Flow from '@/models/flow.js';
+import { generateIconUrl } from '@/helpers/generate-icon-url.js';
 
 class Template extends Base {
   static tableName = 'templates';

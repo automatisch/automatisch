@@ -1,9 +1,9 @@
 import { ValidationError } from 'objection';
-import Base from './base.js';
-import Permission from './permission.js';
-import User from './user.js';
-import SamlAuthProvider from './saml-auth-provider.ee.js';
-import NotAuthorizedError from '../errors/not-authorized.js';
+import Base from '@/models/base.js';
+import Permission from '@/models/permission.js';
+import User from '@/models/user.js';
+import SamlAuthProvider from '@/models/saml-auth-provider.ee.js';
+import NotAuthorizedError from '@/errors/not-authorized.js';
 
 class Role extends Base {
   static tableName = 'roles';

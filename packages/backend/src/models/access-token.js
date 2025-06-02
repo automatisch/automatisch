@@ -1,5 +1,5 @@
-import Base from './base.js';
-import User from './user.js';
+import Base from '@/models/base.js';
+import User from '@/models/user.js';
 
 class AccessToken extends Base {
   static tableName = 'access_tokens';

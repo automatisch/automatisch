@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import Identity from './identity.ee';
-import User from './user';
-import SamlAuthProvider from './saml-auth-provider.ee';
-import Base from './base';
+import Identity from '@/models/identity.ee.js';
+import User from '@/models/user.js';
+import SamlAuthProvider from '@/models/saml-auth-provider.ee.js';
+import Base from '@/models/base.js';
 
 describe('Identity model', () => {
   it('tableName should return correct name', () => {

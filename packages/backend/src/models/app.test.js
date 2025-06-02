@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
-import App from './app.js';
-import * as getAppModule from '../helpers/get-app.js';
-import * as appInfoConverterModule from '../helpers/app-info-converter.js';
-import * as licenseModule from '../helpers/license.ee.js';
+import App from '@/models/app.js';
+import * as getAppModule from '@/helpers/get-app.js';
+import * as appInfoConverterModule from '@/helpers/app-info-converter.js';
+import * as licenseModule from '@/helpers/license.ee.js';
 
 describe('App model', () => {
   it('folderPath should return correct path', () => {

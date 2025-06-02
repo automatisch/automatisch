@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path, { join } from 'path';
 import { fileURLToPath } from 'url';
-import appInfoConverter from '../helpers/app-info-converter.js';
-import getApp from '../helpers/get-app.js';
-import { hasValidLicense } from '../helpers/license.ee.js';
+import appInfoConverter from '@/helpers/app-info-converter.js';
+import getApp from '@/helpers/get-app.js';
+import { hasValidLicense } from '@/helpers/license.ee.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

@@ -1,10 +1,10 @@
 import { vi, describe, it, expect } from 'vitest';
 import { DateTime } from 'luxon';
-import Subscription from './subscription.ee';
-import User from './user';
-import UsageData from './usage-data.ee';
-import Base from './base';
-import { createSubscription } from '../../test/factories/subscription';
+import Subscription from '@/models/subscription.ee.js';
+import User from '@/models/user.js';
+import UsageData from '@/models/usage-data.ee.js';
+import Base from '@/models/base.js';
+import { createSubscription } from '@/factories/subscription.js';
 
 describe('Subscription model', () => {
   it('tableName should return correct name', () => {

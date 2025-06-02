@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Crypto from 'crypto';
-import Template from './template.ee.js';
-import { createFlow } from '../../test/factories/flow';
-import { createStep } from '../../test/factories/step';
-import appConfig from '../config/app.js';
+import Template from '@/models/template.ee.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import appConfig from '@/config/app.js';
 
 describe('Template model', () => {
   it('tableName should return correct name', () => {

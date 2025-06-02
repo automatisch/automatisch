@@ -5,6 +5,9 @@
       "@/models/*": ["src/models/*"],
       "@/helpers/*": ["src/helpers/*"],
       "@/config/*": ["src/config/*"],
+      "@/errors/*": ["src/errors/*"],
+      "@/queues/*": ["src/queues/*"],
+      "@/services/*": ["src/services/*"],
       "@/factories/*": ["test/factories/*"]
     }
   },

@@ -8,6 +8,9 @@ const aliases = {
   '@/models': join(__dirname, 'src/models'),
   '@/helpers': join(__dirname, 'src/helpers'),
   '@/config': join(__dirname, 'src/config'),
+  '@/errors': join(__dirname, 'src/errors'),
+  '@/queues': join(__dirname, 'src/queues'),
+  '@/services': join(__dirname, 'src/services'),
   '@/factories': join(__dirname, 'test/factories'),
 };
 

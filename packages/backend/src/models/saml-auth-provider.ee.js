@@ -1,11 +1,11 @@
 import { URL } from 'node:url';
 import { v4 as uuidv4 } from 'uuid';
 import isEmpty from 'lodash/isEmpty.js';
-import appConfig from '../config/app.js';
-import axios from '../helpers/axios-with-proxy.js';
-import Base from './base.js';
-import Identity from './identity.ee.js';
-import RoleMapping from './role-mapping.ee.js';
+import appConfig from '@/config/app.js';
+import axios from '@/helpers/axios-with-proxy.js';
+import Base from '@/models/base.js';
+import Identity from '@/models/identity.ee.js';
+import RoleMapping from '@/models/role-mapping.ee.js';
 
 class SamlAuthProvider extends Base {
   static tableName = 'saml_auth_providers';

@@ -1,20 +1,20 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest';
-import appConfig from '../config/app.js';
-import App from './app.js';
-import Base from './base.js';
-import Step from './step.js';
-import Flow from './flow.js';
-import Connection from './connection.js';
-import ExecutionStep from './execution-step.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import * as testRunModule from '../services/test-run.js';
-import { createFlow } from '../../test/factories/flow.js';
-import { createUser } from '../../test/factories/user.js';
-import { createRole } from '../../test/factories/role.js';
-import { createPermission } from '../../test/factories/permission.js';
-import { createConnection } from '../../test/factories/connection.js';
-import { createStep } from '../../test/factories/step.js';
-import { createExecutionStep } from '../../test/factories/execution-step.js';
+import appConfig from '@/config/app.js';
+import App from '@/models/app.js';
+import Base from '@/models/base.js';
+import Step from '@/models/step.js';
+import Flow from '@/models/flow.js';
+import Connection from '@/models/connection.js';
+import ExecutionStep from '@/models/execution-step.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import * as testRunModule from '@/services/test-run.js';
+import { createFlow } from '@/factories/flow.js';
+import { createUser } from '@/factories/user.js';
+import { createRole } from '@/factories/role.js';
+import { createPermission } from '@/factories/permission.js';
+import { createConnection } from '@/factories/connection.js';
+import { createStep } from '@/factories/step.js';
+import { createExecutionStep } from '@/factories/execution-step.js';
 
 describe('Step model', () => {
   it('tableName should return correct name', () => {

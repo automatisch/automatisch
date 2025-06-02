@@ -1,4 +1,4 @@
-import Base from './base.js';
+import Base from '@/models/base.js';
 
 class Datastore extends Base {
   static tableName = 'datastore';

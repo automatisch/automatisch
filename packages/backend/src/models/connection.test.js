@@ -1,18 +1,18 @@
 import { describe, it, expect, vi } from 'vitest';
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
-import appConfig from '../config/app.js';
-import OAuthClient from './oauth-client.js';
-import App from './app.js';
-import AppConfig from './app-config.js';
-import Base from './base.js';
-import Connection from './connection';
-import Step from './step.js';
-import User from './user.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import { createConnection } from '../../test/factories/connection.js';
-import { createAppConfig } from '../../test/factories/app-config.js';
-import { createOAuthClient } from '../../test/factories/oauth-client.js';
+import appConfig from '@/config/app.js';
+import OAuthClient from '@/models/oauth-client.js';
+import App from '@/models/app.js';
+import AppConfig from '@/models/app-config.js';
+import Base from '@/models/base.js';
+import Connection from '@/models/connection.js';
+import Step from '@/models/step.js';
+import User from '@/models/user.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import { createConnection } from '@/factories/connection.js';
+import { createAppConfig } from '@/factories/app-config.js';
+import { createOAuthClient } from '@/factories/oauth-client.js';
 
 describe('Connection model', () => {
   it('tableName should return correct name', () => {

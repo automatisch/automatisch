@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import RoleMapping from './role-mapping.ee';
-import SamlAuthProvider from './saml-auth-provider.ee';
-import Base from './base';
+import RoleMapping from '@/models/role-mapping.ee.js';
+import SamlAuthProvider from '@/models/saml-auth-provider.ee.js';
+import Base from '@/models/base.js';
 
 describe('RoleMapping model', () => {
   it('tableName should return correct name', () => {

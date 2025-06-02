@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import Datastore from './datastore';
+import Datastore from '@/models/datastore.js';
 
 describe('Datastore model', () => {
   it('tableName should return correct name', () => {

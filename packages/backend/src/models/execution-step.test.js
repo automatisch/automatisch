@@ -1,13 +1,13 @@
 import { vi, describe, it, expect } from 'vitest';
-import Execution from './execution';
-import ExecutionStep from './execution-step';
-import Step from './step';
-import Base from './base';
-import UsageData from './usage-data.ee';
-import Telemetry from '../helpers/telemetry';
-import appConfig from '../config/app';
-import { createExecution } from '../../test/factories/execution';
-import { createExecutionStep } from '../../test/factories/execution-step';
+import Execution from '@/models/execution.js';
+import ExecutionStep from '@/models/execution-step.js';
+import Step from '@/models/step.js';
+import Base from '@/models/base.js';
+import UsageData from '@/models/usage-data.ee.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import appConfig from '@/config/app.js';
+import { createExecution } from '@/factories/execution.js';
+import { createExecutionStep } from '@/factories/execution-step.js';
 
 describe('ExecutionStep model', () => {
   it('tableName should return correct name', () => {

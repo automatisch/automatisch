@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import UsageData from './usage-data.ee';
-import User from './user';
-import Subscription from './subscription.ee';
-import Base from './base';
-import { createUsageData } from '../../test/factories/usage-data';
+import UsageData from '@/models/usage-data.ee.js';
+import User from '@/models/user.js';
+import Subscription from '@/models/subscription.ee.js';
+import Base from '@/models/base.js';
+import { createUsageData } from '@/factories/usage-data.js';
 
 describe('UsageData model', () => {
   it('tableName should return correct name', () => {

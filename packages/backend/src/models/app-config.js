@@ -1,6 +1,6 @@
-import App from './app.js';
-import OAuthClient from './oauth-client.js';
-import Base from './base.js';
+import App from '@/models/app.js';
+import OAuthClient from '@/models/oauth-client.js';
+import Base from '@/models/base.js';
 import { ValidationError } from 'objection';
 
 class AppConfig extends Base {

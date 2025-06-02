@@ -1,5 +1,5 @@
-import Base from './base.js';
-import permissionCatalog from '../helpers/permission-catalog.ee.js';
+import Base from '@/models/base.js';
+import permissionCatalog from '@/helpers/permission-catalog.ee.js';
 
 class Permission extends Base {
   static tableName = 'permissions';

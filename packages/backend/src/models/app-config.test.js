@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import Base from './base.js';
-import AppConfig from './app-config.js';
-import App from './app.js';
-import OAuthClient from './oauth-client.js';
+import Base from '@/models/base.js';
+import AppConfig from '@/models/app-config.js';
+import App from '@/models/app.js';
+import OAuthClient from '@/models/oauth-client.js';
 
 describe('AppConfig model', () => {
   it('tableName should return correct name', () => {
