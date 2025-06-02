@@ -2,7 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/models/*": ["src/models/*"],
+      "@/helpers/*": ["src/helpers/*"],
+      "@/config/*": ["src/config/*"],
+      "@/factories/*": ["test/factories/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

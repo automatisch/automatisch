@@ -5,7 +5,10 @@ import { dirname, join } from 'path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const aliases = {
-  '@': join(__dirname, 'src'),
+  '@/models': join(__dirname, 'src/models'),
+  '@/helpers': join(__dirname, 'src/helpers'),
+  '@/config': join(__dirname, 'src/config'),
+  '@/factories': join(__dirname, 'test/factories'),
 };
 
 export const resolve = generateAliasesResolver(aliases);
