@@ -1903,6 +1903,11 @@ eslint@^8.13.0:
     strip-ansi "^6.0.1"
     text-table "^0.2.0"
 
+esm-module-alias@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/esm-module-alias/-/esm-module-alias-2.2.1.tgz#e9528875ee3442537a52b186d61d5f911ea7f71d"
+  integrity sha512-CmxoWJb4ShzOQEHc5MBIgp7BUYSiyZkvUzGtJxQlCUZhLXJ/teO7LSyZa9gzPpM5HOarj14GW4DxRuTuCliV1w==
+
 esm@^3.2.25:
   version "3.2.25"
   resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
