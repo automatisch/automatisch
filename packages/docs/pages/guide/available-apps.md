@@ -5,6 +5,7 @@ The following integrations are currently supported by Automatisch.
 - [Airtable](/apps/airtable/actions)
 - [Anthropic](/apps/anthropic/actions)
 - [Appwrite](/apps/appwrite/triggers)
+- [Bluesky](/apps/bluesky/actions)
 - [Brave Search](/apps/brave-search/actions)
 - [Carbone](/apps/carbone/actions)
 - [ClickUp](/apps/clickup/triggers)
