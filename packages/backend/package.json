@@ -5,10 +5,10 @@
   "description": "The open source Zapier alternative. Build workflow automation without spending time and money.",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --loader ./alias-loader.mjs --no-warnings src/server.js",
-    "worker": "nodemon --exec node src/worker.js",
+    "dev": "nodemon --loader ./alias-loader.mjs src/server.js",
+    "worker": "nodemon --loader ./alias-loader.mjs src/worker.js",
     "start": "node --loader ./alias-loader.mjs src/server.js",
-    "start:worker": "node src/worker.js",
+    "start:worker": "node --loader ./alias-loader.mjs src/worker.js",
     "pretest": "APP_ENV=test node --loader ./alias-loader.mjs ./test/setup/prepare-test-env.js",
     "test": "APP_ENV=test node --loader ./alias-loader.mjs ./node_modules/.bin/vitest run",
     "test:watch": "APP_ENV=test node --loader ./alias-loader.mjs ./node_modules/.bin/vitest watch",
