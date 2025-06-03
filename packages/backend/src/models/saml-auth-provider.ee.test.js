@@ -1,14 +1,14 @@
 import { vi, beforeEach, describe, it, expect } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
-import SamlAuthProvider from '../models/saml-auth-provider.ee';
-import RoleMapping from '../models/role-mapping.ee';
-import axios from '../helpers/axios-with-proxy.js';
-import Identity from './identity.ee';
-import Base from './base';
-import appConfig from '../config/app';
-import { createSamlAuthProvider } from '../../test/factories/saml-auth-provider.ee.js';
-import { createRoleMapping } from '../../test/factories/role-mapping.js';
-import { createRole } from '../../test/factories/role.js';
+import SamlAuthProvider from '@/models/saml-auth-provider.ee.js';
+import RoleMapping from '@/models/role-mapping.ee.js';
+import axios from '@/helpers/axios-with-proxy.js';
+import Identity from '@/models/identity.ee.js';
+import Base from '@/models/base.js';
+import appConfig from '@/config/app.js';
+import { createSamlAuthProvider } from '@/factories/saml-auth-provider.ee.js';
+import { createRoleMapping } from '@/factories/role-mapping.js';
+import { createRole } from '@/factories/role.js';
 
 describe('SamlAuthProvider model', () => {
   it('tableName should return correct name', () => {

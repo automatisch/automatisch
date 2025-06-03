@@ -1,6 +1,21 @@
 import { defineConfig } from 'vitest/config';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@/models': resolve(__dirname, './src/models'),
+      '@/helpers': resolve(__dirname, './src/helpers'),
+      '@/config': resolve(__dirname, './src/config'),
+      '@/errors': resolve(__dirname, './src/errors'),
+      '@/queues': resolve(__dirname, './src/queues'),
+      '@/services': resolve(__dirname, './src/services'),
+      '@/factories': resolve(__dirname, './test/factories'),
+    },
+  },
   test: {
     root: './',
     environment: 'node',

@@ -2,11 +2,11 @@ import { describe, it, expect, vi } from 'vitest';
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
 
-import AppConfig from './app-config.js';
-import OAuthClient from './oauth-client.js';
-import Base from './base.js';
-import appConfig from '../config/app.js';
-import { createOAuthClient } from '../../test/factories/oauth-client.js';
+import AppConfig from '@/models/app-config.js';
+import OAuthClient from '@/models/oauth-client.js';
+import Base from '@/models/base.js';
+import appConfig from '@/config/app.js';
+import { createOAuthClient } from '@/factories/oauth-client.js';
 
 describe('OAuthClient model', () => {
   it('tableName should return correct name', () => {

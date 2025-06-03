@@ -1,42 +1,42 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { DateTime, Duration } from 'luxon';
 import Crypto from 'crypto';
-import appConfig from '../config/app.js';
-import * as licenseModule from '../helpers/license.ee.js';
-import Base from './base.js';
-import AccessToken from './access-token.js';
-import Config from './config.js';
-import Connection from './connection.js';
-import Execution from './execution.js';
-import Flow from './flow.js';
-import Identity from './identity.ee.js';
-import Permission from './permission.js';
-import Role from './role.js';
-import Step from './step.js';
-import Subscription from './subscription.ee.js';
-import UsageData from './usage-data.ee.js';
-import Folder from './folder.js';
-import User from './user.js';
-import deleteUserQueue from '../queues/delete-user.ee.js';
-import emailQueue from '../queues/email.js';
+import appConfig from '@/config/app.js';
+import * as licenseModule from '@/helpers/license.ee.js';
+import Base from '@/models/base.js';
+import AccessToken from '@/models/access-token.js';
+import Config from '@/models/config.js';
+import Connection from '@/models/connection.js';
+import Execution from '@/models/execution.js';
+import Flow from '@/models/flow.js';
+import Identity from '@/models/identity.ee.js';
+import Permission from '@/models/permission.js';
+import Role from '@/models/role.js';
+import Step from '@/models/step.js';
+import Subscription from '@/models/subscription.ee.js';
+import UsageData from '@/models/usage-data.ee.js';
+import Folder from '@/models/folder.js';
+import User from '@/models/user.js';
+import deleteUserQueue from '@/queues/delete-user.ee.js';
+import emailQueue from '@/queues/email.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '../helpers/remove-job-configuration.js';
-import * as userAbilityModule from '../helpers/user-ability.js';
-import { createUser } from '../../test/factories/user.js';
-import { createConnection } from '../../test/factories/connection.js';
-import { createRole } from '../../test/factories/role.js';
-import { createPermission } from '../../test/factories/permission.js';
-import { createFlow } from '../../test/factories/flow.js';
-import { createStep } from '../../test/factories/step.js';
-import { createExecution } from '../../test/factories/execution.js';
-import { createSubscription } from '../../test/factories/subscription.js';
-import { createUsageData } from '../../test/factories/usage-data.js';
-import { createFolder } from '../../test/factories/folder.js';
-import { createTemplate } from '../../test/factories/template.js';
-import Billing from '../helpers/billing/index.ee.js';
-import Template from './template.ee.js';
+} from '@/helpers/remove-job-configuration.js';
+import * as userAbilityModule from '@/helpers/user-ability.js';
+import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
+import { createRole } from '@/factories/role.js';
+import { createPermission } from '@/factories/permission.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import { createExecution } from '@/factories/execution.js';
+import { createSubscription } from '@/factories/subscription.js';
+import { createUsageData } from '@/factories/usage-data.js';
+import { createFolder } from '@/factories/folder.js';
+import { createTemplate } from '@/factories/template.js';
+import Billing from '@/helpers/billing/index.ee.js';
+import Template from '@/models/template.ee.js';
 
 describe('User model', () => {
   it('tableName should return correct name', () => {

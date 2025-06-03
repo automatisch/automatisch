@@ -1,5 +1,6 @@
-import Base from './base.js';
+import Base from '@/models/base.js';
 import crypto from 'crypto';
+
 class ApiToken extends Base {
   static tableName = 'api_tokens';
 

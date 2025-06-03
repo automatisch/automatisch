@@ -1,6 +1,6 @@
-import Base from './base.js';
-import User from './user.js';
-import Flow from './flow.js';
+import Base from '@/models/base.js';
+import User from '@/models/user.js';
+import Flow from '@/models/flow.js';
 
 class Folder extends Base {
   static tableName = 'folders';

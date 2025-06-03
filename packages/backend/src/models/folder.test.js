@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import Folder from './folder';
-import User from './user';
-import Flow from './flow';
-import Base from './base';
-import { createFolder } from '../../test/factories/folder';
-import { createFlow } from '../../test/factories/flow';
-import { createUser } from '../../test/factories/user';
+import Folder from '@/models/folder.js';
+import User from '@/models/user.js';
+import Flow from '@/models/flow.js';
+import Base from '@/models/base.js';
+import { createFolder } from '@/factories/folder.js';
+import { createFlow } from '@/factories/flow.js';
+import { createUser } from '@/factories/user.js';
 
 describe('Folder model', () => {
   it('tableName should return correct name', () => {

@@ -1,14 +1,14 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import Execution from './execution';
-import ExecutionStep from './execution-step';
-import Flow from './flow';
-import Base from './base';
-import Telemetry from '../helpers/telemetry/index';
-import { createExecution } from '../../test/factories/execution';
-import { createUser } from '../../test/factories/user';
-import { createFlow } from '../../test/factories/flow';
-import { createStep } from '../../test/factories/step';
-import { createPermission } from '../../test/factories/permission';
+import Execution from '@/models/execution.js';
+import ExecutionStep from '@/models/execution-step.js';
+import Flow from '@/models/flow.js';
+import Base from '@/models/base.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import { createExecution } from '@/factories/execution.js';
+import { createUser } from '@/factories/user.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import { createPermission } from '@/factories/permission.js';
 
 describe('Execution model', () => {
   it('tableName should return correct name', () => {

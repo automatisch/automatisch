@@ -3,36 +3,36 @@ import { DateTime, Duration } from 'luxon';
 import crypto from 'node:crypto';
 import { ValidationError } from 'objection';
 
-import appConfig from '../config/app.js';
-import { hasValidLicense } from '../helpers/license.ee.js';
-import userAbility from '../helpers/user-ability.js';
-import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
-import Base from './base.js';
-import App from './app.js';
-import AccessToken from './access-token.js';
-import Connection from './connection.js';
-import Config from './config.js';
-import Execution from './execution.js';
-import ExecutionStep from './execution-step.js';
-import Flow from './flow.js';
-import Identity from './identity.ee.js';
-import Permission from './permission.js';
-import Role from './role.js';
-import Step from './step.js';
-import Subscription from './subscription.ee.js';
-import Folder from './folder.js';
-import UsageData from './usage-data.ee.js';
-import Template from './template.ee.js';
-import Billing from '../helpers/billing/index.ee.js';
-import NotAuthorizedError from '../errors/not-authorized.js';
+import appConfig from '@/config/app.js';
+import { hasValidLicense } from '@/helpers/license.ee.js';
+import userAbility from '@/helpers/user-ability.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import Base from '@/models/base.js';
+import App from '@/models/app.js';
+import AccessToken from '@/models/access-token.js';
+import Connection from '@/models/connection.js';
+import Config from '@/models/config.js';
+import Execution from '@/models/execution.js';
+import ExecutionStep from '@/models/execution-step.js';
+import Flow from '@/models/flow.js';
+import Identity from '@/models/identity.ee.js';
+import Permission from '@/models/permission.js';
+import Role from '@/models/role.js';
+import Step from '@/models/step.js';
+import Subscription from '@/models/subscription.ee.js';
+import Folder from '@/models/folder.js';
+import UsageData from '@/models/usage-data.ee.js';
+import Template from '@/models/template.ee.js';
+import Billing from '@/helpers/billing/index.ee.js';
+import NotAuthorizedError from '@/errors/not-authorized.js';
 
-import deleteUserQueue from '../queues/delete-user.ee.js';
-import flowQueue from '../queues/flow.js';
-import emailQueue from '../queues/email.js';
+import deleteUserQueue from '@/queues/delete-user.ee.js';
+import flowQueue from '@/queues/flow.js';
+import emailQueue from '@/queues/email.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '../helpers/remove-job-configuration.js';
+} from '@/helpers/remove-job-configuration.js';
 
 class User extends Base {
   static tableName = 'users';

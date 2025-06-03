@@ -1,19 +1,19 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import Flow from './flow.js';
-import User from './user.js';
-import Base from './base.js';
-import Step from './step.js';
-import Folder from './folder.js';
-import Execution from './execution.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import * as globalVariableModule from '../helpers/global-variable.js';
-import { createFlow } from '../../test/factories/flow.js';
-import { createUser } from '../../test/factories/user.js';
-import { createFolder } from '../../test/factories/folder.js';
-import { createStep } from '../../test/factories/step.js';
-import { createExecution } from '../../test/factories/execution.js';
-import { createExecutionStep } from '../../test/factories/execution-step.js';
-import * as exportFlow from '../helpers/export-flow.js';
+import Flow from '@/models/flow.js';
+import User from '@/models/user.js';
+import Base from '@/models/base.js';
+import Step from '@/models/step.js';
+import Folder from '@/models/folder.js';
+import Execution from '@/models/execution.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import * as globalVariableModule from '@/helpers/global-variable.js';
+import { createFlow } from '@/factories/flow.js';
+import { createUser } from '@/factories/user.js';
+import { createFolder } from '@/factories/folder.js';
+import { createStep } from '@/factories/step.js';
+import { createExecution } from '@/factories/execution.js';
+import { createExecutionStep } from '@/factories/execution-step.js';
+import * as exportFlow from '@/helpers/export-flow.js';
 
 describe('Flow model', () => {
   it('tableName should return correct name', () => {

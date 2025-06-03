@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
-import Base from './base.js';
-import Flow from './flow.js';
-import ExecutionStep from './execution-step.js';
-import Telemetry from '../helpers/telemetry/index.js';
+import Base from '@/models/base.js';
+import Flow from '@/models/flow.js';
+import ExecutionStep from '@/models/execution-step.js';
+import Telemetry from '@/helpers/telemetry/index.js';
 
 class Execution extends Base {
   static tableName = 'executions';

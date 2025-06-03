@@ -1,15 +1,15 @@
 import { URL } from 'node:url';
-import Base from './base.js';
-import App from './app.js';
-import Flow from './flow.js';
-import Connection from './connection.js';
-import ExecutionStep from './execution-step.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import appConfig from '../config/app.js';
-import globalVariable from '../helpers/global-variable.js';
-import computeParameters from '../helpers/compute-parameters.js';
-import testRun from '../services/test-run.js';
-import { generateIconUrl } from '../helpers/generate-icon-url.js';
+import Base from '@/models/base.js';
+import App from '@/models/app.js';
+import Flow from '@/models/flow.js';
+import Connection from '@/models/connection.js';
+import ExecutionStep from '@/models/execution-step.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import appConfig from '@/config/app.js';
+import globalVariable from '@/helpers/global-variable.js';
+import computeParameters from '@/helpers/compute-parameters.js';
+import testRun from '@/services/test-run.js';
+import { generateIconUrl } from '@/helpers/generate-icon-url.js';
 
 class Step extends Base {
   static tableName = 'steps';

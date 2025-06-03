@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
-import AccessToken from './access-token.js';
-import User from './user.js';
-import Base from './base.js';
-import SamlAuthProvider from './saml-auth-provider.ee.js';
-import { createAccessToken } from '../../test/factories/access-token.js';
-import { createUser } from '../../test/factories/user.js';
-import { createIdentity } from '../../test/factories/identity.js';
+import AccessToken from '@/models/access-token.js';
+import User from '@/models/user.js';
+import Base from '@/models/base.js';
+import SamlAuthProvider from '@/models/saml-auth-provider.ee.js';
+import { createAccessToken } from '@/factories/access-token.js';
+import { createUser } from '@/factories/user.js';
+import { createIdentity } from '@/factories/identity.js';
 
 describe('AccessToken model', () => {
   it('tableName should return correct name', () => {

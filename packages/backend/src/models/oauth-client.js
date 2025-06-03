@@ -1,8 +1,8 @@
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
-import appConfig from '../config/app.js';
-import Base from './base.js';
-import AppConfig from './app-config.js';
+import appConfig from '@/config/app.js';
+import Base from '@/models/base.js';
+import AppConfig from '@/models/app-config.js';
 
 class OAuthClient extends Base {
   static tableName = 'oauth_clients';

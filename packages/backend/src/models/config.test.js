@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
-import appConfig from '../config/app.js';
-import Config from './config';
-import { createConfig } from '../../test/factories/config.js';
+import appConfig from '@/config/app.js';
+import Config from '@/models/config.js';
+import { createConfig } from '@/factories/config.js';
 
 describe('Config model', () => {
   it('tableName should return correct name', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import ApiToken from './api-token.ee.js';
+import ApiToken from '@/models/api-token.ee.js';
 
 describe('ApiToken model', () => {
   it('tableName should return correct name', () => {

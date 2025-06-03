@@ -1,5 +1,5 @@
-import appConfig from '../config/app.js';
-import Base from './base.js';
+import appConfig from '@/config/app.js';
+import Base from '@/models/base.js';
 
 class Config extends Base {
   static tableName = 'config';

@@ -1,20 +1,20 @@
 import { ValidationError } from 'objection';
-import Base from './base.js';
-import Step from './step.js';
-import User from './user.js';
-import Folder from './folder.js';
-import Execution from './execution.js';
-import ExecutionStep from './execution-step.js';
-import globalVariable from '../helpers/global-variable.js';
-import logger from '../helpers/logger.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import exportFlow from '../helpers/export-flow.js';
-import importFlow from '../helpers/import-flow.js';
-import flowQueue from '../queues/flow.js';
+import Base from '@/models/base.js';
+import Step from '@/models/step.js';
+import User from '@/models/user.js';
+import Folder from '@/models/folder.js';
+import Execution from '@/models/execution.js';
+import ExecutionStep from '@/models/execution-step.js';
+import globalVariable from '@/helpers/global-variable.js';
+import logger from '@/helpers/logger.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import exportFlow from '@/helpers/export-flow.js';
+import importFlow from '@/helpers/import-flow.js';
+import flowQueue from '@/queues/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '../helpers/remove-job-configuration.js';
+} from '@/helpers/remove-job-configuration.js';
 
 const JOB_NAME = 'flow';
 const EVERY_15_MINUTES_CRON = '*/15 * * * *';
