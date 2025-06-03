@@ -1,4 +1,4 @@
 import { Model } from 'objection';
-import { client } from './database.js';
+import { client } from '@/config/database.js';
 
 Model.knex(client);

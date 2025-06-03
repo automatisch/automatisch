@@ -1,4 +1,4 @@
-import appConfig from './app.js';
+import appConfig from '@/config/app.js';
 
 const redisConfig = {
   username: appConfig.redisUsername,
@@ -13,7 +13,7 @@ if (appConfig.redisSentinelHost) {
     {
       host: appConfig.redisSentinelHost,
       port: appConfig.redisSentinelPort,
-    }
+    },
   ];
 
   redisConfig.sentinelUsername = appConfig.redisSentinelUsername;
