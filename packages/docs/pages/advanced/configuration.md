@@ -45,3 +45,9 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 | `BULLMQ_DASHBOARD_PASSWORD`  | string  |                    | Password to login BullMQ Dashboard                                                  |
 | `DISABLE_NOTIFICATIONS_PAGE` | boolean | `false`            | Enable/Disable notifications page                                                   |
 | `DISABLE_FAVICON`            | boolean | `false`            | Enable/Disable favicon                                                              |
+| `SMTP_HOST`                  | string  |                    | SMTP Host                                                                           |
+| `SMTP_PORT`                  | string  | `587`              | SMTP Port                                                                           |
+| `SMTP_SECURE`                | boolean | `false`            | Enable/Disable SSL for SMTP                                                         |
+| `SMTP_USER`                  | string  |                    | SMTP Username                                                                       |
+| `SMTP_PASSWORD`              | string  |                    | SMTP Password                                                                       |
+| `FROM_EMAIL`                 | string  |                    | E-mail address to be used as sender with SMTP configuration                         |
