@@ -14,12 +14,12 @@
     "test:watch": "APP_ENV=test node --loader ./alias-loader.mjs ./node_modules/.bin/vitest watch",
     "test:coverage": "yarn test --coverage",
     "lint": "eslint .",
-    "db:create": "node ./bin/database/create.js",
-    "db:seed:user": "node ./bin/database/seed-user.js",
-    "db:drop": "node ./bin/database/drop.js",
-    "db:migration:create": "knex migrate:make",
-    "db:rollback": "knex migrate:rollback",
-    "db:migrate": "knex migrate:latest"
+    "db:create": "node --loader ./alias-loader.mjs ./bin/database/create.js",
+    "db:seed:user": "node --loader ./alias-loader.mjs ./bin/database/seed-user.js",
+    "db:drop": "node --loader ./alias-loader.mjs ./bin/database/drop.js",
+    "db:migration:create": "node --loader ./alias-loader.mjs ./node_modules/.bin/knex migrate:make",
+    "db:rollback": "node --loader ./alias-loader.mjs ./node_modules/.bin/knex migrate:rollback",
+    "db:migrate": "node --loader ./alias-loader.mjs ./node_modules/.bin/knex migrate:latest"
   },
   "dependencies": {
     "@bull-board/express": "^3.10.1",
