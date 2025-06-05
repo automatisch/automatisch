@@ -2,11 +2,11 @@ import Crypto from 'node:crypto';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { createApiToken } from '../../../../../../../test/factories/api-token.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createUser } from '@/factories/user.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('DELETE /internal/api/v1/admin/api-tokens/:id', () => {
   let adminRole, currentUser, token;

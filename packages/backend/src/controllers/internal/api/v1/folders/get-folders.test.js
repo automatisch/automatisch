@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createFolder } from '../../../../../../test/factories/folder.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import getFoldersMock from '../../../../../../test/mocks/rest/internal/api/v1/folders/get-folders.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createFolder } from '@/factories/folder.js';
+import { createPermission } from '@/factories/permission.js';
+import getFoldersMock from '@/mocks/rest/internal/api/v1/folders/get-folders.js';
 
 describe('GET /internal/api/v1/folders', () => {
   let folderOne, folderTwo, currentUser, currentUserRole, token;

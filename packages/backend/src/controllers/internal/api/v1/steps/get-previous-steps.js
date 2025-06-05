@@ -1,6 +1,6 @@
 import { ref } from 'objection';
-import ExecutionStep from '../../../../../models/execution-step.js';
-import { renderObject } from '../../../../../helpers/renderer.js';
+import ExecutionStep from '@/models/execution-step.js';
+import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
   const step = await request.currentUser.authorizedSteps

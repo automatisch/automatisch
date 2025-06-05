@@ -1,12 +1,12 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../../app.js';
-import ApiToken from '../../../../../../models/api-token.ee.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import createApiTokenMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/api-tokens/create-api-token.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import ApiToken from '@/models/api-token.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import createApiTokenMock from '@/mocks/rest/internal/api/v1/admin/api-tokens/create-api-token.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('POST /internal/api/v1/admin/api-tokens', () => {
   let currentUser, token, role;

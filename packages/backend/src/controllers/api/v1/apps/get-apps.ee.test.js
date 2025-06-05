@@ -1,10 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
-import App from '../../../../models/app.js';
+import App from '@/models/app.js';
 import app from '../../../../app.js';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import getAppsMock from '../../../../../test/mocks/rest/api/v1/apps/get-apps.js';
-import * as license from '../../../../helpers/license.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import getAppsMock from '@/mocks/rest/api/v1/apps/get-apps.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /api/v1/apps', () => {
   let apps, token;

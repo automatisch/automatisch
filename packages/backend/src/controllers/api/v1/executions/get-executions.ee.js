@@ -1,6 +1,6 @@
-import Execution from '../../../../models/execution.js';
-import { renderObject } from '../../../../helpers/renderer.js';
-import paginateRest from '../../../../helpers/pagination.js';
+import Execution from '@/models/execution.js';
+import { renderObject } from '@/helpers/renderer.js';
+import paginateRest from '@/helpers/pagination.js';
 
 export default async (request, response) => {
   const executionsQuery = Execution.find(executionParams(request));

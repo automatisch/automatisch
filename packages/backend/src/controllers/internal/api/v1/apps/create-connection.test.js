@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createAppConfig } from '../../../../../../test/factories/app-config.js';
-import { createOAuthClient } from '../../../../../../test/factories/oauth-client.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import { createRole } from '../../../../../../test/factories/role.js';
-import createConnection from '../../../../../../test/mocks/rest/internal/api/v1/apps/create-connection.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createAppConfig } from '@/factories/app-config.js';
+import { createOAuthClient } from '@/factories/oauth-client.js';
+import { createUser } from '@/factories/user.js';
+import { createPermission } from '@/factories/permission.js';
+import { createRole } from '@/factories/role.js';
+import createConnection from '@/mocks/rest/internal/api/v1/apps/create-connection.js';
 
 describe('POST /internal/api/v1/apps/:appKey/connections', () => {
   let currentUser, token;

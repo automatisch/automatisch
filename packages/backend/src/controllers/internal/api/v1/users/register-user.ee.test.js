@@ -1,11 +1,11 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import User from '../../../../../models/user.js';
-import appConfig from '../../../../../config/app.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createRole } from '../../../../../../test/factories/role.js';
-import registerUserMock from '../../../../../../test/mocks/rest/internal/api/v1/users/register-user.ee.js';
+import User from '@/models/user.js';
+import appConfig from '@/config/app.js';
+import { createUser } from '@/factories/user.js';
+import { createRole } from '@/factories/role.js';
+import registerUserMock from '@/mocks/rest/internal/api/v1/users/register-user.ee.js';
 
 describe('POST /internal/api/v1/users/register', () => {
   beforeEach(async () => {

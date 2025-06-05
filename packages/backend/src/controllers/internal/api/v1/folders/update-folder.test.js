@@ -2,11 +2,11 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createFolder } from '../../../../../../test/factories/folder.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import updateFolderMock from '../../../../../../test/mocks/rest/internal/api/v1/folders/update-folder.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createFolder } from '@/factories/folder.js';
+import { createPermission } from '@/factories/permission.js';
+import updateFolderMock from '@/mocks/rest/internal/api/v1/folders/update-folder.js';
 
 describe('PATCH /internal/api/v1/folders/:folderId', () => {
   let currentUser, currentUserRole, token;

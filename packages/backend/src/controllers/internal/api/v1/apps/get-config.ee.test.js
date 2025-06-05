@@ -1,11 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import getAppConfigMock from '../../../../../../test/mocks/rest/internal/api/v1/apps/get-config.js';
-import { createAppConfig } from '../../../../../../test/factories/app-config.js';
-import * as license from '../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import getAppConfigMock from '@/mocks/rest/internal/api/v1/apps/get-config.js';
+import { createAppConfig } from '@/factories/app-config.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/apps/:appKey/config', () => {
   let currentUser, appConfig, token;

@@ -2,13 +2,13 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createFolder } from '../../../../../../test/factories/folder.js';
-import { createStep } from '../../../../../../test/factories/step.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import updateFlowFolderMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/update-flow-folder.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createFlow } from '@/factories/flow.js';
+import { createFolder } from '@/factories/folder.js';
+import { createStep } from '@/factories/step.js';
+import { createPermission } from '@/factories/permission.js';
+import updateFlowFolderMock from '@/mocks/rest/internal/api/v1/flows/update-flow-folder.js';
 
 describe('PATCH /internal/api/v1/flows/:flowId/folder', () => {
   let currentUser, currentUserRole, token;

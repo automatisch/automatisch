@@ -3,11 +3,11 @@ import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import app from '../../../../app.js';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createTemplate } from '../../../../../test/factories/template.js';
-import { createUser } from '../../../../../test/factories/user.js';
-import createFlowMock from '../../../../../test/mocks/rest/api/v1/users/create-flow.js';
-import * as license from '../../../../helpers/license.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createTemplate } from '@/factories/template.js';
+import { createUser } from '@/factories/user.js';
+import createFlowMock from '@/mocks/rest/api/v1/users/create-flow.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('POST /api/v1/flows', () => {
   let user, token;

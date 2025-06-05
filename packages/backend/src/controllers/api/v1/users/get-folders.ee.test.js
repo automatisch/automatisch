@@ -2,11 +2,11 @@ import Crypto from 'node:crypto';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../app.js';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createUser } from '../../../../../test/factories/user.js';
-import { createFolder } from '../../../../../test/factories/folder.js';
-import getFoldersMock from '../../../../../test/mocks/rest/api/v1/users/get-folders.js';
-import * as license from '../../../../helpers/license.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createUser } from '@/factories/user.js';
+import { createFolder } from '@/factories/folder.js';
+import getFoldersMock from '@/mocks/rest/api/v1/users/get-folders.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /api/v1/users/:userId/folders', () => {
   let folderA, folderB, currentUser, token;

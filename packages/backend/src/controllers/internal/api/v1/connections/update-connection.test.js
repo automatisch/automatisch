@@ -2,11 +2,11 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createConnection } from '../../../../../../test/factories/connection.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import updateConnectionMock from '../../../../../../test/mocks/rest/internal/api/v1/connections/update-connection.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
+import { createPermission } from '@/factories/permission.js';
+import updateConnectionMock from '@/mocks/rest/internal/api/v1/connections/update-connection.js';
 
 describe('PATCH /internal/api/v1/connections/:connectionId', () => {
   let currentUser, currentUserRole, token;

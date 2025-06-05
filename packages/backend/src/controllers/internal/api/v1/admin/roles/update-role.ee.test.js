@@ -1,12 +1,12 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { createPermission } from '../../../../../../../test/factories/permission.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import updateRoleMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/roles/update-role.ee.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createPermission } from '@/factories/permission.js';
+import { createUser } from '@/factories/user.js';
+import updateRoleMock from '@/mocks/rest/internal/api/v1/admin/roles/update-role.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('PATCH /internal/api/v1/admin/roles/:roleId', () => {
   let adminRole, viewerRole, currentUser, token;

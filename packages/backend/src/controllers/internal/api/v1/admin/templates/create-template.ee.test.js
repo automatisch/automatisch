@@ -2,14 +2,14 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import Template from '../../../../../../models/template.ee.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import { createFlow } from '../../../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../../../test/factories/step.js';
-import createTemplateMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/templates/create-template.ee.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import Template from '@/models/template.ee.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import createTemplateMock from '@/mocks/rest/internal/api/v1/admin/templates/create-template.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('POST /internal/api/v1/admin/templates', () => {
   let currentUser, token, role;

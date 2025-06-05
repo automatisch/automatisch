@@ -1,7 +1,7 @@
-import Flow from '../../../../../models/flow.js';
-import logger from '../../../../../helpers/logger.js';
-import handler from '../../../../../helpers/form-handler.ee.js';
-import { renderError } from '../../../../../helpers/renderer.js';
+import Flow from '@/models/flow.js';
+import logger from '@/helpers/logger.js';
+import handler from '@/helpers/form-handler.ee.js';
+import { renderError } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
   logger.debug(`Handling incoming form submission at ${request.originalUrl}.`);

@@ -1,4 +1,4 @@
-import Role from '../../../../../../models/role.js';
+import Role from '@/models/role.js';
 
 export default async (request, response) => {
   const role = await Role.query()

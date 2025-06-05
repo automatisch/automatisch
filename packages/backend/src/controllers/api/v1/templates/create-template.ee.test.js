@@ -1,13 +1,13 @@
 import Crypto from 'node:crypto';
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createFlow } from '../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../test/factories/step.js';
-import createTemplateMock from '../../../../../test/mocks/rest/api/v1/templates/create-template.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import createTemplateMock from '@/mocks/rest/api/v1/templates/create-template.ee.js';
 import app from '../../../../app.js';
-import * as license from '../../../../helpers/license.ee.js';
-import Template from '../../../../models/template.ee.js';
+import * as license from '@/helpers/license.ee.js';
+import Template from '@/models/template.ee.js';
 
 describe('POST /api/v1/templates', () => {
   let token;

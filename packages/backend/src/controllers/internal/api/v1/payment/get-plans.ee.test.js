@@ -1,10 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import getPaymentPlansMock from '../../../../../../test/mocks/rest/internal/api/v1/payment/get-plans.js';
-import appConfig from '../../../../../config/app.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import getPaymentPlansMock from '@/mocks/rest/internal/api/v1/payment/get-plans.js';
+import appConfig from '@/config/app.js';
 
 describe('GET /internal/api/v1/payment/plans', () => {
   let user, token;

@@ -1,6 +1,6 @@
-import Flow from '../../models/flow.js';
-import logger from '../../helpers/logger.js';
-import handlerSync from '../../helpers/webhook-handler-sync.js';
+import Flow from '@/models/flow.js';
+import logger from '@/helpers/logger.js';
+import handlerSync from '@/helpers/webhook-handler-sync.js';
 
 export default async (request, response) => {
   const computedRequestPayload = {

@@ -1,12 +1,12 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import getUserTrialMock from '../../../../../../test/mocks/rest/internal/api/v1/users/get-user-trial.js';
-import appConfig from '../../../../../config/app.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import getUserTrialMock from '@/mocks/rest/internal/api/v1/users/get-user-trial.js';
+import appConfig from '@/config/app.js';
 import { DateTime } from 'luxon';
-import User from '../../../../../models/user.js';
+import User from '@/models/user.js';
 
 describe('GET /internal/api/v1/users/:userId/trial', () => {
   let user, token;

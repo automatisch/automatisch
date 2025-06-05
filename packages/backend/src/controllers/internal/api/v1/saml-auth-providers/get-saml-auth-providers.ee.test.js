@@ -1,9 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import { createSamlAuthProvider } from '../../../../../../test/factories/saml-auth-provider.ee.js';
-import getSamlAuthProvidersMock from '../../../../../../test/mocks/rest/internal/api/v1/saml-auth-providers/get-saml-auth-providers.js';
-import * as license from '../../../../../helpers/license.ee.js';
+import { createSamlAuthProvider } from '@/factories/saml-auth-provider.ee.js';
+import getSamlAuthProvidersMock from '@/mocks/rest/internal/api/v1/saml-auth-providers/get-saml-auth-providers.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/saml-auth-providers', () => {
   let samlAuthProviderOne, samlAuthProviderTwo;

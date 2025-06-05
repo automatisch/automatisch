@@ -1,6 +1,6 @@
-import paginateRest from '../../../../helpers/pagination.js';
-import { renderObject } from '../../../../helpers/renderer.js';
-import Flow from '../../../../models/flow.js';
+import paginateRest from '@/helpers/pagination.js';
+import { renderObject } from '@/helpers/renderer.js';
+import Flow from '@/models/flow.js';
 
 export default async (request, response) => {
   const flowsQuery = Flow.find(flowParams(request));
