@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useForm(formId) {
+export default function useFlowForm(flowId) {
   const query = useQuery({
-    queryKey: ['forms', formId],
+    queryKey: ['flows', flowId, 'form'],
     queryFn: async ({ signal }) => {
-      const { data } = await api.get(`/v1/forms/${formId}`, {
+      const { data } = await api.get(`/v1/flows/${flowId}/form`, {
         signal,
       });
 

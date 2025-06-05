@@ -1,10 +1,12 @@
 import { Route, Navigate } from 'react-router-dom';
+
 import SettingsLayout from 'components/SettingsLayout';
 import { PaddleProvider } from 'contexts/Paddle.ee';
 import ProfileSettings from 'pages/ProfileSettings';
 import BillingAndUsageSettings from 'pages/BillingAndUsageSettings/index.ee';
 import PlanUpgrade from 'pages/PlanUpgrade/index.ee';
 import * as URLS from 'config/urls';
+
 export default (
   <>
     <Route

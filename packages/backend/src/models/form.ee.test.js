@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import User from './user';
-import Base from './base';
-import Form from './form.ee';
+import User from '@/models/user';
+import Base from '@/models/base';
+import Form from '@/models/form.ee';
 
 describe('Form model', () => {
   it('tableName should return correct name', () => {

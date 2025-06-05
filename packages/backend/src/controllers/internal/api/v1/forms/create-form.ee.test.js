@@ -1,11 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import * as license from '../../../../../helpers/license.ee.js';
-import createFormMock from '../../../../../../test/mocks/rest/internal/api/v1/forms/create-form.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createPermission } from '@/factories/permission.js';
+import * as license from '@/helpers/license.ee.js';
+import createFormMock from '@/mocks/rest/internal/api/v1/forms/create-form.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
 
 describe('POST /internal/api/v1/forms', () => {
   let currentUser, token;

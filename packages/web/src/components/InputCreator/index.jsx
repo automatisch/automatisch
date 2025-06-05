@@ -15,6 +15,7 @@ import { FieldPropType } from 'propTypes/propTypes';
 
 const optionGenerator = (options) =>
   options?.map(({ name, value }) => ({ label: name, value: value }));
+
 function InputCreator(props) {
   const {
     onChange,

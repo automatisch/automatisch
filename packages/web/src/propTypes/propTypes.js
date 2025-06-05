@@ -474,3 +474,31 @@ export const NotificationPropType = PropTypes.shape({
   documentationUrl: PropTypes.string,
   description: PropTypes.string,
 });
+
+export const FormFieldPropType = PropTypes.shape({
+  key: PropTypes.string,
+  type: PropTypes.oneOf([
+    'text',
+    'number',
+    'date',
+    'datetime',
+    'email',
+    'dropdown',
+  ]),
+});
+
+export const FormPropType = PropTypes.shape({
+  id: PropTypes.string,
+  name: PropTypes.string,
+  fields: PropTypes.arrayOf(FormFieldPropType),
+  updatedAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date),
+  ]),
+  createdAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date),
+  ]),
+});

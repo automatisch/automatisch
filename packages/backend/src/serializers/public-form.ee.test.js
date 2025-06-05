@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import publicFormSerializer from './public-form.ee.js';
-import { createForm } from '../../test/factories/form.js';
+import { createForm } from '@/factories/form.js';
 
 describe('publicFormSerializer', () => {
   let form;

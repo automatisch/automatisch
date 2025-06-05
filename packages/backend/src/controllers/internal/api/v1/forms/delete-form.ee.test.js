@@ -1,11 +1,11 @@
 import Crypto from 'node:crypto';
 import request from 'supertest';
 import { beforeEach, describe, it, vi } from 'vitest';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createForm } from '../../../../../../test/factories/form.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import * as license from '../../../../../helpers/license.ee.js';
+import { createUser } from '@/factories/user.js';
+import { createForm } from '@/factories/form.js';
+import { createPermission } from '@/factories/permission.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import * as license from '@/helpers/license.ee.js';
 import app from '../../../../../app.js';
 
 describe('DELETE /internal/api/v1/forms/:formId', () => {

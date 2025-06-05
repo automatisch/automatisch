@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../../test/factories/step.js';
-import { createForm } from '../../../../../../test/factories/form.js';
-import getFormMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/get-form.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import { createForm } from '@/factories/form.js';
+import getFormMock from '@/mocks/rest/internal/api/v1/flows/get-form.js';
 
 describe('GET /internal/api/v1/flows/:flowId/form', () => {
   it('should return the form data', async () => {

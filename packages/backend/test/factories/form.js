@@ -1,6 +1,6 @@
-import Form from '../../src/models/form.ee.js';
+import Form from '@/models/form.ee.js';
 import { faker } from '@faker-js/faker';
-import { createUser } from './user.js';
+import { createUser } from '@/factories/user.js';
 
 export const createForm = async (params = {}) => {
   params.userId = params?.userId || (await createUser()).id;

@@ -9,6 +9,7 @@ import Config from '@/models/config.js';
 import Connection from '@/models/connection.js';
 import Execution from '@/models/execution.js';
 import Flow from '@/models/flow.js';
+import Form from '@/models/form.ee.js';
 import Identity from '@/models/identity.ee.js';
 import Permission from '@/models/permission.js';
 import Role from '@/models/role.js';
@@ -165,6 +166,14 @@ describe('User model', () => {
             from: 'users.id',
             to: 'folders.user_id',
           },
+        },
+        forms: {
+          join: {
+            from: 'users.id',
+            to: 'forms.user_id',
+          },
+          modelClass: Form,
+          relation: Base.HasManyRelation,
         },
       };
 

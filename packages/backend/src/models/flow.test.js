@@ -1,3 +1,4 @@
+import Crypto from 'node:crypto';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Flow from '@/models/flow.js';
 import User from '@/models/user.js';
@@ -8,6 +9,7 @@ import Execution from '@/models/execution.js';
 import Telemetry from '@/helpers/telemetry/index.js';
 import * as globalVariableModule from '@/helpers/global-variable.js';
 import { createFlow } from '@/factories/flow.js';
+import { createForm } from '@/factories/form.js';
 import { createUser } from '@/factories/user.js';
 import { createFolder } from '@/factories/folder.js';
 import { createStep } from '@/factories/step.js';
@@ -267,7 +269,7 @@ describe('Flow model', () => {
     expect(await flow.getStepById(step.id)).toStrictEqual(step);
   });
 
-  describe.only('getPublicForm', () => {
+  describe('getPublicForm', () => {
     it('should return the public form', async () => {
       const flow = await createFlow();
       const form = await createForm({ userId: flow.userId });

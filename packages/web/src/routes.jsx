@@ -14,6 +14,9 @@ import Applications from 'pages/Applications';
 import FormFlow from 'pages/FormFlow';
 import Application from 'pages/Application';
 import Executions from 'pages/Executions';
+import Forms from 'pages/Forms/index.ee';
+import EditForm from 'pages/EditForm/index.ee';
+import CreateForm from 'pages/CreateForm/index.ee';
 import Execution from 'pages/Execution';
 import Flows from 'pages/Flows';
 import Login from 'pages/Login';
@@ -33,15 +36,18 @@ import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import Installation from 'pages/Installation';
 
 function Routes() {
+  const navigate = useNavigate();
   const { data: automatischInfo, isSuccess } = useAutomatischInfo();
-  const { data: configData } = useAutomatischConfig();
   const { isAuthenticated } = useAuthentication();
+  const { data: configData } = useAutomatischConfig();
+
   const config = configData?.data;
 
   const installed = isSuccess
     ? automatischInfo.data.installationCompleted
     : true;
-  const navigate = useNavigate();
+
+  const isEnterprise = isSuccess ? automatischInfo.data.isEnterprise : false;
 
   useEffect(() => {
     if (!installed) {
@@ -77,6 +83,39 @@ function Routes() {
           </Layout>
         }
       />
+
+      {isEnterprise && (
+        <Route
+          path={`${URLS.FORMS}/*`}
+          element={
+            <Layout>
+              <Forms />
+            </Layout>
+          }
+        />
+      )}
+
+      {isEnterprise && (
+        <Route
+          path={URLS.CREATE_FORM}
+          element={
+            <Layout>
+              <CreateForm />
+            </Layout>
+          }
+        />
+      )}
+
+      {isEnterprise && (
+        <Route
+          path={URLS.FORM_PATTERN}
+          element={
+            <Layout>
+              <EditForm />
+            </Layout>
+          }
+        />
+      )}
 
       <Route
         path={`${URLS.APPS}/*`}
@@ -176,7 +215,7 @@ function Routes() {
 
       <Route path={URLS.SETTINGS}>{settingsRoutes}</Route>
 
-      <Route path={URLS.FORM_FLOW_PATTERN} element={<FormFlow />} />
+      <Route path={URLS.PUBLIC_FORM_PATTERN} element={<FormFlow />} />
 
       <Route path={URLS.ADMIN_SETTINGS} element={<AdminSettingsLayout />}>
         {adminSettingsRoutes}
