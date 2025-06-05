@@ -1,3 +1,4 @@
+import Crypto from 'node:crypto';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Flow from '@/models/flow.js';
 import User from '@/models/user.js';
@@ -8,6 +9,7 @@ import Execution from '@/models/execution.js';
 import Telemetry from '@/helpers/telemetry/index.js';
 import * as globalVariableModule from '@/helpers/global-variable.js';
 import { createFlow } from '@/factories/flow.js';
+import { createForm } from '@/factories/form.js';
 import { createUser } from '@/factories/user.js';
 import { createFolder } from '@/factories/folder.js';
 import { createStep } from '@/factories/step.js';
@@ -265,6 +267,43 @@ describe('Flow model', () => {
     const step = await createStep({ flowId: flow.id });
 
     expect(await flow.getStepById(step.id)).toStrictEqual(step);
+  });
+
+  describe('getPublicForm', () => {
+    it('should return the public form', async () => {
+      const flow = await createFlow();
+      const form = await createForm({ userId: flow.userId });
+
+      const triggerStep = await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+        parameters: {
+          formId: form.id,
+        },
+      });
+
+      const publicForm = await flow.getPublicForm();
+
+      expect(publicForm).toMatchObject({
+        id: form.id,
+        name: form.name,
+        webhookUrl: triggerStep.getWebhookUrl(),
+      });
+    });
+
+    it('should throw an error if the trigger step has no form', async () => {
+      const flow = await createFlow();
+
+      await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+        parameters: {
+          formId: Crypto.randomUUID(),
+        },
+      });
+
+      await expect(flow.getPublicForm()).rejects.toThrow();
+    });
   });
 
   it('insertActionStepAtPosition should insert action step at given position', async () => {

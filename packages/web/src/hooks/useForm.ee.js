@@ -12,7 +12,6 @@ export default function useForm(formId) {
 
       return data;
     },
-    enabled: !!formId,
   });
 
   return query;

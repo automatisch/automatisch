@@ -11,6 +11,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import PropTypes from 'prop-types';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import SecurityIcon from '@mui/icons-material/Security';
+import CallToActionIcon from '@mui/icons-material/CallToAction';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -32,6 +33,12 @@ const drawerLinks = [
     primary: 'drawer.flows',
     to: URLS.FLOWS,
     dataTest: 'flows-page-drawer-link',
+  },
+  {
+    Icon: CallToActionIcon,
+    primary: 'drawer.forms',
+    to: URLS.FORMS,
+    dataTest: 'forms-page-drawer-link',
   },
   {
     Icon: AppsIcon,

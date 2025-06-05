@@ -18,6 +18,7 @@ import Flow from '@/models/flow.js';
 import Identity from '@/models/identity.ee.js';
 import Permission from '@/models/permission.js';
 import Role from '@/models/role.js';
+import Form from '@/models/form.ee.js';
 import Step from '@/models/step.js';
 import Subscription from '@/models/subscription.ee.js';
 import Folder from '@/models/folder.js';
@@ -186,6 +187,14 @@ class User extends Base {
       join: {
         from: 'users.id',
         to: 'folders.user_id',
+      },
+    },
+    forms: {
+      relation: Base.HasManyRelation,
+      modelClass: Form,
+      join: {
+        from: 'users.id',
+        to: 'forms.user_id',
       },
     },
   });

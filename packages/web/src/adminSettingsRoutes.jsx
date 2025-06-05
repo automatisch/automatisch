@@ -88,9 +88,7 @@ export default (
       element={
         <Can I="read" a="SamlAuthProvider">
           <Can I="manage" a="SamlAuthProvider">
-            <Can I="manage" a="SamlAuthProvider">
-              <Authentication />
-            </Can>
+            <Authentication />
           </Can>
         </Can>
       }

@@ -5,36 +5,26 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 export default defineTrigger({
   name: 'New form submission',
   key: 'newFormSubmission',
-  pollInterval: 15,
   type: 'webhook',
   description: 'Triggers when a new form is submitted.',
   arguments: [
     {
-      label: 'Fields',
-      key: 'fields',
-      type: 'dynamic',
-      required: false,
-      description: 'Add or remove fields as needed',
-      value: [],
-      fields: [
-        {
-          label: 'Field name',
-          key: 'fieldName',
-          type: 'string',
-          required: true,
-          description: 'Displayed name to the user',
-          variables: true,
-        },
-        {
-          label: 'Type',
-          key: 'fieldType',
-          type: 'dropdown',
-          required: true,
-          description: 'Field type',
-          variables: true,
-          options: [{ label: 'String', value: 'string' }],
-        },
-      ],
+      label: 'Form',
+      key: 'formId',
+      type: 'dropdown',
+      required: true,
+      description: 'Form to trigger.',
+      variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listForms',
+          },
+        ],
+      },
     },
   ],
 

@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 
-import api from 'helpers/api';
+import axios from 'axios';
 
-export default function useCreateFormSubmission(formId) {
+export default function useCreateFormSubmission(webhookUrl) {
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      const { data } = await api.post(`/v1/forms/${formId}`, payload);
+      const { data } = await axios.post(webhookUrl, payload);
 
       return data;
     },

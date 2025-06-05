@@ -15,7 +15,8 @@ export const APP = (appKey) => `/app/${appKey}`;
 export const APP_PATTERN = '/app/:appKey';
 export const APP_CONNECTIONS = (appKey) => `/app/${appKey}/connections`;
 export const APP_CONNECTIONS_PATTERN = '/app/:appKey/connections';
-export const FORM_FLOW_PATTERN = '/forms/:flowId';
+export const PUBLIC_FORM_PATTERN = '/forms/:flowId';
+export const PUBLIC_FORM = (flowId) => `/forms/${flowId}`;
 
 export const APP_ADD_CONNECTION = (appKey, shared = false) =>
   `/app/${appKey}/connections/add?shared=${shared}`;
@@ -80,6 +81,11 @@ export const ROLE_PATTERN = `${ROLES}/:roleId`;
 export const CREATE_ROLE = `${ROLES}/create`;
 export const USER_INTERFACE = `${ADMIN_SETTINGS}/user-interface`;
 export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
+export const FORMS = '/form-entities';
+export const CREATE_FORM = `${FORMS}/create`;
+export const FORM_PATTERN = `${FORMS}/:formId`;
+export const EDIT_FORM = (formId) => `${FORMS}/${formId}`;
+
 export const ADMIN_APPS = `${ADMIN_SETTINGS}/apps`;
 export const ADMIN_APP = (appKey) => `${ADMIN_SETTINGS}/apps/${appKey}`;
 export const ADMIN_APP_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey`;

@@ -12,6 +12,7 @@ import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 import appConfig from 'config/app.js';
+import * as URLS from 'config/urls.js';
 
 const useNewFlowEditor = appConfig.useNewFlowEditor;
 
@@ -57,11 +58,13 @@ function FlowSubstep(props) {
             <Alert severity="info" sx={{ mb: 2, width: '100%' }}>
               You may preview the form at{' '}
               <a
-                href={new URL(`/forms/${flowId}`, window.location.href).href}
+                href={
+                  new URL(URLS.PUBLIC_FORM(flowId), window.location.href).href
+                }
                 target="_blank"
                 rel="noreferrer"
               >
-                {new URL(`/forms/${flowId}`, window.location.href).href}
+                {new URL(URLS.PUBLIC_FORM(flowId), window.location.href).href}
               </a>
               .
             </Alert>

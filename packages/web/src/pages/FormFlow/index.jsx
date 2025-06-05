@@ -11,14 +11,15 @@ import Container from 'components/Container';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 
-import useForm from 'hooks/useForm.ee';
+import useFlowForm from 'hooks/useFlowForm.ee';
 import useCreateFormSubmission from 'hooks/useCreateFormSubmission.ee';
 
 export default function FormFlow() {
   const { flowId } = useParams();
-  const { data: flow, isLoading } = useForm(flowId);
-  const { mutate: createFormSubmission, isSuccess } =
-    useCreateFormSubmission(flowId);
+  const { data: flow, isLoading } = useFlowForm(flowId);
+  const { mutate: createFormSubmission, isSuccess } = useCreateFormSubmission(
+    flow?.data.webhookUrl,
+  );
 
   if (isLoading) return 'loading...';
 
@@ -27,12 +28,10 @@ export default function FormFlow() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(event.target);
     const formData = new FormData(event.target);
 
     const data = Object.fromEntries(formData.entries());
 
-    console.log('data', data);
     createFormSubmission(data);
   };
 
@@ -50,12 +49,12 @@ export default function FormFlow() {
             gap={2}
             onSubmit={handleSubmit}
           >
-            {formFields.map(({ fieldName, fieldKey, fieldType }, index) => (
+            {formFields?.map(({ name, type, key }) => (
               <>
-                {fieldType === 'string' && (
-                  <FormControl key={index}>
-                    <FormLabel>{fieldName}</FormLabel>
-                    <Input name={fieldKey} />
+                {type === 'string' && (
+                  <FormControl key={key}>
+                    <FormLabel>{name}</FormLabel>
+                    <Input name={key} />
                   </FormControl>
                 )}
               </>
