@@ -23,8 +23,9 @@ export default async (flowId, request, response) => {
     .orderBy('position', 'asc');
   const app = await triggerStep.getApp();
   const isWebhookApp = app.key === 'webhook';
+  const isFormsApp = app.key === 'forms';
 
-  if (testRun && !isWebhookApp) {
+  if (testRun && !isWebhookApp && !isFormsApp) {
     return response.status(404);
   }
 
