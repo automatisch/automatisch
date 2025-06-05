@@ -2,11 +2,11 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import Crypto from 'node:crypto';
 import request from 'supertest';
 import app from '../../../../app.js';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createUser } from '../../../../../test/factories/user.js';
-import { createFolder } from '../../../../../test/factories/folder.js';
-import updateFolderMock from '../../../../../test/mocks/rest/api/v1/users/update-folder.js';
-import * as license from '../../../../helpers/license.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createUser } from '@/factories/user.js';
+import { createFolder } from '@/factories/folder.js';
+import updateFolderMock from '@/mocks/rest/api/v1/users/update-folder.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('PATCH /api/v1/users/:userId/folders', () => {
   let currentUser, token, folder;

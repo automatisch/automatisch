@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import { createSamlAuthProvider } from '../../../../../../../test/factories/saml-auth-provider.ee.js';
-import { createRoleMapping } from '../../../../../../../test/factories/role-mapping.js';
-import getRoleMappingsMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/saml-auth-providers/get-role-mappings.ee.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import { createSamlAuthProvider } from '@/factories/saml-auth-provider.ee.js';
+import { createRoleMapping } from '@/factories/role-mapping.js';
+import getRoleMappingsMock from '@/mocks/rest/internal/api/v1/admin/saml-auth-providers/get-role-mappings.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/admin/saml-auth-providers/:samlAuthProviderId/role-mappings', () => {
   let roleMappingOne, roleMappingTwo, samlAuthProvider, currentUser, token;

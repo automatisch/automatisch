@@ -2,15 +2,15 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createConnection } from '../../../../../../test/factories/connection.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../../test/factories/step.js';
-import { createExecution } from '../../../../../../test/factories/execution.js';
-import { createExecutionStep } from '../../../../../../test/factories/execution-step.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import testStepMock from '../../../../../../test/mocks/rest/internal/api/v1/steps/test-step.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import { createExecution } from '@/factories/execution.js';
+import { createExecutionStep } from '@/factories/execution-step.js';
+import { createPermission } from '@/factories/permission.js';
+import testStepMock from '@/mocks/rest/internal/api/v1/steps/test-step.js';
 
 describe('POST /internal/api/v1/steps/:stepId/test', () => {
   let currentUser, currentUserRole, token;

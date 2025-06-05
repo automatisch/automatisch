@@ -1,11 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import getOAuthClientsMock from '../../../../../../test/mocks/rest/internal/api/v1/apps/get-oauth-clients.js';
-import { createOAuthClient } from '../../../../../../test/factories/oauth-client.js';
-import * as license from '../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import getOAuthClientsMock from '@/mocks/rest/internal/api/v1/apps/get-oauth-clients.js';
+import { createOAuthClient } from '@/factories/oauth-client.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/apps/:appKey/oauth-clients', () => {
   let currentUser, token;

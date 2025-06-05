@@ -2,11 +2,11 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../../test/factories/step.js';
-import * as license from '../../../../../helpers/license.ee.js';
-import getFormMock from '../../../../../../test/mocks/rest/internal/api/v1/forms/get-form.ee.js';
+import { createUser } from '@/factories/user.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import * as license from '@/helpers/license.ee.js';
+import getFormMock from '@/mocks/rest/internal/api/v1/forms/get-form.ee.js';
 
 describe('GET /internal/api/v1/forms/:formId', () => {
   let currentUser, flow, formStep;

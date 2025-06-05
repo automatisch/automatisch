@@ -1,10 +1,10 @@
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createTemplate } from '../../../../../test/factories/template.js';
-import getTemplateMock from '../../../../../test/mocks/rest/api/v1/templates/get-template.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createTemplate } from '@/factories/template.js';
+import getTemplateMock from '@/mocks/rest/api/v1/templates/get-template.ee.js';
 import app from '../../../../app.js';
-import * as license from '../../../../helpers/license.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /api/v1/templates/:templateId', () => {
   let token;

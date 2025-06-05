@@ -1,4 +1,4 @@
-import Flow from '../../../../models/flow.js';
+import Flow from '@/models/flow.js';
 
 export default async (request, response) => {
   const flow = await Flow.query()

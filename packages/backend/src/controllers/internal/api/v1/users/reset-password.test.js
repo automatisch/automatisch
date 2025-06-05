@@ -2,7 +2,7 @@ import { describe, it, beforeEach } from 'vitest';
 import request from 'supertest';
 import { DateTime } from 'luxon';
 import app from '../../../../../app.js';
-import { createUser } from '../../../../../../test/factories/user.js';
+import { createUser } from '@/factories/user.js';
 
 describe('POST /internal/api/v1/users/reset-password', () => {
   let currentUser;

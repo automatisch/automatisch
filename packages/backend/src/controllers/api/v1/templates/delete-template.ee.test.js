@@ -1,11 +1,11 @@
 import Crypto from 'node:crypto';
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createTemplate } from '../../../../../test/factories/template.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createTemplate } from '@/factories/template.js';
 import app from '../../../../app.js';
-import * as license from '../../../../helpers/license.ee.js';
-import Template from '../../../../models/template.ee.js';
+import * as license from '@/helpers/license.ee.js';
+import Template from '@/models/template.ee.js';
 
 describe('DELETE /api/v1/templates/:templateId', () => {
   let token;

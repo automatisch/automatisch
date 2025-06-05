@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../test/factories/role.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../../test/factories/step.js';
-import { createConnection } from '../../../../../../test/factories/connection.js';
-import getAppsMock from '../../../../../../test/mocks/rest/internal/api/v1/users/get-apps.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import { createPermission } from '@/factories/permission.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import { createConnection } from '@/factories/connection.js';
+import getAppsMock from '@/mocks/rest/internal/api/v1/users/get-apps.js';
 
 describe('GET /internal/api/v1/users/:userId/apps', () => {
   let currentUser, currentUserRole, token;

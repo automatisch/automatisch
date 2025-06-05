@@ -1,12 +1,12 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
-import appConfig from '../../../../../config/app.js';
+import appConfig from '@/config/app.js';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../test/factories/role.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createSubscription } from '../../../../../../test/factories/subscription.js';
-import getSubscriptionMock from '../../../../../../test/mocks/rest/internal/api/v1/users/get-subscription.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import { createSubscription } from '@/factories/subscription.js';
+import getSubscriptionMock from '@/mocks/rest/internal/api/v1/users/get-subscription.js';
 
 describe('GET /internal/api/v1/users/:userId/subscription', () => {
   let currentUser, role, subscription, token;

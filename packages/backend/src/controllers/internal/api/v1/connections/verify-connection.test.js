@@ -2,11 +2,11 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import App from '../../../../../models/app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createConnection } from '../../../../../../test/factories/connection.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
+import App from '@/models/app.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
+import { createPermission } from '@/factories/permission.js';
 
 describe('POST /internal/api/v1/connections/:connectionId/verify', () => {
   let currentUser, currentUserRole, token;

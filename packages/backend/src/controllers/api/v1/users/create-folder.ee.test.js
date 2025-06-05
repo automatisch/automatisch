@@ -2,10 +2,10 @@ import Crypto from 'node:crypto';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../app.js';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createUser } from '../../../../../test/factories/user.js';
-import createFolderMock from '../../../../../test/mocks/rest/api/v1/users/create-folder.js';
-import * as license from '../../../../helpers/license.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createUser } from '@/factories/user.js';
+import createFolderMock from '@/mocks/rest/api/v1/users/create-folder.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('POST /api/v1/users/:userId/folders', () => {
   let currentUser, token;

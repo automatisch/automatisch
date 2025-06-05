@@ -1,9 +1,9 @@
 import { expect, describe, it, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import AccessToken from '../../../../../models/access-token.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import AccessToken from '@/models/access-token.js';
 
 describe('DELETE /internal/api/v1/access-tokens/:token', () => {
   let token;

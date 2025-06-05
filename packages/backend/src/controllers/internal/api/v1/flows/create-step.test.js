@@ -3,12 +3,12 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../../test/factories/step.js';
-import createStepMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/create-step.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import createStepMock from '@/mocks/rest/internal/api/v1/flows/create-step.js';
+import { createPermission } from '@/factories/permission.js';
 
 describe('POST /internal/api/v1/flows/:flowId/steps', () => {
   let currentUser, flow, triggerStep, token;

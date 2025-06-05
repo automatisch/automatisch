@@ -1,11 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import getPaddleInfoMock from '../../../../../../test/mocks/rest/internal/api/v1/payment/get-paddle-info.js';
-import appConfig from '../../../../../config/app.js';
-import billing from '../../../../../helpers/billing/index.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import getPaddleInfoMock from '@/mocks/rest/internal/api/v1/payment/get-paddle-info.js';
+import appConfig from '@/config/app.js';
+import billing from '@/helpers/billing/index.ee.js';
 
 describe('GET /internal/api/v1/payment/paddle-info', () => {
   let user, token;

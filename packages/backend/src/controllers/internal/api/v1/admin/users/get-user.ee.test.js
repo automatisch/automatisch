@@ -2,11 +2,11 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id';
-import { createUser } from '../../../../../../../test/factories/user';
-import { createRole } from '../../../../../../../test/factories/role';
-import getUserMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/users/get-user.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createRole } from '@/factories/role.js';
+import getUserMock from '@/mocks/rest/internal/api/v1/admin/users/get-user.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/admin/users/:userId', () => {
   let currentUser, currentUserRole, anotherUser, anotherUserRole, token;

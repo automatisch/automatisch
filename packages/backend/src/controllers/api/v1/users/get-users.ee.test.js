@@ -1,11 +1,11 @@
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createRole } from '../../../../../test/factories/role.js';
-import { createUser } from '../../../../../test/factories/user.js';
-import getUsersMock from '../../../../../test/mocks/rest/internal/api/v1/admin/users/get-users.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import getUsersMock from '@/mocks/rest/internal/api/v1/admin/users/get-users.js';
 import app from '../../../../app.js';
-import * as license from '../../../../helpers/license.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /api/v1/users', () => {
   let userOne, userOneRole, userTwo, userTwoRole, token;

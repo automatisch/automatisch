@@ -14,6 +14,7 @@ export default defineConfig({
       '@/queues': resolve(__dirname, './src/queues'),
       '@/services': resolve(__dirname, './src/services'),
       '@/factories': resolve(__dirname, './test/factories'),
+      '@/mocks': resolve(__dirname, './test/mocks'),
     },
   },
   test: {

@@ -1,10 +1,10 @@
 import { vi, expect, describe, it } from 'vitest';
 import request from 'supertest';
-import { updateConfig } from '../../../../../../test/factories/config.js';
+import { updateConfig } from '@/factories/config.js';
 import app from '../../../../../app.js';
-import configMock from '../../../../../../test/mocks/rest/internal/api/v1/automatisch/config.js';
-import * as license from '../../../../../helpers/license.ee.js';
-import appConfig from '../../../../../config/app.js';
+import configMock from '@/mocks/rest/internal/api/v1/automatisch/config.js';
+import * as license from '@/helpers/license.ee.js';
+import appConfig from '@/config/app.js';
 
 describe('GET /internal/api/v1/automatisch/config', () => {
   it('should return Automatisch config along with static config', async () => {

@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createConnection } from '../../../../../../test/factories/connection.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import getConnectionsMock from '../../../../../../test/mocks/rest/internal/api/v1/apps/get-connections.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
+import { createPermission } from '@/factories/permission.js';
+import getConnectionsMock from '@/mocks/rest/internal/api/v1/apps/get-connections.js';
 
 describe('GET /internal/api/v1/apps/:appKey/connections', () => {
   let currentUser, currentUserRole, token;

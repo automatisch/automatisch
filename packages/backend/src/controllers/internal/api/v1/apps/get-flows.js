@@ -1,6 +1,6 @@
-import { renderObject } from '../../../../../helpers/renderer.js';
-import App from '../../../../../models/app.js';
-import paginateRest from '../../../../../helpers/pagination.js';
+import { renderObject } from '@/helpers/renderer.js';
+import App from '@/models/app.js';
+import paginateRest from '@/helpers/pagination.js';
 
 export default async (request, response) => {
   const app = await App.findOneByKey(request.params.appKey);

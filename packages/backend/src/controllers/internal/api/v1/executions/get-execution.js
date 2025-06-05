@@ -1,4 +1,4 @@
-import { renderObject } from '../../../../../helpers/renderer.js';
+import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
   const execution = await request.currentUser.authorizedExecutions

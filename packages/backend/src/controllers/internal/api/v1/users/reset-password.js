@@ -1,5 +1,5 @@
-import User from '../../../../../models/user.js';
-import { renderError } from '../../../../../helpers/renderer.js';
+import User from '@/models/user.js';
+import { renderError } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
   const { token, password } = request.body;

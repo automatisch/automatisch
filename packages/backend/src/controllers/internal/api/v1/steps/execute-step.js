@@ -1,5 +1,5 @@
-import { processAction } from '../../../../../services/action.js';
-import { processTrigger } from '../../../../../services/trigger.js';
+import { processAction } from '@/services/action.js';
+import { processTrigger } from '@/services/trigger.js';
 
 export default async (request, response) => {
   const step = await request.currentUser.authorizedSteps

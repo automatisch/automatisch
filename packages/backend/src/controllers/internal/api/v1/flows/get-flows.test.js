@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../../test/factories/step.js';
-import { createFolder } from '../../../../../../test/factories/folder.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import getFlowsMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/get-flows.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import { createFolder } from '@/factories/folder.js';
+import { createPermission } from '@/factories/permission.js';
+import getFlowsMock from '@/mocks/rest/internal/api/v1/flows/get-flows.js';
 
 describe('GET /internal/api/v1/flows', () => {
   let currentUser, currentUserRole, token;

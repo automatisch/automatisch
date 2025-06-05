@@ -1,5 +1,5 @@
-import { getLicense } from '../../../../../helpers/license.ee.js';
-import { renderObject } from '../../../../../helpers/renderer.js';
+import { getLicense } from '@/helpers/license.ee.js';
+import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
   const license = await getLicense();

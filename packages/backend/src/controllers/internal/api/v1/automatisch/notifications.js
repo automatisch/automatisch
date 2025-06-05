@@ -1,7 +1,7 @@
-import { renderObject } from '../../../../../helpers/renderer.js';
-import axios from '../../../../../helpers/axios-with-proxy.js';
-import logger from '../../../../../helpers/logger.js';
-import appConfig from '../../../../../config/app.js';
+import { renderObject } from '@/helpers/renderer.js';
+import axios from '@/helpers/axios-with-proxy.js';
+import logger from '@/helpers/logger.js';
+import appConfig from '@/config/app.js';
 
 export default async (request, response) => {
   const AUTOMATISCH_NOTIFICATIONS_URL =

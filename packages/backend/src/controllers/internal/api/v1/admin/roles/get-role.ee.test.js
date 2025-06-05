@@ -2,12 +2,12 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import { createPermission } from '../../../../../../../test/factories/permission.js';
-import getRoleMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/roles/get-role.ee.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import { createPermission } from '@/factories/permission.js';
+import getRoleMock from '@/mocks/rest/internal/api/v1/admin/roles/get-role.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/admin/roles/:roleId', () => {
   let role, currentUser, token, permissionOne, permissionTwo;

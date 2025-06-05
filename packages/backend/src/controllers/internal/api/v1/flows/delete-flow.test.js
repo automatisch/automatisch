@@ -2,10 +2,10 @@ import { describe, it, beforeEach } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createFlow } from '../../../../../../test/factories/flow.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createFlow } from '@/factories/flow.js';
+import { createPermission } from '@/factories/permission.js';
 
 describe('DELETE /internal/api/v1/flows/:flowId', () => {
   let currentUser, currentUserRole, token;

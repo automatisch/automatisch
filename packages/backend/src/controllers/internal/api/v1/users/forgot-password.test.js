@@ -1,7 +1,7 @@
 import { describe, it, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import { createUser } from '../../../../../../test/factories/user.js';
+import { createUser } from '@/factories/user.js';
 
 describe('POST /internal/api/v1/users/forgot-password', () => {
   let currentUser;

@@ -1,11 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import createSamlAuthProviderMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/saml-auth-providers/create-saml-auth-provider.ee.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import createSamlAuthProviderMock from '@/mocks/rest/internal/api/v1/admin/saml-auth-providers/create-saml-auth-provider.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('POST /internal/api/v1/admin/saml-auth-provider', () => {
   let currentUser, token, role;

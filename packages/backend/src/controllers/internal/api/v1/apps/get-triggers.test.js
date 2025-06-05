@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
-import App from '../../../../../models/app.js';
+import App from '@/models/app.js';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import getTriggersMock from '../../../../../../test/mocks/rest/internal/api/v1/apps/get-triggers.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import getTriggersMock from '@/mocks/rest/internal/api/v1/apps/get-triggers.js';
 
 describe('GET /internal/api/v1/apps/:appKey/triggers', () => {
   let currentUser, token;

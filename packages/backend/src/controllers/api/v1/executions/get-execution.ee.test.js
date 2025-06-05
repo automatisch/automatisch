@@ -1,13 +1,13 @@
 import Crypto from 'node:crypto';
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createExecution } from '../../../../../test/factories/execution.js';
-import { createFlow } from '../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../test/factories/step.js';
-import getExecutionMock from '../../../../../test/mocks/rest/api/v1/executions/get-execution.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createExecution } from '@/factories/execution.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import getExecutionMock from '@/mocks/rest/api/v1/executions/get-execution.js';
 import app from '../../../../app.js';
-import * as license from '../../../../helpers/license.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /api/v1/executions/:executionId', () => {
   let token;

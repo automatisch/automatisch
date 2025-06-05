@@ -2,11 +2,11 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import { updateConfig } from '../../../../../../../test/factories/config.js';
-import * as license from '../../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createRole } from '@/factories/role.js';
+import { updateConfig } from '@/factories/config.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('PATCH /internal/api/v1/admin/config', () => {
   let currentUser, adminRole, token;

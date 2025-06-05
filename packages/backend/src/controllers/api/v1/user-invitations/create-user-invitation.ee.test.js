@@ -1,12 +1,12 @@
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createRole } from '../../../../../test/factories/role.js';
-import { createUser } from '../../../../../test/factories/user.js';
-import createUserMock from '../../../../../test/mocks/rest/api/v1/user-invitations/create-user-invitation.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createRole } from '@/factories/role.js';
+import { createUser } from '@/factories/user.js';
+import createUserMock from '@/mocks/rest/api/v1/user-invitations/create-user-invitation.js';
 import app from '../../../../app.js';
-import * as license from '../../../../helpers/license.ee.js';
-import User from '../../../../models/user.js';
+import * as license from '@/helpers/license.ee.js';
+import User from '@/models/user.js';
 
 describe('POST /api/v1/user-invitations', () => {
   let token, roleId;

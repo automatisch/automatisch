@@ -1,10 +1,10 @@
 import Crypto from 'node:crypto';
 import request from 'supertest';
 import { beforeEach, describe, it, vi } from 'vitest';
-import { createUser } from '../../../../../test/factories/user.js';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
+import { createUser } from '@/factories/user.js';
+import { createApiToken } from '@/factories/api-token.js';
 import app from '../../../../app.js';
-import * as license from '../../../../helpers/license.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('DELETE /api/v1/users/:userId', () => {
   let user, token;

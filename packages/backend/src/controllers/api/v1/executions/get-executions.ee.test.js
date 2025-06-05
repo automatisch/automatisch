@@ -1,13 +1,13 @@
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import app from '../../../../app.js';
-import { createApiToken } from '../../../../../test/factories/api-token.js';
-import { createExecution } from '../../../../../test/factories/execution.js';
-import { createFlow } from '../../../../../test/factories/flow.js';
-import { createStep } from '../../../../../test/factories/step.js';
-import { createUser } from '../../../../../test/factories/user.js';
-import getExecutionsMock from '../../../../../test/mocks/rest/api/v1/executions/get-executions.js';
-import * as license from '../../../../helpers/license.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
+import { createExecution } from '@/factories/execution.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
+import { createUser } from '@/factories/user.js';
+import getExecutionsMock from '@/mocks/rest/api/v1/executions/get-executions.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /api/v1/executions', () => {
   let userOne, userTwo, token;

@@ -2,11 +2,11 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createTemplate } from '../../../../../../test/factories/template.js';
-import createFlowMock from '../../../../../../test/mocks/rest/internal/api/v1/flows/create-flow.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createTemplate } from '@/factories/template.js';
+import createFlowMock from '@/mocks/rest/internal/api/v1/flows/create-flow.js';
+import { createPermission } from '@/factories/permission.js';
 
 describe('POST /internal/api/v1/flows', () => {
   let currentUser, currentUserRole, token;

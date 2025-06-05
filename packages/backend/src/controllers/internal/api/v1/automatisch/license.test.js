@@ -1,8 +1,8 @@
 import { vi, expect, describe, it } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import licenseMock from '../../../../../../test/mocks/rest/internal/api/v1/automatisch/license.js';
-import * as license from '../../../../../helpers/license.ee.js';
+import licenseMock from '@/mocks/rest/internal/api/v1/automatisch/license.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/automatisch/license', () => {
   it('should return Automatisch license info', async () => {

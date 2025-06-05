@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import axios from '../../../../../helpers/axios-with-proxy.js';
-import appConfig from '../../../../../config/app.js';
+import axios from '@/helpers/axios-with-proxy.js';
+import appConfig from '@/config/app.js';
 
 describe('GET /internal/api/v1/automatisch/notifications', () => {
   it('should return Automatisch notifications', async () => {

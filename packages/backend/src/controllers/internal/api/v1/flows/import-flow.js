@@ -1,5 +1,5 @@
-import { renderObject } from '../../../../../helpers/renderer.js';
-import Flow from '../../../../../models/flow.js';
+import { renderObject } from '@/helpers/renderer.js';
+import Flow from '@/models/flow.js';
 
 export default async function importFlowController(request, response) {
   const flow = await Flow.import(request.currentUser, flowParams(request));

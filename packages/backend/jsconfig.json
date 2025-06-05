@@ -8,7 +8,8 @@
       "@/errors/*": ["src/errors/*"],
       "@/queues/*": ["src/queues/*"],
       "@/services/*": ["src/services/*"],
-      "@/factories/*": ["test/factories/*"]
+      "@/factories/*": ["test/factories/*"],
+      "@/mocks/*": ["test/mocks/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

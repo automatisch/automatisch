@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../helpers/create-auth-token-by-user-id.js';
-import { createUser } from '../../../../../../test/factories/user.js';
-import { createTemplate } from '../../../../../../test/factories/template.js';
-import { updateConfig } from '../../../../../../test/factories/config.js';
-import { createPermission } from '../../../../../../test/factories/permission.js';
-import getTemplatesMock from '../../../../../../test/mocks/rest/internal/api/v1/templates/get-templates.ee.js';
-import * as license from '../../../../../helpers/license.ee.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import { createUser } from '@/factories/user.js';
+import { createTemplate } from '@/factories/template.js';
+import { updateConfig } from '@/factories/config.js';
+import { createPermission } from '@/factories/permission.js';
+import getTemplatesMock from '@/mocks/rest/internal/api/v1/templates/get-templates.ee.js';
+import * as license from '@/helpers/license.ee.js';
 
 describe('GET /internal/api/v1/templates', () => {
   let currentUser, currentUserRole, token;

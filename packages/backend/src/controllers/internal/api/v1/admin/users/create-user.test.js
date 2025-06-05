@@ -1,12 +1,12 @@
 import { describe, beforeEach, it, expect } from 'vitest';
 import request from 'supertest';
 import app from '../../../../../../app.js';
-import createAuthTokenByUserId from '../../../../../../helpers/create-auth-token-by-user-id.js';
-import User from '../../../../../../models/user.js';
-import Role from '../../../../../../models/role.js';
-import { createUser } from '../../../../../../../test/factories/user.js';
-import { createRole } from '../../../../../../../test/factories/role.js';
-import createUserMock from '../../../../../../../test/mocks/rest/internal/api/v1/admin/users/create-user.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import User from '@/models/user.js';
+import Role from '@/models/role.js';
+import { createUser } from '@/factories/user.js';
+import { createRole } from '@/factories/role.js';
+import createUserMock from '@/mocks/rest/internal/api/v1/admin/users/create-user.js';
 
 describe('POST /internal/api/v1/admin/users', () => {
   let currentUser, adminRole, token;
