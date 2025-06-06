@@ -1,7 +1,7 @@
-import Step from '../models/step.js';
-import { processFlow } from './flow.js';
-import { processTrigger } from './trigger.js';
-import { processAction } from './action.js';
+import Step from '@/models/step.js';
+import { processFlow } from '@/services/flow.js';
+import { processTrigger } from '@/services/trigger.js';
+import { processAction } from '@/services/action.js';
 
 const testRun = async (options) => {
   const untilStep = await Step.query()
