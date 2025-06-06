@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import Subscription from '../models/subscription.ee.js';
+import Subscription from '@/models/subscription.ee.js';
 
 export const removeCancelledSubscriptionsJob = async () => {
   await Subscription.query()

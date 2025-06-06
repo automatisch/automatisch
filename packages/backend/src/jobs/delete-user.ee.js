@@ -1,6 +1,6 @@
-import appConfig from '../config/app.js';
-import User from '../models/user.js';
-import ExecutionStep from '../models/execution-step.js';
+import appConfig from '@/config/app.js';
+import User from '@/models/user.js';
+import ExecutionStep from '@/models/execution-step.js';
 
 export const deleteUserJob = async (job) => {
   const { id } = job.data;
