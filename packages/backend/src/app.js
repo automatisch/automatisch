@@ -3,21 +3,21 @@ import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
-import appConfig from './config/app.js';
-import corsOptions from './config/cors-options.js';
-import morgan from './helpers/morgan.js';
-import * as Sentry from './helpers/sentry.ee.js';
-import appAssetsHandler from './helpers/app-assets-handler.js';
-import webUIHandler from './helpers/web-ui-handler.js';
-import errorHandler from './helpers/error-handler.js';
-import './config/orm.js';
+import appConfig from '@/config/app.js';
+import corsOptions from '@/config/cors-options.js';
+import morgan from '@/helpers/morgan.js';
+import * as Sentry from '@/helpers/sentry.ee.js';
+import appAssetsHandler from '@/helpers/app-assets-handler.js';
+import webUIHandler from '@/helpers/web-ui-handler.js';
+import errorHandler from '@/helpers/error-handler.js';
+import '@/config/orm.js';
 import {
   createBullBoardHandler,
   serverAdapter,
-} from './helpers/create-bull-board-handler.js';
-import injectBullBoardHandler from './helpers/inject-bull-board-handler.js';
-import router from './routes/index.js';
-import configurePassport from './helpers/passport.js';
+} from '@/helpers/create-bull-board-handler.js';
+import injectBullBoardHandler from '@/helpers/inject-bull-board-handler.js';
+import router from '@/routes/index.js';
+import configurePassport from '@/helpers/passport.js';
 
 createBullBoardHandler(serverAdapter);
 
