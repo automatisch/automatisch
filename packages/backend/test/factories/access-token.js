@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import AccessToken from '../../src/models/access-token.js';
-import { createUser } from './user.js';
+import AccessToken from '@/models/access-token.js';
+import { createUser } from '@/factories/user.js';
 
 export const createAccessToken = async (params = {}) => {
   params.userId = params.userId || (await createUser()).id;

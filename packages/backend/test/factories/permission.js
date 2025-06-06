@@ -1,5 +1,5 @@
-import Permission from '../../src/models/permission.js';
-import { createRole } from './role.js';
+import Permission from '@/models/permission.js';
+import { createRole } from '@/factories/role.js';
 
 export const createPermission = async (params = {}) => {
   params.roleId = params?.roleId || (await createRole()).id;

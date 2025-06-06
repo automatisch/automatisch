@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
-import Identity from '../../src/models/identity.ee.js';
-import { createUser } from './user.js';
-import { createSamlAuthProvider } from './saml-auth-provider.ee.js';
+import Identity from '@/models/identity.ee.js';
+import { createUser } from '@/factories/user.js';
+import { createSamlAuthProvider } from '@/factories/saml-auth-provider.ee.js';
 
 export const createIdentity = async (params = {}) => {
   params.userId = params.userId || (await createUser()).id;

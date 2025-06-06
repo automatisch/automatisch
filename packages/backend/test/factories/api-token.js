@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import ApiToken from '../../src/models/api-token.ee.js';
+import ApiToken from '@/models/api-token.ee.js';
 
 export const createApiToken = async (params = {}) => {
   params.token = params.token || crypto.randomBytes(48).toString('hex');

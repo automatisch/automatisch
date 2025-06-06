@@ -1,5 +1,5 @@
-import { createRole } from './role.js';
-import SamlAuthProvider from '../../src/models/saml-auth-provider.ee.js';
+import { createRole } from '@/factories/role.js';
+import SamlAuthProvider from '@/models/saml-auth-provider.ee.js';
 
 export const createSamlAuthProvider = async (params = {}) => {
   params.name = params?.name || 'Keycloak SAML';

@@ -1,5 +1,5 @@
-import Flow from '../../src/models/flow.js';
-import { createUser } from './user.js';
+import Flow from '@/models/flow.js';
+import { createUser } from '@/factories/user.js';
 
 export const createFlow = async (params = {}) => {
   params.userId = params?.userId || (await createUser()).id;
