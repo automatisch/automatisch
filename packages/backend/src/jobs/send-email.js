@@ -1,7 +1,7 @@
-import logger from '../helpers/logger.js';
-import mailer from '../helpers/mailer.ee.js';
-import compileEmail from '../helpers/compile-email.ee.js';
-import appConfig from '../config/app.js';
+import logger from '@/helpers/logger.js';
+import mailer from '@/helpers/mailer.ee.js';
+import compileEmail from '@/helpers/compile-email.ee.js';
+import appConfig from '@/config/app.js';
 
 export const sendEmailJob = async (job) => {
   const { email, subject, template, params } = job.data;
