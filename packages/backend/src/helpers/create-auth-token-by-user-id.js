@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import User from '../models/user.js';
-import AccessToken from '../models/access-token.js';
+import User from '@/models/user.js';
+import AccessToken from '@/models/access-token.js';
 
 const TOKEN_EXPIRES_IN = 14 * 24 * 60 * 60; // 14 days in seconds
 

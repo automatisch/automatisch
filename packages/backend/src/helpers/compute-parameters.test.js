@@ -1,15 +1,16 @@
 import { beforeEach, describe, it, expect } from 'vitest';
-import { createExecutionStep } from '../../test/factories/execution-step.js';
-import { createDropdownArgument, createDynamicArgument, createStringArgument } from '../../test/factories/app.js';
-import computeParameters from './compute-parameters.js';
+import { createExecutionStep } from '@/factories/execution-step.js';
+import {
+  createDropdownArgument,
+  createDynamicArgument,
+  createStringArgument,
+} from '@/factories/app.js';
+import computeParameters from '@/helpers/compute-parameters.js';
 
 const computeVariable = (stepId, path) => `{{step.${stepId}.${path}}}`;
 
 describe('Compute parameters helper', () => {
-  let executionStepOne,
-    executionStepTwo,
-    executionStepThree,
-    executionSteps;
+  let executionStepOne, executionStepTwo, executionStepThree, executionSteps;
 
   beforeEach(async () => {
     executionStepOne = await createExecutionStep({
@@ -23,9 +24,9 @@ describe('Compute parameters helper', () => {
           // eslint-disable-next-line no-loss-of-precision
           step1Key4ChildKey2: 1267963836502380617,
           step1Key4ChildKey3: '3650238061712679638',
-          step1Key4ChildKey4: ["value1", "value2"],
-        }
-      }
+          step1Key4ChildKey4: ['value1', 'value2'],
+        },
+      },
     });
 
     executionStepTwo = await createExecutionStep({
@@ -39,9 +40,9 @@ describe('Compute parameters helper', () => {
           // eslint-disable-next-line no-loss-of-precision
           step2Key4ChildKey2: 6502380617126796383,
           step2Key4ChildKey3: '6502380617312679638',
-          step2Key4ChildKey4: ["value1", "value2"],
-        }
-      }
+          step2Key4ChildKey4: ['value1', 'value2'],
+        },
+      },
     });
 
     executionStepThree = await createExecutionStep({
@@ -55,9 +56,9 @@ describe('Compute parameters helper', () => {
           // eslint-disable-next-line no-loss-of-precision
           step3Key4ChildKey2: 123123,
           step3Key4ChildKey3: '123123',
-          step3Key4ChildKey4: ["value1", "value2"],
-        }
-      }
+          step3Key4ChildKey4: ['value1', 'value2'],
+        },
+      },
     });
 
     executionSteps = [executionStepOne, executionStepTwo, executionStepThree];
@@ -66,14 +67,21 @@ describe('Compute parameters helper', () => {
   it('should resolve with parameters having no corresponding steps', () => {
     const parameters = {
       key1: `${computeVariable('non-existent-step-id', 'non-existent-key')}`,
-      key2: `"${computeVariable('non-existent-step-id', 'non-existent-key')}" is the value for non-existent-key`,
+      key2: `"${computeVariable(
+        'non-existent-step-id',
+        'non-existent-key'
+      )}" is the value for non-existent-key`,
     };
 
-    const computedParameters = computeParameters(parameters, [], executionSteps);
+    const computedParameters = computeParameters(
+      parameters,
+      [],
+      executionSteps
+    );
     const expectedParameters = {
       key1: '',
       key2: '"" is the value for non-existent-key',
-    }
+    };
 
     expect(computedParameters).toStrictEqual(expectedParameters);
   });
@@ -82,7 +90,11 @@ describe('Compute parameters helper', () => {
     it('should resolve empty object', () => {
       const parameters = {};
 
-      const computedParameters = computeParameters(parameters, [], executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        [],
+        executionSteps
+      );
 
       expect(computedParameters).toStrictEqual(parameters);
     });
@@ -104,7 +116,11 @@ describe('Compute parameters helper', () => {
         key2: 'plain text',
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
 
       expect(computedParameters).toStrictEqual(parameters);
     });
@@ -116,17 +132,28 @@ describe('Compute parameters helper', () => {
         key3: '  plain text',
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
 
       expect(computedParameters).toStrictEqual(parameters);
     });
 
     it('should compute variables correctly', () => {
       const parameters = {
-        key1: `static text  ${computeVariable(executionStepOne.stepId, 'step1Key1')}`,
+        key1: `static text  ${computeVariable(
+          executionStepOne.stepId,
+          'step1Key1'
+        )}`,
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
       const expectedParameters = {
         key1: `static text  plain text value for step1Key1`,
       };
@@ -150,7 +177,10 @@ describe('Compute parameters helper', () => {
             key1: 'prepended text {"key": "value"} ',
           };
 
-          const computedParameters = computeParameters(parameters, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            executionSteps
+          );
 
           expect(computedParameters).toStrictEqual(parameters);
         });
@@ -160,7 +190,11 @@ describe('Compute parameters helper', () => {
             key1: '{"key1": "plain text", "key2": "119007199254740999"}',
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: '{"key1": "plain text", "key2": "119007199254740999"}',
           };
@@ -173,7 +207,11 @@ describe('Compute parameters helper', () => {
             key1: '["value1", "value2"]',
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: '["value1", "value2"]',
           };
@@ -186,7 +224,11 @@ describe('Compute parameters helper', () => {
             key1: '{"items": ["value1", "value2"]}',
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: '{"items": ["value1", "value2"]}',
           };
@@ -196,10 +238,17 @@ describe('Compute parameters helper', () => {
 
         it('should compute mix variables correctly', () => {
           const parameters = {
-            key1: `another static text ${computeVariable(executionStepThree.stepId, 'step3Key4.step3Key4ChildKey4')}`,
+            key1: `another static text ${computeVariable(
+              executionStepThree.stepId,
+              'step3Key4.step3Key4ChildKey4'
+            )}`,
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: `another static text ["value1","value2"]`,
           };
@@ -209,10 +258,17 @@ describe('Compute parameters helper', () => {
 
         it('should compute variables correctly', () => {
           const parameters = {
-            key1: `${computeVariable(executionStepThree.stepId, 'step3Key4.step3Key4ChildKey4')}`,
+            key1: `${computeVariable(
+              executionStepThree.stepId,
+              'step3Key4.step3Key4ChildKey4'
+            )}`,
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: '["value1","value2"]',
           };
@@ -224,7 +280,7 @@ describe('Compute parameters helper', () => {
           const stepArguments = [
             createDynamicArgument({
               key: 'inputs',
-            })
+            }),
           ];
 
           const parameters = {
@@ -232,17 +288,21 @@ describe('Compute parameters helper', () => {
               {
                 key: 'person',
                 value: '{ "name": "John Doe", "age": 32 }',
-              }
+              },
             ],
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             inputs: [
               {
                 key: 'person',
                 value: '{ "name": "John Doe", "age": 32 }',
-              }
+              },
             ],
           };
 
@@ -266,7 +326,11 @@ describe('Compute parameters helper', () => {
             key1: 'prepended text {"key": "value"} ',
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
 
           expect(computedParameters).toStrictEqual(parameters);
         });
@@ -276,7 +340,11 @@ describe('Compute parameters helper', () => {
             key1: '{"key1": "plain text", "key2": "119007199254740999"}',
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: {
               key1: 'plain text',
@@ -292,7 +360,11 @@ describe('Compute parameters helper', () => {
             key1: '["value1", "value2"]',
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: ['value1', 'value2'],
           };
@@ -305,11 +377,15 @@ describe('Compute parameters helper', () => {
             key1: '{"items": ["value1", "value2"]}',
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: {
               items: ['value1', 'value2'],
-            }
+            },
           };
 
           expect(computedParameters).toStrictEqual(expectedParameters);
@@ -317,10 +393,17 @@ describe('Compute parameters helper', () => {
 
         it('should compute and parse mix variables correctly', () => {
           const parameters = {
-            key1: `another static text ${computeVariable(executionStepThree.stepId, 'step3Key4.step3Key4ChildKey4')}`,
+            key1: `another static text ${computeVariable(
+              executionStepThree.stepId,
+              'step3Key4.step3Key4ChildKey4'
+            )}`,
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             key1: `another static text ["value1","value2"]`,
           };
@@ -330,12 +413,19 @@ describe('Compute parameters helper', () => {
 
         it('should compute and parse variables correctly', () => {
           const parameters = {
-            key1: `${computeVariable(executionStepThree.stepId, 'step3Key4.step3Key4ChildKey4')}`,
+            key1: `${computeVariable(
+              executionStepThree.stepId,
+              'step3Key4.step3Key4ChildKey4'
+            )}`,
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
-            key1: ["value1", "value2"],
+            key1: ['value1', 'value2'],
           };
 
           expect(computedParameters).toStrictEqual(expectedParameters);
@@ -358,9 +448,9 @@ describe('Compute parameters helper', () => {
                   required: true,
                   variables: true,
                   valueType: 'parse',
-                }
+                },
               ],
-            })
+            }),
           ];
 
           const parameters = {
@@ -368,11 +458,15 @@ describe('Compute parameters helper', () => {
               {
                 key: 'person',
                 value: '{ "name": "John Doe", "age": 32 }',
-              }
+              },
             ],
           };
 
-          const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+          const computedParameters = computeParameters(
+            parameters,
+            stepArguments,
+            executionSteps
+          );
           const expectedParameters = {
             inputs: [
               {
@@ -380,8 +474,8 @@ describe('Compute parameters helper', () => {
                 value: {
                   name: 'John Doe',
                   age: 32,
-                }
-              }
+                },
+              },
             ],
           };
 
@@ -410,7 +504,11 @@ describe('Compute parameters helper', () => {
         key1: 119007199254740999,
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
 
       expect(computedParameters).toStrictEqual(parameters);
       expect(computedParameters.key1 > Number.MAX_SAFE_INTEGER).toBe(true);
@@ -421,21 +519,32 @@ describe('Compute parameters helper', () => {
         key1: '119007199254740999',
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
 
       expect(computedParameters).toStrictEqual(parameters);
     });
 
     it('should compute variables with int values correctly', () => {
       const parameters = {
-        key1: `another static text ${computeVariable(executionStepThree.stepId, 'step3Key2')}`,
-        key2: `${computeVariable(executionStepThree.stepId, 'step3Key3')}`
+        key1: `another static text ${computeVariable(
+          executionStepThree.stepId,
+          'step3Key2'
+        )}`,
+        key2: `${computeVariable(executionStepThree.stepId, 'step3Key3')}`,
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
       const expectedParameters = {
         key1: `another static text 123123`,
-        key2: `123123`
+        key2: `123123`,
       };
 
       expect(computedParameters).toStrictEqual(expectedParameters);
@@ -443,15 +552,22 @@ describe('Compute parameters helper', () => {
 
     it.todo('should compute variables with bigint values correctly', () => {
       const parameters = {
-        key1: `another static text ${computeVariable(executionStepTwo.stepId, 'step2Key2')}`,
-        key2: `${computeVariable(executionStepTwo.stepId, 'step2Key3')}`
+        key1: `another static text ${computeVariable(
+          executionStepTwo.stepId,
+          'step2Key2'
+        )}`,
+        key2: `${computeVariable(executionStepTwo.stepId, 'step2Key3')}`,
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
       const expectedParameters = {
         // The expected `key2` is computed wrongly.
         key1: `another static text 6502380617126796383`,
-        key2: `6502380617126796383`
+        key2: `6502380617126796383`,
       };
 
       expect(computedParameters).toStrictEqual(expectedParameters);
@@ -477,7 +593,11 @@ describe('Compute parameters helper', () => {
         key2: false,
       };
 
-      const computedParameters = computeParameters(parameters, stepArguments, executionSteps);
+      const computedParameters = computeParameters(
+        parameters,
+        stepArguments,
+        executionSteps
+      );
 
       expect(computedParameters).toStrictEqual(parameters);
       expect(computedParameters.key1).toBe(true);

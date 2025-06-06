@@ -2,13 +2,13 @@ import isEmpty from 'lodash/isEmpty.js';
 
 import Flow from '@/models/flow.js';
 import { processTrigger } from '@/services/trigger.js';
-import triggerQueue from '../queues/trigger.js';
-import globalVariable from './global-variable.js';
-import QuotaExceededError from '../errors/quote-exceeded.js';
+import triggerQueue from '@/queues/trigger.js';
+import globalVariable from '@/helpers/global-variable.js';
+import QuotaExceededError from '@/errors/quote-exceeded.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from './remove-job-configuration.js';
+} from '@/helpers/remove-job-configuration.js';
 
 export default async (flowId, request, response) => {
   const flow = await Flow.query().findById(flowId).throwIfNotFound();

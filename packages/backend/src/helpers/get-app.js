@@ -2,8 +2,8 @@ import path, { join } from 'path';
 import fs from 'node:fs';
 import omit from 'lodash/omit.js';
 import cloneDeep from 'lodash/cloneDeep.js';
-import addAuthenticationSteps from './add-authentication-steps.js';
-import addReconnectionSteps from './add-reconnection-steps.js';
+import addAuthenticationSteps from '@/helpers/add-authentication-steps.js';
+import addReconnectionSteps from '@/helpers/add-reconnection-steps.js';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

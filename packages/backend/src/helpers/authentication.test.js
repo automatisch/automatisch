@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { isAuthenticated } from './authentication.js';
-import { createUser } from '../../test/factories/user.js';
-import createAuthTokenByUserId from '../helpers/create-auth-token-by-user-id.js';
+import { isAuthenticated } from '@/helpers/authentication.js';
+import { createUser } from '@/factories/user.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
 
 describe('isAuthenticated', () => {
   it('should return false if no token is provided', async () => {

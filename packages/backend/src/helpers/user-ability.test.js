@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import userAbility from './user-ability.js';
+import userAbility from '@/helpers/user-ability.js';
 
 describe('userAbility', () => {
   it('should return PureAbility instantiated with user permissions', () => {

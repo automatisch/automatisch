@@ -1,7 +1,7 @@
-import createHttpClient from './http-client/index.js';
-import EarlyExitError from '../errors/early-exit.js';
-import AlreadyProcessedError from '../errors/already-processed.js';
-import Datastore from '../models/datastore.js';
+import createHttpClient from '@/helpers/http-client/index.js';
+import EarlyExitError from '@/errors/early-exit.js';
+import AlreadyProcessedError from '@/errors/already-processed.js';
+import Datastore from '@/models/datastore.js';
 
 const globalVariable = async (options) => {
   const {

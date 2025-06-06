@@ -1,4 +1,4 @@
-import NotAuthorizedError from '../errors/not-authorized.js';
+import NotAuthorizedError from '@/errors/not-authorized.js';
 
 const authorizationList = {
   'GET /internal/api/v1/users/:userId': {

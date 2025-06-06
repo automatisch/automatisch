@@ -1,5 +1,5 @@
 import morgan from 'morgan';
-import logger from './logger.js';
+import logger from '@/helpers/logger.js';
 
 const stream = {
   write: (message) =>

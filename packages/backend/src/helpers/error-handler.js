@@ -1,6 +1,6 @@
-import logger from './logger.js';
+import logger from '@/helpers/logger.js';
 import objection from 'objection';
-import * as Sentry from './sentry.ee.js';
+import * as Sentry from '@/helpers/sentry.ee.js';
 const {
   NotFoundError,
   DataError,
@@ -8,12 +8,12 @@ const {
   ValidationError,
   UniqueViolationError,
 } = objection;
-import NotAuthorizedError from '../errors/not-authorized.js';
-import HttpError from '../errors/http.js';
+import NotAuthorizedError from '@/errors/not-authorized.js';
+import HttpError from '@/errors/http.js';
 import {
   renderObjectionError,
   renderUniqueViolationError,
-} from './renderer.js';
+} from '@/helpers/renderer.js';
 
 // Do not remove `next` argument as the function signature will not fit for an error handler middleware
 // eslint-disable-next-line no-unused-vars
