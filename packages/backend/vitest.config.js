@@ -15,6 +15,7 @@ export default defineConfig({
       '@/queues': resolve(__dirname, './src/queues'),
       '@/services': resolve(__dirname, './src/services'),
       '@/routes': resolve(__dirname, './src/routes'),
+      '@/serializers': resolve(__dirname, './src/serializers'),
       '@/factories': resolve(__dirname, './test/factories'),
       '@/mocks': resolve(__dirname, './test/mocks'),
     },

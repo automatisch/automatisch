@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createUser } from '../../../test/factories/user';
-import adminUserSerializer from './user.js';
+import { createUser } from '@/factories/user.js';
+import adminUserSerializer from '@/serializers/admin/user.js';
 
 describe('adminUserSerializer', () => {
   let user;

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import formSerializer from './form.ee.js';
+import formSerializer from '@/serializers/form.ee.js';
 import { createForm } from '@/factories/form.js';
 
 describe('formSerializer', () => {

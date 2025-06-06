@@ -1,4 +1,4 @@
-import executionStepSerializer from './execution-step.js';
+import executionStepSerializer from '@/serializers/execution-step.js';
 
 const stepSerializer = (step) => {
   let stepData = {

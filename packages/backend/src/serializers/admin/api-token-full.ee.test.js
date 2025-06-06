@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import adminApiTokenFullSerializer from './api-token-full.ee.js';
-import { createApiToken } from '../../../test/factories/api-token.js';
+import adminApiTokenFullSerializer from '@/serializers/admin/api-token-full.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
 
 describe('adminApiTokenFullSerializer', () => {
   let apiToken;

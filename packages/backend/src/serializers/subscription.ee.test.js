@@ -1,8 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import appConfig from '../config/app';
-import { createUser } from '../../test/factories/user';
-import { createSubscription } from '../../test/factories/subscription';
-import subscriptionSerializer from './subscription.ee.js';
+import appConfig from '@/config/app.js';
+import { createUser } from '@/factories/user.js';
+import { createSubscription } from '@/factories/subscription.js';
+import subscriptionSerializer from '@/serializers/subscription.ee.js';
 
 describe('subscriptionSerializer', () => {
   let user, subscription;

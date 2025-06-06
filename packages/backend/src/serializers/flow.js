@@ -1,5 +1,5 @@
-import stepSerializer from './step.js';
-import folderSerilializer from './folder.js';
+import stepSerializer from '@/serializers/step.js';
+import folderSerilializer from '@/serializers/folder.js';
 
 const flowSerializer = (flow) => {
   let flowData = {

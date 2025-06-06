@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createPermission } from '../../test/factories/permission';
-import permissionSerializer from './permission';
+import { createPermission } from '@/factories/permission.js';
+import permissionSerializer from '@/serializers/permission.js';
 
 describe('permissionSerializer', () => {
   let permission;

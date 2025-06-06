@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createFlow } from '../../test/factories/flow';
-import flowSerializer from './flow';
-import stepSerializer from './step';
-import { createStep } from '../../test/factories/step';
+import { createFlow } from '@/factories/flow.js';
+import flowSerializer from '@/serializers/flow.js';
+import stepSerializer from '@/serializers/step.js';
+import { createStep } from '@/factories/step.js';
 
 describe('flowSerializer', () => {
   let flow, stepOne, stepTwo;

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createConnection } from '../../test/factories/connection';
-import connectionSerializer from './connection';
+import { createConnection } from '@/factories/connection.js';
+import connectionSerializer from '@/serializers/connection.js';
 
 describe('connectionSerializer', () => {
   let connection;

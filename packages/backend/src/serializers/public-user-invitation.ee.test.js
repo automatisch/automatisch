@@ -1,8 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import appConfig from '../config/app.js';
-import { createUser } from '../../test/factories/user.js';
-import publicUserInvitationSerializer from './public-user-invitation.ee.js';
-import roleSerializer from './role.js';
+import appConfig from '@/config/app.js';
+import { createUser } from '@/factories/user.js';
+import publicUserInvitationSerializer from '@/serializers/public-user-invitation.ee.js';
+import roleSerializer from '@/serializers/role.js';
 
 describe('publicUserInvitation', () => {
   let user, role;

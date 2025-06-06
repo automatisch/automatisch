@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createFolder } from '../../test/factories/folder';
-import folderSerializer from './folder';
+import { createFolder } from '@/factories/folder.js';
+import folderSerializer from '@/serializers/folder.js';
 
 describe('folder serializer', () => {
   let folder;

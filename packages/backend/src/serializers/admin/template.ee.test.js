@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import templateSerializer from './template.ee.js';
-import { createTemplate } from '../../../test/factories/template.js';
+import templateSerializer from '@/serializers/admin/template.ee.js';
+import { createTemplate } from '@/factories/template.js';
 
 describe('adminTemplateSerializer', () => {
   let template;

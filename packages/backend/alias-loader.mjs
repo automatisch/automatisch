@@ -13,6 +13,7 @@ const aliases = {
   '@/queues': join(__dirname, 'src/queues'),
   '@/services': join(__dirname, 'src/services'),
   '@/routes': join(__dirname, 'src/routes'),
+  '@/serializers': join(__dirname, 'src/serializers'),
   '@/factories': join(__dirname, 'test/factories'),
   '@/mocks': join(__dirname, 'test/mocks'),
 };

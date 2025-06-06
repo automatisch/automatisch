@@ -10,6 +10,7 @@
       "@/queues/*": ["src/queues/*"],
       "@/services/*": ["src/services/*"],
       "@/routes/*": ["src/routes/*"],
+      "@/serializers/*": ["src/serializers/*"],
       "@/factories/*": ["test/factories/*"],
       "@/mocks/*": ["test/mocks/*"]
     }

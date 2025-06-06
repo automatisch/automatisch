@@ -1,4 +1,4 @@
-import roleSerializer from './role.js';
+import roleSerializer from '@/serializers/role.js';
 
 const publicUserInvitationSerializer = (user) => {
   let userData = {
