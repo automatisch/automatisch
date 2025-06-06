@@ -1,5 +1,5 @@
-import User from '../models/user.js';
-import AccessToken from '../models/access-token.js';
+import User from '@/models/user.js';
+import AccessToken from '@/models/access-token.js';
 
 export const isAuthenticated = async (req) => {
   const token = req.headers['authorization'];

@@ -1,5 +1,5 @@
-import HttpError from '../../errors/http.js';
-import { createInstance } from '../axios-with-proxy.js';
+import HttpError from '@/errors/http.js';
+import { createInstance } from '@/helpers/axios-with-proxy.js';
 
 export default function createHttpClient({ $, baseURL, beforeRequest = [] }) {
   async function interceptResponseError(error) {
@@ -25,7 +25,7 @@ export default function createHttpClient({ $, baseURL, beforeRequest = [] }) {
     }
 
     throw new HttpError(error);
-  };
+  }
 
   const instance = createInstance(
     {
@@ -33,11 +33,12 @@ export default function createHttpClient({ $, baseURL, beforeRequest = [] }) {
     },
     {
       requestInterceptor: beforeRequest.map((originalBeforeRequest) => {
-        return async (requestConfig) => await originalBeforeRequest($, requestConfig);
+        return async (requestConfig) =>
+          await originalBeforeRequest($, requestConfig);
       }),
       responseErrorInterceptor: interceptResponseError,
     }
-  )
+  );
 
   return instance;
 }

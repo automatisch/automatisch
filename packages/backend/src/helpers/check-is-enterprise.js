@@ -1,4 +1,4 @@
-import { hasValidLicense } from './license.ee.js';
+import { hasValidLicense } from '@/helpers/license.ee.js';
 
 export const checkIsEnterprise = async (request, response, next) => {
   if (await hasValidLicense()) {

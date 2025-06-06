@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { isApiTokenAuthenticated } from './authenticate-api-token.ee.js';
-import { createApiToken } from '../../test/factories/api-token.js';
+import { isApiTokenAuthenticated } from '@/helpers/authenticate-api-token.ee.js';
+import { createApiToken } from '@/factories/api-token.js';
 
 describe('isApiTokenAuthenticated', () => {
   it('should return false if no token is provided', async () => {

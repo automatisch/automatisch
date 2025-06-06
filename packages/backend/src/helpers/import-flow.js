@@ -1,5 +1,5 @@
 import Crypto from 'crypto';
-import Step from '../models/step.js';
+import Step from '@/models/step.js';
 import { ValidationError } from 'objection';
 
 const importFlow = async (user, flowData) => {

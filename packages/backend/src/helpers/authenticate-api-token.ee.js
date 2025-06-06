@@ -1,4 +1,4 @@
-import ApiToken from '../models/api-token.ee.js';
+import ApiToken from '@/models/api-token.ee.js';
 
 export const isApiTokenAuthenticated = async (request) => {
   const token = request.headers['x-api-token'];

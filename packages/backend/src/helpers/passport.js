@@ -2,13 +2,13 @@ import { URL } from 'node:url';
 import { MultiSamlStrategy } from '@node-saml/passport-saml';
 import passport from 'passport';
 
-import appConfig from '../config/app.js';
-import createAuthTokenByUserId from './create-auth-token-by-user-id.js';
-import SamlAuthProvider from '../models/saml-auth-provider.ee.js';
-import AccessToken from '../models/access-token.js';
-import findOrCreateUserBySamlIdentity from './find-or-create-user-by-saml-identity.ee.js';
+import appConfig from '@/config/app.js';
+import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import SamlAuthProvider from '@/models/saml-auth-provider.ee.js';
+import AccessToken from '@/models/access-token.js';
+import findOrCreateUserBySamlIdentity from '@/helpers/find-or-create-user-by-saml-identity.ee.js';
 
-const asyncNoop = async () => { };
+const asyncNoop = async () => {};
 
 export default function configurePassport(app) {
   app.use(
@@ -84,10 +84,12 @@ export default function configurePassport(app) {
           authProvider
         );
 
-        const accessToken = await AccessToken.query().findOne({
-          revoked_at: null,
-          saml_session_id: user.sessionIndex,
-        }).throwIfNotFound();
+        const accessToken = await AccessToken.query()
+          .findOne({
+            revoked_at: null,
+            saml_session_id: user.sessionIndex,
+          })
+          .throwIfNotFound();
 
         await accessToken.revoke();
 
@@ -110,7 +112,10 @@ export default function configurePassport(app) {
       session: false,
     }),
     async (request, response) => {
-      const token = await createAuthTokenByUserId(request.currentUser.id, request.samlSessionId);
+      const token = await createAuthTokenByUserId(
+        request.currentUser.id,
+        request.samlSessionId
+      );
 
       const redirectUrl = new URL(
         `/login/callback?token=${token}`,
@@ -124,6 +129,6 @@ export default function configurePassport(app) {
     '/logout/saml/:issuer',
     passport.authenticate('saml', {
       session: false,
-    }),
+    })
   );
 }

@@ -1,4 +1,4 @@
-import appConfig from '../config/app.js';
+import appConfig from '@/config/app.js';
 
 const appInfoConverter = (rawAppData) => {
   rawAppData.iconUrl = rawAppData.iconUrl.replace(
