@@ -1,6 +1,6 @@
-import { createRole } from './role.js';
 import { faker } from '@faker-js/faker';
-import User from '../../src/models/user.js';
+import { createRole } from '@/factories/role.js';
+import User from '@/models/user.js';
 
 export const createUser = async (params = {}) => {
   params.roleId = params?.roleId || (await createRole()).id;

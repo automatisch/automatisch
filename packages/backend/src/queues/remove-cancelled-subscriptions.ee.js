@@ -1,4 +1,4 @@
-import { generateQueue } from './queue.js';
+import { generateQueue } from '@/queues/queue.js';
 
 const removeCancelledSubscriptionsQueue = generateQueue(
   'remove-cancelled-subscriptions',

@@ -1,5 +1,5 @@
-import Step from '../../src/models/step.js';
-import { createFlow } from './flow.js';
+import Step from '@/models/step.js';
+import { createFlow } from '@/factories/flow.js';
 
 export const createStep = async (params = {}) => {
   params.flowId = params?.flowId || (await createFlow()).id;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import App from '../models/app';
-import appSerializer from './app';
+import App from '@/models/app.js';
+import appSerializer from '@/serializers/app.js';
 
 describe('appSerializer', () => {
   it('should return app data', async () => {

@@ -1,6 +1,6 @@
 import { Model } from 'objection';
-import { client as knex } from '../../src/config/database.js';
-import logger from '../../src/helpers/logger.js';
+import { client as knex } from '@/config/database.js';
+import logger from '@/helpers/logger.js';
 import { vi } from 'vitest';
 import './insert-assertions.js';
 

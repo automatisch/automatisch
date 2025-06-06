@@ -1,4 +1,4 @@
-import appConfig from '../../../../../../../src/config/app.js';
+import appConfig from '@/config/app.js';
 
 const registerUserMock = (user) => {
   const userData = {

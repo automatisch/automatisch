@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import appsRouter from './v1/apps.ee.js';
-import executionsRouter from './v1/executions.ee.js';
-import flowsRouter from './v1/flows.ee.js';
-import templatesRouter from './v1/templates.ee.js';
-import usersRouter from './v1/users.ee.js';
-import userInvitationsRouter from './v1/user-invitations.ee.js';
+import appsRouter from '@/routes/api/v1/apps.ee.js';
+import executionsRouter from '@/routes/api/v1/executions.ee.js';
+import flowsRouter from '@/routes/api/v1/flows.ee.js';
+import templatesRouter from '@/routes/api/v1/templates.ee.js';
+import usersRouter from '@/routes/api/v1/users.ee.js';
+import userInvitationsRouter from '@/routes/api/v1/user-invitations.ee.js';
 
 const router = Router();
 

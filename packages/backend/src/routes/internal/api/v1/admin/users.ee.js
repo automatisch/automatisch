@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { authenticateUser } from '../../../../../helpers/authentication.js';
-import { authorizeAdmin } from '../../../../../helpers/authorization.js';
-import getUsersAction from '../../../../../controllers/internal/api/v1/admin/users/get-users.ee.js';
-import createUserAction from '../../../../../controllers/internal/api/v1/admin/users/create-user.js';
-import getUserAction from '../../../../../controllers/internal/api/v1/admin/users/get-user.ee.js';
-import updateUserAction from '../../../../../controllers/internal/api/v1/admin/users/update-user.ee.js';
-import deleteUserAction from '../../../../../controllers/internal/api/v1/admin/users/delete-user.js';
+import { authenticateUser } from '@/helpers/authentication.js';
+import { authorizeAdmin } from '@/helpers/authorization.js';
+import getUsersAction from '@/controllers/internal/api/v1/admin/users/get-users.ee.js';
+import createUserAction from '@/controllers/internal/api/v1/admin/users/create-user.js';
+import getUserAction from '@/controllers/internal/api/v1/admin/users/get-user.ee.js';
+import updateUserAction from '@/controllers/internal/api/v1/admin/users/update-user.ee.js';
+import deleteUserAction from '@/controllers/internal/api/v1/admin/users/delete-user.js';
 
 const router = Router();
 

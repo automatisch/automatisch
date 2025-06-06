@@ -1,8 +1,8 @@
 import { Worker } from 'bullmq';
 
-import * as Sentry from '../helpers/sentry.ee.js';
-import redisConfig from '../config/redis.js';
-import logger from '../helpers/logger.js';
+import * as Sentry from '@/helpers/sentry.ee.js';
+import redisConfig from '@/config/redis.js';
+import logger from '@/helpers/logger.js';
 
 export const generateWorker = (workerName, job) => {
   const worker = new Worker(workerName, job, { connection: redisConfig });

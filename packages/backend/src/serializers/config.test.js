@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getConfig } from '../../test/factories/config';
-import configSerializer from './config';
+import { getConfig } from '@/factories/config.js';
+import configSerializer from '@/serializers/config.js';
 
 describe('configSerializer', () => {
   let config;

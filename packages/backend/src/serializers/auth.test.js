@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import App from '../models/app';
-import authSerializer from './auth';
+import App from '@/models/app.js';
+import authSerializer from '@/serializers/auth.js';
 
 describe('authSerializer', () => {
   it('should return auth data', async () => {

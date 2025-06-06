@@ -1,5 +1,5 @@
-import { generateWorker } from './worker.js';
-import { executeActionJob } from '../jobs/execute-action.js';
+import { generateWorker } from '@/workers/worker.js';
+import { executeActionJob } from '@/jobs/execute-action.js';
 
 const actionWorker = generateWorker('action', executeActionJob);
 

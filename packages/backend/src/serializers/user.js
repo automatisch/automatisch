@@ -1,6 +1,6 @@
-import roleSerializer from './role.js';
-import permissionSerializer from './permission.js';
-import appConfig from '../config/app.js';
+import roleSerializer from '@/serializers/role.js';
+import permissionSerializer from '@/serializers/permission.js';
+import appConfig from '@/config/app.js';
 
 const userSerializer = (user) => {
   let userData = {

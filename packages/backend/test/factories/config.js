@@ -1,4 +1,4 @@
-import Config from '../../src/models/config';
+import Config from '@/models/config';
 
 export const getConfig = async () => {
   return await Config.get();

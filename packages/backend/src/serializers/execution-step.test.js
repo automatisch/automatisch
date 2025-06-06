@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import executionStepSerializer from './execution-step';
-import stepSerializer from './step';
-import { createExecutionStep } from '../../test/factories/execution-step';
-import { createStep } from '../../test/factories/step';
+import executionStepSerializer from '@/serializers/execution-step.js';
+import stepSerializer from '@/serializers/step.js';
+import { createExecutionStep } from '@/factories/execution-step.js';
+import { createStep } from '@/factories/step.js';
 
 describe('executionStepSerializer', () => {
   let executionStep, step;

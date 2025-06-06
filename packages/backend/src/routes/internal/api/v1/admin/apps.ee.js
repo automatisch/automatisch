@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { authenticateUser } from '../../../../../helpers/authentication.js';
-import { authorizeAdmin } from '../../../../../helpers/authorization.js';
-import { checkIsEnterprise } from '../../../../../helpers/check-is-enterprise.js';
-import createConfigAction from '../../../../../controllers/internal/api/v1/admin/apps/create-config.ee.js';
-import updateConfigAction from '../../../../../controllers/internal/api/v1/admin/apps/update-config.ee.js';
-import getOAuthClientsAction from '../../../../../controllers/internal/api/v1/admin/apps/get-oauth-clients.ee.js';
-import getOAuthClientAction from '../../../../../controllers/internal/api/v1/admin/apps/get-oauth-client.ee.js';
-import createOAuthClientAction from '../../../../../controllers/internal/api/v1/admin/apps/create-oauth-client.ee.js';
-import updateOAuthClientAction from '../../../../../controllers/internal/api/v1/admin/apps/update-oauth-client.ee.js';
+import { authenticateUser } from '@/helpers/authentication.js';
+import { authorizeAdmin } from '@/helpers/authorization.js';
+import { checkIsEnterprise } from '@/helpers/check-is-enterprise.js';
+import createConfigAction from '@/controllers/internal/api/v1/admin/apps/create-config.ee.js';
+import updateConfigAction from '@/controllers/internal/api/v1/admin/apps/update-config.ee.js';
+import getOAuthClientsAction from '@/controllers/internal/api/v1/admin/apps/get-oauth-clients.ee.js';
+import getOAuthClientAction from '@/controllers/internal/api/v1/admin/apps/get-oauth-client.ee.js';
+import createOAuthClientAction from '@/controllers/internal/api/v1/admin/apps/create-oauth-client.ee.js';
+import updateOAuthClientAction from '@/controllers/internal/api/v1/admin/apps/update-oauth-client.ee.js';
 
 const router = Router();
 

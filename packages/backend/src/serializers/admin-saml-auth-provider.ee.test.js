@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createSamlAuthProvider } from '../../test/factories/saml-auth-provider.ee.js';
-import adminSamlAuthProviderSerializer from './admin-saml-auth-provider.ee.js';
+import { createSamlAuthProvider } from '@/factories/saml-auth-provider.ee.js';
+import adminSamlAuthProviderSerializer from '@/serializers/admin-saml-auth-provider.ee.js';
 
 describe('adminSamlAuthProviderSerializer', () => {
   let samlAuthProvider;

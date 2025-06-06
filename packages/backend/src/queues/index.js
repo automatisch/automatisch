@@ -1,10 +1,10 @@
-import appConfig from '../config/app.js';
-import actionQueue from './action.js';
-import emailQueue from './email.js';
-import flowQueue from './flow.js';
-import triggerQueue from './trigger.js';
-import deleteUserQueue from './delete-user.ee.js';
-import removeCancelledSubscriptionsQueue from './remove-cancelled-subscriptions.ee.js';
+import appConfig from '@/config/app.js';
+import actionQueue from '@/queues/action.js';
+import emailQueue from '@/queues/email.js';
+import flowQueue from '@/queues/flow.js';
+import triggerQueue from '@/queues/trigger.js';
+import deleteUserQueue from '@/queues/delete-user.ee.js';
+import removeCancelledSubscriptionsQueue from '@/queues/remove-cancelled-subscriptions.ee.js';
 
 const queues = [
   actionQueue,

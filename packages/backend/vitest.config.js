@@ -8,11 +8,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@/models': resolve(__dirname, './src/models'),
+      '@/controllers': resolve(__dirname, './src/controllers'),
       '@/helpers': resolve(__dirname, './src/helpers'),
       '@/config': resolve(__dirname, './src/config'),
       '@/errors': resolve(__dirname, './src/errors'),
       '@/queues': resolve(__dirname, './src/queues'),
+      '@/workers': resolve(__dirname, './src/workers'),
+      '@/jobs': resolve(__dirname, './src/jobs'),
       '@/services': resolve(__dirname, './src/services'),
+      '@/routes': resolve(__dirname, './src/routes'),
+      '@/serializers': resolve(__dirname, './src/serializers'),
       '@/factories': resolve(__dirname, './test/factories'),
       '@/mocks': resolve(__dirname, './test/mocks'),
     },

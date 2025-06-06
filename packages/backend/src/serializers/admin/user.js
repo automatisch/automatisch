@@ -1,4 +1,4 @@
-import userSerializer from '../user.js';
+import userSerializer from '@/serializers/user.js';
 
 const adminUserSerializer = (user) => {
   const userData = userSerializer(user);

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import OAuthClient from '../../src/models/oauth-client.js';
+import OAuthClient from '@/models/oauth-client.js';
 
 const formattedAuthDefaults = {
   oAuthRedirectUrl: faker.internet.url(),

@@ -1,4 +1,4 @@
-import flowSerializer from './flow.js';
+import flowSerializer from '@/serializers/flow.js';
 
 const executionSerializer = (execution) => {
   let executionData = {

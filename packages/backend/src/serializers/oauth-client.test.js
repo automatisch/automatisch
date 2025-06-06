@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createOAuthClient } from '../../test/factories/oauth-client';
-import oauthClientSerializer from './oauth-client';
+import { createOAuthClient } from '@/factories/oauth-client.js';
+import oauthClientSerializer from '@/serializers/oauth-client.js';
 
 describe('oauthClient serializer', () => {
   let oauthClient;

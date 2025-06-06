@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createAppConfig } from '../../test/factories/app-config';
-import appConfigSerializer from './app-config';
+import { createAppConfig } from '@/factories/app-config.js';
+import appConfigSerializer from '@/serializers/app-config.js';
 
 describe('appConfig serializer', () => {
   let appConfig;

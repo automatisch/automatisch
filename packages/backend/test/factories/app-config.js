@@ -1,4 +1,4 @@
-import AppConfig from '../../src/models/app-config.js';
+import AppConfig from '@/models/app-config.js';
 import { faker } from '@faker-js/faker';
 
 export const createAppConfig = async (params = {}) => {

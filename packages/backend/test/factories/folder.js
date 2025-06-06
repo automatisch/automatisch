@@ -1,6 +1,6 @@
-import Folder from '../../src/models/folder.js';
+import Folder from '@/models/folder.js';
 import { faker } from '@faker-js/faker';
-import { createUser } from './user.js';
+import { createUser } from '@/factories/user.js';
 
 export const createFolder = async (params = {}) => {
   params.userId = params?.userId || (await createUser()).id;
