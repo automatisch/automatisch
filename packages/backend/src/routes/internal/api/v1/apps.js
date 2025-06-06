@@ -1,20 +1,20 @@
 import { Router } from 'express';
-import { authenticateUser } from '../../../../helpers/authentication.js';
-import { authorizeUser } from '../../../../helpers/authorization.js';
-import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
-import getAppAction from '../../../../controllers/internal/api/v1/apps/get-app.js';
-import getAppsAction from '../../../../controllers/internal/api/v1/apps/get-apps.js';
-import getAuthAction from '../../../../controllers/internal/api/v1/apps/get-auth.js';
-import getConnectionsAction from '../../../../controllers/internal/api/v1/apps/get-connections.js';
-import getConfigAction from '../../../../controllers/internal/api/v1/apps/get-config.ee.js';
-import getOAuthClientsAction from '../../../../controllers/internal/api/v1/apps/get-oauth-clients.ee.js';
-import getOAuthClientAction from '../../../../controllers/internal/api/v1/apps/get-oauth-client.ee.js';
-import getTriggersAction from '../../../../controllers/internal/api/v1/apps/get-triggers.js';
-import getTriggerSubstepsAction from '../../../../controllers/internal/api/v1/apps/get-trigger-substeps.js';
-import getActionsAction from '../../../../controllers/internal/api/v1/apps/get-actions.js';
-import getActionSubstepsAction from '../../../../controllers/internal/api/v1/apps/get-action-substeps.js';
-import getFlowsAction from '../../../../controllers/internal/api/v1/apps/get-flows.js';
-import createConnectionAction from '../../../../controllers/internal/api/v1/apps/create-connection.js';
+import { authenticateUser } from '@/helpers/authentication.js';
+import { authorizeUser } from '@/helpers/authorization.js';
+import { checkIsEnterprise } from '@/helpers/check-is-enterprise.js';
+import getAppAction from '@/controllers/internal/api/v1/apps/get-app.js';
+import getAppsAction from '@/controllers/internal/api/v1/apps/get-apps.js';
+import getAuthAction from '@/controllers/internal/api/v1/apps/get-auth.js';
+import getConnectionsAction from '@/controllers/internal/api/v1/apps/get-connections.js';
+import getConfigAction from '@/controllers/internal/api/v1/apps/get-config.ee.js';
+import getOAuthClientsAction from '@/controllers/internal/api/v1/apps/get-oauth-clients.ee.js';
+import getOAuthClientAction from '@/controllers/internal/api/v1/apps/get-oauth-client.ee.js';
+import getTriggersAction from '@/controllers/internal/api/v1/apps/get-triggers.js';
+import getTriggerSubstepsAction from '@/controllers/internal/api/v1/apps/get-trigger-substeps.js';
+import getActionsAction from '@/controllers/internal/api/v1/apps/get-actions.js';
+import getActionSubstepsAction from '@/controllers/internal/api/v1/apps/get-action-substeps.js';
+import getFlowsAction from '@/controllers/internal/api/v1/apps/get-flows.js';
+import createConnectionAction from '@/controllers/internal/api/v1/apps/create-connection.js';
 
 const router = Router();
 

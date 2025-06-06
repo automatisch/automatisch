@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { checkIsEnterprise } from '../../../../helpers/check-is-enterprise.js';
-import versionAction from '../../../../controllers/internal/api/v1/automatisch/version.js';
-import notificationsAction from '../../../../controllers/internal/api/v1/automatisch/notifications.js';
-import infoAction from '../../../../controllers/internal/api/v1/automatisch/info.js';
-import licenseAction from '../../../../controllers/internal/api/v1/automatisch/license.js';
-import configAction from '../../../../controllers/internal/api/v1/automatisch/config.ee.js';
+import { checkIsEnterprise } from '@/helpers/check-is-enterprise.js';
+import versionAction from '@/controllers/internal/api/v1/automatisch/version.js';
+import notificationsAction from '@/controllers/internal/api/v1/automatisch/notifications.js';
+import infoAction from '@/controllers/internal/api/v1/automatisch/info.js';
+import licenseAction from '@/controllers/internal/api/v1/automatisch/license.js';
+import configAction from '@/controllers/internal/api/v1/automatisch/config.ee.js';
 
 const router = Router();
 

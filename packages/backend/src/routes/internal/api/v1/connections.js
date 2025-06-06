@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { authenticateUser } from '../../../../helpers/authentication.js';
-import { authorizeUser } from '../../../../helpers/authorization.js';
-import getFlowsAction from '../../../../controllers/internal/api/v1/connections/get-flows.js';
-import testConnectionAction from '../../../../controllers/internal/api/v1/connections/test-connection.js';
-import verifyConnectionAction from '../../../../controllers/internal/api/v1/connections/verify-connection.js';
-import deleteConnectionAction from '../../../../controllers/internal/api/v1/connections/delete-connection.js';
-import updateConnectionAction from '../../../../controllers/internal/api/v1/connections/update-connection.js';
-import generateAuthUrlAction from '../../../../controllers/internal/api/v1/connections/generate-auth-url.js';
-import resetConnectionAction from '../../../../controllers/internal/api/v1/connections/reset-connection.js';
+import { authenticateUser } from '@/helpers/authentication.js';
+import { authorizeUser } from '@/helpers/authorization.js';
+import getFlowsAction from '@/controllers/internal/api/v1/connections/get-flows.js';
+import testConnectionAction from '@/controllers/internal/api/v1/connections/test-connection.js';
+import verifyConnectionAction from '@/controllers/internal/api/v1/connections/verify-connection.js';
+import deleteConnectionAction from '@/controllers/internal/api/v1/connections/delete-connection.js';
+import updateConnectionAction from '@/controllers/internal/api/v1/connections/update-connection.js';
+import generateAuthUrlAction from '@/controllers/internal/api/v1/connections/generate-auth-url.js';
+import resetConnectionAction from '@/controllers/internal/api/v1/connections/reset-connection.js';
 
 const router = Router();
 

@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import webhooksRouter from './webhooks.js';
-import paddleRouter from './paddle.ee.js';
-import healthcheckRouter from './healthcheck.js';
-import apiRouter from './api/index.js';
-import internalApiRouter from './internal/api/index.js';
-import { checkIsEnterprise } from '../helpers/check-is-enterprise.js';
-import { authenticateApiToken } from '../helpers/authenticate-api-token.ee.js';
+import webhooksRouter from '@/routes/webhooks.js';
+import paddleRouter from '@/routes/paddle.ee.js';
+import healthcheckRouter from '@/routes/healthcheck.js';
+import apiRouter from '@/routes/api/index.js';
+import internalApiRouter from '@/routes/internal/api/index.js';
+import { checkIsEnterprise } from '@/helpers/check-is-enterprise.js';
+import { authenticateApiToken } from '@/helpers/authenticate-api-token.ee.js';
 
 const router = Router();
 

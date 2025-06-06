@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import getExecutionsAction from '../../../controllers/api/v1/executions/get-executions.ee.js';
-import getExecutionAction from '../../../controllers/api/v1/executions/get-execution.ee.js';
+import getExecutionsAction from '@/controllers/api/v1/executions/get-executions.ee.js';
+import getExecutionAction from '@/controllers/api/v1/executions/get-execution.ee.js';
 
 const router = Router();
 

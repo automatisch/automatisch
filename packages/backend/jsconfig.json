@@ -3,11 +3,13 @@
     "baseUrl": ".",
     "paths": {
       "@/models/*": ["src/models/*"],
+      "@/controllers/*": ["src/controllers/*"],
       "@/helpers/*": ["src/helpers/*"],
       "@/config/*": ["src/config/*"],
       "@/errors/*": ["src/errors/*"],
       "@/queues/*": ["src/queues/*"],
       "@/services/*": ["src/services/*"],
+      "@/routes/*": ["src/routes/*"],
       "@/factories/*": ["test/factories/*"],
       "@/mocks/*": ["test/mocks/*"]
     }
