@@ -13,6 +13,8 @@ export default defineConfig({
       '@/config': resolve(__dirname, './src/config'),
       '@/errors': resolve(__dirname, './src/errors'),
       '@/queues': resolve(__dirname, './src/queues'),
+      '@/workers': resolve(__dirname, './src/workers'),
+      '@/jobs': resolve(__dirname, './src/jobs'),
       '@/services': resolve(__dirname, './src/services'),
       '@/routes': resolve(__dirname, './src/routes'),
       '@/serializers': resolve(__dirname, './src/serializers'),
