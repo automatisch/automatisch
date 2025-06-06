@@ -1,4 +1,4 @@
-import { generateQueue } from './queue.js';
+import { generateQueue } from '@/queues/queue.js';
 
 const triggerQueue = generateQueue('trigger');
 export default triggerQueue;
