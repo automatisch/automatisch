@@ -14,6 +14,7 @@ describe('formSerializer', () => {
       id: form.id,
       name: form.name,
       fields: form.fields,
+      response_message: form.response_message,
       createdAt: form.createdAt.getTime(),
       updatedAt: form.updatedAt.getTime(),
     };
