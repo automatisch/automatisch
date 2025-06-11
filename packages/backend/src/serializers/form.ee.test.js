@@ -13,8 +13,8 @@ describe('formSerializer', () => {
     const expectedPayload = {
       id: form.id,
       name: form.name,
-      fields: form.fields,
       response_message: form.response_message,
+      fields: form.fields,
       createdAt: form.createdAt.getTime(),
       updatedAt: form.updatedAt.getTime(),
     };
