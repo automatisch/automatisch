@@ -17,6 +17,9 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
       "minLength": 1,
       "type": "string",
     },
+    "response_message": {
+      "type": "string",
+    },
     "updatedAt": {
       "type": "string",
     },
