@@ -6,6 +6,9 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
     "createdAt": {
       "type": "string",
     },
+    "description": {
+      "type": "string",
+    },
     "fields": {
       "type": "array",
     },
