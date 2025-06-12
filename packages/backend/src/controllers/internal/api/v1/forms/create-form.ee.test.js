@@ -28,7 +28,11 @@ describe('POST /internal/api/v1/forms', () => {
     const response = await request(app)
       .post('/internal/api/v1/forms')
       .set('Authorization', token)
-      .send({ name: 'Test Form' })
+      .send({
+        name: 'Test Form',
+        description: 'Test Description',
+        responseMessage: 'Test Response Message',
+      })
       .expect(201);
 
     const refetchedForm = await currentUser

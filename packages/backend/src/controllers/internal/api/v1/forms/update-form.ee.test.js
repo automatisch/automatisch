@@ -34,6 +34,7 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
       .send({
         name: 'Updated form',
         response_message: 'Updated response message',
+        description: 'Updated description',
         fields: [{ key: 'updated value', type: 'string' }],
       })
       .expect(200);
@@ -43,7 +44,8 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
     const expectedPayload = await updateFormMock({
       ...refetchedForm,
       name: 'Updated form',
-      response_message: 'Updated response message',
+      responseMessage: 'Updated response message',
+      description: 'Updated description',
       fields: [{ key: 'updated value', type: 'string' }],
     });
 
