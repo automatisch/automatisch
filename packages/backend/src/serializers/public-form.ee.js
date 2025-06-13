@@ -3,6 +3,8 @@ const publicFormSerializer = (form) => {
     id: form.id,
     name: form.name,
     fields: form.fields,
+    description: form.description,
+    responseMessage: form.responseMessage,
     webhookUrl: form.webhookUrl,
   };
 
