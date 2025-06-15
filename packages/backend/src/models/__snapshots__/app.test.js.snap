@@ -6,6 +6,7 @@ exports[`App model > list > should exclude enterprise apps when license is not v
   "anthropic",
   "appwrite",
   "azure-openai",
+  "bluesky",
   "brave-search",
   "carbone",
   "clickup",
