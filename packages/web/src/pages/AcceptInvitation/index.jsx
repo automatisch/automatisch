@@ -1,13 +1,20 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Container from 'components/Container';
-import AcceptInvitationForm from 'components/AcceptInvitationForm';
+import LoginForm from 'components/LoginForm';
+import SsoProviders from 'components/SsoProviders/index.ee';
 
-export default function AcceptInvitation() {
+
+export default function Login(): React.ReactElement {
   return (
     <Box sx={{ display: 'flex', flex: 1, alignItems: 'center' }}>
       <Container maxWidth="sm">
-        <AcceptInvitationForm />
+        <Stack direction="column" gap={2}>
+          <LoginForm />
+
+          <SsoProviders />
+        </Stack>
       </Container>
     </Box>
   );
