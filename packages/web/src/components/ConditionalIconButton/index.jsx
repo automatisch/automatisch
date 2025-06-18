@@ -1,11 +1,13 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
+import type { ButtonProps } from '@mui/material/Button';
+
 import { IconButton } from './style';
 
-function ConditionalIconButton(props) {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export default function ConditionalIconButton(props: any): React.ReactElement {
   const { icon, ...buttonProps } = props;
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -18,20 +20,11 @@ function ConditionalIconButton(props) {
         size={buttonProps.size}
         component={buttonProps.component}
         to={buttonProps.to}
-        onClick={buttonProps.onClick}
-        disabled={buttonProps.disabled}
-        data-test={buttonProps['data-test']}
       >
         {icon}
       </IconButton>
     );
   }
 
-  return <Button {...buttonProps} startIcon={icon} />;
+  return <Button {...(buttonProps as ButtonProps)} />;
 }
-
-ConditionalIconButton.propTypes = {
-  icon: PropTypes.node.isRequired,
-};
-
-export default ConditionalIconButton;
