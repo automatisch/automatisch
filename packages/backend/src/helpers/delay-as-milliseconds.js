@@ -1,5 +1,5 @@
-import delayForAsMilliseconds from './delay-for-as-milliseconds.js';
-import delayUntilAsMilliseconds from './delay-until-as-milliseconds.js';
+import delayForAsMilliseconds from '@/helpers/delay-for-as-milliseconds.js';
+import delayUntilAsMilliseconds from '@/helpers/delay-until-as-milliseconds.js';
 
 const delayAsMilliseconds = (eventKey, computedParameters) => {
   let delayDuration = 0;

@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Execution model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "deletedAt": {
+      "type": "string",
+    },
+    "flowId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "internalId": {
+      "type": "string",
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+      ],
+      "type": "string",
+    },
+    "testRun": {
+      "default": false,
+      "type": "boolean",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

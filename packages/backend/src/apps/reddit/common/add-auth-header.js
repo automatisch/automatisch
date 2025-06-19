@@ -2,10 +2,6 @@ import appConfig from '../../../config/app.js';
 
 const addAuthHeader = ($, requestConfig) => {
   const screenName = $.auth.data?.screenName;
-  if ($.auth.data?.accessToken) {
-    requestConfig.headers.Authorization = `${$.auth.data.tokenType} ${$.auth.data.accessToken}`;
-  }
-
   if (screenName) {
     requestConfig.headers[
       'User-Agent'
@@ -14,6 +10,13 @@ const addAuthHeader = ($, requestConfig) => {
     requestConfig.headers[
       'User-Agent'
     ] = `web:automatisch:${appConfig.version}`;
+  }
+
+  if (
+    !requestConfig.additionalProperties?.skipAddingAuthHeader &&
+    $.auth.data?.accessToken
+  ) {
+    requestConfig.headers.Authorization = `${$.auth.data.tokenType} ${$.auth.data.accessToken}`;
   }
 
   return requestConfig;

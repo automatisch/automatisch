@@ -9,7 +9,7 @@ export default function useAutomatischInfo() {
      **/
     staleTime: Infinity,
     queryKey: ['automatisch', 'info'],
-    queryFn: async (payload, signal) => {
+    queryFn: async ({ signal }) => {
       const { data } = await api.get('/v1/automatisch/info', { signal });
 
       return data;

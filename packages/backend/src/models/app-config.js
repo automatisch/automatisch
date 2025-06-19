@@ -1,9 +1,14 @@
-import App from './app.js';
-import AppAuthClient from './app-auth-client.js';
-import Base from './base.js';
+import App from '@/models/app.js';
+import OAuthClient from '@/models/oauth-client.js';
+import Base from '@/models/base.js';
+import { ValidationError } from 'objection';
 
 class AppConfig extends Base {
   static tableName = 'app_configs';
+
+  static get idColumn() {
+    return 'key';
+  }
 
   static jsonSchema = {
     type: 'object',
@@ -12,47 +17,49 @@ class AppConfig extends Base {
     properties: {
       id: { type: 'string', format: 'uuid' },
       key: { type: 'string' },
-      allowCustomConnection: { type: 'boolean', default: false },
-      shared: { type: 'boolean', default: false },
+      useOnlyPredefinedAuthClients: { type: 'boolean', default: false },
       disabled: { type: 'boolean', default: false },
+      createdAt: { type: 'string' },
+      updatedAt: { type: 'string' },
     },
   };
 
   static relationMappings = () => ({
-    appAuthClients: {
+    oauthClients: {
       relation: Base.HasManyRelation,
-      modelClass: AppAuthClient,
+      modelClass: OAuthClient,
       join: {
         from: 'app_configs.key',
-        to: 'app_auth_clients.app_key',
+        to: 'oauth_clients.app_key',
       },
     },
   });
-
-  static get virtualAttributes() {
-    return ['canConnect', 'canCustomConnect'];
-  }
-
-  get canCustomConnect() {
-    return !this.disabled && this.allowCustomConnection;
-  }
-
-  get canConnect() {
-    const hasSomeActiveAppAuthClients = !!this.appAuthClients?.some(
-      (appAuthClient) => appAuthClient.active
-    );
-    const shared = this.shared;
-    const active = this.disabled === false;
-
-    const conditions = [hasSomeActiveAppAuthClients, shared, active];
-
-    return conditions.every(Boolean);
-  }
 
   async getApp() {
     if (!this.key) return null;
 
     return await App.findOneByKey(this.key);
+  }
+
+  async createOAuthClient(params) {
+    const supportsOauthClients = (await this.getApp())?.auth?.generateAuthUrl
+      ? true
+      : false;
+
+    if (!supportsOauthClients) {
+      throw new ValidationError({
+        data: {
+          app: [
+            {
+              message: 'This app does not support OAuth clients!',
+            },
+          ],
+        },
+        type: 'ModelValidation',
+      });
+    }
+
+    return await this.$relatedQuery('oauthClients').insert(params);
   }
 }
 

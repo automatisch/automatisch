@@ -1,5 +1,4 @@
-// @ts-check
-const { publicTest, test, expect } = require('../../fixtures/index');
+const { publicTest, expect } = require('../../fixtures/index');
 
 publicTest.describe('Login page', () => {
   publicTest('shows login form', async ({ loginPage }) => {

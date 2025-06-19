@@ -1,13 +1,13 @@
 import { ExpressAdapter } from '@bull-board/express';
 import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter.js';
-import flowQueue from '../queues/flow.js';
-import triggerQueue from '../queues/trigger.js';
-import actionQueue from '../queues/action.js';
-import emailQueue from '../queues/email.js';
-import deleteUserQueue from '../queues/delete-user.ee.js';
-import removeCancelledSubscriptionsQueue from '../queues/remove-cancelled-subscriptions.ee.js';
-import appConfig from '../config/app.js';
+import flowQueue from '@/queues/flow.js';
+import triggerQueue from '@/queues/trigger.js';
+import actionQueue from '@/queues/action.js';
+import emailQueue from '@/queues/email.js';
+import deleteUserQueue from '@/queues/delete-user.ee.js';
+import removeCancelledSubscriptionsQueue from '@/queues/remove-cancelled-subscriptions.ee.js';
+import appConfig from '@/config/app.js';
 
 const serverAdapter = new ExpressAdapter();
 

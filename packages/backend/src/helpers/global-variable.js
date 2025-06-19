@@ -1,7 +1,7 @@
-import createHttpClient from './http-client/index.js';
-import EarlyExitError from '../errors/early-exit.js';
-import AlreadyProcessedError from '../errors/already-processed.js';
-import Datastore from '../models/datastore.js';
+import createHttpClient from '@/helpers/http-client/index.js';
+import EarlyExitError from '@/errors/early-exit.js';
+import AlreadyProcessedError from '@/errors/already-processed.js';
+import Datastore from '@/models/datastore.js';
 
 const globalVariable = async (options) => {
   const {
@@ -12,6 +12,7 @@ const globalVariable = async (options) => {
     execution,
     request,
     testRun = false,
+    currentUser,
   } = options;
 
   const isTrigger = step?.isTrigger;
@@ -58,6 +59,9 @@ const globalVariable = async (options) => {
         throw new EarlyExitError();
       },
     },
+    forms: {
+      getAll: async () => await currentUser.$relatedQuery('forms'),
+    },
     getLastExecutionStep: async () =>
       (await step?.getLastExecutionStep())?.toJSON(),
     triggerOutput: {
@@ -80,8 +84,9 @@ const globalVariable = async (options) => {
       $.triggerOutput.data.push(triggerItem);
 
       const isWebhookApp = app.key === 'webhook';
+      const isFormsApp = app.key === 'forms';
 
-      if ($.execution.testRun && !isWebhookApp) {
+      if ($.execution.testRun && !isWebhookApp && !isFormsApp) {
         // early exit after receiving one item as it is enough for test execution
         throw new EarlyExitError();
       }
@@ -98,9 +103,9 @@ const globalVariable = async (options) => {
         });
 
         return {
-          key: datastore.key,
-          value: datastore.value,
-          [datastore.key]: datastore.value,
+          key: key,
+          value: datastore?.value ?? null,
+          [key]: datastore?.value ?? null,
         };
       },
       set: async ({ key, value }) => {

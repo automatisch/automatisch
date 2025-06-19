@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`User model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "deletedAt": {
+      "type": "string",
+    },
+    "email": {
+      "format": "email",
+      "maxLength": 255,
+      "minLength": 1,
+      "type": "string",
+    },
+    "fullName": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "invitationToken": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "invitationTokenSentAt": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "password": {
+      "minLength": 6,
+      "type": "string",
+    },
+    "resetPasswordToken": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "resetPasswordTokenSentAt": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "roleId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "invited",
+      ],
+      "type": "string",
+    },
+    "trialExpiryDate": {
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "required": [
+    "fullName",
+    "email",
+  ],
+  "type": "object",
+}
+`;

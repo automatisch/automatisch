@@ -1,150 +1,205 @@
-import * as React from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import debounce from 'lodash/debounce';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import AddIcon from '@mui/icons-material/Add';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
+import * as React from 'react';
+import {
+  Link,
+  Route,
+  Routes,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 
-import Can from 'components/Can';
-import FlowRow from 'components/FlowRow';
-import NoResultFound from 'components/NoResultFound';
-import ConditionalIconButton from 'components/ConditionalIconButton';
 import Container from 'components/Container';
+import FlowFilters from 'components/FlowFilters';
+import FlowRow from 'components/FlowRow';
+import FlowsButtons from 'components/FlowsButtons';
+import Folders from 'components/Folders';
+import ImportFlowDialog from 'components/ImportFlowDialog';
+import NoResultFound from 'components/NoResultFound';
 import PageTitle from 'components/PageTitle';
 import SearchInput from 'components/SearchInput';
-import useFormatMessage from 'hooks/useFormatMessage';
+import TemplatesDialog from 'components/TemplatesDialog/index.ee';
 import * as URLS from 'config/urls';
-import useLazyFlows from 'hooks/useLazyFlows';
+import objectifyUrlSearchParams from 'helpers/objectifyUrlSearchParams';
+import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+import useFlows from 'hooks/useFlows';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 export default function Flows() {
   const formatMessage = useFormatMessage();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '', 10) || 1;
-  const [flowName, setFlowName] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
+  const flowName = searchParams.get('flowName') || '';
+  const folderId = searchParams.get('folderId');
+  const status = searchParams.get('status');
+  const onlyOwnedFlows = searchParams.get('onlyOwnedFlows');
+  const currentUserAbility = useCurrentUserAbility();
+  const [searchValue, setSearchValue] = React.useState(flowName);
 
-  const { data, mutate: fetchFlows } = useLazyFlows(
-    { flowName, page },
-    {
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  );
-
-  const fetchData = React.useMemo(
-    () => debounce(fetchFlows, 300),
-    [fetchFlows],
-  );
-
-  React.useEffect(() => {
-    setIsLoading(true);
-
-    fetchData({ flowName, page });
-
-    return () => {
-      fetchData.cancel();
-    };
-  }, [fetchData, flowName, page]);
-
-  React.useEffect(
-    function resetPageOnSearch() {
-      // reset search params which only consists of `page`
-      setSearchParams({});
-    },
-    [flowName],
-  );
+  const { data, isSuccess, isLoading } = useFlows({
+    flowName,
+    page,
+    folderId,
+    status,
+    onlyOwnedFlows,
+  });
 
   const flows = data?.data || [];
   const pageInfo = data?.meta;
   const hasFlows = flows?.length;
+  const navigateToLastPage = isSuccess && !hasFlows && page > 1;
 
-  const onSearchChange = React.useCallback((event) => {
-    setFlowName(event.target.value);
-  }, []);
+  const onSearchChange = React.useCallback(
+    (event) => {
+      const value = event.target.value;
+
+      setSearchValue(value);
+
+      setSearchParams({
+        flowName: value,
+        ...(folderId && { folderId }),
+        ...(onlyOwnedFlows && { onlyOwnedFlows }),
+        ...(status && { status }),
+      });
+    },
+    [folderId, setSearchParams, onlyOwnedFlows, status],
+  );
+
+  const getPathWithSearchParams = (page) => {
+    const searchParamsObject = objectifyUrlSearchParams(searchParams);
+
+    const newSearchParams = new window.URLSearchParams({
+      ...searchParamsObject,
+      page,
+    });
+
+    return { search: newSearchParams.toString() };
+  };
+
+  const onDuplicateFlow = () => {
+    if (pageInfo?.currentPage > 1) {
+      navigate(getPathWithSearchParams(1));
+    }
+  };
+
+  React.useEffect(
+    function resetSearchValue() {
+      if (!searchParams.has('flowName')) {
+        setSearchValue('');
+      }
+    },
+    [searchParams],
+  );
+
+  React.useEffect(
+    function redirectToLastPage() {
+      if (navigateToLastPage) {
+        navigate(getPathWithSearchParams(pageInfo.totalPages));
+      }
+    },
+    [navigateToLastPage],
+  );
 
   return (
-    <Box sx={{ py: 3 }}>
-      <Container>
-        <Grid container sx={{ mb: [0, 3] }} columnSpacing={1.5} rowSpacing={3}>
-          <Grid container item xs sm alignItems="center" order={{ xs: 0 }}>
-            <PageTitle>{formatMessage('flows.title')}</PageTitle>
-          </Grid>
-
-          <Grid item xs={12} sm="auto" order={{ xs: 2, sm: 1 }}>
-            <SearchInput onChange={onSearchChange} />
-          </Grid>
-
+    <>
+      <Box sx={{ py: 3 }}>
+        <Container>
           <Grid
             container
-            item
-            xs="auto"
-            sm="auto"
-            alignItems="center"
-            order={{ xs: 1, sm: 2 }}
+            sx={{ mb: [0, 3] }}
+            columnSpacing={1.5}
+            rowSpacing={3}
           >
-            <Can I="create" a="Flow" passThrough>
-              {(allowed) => (
-                <ConditionalIconButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  component={Link}
-                  fullWidth
-                  disabled={!allowed}
-                  icon={<AddIcon />}
-                  to={URLS.CREATE_FLOW}
-                  data-test="create-flow-button"
-                >
-                  {formatMessage('flows.create')}
-                </ConditionalIconButton>
-              )}
-            </Can>
-          </Grid>
-        </Grid>
+            <Grid container item xs sm alignItems="center" order={{ xs: 0 }}>
+              <PageTitle>{formatMessage('flows.title')}</PageTitle>
+            </Grid>
 
-        <Divider sx={{ mt: [2, 0], mb: 2 }} />
-        {isLoading && (
-          <CircularProgress sx={{ display: 'block', margin: '20px auto' }} />
-        )}
-        {!isLoading &&
-          flows?.map((flow) => (
-            <FlowRow
-              key={flow.id}
-              flow={flow}
-              onDuplicateFlow={fetchFlows}
-              onDeleteFlow={fetchFlows}
-            />
-          ))}
-        {!isLoading && !hasFlows && (
-          <NoResultFound
-            text={formatMessage('flows.noFlows')}
-            to={URLS.CREATE_FLOW}
-          />
-        )}
-        {!isLoading && pageInfo && pageInfo.totalPages > 1 && (
-          <Pagination
-            sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
-            page={pageInfo?.currentPage}
-            count={pageInfo?.totalPages}
-            onChange={(event, page) =>
-              setSearchParams({ page: page.toString() })
-            }
-            renderItem={(item) => (
-              <PaginationItem
-                component={Link}
-                to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-                {...item}
-              />
-            )}
-          />
-        )}
-      </Container>
-    </Box>
+            <Grid item xs={12} md="auto" order={{ xs: 2, md: 1 }}>
+              <SearchInput onChange={onSearchChange} value={searchValue} />
+            </Grid>
+
+            <Grid
+              container
+              item
+              display="flex"
+              direction="row"
+              xs="auto"
+              sm="auto"
+              gap={1}
+              alignItems="center"
+              order={{ xs: 1 }}
+            >
+              <FlowsButtons />
+            </Grid>
+          </Grid>
+
+          <Divider sx={{ mt: [2, 0], mb: 2 }} />
+
+          <Grid container columnSpacing={2} rowSpacing={2}>
+            <Grid item xs={12} sm={3}>
+              <Folders />
+
+              <Divider sx={{ mt: { xs: 2 }, display: { sm: 'none' } }} />
+            </Grid>
+
+            <Grid item xs={12} sm={9}>
+              <FlowFilters />
+
+              {(isLoading || navigateToLastPage) && (
+                <CircularProgress
+                  sx={{ display: 'block', margin: '20px auto' }}
+                />
+              )}
+
+              {!isLoading &&
+                flows?.map((flow) => (
+                  <FlowRow
+                    key={flow.id}
+                    flow={flow}
+                    onDuplicateFlow={onDuplicateFlow}
+                  />
+                ))}
+
+              {!isLoading && !navigateToLastPage && !hasFlows && (
+                <NoResultFound
+                  text={formatMessage('flows.noFlows')}
+                  {...(currentUserAbility.can('manage', 'Flow') && {
+                    to: URLS.CREATE_FLOW,
+                  })}
+                />
+              )}
+
+              {!isLoading &&
+                !navigateToLastPage &&
+                pageInfo &&
+                pageInfo.totalPages > 1 && (
+                  <Pagination
+                    sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+                    page={pageInfo?.currentPage}
+                    count={pageInfo?.totalPages}
+                    renderItem={(item) => (
+                      <PaginationItem
+                        component={Link}
+                        to={getPathWithSearchParams(item.page)}
+                        {...item}
+                      />
+                    )}
+                  />
+                )}
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      <Routes>
+        <Route path="/import" element={<ImportFlowDialog />} />
+        <Route path="/templates" element={<TemplatesDialog />} />
+      </Routes>
+    </>
   );
 }

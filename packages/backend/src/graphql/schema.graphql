@@ -1,9 +1,59 @@
 type Query {
-  placeholderQuery(name: String): Boolean
+  getApps(
+    name: String
+    onlyWithTriggers: Boolean
+    onlyWithActions: Boolean
+  ): [App]
+  getApp(key: String!): App
+  getConnectedApps(name: String): [App]
+  testConnection(id: String!): Connection
+  getFlow(id: String!): Flow
+  getFlows(
+    limit: Int!
+    offset: Int!
+    appKey: String
+    connectionId: String
+    name: String
+  ): FlowConnection
+  getStepWithTestExecutions(stepId: String!): [Step]
+  getExecution(executionId: String!): Execution
+  getExecutions(limit: Int!, offset: Int!): ExecutionConnection
+  getExecutionSteps(
+    executionId: String!
+    limit: Int!
+    offset: Int!
+  ): ExecutionStepConnection
+  getDynamicData(
+    stepId: String!
+    key: String!
+    parameters: JSONObject
+  ): JSONObject
+  getDynamicFields(
+    stepId: String!
+    key: String!
+    parameters: JSONObject
+  ): [SubstepArgument]
+  getCurrentUser: User
+  getPaymentPlans: [PaymentPlan]
+  getPaddleInfo: GetPaddleInfo
+  getBillingAndUsage: GetBillingAndUsage
+  getInvoices: [Invoice]
+  getAutomatischInfo: GetAutomatischInfo
+  getTrialStatus: GetTrialStatus
+  getSubscriptionStatus: GetSubscriptionStatus
+  getSamlAuthProviders: [GetSamlAuthProviders]
+  getUsers(
+    limit: Int!
+    offset: Int!
+  ): UserConnection
+  getUser(id: String!): User
+  getRoles: [Role]
+  getRole(id: String!): Role
+  getPermissions: Permissions
+  healthcheck: AppHealth
 }
+
 type Mutation {
-  createAppConfig(input: CreateAppConfigInput): AppConfig
-  createAppAuthClient(input: CreateAppAuthClientInput): AppAuthClient
   createConnection(input: CreateConnectionInput): Connection
   createFlow(input: CreateFlowInput): Flow
   createRole(input: CreateRoleInput): Role
@@ -23,9 +73,6 @@ type Mutation {
   registerUser(input: RegisterUserInput): User
   resetConnection(input: ResetConnectionInput): Connection
   resetPassword(input: ResetPasswordInput): Boolean
-  updateAppAuthClient(input: UpdateAppAuthClientInput): AppAuthClient
-  updateAppConfig(input: UpdateAppConfigInput): AppConfig
-  updateConfig(input: JSONObject): JSONObject
   updateConnection(input: UpdateConnectionInput): Connection
   updateCurrentUser(input: UpdateCurrentUserInput): User
   updateFlow(input: UpdateFlowInput): Flow
@@ -33,10 +80,6 @@ type Mutation {
   updateRole(input: UpdateRoleInput): Role
   updateStep(input: UpdateStepInput): Step
   updateUser(input: UpdateUserInput): User
-  upsertSamlAuthProvider(input: UpsertSamlAuthProviderInput): SamlAuthProvider
-  upsertSamlAuthProvidersRoleMappings(
-    input: UpsertSamlAuthProvidersRoleMappingsInput
-  ): [SamlAuthProvidersRoleMapping]
   verifyConnection(input: VerifyConnectionInput): Connection
 }
 
@@ -115,16 +158,6 @@ type SubstepArgumentAdditionalFieldsArgument {
   value: String
 }
 
-type AppConfig {
-  id: String
-  key: String
-  allowCustomConnection: Boolean
-  canConnect: Boolean
-  canCustomConnect: Boolean
-  shared: Boolean
-  disabled: Boolean
-}
-
 type App {
   name: String
   key: String
@@ -144,9 +177,7 @@ type App {
 type AppAuth {
   fields: [Field]
   authenticationSteps: [AuthenticationStep]
-  sharedAuthenticationSteps: [AuthenticationStep]
   reconnectionSteps: [ReconnectionStep]
-  sharedReconnectionSteps: [ReconnectionStep]
 }
 
 enum ArgumentEnumType {
@@ -184,8 +215,6 @@ type AuthLink {
 type Connection {
   id: String
   key: String
-  reconnectable: Boolean
-  appAuthClientId: String
   formattedData: ConnectionData
   verified: Boolean
   app: App
@@ -229,6 +258,15 @@ type Field {
   options: [SubstepArgumentOption]
 }
 
+type FlowConnection {
+  edges: [FlowEdge]
+  pageInfo: PageInfo
+}
+
+type FlowEdge {
+  node: Flow
+}
+
 enum FlowStatus {
   paused
   published
@@ -245,32 +283,27 @@ type Flow {
   status: FlowStatus
 }
 
-type SamlAuthProvider {
+type Execution {
   id: String
-  name: String
-  certificate: String
-  signatureAlgorithm: String
-  issuer: String
-  entryPoint: String
-  firstnameAttributeName: String
-  surnameAttributeName: String
-  emailAttributeName: String
-  roleAttributeName: String
-  active: Boolean
-  defaultRoleId: String
+  testRun: Boolean
+  createdAt: String
+  updatedAt: String
+  status: String
+  flow: Flow
 }
 
-type SamlAuthProvidersRoleMapping {
-  id: String
-  samlAuthProviderId: String
-  roleId: String
-  remoteRoleName: String
+type UserConnection {
+  edges: [UserEdge]
+  pageInfo: PageInfo
+}
+
+type UserEdge {
+  node: User
 }
 
 input CreateConnectionInput {
   key: String!
-  appAuthClientId: String
-  formattedData: JSONObject
+  formattedData: JSONObject!
 }
 
 input GenerateAuthUrlInput {
@@ -279,8 +312,7 @@ input GenerateAuthUrlInput {
 
 input UpdateConnectionInput {
   id: String!
-  formattedData: JSONObject
-  appAuthClientId: String
+  formattedData: JSONObject!
 }
 
 input ResetConnectionInput {
@@ -289,30 +321,6 @@ input ResetConnectionInput {
 
 input VerifyConnectionInput {
   id: String!
-}
-
-input UpsertSamlAuthProviderInput {
-  name: String!
-  certificate: String!
-  signatureAlgorithm: String!
-  issuer: String!
-  entryPoint: String!
-  firstnameAttributeName: String!
-  surnameAttributeName: String!
-  emailAttributeName: String!
-  roleAttributeName: String!
-  defaultRoleId: String!
-  active: Boolean!
-}
-
-input UpsertSamlAuthProvidersRoleMappingsInput {
-  samlAuthProviderId: String!
-  samlAuthProvidersRoleMappings: [SamlAuthProviderRoleMappingInput]
-}
-
-input SamlAuthProviderRoleMappingInput {
-  roleId: String!
-  remoteRoleName: String!
 }
 
 input DeleteConnectionInput {
@@ -534,8 +542,17 @@ type PageInfo {
   totalPages: Int!
 }
 
+type ExecutionEdge {
+  node: Execution
+}
+
 type ExecutionStepEdge {
   node: ExecutionStep
+}
+
+type ExecutionConnection {
+  edges: [ExecutionEdge]
+  pageInfo: PageInfo
 }
 
 type ExecutionStepConnection {
@@ -543,23 +560,101 @@ type ExecutionStepConnection {
   pageInfo: PageInfo
 }
 
-type License {
+type AppHealth {
+  version: String
+}
+
+type GetAutomatischInfo {
+  isCloud: Boolean
+}
+
+type GetTrialStatus {
+  expireAt: String
+}
+
+type GetSubscriptionStatus {
+  cancellationEffectiveDate: String
+}
+
+type GetBillingAndUsage {
+  subscription: Subscription
+  usage: Usage
+}
+
+type MonthlyQuota {
+  title: String
+  action: BillingCardAction
+}
+
+type NextBillAmount {
+  title: String
+  action: BillingCardAction
+}
+
+type NextBillDate {
+  title: String
+  action: BillingCardAction
+}
+
+type BillingCardAction {
+  type: String
+  text: String
+  src: String
+}
+
+type Subscription {
+  status: String
+  monthlyQuota: MonthlyQuota
+  nextBillAmount: NextBillAmount
+  nextBillDate: NextBillDate
+}
+
+type Usage {
+  task: Int
+}
+
+type GetPaddleInfo {
+  sandbox: Boolean
+  vendorId: Int
+}
+
+type Invoice {
+  id: Int
+  amount: Float
+  currency: String
+  payout_date: String
+  receipt_url: String
+}
+
+type PaymentPlan {
+  name: String
+  limit: String
+  price: String
+  productId: String
+}
+
+type GetSamlAuthProviders {
   id: String
   name: String
-  expireAt: String
-  verified: Boolean
+  issuer: String
 }
 
 type Permission {
-  id: String
   action: String
   subject: String
   conditions: [String]
 }
 
+# TODO: emphasize it's a catalog item
+type Permissions {
+  actions: [Action]
+  subjects: [Subject]
+  conditions: [Condition]
+}
+
 type Action {
   label: String
-  key: String
+  action: String
   subjects: [String]
 }
 
@@ -571,41 +666,6 @@ type Condition {
 type Subject {
   label: String
   key: String
-}
-
-input CreateAppConfigInput {
-  key: String
-  allowCustomConnection: Boolean
-  shared: Boolean
-  disabled: Boolean
-}
-
-input UpdateAppConfigInput {
-  id: String
-  allowCustomConnection: Boolean
-  shared: Boolean
-  disabled: Boolean
-}
-
-type AppAuthClient {
-  id: String
-  appConfigId: String
-  name: String
-  active: Boolean
-}
-
-input CreateAppAuthClientInput {
-  appConfigId: String
-  name: String
-  formattedAuthDefaults: JSONObject
-  active: Boolean
-}
-
-input UpdateAppAuthClientInput {
-  id: String
-  name: String
-  formattedAuthDefaults: JSONObject
-  active: Boolean
 }
 
 schema {

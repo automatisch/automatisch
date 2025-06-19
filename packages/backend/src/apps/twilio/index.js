@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://twilio.com',
   apiBaseUrl: 'https://api.twilio.com',
-  primaryColor: 'e1000f',
+  primaryColor: '#e1000f',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

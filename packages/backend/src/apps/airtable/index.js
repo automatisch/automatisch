@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: 'https://api.airtable.com',
   iconUrl: '{BASE_URL}/apps/airtable/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/airtable/connection',
-  primaryColor: 'FFBF00',
+  primaryColor: '#FFBF00',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

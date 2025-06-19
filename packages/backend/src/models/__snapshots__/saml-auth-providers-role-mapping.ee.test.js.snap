@@ -1,0 +1,30 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RoleMapping model > jsonSchema should have the correct schema 1`] = `
+{
+  "properties": {
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "remoteRoleName": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "roleId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "samlAuthProviderId": {
+      "format": "uuid",
+      "type": "string",
+    },
+  },
+  "required": [
+    "samlAuthProviderId",
+    "roleId",
+    "remoteRoleName",
+  ],
+  "type": "object",
+}
+`;

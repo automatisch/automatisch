@@ -4,13 +4,16 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import LockIcon from '@mui/icons-material/LockPerson';
 import BrushIcon from '@mui/icons-material/Brush';
 import AppsIcon from '@mui/icons-material/Apps';
+import PinIcon from '@mui/icons-material/Pin';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Outlet } from 'react-router-dom';
-
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from 'react';
+
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import Can from 'components/Can';
@@ -18,12 +21,15 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 
+import Footer from './Footer';
+
 function createDrawerLinks({
   canReadRole,
   canReadUser,
   canUpdateConfig,
   canManageSamlAuthProvider,
   canUpdateApp,
+  canManageApiTokens,
 }) {
   const items = [
     canReadUser
@@ -66,7 +72,24 @@ function createDrawerLinks({
           dataTest: 'apps-drawer-link',
         }
       : null,
+    canUpdateConfig
+      ? {
+          Icon: ContentCopyIcon,
+          primary: 'adminSettingsDrawer.templates',
+          to: URLS.ADMIN_TEMPLATES,
+          dataTest: 'templates-drawer-link',
+        }
+      : null,
+    canManageApiTokens
+      ? {
+          Icon: PinIcon,
+          primary: 'adminSettingsDrawer.apiTokens',
+          to: URLS.ADMIN_API_TOKENS,
+          dataTest: 'api-tokens-drawer-link',
+        }
+      : null,
   ].filter(Boolean);
+
   return items;
 }
 
@@ -78,16 +101,20 @@ function SettingsLayout() {
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
+
   const drawerLinks = createDrawerLinks({
+    canCreateFlows: currentUserAbility.can('manage', 'Flow'),
     canReadUser: currentUserAbility.can('read', 'User'),
     canReadRole: currentUserAbility.can('read', 'Role'),
-    canUpdateConfig: currentUserAbility.can('update', 'Config'),
-    canManageSamlAuthProvider:
-      currentUserAbility.can('read', 'SamlAuthProvider') &&
-      currentUserAbility.can('update', 'SamlAuthProvider') &&
-      currentUserAbility.can('create', 'SamlAuthProvider'),
-    canUpdateApp: currentUserAbility.can('update', 'App'),
+    canUpdateConfig: currentUserAbility.can('manage', 'Config'),
+    canManageSamlAuthProvider: currentUserAbility.can(
+      'manage',
+      'SamlAuthProvider',
+    ),
+    canUpdateApp: currentUserAbility.can('manage', 'App'),
+    canManageApiTokens: currentUserAbility.can('manage', 'ApiToken'),
   });
+
   const drawerBottomLinks = [
     {
       Icon: ArrowBackIosNewIcon,
@@ -96,6 +123,7 @@ function SettingsLayout() {
       dataTest: 'go-back-drawer-link',
     },
   ];
+
   return (
     <Can I="read" a="User">
       <AppBar
@@ -103,7 +131,8 @@ function SettingsLayout() {
         onDrawerOpen={openDrawer}
         onDrawerClose={closeDrawer}
       />
-      <Box sx={{ display: 'flex' }}>
+
+      <Box sx={{ display: 'flex', flex: 1 }}>
         <Drawer
           links={drawerLinks}
           bottomLinks={drawerBottomLinks}
@@ -111,10 +140,12 @@ function SettingsLayout() {
           onOpen={openDrawer}
           onClose={closeDrawer}
         />
-        <Box sx={{ flex: 1 }}>
+
+        <Stack sx={{ flex: 1 }}>
           <Toolbar />
           <Outlet />
-        </Box>
+          <Footer />
+        </Stack>
       </Box>
     </Can>
   );

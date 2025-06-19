@@ -14,6 +14,6 @@ export class DeleteUserModal {
   async close () {
     await this.page.click('body', {
       position: { x: 10, y: 10 }
-    })
+    });
   }
 }

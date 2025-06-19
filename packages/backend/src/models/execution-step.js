@@ -1,8 +1,8 @@
-import appConfig from '../config/app.js';
-import Base from './base.js';
-import Execution from './execution.js';
-import Step from './step.js';
-import Telemetry from '../helpers/telemetry/index.js';
+import appConfig from '@/config/app.js';
+import Base from '@/models/base.js';
+import Execution from '@/models/execution.js';
+import Step from '@/models/step.js';
+import Telemetry from '@/helpers/telemetry/index.js';
 
 class ExecutionStep extends Base {
   static tableName = 'execution_steps';
@@ -47,21 +47,40 @@ class ExecutionStep extends Base {
     return this.status === 'failure';
   }
 
+  async isSucceededNonTestRun() {
+    const execution = await this.$relatedQuery('execution');
+    return !execution.testRun && !this.isFailed;
+  }
+
+  async updateUsageData() {
+    const execution = await this.$relatedQuery('execution');
+
+    const flow = await execution.$relatedQuery('flow');
+    const user = await flow.$relatedQuery('user');
+    const usageData = await user.$relatedQuery('currentUsageData');
+
+    await usageData.increaseConsumedTaskCountByOne();
+  }
+
+  async increaseUsageCount() {
+    if (appConfig.isCloud && this.isSucceededNonTestRun()) {
+      await this.updateUsageData();
+    }
+  }
+
+  async updateExecutionStatus() {
+    const execution = await this.$relatedQuery('execution');
+
+    await execution.$query().patch({
+      status: this.status === 'failure' ? 'failure' : 'success',
+    });
+  }
+
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     Telemetry.executionStepCreated(this);
-
-    if (appConfig.isCloud) {
-      const execution = await this.$relatedQuery('execution');
-
-      if (!execution.testRun && !this.isFailed) {
-        const flow = await execution.$relatedQuery('flow');
-        const user = await flow.$relatedQuery('user');
-        const usageData = await user.$relatedQuery('currentUsageData');
-
-        await usageData.increaseConsumedTaskCountByOne();
-      }
-    }
+    await this.increaseUsageCount();
+    await this.updateExecutionStatus();
   }
 }
 

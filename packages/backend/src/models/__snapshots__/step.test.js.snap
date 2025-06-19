@@ -1,0 +1,85 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Step model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "appKey": {
+      "maxLength": 255,
+      "minLength": 1,
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "connectionId": {
+      "format": "uuid",
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "deletedAt": {
+      "type": "string",
+    },
+    "flowId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "key": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "name": {
+      "maxLength": 255,
+      "minLength": 1,
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "parameters": {
+      "type": "object",
+    },
+    "position": {
+      "type": "integer",
+    },
+    "status": {
+      "default": "incomplete",
+      "enum": [
+        "incomplete",
+        "completed",
+      ],
+      "type": "string",
+    },
+    "type": {
+      "enum": [
+        "action",
+        "trigger",
+      ],
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+    "webhookPath": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+  },
+  "required": [
+    "type",
+  ],
+  "type": "object",
+}
+`;

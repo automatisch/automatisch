@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -99,4 +100,8 @@ export const PaddleProvider = (props) => {
   return (
     <PaddleContext.Provider value={value}>{children}</PaddleContext.Provider>
   );
+};
+
+PaddleProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

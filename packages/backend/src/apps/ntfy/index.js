@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://ntfy.sh',
   apiBaseUrl: 'https://ntfy.sh',
-  primaryColor: '56bda8',
+  primaryColor: '#56bda8',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

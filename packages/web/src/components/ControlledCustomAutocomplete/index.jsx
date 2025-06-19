@@ -6,7 +6,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearIcon from '@mui/icons-material/Clear';
 import { ActionButtonsWrapper } from './style';
-import ClickAwayListener from '@mui/base/ClickAwayListener';
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import InputLabel from '@mui/material/InputLabel';
 import { createEditor } from 'slate';
 import { Editable, ReactEditor } from 'slate-react';
@@ -61,6 +61,7 @@ function ControlledCustomAutocomplete(props) {
   const [isSingleChoice, setSingleChoice] = React.useState(undefined);
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef(null);
+  const mountedRef = React.useRef(false);
 
   const renderElement = React.useCallback(
     (props) => <Element {...props} disabled={disabled} />,
@@ -88,16 +89,20 @@ function ControlledCustomAutocomplete(props) {
   };
 
   const resizeObserver = React.useMemo(function syncCustomOptionsPosition() {
-    return new ResizeObserver(() => {
+    return new window.ResizeObserver(() => {
       forceUpdate();
     });
   }, []);
 
   React.useEffect(() => {
-    const hasDependencies = dependsOnValues.length;
-    if (hasDependencies) {
-      // Reset the field when a dependent has been updated
-      resetEditor(editor);
+    if (mountedRef.current) {
+      const hasDependencies = dependsOnValues.length;
+      if (hasDependencies) {
+        // Reset the field when a dependent has been updated
+        resetEditor(editor);
+      }
+    } else {
+      mountedRef.current = true;
     }
   }, dependsOnValues);
 

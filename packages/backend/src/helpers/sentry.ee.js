@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 
-import appConfig from '../config/app.js';
+import appConfig from '@/config/app.js';
 
 const isSentryEnabled = () => {
   if (appConfig.isDev || appConfig.isTest) return false;
@@ -17,7 +17,6 @@ export function init(app) {
     integrations: [
       app && new Sentry.Integrations.Http({ tracing: true }),
       app && new Tracing.Integrations.Express({ app }),
-      app && new Tracing.Integrations.GraphQL(),
     ].filter(Boolean),
     tracesSampleRate: 1.0,
   });

@@ -1,0 +1,63 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Subscription model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "cancelUrl": {
+      "type": "string",
+    },
+    "cancellationEffectiveDate": {
+      "type": "string",
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "deletedAt": {
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "lastBillDate": {
+      "type": "string",
+    },
+    "nextBillAmount": {
+      "type": "string",
+    },
+    "nextBillDate": {
+      "type": "string",
+    },
+    "paddlePlanId": {
+      "type": "string",
+    },
+    "paddleSubscriptionId": {
+      "type": "string",
+    },
+    "status": {
+      "type": "string",
+    },
+    "updateUrl": {
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+    "userId": {
+      "format": "uuid",
+      "type": "string",
+    },
+  },
+  "required": [
+    "userId",
+    "paddleSubscriptionId",
+    "paddlePlanId",
+    "updateUrl",
+    "cancelUrl",
+    "status",
+    "nextBillAmount",
+    "nextBillDate",
+  ],
+  "type": "object",
+}
+`;

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SnackbarProvider as BaseSnackbarProvider } from 'notistack';
+
 const SnackbarProvider = (props) => {
   return (
     <BaseSnackbarProvider
@@ -12,4 +13,5 @@ const SnackbarProvider = (props) => {
     />
   );
 };
+
 export default SnackbarProvider;

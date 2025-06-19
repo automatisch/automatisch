@@ -25,7 +25,7 @@ const formatDateTime = [
     type: 'dropdown',
     required: true,
     description: 'The timezone of the input.',
-    variables: true,
+    variables: false,
     options: timezoneOptions,
   },
   {
@@ -43,7 +43,7 @@ const formatDateTime = [
     type: 'dropdown',
     required: true,
     description: 'The timezone of the output.',
-    variables: true,
+    variables: false,
     options: timezoneOptions,
   },
 ];

@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createStep } from '../../test/factories/step';
-import { createExecutionStep } from '../../test/factories/execution-step';
-import stepSerializer from './step';
-import executionStepSerializer from './execution-step';
+import { createStep } from '@/factories/step.js';
+import { createExecutionStep } from '@/factories/execution-step.js';
+import stepSerializer from '@/serializers/step.js';
+import executionStepSerializer from '@/serializers/execution-step.js';
 
 describe('stepSerializer', () => {
   let step;
@@ -16,6 +16,7 @@ describe('stepSerializer', () => {
       id: step.id,
       type: step.type,
       key: step.key,
+      name: step.name,
       appKey: step.appKey,
       iconUrl: step.iconUrl,
       webhookUrl: step.webhookUrl,
@@ -24,7 +25,19 @@ describe('stepSerializer', () => {
       parameters: step.parameters,
     };
 
-    expect(stepSerializer(step)).toEqual(expectedPayload);
+    expect(stepSerializer(step)).toStrictEqual(expectedPayload);
+  });
+
+  it('should return step data with the last execution step', async () => {
+    const executionStep = await createExecutionStep({ stepId: step.id });
+
+    step.lastExecutionStep = executionStep;
+
+    const expectedPayload = {
+      lastExecutionStep: executionStepSerializer(executionStep),
+    };
+
+    expect(stepSerializer(step)).toMatchObject(expectedPayload);
   });
 
   it('should return step data with the execution steps', async () => {

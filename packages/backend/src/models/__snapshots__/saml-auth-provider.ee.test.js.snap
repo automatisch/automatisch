@@ -1,0 +1,72 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`SamlAuthProvider model > jsonSchema should have the correct schema 1`] = `
+{
+  "properties": {
+    "active": {
+      "type": "boolean",
+    },
+    "certificate": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "defaultRoleId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "emailAttributeName": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "entryPoint": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "firstnameAttributeName": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "issuer": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "name": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "roleAttributeName": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "signatureAlgorithm": {
+      "enum": [
+        "sha1",
+        "sha256",
+        "sha512",
+      ],
+      "type": "string",
+    },
+    "surnameAttributeName": {
+      "minLength": 1,
+      "type": "string",
+    },
+  },
+  "required": [
+    "name",
+    "certificate",
+    "signatureAlgorithm",
+    "entryPoint",
+    "issuer",
+    "firstnameAttributeName",
+    "surnameAttributeName",
+    "emailAttributeName",
+    "roleAttributeName",
+    "defaultRoleId",
+  ],
+  "type": "object",
+}
+`;

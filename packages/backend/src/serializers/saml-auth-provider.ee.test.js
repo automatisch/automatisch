@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createSamlAuthProvider } from '../../test/factories/saml-auth-provider.ee.js';
-import samlAuthProviderSerializer from './saml-auth-provider.ee.js';
+import { createSamlAuthProvider } from '@/factories/saml-auth-provider.ee.js';
+import samlAuthProviderSerializer from '@/serializers/saml-auth-provider.ee.js';
 
 describe('samlAuthProviderSerializer', () => {
   let samlAuthProvider;
@@ -17,7 +17,7 @@ describe('samlAuthProviderSerializer', () => {
       issuer: samlAuthProvider.issuer,
     };
 
-    expect(samlAuthProviderSerializer(samlAuthProvider)).toEqual(
+    expect(samlAuthProviderSerializer(samlAuthProvider)).toStrictEqual(
       expectedPayload
     );
   });

@@ -1,5 +1,5 @@
-import Step from '../../src/models/step';
-import { createFlow } from './flow';
+import Step from '@/models/step.js';
+import { createFlow } from '@/factories/flow.js';
 
 export const createStep = async (params = {}) => {
   params.flowId = params?.flowId || (await createFlow()).id;
@@ -16,8 +16,11 @@ export const createStep = async (params = {}) => {
     params?.position || (lastStep?.position ? lastStep.position + 1 : 1);
 
   params.status = params?.status || 'completed';
-  params.appKey =
-    params?.appKey || (params.type === 'action' ? 'deepl' : 'webhook');
+
+  if (params.appKey !== null) {
+    params.appKey =
+      params?.appKey || (params.type === 'action' ? 'deepl' : 'webhook');
+  }
 
   params.parameters = params?.parameters || {};
 

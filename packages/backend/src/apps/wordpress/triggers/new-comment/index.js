@@ -4,6 +4,7 @@ export default defineTrigger({
   name: 'New comment',
   key: 'newComment',
   description: 'Triggers when a new comment is created.',
+  pollInterval: 15,
   arguments: [
     {
       label: 'Status',

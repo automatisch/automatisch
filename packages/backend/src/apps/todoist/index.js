@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://todoist.com',
   apiBaseUrl: 'https://api.todoist.com/rest/v2',
-  primaryColor: 'e44332',
+  primaryColor: '#e44332',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

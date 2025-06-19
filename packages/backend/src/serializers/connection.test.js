@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createConnection } from '../../test/factories/connection';
-import connectionSerializer from './connection';
+import { createConnection } from '@/factories/connection.js';
+import connectionSerializer from '@/serializers/connection.js';
 
 describe('connectionSerializer', () => {
   let connection;
@@ -13,8 +13,7 @@ describe('connectionSerializer', () => {
     const expectedPayload = {
       id: connection.id,
       key: connection.key,
-      reconnectable: connection.reconnectable,
-      appAuthClientId: connection.appAuthClientId,
+      oauthClientId: connection.oauthClientId,
       formattedData: {
         screenName: connection.formattedData.screenName,
       },
@@ -23,6 +22,6 @@ describe('connectionSerializer', () => {
       updatedAt: connection.updatedAt.getTime(),
     };
 
-    expect(connectionSerializer(connection)).toEqual(expectedPayload);
+    expect(connectionSerializer(connection)).toStrictEqual(expectedPayload);
   });
 });

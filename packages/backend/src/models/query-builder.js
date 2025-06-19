@@ -53,6 +53,18 @@ class ExtendedQueryBuilder extends Model.QueryBuilder {
       [DELETED_COLUMN_NAME]: null,
     });
   }
+
+  async updateFirstOrInsert(data = {}) {
+    let firstRow = await this.first();
+
+    if (firstRow) {
+      return firstRow.$query().patchAndFetch(data);
+    }
+
+    const newInstance = this.insertAndFetch(data);
+
+    return newInstance;
+  }
 }
 
 export default ExtendedQueryBuilder;

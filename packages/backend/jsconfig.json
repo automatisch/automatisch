@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/models/*": ["src/models/*"],
+      "@/controllers/*": ["src/controllers/*"],
+      "@/helpers/*": ["src/helpers/*"],
+      "@/config/*": ["src/config/*"],
+      "@/errors/*": ["src/errors/*"],
+      "@/queues/*": ["src/queues/*"],
+      "@/workers/*": ["src/workers/*"],
+      "@/jobs/*": ["src/jobs/*"],
+      "@/services/*": ["src/services/*"],
+      "@/routes/*": ["src/routes/*"],
+      "@/serializers/*": ["src/serializers/*"],
+      "@/factories/*": ["test/factories/*"],
+      "@/mocks/*": ["test/mocks/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://deepl.com',
   apiBaseUrl: 'https://api.deepl.com',
-  primaryColor: '0d2d45',
+  primaryColor: '#0d2d45',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

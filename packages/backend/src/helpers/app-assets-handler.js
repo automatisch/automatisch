@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const appAssetsHandler = async (app) => {
   app.use('/apps/:appKey/assets/favicon.svg', (req, res, next) => {
     const { appKey } = req.params;
-    const svgPath = `${__dirname}/../apps/${appKey}/assets/favicon.svg`;
+    const svgPath = path.resolve(`${__dirname}/../apps/${appKey}/assets/favicon.svg`);
     const staticFileHandlerOptions = {
       /**
        * Disabling fallthrough is important to respond with HTTP 404.

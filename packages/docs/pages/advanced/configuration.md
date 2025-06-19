@@ -35,6 +35,7 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 | `APP_SECRET_KEY`             | string  |                    | Secret Key to authenticate the user                                                 |
 | `REDIS_HOST`                 | string  | `redis`            | Redis Host                                                                          |
 | `REDIS_PORT`                 | number  | `6379`             | Redis Port                                                                          |
+| `REDIS_DB`                   | number  |                    | Redis Database                                                                      |
 | `REDIS_USERNAME`             | string  |                    | Redis Username                                                                      |
 | `REDIS_PASSWORD`             | string  |                    | Redis Password                                                                      |
 | `REDIS_TLS`                  | boolean | `false`            | Redis TLS                                                                           |
@@ -44,3 +45,9 @@ Please be careful with the `ENCRYPTION_KEY` and `WEBHOOK_SECRET_KEY` environment
 | `BULLMQ_DASHBOARD_PASSWORD`  | string  |                    | Password to login BullMQ Dashboard                                                  |
 | `DISABLE_NOTIFICATIONS_PAGE` | boolean | `false`            | Enable/Disable notifications page                                                   |
 | `DISABLE_FAVICON`            | boolean | `false`            | Enable/Disable favicon                                                              |
+| `SMTP_HOST`                  | string  |                    | SMTP Host                                                                           |
+| `SMTP_PORT`                  | string  | `587`              | SMTP Port                                                                           |
+| `SMTP_SECURE`                | boolean | `false`            | Enable/Disable SSL for SMTP                                                         |
+| `SMTP_USER`                  | string  |                    | SMTP Username                                                                       |
+| `SMTP_PASSWORD`              | string  |                    | SMTP Password                                                                       |
+| `FROM_EMAIL`                 | string  |                    | E-mail address to be used as sender with SMTP configuration                         |

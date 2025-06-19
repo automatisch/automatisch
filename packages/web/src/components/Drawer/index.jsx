@@ -12,7 +12,7 @@ import { Drawer as BaseDrawer } from './style';
 
 const iOS =
   typeof navigator !== 'undefined' &&
-  /iPad|iPhone|iPod/.test(navigator.userAgent);
+  /iPad|iPhone|iPod/.test(window.navigator.userAgent);
 
 function Drawer(props) {
   const { links = [], bottomLinks = [], ...drawerProps } = props;

@@ -4,6 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import FormHelperText from '@mui/material/FormHelperText';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
+import { Option } from './style';
 
 const getOption = (options, value) =>
   options.find((option) => option.value === value) || null;
@@ -29,12 +30,16 @@ function ControlledAutocomplete(props) {
     options = [],
     dependsOn = [],
     showOptionValue,
+    renderInput,
+    showHelperText = true,
     ...autocompleteProps
   } = props;
   let dependsOnValues = [];
+
   if (dependsOn?.length) {
     dependsOnValues = watch(dependsOn);
   }
+
   React.useEffect(() => {
     const hasDependencies = dependsOnValues.length;
     const allDepsSatisfied = dependsOnValues.every(Boolean);
@@ -44,11 +49,12 @@ function ControlledAutocomplete(props) {
       resetField(name);
     }
   }, dependsOnValues);
+
   return (
     <Controller
       rules={{ required }}
       name={name}
-      defaultValue={defaultValue || ''}
+      defaultValue={defaultValue}
       control={control}
       shouldUnregister={shouldUnregister}
       render={({
@@ -90,28 +96,38 @@ function ControlledAutocomplete(props) {
             ref={ref}
             data-test={`${name}-autocomplete`}
             renderOption={(optionProps, option) => (
-              <li
+              <Option
                 {...optionProps}
                 key={option.value?.toString()}
-                style={{ flexDirection: 'column', alignItems: 'start' }}
+                showOptionValue={showOptionValue}
               >
-                <Typography>{option.label}</Typography>
+                <Typography
+                  variant={showOptionValue ? 'subtitle1' : 'body1'}
+                  {...(showOptionValue && { sx: { fontWeight: 700 } })}
+                >
+                  {option.label}
+                </Typography>
 
-                {showOptionValue && (
-                  <Typography variant="caption">{option.value}</Typography>
+                {showOptionValue && typeof option.value === 'string' && (
+                  <Typography variant="subtitle2" color="text.secondary">
+                    {option.value}
+                  </Typography>
                 )}
-              </li>
+              </Option>
             )}
+            renderInput={(params) => renderInput(params, fieldState)}
+            {...(showOptionValue && { ListboxProps: { sx: { p: 0 } } })}
           />
-
-          <FormHelperText
-            variant="outlined"
-            error={Boolean(fieldState.isTouched && fieldState.error)}
-          >
-            {fieldState.isTouched
-              ? fieldState.error?.message || description
-              : description}
-          </FormHelperText>
+          {showHelperText && (
+            <FormHelperText
+              variant="outlined"
+              error={Boolean(fieldState.isTouched && fieldState.error)}
+            >
+              {fieldState.isTouched
+                ? fieldState.error?.message || description
+                : description}
+            </FormHelperText>
+          )}
         </div>
       )}
     />
@@ -129,6 +145,8 @@ ControlledAutocomplete.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   options: PropTypes.array,
+  renderInput: PropTypes.func.isRequired,
+  showHelperText: PropTypes.bool,
 };
 
 export default ControlledAutocomplete;

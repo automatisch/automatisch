@@ -9,6 +9,6 @@ export default defineApp({
   supportsConnections: false,
   baseUrl: '',
   apiBaseUrl: '',
-  primaryColor: 'ff8800',
+  primaryColor: '#ff8800',
   triggers,
 });

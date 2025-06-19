@@ -19,7 +19,7 @@ export default defineAction({
         arguments: [
           {
             name: 'key',
-            value: 'listIncomingPhoneNumbers',
+            value: 'listIncomingSmsPhoneNumbers',
           },
         ],
       },

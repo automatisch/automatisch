@@ -1,54 +1,23 @@
 import cloneDeep from 'lodash/cloneDeep.js';
 
-const connectionIdArgument = {
-  name: 'id',
-  value: '{connection.id}',
-};
-
 const resetConnectionStep = {
   type: 'mutation',
   name: 'resetConnection',
-  arguments: [connectionIdArgument],
+  arguments: [],
 };
-
-function replaceCreateConnection(string) {
-  return string.replace('{createConnection.id}', '{connection.id}');
-}
 
 function removeAppKeyArgument(args) {
   return args.filter((argument) => argument.name !== 'key');
 }
 
-function addConnectionId(step) {
-  step.arguments = step.arguments.map((argument) => {
-    if (typeof argument.value === 'string') {
-      argument.value = replaceCreateConnection(argument.value);
-    }
-
-    if (argument.properties) {
-      argument.properties = argument.properties.map((property) => {
-        return {
-          name: property.name,
-          value: replaceCreateConnection(property.value),
-        };
-      });
-    }
-
-    return argument;
-  });
-
-  return step;
-}
-
 function replaceCreateConnectionsWithUpdate(steps) {
   const updatedSteps = cloneDeep(steps);
   return updatedSteps.map((step) => {
-    const updatedStep = addConnectionId(step);
+    const updatedStep = { ...step };
 
     if (step.name === 'createConnection') {
       updatedStep.name = 'updateConnection';
       updatedStep.arguments = removeAppKeyArgument(updatedStep.arguments);
-      updatedStep.arguments.unshift(connectionIdArgument);
 
       return updatedStep;
     }

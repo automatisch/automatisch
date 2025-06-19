@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/ghost/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/ghost/connection',
-  primaryColor: '15171A',
+  primaryColor: '#15171A',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: 'https://api.github.com',
   iconUrl: '{BASE_URL}/apps/github/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/github/connection',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

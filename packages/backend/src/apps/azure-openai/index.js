@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/azure-openai/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/azure-openai/connection',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

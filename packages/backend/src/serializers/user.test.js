@@ -1,11 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
-import appConfig from '../config/app';
-import { createUser } from '../../test/factories/user';
-import { createPermission } from '../../test/factories/permission';
-import userSerializer from './user';
-import roleSerializer from './role';
-import permissionSerializer from './permission';
+import appConfig from '@/config/app.js';
+import { createUser } from '@/factories/user.js';
+import { createPermission } from '@/factories/permission.js';
+import userSerializer from '@/serializers/user.js';
+import roleSerializer from '@/serializers/role.js';
+import permissionSerializer from '@/serializers/permission.js';
 
 describe('userSerializer', () => {
   let user, role, permissionOne, permissionTwo;
@@ -35,10 +35,11 @@ describe('userSerializer', () => {
       email: user.email,
       fullName: user.fullName,
       id: user.id,
+      status: user.status,
       updatedAt: user.updatedAt.getTime(),
     };
 
-    expect(userSerializer(user)).toEqual(expectedPayload);
+    expect(userSerializer(user)).toStrictEqual(expectedPayload);
   });
 
   it('should return user data with the role', async () => {

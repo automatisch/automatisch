@@ -1,0 +1,109 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Config model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "enableFooter": {
+      "type": "boolean",
+    },
+    "enableTemplates": {
+      "type": [
+        "boolean",
+        "null",
+      ],
+    },
+    "footerBackgroundColor": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerCopyrightText": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerDocsUrl": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerImprintUrl": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerLogoSvgData": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerPrivacyPolicyUrl": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerTextColor": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "footerTosUrl": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "installationCompleted": {
+      "type": "boolean",
+    },
+    "logoSvgData": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "palettePrimaryDark": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "palettePrimaryLight": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "palettePrimaryMain": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "title": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

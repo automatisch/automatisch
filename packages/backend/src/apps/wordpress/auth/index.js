@@ -8,7 +8,7 @@ export default {
       key: 'instanceUrl',
       label: 'WordPress instance URL',
       type: 'string',
-      required: false,
+      required: true,
       readOnly: false,
       value: null,
       placeholder: null,

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   IconButton,
   Skeleton,
@@ -7,6 +8,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 const ListLoader = ({ rowsNumber, columnsNumber, 'data-test': dataTest }) => {
   return (
     <>
@@ -38,4 +40,11 @@ const ListLoader = ({ rowsNumber, columnsNumber, 'data-test': dataTest }) => {
     </>
   );
 };
+
+ListLoader.propTypes = {
+  rowsNumber: PropTypes.number.isRequired,
+  columnsNumber: PropTypes.number.isRequired,
+  'data-test': PropTypes.string,
+};
+
 export default ListLoader;

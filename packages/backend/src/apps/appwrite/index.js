@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: 'https://cloud.appwrite.io',
   iconUrl: '{BASE_URL}/apps/appwrite/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/appwrite/connection',
-  primaryColor: 'FD366E',
+  primaryColor: '#FD366E',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

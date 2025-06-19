@@ -1,7 +1,7 @@
 import { raw } from 'objection';
-import Base from './base.js';
-import User from './user.js';
-import Subscription from './subscription.ee.js';
+import Base from '@/models/base.js';
+import User from '@/models/user.js';
+import Subscription from '@/models/subscription.ee.js';
 
 class UsageData extends Base {
   static tableName = 'usage_data';

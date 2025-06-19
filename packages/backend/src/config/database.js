@@ -5,7 +5,7 @@ import pg from 'pg';
 pg.types.setTypeParser(20, 'text', parseInt);
 import knex from 'knex';
 import knexConfig from '../../knexfile.js';
-import logger from '../helpers/logger.js';
+import logger from '@/helpers/logger.js';
 
 export const client = knex(knexConfig);
 

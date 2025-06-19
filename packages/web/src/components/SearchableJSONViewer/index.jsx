@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import throttle from 'lodash/throttle';
 import isEmpty from 'lodash/isEmpty';
@@ -6,9 +7,11 @@ import JSONViewer from 'components/JSONViewer';
 import SearchInput from 'components/SearchInput';
 import useFormatMessage from 'hooks/useFormatMessage';
 import filterObject from 'helpers/filterObject';
+
 const SearchableJSONViewer = ({ data }) => {
   const [filteredData, setFilteredData] = React.useState(data);
   const formatMessage = useFormatMessage();
+
   const onSearchChange = React.useMemo(
     () =>
       throttle((event) => {
@@ -26,6 +29,7 @@ const SearchableJSONViewer = ({ data }) => {
       }, 400),
     [data],
   );
+
   return (
     <>
       <Box my={2}>
@@ -38,4 +42,9 @@ const SearchableJSONViewer = ({ data }) => {
     </>
   );
 };
+
+SearchableJSONViewer.propTypes = {
+  data: PropTypes.object.isRequired,
+};
+
 export default SearchableJSONViewer;

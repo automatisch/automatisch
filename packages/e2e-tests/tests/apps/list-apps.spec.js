@@ -1,4 +1,3 @@
-// @ts-check
 const { test, expect } = require('../../fixtures/index');
 
 test.describe('Apps page', () => {
@@ -56,7 +55,7 @@ test.describe('Apps page', () => {
     test('goes to app page to create a connection', async ({
       applicationsPage,
     }) => {
-      // loading app, app config, app auth clients take time
+      // loading app, app config, app oauth clients take time
       test.setTimeout(60000);
 
       await applicationsPage.page.getByTestId('app-list-item').first().click();

@@ -1,9 +1,10 @@
-import flowSerializer from './flow.js';
+import flowSerializer from '@/serializers/flow.js';
 
 const executionSerializer = (execution) => {
   let executionData = {
     id: execution.id,
     testRun: execution.testRun,
+    status: execution.status,
     createdAt: execution.createdAt.getTime(),
     updatedAt: execution.updatedAt.getTime(),
   };

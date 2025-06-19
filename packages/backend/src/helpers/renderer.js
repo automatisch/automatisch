@@ -41,7 +41,9 @@ const renderObject = (response, object, options) => {
     },
   };
 
-  return response.json(computedPayload);
+  const status = options?.status || 200;
+
+  return response.status(status).json(computedPayload);
 };
 
 const renderError = (response, errors, status, type) => {
@@ -62,4 +64,31 @@ const renderError = (response, errors, status, type) => {
   return response.status(errorStatus).send(payload);
 };
 
-export { renderObject, renderError };
+const renderUniqueViolationError = (response, error) => {
+  const errors = error.columns.map((column) => ({
+    [column]: [`'${column}' must be unique.`],
+  }));
+
+  return renderError(response, errors, 422, 'UniqueViolationError');
+};
+
+const renderObjectionError = (response, error, status) => {
+  const { statusCode, type, data = {} } = error;
+
+  const computedStatusCode = status || statusCode;
+
+  const computedErrors = Object.entries(data).map(
+    ([fieldName, fieldErrors]) => ({
+      [fieldName]: fieldErrors.map(({ message }) => message),
+    })
+  );
+
+  return renderError(response, computedErrors, computedStatusCode, type);
+};
+
+export {
+  renderObject,
+  renderError,
+  renderObjectionError,
+  renderUniqueViolationError,
+};

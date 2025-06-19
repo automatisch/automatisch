@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import { createUser } from './user';
-import UsageData from '../../src/models/usage-data.ee.js';
+import { createUser } from '@/factories/user.js';
+import UsageData from '@/models/usage-data.ee.js';
 
 export const createUsageData = async (params = {}) => {
   params.userId = params?.userId || (await createUser()).id;

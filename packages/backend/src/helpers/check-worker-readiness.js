@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
-import logger from './logger.js';
-import redisConfig from '../config/redis.js';
+import logger from '@/helpers/logger.js';
+import redisConfig from '@/config/redis.js';
 
 const redisClient = new Redis(redisConfig);
 

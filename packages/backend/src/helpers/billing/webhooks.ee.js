@@ -1,5 +1,5 @@
-import Subscription from '../../models/subscription.ee.js';
-import Billing from './index.ee.js';
+import Subscription from '@/models/subscription.ee.js';
+import Billing from '@/helpers/billing/index.ee.js';
 
 const handleSubscriptionCreated = async (request) => {
   const subscription = await Subscription.query().insertAndFetch(

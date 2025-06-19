@@ -12,7 +12,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://placetel.de',
   apiBaseUrl: 'https://api.placetel.de',
-  primaryColor: '069dd9',
+  primaryColor: '#069dd9',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -64,6 +65,15 @@ export default function UserList() {
                 </Typography>
               </TableCell>
 
+              <TableCell component="th">
+                <Typography
+                  variant="subtitle1"
+                  sx={{ color: 'text.secondary', fontWeight: 700 }}
+                >
+                  {formatMessage('userList.status')}
+                </Typography>
+              </TableCell>
+
               <TableCell component="th" />
             </TableRow>
           </TableHead>
@@ -97,6 +107,12 @@ export default function UserList() {
                   <TableCell>
                     <Typography variant="subtitle2" data-test="user-role">
                       {user.role.name}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell>
+                    <Typography variant="subtitle2" data-test="user-status">
+                      <Chip label={user.status} variant="outlined" color={user.status === 'active' ? 'success' : 'warning'} />
                     </Typography>
                   </TableCell>
 

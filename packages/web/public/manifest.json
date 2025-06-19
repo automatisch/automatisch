@@ -1,9 +1,0 @@
-{
-  "short_name": "automatisch",
-  "name": "automatisch",
-  "description": "Build workflow automation without spending time and money. No code is required.",
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}

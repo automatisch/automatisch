@@ -14,7 +14,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://discord.com',
   apiBaseUrl: 'https://discord.com/api',
-  primaryColor: '5865f2',
+  primaryColor: '#5865f2',
   beforeRequest: [addAuthHeader],
   auth,
   dynamicData,

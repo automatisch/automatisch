@@ -1,4 +1,4 @@
-import BaseError from './base';
+import BaseError from '@/errors/base.js';
 
 export default class GenerateAuthUrlError extends BaseError {
   constructor(error) {

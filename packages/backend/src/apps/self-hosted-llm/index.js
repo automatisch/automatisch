@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/self-hosted-llm/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/self-hosted-llm/connection',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

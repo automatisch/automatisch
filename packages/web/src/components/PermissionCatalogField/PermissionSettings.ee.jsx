@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -15,7 +16,8 @@ import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
 import ControlledCheckbox from 'components/ControlledCheckbox';
 import useFormatMessage from 'hooks/useFormatMessage';
-export default function PermissionSettings(props) {
+
+function PermissionSettings(props) {
   const {
     onClose,
     open = false,
@@ -23,34 +25,37 @@ export default function PermissionSettings(props) {
     subject,
     actions,
     conditions,
-    defaultChecked,
   } = props;
   const formatMessage = useFormatMessage();
   const { getValues, resetField } = useFormContext();
+
   const cancel = () => {
     for (const action of actions) {
       for (const condition of conditions) {
         const fieldName = `${fieldPrefix}.${action.key}.conditions.${condition.key}`;
-        resetField(fieldName);
+        resetField(fieldName, { keepTouched: true });
       }
     }
     onClose();
   };
+
   const apply = () => {
     for (const action of actions) {
       for (const condition of conditions) {
         const fieldName = `${fieldPrefix}.${action.key}.conditions.${condition.key}`;
         const value = getValues(fieldName);
-        resetField(fieldName, { defaultValue: value });
+        resetField(fieldName, { defaultValue: value, keepTouched: true });
       }
     }
     onClose();
   };
+
   return (
     <Dialog
       open={open}
       onClose={cancel}
       data-test={`${subject}-role-conditions-modal`}
+      keepMounted
     >
       <DialogTitle>{formatMessage('permissionSettings.title')}</DialogTitle>
 
@@ -60,10 +65,10 @@ export default function PermissionSettings(props) {
             <TableHead>
               <TableRow>
                 <TableCell component="th" />
-
                 {actions.map((action) => (
                   <TableCell component="th" key={action.key}>
                     <Typography
+                      component="div"
                       variant="subtitle1"
                       align="center"
                       sx={{
@@ -84,7 +89,7 @@ export default function PermissionSettings(props) {
                   sx={{ '&:last-child td': { border: 0 } }}
                 >
                   <TableCell scope="row">
-                    <Typography variant="subtitle2">
+                    <Typography variant="subtitle2" component="div">
                       {condition.label}
                     </Typography>
                   </TableCell>
@@ -94,14 +99,13 @@ export default function PermissionSettings(props) {
                       key={`${action.key}.${condition.key}`}
                       align="center"
                     >
-                      <Typography variant="subtitle2">
+                      <Typography variant="subtitle2" component="div">
                         {action.subjects.includes(subject) && (
                           <ControlledCheckbox
                             name={`${fieldPrefix}.${action.key}.conditions.${condition.key}`}
                             dataTest={`${
                               condition.key
                             }-${action.key.toLowerCase()}-checkbox`}
-                            defaultValue={defaultChecked}
                             disabled={
                               getValues(
                                 `${fieldPrefix}.${action.key}.value`,
@@ -133,3 +137,25 @@ export default function PermissionSettings(props) {
     </Dialog>
   );
 }
+
+PermissionSettings.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  fieldPrefix: PropTypes.string.isRequired,
+  subject: PropTypes.string.isRequired,
+  open: PropTypes.bool,
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      key: PropTypes.string,
+      subjects: PropTypes.arrayOf(PropTypes.string),
+    }),
+  ).isRequired,
+  conditions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      key: PropTypes.string,
+    }),
+  ).isRequired,
+};
+
+export default PermissionSettings;

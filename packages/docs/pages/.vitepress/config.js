@@ -51,6 +51,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Asana',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/asana/triggers' },
+            { text: 'Actions', link: '/apps/asana/actions' },
+            { text: 'Connection', link: '/apps/asana/connection' },
+          ],
+        },
+        {
           text: 'Carbone',
           collapsible: true,
           collapsed: true,

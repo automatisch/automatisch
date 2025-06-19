@@ -3,6 +3,7 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 export default defineTrigger({
   name: 'New video by search',
   key: 'newVideoBySearch',
+  pollInterval: 15,
   description:
     'Triggers when a new video is uploaded that matches a specific search string.',
   arguments: [

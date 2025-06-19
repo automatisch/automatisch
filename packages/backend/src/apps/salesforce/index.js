@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://salesforce.com',
   apiBaseUrl: '',
-  primaryColor: '00A1E0',
+  primaryColor: '#00A1E0',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

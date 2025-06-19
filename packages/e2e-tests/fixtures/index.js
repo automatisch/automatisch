@@ -2,10 +2,15 @@ const { test, expect } = require('@playwright/test');
 const { ApplicationsPage } = require('./applications-page');
 const { ConnectionsPage } = require('./connections-page');
 const { ExecutionsPage } = require('./executions-page');
+const { ExecutionDetailsPage } = require('./execution-details-page');
 const { FlowEditorPage } = require('./flow-editor-page');
 const { UserInterfacePage } = require('./user-interface-page');
 const { LoginPage } = require('./login-page');
+const { AcceptInvitation } = require('./accept-invitation-page');
 const { adminFixtures } = require('./admin');
+const { AdminSetupPage } = require('./admin-setup-page');
+const { AdminCreateUserPage } = require('./admin/create-user-page');
+const { FlowsPage } = require('./flows-page');
 
 exports.test = test.extend({
   page: async ({ page }, use) => {
@@ -26,13 +31,19 @@ exports.test = test.extend({
   executionsPage: async ({ page }, use) => {
     await use(new ExecutionsPage(page));
   },
+  executionDetailsPage: async ({ page }, use) => {
+    await use(new ExecutionDetailsPage(page));
+  },
   flowEditorPage: async ({ page }, use) => {
     await use(new FlowEditorPage(page));
+  },
+  flowsPage: async ({ page }, use) => {
+    await use(new FlowsPage(page));
   },
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));
   },
-  ...adminFixtures
+  ...adminFixtures,
 });
 
 exports.publicTest = test.extend({
@@ -45,6 +56,18 @@ exports.publicTest = test.extend({
     await loginPage.open();
 
     await use(loginPage);
+  },
+  acceptInvitationPage: async ({ page }, use) => {
+    const acceptInvitationPage = new AcceptInvitation(page);
+    await use(acceptInvitationPage);
+  },
+  adminSetupPage: async ({ page }, use) => {
+    const adminSetupPage = new AdminSetupPage(page);
+    await use(adminSetupPage);
+  },
+  adminCreateUserPage: async ({ page }, use) => {
+    const adminCreateUserPage = new AdminCreateUserPage(page);
+    await use(adminCreateUserPage);
   },
 });
 

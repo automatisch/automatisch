@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import App from '../models/app';
-import triggerSerializer from './trigger';
+import App from '@/models/app.js';
+import triggerSerializer from '@/serializers/trigger.js';
 
 describe('triggerSerializer', () => {
   it('should return the trigger data', async () => {
@@ -16,6 +16,6 @@ describe('triggerSerializer', () => {
       type: trigger.type,
     };
 
-    expect(triggerSerializer(trigger)).toEqual(expectedPayload);
+    expect(triggerSerializer(trigger)).toStrictEqual(expectedPayload);
   });
 });

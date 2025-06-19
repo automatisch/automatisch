@@ -1,14 +1,15 @@
 import { URL } from 'node:url';
-import get from 'lodash.get';
-import Base from './base.js';
-import App from './app.js';
-import Flow from './flow.js';
-import Connection from './connection.js';
-import ExecutionStep from './execution-step.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import appConfig from '../config/app.js';
-import globalVariable from '../helpers/global-variable.js';
-import computeParameters from '../helpers/compute-parameters.js';
+import Base from '@/models/base.js';
+import App from '@/models/app.js';
+import Flow from '@/models/flow.js';
+import Connection from '@/models/connection.js';
+import ExecutionStep from '@/models/execution-step.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import appConfig from '@/config/app.js';
+import globalVariable from '@/helpers/global-variable.js';
+import computeParameters from '@/helpers/compute-parameters.js';
+import testRun from '@/services/test-run.js';
+import { generateIconUrl } from '@/helpers/generate-icon-url.js';
 
 class Step extends Base {
   static tableName = 'steps';
@@ -21,6 +22,7 @@ class Step extends Base {
       id: { type: 'string', format: 'uuid' },
       flowId: { type: 'string', format: 'uuid' },
       key: { type: ['string', 'null'] },
+      name: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       appKey: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
       connectionId: { type: ['string', 'null'], format: 'uuid' },
@@ -59,6 +61,17 @@ class Step extends Base {
         to: 'connections.id',
       },
     },
+    lastExecutionStep: {
+      relation: Base.HasOneRelation,
+      modelClass: ExecutionStep,
+      join: {
+        from: 'steps.id',
+        to: 'execution_steps.step_id',
+      },
+      filter(builder) {
+        builder.orderBy('created_at', 'desc').limit(1).first();
+      },
+    },
     executionSteps: {
       relation: Base.HasManyRelation,
       modelClass: ExecutionStep,
@@ -70,13 +83,21 @@ class Step extends Base {
   });
 
   get webhookUrl() {
+    if (!this.webhookPath) return null;
+
     return new URL(this.webhookPath, appConfig.webhookUrl).toString();
   }
 
   get iconUrl() {
-    if (!this.appKey) return null;
+    return generateIconUrl(this.appKey);
+  }
 
-    return `${appConfig.baseUrl}/apps/${this.appKey}/assets/favicon.svg`;
+  get isTrigger() {
+    return this.type === 'trigger';
+  }
+
+  get isAction() {
+    return this.type === 'action';
   }
 
   async computeWebhookPath() {
@@ -86,26 +107,15 @@ class Step extends Base {
 
     if (!triggerCommand) return null;
 
-    const { useSingletonWebhook, singletonWebhookRefValueParameter, type } =
-      triggerCommand;
-
-    const isWebhook = type === 'webhook';
+    const isWebhook = triggerCommand.type === 'webhook';
 
     if (!isWebhook) return null;
 
-    if (singletonWebhookRefValueParameter) {
-      const parameterValue = get(
-        this.parameters,
-        singletonWebhookRefValueParameter
-      );
-      return `/webhooks/connections/${this.connectionId}/${parameterValue}`;
-    }
-
-    if (useSingletonWebhook) {
-      return `/webhooks/connections/${this.connectionId}`;
-    }
-
     if (this.parameters.workSynchronously) {
+      return `/webhooks/flows/${this.flowId}/sync`;
+    }
+
+    if (triggerCommand.workSynchronously) {
       return `/webhooks/flows/${this.flowId}/sync`;
     }
 
@@ -121,37 +131,24 @@ class Step extends Base {
     return webhookUrl;
   }
 
-  async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
-    Telemetry.stepCreated(this);
-  }
-
-  async $afterUpdate(opt, queryContext) {
-    await super.$afterUpdate(opt, queryContext);
-    Telemetry.stepUpdated(this);
-  }
-
-  get isTrigger() {
-    return this.type === 'trigger';
-  }
-
-  get isAction() {
-    return this.type === 'action';
-  }
-
   async getApp() {
     if (!this.appKey) return null;
 
     return await App.findOneByKey(this.appKey);
   }
 
-  async getLastExecutionStep() {
-    const lastExecutionStep = await this.$relatedQuery('executionSteps')
-      .orderBy('created_at', 'desc')
-      .limit(1)
-      .first();
+  async test() {
+    await testRun({ stepId: this.id });
 
-    return lastExecutionStep;
+    const updatedStep = await this.$query()
+      .withGraphFetched('lastExecutionStep')
+      .patchAndFetch({ status: 'completed' });
+
+    return updatedStep;
+  }
+
+  async getLastExecutionStep() {
+    return await this.$relatedQuery('lastExecutionStep');
   }
 
   async getNextStep() {
@@ -183,19 +180,44 @@ class Step extends Base {
   }
 
   async getSetupFields() {
-    let setupSupsteps;
+    let substeps;
 
     if (this.isTrigger) {
-      setupSupsteps = (await this.getTriggerCommand()).substeps;
+      substeps = (await this.getTriggerCommand()).substeps;
     } else {
-      setupSupsteps = (await this.getActionCommand()).substeps;
+      substeps = (await this.getActionCommand()).substeps;
     }
 
-    const existingArguments = setupSupsteps.find(
+    const setupSubstep = substeps.find(
       (substep) => substep.key === 'chooseTrigger'
-    ).arguments;
+    );
+    return setupSubstep.arguments;
+  }
 
-    return existingArguments;
+  async getSetupAndDynamicFields() {
+    const setupFields = await this.getSetupFields();
+    const setupAndDynamicFields = [];
+
+    for (const setupField of setupFields) {
+      setupAndDynamicFields.push(setupField);
+
+      const additionalFields = setupField.additionalFields;
+      if (additionalFields) {
+        const keyArgument = additionalFields.arguments.find(
+          (argument) => argument.name === 'key'
+        );
+        const dynamicFieldsKey = keyArgument.value;
+
+        const dynamicFields = await this.createDynamicFields(
+          dynamicFieldsKey,
+          this.parameters
+        );
+
+        setupAndDynamicFields.push(...dynamicFields);
+      }
+    }
+
+    return setupAndDynamicFields;
   }
 
   async createDynamicFields(dynamicFieldsKey, parameters) {
@@ -218,11 +240,18 @@ class Step extends Base {
     return dynamicFields;
   }
 
-  async createDynamicData(dynamicDataKey, parameters) {
+  async createDynamicData(dynamicDataKey, parameters, currentUser) {
     const connection = await this.$relatedQuery('connection');
     const flow = await this.$relatedQuery('flow');
     const app = await this.getApp();
-    const $ = await globalVariable({ connection, app, flow, step: this });
+
+    const $ = await globalVariable({
+      connection,
+      app,
+      flow,
+      step: this,
+      currentUser,
+    });
 
     const command = app.dynamicData.find((data) => data.key === dynamicDataKey);
 
@@ -240,8 +269,11 @@ class Step extends Base {
         })
       : [];
 
+    const setupAndDynamicFields = await this.getSetupAndDynamicFields();
+
     const computedParameters = computeParameters(
       $.step.parameters,
+      setupAndDynamicFields,
       priorExecutionSteps
     );
 
@@ -261,6 +293,69 @@ class Step extends Base {
     await this.$query().patchAndFetch(payload);
 
     return this;
+  }
+
+  async delete() {
+    await this.$relatedQuery('executionSteps').delete();
+    await this.$query().delete();
+
+    const flow = await this.$relatedQuery('flow');
+
+    const nextSteps = await flow
+      .$relatedQuery('steps')
+      .where('position', '>', this.position);
+
+    await flow.updateStepPositionsFrom(this.position, nextSteps);
+  }
+
+  async updateFor(user, newStepData) {
+    const {
+      appKey = this.appKey,
+      name,
+      connectionId,
+      key,
+      parameters,
+    } = newStepData;
+
+    if (connectionId && appKey) {
+      await user.authorizedConnections
+        .findOne({
+          id: connectionId,
+          key: appKey,
+        })
+        .throwIfNotFound();
+    }
+
+    if (this.isTrigger && appKey && key) {
+      await App.checkAppAndTrigger(appKey, key);
+    }
+
+    if (this.isAction && appKey && key) {
+      await App.checkAppAndAction(appKey, key);
+    }
+
+    const updatedStep = await this.$query().patchAndFetch({
+      key,
+      name,
+      appKey,
+      connectionId: connectionId,
+      parameters: parameters,
+      status: 'incomplete',
+    });
+
+    await updatedStep.updateWebhookUrl();
+
+    return updatedStep;
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+    Telemetry.stepCreated(this);
+  }
+
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
+    Telemetry.stepUpdated(this);
   }
 }
 

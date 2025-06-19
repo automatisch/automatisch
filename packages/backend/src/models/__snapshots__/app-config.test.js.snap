@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppConfig model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "disabled": {
+      "default": false,
+      "type": "boolean",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "key": {
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+    "useOnlyPredefinedAuthClients": {
+      "default": false,
+      "type": "boolean",
+    },
+  },
+  "required": [
+    "key",
+  ],
+  "type": "object",
+}
+`;

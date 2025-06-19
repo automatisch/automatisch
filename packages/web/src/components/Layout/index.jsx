@@ -8,7 +8,10 @@ import AppsIcon from '@mui/icons-material/Apps';
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
 import HistoryIcon from '@mui/icons-material/History';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
+import PropTypes from 'prop-types';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import SecurityIcon from '@mui/icons-material/Security';
+import CallToActionIcon from '@mui/icons-material/CallToAction';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -16,32 +19,48 @@ import useVersion from 'hooks/useVersion';
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
 
-const drawerLinks = [
-  {
-    Icon: SwapCallsIcon,
-    primary: 'drawer.flows',
-    to: URLS.FLOWS,
-    dataTest: 'flows-page-drawer-link',
-  },
-  {
-    Icon: AppsIcon,
-    primary: 'drawer.apps',
-    to: URLS.APPS,
-    dataTest: 'apps-page-drawer-link',
-  },
-  {
-    Icon: HistoryIcon,
-    primary: 'drawer.executions',
-    to: URLS.EXECUTIONS,
-    dataTest: 'executions-page-drawer-link',
-  },
-];
+import Footer from './Footer';
 
-const generateDrawerBottomLinks = async ({
+const additionalDrawerLinkIcons = {
+  Security: SecurityIcon,
+  ArrowBackIosNew: ArrowBackIosNewIcon,
+};
+
+const generateDrawerLinks = ({ isEnterprise }) =>
+  [
+    {
+      Icon: SwapCallsIcon,
+      primary: 'drawer.flows',
+      to: URLS.FLOWS,
+      dataTest: 'flows-page-drawer-link',
+    },
+    isEnterprise && {
+      Icon: CallToActionIcon,
+      primary: 'drawer.forms',
+      to: URLS.FORMS,
+      dataTest: 'forms-page-drawer-link',
+    },
+    {
+      Icon: AppsIcon,
+      primary: 'drawer.apps',
+      to: URLS.APPS,
+      dataTest: 'apps-page-drawer-link',
+    },
+    {
+      Icon: HistoryIcon,
+      primary: 'drawer.executions',
+      to: URLS.EXECUTIONS,
+      dataTest: 'executions-page-drawer-link',
+    },
+  ].filter(Boolean);
+
+const generateDrawerBottomLinks = ({
   disableNotificationsPage,
   notificationBadgeContent = 0,
   additionalDrawerLink,
+  additionalDrawerLinkIcon,
   additionalDrawerLinkText,
   formatMessage,
 }) => {
@@ -56,7 +75,9 @@ const generateDrawerBottomLinks = async ({
     additionalDrawerLink && additionalDrawerLinkText;
 
   const additionalDrawerLinkObject = {
-    Icon: ArrowBackIosNew,
+    Icon:
+      additionalDrawerLinkIcons[additionalDrawerLinkIcon] ||
+      ArrowBackIosNewIcon,
     primary: additionalDrawerLinkText || '',
     to: additionalDrawerLink || '',
     target: '_blank',
@@ -75,35 +96,37 @@ const generateDrawerBottomLinks = async ({
   return links;
 };
 
-export default function PublicLayout({ children }) {
+function PublicLayout({ children }) {
   const version = useVersion();
-  const { data: configData, isLoading } = useAutomatischConfig();
+  const { data: automatischInfoData } = useAutomatischInfo();
+  const { data: configData } = useAutomatischConfig();
+
+  const automatischInfo = automatischInfoData?.data;
   const config = configData?.data;
 
   const theme = useTheme();
   const formatMessage = useFormatMessage();
-  const [bottomLinks, setBottomLinks] = React.useState([]);
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
 
-  React.useEffect(() => {
-    async function perform() {
-      const newBottomLinks = await generateDrawerBottomLinks({
-        notificationBadgeContent: version.newVersionCount,
-        disableNotificationsPage: config?.disableNotificationsPage,
-        additionalDrawerLink: config?.additionalDrawerLink,
-        additionalDrawerLinkText: config?.additionalDrawerLinkText,
-        formatMessage,
-      });
-      setBottomLinks(newBottomLinks);
-    }
+  const bottomLinks = React.useMemo(() => {
+    return generateDrawerBottomLinks({
+      notificationBadgeContent: version.newVersionCount,
+      disableNotificationsPage: config?.disableNotificationsPage,
+      additionalDrawerLink: config?.additionalDrawerLink,
+      additionalDrawerLinkIcon: config?.additionalDrawerLinkIcon,
+      additionalDrawerLinkText: config?.additionalDrawerLinkText,
+      formatMessage,
+    });
+  }, [formatMessage, config, version.newVersionCount]);
 
-    if (isLoading) return;
-
-    perform();
-  }, [config, isLoading, version.newVersionCount]);
+  const drawerLinks = React.useMemo(() => {
+    return generateDrawerLinks({
+      isEnterprise: automatischInfo?.isEnterprise,
+    });
+  }, [automatischInfo?.isEnterprise]);
 
   return (
     <>
@@ -130,8 +153,15 @@ export default function PublicLayout({ children }) {
         <Stack flex={1}>
           <Toolbar />
           {children}
+          <Footer />
         </Stack>
       </Box>
     </>
   );
 }
+
+PublicLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default PublicLayout;

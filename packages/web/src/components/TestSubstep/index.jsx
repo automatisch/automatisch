@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
-import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
@@ -9,28 +9,15 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { EditorContext } from 'contexts/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
-import { EXECUTE_FLOW } from 'graphql/mutations/execute-flow';
+import useTestStep from 'hooks/useTestStep';
 import JSONViewer from 'components/JSONViewer';
 import WebhookUrlInfo from 'components/WebhookUrlInfo';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import { useQueryClient } from '@tanstack/react-query';
+import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
+import appConfig from 'config/app.js';
 
-function serializeErrors(graphQLErrors) {
-  return graphQLErrors?.map((error) => {
-    try {
-      return {
-        ...error,
-        message: (
-          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
-            {JSON.stringify(JSON.parse(error.message), null, 2)}
-          </pre>
-        ),
-      };
-    } catch {
-      return error;
-    }
-  });
-}
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 function TestSubstep(props) {
   const {
@@ -38,7 +25,6 @@ function TestSubstep(props) {
     expanded = false,
     onExpand,
     onCollapse,
-    onSubmit,
     onContinue,
     step,
     showWebhookUrl = false,
@@ -46,25 +32,31 @@ function TestSubstep(props) {
   } = props;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
-  const [executeFlow, { data, error, loading, called, reset }] = useMutation(
-    EXECUTE_FLOW,
-    {
-      context: { autoSnackbar: false },
-    },
-  );
-  const response = data?.executeFlow?.data;
-  const isCompleted = !error && called && !loading;
-  const hasNoOutput = !response && isCompleted;
+  const {
+    mutateAsync: testStep,
+    isPending: isTestStepPending,
+    data,
+    isSuccess: isCompleted,
+    reset,
+  } = useTestStep(step.id);
+  const loading = isTestStepPending;
+  const lastExecutionStep = data?.data.lastExecutionStep;
+  const dataOut = lastExecutionStep?.dataOut;
+  const errorDetails = lastExecutionStep?.errorDetails;
+  const hasError = errorDetails && Object.values(errorDetails).length > 0;
+  const hasNoOutput = !hasError && isCompleted && !dataOut;
+  const hasOutput =
+    !hasError && isCompleted && dataOut && Object.values(dataOut).length > 0;
   const { name } = substep;
   const queryClient = useQueryClient();
 
   React.useEffect(
     function resetTestDataOnSubstepToggle() {
-      if (!expanded) {
+      if (!expanded && !loading) {
         reset();
       }
     },
-    [expanded, reset],
+    [expanded, reset, loading],
   );
 
   const handleSubmit = React.useCallback(async () => {
@@ -73,25 +65,23 @@ function TestSubstep(props) {
       return;
     }
 
-    await executeFlow({
-      variables: {
-        input: {
-          stepId: step.id,
-        },
-      },
-    });
+    await testStep();
 
     await queryClient.invalidateQueries({
       queryKey: ['flows', flowId],
     });
-  }, [onSubmit, onContinue, isCompleted, queryClient, flowId]);
+  }, [testStep, onContinue, isCompleted, queryClient, flowId]);
 
   const onToggle = expanded ? onCollapse : onExpand;
 
   return (
     <React.Fragment>
       <FlowSubstepTitle expanded={expanded} onClick={onToggle} title={name} />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={expanded}
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+        unmountOnExit
+      >
         <ListItem
           sx={{
             pt: 2,
@@ -100,14 +90,11 @@ function TestSubstep(props) {
             alignItems: 'flex-start',
           }}
         >
-          {!!error?.graphQLErrors?.length && (
-            <Alert
-              severity="error"
-              sx={{ mb: 2, fontWeight: 500, width: '100%' }}
-            >
-              {serializeErrors(error.graphQLErrors).map((error, i) => (
-                <div key={i}>{error.message}</div>
-              ))}
+          {hasError && (
+            <Alert severity="error" sx={{ mb: 2, width: '100%' }}>
+              <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+                {JSON.stringify(errorDetails, null, 2)}
+              </pre>
             </Alert>
           )}
 
@@ -116,23 +103,26 @@ function TestSubstep(props) {
           )}
 
           {hasNoOutput && (
-            <Alert severity="warning" sx={{ mb: 1, width: '100%' }}>
-              <AlertTitle sx={{ fontWeight: 700 }}>
+            <Alert
+              data-test="flow-test-substep-no-output"
+              severity="warning"
+              sx={{ mb: 1, width: '100%' }}
+            >
+              <AlertTitle>
                 {formatMessage('flowEditor.noTestDataTitle')}
               </AlertTitle>
 
-              <Box sx={{ fontWeight: 400 }}>
-                {formatMessage('flowEditor.noTestDataMessage')}
-              </Box>
+              <Box>{formatMessage('flowEditor.noTestDataMessage')}</Box>
             </Alert>
           )}
 
-          {response && (
+          {hasOutput && (
             <Box
               sx={{ maxHeight: 400, overflowY: 'auto', width: '100%' }}
               data-test="flow-test-substep-output"
+              className="nowheel"
             >
-              <JSONViewer data={response} />
+              <JSONViewer data={dataOut} />
             </Box>
           )}
 
@@ -154,4 +144,18 @@ function TestSubstep(props) {
     </React.Fragment>
   );
 }
+
+TestSubstep.propTypes = {
+  substep: SubstepPropType.isRequired,
+  expanded: PropTypes.bool,
+  showWebhookUrl: PropTypes.bool,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+  onContinue: PropTypes.func,
+  step: StepPropType.isRequired,
+  flowId: PropTypes.string.isRequired,
+};
+
 export default TestSubstep;

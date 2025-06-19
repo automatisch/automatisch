@@ -3,6 +3,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
@@ -13,10 +14,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { isEqual } from 'lodash';
 
 import { EditorContext } from 'contexts/Editor';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
 import TestSubstep from 'components/TestSubstep';
+import EditableTypography from 'components/EditableTypography';
 import FlowSubstep from 'components/FlowSubstep';
 import ChooseAppAndEventSubstep from 'components/ChooseAppAndEventSubstep';
 import ChooseConnectionSubstep from 'components/ChooseConnectionSubstep';
@@ -40,6 +43,9 @@ import useActions from 'hooks/useActions';
 import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
 import useActionSubsteps from 'hooks/useActionSubsteps';
 import useStepWithTestExecutions from 'hooks/useStepWithTestExecutions';
+import appConfig from 'config/app.js';
+
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -105,16 +111,19 @@ function generateValidationSchema(substeps) {
 }
 
 function FlowStep(props) {
-  const { collapsed, onChange, onContinue, flowId } = props;
+  const { collapsed, onChange, onContinue, onDelete, flowId, step } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
-  const step = props.step;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const formatMessage = useFormatMessage();
   const [currentSubstep, setCurrentSubstep] = React.useState(0);
   const useAppsOptions = {};
+
+  const stepTypeName = isTrigger
+    ? formatMessage('flowStep.triggerType')
+    : formatMessage('flowStep.actionType');
 
   if (isTrigger) {
     useAppsOptions.onlyWithTriggers = true;
@@ -168,16 +177,28 @@ function FlowStep(props) {
       ? triggerSubstepsData
       : actionSubstepsData || [];
 
-  const handleChange = React.useCallback(({ step }) => {
-    onChange(step);
-  }, []);
+  const handleChange = React.useCallback(
+    async ({ step }) => {
+      await onChange(step);
+    },
+    [onChange],
+  );
 
   const expandNextStep = React.useCallback(() => {
     setCurrentSubstep((currentSubstep) => (currentSubstep ?? 0) + 1);
   }, []);
 
   const handleSubmit = (val) => {
-    handleChange({ step: val });
+    if (!isEqual(step, val)) {
+      handleChange({ step: val });
+    }
+  };
+
+  const handleStepNameChange = async (name) => {
+    await onChange({
+      ...step,
+      name,
+    });
   };
 
   const stepValidationSchema = React.useMemo(
@@ -223,26 +244,42 @@ function FlowStep(props) {
       data-test="flow-step"
     >
       <Header collapsed={collapsed}>
-        <Stack direction="row" alignItems="center" gap={2}>
+        <Stack direction="row" alignItems="center" gap={3}>
           <AppIconWrapper>
-            <AppIcon url={app?.iconUrl} name={app?.name} />
+            <AppIcon
+              url={app?.iconUrl}
+              name={app?.name}
+              color={app?.primaryColor}
+            />
 
             <AppIconStatusIconWrapper>
               {validationStatusIcon}
             </AppIconStatusIconWrapper>
           </AppIconWrapper>
 
-          <div>
-            <Typography variant="caption">
-              {isTrigger
-                ? formatMessage('flowStep.triggerType')
-                : formatMessage('flowStep.actionType')}
+          <Stack direction="column" gap={0.5} sx={{ width: '100%' }}>
+            <Typography
+              component={Stack}
+              direction="row"
+              variant="stepApp"
+              alignItems="center"
+              gap={0.5}
+            >
+              <Chip label={stepTypeName} variant="stepType" size="small" />
+
+              {app?.name}
             </Typography>
 
-            <Typography variant="body2">
-              {step.position}. {app?.name}
-            </Typography>
-          </div>
+            <EditableTypography
+              data-test="step-name"
+              variant="body2"
+              onConfirm={handleStepNameChange}
+              prefixValue={`${step.position}. `}
+              disabled={editorContext.readOnly || collapsed}
+            >
+              {step.name}
+            </EditableTypography>
+          </Stack>
 
           <Box display="flex" flex={1} justifyContent="end">
             {/* as there are no other actions besides "delete step", we hide the context menu. */}
@@ -259,46 +296,49 @@ function FlowStep(props) {
         </Stack>
       </Header>
 
-      <Collapse in={!collapsed} unmountOnExit>
+      <Collapse
+        in={!collapsed}
+        unmountOnExit
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+      >
         <Content>
           <List>
             <StepExecutionsProvider value={stepWithTestExecutionsData}>
-              <Form
-                defaultValues={step}
-                onSubmit={handleSubmit}
-                resolver={stepValidationSchema}
-              >
-                <ChooseAppAndEventSubstep
-                  expanded={currentSubstep === 0}
-                  substep={{
-                    key: 'chooAppAndEvent',
-                    name: 'Choose app & event',
-                    arguments: [],
-                  }}
-                  onExpand={() => toggleSubstep(0)}
-                  onCollapse={() => toggleSubstep(0)}
-                  onSubmit={expandNextStep}
-                  onChange={handleChange}
-                  step={step}
-                />
+              <ChooseAppAndEventSubstep
+                expanded={currentSubstep === 0}
+                substep={{
+                  key: 'chooAppAndEvent',
+                  name: 'Choose app & event',
+                  arguments: [],
+                }}
+                onExpand={() => toggleSubstep(0)}
+                onCollapse={() => toggleSubstep(0)}
+                onSubmit={expandNextStep}
+                onChange={handleChange}
+                step={step}
+              />
 
-                {actionOrTrigger &&
-                  substeps?.length > 0 &&
-                  substeps.map((substep, index) => (
-                    <React.Fragment key={`${substep?.name}-${index}`}>
-                      {substep.key === 'chooseConnection' && app && (
-                        <ChooseConnectionSubstep
-                          expanded={currentSubstep === index + 1}
-                          substep={substep}
-                          onExpand={() => toggleSubstep(index + 1)}
-                          onCollapse={() => toggleSubstep(index + 1)}
-                          onSubmit={expandNextStep}
-                          onChange={handleChange}
-                          application={app}
-                          step={step}
-                        />
-                      )}
-
+              {actionOrTrigger &&
+                substeps?.length > 0 &&
+                substeps.map((substep, index) => (
+                  <React.Fragment key={`${substep?.name}-${index}`}>
+                    {substep.key === 'chooseConnection' && app && (
+                      <ChooseConnectionSubstep
+                        expanded={currentSubstep === index + 1}
+                        substep={substep}
+                        onExpand={() => toggleSubstep(index + 1)}
+                        onCollapse={() => toggleSubstep(index + 1)}
+                        onSubmit={expandNextStep}
+                        onChange={handleChange}
+                        application={app}
+                        step={step}
+                      />
+                    )}
+                    <Form
+                      defaultValues={step}
+                      onSubmit={handleSubmit}
+                      resolver={stepValidationSchema}
+                    >
                       {substep.key === 'testStep' && (
                         <TestSubstep
                           expanded={currentSubstep === index + 1}
@@ -317,7 +357,6 @@ function FlowStep(props) {
                           flowId={flowId}
                         />
                       )}
-
                       {substep.key &&
                         ['chooseConnection', 'testStep'].includes(
                           substep.key,
@@ -330,11 +369,12 @@ function FlowStep(props) {
                             onSubmit={expandNextStep}
                             onChange={handleChange}
                             step={step}
+                            flowId={flowId}
                           />
                         )}
-                    </React.Fragment>
-                  ))}
-              </Form>
+                    </Form>
+                  </React.Fragment>
+                ))}
             </StepExecutionsProvider>
           </List>
         </Content>
@@ -349,6 +389,7 @@ function FlowStep(props) {
           stepId={step.id}
           deletable={!isTrigger}
           onClose={onContextMenuClose}
+          onDelete={onDelete}
           anchorEl={anchorEl}
           flowId={flowId}
         />
@@ -360,11 +401,12 @@ function FlowStep(props) {
 FlowStep.propTypes = {
   collapsed: PropTypes.bool,
   step: StepPropType.isRequired,
-  index: PropTypes.number,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onContinue: PropTypes.func,
+  onDelete: PropTypes.func,
+  flowId: PropTypes.string.isRequired,
 };
 
 export default FlowStep;

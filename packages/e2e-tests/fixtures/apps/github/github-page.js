@@ -1,10 +1,11 @@
 const { BasePage } = require('../../base-page');
 const { AddGithubConnectionModal } = require('./add-github-connection-modal');
+const { expect } = require('@playwright/test');
 
 export class GithubPage extends BasePage {
 
   constructor (page) {
-    super(page)
+    super(page);
     this.addConnectionButton = page.getByTestId('add-connection-button');
     this.connectionsTab = page.getByTestId('connections-tab');
     this.flowsTab = page.getByTestId('flows-tab');
@@ -38,7 +39,7 @@ export class GithubPage extends BasePage {
       await this.flowsTab.click();
       await expect(this.flowsTab).toBeVisible();
     }
-    return await this.flowRows.count() > 0
+    return await this.flowRows.count() > 0;
   }
 
   async hasConnections () {

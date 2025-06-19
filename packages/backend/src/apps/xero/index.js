@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://api.xero.com',
   iconUrl: '{BASE_URL}/apps/xero/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/xero/connection',
-  primaryColor: '13B5EA',
+  primaryColor: '#13B5EA',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

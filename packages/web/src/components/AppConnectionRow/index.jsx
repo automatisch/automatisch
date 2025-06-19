@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useMutation } from '@apollo/client';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import Skeleton from '@mui/material/Skeleton';
@@ -10,10 +9,11 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import { DateTime } from 'luxon';
+import { useQueryClient } from '@tanstack/react-query';
 
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useDeleteConnection from 'hooks/useDeleteConnection';
 import ConnectionContextMenu from 'components/AppConnectionContextMenu';
-import { DELETE_CONNECTION } from 'graphql/mutations/delete-connection';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { ConnectionPropType } from 'propTypes/propTypes';
 import { CardContent, Typography } from './style';
@@ -30,20 +30,20 @@ const countTranslation = (value) => (
 function AppConnectionRow(props) {
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
-  const { id, key, formattedData, verified, createdAt, reconnectable } =
-    props.connection;
+  const { id, key, formattedData, verified, createdAt } = props.connection;
   const [verificationVisible, setVerificationVisible] = React.useState(false);
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const queryClient = useQueryClient();
 
-  const [deleteConnection] = useMutation(DELETE_CONNECTION);
+  const { mutateAsync: deleteConnection } = useDeleteConnection();
 
   const { mutate: testConnection, isPending: isTestConnectionPending } =
     useTestConnection(
       { connectionId: id },
       {
         onSettled: () => {
-          setTimeout(() => setVerificationVisible(false), 3000);
+          window.setTimeout(() => setVerificationVisible(false), 3000);
         },
       },
     );
@@ -62,17 +62,10 @@ function AppConnectionRow(props) {
   const onContextMenuAction = React.useCallback(
     async (event, action) => {
       if (action.type === 'delete') {
-        await deleteConnection({
-          variables: { input: { id } },
-          update: (cache) => {
-            const connectionCacheId = cache.identify({
-              __typename: 'Connection',
-              id,
-            });
-            cache.evict({
-              id: connectionCacheId,
-            });
-          },
+        await deleteConnection(id);
+
+        await queryClient.invalidateQueries({
+          queryKey: ['apps', key, 'connections'],
         });
 
         enqueueSnackbar(formatMessage('connection.deletedMessage'), {
@@ -86,7 +79,15 @@ function AppConnectionRow(props) {
         testConnection({ variables: { id } });
       }
     },
-    [deleteConnection, id, testConnection, formatMessage, enqueueSnackbar],
+    [
+      deleteConnection,
+      id,
+      queryClient,
+      key,
+      enqueueSnackbar,
+      formatMessage,
+      testConnection,
+    ],
   );
 
   const relativeCreatedAt = DateTime.fromMillis(
@@ -172,7 +173,6 @@ function AppConnectionRow(props) {
         <ConnectionContextMenu
           appKey={key}
           connection={props.connection}
-          disableReconnection={!reconnectable}
           onClose={handleClose}
           onMenuItemClick={onContextMenuAction}
           anchorEl={anchorEl}

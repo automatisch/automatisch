@@ -1,6 +1,6 @@
-import Flow from '../../models/flow.js';
-import logger from '../../helpers/logger.js';
-import handler from '../../helpers/webhook-handler.js';
+import Flow from '@/models/flow.js';
+import logger from '@/helpers/logger.js';
+import handler from '@/helpers/webhook-handler.js';
 
 export default async (request, response) => {
   const computedRequestPayload = {
@@ -17,7 +17,7 @@ export default async (request, response) => {
   const flow = await Flow.query().findById(flowId).throwIfNotFound();
   const triggerStep = await flow.getTriggerStep();
 
-  if (triggerStep.appKey !== 'webhook') {
+  if (triggerStep.appKey !== 'webhook' && triggerStep.appKey !== 'forms') {
     const connection = await triggerStep.$relatedQuery('connection');
 
     if (!(await connection.verifyWebhook(request))) {

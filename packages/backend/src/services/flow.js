@@ -1,9 +1,9 @@
-import Flow from '../models/flow.js';
-import globalVariable from '../helpers/global-variable.js';
-import EarlyExitError from '../errors/early-exit.js';
-import AlreadyProcessedError from '../errors/already-processed.js';
-import HttpError from '../errors/http.js';
-import { logger } from '../helpers/logger.js';
+import Flow from '@/models/flow.js';
+import globalVariable from '@/helpers/global-variable.js';
+import EarlyExitError from '@/errors/early-exit.js';
+import AlreadyProcessedError from '@/errors/already-processed.js';
+import HttpError from '@/errors/http.js';
+import { logger } from '@/helpers/logger.js';
 
 export const processFlow = async (options) => {
   const { testRun, flowId } = options;
@@ -31,8 +31,6 @@ export const processFlow = async (options) => {
     const shouldNotConsiderAsError = shouldEarlyExit || shouldNotProcess;
 
     if (!shouldNotConsiderAsError) {
-      logger.error(error);
-
       if (error instanceof HttpError) {
         $.triggerOutput.error = error.details;
       } else {
@@ -42,6 +40,8 @@ export const processFlow = async (options) => {
           $.triggerOutput.error = { error: error.message };
         }
       }
+
+      logger.error(error);
     }
   }
 

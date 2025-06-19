@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Flow model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "active": {
+      "type": "boolean",
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "deletedAt": {
+      "type": "string",
+    },
+    "folderId": {
+      "format": "uuid",
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "name": {
+      "minLength": 1,
+      "type": "string",
+    },
+    "publishedAt": {
+      "type": "string",
+    },
+    "remoteWebhookId": {
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+    "userId": {
+      "format": "uuid",
+      "type": "string",
+    },
+  },
+  "required": [
+    "name",
+  ],
+  "type": "object",
+}
+`;

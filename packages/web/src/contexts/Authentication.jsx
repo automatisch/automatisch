@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { getItem, removeItem, setItem } from 'helpers/storage';
 import api from 'helpers/api.js';
@@ -35,4 +36,8 @@ export const AuthenticationProvider = (props) => {
       {children}
     </AuthenticationContext.Provider>
   );
+};
+
+AuthenticationProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

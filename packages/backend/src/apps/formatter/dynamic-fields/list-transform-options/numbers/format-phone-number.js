@@ -15,7 +15,7 @@ const formatPhoneNumber = [
     type: 'dropdown',
     required: true,
     description: 'The format you want to convert the number to.',
-    variables: true,
+    variables: false,
     options: [
       { label: '+491632223344 (E164)', value: 'e164' },
       { label: '+49 163 2223344 (International)', value: 'international' },
@@ -28,7 +28,7 @@ const formatPhoneNumber = [
     type: 'dropdown',
     required: true,
     description: 'The country code of the phone number. The default is US.',
-    variables: true,
+    variables: false,
     options: phoneNumberCountryCodes,
   },
 ];

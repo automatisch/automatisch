@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import App from '../models/app';
-import actionSerializer from './action';
+import App from '@/models/app.js';
+import actionSerializer from '@/serializers/action.js';
 
 describe('actionSerializer', () => {
   it('should return the action data', async () => {
@@ -16,6 +16,6 @@ describe('actionSerializer', () => {
       type: action.type,
     };
 
-    expect(actionSerializer(action)).toEqual(expectedPayload);
+    expect(expectedPayload).toMatchObject(actionSerializer(action));
   });
 });

@@ -25,7 +25,7 @@ export class ApplicationsModal extends BasePage {
     if (this.applications[link] === undefined) {
       throw {
         message: `Unknown link "${link}" passed to ApplicationsModal.selectLink`
-      }
+      };
     }
     await this.searchInput.fill(link);
     await this.appListItem.first().click();

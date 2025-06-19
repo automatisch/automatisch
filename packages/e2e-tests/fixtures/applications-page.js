@@ -1,4 +1,3 @@
-const path = require('node:path');
 const { ApplicationsModal } = require('./applications-modal');
 const { AuthenticatedPage } = require('./authenticated-page');
 

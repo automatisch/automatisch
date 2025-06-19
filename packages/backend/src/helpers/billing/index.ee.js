@@ -1,7 +1,7 @@
-import appConfig from '../../config/app.js';
-import paddleClient from './paddle.ee.js';
-import paddlePlans from './plans.ee.js';
-import webhooks from './webhooks.ee.js';
+import appConfig from '@/config/app.js';
+import paddleClient from '@/helpers/billing/paddle.ee.js';
+import paddlePlans from '@/helpers/billing/plans.ee.js';
+import webhooks from '@/helpers/billing/webhooks.ee.js';
 
 const paddleInfo = {
   sandbox: appConfig.isProd ? false : true,

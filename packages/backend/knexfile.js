@@ -1,6 +1,6 @@
 import { knexSnakeCaseMappers } from 'objection';
 import appConfig from './src/config/app.js';
-import path from 'path';
+import path, { join } from 'path';
 import { fileURLToPath } from 'url';
 
 const fileExtension = 'js';
@@ -20,12 +20,12 @@ const knexConfig = {
   searchPath: [appConfig.postgresSchema],
   pool: { min: 0, max: 20 },
   migrations: {
-    directory: __dirname + '/src/db/migrations',
+    directory: join(__dirname, '/src/db/migrations'),
     extension: fileExtension,
     loadExtensions: [`.${fileExtension}`],
   },
   seeds: {
-    directory: __dirname + '/src/db/seeds',
+    directory: join(__dirname, '/src/db/seeds'),
   },
   ...(appConfig.isTest ? knexSnakeCaseMappers() : {}),
 };

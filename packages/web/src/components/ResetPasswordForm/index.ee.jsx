@@ -1,17 +1,19 @@
-import { useMutation } from '@apollo/client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
+
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
-import { RESET_PASSWORD } from 'graphql/mutations/reset-password.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useResetPassword from 'hooks/useResetPassword';
+
 const validationSchema = yup.object().shape({
   password: yup.string().required('resetPasswordForm.mandatoryInput'),
   confirmPassword: yup
@@ -19,30 +21,56 @@ const validationSchema = yup.object().shape({
     .required('resetPasswordForm.mandatoryInput')
     .oneOf([yup.ref('password')], 'resetPasswordForm.passwordsMustMatch'),
 });
+
 export default function ResetPasswordForm() {
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [resetPassword, { data, loading }] = useMutation(RESET_PASSWORD);
+  const {
+    mutateAsync: resetPassword,
+    isPending,
+    isSuccess,
+    error,
+    isError,
+  } = useResetPassword();
   const token = searchParams.get('token');
+
   const handleSubmit = async (values) => {
-    await resetPassword({
-      variables: {
-        input: {
-          password: values.password,
-          token,
+    const { password } = values;
+    try {
+      await resetPassword({
+        password,
+        token,
+      });
+      enqueueSnackbar(formatMessage('resetPasswordForm.passwordUpdated'), {
+        variant: 'success',
+        SnackbarProps: {
+          'data-test': 'snackbar-reset-password-success',
         },
-      },
-    });
-    enqueueSnackbar(formatMessage('resetPasswordForm.passwordUpdated'), {
-      variant: 'success',
-      SnackbarProps: {
-        'data-test': 'snackbar-reset-password-success',
-      },
-    });
-    navigate(URLS.LOGIN);
+      });
+      navigate(URLS.LOGIN);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const renderError = () => {
+    if (!isError) {
+      return null;
+    }
+
+    const errors = error?.response?.data?.errors?.general || [
+      error?.message || formatMessage('resetPasswordForm.error'),
+    ];
+
+    return errors.map((error) => (
+      <Alert key={error} severity="error" sx={{ mt: 2 }}>
+        {error}
+      </Alert>
+    ));
+  };
+
   return (
     <Paper sx={{ px: 2, py: 4 }}>
       <Typography
@@ -82,7 +110,6 @@ export default function ResetPasswordForm() {
                   : ''
               }
             />
-
             <TextField
               label={formatMessage(
                 'resetPasswordForm.confirmPasswordFieldLabel',
@@ -103,14 +130,14 @@ export default function ResetPasswordForm() {
                   : ''
               }
             />
-
+            {renderError()}
             <LoadingButton
               type="submit"
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, my: 3 }}
-              loading={loading}
-              disabled={data || !token}
+              loading={isPending}
+              disabled={isSuccess || !token}
               fullWidth
             >
               {formatMessage('resetPasswordForm.submit')}

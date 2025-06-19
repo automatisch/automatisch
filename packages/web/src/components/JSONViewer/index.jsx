@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { JSONTree } from 'react-json-tree';
+import PropTypes from 'prop-types';
+
 const theme = {
   scheme: 'inspector',
   author: 'Alexander Kuznetsov (alexkuz@gmail.com)',
@@ -36,16 +38,23 @@ const theme = {
   // base0F - Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
   base0F: '#a16946',
 };
+
 function JSONViewer(props) {
   const { data } = props;
+
   return (
     <JSONTree
       hideRoot
       data={data}
-      shouldExpandNode={() => true}
+      shouldExpandNode={(keyPath) => keyPath.length < 3}
       invertTheme={false}
       theme={theme}
     />
   );
 }
+
+JSONViewer.propTypes = {
+  data: PropTypes.object.isRequired,
+};
+
 export default JSONViewer;

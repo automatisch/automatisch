@@ -1,4 +1,3 @@
-const path = require('node:path');
 const { AuthenticatedPage } = require('./authenticated-page');
 
 export class UserInterfacePage extends AuthenticatedPage {

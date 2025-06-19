@@ -13,9 +13,10 @@ export class AdminEditUserPage extends AuthenticatedPage {
     super(page);
     this.fullNameInput = page.getByTestId('full-name-input');
     this.emailInput = page.getByTestId('email-input');
-    this.roleInput = page.getByTestId('role.id-autocomplete');
+    this.roleInput = page.getByTestId('roleId-autocomplete');
     this.updateButton = page.getByTestId('update-button');
     this.pageTitle = page.getByTestId('edit-user-title');
+    this.fieldError = page.locator('p[id$="-helper-text"]');
   }
 
   /**
@@ -23,6 +24,7 @@ export class AdminEditUserPage extends AuthenticatedPage {
    */
   async waitForLoad(fullName) {
     return await this.page.waitForFunction((fullName) => {
+      // eslint-disable-next-line no-undef
       const el = document.querySelector("[data-test='full-name-input']");
       return el && el.value === fullName;
     }, fullName);

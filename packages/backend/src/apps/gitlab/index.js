@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: 'https://gitlab.com',
   iconUrl: '{BASE_URL}/apps/gitlab/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/gitlab/connection',
-  primaryColor: 'FC6D26',
+  primaryColor: '#FC6D26',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

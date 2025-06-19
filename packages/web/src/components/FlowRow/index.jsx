@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -34,24 +34,29 @@ function getFlowStatusColor(status) {
 }
 
 function FlowRow(props) {
+  const location = useLocation();
   const formatMessage = useFormatMessage();
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { flow, onDuplicateFlow, onDeleteFlow, appKey } = props;
+  const { flow, onDuplicateFlow, appKey } = props;
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const onContextMenuClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
     event.nativeEvent.stopImmediatePropagation();
     setAnchorEl(contextButtonRef.current);
   };
+
   const createdAt = DateTime.fromMillis(parseInt(flow.createdAt, 10));
   const updatedAt = DateTime.fromMillis(parseInt(flow.updatedAt, 10));
   const isUpdated = updatedAt > createdAt;
   const relativeCreatedAt = createdAt.toRelative();
   const relativeUpdatedAt = updatedAt.toRelative();
+
   return (
     <>
       <Card sx={{ mb: 1 }} data-test="flow-row">
@@ -59,6 +64,9 @@ function FlowRow(props) {
           component={Link}
           to={URLS.FLOW(flow.id)}
           data-test="card-action-area"
+          state={{
+            from: `${location.pathname}${location.search}${location.hash}`,
+          }}
         >
           <CardContent>
             <Apps direction="row" gap={1} sx={{ gridArea: 'apps' }}>
@@ -112,9 +120,9 @@ function FlowRow(props) {
       {anchorEl && (
         <FlowContextMenu
           flowId={flow.id}
+          folderId={flow.folder?.id}
           onClose={handleClose}
           anchorEl={anchorEl}
-          onDeleteFlow={onDeleteFlow}
           onDuplicateFlow={onDuplicateFlow}
           appKey={appKey}
         />
@@ -125,9 +133,8 @@ function FlowRow(props) {
 
 FlowRow.propTypes = {
   flow: FlowPropType.isRequired,
-  onDeleteFlow: PropTypes.func,
   onDuplicateFlow: PropTypes.func,
-  appKey: PropTypes.string.isRequired,
+  appKey: PropTypes.string,
 };
 
 export default FlowRow;

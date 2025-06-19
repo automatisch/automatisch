@@ -13,7 +13,7 @@ const formatNumber = [
     type: 'dropdown',
     required: true,
     description: 'The decimal mark of the input number.',
-    variables: true,
+    variables: false,
     options: [
       { label: 'Comma', value: ',' },
       { label: 'Period', value: '.' },
@@ -25,7 +25,7 @@ const formatNumber = [
     type: 'dropdown',
     required: true,
     description: 'The format you want to convert the number to.',
-    variables: true,
+    variables: false,
     options: [
       { label: 'Comma for grouping & period for decimal', value: '0' },
       { label: 'Period for grouping & comma for decimal', value: '1' },

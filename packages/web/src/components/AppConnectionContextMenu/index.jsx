@@ -8,16 +8,10 @@ import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import { ConnectionPropType } from 'propTypes/propTypes';
 import { useQueryClient } from '@tanstack/react-query';
+import Can from 'components/Can';
 
 function ContextMenu(props) {
-  const {
-    appKey,
-    connection,
-    onClose,
-    onMenuItemClick,
-    anchorEl,
-    disableReconnection,
-  } = props;
+  const { appKey, connection, onClose, onMenuItemClick, anchorEl } = props;
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
 
@@ -44,34 +38,57 @@ function ContextMenu(props) {
       hideBackdrop={false}
       anchorEl={anchorEl}
     >
-      <MenuItem
-        component={Link}
-        to={URLS.APP_FLOWS_FOR_CONNECTION(appKey, connection.id)}
-        onClick={createActionHandler({ type: 'viewFlows' })}
-      >
-        {formatMessage('connection.viewFlows')}
-      </MenuItem>
-
-      <MenuItem onClick={createActionHandler({ type: 'test' })}>
-        {formatMessage('connection.testConnection')}
-      </MenuItem>
-
-      <MenuItem
-        component={Link}
-        disabled={disableReconnection}
-        to={URLS.APP_RECONNECT_CONNECTION(
-          appKey,
-          connection.id,
-          connection.appAuthClientId,
+      <Can I="read" a="Flow" passThrough>
+        {(allowed) => (
+          <MenuItem
+            component={Link}
+            to={URLS.APP_FLOWS_FOR_CONNECTION(appKey, connection.id)}
+            onClick={createActionHandler({ type: 'viewFlows' })}
+            disabled={!allowed}
+          >
+            {formatMessage('connection.viewFlows')}
+          </MenuItem>
         )}
-        onClick={createActionHandler({ type: 'reconnect' })}
-      >
-        {formatMessage('connection.reconnect')}
-      </MenuItem>
+      </Can>
 
-      <MenuItem onClick={createActionHandler({ type: 'delete' })}>
-        {formatMessage('connection.delete')}
-      </MenuItem>
+      <Can I="manage" a="Connection" passThrough>
+        {(allowed) => (
+          <MenuItem
+            onClick={createActionHandler({ type: 'test' })}
+            disabled={!allowed}
+          >
+            {formatMessage('connection.testConnection')}
+          </MenuItem>
+        )}
+      </Can>
+
+      <Can I="manage" a="Connection" passThrough>
+        {(allowed) => (
+          <MenuItem
+            component={Link}
+            disabled={!allowed}
+            to={URLS.APP_RECONNECT_CONNECTION(
+              appKey,
+              connection.id,
+              connection.oauthClientId,
+            )}
+            onClick={createActionHandler({ type: 'reconnect' })}
+          >
+            {formatMessage('connection.reconnect')}
+          </MenuItem>
+        )}
+      </Can>
+
+      <Can I="manage" a="Connection" passThrough>
+        {(allowed) => (
+          <MenuItem
+            onClick={createActionHandler({ type: 'delete' })}
+            disabled={!allowed}
+          >
+            {formatMessage('connection.delete')}
+          </MenuItem>
+        )}
+      </Can>
     </Menu>
   );
 }
@@ -83,9 +100,8 @@ ContextMenu.propTypes = {
   onMenuItemClick: PropTypes.func.isRequired,
   anchorEl: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    PropTypes.shape({ current: PropTypes.instanceOf(window.Element) }),
   ]),
-  disableReconnection: PropTypes.bool.isRequired,
 };
 
 export default ContextMenu;

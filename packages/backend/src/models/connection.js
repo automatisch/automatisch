@@ -1,14 +1,15 @@
 import AES from 'crypto-js/aes.js';
 import enc from 'crypto-js/enc-utf8.js';
-import App from './app.js';
-import AppConfig from './app-config.js';
-import AppAuthClient from './app-auth-client.js';
-import Base from './base.js';
-import User from './user.js';
-import Step from './step.js';
-import appConfig from '../config/app.js';
-import Telemetry from '../helpers/telemetry/index.js';
-import globalVariable from '../helpers/global-variable.js';
+import App from '@/models/app.js';
+import AppConfig from '@/models/app-config.js';
+import OAuthClient from '@/models/oauth-client.js';
+import Base from '@/models/base.js';
+import User from '@/models/user.js';
+import Step from '@/models/step.js';
+import appConfig from '@/config/app.js';
+import Telemetry from '@/helpers/telemetry/index.js';
+import globalVariable from '@/helpers/global-variable.js';
+import NotAuthorizedError from '@/errors/not-authorized.js';
 
 class Connection extends Base {
   static tableName = 'connections';
@@ -23,7 +24,7 @@ class Connection extends Base {
       data: { type: 'string' },
       formattedData: { type: 'object' },
       userId: { type: 'string', format: 'uuid' },
-      appAuthClientId: { type: 'string', format: 'uuid' },
+      oauthClientId: { type: 'string', format: 'uuid' },
       verified: { type: 'boolean', default: false },
       draft: { type: 'boolean' },
       deletedAt: { type: 'string' },
@@ -31,10 +32,6 @@ class Connection extends Base {
       updatedAt: { type: 'string' },
     },
   };
-
-  static get virtualAttributes() {
-    return ['reconnectable'];
-  }
 
   static relationMappings = () => ({
     user: {
@@ -72,27 +69,15 @@ class Connection extends Base {
         to: 'app_configs.key',
       },
     },
-    appAuthClient: {
+    oauthClient: {
       relation: Base.BelongsToOneRelation,
-      modelClass: AppAuthClient,
+      modelClass: OAuthClient,
       join: {
-        from: 'connections.app_auth_client_id',
-        to: 'app_auth_clients.id',
+        from: 'connections.oauth_client_id',
+        to: 'oauth_clients.id',
       },
     },
   });
-
-  get reconnectable() {
-    if (this.appAuthClientId) {
-      return this.appAuthClient.active;
-    }
-
-    if (this.appConfig) {
-      return !this.appConfig.disabled && this.appConfig.allowCustomConnection;
-    }
-
-    return true;
-  }
 
   encryptData() {
     if (!this.eligibleForEncryption()) return;
@@ -121,36 +106,46 @@ class Connection extends Base {
     return this.data ? true : false;
   }
 
-  // TODO: Make another abstraction like beforeSave instead of using
-  // beforeInsert and beforeUpdate separately for the same operation.
-  async $beforeInsert(queryContext) {
-    await super.$beforeInsert(queryContext);
-    this.encryptData();
-  }
-
-  async $beforeUpdate(opt, queryContext) {
-    await super.$beforeUpdate(opt, queryContext);
-    this.encryptData();
-  }
-
-  async $afterFind() {
-    this.decryptData();
-  }
-
-  async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
-    Telemetry.connectionCreated(this);
-  }
-
-  async $afterUpdate(opt, queryContext) {
-    await super.$afterUpdate(opt, queryContext);
-    Telemetry.connectionUpdated(this);
-  }
-
   async getApp() {
     if (!this.key) return null;
 
     return await App.findOneByKey(this.key);
+  }
+
+  async getAppConfig() {
+    return await AppConfig.query().findOne({ key: this.key });
+  }
+
+  async checkEligibilityForCreation() {
+    const app = await this.getApp();
+
+    const appConfig = await this.getAppConfig();
+
+    if (appConfig) {
+      if (appConfig.disabled) {
+        throw new NotAuthorizedError(
+          'The application has been disabled for new connections!'
+        );
+      }
+
+      if (appConfig.useOnlyPredefinedAuthClients && this.formattedData) {
+        throw new NotAuthorizedError(
+          `New custom connections have been disabled for ${app.name}!`
+        );
+      }
+
+      if (!this.formattedData) {
+        const authClient = await appConfig
+          .$relatedQuery('oauthClients')
+          .findById(this.oauthClientId)
+          .where({ active: true })
+          .throwIfNotFound();
+
+        this.formattedData = authClient.formattedAuthDefaults;
+      }
+    }
+
+    return this;
   }
 
   async testAndUpdateConnection() {
@@ -171,6 +166,17 @@ class Connection extends Base {
     });
   }
 
+  async verifyAndUpdateConnection() {
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection: this, app });
+    await app.auth.verifyCredentials($);
+
+    return await this.$query().patchAndFetch({
+      verified: true,
+      draft: false,
+    });
+  }
+
   async verifyWebhook(request) {
     if (!this.key) return true;
 
@@ -184,6 +190,75 @@ class Connection extends Base {
     if (!app.auth?.verifyWebhook) return true;
 
     return app.auth.verifyWebhook($);
+  }
+
+  async generateAuthUrl() {
+    const app = await this.getApp();
+    const $ = await globalVariable({ connection: this, app });
+
+    await app.auth.generateAuthUrl($);
+
+    const url = this.formattedData.url;
+
+    return { url };
+  }
+
+  async reset() {
+    const formattedData = this?.formattedData?.screenName
+      ? { screenName: this.formattedData.screenName }
+      : {};
+
+    const updatedConnection = await this.$query().patchAndFetch({
+      formattedData,
+    });
+
+    return updatedConnection;
+  }
+
+  async updateFormattedData({ formattedData, oauthClientId }) {
+    if (oauthClientId) {
+      const oauthClient = await OAuthClient.query()
+        .findById(oauthClientId)
+        .throwIfNotFound();
+
+      formattedData = oauthClient.formattedAuthDefaults;
+    }
+
+    return await this.$query().patchAndFetch({
+      formattedData: {
+        ...this.formattedData,
+        ...formattedData,
+      },
+    });
+  }
+
+  // TODO: Make another abstraction like beforeSave instead of using
+  // beforeInsert and beforeUpdate separately for the same operation.
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+
+    await this.checkEligibilityForCreation();
+
+    this.encryptData();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+    this.encryptData();
+  }
+
+  async $afterFind() {
+    this.decryptData();
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+    Telemetry.connectionCreated(this);
+  }
+
+  async $afterUpdate(opt, queryContext) {
+    await super.$afterUpdate(opt, queryContext);
+    Telemetry.connectionUpdated(this);
   }
 }
 

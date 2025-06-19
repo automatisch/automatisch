@@ -10,6 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 
 import TrialOverAlert from 'components/TrialOverAlert/index.ee';
 import SubscriptionCancelledAlert from 'components/SubscriptionCancelledAlert/index.ee';
@@ -43,7 +44,7 @@ function BillingCard(props) {
         </Typography>
 
         <Typography variant="h6" fontWeight="bold">
-          {title}
+          {title || '---'}
         </Typography>
       </CardContent>
 
@@ -53,6 +54,13 @@ function BillingCard(props) {
     </Card>
   );
 }
+
+BillingCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  action: PropTypes.string,
+  text: PropTypes.string,
+};
 
 function Action(props) {
   const { action, text } = props;
@@ -80,6 +88,11 @@ function Action(props) {
   );
 }
 
+Action.propTypes = {
+  action: PropTypes.string,
+  text: PropTypes.string,
+};
+
 export default function UsageDataInformation() {
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
@@ -106,12 +119,12 @@ export default function UsageDataInformation() {
         text: 'Upgrade plan',
       },
       nextBillAmount: {
-        title: '---',
+        title: null,
         action: null,
         text: null,
       },
       nextBillDate: {
-        title: '---',
+        title: null,
         action: null,
         text: null,
       },
@@ -124,7 +137,9 @@ export default function UsageDataInformation() {
         text: formatMessage('usageDataInformation.cancelPlan'),
       },
       nextBillAmount: {
-        title: `€${subscription?.nextBillAmount}`,
+        title: subscription?.nextBillAmount
+          ? `€${subscription?.nextBillAmount}`
+          : null,
         action: subscription?.updateUrl,
         text: formatMessage('usageDataInformation.updatePaymentMethod'),
       },

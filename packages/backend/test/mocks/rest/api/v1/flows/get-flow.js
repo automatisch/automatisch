@@ -1,4 +1,4 @@
-const getFlowMock = async (flow, steps) => {
+const getFlowMock = async (flow, steps = []) => {
   const data = {
     active: flow.active,
     id: flow.id,
@@ -6,18 +6,22 @@ const getFlowMock = async (flow, steps) => {
     status: flow.active ? 'published' : 'draft',
     createdAt: flow.createdAt.getTime(),
     updatedAt: flow.updatedAt.getTime(),
-    steps: steps.map((step) => ({
+  };
+
+  if (steps.length) {
+    data.steps = steps.map((step) => ({
       appKey: step.appKey,
       iconUrl: step.iconUrl,
       id: step.id,
       key: step.key,
+      name: step.name,
       parameters: step.parameters,
       position: step.position,
       status: step.status,
       type: step.type,
       webhookUrl: step.webhookUrl,
-    })),
-  };
+    }));
+  }
 
   return {
     data: data,

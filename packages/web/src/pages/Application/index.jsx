@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import {
   Link,
@@ -5,7 +6,6 @@ import {
   Navigate,
   Routes,
   useParams,
-  useSearchParams,
   useMatch,
   useNavigate,
 } from 'react-router-dom';
@@ -30,6 +30,9 @@ import AppIcon from 'components/AppIcon';
 import Container from 'components/Container';
 import PageTitle from 'components/PageTitle';
 import useApp from 'hooks/useApp';
+import useOAuthClients from 'hooks/useOAuthClients';
+import Can from 'components/Can';
+import { AppPropType } from 'propTypes/propTypes';
 
 const ReconnectConnection = (props) => {
   const { application, onClose } = props;
@@ -44,6 +47,11 @@ const ReconnectConnection = (props) => {
   );
 };
 
+ReconnectConnection.propTypes = {
+  application: AppPropType.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
 export default function Application() {
   const theme = useTheme();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('md'));
@@ -53,46 +61,59 @@ export default function Application() {
     end: false,
   });
   const flowsPathMatch = useMatch({ path: URLS.APP_FLOWS_PATTERN, end: false });
-  const [searchParams] = useSearchParams();
   const { appKey } = useParams();
   const navigate = useNavigate();
+  const { data: appOAuthClients } = useOAuthClients(appKey);
 
   const { data, loading } = useApp(appKey);
   const app = data?.data || {};
 
   const { data: appConfig } = useAppConfig(appKey);
-  const connectionId = searchParams.get('connectionId') || undefined;
 
   const currentUserAbility = useCurrentUserAbility();
 
   const goToApplicationPage = () => navigate('connections');
 
   const connectionOptions = React.useMemo(() => {
-    const shouldHaveCustomConnection =
-      appConfig?.data?.canConnect && appConfig?.data?.canCustomConnect;
+    const addCustomConnection = {
+      label: formatMessage('app.addConnection'),
+      key: 'addConnection',
+      'data-test': 'add-connection-button',
+      to: URLS.APP_ADD_CONNECTION(appKey, false),
+      disabled:
+        !currentUserAbility.can('manage', 'Connection') ||
+        appConfig?.data?.useOnlyPredefinedAuthClients === true ||
+        appConfig?.data?.disabled === true,
+    };
 
-    const options = [
-      {
-        label: formatMessage('app.addConnection'),
-        key: 'addConnection',
-        'data-test': 'add-connection-button',
-        to: URLS.APP_ADD_CONNECTION(appKey, appConfig?.data?.canConnect),
-        disabled: !currentUserAbility.can('create', 'Connection'),
-      },
-    ];
+    const addConnectionWithOAuthClient = {
+      label: formatMessage('app.addConnectionWithOAuthClient'),
+      key: 'addConnectionWithOAuthClient',
+      'data-test': 'add-connection-with-auth-client-button',
+      to: URLS.APP_ADD_CONNECTION(appKey, true),
+      disabled:
+        !currentUserAbility.can('manage', 'Connection') ||
+        appOAuthClients?.data?.length === 0 ||
+        appConfig?.data?.disabled === true,
+    };
 
-    if (shouldHaveCustomConnection) {
-      options.push({
-        label: formatMessage('app.addCustomConnection'),
-        key: 'addCustomConnection',
-        'data-test': 'add-custom-connection-button',
-        to: URLS.APP_ADD_CONNECTION(appKey),
-        disabled: !currentUserAbility.can('create', 'Connection'),
-      });
+    // means there is no app config. defaulting to custom connections only
+    if (!appConfig?.data) {
+      return [addCustomConnection];
     }
 
-    return options;
-  }, [appKey, appConfig?.data, currentUserAbility]);
+    // means only OAuth clients are allowed for connection creation
+    if (appConfig?.data?.useOnlyPredefinedAuthClients === true) {
+      return [addConnectionWithOAuthClient];
+    }
+
+    // means there is no OAuth client. so we don't show the `addConnectionWithOAuthClient`
+    if (appOAuthClients?.data?.length === 0) {
+      return [addCustomConnection];
+    }
+
+    return [addCustomConnection, addConnectionWithOAuthClient];
+  }, [appKey, appConfig, appOAuthClients, currentUserAbility, formatMessage]);
 
   if (loading) return null;
 
@@ -118,37 +139,37 @@ export default function Application() {
                 <Route
                   path={`${URLS.FLOWS}/*`}
                   element={
-                    <ConditionalIconButton
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      component={Link}
-                      to={URLS.CREATE_FLOW_WITH_APP_AND_CONNECTION(
-                        appKey,
-                        connectionId,
+                    <Can I="manage" a="Flow" passThrough>
+                      {(allowed) => (
+                        <ConditionalIconButton
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          component={Link}
+                          to={URLS.CREATE_FLOW}
+                          fullWidth
+                          icon={<AddIcon />}
+                          disabled={!allowed}
+                        >
+                          {formatMessage('app.createFlow')}
+                        </ConditionalIconButton>
                       )}
-                      fullWidth
-                      icon={<AddIcon />}
-                      disabled={!currentUserAbility.can('create', 'Flow')}
-                    >
-                      {formatMessage('app.createFlow')}
-                    </ConditionalIconButton>
+                    </Can>
                   }
                 />
 
                 <Route
                   path={`${URLS.CONNECTIONS}/*`}
                   element={
-                    <SplitButton
-                      disabled={
-                        (appConfig?.data &&
-                          !appConfig?.data?.canConnect &&
-                          !appConfig?.data?.canCustomConnect) ||
-                        connectionOptions.every(({ disabled }) => disabled)
-                      }
-                      options={connectionOptions}
-                    />
+                    <Can I="manage" a="Connection" passThrough>
+                      {(allowed) => (
+                        <SplitButton
+                          disabled={!allowed}
+                          options={connectionOptions}
+                        />
+                      )}
+                    </Can>
                   }
                 />
               </Routes>
@@ -169,17 +190,20 @@ export default function Application() {
                     label={formatMessage('app.connections')}
                     to={URLS.APP_CONNECTIONS(appKey)}
                     value={URLS.APP_CONNECTIONS_PATTERN}
-                    disabled={!app.supportsConnections}
+                    disabled={
+                      !currentUserAbility.can('read', 'Connection') ||
+                      !app.supportsConnections
+                    }
                     component={Link}
                     data-test="connections-tab"
                   />
-
                   <Tab
                     label={formatMessage('app.flows')}
                     to={URLS.APP_FLOWS(appKey)}
                     value={URLS.APP_FLOWS_PATTERN}
                     component={Link}
                     data-test="flows-tab"
+                    disabled={!currentUserAbility.can('read', 'Flow')}
                   />
                 </Tabs>
               </Box>
@@ -187,14 +211,20 @@ export default function Application() {
               <Routes>
                 <Route
                   path={`${URLS.FLOWS}/*`}
-                  element={<AppFlows appKey={appKey} />}
+                  element={
+                    <Can I="read" a="Flow">
+                      <AppFlows appKey={appKey} />
+                    </Can>
+                  }
                 />
-
                 <Route
                   path={`${URLS.CONNECTIONS}/*`}
-                  element={<AppConnections appKey={appKey} />}
+                  element={
+                    <Can I="read" a="Connection">
+                      <AppConnections appKey={appKey} />
+                    </Can>
+                  }
                 />
-
                 <Route
                   path="/"
                   element={
@@ -218,17 +248,24 @@ export default function Application() {
         <Route
           path="/connections/add"
           element={
-            <AddAppConnection onClose={goToApplicationPage} application={app} />
+            <Can I="manage" a="Connection">
+              <AddAppConnection
+                onClose={goToApplicationPage}
+                application={app}
+              />
+            </Can>
           }
         />
 
         <Route
           path="/connections/:connectionId/reconnect"
           element={
-            <ReconnectConnection
-              application={app}
-              onClose={goToApplicationPage}
-            />
+            <Can I="manage" a="Connection">
+              <ReconnectConnection
+                application={app}
+                onClose={goToApplicationPage}
+              />
+            </Can>
           }
         />
       </Routes>

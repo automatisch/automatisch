@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://www.googleapis.com/calendar',
   iconUrl: '{BASE_URL}/apps/google-calendar/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/google-calendar/connection',
-  primaryColor: '448AFF',
+  primaryColor: '#448AFF',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

@@ -1,64 +1,94 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Alert from '@mui/material/Alert';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+
 import useAuthentication from 'hooks/useAuthentication';
 import * as URLS from 'config/urls';
-import { REGISTER_USER } from 'graphql/mutations/register-user.ee';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
-import { LOGIN } from 'graphql/mutations/login';
 import useFormatMessage from 'hooks/useFormatMessage';
-const validationSchema = yup.object().shape({
-  fullName: yup.string().trim().required('signupForm.mandatoryInput'),
-  email: yup
-    .string()
-    .trim()
-    .email('signupForm.validateEmail')
-    .required('signupForm.mandatoryInput'),
-  password: yup.string().required('signupForm.mandatoryInput'),
-  confirmPassword: yup
-    .string()
-    .required('signupForm.mandatoryInput')
-    .oneOf([yup.ref('password')], 'signupForm.passwordsMustMatch'),
-});
-const initialValues = {
+import useCreateAccessToken from 'hooks/useCreateAccessToken';
+import useRegisterUser from 'hooks/useRegisterUser';
+
+const getValidationSchema = (formatMessage) => {
+  const getMandatoryInputMessage = (inputNameId) =>
+    formatMessage('signupForm.mandatoryInput', {
+      inputName: formatMessage(inputNameId),
+    });
+
+  return yup.object().shape({
+    fullName: yup
+      .string()
+      .trim()
+      .required(getMandatoryInputMessage('signupForm.fullNameFieldLabel')),
+    email: yup
+      .string()
+      .trim()
+      .required(getMandatoryInputMessage('signupForm.emailFieldLabel'))
+      .email(formatMessage('signupForm.validateEmail')),
+    password: yup
+      .string()
+      .required(getMandatoryInputMessage('signupForm.passwordFieldLabel'))
+      .min(6, formatMessage('signupForm.passwordMinLength')),
+    confirmPassword: yup
+      .string()
+      .required(
+        getMandatoryInputMessage('signupForm.confirmPasswordFieldLabel'),
+      )
+      .oneOf(
+        [yup.ref('password')],
+        formatMessage('signupForm.passwordsMustMatch'),
+      ),
+  });
+};
+
+const defaultValues = {
   fullName: '',
   email: '',
   password: '',
   confirmPassword: '',
 };
+
 function SignUpForm() {
   const navigate = useNavigate();
   const authentication = useAuthentication();
   const formatMessage = useFormatMessage();
-  const [registerUser, { loading: registerUserLoading }] =
-    useMutation(REGISTER_USER);
-  const [login, { loading: loginLoading }] = useMutation(LOGIN);
+  const { mutateAsync: registerUser, isPending: isRegisterUserPending } =
+    useRegisterUser();
+  const { mutateAsync: createAccessToken, isPending: loginLoading } =
+    useCreateAccessToken();
+
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
       navigate(URLS.DASHBOARD);
     }
   }, [authentication.isAuthenticated]);
+
   const handleSubmit = async (values) => {
-    const { fullName, email, password } = values;
-    await registerUser({
-      variables: {
-        input: { fullName, email, password },
-      },
-    });
-    const { data } = await login({
-      variables: {
-        input: { email, password },
-      },
-    });
-    const { token } = data.login;
-    authentication.updateToken(token);
+    try {
+      const { fullName, email, password } = values;
+      await registerUser({
+        fullName,
+        email,
+        password,
+      });
+      const { data } = await createAccessToken({
+        email,
+        password,
+      });
+      const { token } = data;
+      authentication.updateToken(token);
+    } catch (error) {
+      const errors = error?.response?.data?.errors;
+      throw errors || error;
+    }
   };
+
   return (
     <Paper sx={{ px: 2, py: 4 }}>
       <Typography
@@ -76,11 +106,13 @@ function SignUpForm() {
       </Typography>
 
       <Form
-        defaultValues={initialValues}
+        automaticValidation={false}
+        noValidate
+        defaultValues={defaultValues}
         onSubmit={handleSubmit}
-        resolver={yupResolver(validationSchema)}
+        resolver={yupResolver(getValidationSchema(formatMessage))}
         mode="onChange"
-        render={({ formState: { errors, touchedFields } }) => (
+        render={({ formState: { errors } }) => (
           <>
             <TextField
               label={formatMessage('signupForm.fullNameFieldLabel')}
@@ -89,14 +121,9 @@ function SignUpForm() {
               margin="dense"
               autoComplete="fullName"
               data-test="fullName-text-field"
-              error={touchedFields.fullName && !!errors?.fullName}
-              helperText={
-                touchedFields.fullName && errors?.fullName?.message
-                  ? formatMessage(errors?.fullName?.message, {
-                      inputName: formatMessage('signupForm.fullNameFieldLabel'),
-                    })
-                  : ''
-              }
+              error={!!errors?.fullName}
+              helperText={errors?.fullName?.message}
+              required
             />
 
             <TextField
@@ -106,14 +133,9 @@ function SignUpForm() {
               margin="dense"
               autoComplete="email"
               data-test="email-text-field"
-              error={touchedFields.email && !!errors?.email}
-              helperText={
-                touchedFields.email && errors?.email?.message
-                  ? formatMessage(errors?.email?.message, {
-                      inputName: formatMessage('signupForm.emailFieldLabel'),
-                    })
-                  : ''
-              }
+              error={!!errors?.email}
+              helperText={errors?.email?.message}
+              required
             />
 
             <TextField
@@ -122,14 +144,9 @@ function SignUpForm() {
               fullWidth
               margin="dense"
               type="password"
-              error={touchedFields.password && !!errors?.password}
-              helperText={
-                touchedFields.password && errors?.password?.message
-                  ? formatMessage(errors?.password?.message, {
-                      inputName: formatMessage('signupForm.passwordFieldLabel'),
-                    })
-                  : ''
-              }
+              error={!!errors?.password}
+              helperText={errors?.password?.message}
+              required
             />
 
             <TextField
@@ -138,25 +155,27 @@ function SignUpForm() {
               fullWidth
               margin="dense"
               type="password"
-              error={touchedFields.confirmPassword && !!errors?.confirmPassword}
-              helperText={
-                touchedFields.confirmPassword &&
-                errors?.confirmPassword?.message
-                  ? formatMessage(errors?.confirmPassword?.message, {
-                      inputName: formatMessage(
-                        'signupForm.confirmPasswordFieldLabel',
-                      ),
-                    })
-                  : ''
-              }
+              error={!!errors?.confirmPassword}
+              helperText={errors?.confirmPassword?.message}
+              required
             />
+
+            {errors?.root?.general && (
+              <Alert
+                data-test="alert-sign-up-error"
+                severity="error"
+                sx={{ mt: 2 }}
+              >
+                {errors.root.general.message}
+              </Alert>
+            )}
 
             <LoadingButton
               type="submit"
               variant="contained"
               color="primary"
               sx={{ boxShadow: 2, mt: 3 }}
-              loading={registerUserLoading || loginLoading}
+              loading={isRegisterUserPending || loginLoading}
               fullWidth
               data-test="signUp-button"
             >
@@ -168,4 +187,5 @@ function SignUpForm() {
     </Paper>
   );
 }
+
 export default SignUpForm;

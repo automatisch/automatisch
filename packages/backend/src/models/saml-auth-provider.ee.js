@@ -1,10 +1,11 @@
 import { URL } from 'node:url';
 import { v4 as uuidv4 } from 'uuid';
-import appConfig from '../config/app.js';
-import axios from '../helpers/axios-with-proxy.js';
-import Base from './base.js';
-import Identity from './identity.ee.js';
-import SamlAuthProvidersRoleMapping from './saml-auth-providers-role-mapping.ee.js';
+import isEmpty from 'lodash/isEmpty.js';
+import appConfig from '@/config/app.js';
+import axios from '@/helpers/axios-with-proxy.js';
+import Base from '@/models/base.js';
+import Identity from '@/models/identity.ee.js';
+import RoleMapping from '@/models/role-mapping.ee.js';
 
 class SamlAuthProvider extends Base {
   static tableName = 'saml_auth_providers';
@@ -52,12 +53,12 @@ class SamlAuthProvider extends Base {
         to: 'saml_auth_providers.id',
       },
     },
-    samlAuthProvidersRoleMappings: {
+    roleMappings: {
       relation: Base.HasManyRelation,
-      modelClass: SamlAuthProvidersRoleMapping,
+      modelClass: RoleMapping,
       join: {
         from: 'saml_auth_providers.id',
-        to: 'saml_auth_providers_role_mappings.saml_auth_provider_id',
+        to: 'role_mappings.saml_auth_provider_id',
       },
     },
   });
@@ -88,7 +89,7 @@ class SamlAuthProvider extends Base {
       entryPoint: this.entryPoint,
       issuer: this.issuer,
       signatureAlgorithm: this.signatureAlgorithm,
-      logoutUrl: this.remoteLogoutUrl
+      logoutUrl: this.remoteLogoutUrl,
     };
   }
 
@@ -101,14 +102,16 @@ class SamlAuthProvider extends Base {
           IssueInstant="${new Date().toISOString()}"
           Destination="${this.remoteLogoutUrl}">
 
-          <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">${this.issuer}</saml:Issuer>
+          <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">${
+            this.issuer
+          }</saml:Issuer>
           <samlp:SessionIndex>${sessionId}</samlp:SessionIndex>
       </samlp:LogoutRequest>
     `;
 
-    const encodedLogoutRequest = Buffer.from(logoutRequest).toString('base64')
+    const encodedLogoutRequest = Buffer.from(logoutRequest).toString('base64');
 
-    return encodedLogoutRequest
+    return encodedLogoutRequest;
   }
 
   async terminateRemoteSession(sessionId) {
@@ -122,11 +125,30 @@ class SamlAuthProvider extends Base {
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-        }
+        },
       }
     );
 
     return response;
+  }
+
+  async updateRoleMappings(roleMappings) {
+    await this.$relatedQuery('roleMappings').delete();
+
+    if (isEmpty(roleMappings)) {
+      return [];
+    }
+
+    const roleMappingsData = roleMappings.map((roleMapping) => ({
+      ...roleMapping,
+      samlAuthProviderId: this.id,
+    }));
+
+    const newRoleMappings = await RoleMapping.query().insertAndFetch(
+      roleMappingsData
+    );
+
+    return newRoleMappings;
   }
 }
 

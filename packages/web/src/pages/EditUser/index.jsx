@@ -1,13 +1,16 @@
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import MuiTextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Can from 'components/Can';
 import Container from 'components/Container';
@@ -16,42 +19,69 @@ import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
 import * as URLS from 'config/urls';
-import { UPDATE_USER } from 'graphql/mutations/update-user.ee';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
+import useAdminUpdateUser from 'hooks/useAdminUpdateUser';
 import useAdminUser from 'hooks/useAdminUser';
+import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
 }
 
+const getValidationSchema = (formatMessage, canUpdateRole) => {
+  const getMandatoryFieldMessage = (fieldTranslationId) =>
+    formatMessage('userForm.mandatoryInput', {
+      inputName: formatMessage(fieldTranslationId),
+    });
+
+  return yup.object().shape({
+    fullName: yup
+      .string()
+      .trim()
+      .required(getMandatoryFieldMessage('userForm.fullName')),
+    email: yup
+      .string()
+      .trim()
+      .email(formatMessage('userForm.validateEmail'))
+      .required(getMandatoryFieldMessage('userForm.email')),
+    ...(canUpdateRole
+      ? {
+          roleId: yup
+            .string()
+            .required(getMandatoryFieldMessage('userForm.role')),
+        }
+      : {}),
+  });
+};
+
+const defaultValues = {
+  fullName: '',
+  email: '',
+  roleId: '',
+};
+
 export default function EditUser() {
   const formatMessage = useFormatMessage();
-  const [updateUser, { loading }] = useMutation(UPDATE_USER);
   const { userId } = useParams();
+  const { mutateAsync: updateUser, isPending: isAdminUpdateUserPending } =
+    useAdminUpdateUser(userId);
   const { data: userData, isLoading: isUserLoading } = useAdminUser({ userId });
   const user = userData?.data;
   const { data, isLoading: isRolesLoading } = useRoles();
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const currentUserAbility = useCurrentUserAbility();
+  const canUpdateRole = currentUserAbility.can('manage', 'Role');
 
   const handleUserUpdate = async (userDataToUpdate) => {
     try {
       await updateUser({
-        variables: {
-          input: {
-            id: userId,
-            fullName: userDataToUpdate.fullName,
-            email: userDataToUpdate.email,
-            role: {
-              id: userDataToUpdate.role?.id,
-            },
-          },
-        },
+        fullName: userDataToUpdate.fullName,
+        email: userDataToUpdate.email,
+        roleId: userDataToUpdate.roleId,
       });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
 
       enqueueSnackbar(formatMessage('editUser.successfullyUpdated'), {
         variant: 'success',
@@ -63,7 +93,9 @@ export default function EditUser() {
 
       navigate(URLS.USERS);
     } catch (error) {
-      throw new Error('Failed while updating!');
+      const errors = error?.response?.data?.errors;
+
+      throw errors || error;
     }
   };
 
@@ -82,58 +114,100 @@ export default function EditUser() {
               <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={55} />
+              <Skeleton variant="rounded" height={55} />
               <Skeleton variant="rounded" height={45} />
             </Stack>
           )}
 
           {!isUserLoading && (
-            <Form defaultValues={user} onSubmit={handleUserUpdate}>
-              <Stack direction="column" gap={2}>
-                <TextField
-                  required={true}
-                  name="fullName"
-                  label={formatMessage('userForm.fullName')}
-                  data-test="full-name-input"
-                  fullWidth
-                />
+            <Form
+              defaultValues={
+                user
+                  ? {
+                      fullName: user.fullName,
+                      email: user.email,
+                      roleId: user.role.id,
+                    }
+                  : defaultValues
+              }
+              onSubmit={handleUserUpdate}
+              resolver={yupResolver(
+                getValidationSchema(formatMessage, canUpdateRole),
+              )}
+              noValidate
+              render={({ formState: { errors } }) => (
+                <Stack direction="column" gap={2}>
+                  <Stack direction="row" gap={2} mb={2} alignItems="center">
+                    <Typography variant="h6" noWrap>
+                      {formatMessage('editUser.status')}
+                    </Typography>
 
-                <TextField
-                  required={true}
-                  name="email"
-                  label={formatMessage('userForm.email')}
-                  data-test="email-input"
-                  fullWidth
-                />
+                    <Chip
+                      label={user.status}
+                      variant="outlined"
+                      color={user.status === 'active' ? 'success' : 'warning'}
+                    />
+                  </Stack>
 
-                <Can I="update" a="Role">
-                  <ControlledAutocomplete
-                    name="role.id"
+                  <TextField
+                    required={true}
+                    name="fullName"
+                    label={formatMessage('userForm.fullName')}
+                    data-test="full-name-input"
                     fullWidth
-                    disablePortal
-                    disableClearable={true}
-                    options={generateRoleOptions(roles)}
-                    renderInput={(params) => (
-                      <MuiTextField
-                        {...params}
-                        label={formatMessage('userForm.role')}
-                      />
-                    )}
-                    loading={isRolesLoading}
+                    error={!!errors?.fullName}
+                    helperText={errors?.fullName?.message}
                   />
-                </Can>
 
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  sx={{ boxShadow: 2 }}
-                  loading={loading}
-                  data-test="update-button"
-                >
-                  {formatMessage('editUser.submit')}
-                </LoadingButton>
-              </Stack>
-            </Form>
+                  <TextField
+                    required={true}
+                    name="email"
+                    label={formatMessage('userForm.email')}
+                    data-test="email-input"
+                    fullWidth
+                    error={!!errors?.email}
+                    helperText={errors?.email?.message}
+                  />
+
+                  <Can I="manage" a="Role">
+                    <ControlledAutocomplete
+                      name="roleId"
+                      fullWidth
+                      disablePortal
+                      disableClearable={true}
+                      options={generateRoleOptions(roles)}
+                      renderInput={(params) => (
+                        <MuiTextField
+                          {...params}
+                          label={formatMessage('userForm.role')}
+                          error={!!errors?.roleId}
+                          helperText={errors?.roleId?.message}
+                        />
+                      )}
+                      loading={isRolesLoading}
+                      showHelperText={false}
+                    />
+                  </Can>
+
+                  {errors?.root?.general && (
+                    <Alert data-test="update-user-error-alert" severity="error">
+                      {errors?.root?.general?.message}
+                    </Alert>
+                  )}
+
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{ boxShadow: 2 }}
+                    loading={isAdminUpdateUserPending}
+                    data-test="update-button"
+                  >
+                    {formatMessage('editUser.submit')}
+                  </LoadingButton>
+                </Stack>
+              )}
+            />
           )}
         </Grid>
       </Grid>

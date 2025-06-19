@@ -3,6 +3,7 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 export default defineTrigger({
   name: 'New post',
   key: 'newPost',
+  pollInterval: 15,
   description: 'Triggers when a new post is created.',
   arguments: [
     {

@@ -2,13 +2,29 @@ import { useQuery } from '@tanstack/react-query';
 
 import api from 'helpers/api';
 
-export default function useExecutions({ page }, { refetchInterval } = {}) {
+export default function useExecutions(
+  { endDateTime, startDateTime, name, page, status },
+  { refetchInterval } = {},
+) {
   const query = useQuery({
-    queryKey: ['executions', { page }],
+    queryKey: [
+      'executions',
+      {
+        endDateTime,
+        startDateTime,
+        name,
+        page,
+        status,
+      },
+    ],
     queryFn: async ({ signal }) => {
-      const { data } = await api.get(`/v1/executions`, {
+      const { data } = await api.get('/v1/executions', {
         params: {
+          endDateTime,
+          startDateTime,
+          name,
           page,
+          status,
         },
         signal,
       });

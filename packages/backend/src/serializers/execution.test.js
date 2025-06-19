@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import executionSerializer from './execution';
-import flowSerializer from './flow';
-import { createExecution } from '../../test/factories/execution';
-import { createFlow } from '../../test/factories/flow';
+import executionSerializer from '@/serializers/execution.js';
+import flowSerializer from '@/serializers/flow.js';
+import { createExecution } from '@/factories/execution.js';
+import { createFlow } from '@/factories/flow.js';
 
 describe('executionSerializer', () => {
   let flow, execution;
@@ -19,25 +19,12 @@ describe('executionSerializer', () => {
     const expectedPayload = {
       id: execution.id,
       testRun: execution.testRun,
+      status: execution.status,
       createdAt: execution.createdAt.getTime(),
       updatedAt: execution.updatedAt.getTime(),
     };
 
-    expect(executionSerializer(execution)).toEqual(expectedPayload);
-  });
-
-  it('should return the execution data with status', async () => {
-    execution.status = 'success';
-
-    const expectedPayload = {
-      id: execution.id,
-      testRun: execution.testRun,
-      createdAt: execution.createdAt.getTime(),
-      updatedAt: execution.updatedAt.getTime(),
-      status: 'success',
-    };
-
-    expect(executionSerializer(execution)).toEqual(expectedPayload);
+    expect(executionSerializer(execution)).toStrictEqual(expectedPayload);
   });
 
   it('should return the execution data with the flow', async () => {

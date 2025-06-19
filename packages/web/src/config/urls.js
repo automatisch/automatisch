@@ -5,58 +5,61 @@ export const EXECUTION = (executionId) => `/executions/${executionId}`;
 export const LOGIN = '/login';
 export const LOGIN_CALLBACK = `${LOGIN}/callback`;
 export const SIGNUP = '/sign-up';
+export const ACCEPT_INVITATON = '/accept-invitation';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const RESET_PASSWORD = '/reset-password';
+export const INSTALLATION = '/installation';
 export const APPS = '/apps';
 export const NEW_APP_CONNECTION = '/apps/new';
 export const APP = (appKey) => `/app/${appKey}`;
 export const APP_PATTERN = '/app/:appKey';
 export const APP_CONNECTIONS = (appKey) => `/app/${appKey}/connections`;
 export const APP_CONNECTIONS_PATTERN = '/app/:appKey/connections';
+export const PUBLIC_FORM_PATTERN = '/forms/:flowId';
+export const PUBLIC_FORM = (flowId) => `/forms/${flowId}`;
+
 export const APP_ADD_CONNECTION = (appKey, shared = false) =>
   `/app/${appKey}/connections/add?shared=${shared}`;
-export const APP_ADD_CONNECTION_WITH_AUTH_CLIENT_ID = (
+
+export const APP_ADD_CONNECTION_WITH_OAUTH_CLIENT_ID = (
   appKey,
-  appAuthClientId,
-) => `/app/${appKey}/connections/add?appAuthClientId=${appAuthClientId}`;
+  oauthClientId,
+) => `/app/${appKey}/connections/add?oauthClientId=${oauthClientId}`;
+
 export const APP_ADD_CONNECTION_PATTERN = '/app/:appKey/connections/add';
+
 export const APP_RECONNECT_CONNECTION = (
   appKey,
   connectionId,
-  appAuthClientId,
+  oauthClientId,
 ) => {
   const path = `/app/${appKey}/connections/${connectionId}/reconnect`;
-  if (appAuthClientId) {
-    return `${path}?appAuthClientId=${appAuthClientId}`;
+
+  if (oauthClientId) {
+    return `${path}?oauthClientId=${oauthClientId}`;
   }
+
   return path;
 };
+
 export const APP_RECONNECT_CONNECTION_PATTERN =
   '/app/:appKey/connections/:connectionId/reconnect';
-export const APP_FLOWS = (appKey) => `/app/${appKey}/flows`;
+
 export const APP_FLOWS_FOR_CONNECTION = (appKey, connectionId) =>
   `/app/${appKey}/flows?connectionId=${connectionId}`;
+
+export const APP_FLOWS = (appKey) => `/app/${appKey}/flows`;
+export const FOLDER_FLOWS = (folderId) => `/flows?folderId=${folderId}`;
 export const APP_FLOWS_PATTERN = '/app/:appKey/flows';
 export const EDITOR = '/editor';
 export const CREATE_FLOW = '/editor/create';
-export const CREATE_FLOW_WITH_APP = (appKey) =>
-  `/editor/create?appKey=${appKey}`;
-export const CREATE_FLOW_WITH_APP_AND_CONNECTION = (appKey, connectionId) => {
-  const params = {};
-  if (appKey) {
-    params.appKey = appKey;
-  }
-  if (connectionId) {
-    params.connectionId = connectionId;
-  }
-  const searchParams = new URLSearchParams(params).toString();
-  return `/editor/create?${searchParams}`;
-};
+export const VIEW_TEMPLATES = '/flows/templates';
+export const IMPORT_FLOW = '/flows/import';
 export const FLOW_EDITOR = (flowId) => `/editor/${flowId}`;
 export const FLOWS = '/flows';
 // TODO: revert this back to /flows/:flowId once we have a proper single flow page
 export const FLOW = (flowId) => `/editor/${flowId}`;
-export const FLOW_PATTERN = '/flows/:flowId';
+export const FLOWS_PATTERN = '/flows/:flowId';
 export const SETTINGS = '/settings';
 export const SETTINGS_DASHBOARD = SETTINGS;
 export const PROFILE = 'profile';
@@ -78,23 +81,48 @@ export const ROLE_PATTERN = `${ROLES}/:roleId`;
 export const CREATE_ROLE = `${ROLES}/create`;
 export const USER_INTERFACE = `${ADMIN_SETTINGS}/user-interface`;
 export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
+export const FORMS = '/form-entities';
+export const CREATE_FORM = `${FORMS}/create`;
+export const FORM_PATTERN = `${FORMS}/:formId`;
+export const EDIT_FORM = (formId) => `${FORMS}/${formId}`;
+
 export const ADMIN_APPS = `${ADMIN_SETTINGS}/apps`;
 export const ADMIN_APP = (appKey) => `${ADMIN_SETTINGS}/apps/${appKey}`;
 export const ADMIN_APP_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey`;
 export const ADMIN_APP_SETTINGS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/settings`;
-export const ADMIN_APP_AUTH_CLIENTS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/auth-clients`;
+export const ADMIN_APP_AUTH_CLIENTS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/oauth-clients`;
 export const ADMIN_APP_CONNECTIONS_PATTERN = `${ADMIN_SETTINGS}/apps/:appKey/connections`;
+export const ADMIN_TEMPLATES = `${ADMIN_SETTINGS}/templates`;
+export const ADMIN_CREATE_TEMPLATE_PATTERN = `${ADMIN_SETTINGS}/templates/create/:flowId`;
+export const ADMIN_UPDATE_TEMPLATE_PATTERN = `${ADMIN_SETTINGS}/templates/update/:templateId`;
+export const ADMIN_API_TOKENS = `${ADMIN_SETTINGS}/api-tokens`;
+
+export const CREATE_FLOW_FROM_TEMPLATE = (templateId) =>
+  `/editor/create?templateId=${templateId}`;
+
 export const ADMIN_APP_CONNECTIONS = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/connections`;
+
 export const ADMIN_APP_SETTINGS = (appKey) =>
   `${ADMIN_SETTINGS}/apps/${appKey}/settings`;
+
 export const ADMIN_APP_AUTH_CLIENTS = (appKey) =>
-  `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients`;
+  `${ADMIN_SETTINGS}/apps/${appKey}/oauth-clients`;
+
 export const ADMIN_APP_AUTH_CLIENT = (appKey, id) =>
-  `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients/${id}`;
+  `${ADMIN_SETTINGS}/apps/${appKey}/oauth-clients/${id}`;
+
 export const ADMIN_APP_AUTH_CLIENTS_CREATE = (appKey) =>
-  `${ADMIN_SETTINGS}/apps/${appKey}/auth-clients/create`;
+  `${ADMIN_SETTINGS}/apps/${appKey}/oauth-clients/create`;
+
+export const ADMIN_CREATE_TEMPLATE = (flowId) =>
+  `${ADMIN_SETTINGS}/templates/create/${flowId}`;
+
+export const ADMIN_UPDATE_TEMPLATE = (templateId) =>
+  `${ADMIN_SETTINGS}/templates/update/${templateId}`;
+
 export const DASHBOARD = FLOWS;
-// External links
-export const WEBHOOK_DOCS =
-  'https://automatisch.io/docs/apps/webhooks/connection';
+
+// External links and paths
+// The paths are sensitive for their relativity.
+export const WEBHOOK_DOCS_PATH = './apps/webhooks/connection';

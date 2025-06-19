@@ -1,71 +1,58 @@
 import * as React from 'react';
-import { useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
-import { CREATE_STEP } from 'graphql/mutations/create-step';
-import { UPDATE_STEP } from 'graphql/mutations/update-step';
+import useCreateStep from 'hooks/useCreateStep';
+import useUpdateStep from 'hooks/useUpdateStep';
 import FlowStep from 'components/FlowStep';
 import { FlowPropType } from 'propTypes/propTypes';
 import { useQueryClient } from '@tanstack/react-query';
 
 function Editor(props) {
-  const [updateStep] = useMutation(UPDATE_STEP);
-  const [createStep, { loading: creationInProgress }] =
-    useMutation(CREATE_STEP);
   const { flow } = props;
+  const { mutateAsync: updateStep } = useUpdateStep();
+  const { mutateAsync: createStep, isPending: isCreateStepPending } =
+    useCreateStep(flow?.id);
   const [triggerStep] = flow.steps;
   const [currentStepId, setCurrentStepId] = React.useState(triggerStep.id);
   const queryClient = useQueryClient();
 
   const onStepChange = React.useCallback(
     async (step) => {
-      const mutationInput = {
+      const payload = {
         id: step.id,
         key: step.key,
         parameters: step.parameters,
-        connection: {
-          id: step.connection?.id,
-        },
-        flow: {
-          id: flow.id,
-        },
+        connectionId: step.connection?.id,
       };
 
-      if (step.appKey) {
-        mutationInput.appKey = step.appKey;
+      if (step.name || step.keyLabel) {
+        payload.name = step.name || step.keyLabel;
       }
 
-      await updateStep({ variables: { input: mutationInput } });
+      if (step.appKey) {
+        payload.appKey = step.appKey;
+      }
+
+      await updateStep(payload);
+
       await queryClient.invalidateQueries({
         queryKey: ['steps', step.id, 'connection'],
       });
-      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
     },
-    [updateStep, flow.id, queryClient],
+    [updateStep, queryClient],
   );
 
   const addStep = React.useCallback(
     async (previousStepId) => {
-      const mutationInput = {
-        previousStep: {
-          id: previousStepId,
-        },
-        flow: {
-          id: flow.id,
-        },
-      };
-
-      const createdStep = await createStep({
-        variables: { input: mutationInput },
+      const { data: createdStep } = await createStep({
+        previousStepId,
       });
 
-      const createdStepId = createdStep.data.createStep.id;
-      setCurrentStepId(createdStepId);
-      await queryClient.invalidateQueries({ queryKey: ['flows', flow.id] });
+      setCurrentStepId(createdStep.id);
     },
-    [createStep, flow.id, queryClient],
+    [createStep],
   );
 
   const openNextStep = React.useCallback((nextStep) => {
@@ -101,7 +88,7 @@ function Editor(props) {
           <IconButton
             onClick={() => addStep(step.id)}
             color="primary"
-            disabled={creationInProgress || flow.active}
+            disabled={isCreateStepPending || flow.active}
           >
             <AddIcon />
           </IconButton>

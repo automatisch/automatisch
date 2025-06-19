@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UsageData model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "consumedTaskCount": {
+      "type": "integer",
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "deletedAt": {
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "nextResetAt": {
+      "type": "string",
+    },
+    "subscriptionId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+    "userId": {
+      "format": "uuid",
+      "type": "string",
+    },
+  },
+  "required": [
+    "userId",
+    "consumedTaskCount",
+    "nextResetAt",
+  ],
+  "type": "object",
+}
+`;

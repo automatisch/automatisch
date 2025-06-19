@@ -1,24 +1,29 @@
 import * as React from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import useAuthentication from 'hooks/useAuthentication';
 import useCloud from 'hooks/useCloud';
 import * as URLS from 'config/urls';
-import { LOGIN } from 'graphql/mutations/login';
 import Form from 'components/Form';
 import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
+import useCreateAccessToken from 'hooks/useCreateAccessToken';
 
 function LoginForm() {
   const isCloud = useCloud();
   const navigate = useNavigate();
   const formatMessage = useFormatMessage();
   const authentication = useAuthentication();
-  const [login, { loading }] = useMutation(LOGIN);
+  const {
+    mutateAsync: createAccessToken,
+    isPending: loading,
+    error,
+    isError,
+  } = useCreateAccessToken();
 
   React.useEffect(() => {
     if (authentication.isAuthenticated) {
@@ -27,13 +32,29 @@ function LoginForm() {
   }, [authentication.isAuthenticated]);
 
   const handleSubmit = async (values) => {
-    const { data } = await login({
-      variables: {
-        input: values,
-      },
-    });
-    const { token } = data.login;
-    authentication.updateToken(token);
+    try {
+      const { email, password } = values;
+      const { data } = await createAccessToken({
+        email,
+        password,
+      });
+      const { token } = data;
+      authentication.updateToken(token);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const renderError = () => {
+    const errors = error?.response?.data?.errors?.general || [
+      error?.message || formatMessage('loginForm.error'),
+    ];
+
+    return errors.map((error) => (
+      <Alert key={error} severity="error" sx={{ mt: 2 }}>
+        {error}
+      </Alert>
+    ));
   };
 
   return (
@@ -85,6 +106,8 @@ function LoginForm() {
             {formatMessage('loginForm.forgotPasswordText')}
           </Link>
         )}
+
+        {isError && renderError()}
 
         <LoadingButton
           type="submit"

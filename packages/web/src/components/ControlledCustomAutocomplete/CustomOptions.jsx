@@ -47,6 +47,7 @@ const CustomOptions = (props) => {
           },
         },
       ]}
+      className="nowheel"
     >
       <Paper elevation={5} sx={{ width: '100%' }}>
         <Tabs
@@ -75,7 +76,10 @@ const CustomOptions = (props) => {
 
 CustomOptions.propTypes = {
   open: PropTypes.bool.isRequired,
-  anchorEl: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+  anchorEl: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(window.Element) }),
+  ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

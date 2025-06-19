@@ -11,7 +11,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://www.remove.bg',
   apiBaseUrl: 'https://api.remove.bg/v1.0',
-  primaryColor: '55636c',
+  primaryColor: '#55636c',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

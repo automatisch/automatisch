@@ -1,0 +1,51 @@
+import { Router } from 'express';
+
+import automatischRouter from '@/routes/internal/api/v1/automatisch.js';
+import accessTokensRouter from '@/routes/internal/api/v1/access-tokens.js';
+import usersRouter from '@/routes/internal/api/v1/users.js';
+import paymentRouter from '@/routes/internal/api/v1/payment.ee.js';
+import flowsRouter from '@/routes/internal/api/v1/flows.js';
+import stepsRouter from '@/routes/internal/api/v1/steps.js';
+import appsRouter from '@/routes/internal/api/v1/apps.js';
+import connectionsRouter from '@/routes/internal/api/v1/connections.js';
+import executionsRouter from '@/routes/internal/api/v1/executions.js';
+import samlAuthProvidersRouter from '@/routes/internal/api/v1/saml-auth-providers.ee.js';
+import adminAppsRouter from '@/routes/internal/api/v1/admin/apps.ee.js';
+import adminConfigRouter from '@/routes/internal/api/v1/admin/config.ee.js';
+import adminSamlAuthProvidersRouter from '@/routes/internal/api/v1/admin/saml-auth-providers.ee.js';
+import adminTemplatesRouter from '@/routes/internal/api/v1/admin/templates.ee.js';
+import adminApiTokensRouter from '@/routes/internal/api/v1/admin/api-tokens.ee.js';
+import templatesRouter from '@/routes/internal/api/v1/templates.ee.js';
+import rolesRouter from '@/routes/internal/api/v1/admin/roles.ee.js';
+import permissionsRouter from '@/routes/internal/api/v1/admin/permissions.ee.js';
+import adminUsersRouter from '@/routes/internal/api/v1/admin/users.ee.js';
+import installationUsersRouter from '@/routes/internal/api/v1/installation/users.js';
+import foldersRouter from '@/routes/internal/api/v1/folders.js';
+import formsRouter from '@/routes/internal/api/v1/forms.ee.js';
+
+const router = Router();
+
+router.use('/v1/automatisch', automatischRouter);
+router.use('/v1/access-tokens', accessTokensRouter);
+router.use('/v1/users', usersRouter);
+router.use('/v1/payment', paymentRouter);
+router.use('/v1/apps', appsRouter);
+router.use('/v1/connections', connectionsRouter);
+router.use('/v1/flows', flowsRouter);
+router.use('/v1/steps', stepsRouter);
+router.use('/v1/executions', executionsRouter);
+router.use('/v1/saml-auth-providers', samlAuthProvidersRouter);
+router.use('/v1/admin/apps', adminAppsRouter);
+router.use('/v1/admin/config', adminConfigRouter);
+router.use('/v1/admin/users', adminUsersRouter);
+router.use('/v1/admin/roles', rolesRouter);
+router.use('/v1/admin/permissions', permissionsRouter);
+router.use('/v1/admin/saml-auth-providers', adminSamlAuthProvidersRouter);
+router.use('/v1/admin/templates', adminTemplatesRouter);
+router.use('/v1/admin/api-tokens', adminApiTokensRouter);
+router.use('/v1/templates', templatesRouter);
+router.use('/v1/installation/users', installationUsersRouter);
+router.use('/v1/folders', foldersRouter);
+router.use('/v1/forms', formsRouter);
+
+export default router;

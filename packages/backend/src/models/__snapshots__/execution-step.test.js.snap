@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ExecutionStep model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "dataIn": {
+      "type": [
+        "object",
+        "null",
+      ],
+    },
+    "dataOut": {
+      "type": [
+        "object",
+        "null",
+      ],
+    },
+    "deletedAt": {
+      "type": "string",
+    },
+    "errorDetails": {
+      "type": [
+        "object",
+        "null",
+      ],
+    },
+    "executionId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+      ],
+      "type": "string",
+    },
+    "stepId": {
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

@@ -14,7 +14,7 @@ connection in Automatisch. If any of the steps are outdated, please let us know!
 7. Click on the **Select all** and then click on the **Create** button.
 8. Now, copy your **API key secret** and paste the key into the **API Key** field in Automatisch.
 9. Write any screen name to be displayed in Automatisch.
-10. You can find your project ID next to your project name. Paste the id into **Project ID** field in Automatsich.
-11. If you are using self-hosted Appwrite project, you can paste the instace url into **Appwrite instance URL** field in Automatisch.
+10. You can find your project ID next to your project name. Paste the id into **Project ID** field in Automatisch.
+11. If you are using self-hosted Appwrite project, you can paste the instance url into **Appwrite instance URL** field in Automatisch.
 12. Fill the host name field with the hostname of your instance URL. It's either `cloud.appwrite.io` or hostname of your instance URL.
 13. Start using Appwrite integration with Automatisch!

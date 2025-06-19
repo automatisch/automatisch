@@ -32,7 +32,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://thecatapi.com',
   apiBaseUrl: 'https://api.thecatapi.com',
-  primaryColor: '000000',
+  primaryColor: '#000000',
   auth,
   triggers
   actions

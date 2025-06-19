@@ -1,19 +1,18 @@
-import { useMutation } from '@apollo/client';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import merge from 'lodash/merge';
+import mergeWith from 'lodash/mergeWith';
 import * as React from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 
+import Switch from 'components/Switch';
 import ColorInput from 'components/ColorInput';
 import Container from 'components/Container';
 import Form from 'components/Form';
 import PageTitle from 'components/PageTitle';
 import TextField from 'components/TextField';
-import { UPDATE_CONFIG } from 'graphql/mutations/update-config.ee';
-import nestObject from 'helpers/nestObject';
+import useAdminUpdateConfig from 'hooks/useAdminUpdateConfig';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
@@ -29,58 +28,70 @@ const getPrimaryLightColor = (color) => color || primaryLightColor;
 
 const defaultValues = {
   title: 'Automatisch',
-  'palette.primary.main': primaryMainColor,
-  'palette.primary.dark': primaryDarkColor,
-  'palette.primary.light': primaryLightColor,
+  palettePrimaryMain: primaryMainColor,
+  palettePrimaryDark: primaryDarkColor,
+  palettePrimaryLight: primaryLightColor,
+  logoSvgData: '',
+  enableFooter: false,
+  footerLogoSvgData: '',
+  footerCopyrightText: '',
+  footerBackgroundColor: '#FFFFFF',
+  footerTextColor: '#000000',
+  footerDocsUrl: '',
+  footerTosUrl: '',
+  footerPrivacyPolicyUrl: '',
+  footerImprintUrl: '',
+};
+
+const mergeIfGiven = (oldValue, newValue) => {
+  if (newValue) {
+    return newValue;
+  }
+
+  return oldValue;
 };
 
 export default function UserInterface() {
   const formatMessage = useFormatMessage();
-  const [updateConfig, { loading }] = useMutation(UPDATE_CONFIG);
+  const { mutateAsync: updateConfig, isPending } = useAdminUpdateConfig();
   const { data: configData, isLoading: configLoading } = useAutomatischConfig();
   const config = configData?.data;
-  const queryClient = useQueryClient();
 
   const enqueueSnackbar = useEnqueueSnackbar();
-  const configWithDefaults = merge({}, defaultValues, nestObject(config));
+  const configWithDefaults = mergeWith(defaultValues, config, mergeIfGiven);
+
   const handleUserInterfaceUpdate = async (uiData) => {
     try {
       const input = {
-        title: uiData?.title,
-        'palette.primary.main': getPrimaryMainColor(
-          uiData?.palette?.primary.main,
-        ),
-        'palette.primary.dark': getPrimaryDarkColor(
-          uiData?.palette?.primary.dark,
-        ),
-        'palette.primary.light': getPrimaryLightColor(
-          uiData?.palette?.primary.light,
-        ),
-        'logo.svgData': uiData?.logo?.svgData,
+        enableFooter: uiData.enableFooter,
+        footerBackgroundColor: uiData.footerBackgroundColor,
+        footerCopyrightText: uiData.footerCopyrightText,
+        footerDocsUrl: uiData.footerDocsUrl,
+        footerImprintUrl: uiData.footerImprintUrl,
+        footerLogoSvgData: uiData.footerLogoSvgData,
+        footerPrivacyPolicyUrl: uiData.footerPrivacyPolicyUrl,
+        footerTextColor: uiData.footerTextColor,
+        footerTosUrl: uiData.footerTosUrl,
+        logoSvgData: uiData.logoSvgData,
+        palettePrimaryDark: getPrimaryDarkColor(uiData.palettePrimaryDark),
+        palettePrimaryLight: getPrimaryLightColor(uiData.palettePrimaryLight),
+        palettePrimaryMain: getPrimaryMainColor(uiData.palettePrimaryMain),
+        title: uiData.title,
       };
-      await updateConfig({
-        variables: {
-          input,
-        },
-        optimisticResponse: {
-          updateConfig: input,
-        },
-        update: async function () {
-          queryClient.invalidateQueries({
-            queryKey: ['automatisch', 'config'],
-          });
-        },
-      });
+
+      await updateConfig(input);
+
       enqueueSnackbar(formatMessage('userInterfacePage.successfullyUpdated'), {
         variant: 'success',
         SnackbarProps: {
           'data-test': 'snackbar-update-user-interface-success',
         },
       });
-    } catch (error) {
+    } catch {
       throw new Error('Failed while updating!');
     }
   };
+
   return (
     <Container sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
       <Grid container item xs={12} sm={10} md={9}>
@@ -104,6 +115,10 @@ export default function UserInterface() {
               defaultValues={configWithDefaults}
             >
               <Stack direction="column" gap={2}>
+                <Typography variant="h4" gutterBottom={true}>
+                  {formatMessage('userInterfacePage.generalTitle')}
+                </Typography>
+
                 <TextField
                   name="title"
                   label={formatMessage('userInterfacePage.titleFieldLabel')}
@@ -111,7 +126,7 @@ export default function UserInterface() {
                 />
 
                 <ColorInput
-                  name="palette.primary.main"
+                  name="palettePrimaryMain"
                   label={formatMessage(
                     'userInterfacePage.primaryMainColorFieldLabel',
                   )}
@@ -120,7 +135,7 @@ export default function UserInterface() {
                 />
 
                 <ColorInput
-                  name="palette.primary.dark"
+                  name="palettePrimaryDark"
                   label={formatMessage(
                     'userInterfacePage.primaryDarkColorFieldLabel',
                   )}
@@ -129,7 +144,7 @@ export default function UserInterface() {
                 />
 
                 <ColorInput
-                  name="palette.primary.light"
+                  name="palettePrimaryLight"
                   label={formatMessage(
                     'userInterfacePage.primaryLightColorFieldLabel',
                   )}
@@ -138,11 +153,94 @@ export default function UserInterface() {
                 />
 
                 <TextField
-                  name="logo.svgData"
+                  name="logoSvgData"
                   label={formatMessage('userInterfacePage.svgDataFieldLabel')}
                   multiline
                   fullWidth
                   data-test="logo-svg-data-text-field"
+                />
+
+                <Typography variant="h4" gutterBottom={true} mt={3}>
+                  {formatMessage('userInterfacePage.footerTitle')}
+                </Typography>
+
+                <Switch
+                  name="enableFooter"
+                  label={formatMessage('userInterfacePage.enableFooterLabel')}
+                />
+
+                <TextField
+                  name="footerLogoSvgData"
+                  label={formatMessage(
+                    'userInterfacePage.footerLogoSvgDataFieldLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="footer-logo-svg-data-text-field"
+                />
+
+                <TextField
+                  name="footerCopyrightText"
+                  label={formatMessage(
+                    'userInterfacePage.footerCopyrightTextFieldLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="footer-copyright-text-field"
+                />
+
+                <ColorInput
+                  name="footerBackgroundColor"
+                  label={formatMessage(
+                    'userInterfacePage.footerBackgroundColorLabel',
+                  )}
+                  fullWidth
+                  data-test="footer-background-color-input"
+                />
+
+                <ColorInput
+                  name="footerTextColor"
+                  label={formatMessage(
+                    'userInterfacePage.footerTextColorLabel',
+                  )}
+                  fullWidth
+                  data-test="footer-text-color-input"
+                />
+
+                <TextField
+                  name="footerDocsUrl"
+                  label={formatMessage('userInterfacePage.footerDocsUrlLabel')}
+                  multiline
+                  fullWidth
+                  data-test="logo-docs-text-field"
+                />
+
+                <TextField
+                  name="footerTosUrl"
+                  label={formatMessage('userInterfacePage.footerTosUrlLabel')}
+                  multiline
+                  fullWidth
+                  data-test="logo-tos-url-text-field"
+                />
+
+                <TextField
+                  name="footerPrivacyPolicyUrl"
+                  label={formatMessage(
+                    'userInterfacePage.footerPrivacyPolicyUrlLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="logo-privacy-policy-url-text-field"
+                />
+
+                <TextField
+                  name="footerImprintUrl"
+                  label={formatMessage(
+                    'userInterfacePage.footerImprintUrlLabel',
+                  )}
+                  multiline
+                  fullWidth
+                  data-test="logo-imprint-url-text-field"
                 />
 
                 <LoadingButton
@@ -150,7 +248,7 @@ export default function UserInterface() {
                   variant="contained"
                   color="primary"
                   sx={{ boxShadow: 2 }}
-                  loading={loading}
+                  loading={isPending}
                   data-test="update-button"
                 >
                   {formatMessage('userInterfacePage.submit')}

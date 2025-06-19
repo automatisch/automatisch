@@ -1,11 +1,11 @@
-import Base from './base.js';
+import Base from '@/models/base.js';
 
 class Datastore extends Base {
   static tableName = 'datastore';
 
   static jsonSchema = {
     type: 'object',
-    required: ['key', 'value', 'scope', 'scopeId'],
+    required: ['key', 'value', 'scopeId'],
 
     properties: {
       id: { type: 'string', format: 'uuid' },

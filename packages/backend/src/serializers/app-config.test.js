@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createAppConfig } from '../../test/factories/app-config';
-import appConfigSerializer from './app-config';
+import { createAppConfig } from '@/factories/app-config.js';
+import appConfigSerializer from '@/serializers/app-config.js';
 
 describe('appConfig serializer', () => {
   let appConfig;
@@ -11,17 +11,13 @@ describe('appConfig serializer', () => {
 
   it('should return app config data', async () => {
     const expectedPayload = {
-      id: appConfig.id,
       key: appConfig.key,
-      allowCustomConnection: appConfig.allowCustomConnection,
-      shared: appConfig.shared,
+      useOnlyPredefinedAuthClients: appConfig.useOnlyPredefinedAuthClients,
       disabled: appConfig.disabled,
-      canConnect: appConfig.canConnect,
-      canCustomConnect: appConfig.canCustomConnect,
       createdAt: appConfig.createdAt.getTime(),
       updatedAt: appConfig.updatedAt.getTime(),
     };
 
-    expect(appConfigSerializer(appConfig)).toEqual(expectedPayload);
+    expect(appConfigSerializer(appConfig)).toStrictEqual(expectedPayload);
   });
 });

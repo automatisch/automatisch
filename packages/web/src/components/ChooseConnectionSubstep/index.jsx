@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import * as React from 'react';
 
 import AddAppConnection from 'components/AddAppConnection';
-import AppAuthClientsDialog from 'components/AppAuthClientsDialog/index.ee';
+import AppOAuthClientsDialog from 'components/OAuthClientsDialog/index.ee';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import useAppConfig from 'hooks/useAppConfig.ee';
 import { EditorContext } from 'contexts/Editor';
@@ -22,6 +22,11 @@ import useStepConnection from 'hooks/useStepConnection';
 import { useQueryClient } from '@tanstack/react-query';
 import useAppConnections from 'hooks/useAppConnections';
 import useTestConnection from 'hooks/useTestConnection';
+import useOAuthClients from 'hooks/useOAuthClients';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import appConfig from 'config/app.js';
+
+const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -32,7 +37,7 @@ const optionGenerator = (connection) => ({
 });
 
 const getOption = (options, connectionId) =>
-  options.find((connection) => connection.value === connectionId) || undefined;
+  options.find((connection) => connection.value === connectionId) || '';
 
 function ChooseConnectionSubstep(props) {
   const {
@@ -47,11 +52,15 @@ function ChooseConnectionSubstep(props) {
   } = props;
   const { appKey } = step;
   const formatMessage = useFormatMessage();
+  const enqueueSnackbar = useEnqueueSnackbar();
+
   const editorContext = React.useContext(EditorContext);
   const [showAddConnectionDialog, setShowAddConnectionDialog] =
     React.useState(false);
   const [showAddSharedConnectionDialog, setShowAddSharedConnectionDialog] =
     React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+
   const queryClient = useQueryClient();
 
   const { authenticate } = useAuthenticateApp({
@@ -59,12 +68,13 @@ function ChooseConnectionSubstep(props) {
     useShared: true,
   });
 
-  const {
-    data,
-    isLoading: isAppConnectionsLoading,
-    refetch,
-  } = useAppConnections(appKey);
+  const { data: appOAuthClients } = useOAuthClients(application.key);
 
+  const {
+    data: appConnectionsData,
+    isLoading: isAppConnectionsLoading,
+    refetch: refetchAppConnections,
+  } = useAppConnections(appKey);
   const { data: appConfig } = useAppConfig(application.key);
 
   const { data: stepConnectionData } = useStepConnection(step.id);
@@ -88,37 +98,63 @@ function ChooseConnectionSubstep(props) {
   }, []);
 
   const connectionOptions = React.useMemo(() => {
-    const appWithConnections = data?.data;
+    const appWithConnections = appConnectionsData?.data;
     const options =
       appWithConnections?.map((connection) => optionGenerator(connection)) ||
       [];
 
-    if (!appConfig?.data || appConfig?.data?.canCustomConnect) {
-      options.push({
-        label: formatMessage('chooseConnectionSubstep.addNewConnection'),
-        value: ADD_CONNECTION_VALUE,
-      });
+    const addCustomConnection = {
+      label: formatMessage('chooseConnectionSubstep.addNewConnection'),
+      value: ADD_CONNECTION_VALUE,
+    };
+
+    const addConnectionWithOAuthClient = {
+      label: formatMessage(
+        'chooseConnectionSubstep.addConnectionWithOAuthClient',
+      ),
+      value: ADD_SHARED_CONNECTION_VALUE,
+    };
+
+    // means there is no app config. defaulting to custom connections only
+    if (!appConfig?.data) {
+      return options.concat([addCustomConnection]);
     }
 
-    if (appConfig?.data?.canConnect) {
-      options.push({
-        label: formatMessage('chooseConnectionSubstep.addNewSharedConnection'),
-        value: ADD_SHARED_CONNECTION_VALUE,
-      });
+    // app is disabled.
+    if (appConfig.data.disabled) return options;
+
+    // means only OAuth clients are allowed for connection creation and there is OAuth client
+    if (
+      appConfig.data.useOnlyPredefinedAuthClients === true &&
+      appOAuthClients.data.length > 0
+    ) {
+      return options.concat([addConnectionWithOAuthClient]);
     }
 
-    return options;
-  }, [data, formatMessage, appConfig?.data]);
+    // means there is no OAuth client. so we don't show the `addConnectionWithOAuthClient`
+    if (
+      appConfig.data.useOnlyPredefinedAuthClients === true &&
+      appOAuthClients.data.length === 0
+    ) {
+      return options;
+    }
 
-  const handleClientClick = async (appAuthClientId) => {
+    if (appOAuthClients.data.length === 0) {
+      return options.concat([addCustomConnection]);
+    }
+
+    return options.concat([addCustomConnection, addConnectionWithOAuthClient]);
+  }, [appConnectionsData, formatMessage, appConfig, appOAuthClients]);
+
+  const handleClientClick = async (oauthClientId) => {
     try {
       const response = await authenticate?.({
-        appAuthClientId,
+        oauthClientId,
       });
       const connectionId = response?.createConnection.id;
 
       if (connectionId) {
-        await refetch();
+        await refetchAppConnections();
         onChange({
           step: {
             ...step,
@@ -128,8 +164,10 @@ function ChooseConnectionSubstep(props) {
           },
         });
       }
-    } catch (err) {
-      // void
+    } catch (error) {
+      enqueueSnackbar(error?.message || formatMessage('genericError'), {
+        variant: 'error',
+      });
     } finally {
       setShowAddSharedConnectionDialog(false);
     }
@@ -139,12 +177,12 @@ function ChooseConnectionSubstep(props) {
 
   const handleAddConnectionClose = React.useCallback(
     async (response) => {
+      setSubmitting(true);
       setShowAddConnectionDialog(false);
-      const connectionId = response?.createConnection.id;
-
+      const connectionId = response?.createConnection?.id;
       if (connectionId) {
-        await refetch();
-        onChange({
+        await refetchAppConnections();
+        await onChange({
           step: {
             ...step,
             connection: {
@@ -153,30 +191,23 @@ function ChooseConnectionSubstep(props) {
           },
         });
       }
+      setSubmitting(false);
     },
-    [onChange, refetch, step],
+    [onChange, refetchAppConnections, step],
   );
 
   const handleChange = React.useCallback(
     async (event, selectedOption) => {
       if (typeof selectedOption === 'object') {
-        // TODO: try to simplify type casting below.
-        const typedSelectedOption = selectedOption;
-        const option = typedSelectedOption;
-        const connectionId = option?.value;
+        setSubmitting(true);
+        const connectionId = selectedOption?.value;
 
         if (connectionId === ADD_CONNECTION_VALUE) {
           setShowAddConnectionDialog(true);
-          return;
-        }
-
-        if (connectionId === ADD_SHARED_CONNECTION_VALUE) {
+        } else if (connectionId === ADD_SHARED_CONNECTION_VALUE) {
           setShowAddSharedConnectionDialog(true);
-          return;
-        }
-
-        if (connectionId !== stepConnection?.id) {
-          onChange({
+        } else if (connectionId !== stepConnection?.id) {
+          await onChange({
             step: {
               ...step,
               connection: {
@@ -189,9 +220,10 @@ function ChooseConnectionSubstep(props) {
             queryKey: ['steps', step.id, 'connection'],
           });
         }
+        setSubmitting(false);
       }
     },
-    [step, onChange, queryClient],
+    [stepConnection?.id, onChange, step, queryClient],
   );
 
   React.useEffect(() => {
@@ -212,7 +244,11 @@ function ChooseConnectionSubstep(props) {
         title={name}
         valid={isTestConnectionPending ? null : stepConnection?.verified}
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={expanded}
+        timeout={useNewFlowEditor ? 0 : 'auto'}
+        unmountOnExit
+      >
         <ListItem
           sx={{
             pt: 2,
@@ -225,7 +261,9 @@ function ChooseConnectionSubstep(props) {
             fullWidth
             disablePortal
             disableClearable
-            disabled={editorContext.readOnly}
+            disabled={
+              editorContext.readOnly || isTestConnectionPending || submitting
+            }
             options={connectionOptions}
             renderInput={(params) => (
               <TextField
@@ -240,6 +278,7 @@ function ChooseConnectionSubstep(props) {
             onChange={handleChange}
             loading={isAppConnectionsLoading}
             data-test="choose-connection-autocomplete"
+            componentsProps={{ popper: { className: 'nowheel' } }}
           />
 
           <Button
@@ -248,6 +287,7 @@ function ChooseConnectionSubstep(props) {
             onClick={onSubmit}
             sx={{ mt: 2 }}
             disabled={
+              submitting ||
               isTestConnectionPending ||
               !stepConnection?.verified ||
               editorContext.readOnly
@@ -267,7 +307,7 @@ function ChooseConnectionSubstep(props) {
       )}
 
       {application && showAddSharedConnectionDialog && (
-        <AppAuthClientsDialog
+        <AppOAuthClientsDialog
           appKey={application.key}
           onClose={() => setShowAddSharedConnectionDialog(false)}
           onClientClick={handleClientClick}

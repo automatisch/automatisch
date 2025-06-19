@@ -12,7 +12,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://twitter.com',
   apiBaseUrl: 'https://api.twitter.com',
-  primaryColor: '1da1f2',
+  primaryColor: '#1da1f2',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,

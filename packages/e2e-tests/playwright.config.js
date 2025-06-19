@@ -1,4 +1,3 @@
-// @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
 /**
@@ -16,9 +15,9 @@ module.exports = defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: process.env.CI ? 1 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: undefined,
   /* Timeout threshold for each test */
   timeout: 30000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -44,8 +43,23 @@ module.exports = defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'db-restore',
+      testMatch: /.*\.teardown\.js/,
+    },
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.js/,
+      teardown: 'teardown',
+      dependencies: ['db-restore'],
+    },
+    {
+      name: 'teardown',
+      testMatch: /.*\.teardown\.js/,
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup'],
     },
 
     // {

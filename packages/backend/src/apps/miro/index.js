@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://api.miro.com',
   iconUrl: '{BASE_URL}/apps/miro/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/miro/connection',
-  primaryColor: 'F2CA02',
+  primaryColor: '#F2CA02',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

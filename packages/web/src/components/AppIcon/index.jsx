@@ -7,11 +7,18 @@ const inlineImgStyle = {
 function AppIcon(props) {
   const { name, url, color, sx = {}, variant = 'square', ...restProps } = props;
   const initialLetter = name?.[0];
+
   return (
     <Avatar
       component="span"
       variant={variant}
-      sx={{ bgcolor: color, display: 'flex', width: 50, height: 50, ...sx }}
+      sx={{
+        bgcolor: url ? null : color,
+        display: 'flex',
+        width: 50,
+        height: 50,
+        ...sx,
+      }}
       imgProps={{ style: inlineImgStyle }}
       src={url}
       alt={name}

@@ -42,13 +42,9 @@ export default function Execution() {
       <Grid container item sx={{ mt: 2, mb: [2, 5] }} rowGap={3}>
         {!isExecutionStepsLoading && !data?.pages?.[0].data.length && (
           <Alert severity="warning" sx={{ flex: 1 }}>
-            <AlertTitle sx={{ fontWeight: 700 }}>
-              {formatMessage('execution.noDataTitle')}
-            </AlertTitle>
+            <AlertTitle>{formatMessage('execution.noDataTitle')}</AlertTitle>
 
-            <Box sx={{ fontWeight: 400 }}>
-              {formatMessage('execution.noDataMessage')}
-            </Box>
+            <Box>{formatMessage('execution.noDataMessage')}</Box>
           </Alert>
         )}
 

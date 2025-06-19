@@ -13,7 +13,7 @@ export default defineApp({
   apiBaseUrl: 'https://sheets.googleapis.com',
   iconUrl: '{BASE_URL}/apps/google-sheets/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/google-sheets/connection',
-  primaryColor: '0F9D58',
+  primaryColor: '#0F9D58',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

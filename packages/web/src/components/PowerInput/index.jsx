@@ -1,4 +1,5 @@
-import ClickAwayListener from '@mui/base/ClickAwayListener';
+import PropTypes from 'prop-types';
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import * as React from 'react';
@@ -17,6 +18,7 @@ import { StepExecutionsContext } from 'contexts/StepExecutions';
 import Popper from './Popper';
 import { processStepWithExecutions } from './data';
 import { ChildrenWrapper, FakeInput, InputLabelWrapper } from './style';
+
 const PowerInput = (props) => {
   const { control } = useFormContext();
   const {
@@ -31,33 +33,41 @@ const PowerInput = (props) => {
   } = props;
   const priorStepsWithExecutions = React.useContext(StepExecutionsContext);
   const editorRef = React.useRef(null);
+
   const renderElement = React.useCallback(
     (props) => <Element {...props} />,
     [],
   );
+
   const [editor] = React.useState(() => customizeEditor(createEditor()));
+
   const [showVariableSuggestions, setShowVariableSuggestions] =
     React.useState(false);
+
   const disappearSuggestionsOnShift = (event) => {
     if (event.code === 'Tab') {
       setShowVariableSuggestions(false);
     }
   };
+
   const stepsWithVariables = React.useMemo(() => {
     return processStepWithExecutions(priorStepsWithExecutions);
   }, [priorStepsWithExecutions]);
+
   const handleBlur = React.useCallback(
     (value) => {
       onBlur?.(value);
     },
     [onBlur],
   );
+
   const handleVariableSuggestionClick = React.useCallback(
     (variable) => {
       insertVariable(editor, variable, stepsWithVariables);
     },
     [stepsWithVariables],
   );
+
   return (
     <Controller
       rules={{ required }}
@@ -127,6 +137,7 @@ const PowerInput = (props) => {
                 anchorEl={editorRef.current}
                 data={stepsWithVariables}
                 onSuggestionClick={handleVariableSuggestionClick}
+                className="nowheel"
               />
 
               <FormHelperText variant="outlined">{description}</FormHelperText>
@@ -137,4 +148,21 @@ const PowerInput = (props) => {
     />
   );
 };
+
+PowerInput.propTypes = {
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  defaultValue: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  required: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  description: PropTypes.string,
+  docUrl: PropTypes.string,
+  clickToCopy: PropTypes.bool,
+  disabled: PropTypes.bool,
+  shouldUnregister: PropTypes.bool,
+};
+
 export default PowerInput;

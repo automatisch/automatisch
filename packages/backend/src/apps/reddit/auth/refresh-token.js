@@ -14,7 +14,12 @@ const refreshToken = async ($) => {
   const { data } = await $.http.post(
     'https://www.reddit.com/api/v1/access_token',
     params.toString(),
-    { headers }
+    {
+      headers,
+      additionalProperties: {
+        skipAddingAuthHeader: true,
+      },
+    }
   );
 
   await $.auth.set({

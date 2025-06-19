@@ -12,7 +12,7 @@ export default defineApp({
   iconUrl: '{BASE_URL}/apps/trello/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/trello/connection',
   supportsConnections: true,
-  primaryColor: '0079bf',
+  primaryColor: '#0079bf',
   beforeRequest: [addAuthHeader],
   auth,
   actions,

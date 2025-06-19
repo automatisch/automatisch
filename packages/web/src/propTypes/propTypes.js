@@ -123,8 +123,6 @@ export const RawTriggerPropType = PropTypes.shape({
   showWebhookUrl: PropTypes.bool,
   pollInterval: PropTypes.number,
   description: PropTypes.string,
-  useSingletonWebhook: PropTypes.bool,
-  singletonWebhookRefValueParameter: PropTypes.string,
   getInterval: PropTypes.func,
   run: PropTypes.func,
   testRun: PropTypes.func,
@@ -140,8 +138,6 @@ export const TriggerPropType = PropTypes.shape({
   showWebhookUrl: PropTypes.bool,
   pollInterval: PropTypes.number,
   description: PropTypes.string,
-  useSingletonWebhook: PropTypes.bool,
-  singletonWebhookRefValueParameter: PropTypes.string,
   getInterval: PropTypes.func,
   run: PropTypes.func,
   testRun: PropTypes.func,
@@ -211,8 +207,7 @@ export const ConnectionPropType = PropTypes.shape({
   flowCount: PropTypes.number,
   appData: AppPropType,
   createdAt: PropTypes.number,
-  reconnectable: PropTypes.bool,
-  appAuthClientId: PropTypes.string,
+  oauthClientId: PropTypes.string,
 });
 
 AppPropType.connection = PropTypes.arrayOf(ConnectionPropType);
@@ -459,17 +454,15 @@ export const SamlAuthProviderRolePropType = PropTypes.shape({
 export const AppConfigPropType = PropTypes.shape({
   id: PropTypes.string,
   key: PropTypes.string,
-  allowCustomConnection: PropTypes.bool,
-  canConnect: PropTypes.bool,
-  canCustomConnect: PropTypes.bool,
+  useOnlyPredefinedAuthClients: PropTypes.bool,
   shared: PropTypes.bool,
   disabled: PropTypes.bool,
 });
 
-export const AppAuthClientPropType = PropTypes.shape({
+export const OAuthClientPropType = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,
-  appConfigId: PropTypes.string,
+  appConfigKey: PropTypes.string,
   authDefaults: PropTypes.string,
   formattedAuthDefaults: PropTypes.object,
   active: PropTypes.bool,
@@ -480,4 +473,32 @@ export const NotificationPropType = PropTypes.shape({
   createdAt: PropTypes.string,
   documentationUrl: PropTypes.string,
   description: PropTypes.string,
+});
+
+export const FormFieldPropType = PropTypes.shape({
+  key: PropTypes.string,
+  type: PropTypes.oneOf([
+    'text',
+    'number',
+    'date',
+    'datetime',
+    'email',
+    'dropdown',
+  ]),
+});
+
+export const FormPropType = PropTypes.shape({
+  id: PropTypes.string,
+  name: PropTypes.string,
+  fields: PropTypes.arrayOf(FormFieldPropType),
+  updatedAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date),
+  ]),
+  createdAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date),
+  ]),
 });

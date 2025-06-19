@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://oauth.reddit.com',
   iconUrl: '{BASE_URL}/apps/reddit/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/reddit/connection',
-  primaryColor: 'FF4500',
+  primaryColor: '#FF4500',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

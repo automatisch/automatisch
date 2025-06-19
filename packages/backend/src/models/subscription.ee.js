@@ -1,8 +1,8 @@
-import Base from './base.js';
-import User from './user.js';
-import UsageData from './usage-data.ee.js';
+import Base from '@/models/base.js';
+import User from '@/models/user.js';
+import UsageData from '@/models/usage-data.ee.js';
 import { DateTime } from 'luxon';
-import { getPlanById } from '../helpers/billing/plans.ee.js';
+import { getPlanById } from '@/helpers/billing/plans.ee.js';
 
 class Subscription extends Base {
   static tableName = 'subscriptions';
@@ -73,7 +73,7 @@ class Subscription extends Base {
     return (
       this.status === 'deleted' &&
       Number(this.cancellationEffectiveDate) >
-        DateTime.now().startOf('day').toMillis()
+      DateTime.now().startOf('day').toMillis()
     );
   }
 

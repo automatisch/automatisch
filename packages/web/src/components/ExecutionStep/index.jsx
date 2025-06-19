@@ -9,6 +9,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 
 import TabPanel from 'components/TabPanel';
 import SearchableJSONViewer from 'components/SearchableJSONViewer';
@@ -36,7 +37,11 @@ function ExecutionStepId(props) {
 
   return (
     <Box sx={{ display: 'flex' }} gridArea="id">
-      <Typography variant="caption" fontWeight="bold">
+      <Typography
+        data-test="execution-step-id"
+        variant="caption"
+        fontWeight="bold"
+      >
         {formatMessage('executionStep.id', { id })}
       </Typography>
     </Box>
@@ -56,7 +61,11 @@ function ExecutionStepDate(props) {
     <Tooltip
       title={createdAt.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS)}
     >
-      <Typography variant="caption" gutterBottom>
+      <Typography
+        data-test="execution-step-executed-at"
+        variant="caption"
+        gutterBottom
+      >
         {formatMessage('executionStep.executedAt', {
           datetime: relativeCreatedAt,
         })}
@@ -100,14 +109,21 @@ function ExecutionStep(props) {
 
   const hasError = !!executionStep.errorDetails;
 
+  const stepTypeName = isTrigger
+    ? formatMessage('flowStep.triggerType')
+    : formatMessage('flowStep.actionType');
+
   return (
     <Wrapper elevation={1} data-test="execution-step">
       <Header>
         <Stack direction="row" gap={3}>
           <AppIconWrapper>
             <AppIconStatusIconWrapper>
-              <AppIcon url={app?.iconUrl} name={app?.name} />
-
+              <AppIcon
+                url={app?.iconUrl}
+                name={app?.name}
+                color={app?.primaryColor}
+              />
               {validationStatusIcon}
             </AppIconStatusIconWrapper>
           </AppIconWrapper>
@@ -116,13 +132,25 @@ function ExecutionStep(props) {
             <ExecutionStepId id={executionStep.step.id} />
 
             <Box flex="1" gridArea="step">
-              <Typography variant="caption">
-                {isTrigger && formatMessage('flowStep.triggerType')}
-                {isAction && formatMessage('flowStep.actionType')}
+              <Typography
+                component={Stack}
+                direction="row"
+                variant="stepApp"
+                alignItems="center"
+                gap={0.5}
+              >
+                <Chip
+                  data-test="step-type"
+                  label={stepTypeName}
+                  variant="stepType"
+                  size="small"
+                />
+
+                {app?.name}
               </Typography>
 
-              <Typography variant="body2">
-                {step.position}. {app?.name}
+              <Typography data-test="step-position-and-name" variant="body2">
+                {step.position}. {step.name}
               </Typography>
             </Box>
 
@@ -149,7 +177,7 @@ function ExecutionStep(props) {
           </Tabs>
         </Box>
 
-        <TabPanel value={activeTabIndex} index={0}>
+        <TabPanel value={activeTabIndex} index={0} data-test="data-in-panel">
           <SearchableJSONViewer data={executionStep.dataIn} />
         </TabPanel>
 

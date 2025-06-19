@@ -4,6 +4,7 @@ import auth from './auth/index.js';
 import triggers from './triggers/index.js';
 import actions from './actions/index.js';
 import dynamicData from './dynamic-data/index.js';
+import dynamicFields from './dynamic-fields/index.js';
 
 export default defineApp({
   name: 'SignalWire',
@@ -13,10 +14,11 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://signalwire.com',
   apiBaseUrl: '',
-  primaryColor: '044cf6',
+  primaryColor: '#044cf6',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,
   actions,
   dynamicData,
+  dynamicFields,
 });

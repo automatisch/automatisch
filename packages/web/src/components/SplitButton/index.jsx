@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
@@ -23,10 +23,7 @@ export default function SplitButton(props) {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
+  const handleClose = () => {
     setOpen(false);
   };
 
@@ -43,6 +40,7 @@ export default function SplitButton(props) {
           data-test={selectedOption['data-test']}
           component={Link}
           to={selectedOption.to}
+          startIcon={selectedOption.startIcon}
           sx={{
             // Link component causes style loss in ButtonGroup
             borderRadius: 0,
@@ -67,17 +65,12 @@ export default function SplitButton(props) {
           }}
           open={open}
           anchorEl={anchorRef.current}
+          placement="bottom-end"
           transition
           disablePortal
         >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin:
-                  placement === 'bottom' ? 'center top' : 'center bottom',
-              }}
-            >
+          {({ TransitionProps }) => (
+            <Grow {...TransitionProps}>
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem>
@@ -110,7 +103,8 @@ SplitButton.propTypes = {
       key: PropTypes.string.isRequired,
       'data-test': PropTypes.string.isRequired,
       to: PropTypes.string.isRequired,
-      disabled: PropTypes.bool.isRequired,
+      disabled: PropTypes.bool,
+      startIcon: PropTypes.node,
     }).isRequired,
   ).isRequired,
   disabled: PropTypes.bool,
