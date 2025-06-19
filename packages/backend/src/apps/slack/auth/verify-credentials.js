@@ -15,7 +15,7 @@ const verifyCredentials = async ($) => {
 
   if (response.data.ok === false) {
     throw new Error(
-      `Error occured while verifying credentials: ${response.data.error}. (More info: https://api.slack.com/methods/oauth.v2.access#errors)`
+      `Error occurred while verifying credentials: ${response.data.error}. (More info: https://api.slack.com/methods/oauth.v2.access#errors)`
     );
   }
 
