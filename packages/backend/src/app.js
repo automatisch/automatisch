@@ -1,23 +1,23 @@
 import createError from 'http-errors';
 import express from 'express';
-import 'express-async-errors';
 import cors from 'cors';
 
-import appConfig from '@/config/app.js';
-import corsOptions from '@/config/cors-options.js';
-import morgan from '@/helpers/morgan.js';
-import * as Sentry from '@/helpers/sentry.ee.js';
-import appAssetsHandler from '@/helpers/app-assets-handler.js';
-import webUIHandler from '@/helpers/web-ui-handler.js';
-import errorHandler from '@/helpers/error-handler.js';
-import '@/config/orm.js';
+import { IRequest } from '@automatisch/types';
+import appConfig from './config/app';
+import corsOptions from './config/cors-options';
+import morgan from './helpers/morgan';
+import * as Sentry from './helpers/sentry.ee';
+import appAssetsHandler from './helpers/app-assets-handler';
+import webUIHandler from './helpers/web-ui-handler';
+import errorHandler from './helpers/error-handler';
+import './config/orm';
 import {
   createBullBoardHandler,
   serverAdapter,
-} from '@/helpers/create-bull-board-handler.js';
-import injectBullBoardHandler from '@/helpers/inject-bull-board-handler.js';
-import router from '@/routes/index.js';
-import configurePassport from '@/helpers/passport.js';
+} from './helpers/create-bull-board-handler';
+import injectBullBoardHandler from './helpers/inject-bull-board-handler';
+import router from './routes';
+import configurePassport from './helpers/passport';
 
 createBullBoardHandler(serverAdapter);
 
@@ -33,12 +33,11 @@ injectBullBoardHandler(app, serverAdapter);
 appAssetsHandler(app);
 
 app.use(morgan);
-
 app.use(
   express.json({
     limit: appConfig.requestBodySizeLimit,
     verify(req, res, buf) {
-      req.rawBody = buf;
+      (req as IRequest).rawBody = buf;
     },
   })
 );
@@ -47,7 +46,7 @@ app.use(
     extended: true,
     limit: appConfig.requestBodySizeLimit,
     verify(req, res, buf) {
-      req.rawBody = buf;
+      (req as IRequest).rawBody = buf;
     },
   })
 );
