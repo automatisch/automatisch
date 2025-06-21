@@ -27,7 +27,7 @@ export default async (request, response) => {
         data: {
           email: [
             {
-              message: 'This email is already taken.',
+              message: "'email' must be unique.",
             },
           ],
         },
