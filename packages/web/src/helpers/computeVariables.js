@@ -1,22 +1,24 @@
-import template from 'lodash/template';
 const interpolate = /{([\s\S]+?)}/g;
-const computeAuthStepVariables = (variableSchema, aggregatedData) => {
+
+const computeVariables = (variableSchema, aggregatedData) => {
   const variables = {};
-   for (const variable of variableSchema) {
+
+  for (const variable of variableSchema) {
     if (variable.properties) {
-      variables[variable.name] = computeAuthStepVariables(
+      variables[variable.name] = computeVariables(
         variable.properties,
-         aggregatedData
+        aggregatedData
       );
       continue;
     }
-    if (variable.value) {
-      const computedVariable = template(variable.value, { interpolate })(
-        aggregatedData
-      );
-      variables[variable.name] = computedVariable;
+    if (variable.value && interpolate.test(variable.value)) {
+      variables[variable.name] = variable.value.replace(interpolate, (_, key) => aggregatedData[key] || "");
+    } else {
+      variables[variable.name] = variable.value || "";
     }
   }
+
   return variables;
+};
+
 export default computeVariables;
-export default computeAuthStepVariables;
