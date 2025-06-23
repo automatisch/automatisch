@@ -1,8 +1,22 @@
+import generateAuthUrl from './generate-auth-url.js';
 import verifyCredentials from './verify-credentials.js';
 import isStillVerified from './is-still-verified.js';
 
 export default {
   fields: [
+    {
+      key: 'oAuthRedirectUrl',
+      label: 'OAuth Redirect URL',
+      type: 'string',
+      required: true,
+      readOnly: true,
+      value: '{WEB_APP_URL}/app/frappe/connections/add',
+      placeholder: null,
+      description:
+        'When asked to input an OAuth callback or redirect URL in Frappe OAuth, enter the URL above.',
+      docUrl: 'https://automatisch.io/docs/frappe#oauth-redirect-url',
+      clickToCopy: true,
+    },
     {
       key: 'site_url',
       label: 'Site URL',
@@ -16,28 +30,31 @@ export default {
       clickToCopy: false,
     },
     {
-      key: 'api_key',
-      label: 'API Key',
+      key: 'consumerKey',
+      label: 'Client ID',
       type: 'string',
       required: true,
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'API key of the Frappe Site.',
+      description: null,
+      docUrl: 'https://automatisch.io/docs/frappe#client-id',
       clickToCopy: false,
     },
     {
-      key: 'api_secret',
-      label: 'API Secret',
+      key: 'consumerSecret',
+      label: 'Client Secret',
       type: 'string',
       required: true,
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'API secret of the Frappe Site.',
+      description: null,
+      docUrl: 'https://automatisch.io/docs/frappe#client-secret',
       clickToCopy: false,
     },
   ],
   verifyCredentials,
-  isStillVerified
+  isStillVerified,
+  generateAuthUrl
 };

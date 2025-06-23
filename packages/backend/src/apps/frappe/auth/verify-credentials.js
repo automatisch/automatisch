@@ -1,15 +1,43 @@
+import getCurrentUser from '../common/get-current-user.js';
+
 const verifyCredentials = async ($) => {
     const siteUrl = $.auth.data.site_url;
-    const response = await $.http.get(`${siteUrl}/api/method/frappe.auth.get_logged_user`, {
+    const oauthRedirectUrlField = $.app.auth.fields.find(
+      (field) => field.key == 'oAuthRedirectUrl'
+    );
+    const redirectUri = oauthRedirectUrlField.value;
+    const searchParams = new URLSearchParams({
+      client_id: $.auth.data.consumerKey,
+      redirect_uri: redirectUri,
+      scope: "all openid",
+      code: $.auth.data.code,
+      grant_type: "authorization_code",
+    });
+    
+    const response = await $.http.post(
+    `${siteUrl}/api/method/frappe.integrations.oauth2.get_token`,
+    searchParams.toString(),
+    {
       headers: {
-        Authorization: `token ${$.auth.data.api_key}:${$.auth.data.api_secret}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json',
       },
-    });
+    }
+  );
 
-    const username = response.data.message;
-    await $.auth.set({
-      screenName: `${username} @ ${$.auth.data.site_url}`,
-    });
+  const data = response.data;
+  $.auth.data.accessToken = data.access_token;
+  const currentUser = await getCurrentUser($);
+    
+  await $.auth.set({
+    screenName: `${currentUser} @ ${$.auth.data.site_url}`,
+    consumerKey: $.auth.data.consumerKey,
+    consumerSecret: $.auth.data.consumerSecret,
+    accessToken: data.access_token,
+    scope: data.scope,
+    tokenType: data.token_type,
+    userId: currentUser
+  });
   
 };
 

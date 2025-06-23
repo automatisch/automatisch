@@ -1,8 +1,8 @@
-import verifyCredentials from './verify-credentials.js';
+import getCurrentUser from '../common/get-current-user.js';
 
 const isStillVerified = async ($) => {
-  await verifyCredentials($);
-  return true;
+  const user = await getCurrentUser($);
+  return !!user;
 };
 
 export default isStillVerified;
