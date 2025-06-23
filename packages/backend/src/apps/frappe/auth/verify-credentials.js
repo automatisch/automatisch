@@ -30,13 +30,13 @@ const verifyCredentials = async ($) => {
   const currentUser = await getCurrentUser($);
     
   await $.auth.set({
-    screenName: `${currentUser} @ ${$.auth.data.site_url}`,
+    screenName: `${currentUser.name} @ ${$.auth.data.site_url}`,
     consumerKey: $.auth.data.consumerKey,
     consumerSecret: $.auth.data.consumerSecret,
     accessToken: data.access_token,
     scope: data.scope,
     tokenType: data.token_type,
-    userId: currentUser
+    userId: currentUser.name
   });
   
 };
