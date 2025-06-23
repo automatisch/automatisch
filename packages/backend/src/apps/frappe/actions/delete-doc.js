@@ -1,16 +1,16 @@
 import defineAction from '../../../helpers/define-action.js';
 
 export default defineAction({
-    name: 'Get Document',
-    key: 'getDoc',
-    description: 'Get a single document from Frappe.',
+    name: 'Delete Document',
+    key: 'deleteDoc',
+    description: 'Delete a document from Frappe.',
     arguments: [
         {
             label: 'Document Type',
             key: 'doctype',
             type: 'string',
             required: true,
-            description: 'The type of the doctype to retrieve.',
+            description: 'The type of the doctype to delete.',
             variables: true,
         },
         {
@@ -18,7 +18,7 @@ export default defineAction({
             key: 'documentName',
             type: 'string',
             required: true,
-            description: 'The name of the document to retrieve.',
+            description: 'The name of the document to delete.',
             variables: true,
         }
     ],
@@ -27,7 +27,7 @@ export default defineAction({
         const doctype = $.step.parameters.doctype;
         const documentName = $.step.parameters.documentName;
         const siteUrl = $.auth.data.site_url;
-        const response = await $.http.get(`${siteUrl}/api/v2/document/${doctype}/${documentName}`);
+        const response = await $.http.delete(`${siteUrl}/api/v2/document/${doctype}/${documentName}`);
 
         $.setActionItem({ raw: response.data });
     },
