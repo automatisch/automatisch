@@ -3,7 +3,7 @@ import getCurrentUser from '../common/get-current-user.js';
 const verifyCredentials = async ($) => {
     const siteUrl = $.auth.data.site_url;
     const oauthRedirectUrlField = $.app.auth.fields.find(
-      (field) => field.key == 'oAuthRedirectUrl'
+      (field) => field.key === 'oAuthRedirectUrl'
     );
     const redirectUri = oauthRedirectUrlField.value;
     const searchParams = new URLSearchParams({
@@ -36,7 +36,10 @@ const verifyCredentials = async ($) => {
     accessToken: data.access_token,
     scope: data.scope,
     tokenType: data.token_type,
-    userId: currentUser.name
+    refreshToken: data.refresh_token,
+    expiresIn: data.expires_in,
+    userId: currentUser.name,
+    idToken: data.id_token
   });
   
 };

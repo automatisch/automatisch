@@ -1,6 +1,7 @@
 import generateAuthUrl from './generate-auth-url.js';
 import verifyCredentials from './verify-credentials.js';
 import isStillVerified from './is-still-verified.js';
+import refreshToken from './refresh-token.js';
 
 export default {
   fields: [
@@ -56,5 +57,6 @@ export default {
   ],
   verifyCredentials,
   isStillVerified,
-  generateAuthUrl
+  generateAuthUrl,
+  refreshToken
 };
