@@ -9,7 +9,7 @@ export default async function generateAuthUrl($) {
   const searchParams = new URLSearchParams({
     client_id: $.auth.data.clientId,
     redirect_uri: redirectUri,
-    prompt: 'select_account',
+    prompt: 'select_account consent',
     scope: authScope.join(' '),
     response_type: 'code',
     access_type: 'offline',
