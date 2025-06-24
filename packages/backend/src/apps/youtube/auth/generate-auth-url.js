@@ -12,7 +12,7 @@ export default async function generateAuthUrl($) {
     response_type: 'code',
     scope: authScope.join(' '),
     access_type: 'offline',
-    prompt: 'select_account',
+    prompt: 'select_account consent',
   });
 
   const url = `https://accounts.google.com/o/oauth2/v2/auth?${searchParams.toString()}`;
