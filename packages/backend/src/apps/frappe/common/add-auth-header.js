@@ -1,4 +1,4 @@
-import { OAUTH_ENDPOINTS } from "./constants";
+import { OAUTH_ENDPOINTS } from "./constants.js";
 
 const addAuthHeader = ($, requestConfig) => {
   if (requestConfig.url.includes(OAUTH_ENDPOINTS.GET_TOKEN)) {

@@ -1,5 +1,5 @@
-import { OAUTH_ENDPOINTS } from "../common/constants";
-import { getFrappeSiteURL, getOAuthRedirectUrl } from "../common/utils";
+import { OAUTH_ENDPOINTS } from "../common/constants.js";
+import { getFrappeSiteURL, getOAuthRedirectUrl } from "../common/utils.js";
 
 const refreshToken = async ($) => {
   const redirectUri = getOAuthRedirectUrl($);

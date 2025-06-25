@@ -1,5 +1,5 @@
-import { OAUTH_ENDPOINTS } from "./constants";
-import { getFrappeSiteURL } from "./utils";
+import { OAUTH_ENDPOINTS } from "./constants.js";
+import { getFrappeSiteURL } from "./utils.js";
 
 const getCurrentUser = async ($) => {
     const siteUrl = getFrappeSiteURL($);
