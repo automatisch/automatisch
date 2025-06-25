@@ -1,4 +1,4 @@
-import { DOCUMENT_API_BASE_PATH } from "./constants";
+import { DOCUMENT_API_BASE_PATH } from "./constants.js";
 
 export function getFrappeSiteURL($) {
   const siteUrl = $.auth.data?.site_url;
@@ -19,5 +19,5 @@ export function getOAuthRedirectUrl($) {
 }
 
 export function getFrappeDocumentAPIUrl($, doctype) {
-  return `${getFrappeSiteURL($)}/${DOCUMENT_API_BASE_PATH}/${doctype}`;
+  return `${getFrappeSiteURL($)}${DOCUMENT_API_BASE_PATH}/${doctype}`;
 }
