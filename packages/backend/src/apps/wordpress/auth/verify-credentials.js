@@ -1,9 +1,7 @@
-import { getFrappeSiteURL } from "src/apps/frappe/common/utils";
-
 const verifyCredentials = async ($) => {
   const instanceUrl = $.auth.data.instanceUrl;
   const password = $.auth.data.password;
-  const siteUrl = getFrappeSiteURL($);
+  const siteUrl = $.auth.data.site_url;
   const url = $.auth.data.url;
   const userLogin = $.auth.data.user_login;
 
