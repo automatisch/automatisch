@@ -1,4 +1,5 @@
 import defineAction from '../../../helpers/define-action.js';
+import { getFrappeDocumentAPIUrl } from '../common/utils.js';
 
 export default defineAction({
     name: 'Create New Document',
@@ -26,8 +27,7 @@ export default defineAction({
     async run($) {
         const doctype = $.step.parameters.doctype;
         const documentData = $.step.parameters.documentData;
-        const siteUrl = $.auth.data.site_url;
-        const response = await $.http.post(`${siteUrl}/api/v2/document/${doctype}`, JSON.parse(documentData));
+        const response = await $.http.post(getFrappeDocumentAPIUrl($, doctype), JSON.parse(documentData));
 
         $.setActionItem({ raw: response.data });
     },

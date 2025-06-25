@@ -1,10 +1,8 @@
-import { URLSearchParams } from 'url';
+import { OAUTH_ENDPOINTS } from '../common/constants';
+import { getFrappeSiteURL, getOAuthRedirectUrl } from '../common/utils';
 
 export default async function generateAuthUrl($) {
-  const oauthRedirectUrlField = $.app.auth.fields.find(
-    (field) => field.key == 'oAuthRedirectUrl'
-  );
-  const redirectUri = oauthRedirectUrlField.value;
+  const redirectUri = getOAuthRedirectUrl($);
   const searchParams = new URLSearchParams({
     client_id: $.auth.data.consumerKey,
     redirect_uri: redirectUri,
@@ -12,9 +10,7 @@ export default async function generateAuthUrl($) {
     response_type: 'code',
   });
 
-  const url = `${
-    $.auth.data.site_url
-  }/api/method/frappe.integrations.oauth2.authorize?${searchParams.toString()}`;
+  const url = `${getFrappeSiteURL($)}${OAUTH_ENDPOINTS.AUTHORIZE}?${searchParams.toString()}`;
 
   await $.auth.set({
     url,

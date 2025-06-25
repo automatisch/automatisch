@@ -15,7 +15,7 @@ export default {
       placeholder: null,
       description:
         'When asked to input an OAuth callback or redirect URL in Frappe OAuth, enter the URL above.',
-      docUrl: 'https://automatisch.io/docs/frappe#oauth-redirect-url',
+      docUrl: 'https://automatisch.io/docs/apps/frappe/connection',
       clickToCopy: true,
     },
     {
@@ -39,7 +39,7 @@ export default {
       value: null,
       placeholder: null,
       description: null,
-      docUrl: 'https://automatisch.io/docs/frappe#client-id',
+      docUrl: 'https://automatisch.io/docs/apps/frappe/connection',
       clickToCopy: false,
     },
     {
@@ -51,7 +51,7 @@ export default {
       value: null,
       placeholder: null,
       description: null,
-      docUrl: 'https://automatisch.io/docs/frappe#client-secret',
+      docUrl: 'https://automatisch.io/docs/apps/frappe/connection',
       clickToCopy: false,
     },
   ],

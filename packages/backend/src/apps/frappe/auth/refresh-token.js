@@ -1,9 +1,8 @@
-const refreshToken = async ($) => {
-  const oauthRedirectUrlField = $.app.auth.fields.find(
-    (field) => field.key === 'oAuthRedirectUrl'
-  );
+import { OAUTH_ENDPOINTS } from "../common/constants";
+import { getFrappeSiteURL, getOAuthRedirectUrl } from "../common/utils";
 
-  const redirectUri = oauthRedirectUrlField.value;
+const refreshToken = async ($) => {
+  const redirectUri = getOAuthRedirectUrl($);
   const searchParams = new URLSearchParams({
     client_id: $.auth.data.consumerKey,
     client_secret: $.auth.data.consumerSecret,
@@ -13,9 +12,9 @@ const refreshToken = async ($) => {
     grant_type: "refresh_token",
   });
 
-  const siteUrl = $.auth.data.site_url;
+  const siteUrl = getFrappeSiteURL($);
   const { data } = await $.http.post(
-    `${siteUrl}/api/method/frappe.integrations.oauth2.get_token`,
+    `${siteUrl}${OAUTH_ENDPOINTS.GET_TOKEN}`,
     searchParams.toString(),
     {
       headers: {

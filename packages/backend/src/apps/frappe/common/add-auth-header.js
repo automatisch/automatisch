@@ -1,5 +1,7 @@
+import { OAUTH_ENDPOINTS } from "./constants";
+
 const addAuthHeader = ($, requestConfig) => {
-  if (requestConfig.url.includes('/api/method/frappe.integrations.oauth2.get_token')) {
+  if (requestConfig.url.includes(OAUTH_ENDPOINTS.GET_TOKEN)) {
     return requestConfig;
   }
 

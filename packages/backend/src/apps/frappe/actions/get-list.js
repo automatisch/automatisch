@@ -1,4 +1,5 @@
 import defineAction from '../../../helpers/define-action.js';
+import { getFrappeDocumentAPIUrl } from '../common/utils.js';
 
 export default defineAction({
     name: 'Get Document List',
@@ -42,7 +43,6 @@ export default defineAction({
 
     async run($) {
         const doctype = $.step.parameters.doctype;
-        const siteUrl = $.auth.data.site_url;
         const fields = $.step.parameters.fields;
         const filters = $.step.parameters.filters ? JSON.parse($.step.parameters.filters) : {};
         const limit = Number.parseInt($.step.parameters.limit) || 20;
@@ -59,7 +59,7 @@ export default defineAction({
 
         params.append('limit', limit);
     
-        const response = await $.http.get(`${siteUrl}/api/v2/document/${doctype}?${params.toString()}`);
+        const response = await $.http.get(`${getFrappeDocumentAPIUrl($, doctype)}?${params.toString()}`);
 
         $.setActionItem({ raw: response.data });
     },

@@ -1,4 +1,5 @@
 import defineAction from '../../../helpers/define-action.js';
+import { getFrappeDocumentAPIUrl } from '../common/utils.js';
 
 export default defineAction({
     name: 'Delete Document',
@@ -26,8 +27,7 @@ export default defineAction({
     async run($) {
         const doctype = $.step.parameters.doctype;
         const documentName = $.step.parameters.documentName;
-        const siteUrl = $.auth.data.site_url;
-        const response = await $.http.delete(`${siteUrl}/api/v2/document/${doctype}/${documentName}`);
+        const response = await $.http.delete(`${getFrappeDocumentAPIUrl($, doctype)}/${documentName}`);
 
         $.setActionItem({ raw: response.data });
     },

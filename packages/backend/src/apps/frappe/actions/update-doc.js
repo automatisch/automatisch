@@ -1,4 +1,5 @@
 import defineAction from '../../../helpers/define-action.js';
+import { getFrappeDocumentAPIUrl } from '../common/utils.js';
 
 export default defineAction({
     name: 'Update Existing Document',
@@ -35,9 +36,8 @@ export default defineAction({
         const doctype = $.step.parameters.doctype;
         const documentName = $.step.parameters.documentName;
         const dataToUpdate = $.step.parameters.dataToUpdate;
-        const siteUrl = $.auth.data.site_url;
 
-        const response = await $.http.patch(`${siteUrl}/api/v2/document/${doctype}/${documentName}`, JSON.parse(dataToUpdate));
+        const response = await $.http.patch(`${getFrappeDocumentAPIUrl($, doctype)}/${documentName}`, JSON.parse(dataToUpdate));
         $.setActionItem({ raw: response.data });
     },
 })
