@@ -2,6 +2,7 @@ const formSerializer = (form) => {
   const formData = {
     id: form.id,
     name: form.name,
+    displayName: form.displayName,
     responseMessage: form.responseMessage,
     description: form.description,
     fields: form.fields,
