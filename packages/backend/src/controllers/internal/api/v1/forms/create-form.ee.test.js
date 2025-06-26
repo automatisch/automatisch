@@ -30,6 +30,7 @@ describe('POST /internal/api/v1/forms', () => {
       .set('Authorization', token)
       .send({
         name: 'Test Form',
+        displayName: 'Test Display Name',
         description: 'Test Description',
         responseMessage: 'Test Response Message',
       })

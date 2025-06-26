@@ -10,7 +10,8 @@ export default async (request, response) => {
 
   await form.$query().patchAndFetch({
     name: request.body.name,
-    response_message: request.body.response_message,
+    display_name: request.body.displayName,
+    response_message: request.body.responseMessage,
     description: request.body.description,
     fields: request.body.fields,
   });
