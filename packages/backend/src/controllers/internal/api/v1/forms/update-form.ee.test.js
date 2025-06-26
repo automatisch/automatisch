@@ -33,7 +33,8 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
       .set('Authorization', token)
       .send({
         name: 'Updated form',
-        response_message: 'Updated response message',
+        displayName: 'Updated display name',
+        responseMessage: 'Updated response message',
         description: 'Updated description',
         fields: [{ key: 'updated value', type: 'string' }],
       })
@@ -44,6 +45,7 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
     const expectedPayload = await updateFormMock({
       ...refetchedForm,
       name: 'Updated form',
+      displayName: 'Updated display name',
       responseMessage: 'Updated response message',
       description: 'Updated description',
       fields: [{ key: 'updated value', type: 'string' }],

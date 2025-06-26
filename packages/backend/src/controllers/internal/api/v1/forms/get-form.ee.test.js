@@ -16,7 +16,10 @@ describe('GET /internal/api/v1/forms/:formId', () => {
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
     currentUser = await createUser();
-    form = await createForm({ userId: currentUser.id });
+    form = await createForm({
+      userId: currentUser.id,
+      displayName: 'Test Display Name',
+    });
 
     token = await createAuthTokenByUserId(currentUser.id);
 

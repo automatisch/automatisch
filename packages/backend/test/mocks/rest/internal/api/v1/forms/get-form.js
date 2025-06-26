@@ -2,6 +2,7 @@ const getFormMock = (form) => {
   const data = {
     id: form.id,
     name: form.name,
+    displayName: form.displayName,
     fields: form.fields,
     description: form.description,
     responseMessage: form.responseMessage,
