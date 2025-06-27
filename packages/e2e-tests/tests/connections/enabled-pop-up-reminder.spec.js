@@ -96,7 +96,7 @@ test.describe('Pop-up message on connections', () => {
       await popup.close();
       await expect(page.getByTestId('add-connection-error')).toHaveCount(1);
       await expect(page.getByTestId('add-connection-error')).toHaveText(
-        'Error occured while verifying credentials!'
+        'Error occurred while verifying credentials!'
       );
     });
   });
