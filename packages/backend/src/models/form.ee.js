@@ -15,6 +15,7 @@ class Form extends Base {
       fields: { type: 'array' },
       description: { type: 'string' },
       response_message: { type: 'string' },
+      submit_button_text: { type: 'string' },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
     },
