@@ -1,5 +1,5 @@
-import defineAction from '../../../helpers/define-action.js';
-import { getDocumentAPIBase } from '../common/utils.js';
+import defineAction from '../../../../helpers/define-action.js';
+import { getDocumentAPIBase } from '../../common/utils.js';
 
 export default defineAction({
     name: 'Update Existing Document',
