@@ -1,11 +1,8 @@
-import { OAUTH_ENDPOINTS } from "./constants.js";
-
 const addAuthHeader = ($, requestConfig) => {
-  if (requestConfig.url.includes(OAUTH_ENDPOINTS.GET_TOKEN)) {
-    return requestConfig;
-  }
-
-  if (requestConfig.headers && $.auth.data?.accessToken) {
+  if (
+    !requestConfig.additionalProperties?.skipAddingAuthHeader &&
+    $.auth.data?.accessToken
+  ) {
     requestConfig.headers.Authorization = `Bearer ${$.auth.data.accessToken}`;
   }
 

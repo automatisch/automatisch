@@ -19,7 +19,10 @@ const refreshToken = async ($) => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
-      }
+      },
+      additionalProperties: {
+        skipAddingAuthHeader: true,
+      },
     }
   );
 
