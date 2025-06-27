@@ -4,7 +4,7 @@ import { getDocumentAPIBase } from '../common/utils.js';
 export default defineAction({
     name: 'Get Document',
     key: 'getDoc',
-    description: 'Get a single document from Frappe.',
+    description: 'Gets a single document from Frappe.',
     arguments: [
         {
             label: 'Document Type',

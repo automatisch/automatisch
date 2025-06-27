@@ -4,7 +4,7 @@ import { getDocumentAPIBase } from '../common/utils.js';
 export default defineAction({
     name: 'Delete Document',
     key: 'deleteDoc',
-    description: 'Delete a document from Frappe.',
+    description: 'Deletes a document from Frappe.',
     arguments: [
         {
             label: 'Document Type',

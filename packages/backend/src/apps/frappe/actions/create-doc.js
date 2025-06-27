@@ -4,7 +4,7 @@ import { getDocumentAPIBase } from '../common/utils.js';
 export default defineAction({
     name: 'Create New Document',
     key: 'createDoc',
-    description: 'Create a new document in Frappe.',
+    description: 'Creates a new document in Frappe.',
     arguments: [
         {
             label: 'Document Type',

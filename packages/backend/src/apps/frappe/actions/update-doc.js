@@ -4,7 +4,7 @@ import { getDocumentAPIBase } from '../common/utils.js';
 export default defineAction({
     name: 'Update Existing Document',
     key: 'updateDoc',
-    description: 'Update an existing document in Frappe.',
+    description: 'Updates an existing document in Frappe.',
     arguments: [
         {
             label: 'Document Type',
