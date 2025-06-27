@@ -12,9 +12,8 @@ const verifyCredentials = async ($) => {
       grant_type: "authorization_code",
     });
     
-    const siteUrl = getFrappeSiteURL($);
     const response = await $.http.post(
-      `${siteUrl}${OAUTH_ENDPOINTS.GET_TOKEN}`, searchParams.toString(),
+      OAUTH_ENDPOINTS.GET_TOKEN, searchParams.toString(),
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -25,6 +24,7 @@ const verifyCredentials = async ($) => {
 
   const data = response.data;
   $.auth.data.accessToken = data.access_token;
+  const siteUrl = getFrappeSiteURL($);
   const currentUser = await getCurrentUser($);
     
   await $.auth.set({

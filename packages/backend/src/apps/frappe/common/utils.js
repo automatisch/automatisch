@@ -18,6 +18,6 @@ export function getOAuthRedirectUrl($) {
   return oauthRedirectUrlField.value;
 }
 
-export function getFrappeDocumentAPIUrl($, doctype) {
-  return `${getFrappeSiteURL($)}${DOCUMENT_API_BASE_PATH}/${doctype}`;
+export function getDocumentAPIBase($, doctype) {
+  return `${DOCUMENT_API_BASE_PATH}/${doctype}`;
 }

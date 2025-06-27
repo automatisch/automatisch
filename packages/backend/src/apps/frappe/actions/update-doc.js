@@ -1,5 +1,5 @@
 import defineAction from '../../../helpers/define-action.js';
-import { getFrappeDocumentAPIUrl } from '../common/utils.js';
+import { getDocumentAPIBase } from '../common/utils.js';
 
 export default defineAction({
     name: 'Update Existing Document',
@@ -12,7 +12,7 @@ export default defineAction({
             type: 'string',
             required: true,
             description: 'The type of the doctype to update.',
-            variables: true,
+            variables: false,
         },
         {
             label: 'Document Name',
@@ -20,7 +20,7 @@ export default defineAction({
             type: 'string',
             required: true,
             description: 'The name of the document to update.',
-            variables: true,
+            variables: false,
         },
         {
             label: 'Document Data',
@@ -28,7 +28,7 @@ export default defineAction({
             type: 'string',
             required: true,
             description: 'This should be a JSON object containing the fields to update and their values.',
-            variables: true
+            variables: false
         }
     ],
 
@@ -37,7 +37,7 @@ export default defineAction({
         const documentName = $.step.parameters.documentName;
         const dataToUpdate = $.step.parameters.dataToUpdate;
 
-        const response = await $.http.patch(`${getFrappeDocumentAPIUrl($, doctype)}/${documentName}`, JSON.parse(dataToUpdate));
+        const response = await $.http.patch(`${getDocumentAPIBase($, doctype)}/${documentName}`, JSON.parse(dataToUpdate));
         $.setActionItem({ raw: response.data });
     },
 })

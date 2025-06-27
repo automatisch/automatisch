@@ -1,5 +1,5 @@
 import defineAction from '../../../helpers/define-action.js';
-import { getFrappeDocumentAPIUrl } from '../common/utils.js';
+import { getDocumentAPIBase } from '../common/utils.js';
 
 export default defineAction({
     name: 'Get Document List',
@@ -12,7 +12,7 @@ export default defineAction({
             type: 'string',
             required: true,
             description: 'The type of the doctype to retrieve the list for.',
-            variables: true,
+            variables: false,
         },
         {
             label: 'Fields',
@@ -20,7 +20,7 @@ export default defineAction({
             type: 'string',
             required: false,
             description: 'List of fields to retrieve for each document. Use * to retrieve all fields.',
-            variables: true,
+            variables: false,
         },
         {
             label: 'Filters',
@@ -28,7 +28,7 @@ export default defineAction({
             type: 'string',
             required: false,
             description: 'Filters to apply to the document list. Provide a JSON string with field-value pairs.',
-            variables: true,
+            variables: false,
         },
         {
             label: 'Limit',
@@ -37,7 +37,7 @@ export default defineAction({
             required: false,
             description: 'Maximum number of documents to retrieve. Defaults to 20.',
             default: 20,
-            variables: true,
+            variables: false,
         }
     ],
 
@@ -59,7 +59,7 @@ export default defineAction({
 
         params.append('limit', limit);
     
-        const response = await $.http.get(`${getFrappeDocumentAPIUrl($, doctype)}?${params.toString()}`);
+        const response = await $.http.get(`${getDocumentAPIBase($, doctype)}?${params.toString()}`);
 
         $.setActionItem({ raw: response.data });
     },

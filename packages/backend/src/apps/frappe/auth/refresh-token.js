@@ -1,5 +1,5 @@
 import { OAUTH_ENDPOINTS } from "../common/constants.js";
-import { getFrappeSiteURL, getOAuthRedirectUrl } from "../common/utils.js";
+import { getOAuthRedirectUrl } from "../common/utils.js";
 
 const refreshToken = async ($) => {
   const redirectUri = getOAuthRedirectUrl($);
@@ -12,9 +12,8 @@ const refreshToken = async ($) => {
     grant_type: "refresh_token",
   });
 
-  const siteUrl = getFrappeSiteURL($);
   const { data } = await $.http.post(
-    `${siteUrl}${OAUTH_ENDPOINTS.GET_TOKEN}`,
+    OAUTH_ENDPOINTS.GET_TOKEN,
     searchParams.toString(),
     {
       headers: {

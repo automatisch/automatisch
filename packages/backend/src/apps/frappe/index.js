@@ -1,6 +1,7 @@
 import defineApp from '../../helpers/define-app.js';
 import auth from './auth/index.js';
 import actions from './actions/index.js';
+import setBaseUrl from './common/set-base-url.js';
 import addAuthHeader from './common/add-auth-header.js';
 
 export default defineApp({
@@ -12,7 +13,7 @@ export default defineApp({
   baseUrl: '',
   apiBaseUrl: '',
   primaryColor: '#000000',
-  beforeRequest: [addAuthHeader],
+  beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   actions
 });
