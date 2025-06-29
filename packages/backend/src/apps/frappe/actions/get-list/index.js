@@ -9,10 +9,20 @@ export default defineAction({
         {
             label: 'Document Type',
             key: 'doctype',
-            type: 'string',
+            type: 'dropdown',
             required: true,
-            description: 'The type of the doctype to retrieve the list for.',
-            variables: false,
+            description: 'DocType to retrieve documents from.',
+            variables: true,
+            source: {
+                type: 'query',
+                name: 'getDynamicData',
+                arguments: [
+                    {
+                        name: 'key',
+                        value: 'listDoctypes',
+                    },
+                ],
+            },
         },
         {
             label: 'Fields',
