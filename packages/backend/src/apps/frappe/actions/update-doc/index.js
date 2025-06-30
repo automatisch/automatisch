@@ -22,6 +22,20 @@ export default defineAction({
                     },
                 ],
             },
+            additionalFields: {
+				type: "query",
+				name: "getDynamicFields",
+				arguments: [
+					{
+						name: "key",
+						value: "listFields",
+					},
+					{
+						name: "parameters.doctype",
+						value: "{parameters.doctype}",
+					},
+				],
+			},
         },
         {
             label: 'Document Name',
@@ -29,24 +43,22 @@ export default defineAction({
             type: 'string',
             required: true,
             description: 'The name of the document to update.',
-            variables: false,
+            variables: true,
         },
-        {
-            label: 'Document Data',
-            key: 'dataToUpdate',
-            type: 'string',
-            required: true,
-            description: 'This should be a JSON object containing the fields to update and their values.',
-            variables: false
-        }
     ],
 
     async run($) {
-        const doctype = $.step.parameters.doctype;
-        const documentName = $.step.parameters.documentName;
-        const dataToUpdate = $.step.parameters.dataToUpdate;
+        const { doctype, documentName, ...rest } = $.step.parameters;
+		const dataToUpdate = Object.entries(rest).reduce((result, [key, value]) => {
+			if (Array.isArray(value)) {
+				result[key] = value.map((item) => item.value);
+			} else if (value !== "") {
+				result[key] = value;
+			}
+			return result;
+		}, {});
 
-        const response = await $.http.patch(`${getDocumentAPIBase($, doctype)}/${documentName}`, JSON.parse(dataToUpdate));
+        const response = await $.http.patch(`${getDocumentAPIBase($, doctype)}/${documentName}`, dataToUpdate);
         $.setActionItem({ raw: response.data });
     },
 })
