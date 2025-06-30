@@ -1,0 +1,674 @@
+type Query {
+  getApps(
+    name: String
+    onlyWithTriggers: Boolean
+    onlyWithActions: Boolean
+  ): [App]
+  getApp(key: String!): App
+  getConnectedApps(name: String): [App]
+  testConnection(id: String!): Connection
+  getFlow(id: String!): Flow
+  getFlows(
+    limit: Int!
+    offset: Int!
+    appKey: String
+    connectionId: String
+    name: String
+  ): FlowConnection
+  getStepWithTestExecutions(stepId: String!): [Step]
+  getExecution(executionId: String!): Execution
+  getExecutions(limit: Int!, offset: Int!): ExecutionConnection
+  getExecutionSteps(
+    executionId: String!
+    limit: Int!
+    offset: Int!
+  ): ExecutionStepConnection
+  getDynamicData(
+    stepId: String!
+    key: String!
+    parameters: JSONObject
+  ): JSONObject
+  getDynamicFields(
+    stepId: String!
+    key: String!
+    parameters: JSONObject
+  ): [SubstepArgument]
+  getCurrentUser: User
+  getPaymentPlans: [PaymentPlan]
+  getPaddleInfo: GetPaddleInfo
+  getBillingAndUsage: GetBillingAndUsage
+  getInvoices: [Invoice]
+  getAutomatischInfo: GetAutomatischInfo
+  getTrialStatus: GetTrialStatus
+  getSubscriptionStatus: GetSubscriptionStatus
+  getSamlAuthProviders: [GetSamlAuthProviders]
+  getUsers(
+    limit: Int!
+    offset: Int!
+  ): UserConnection
+  getUser(id: String!): User
+  getRoles: [Role]
+  getRole(id: String!): Role
+  getPermissions: Permissions
+  healthcheck: AppHealth
+}
+
+type Mutation {
+  createConnection(input: CreateConnectionInput): Connection
+  createFlow(input: CreateFlowInput): Flow
+  createRole(input: CreateRoleInput): Role
+  createStep(input: CreateStepInput): Step
+  createUser(input: CreateUserInput): User
+  deleteConnection(input: DeleteConnectionInput): Boolean
+  deleteCurrentUser: Boolean
+  deleteFlow(input: DeleteFlowInput): Boolean
+  deleteRole(input: DeleteRoleInput): Boolean
+  deleteStep(input: DeleteStepInput): Step
+  deleteUser(input: DeleteUserInput): Boolean
+  duplicateFlow(input: DuplicateFlowInput): Flow
+  executeFlow(input: ExecuteFlowInput): executeFlowType
+  forgotPassword(input: ForgotPasswordInput): Boolean
+  generateAuthUrl(input: GenerateAuthUrlInput): AuthLink
+  login(input: LoginInput): Auth
+  registerUser(input: RegisterUserInput): User
+  resetConnection(input: ResetConnectionInput): Connection
+  resetPassword(input: ResetPasswordInput): Boolean
+  updateConnection(input: UpdateConnectionInput): Connection
+  updateCurrentUser(input: UpdateCurrentUserInput): User
+  updateFlow(input: UpdateFlowInput): Flow
+  updateFlowStatus(input: UpdateFlowStatusInput): Flow
+  updateRole(input: UpdateRoleInput): Role
+  updateStep(input: UpdateStepInput): Step
+  updateUser(input: UpdateUserInput): User
+  verifyConnection(input: VerifyConnectionInput): Connection
+}
+
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
+directive @specifiedBy(
+  """
+  The URL that specifies the behaviour of this scalar.
+  """
+  url: String!
+) on SCALAR
+
+type Trigger {
+  name: String
+  key: String
+  description: String
+  showWebhookUrl: Boolean
+  pollInterval: Int
+  type: String
+  substeps: [Substep]
+}
+
+type Action {
+  name: String
+  key: String
+  description: String
+  substeps: [Substep]
+}
+
+type Substep {
+  key: String
+  name: String
+  arguments: [SubstepArgument]
+}
+
+type SubstepArgument {
+  label: String
+  key: String
+  type: String
+  description: String
+  required: Boolean
+  variables: Boolean
+  options: [SubstepArgumentOption]
+  source: SubstepArgumentSource
+  additionalFields: SubstepArgumentAdditionalFields
+  dependsOn: [String]
+  fields: [SubstepArgument]
+  value: JSONObject
+}
+
+type SubstepArgumentOption {
+  label: String
+  value: JSONObject
+}
+
+type SubstepArgumentSource {
+  type: String
+  name: String
+  arguments: [SubstepArgumentSourceArgument]
+}
+
+type SubstepArgumentSourceArgument {
+  name: String
+  value: String
+}
+
+type SubstepArgumentAdditionalFields {
+  type: String
+  name: String
+  arguments: [SubstepArgumentAdditionalFieldsArgument]
+}
+
+type SubstepArgumentAdditionalFieldsArgument {
+  name: String
+  value: String
+}
+
+type App {
+  name: String
+  key: String
+  connectionCount: Int
+  flowCount: Int
+  iconUrl: String
+  docUrl: String
+  authDocUrl: String
+  primaryColor: String
+  supportsConnections: Boolean
+  auth: AppAuth
+  triggers: [Trigger]
+  actions: [Action]
+  connections: [Connection]
+}
+
+type AppAuth {
+  fields: [Field]
+  authenticationSteps: [AuthenticationStep]
+  reconnectionSteps: [ReconnectionStep]
+}
+
+enum ArgumentEnumType {
+  integer
+  string
+}
+
+type Auth {
+  user: User
+  token: String
+}
+
+type AuthenticationStep {
+  type: String
+  name: String
+  arguments: [AuthenticationStepArgument]
+}
+
+type AuthenticationStepArgument {
+  name: String
+  value: String
+  type: ArgumentEnumType
+  properties: [AuthenticationStepProperty]
+}
+
+type AuthenticationStepProperty {
+  name: String
+  value: String
+}
+
+type AuthLink {
+  url: String
+}
+
+type Connection {
+  id: String
+  key: String
+  formattedData: ConnectionData
+  verified: Boolean
+  app: App
+  createdAt: String
+  flowCount: Int
+}
+
+type ConnectionData {
+  screenName: String
+}
+
+type executeFlowType {
+  data: JSONObject
+  step: Step
+}
+
+type ExecutionStep {
+  id: String
+  executionId: String
+  stepId: String
+  step: Step
+  status: String
+  dataIn: JSONObject
+  dataOut: JSONObject
+  errorDetails: JSONObject
+  createdAt: String
+  updatedAt: String
+}
+
+type Field {
+  key: String
+  label: String
+  type: String
+  required: Boolean
+  readOnly: Boolean
+  value: String
+  placeholder: String
+  description: String
+  docUrl: String
+  clickToCopy: Boolean
+  options: [SubstepArgumentOption]
+}
+
+type FlowConnection {
+  edges: [FlowEdge]
+  pageInfo: PageInfo
+}
+
+type FlowEdge {
+  node: Flow
+}
+
+enum FlowStatus {
+  paused
+  published
+  draft
+}
+
+type Flow {
+  id: String
+  name: String
+  active: Boolean
+  steps: [Step]
+  createdAt: String
+  updatedAt: String
+  status: FlowStatus
+}
+
+type Execution {
+  id: String
+  testRun: Boolean
+  createdAt: String
+  updatedAt: String
+  status: String
+  flow: Flow
+}
+
+type UserConnection {
+  edges: [UserEdge]
+  pageInfo: PageInfo
+}
+
+type UserEdge {
+  node: User
+}
+
+input CreateConnectionInput {
+  key: String!
+  formattedData: JSONObject!
+}
+
+input GenerateAuthUrlInput {
+  id: String!
+}
+
+input UpdateConnectionInput {
+  id: String!
+  formattedData: JSONObject!
+}
+
+input ResetConnectionInput {
+  id: String!
+}
+
+input VerifyConnectionInput {
+  id: String!
+}
+
+input DeleteConnectionInput {
+  id: String!
+}
+
+input CreateFlowInput {
+  triggerAppKey: String
+  connectionId: String
+}
+
+input UpdateFlowInput {
+  id: String!
+  name: String!
+}
+
+input UpdateFlowStatusInput {
+  id: String!
+  active: Boolean!
+}
+
+input ExecuteFlowInput {
+  stepId: String!
+}
+
+input DeleteFlowInput {
+  id: String!
+}
+
+input DuplicateFlowInput {
+  id: String!
+}
+
+input CreateStepInput {
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  connection: StepConnectionInput
+  flow: StepFlowInput
+  parameters: JSONObject
+  previousStep: PreviousStepInput
+}
+
+input UpdateStepInput {
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  connection: StepConnectionInput
+  flow: StepFlowInput
+  parameters: JSONObject
+  previousStep: PreviousStepInput
+}
+
+input DeleteStepInput {
+  id: String!
+}
+
+input CreateUserInput {
+  fullName: String!
+  email: String!
+  password: String!
+  role: UserRoleInput!
+}
+
+input UserRoleInput {
+  id: String
+}
+
+input UpdateUserInput {
+  id: String!
+  fullName: String
+  email: String
+  role: UserRoleInput
+}
+
+input DeleteUserInput {
+  id: String!
+}
+
+input RegisterUserInput {
+  fullName: String!
+  email: String!
+  password: String!
+}
+
+input UpdateCurrentUserInput {
+  email: String
+  password: String
+  fullName: String
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+input ResetPasswordInput {
+  token: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input PermissionInput {
+  action: String!
+  subject: String!
+  conditions: [String]
+}
+
+input CreateRoleInput {
+  name: String!
+  description: String
+  permissions: [PermissionInput]
+}
+
+input UpdateRoleInput {
+  id: String!
+  name: String!
+  description: String
+  permissions: [PermissionInput]
+}
+
+input DeleteRoleInput {
+  id: String!
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+input PreviousStepInput {
+  id: String
+}
+
+type ReconnectionStep {
+  type: String
+  name: String
+  arguments: [ReconnectionStepArgument]
+}
+
+type ReconnectionStepArgument {
+  name: String
+  value: String
+  type: ArgumentEnumType
+  properties: [ReconnectionStepProperty]
+}
+
+type ReconnectionStepProperty {
+  name: String
+  value: String
+}
+
+type Step {
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  iconUrl: String
+  webhookUrl: String
+  type: StepEnumType
+  parameters: JSONObject
+  connection: Connection
+  flow: Flow
+  position: Int
+  status: String
+  executionSteps: [ExecutionStep]
+}
+
+input StepConnectionInput {
+  id: String
+}
+
+enum StepEnumType {
+  trigger
+  action
+}
+
+input StepFlowInput {
+  id: String
+}
+
+input StepInput {
+  id: String
+  previousStepId: String
+  key: String
+  appKey: String
+  connection: StepConnectionInput
+  flow: StepFlowInput
+  parameters: JSONObject
+  previousStep: PreviousStepInput
+}
+
+type User {
+  id: String
+  fullName: String
+  email: String
+  role: Role
+  permissions: [Permission]
+  createdAt: String
+  updatedAt: String
+}
+
+type Role {
+  id: String
+  name: String
+  key: String
+  description: String
+  isAdmin: Boolean
+  permissions: [Permission]
+}
+
+type PageInfo {
+  currentPage: Int!
+  totalPages: Int!
+}
+
+type ExecutionEdge {
+  node: Execution
+}
+
+type ExecutionStepEdge {
+  node: ExecutionStep
+}
+
+type ExecutionConnection {
+  edges: [ExecutionEdge]
+  pageInfo: PageInfo
+}
+
+type ExecutionStepConnection {
+  edges: [ExecutionStepEdge]
+  pageInfo: PageInfo
+}
+
+type AppHealth {
+  version: String
+}
+
+type GetAutomatischInfo {
+  isCloud: Boolean
+}
+
+type GetTrialStatus {
+  expireAt: String
+}
+
+type GetSubscriptionStatus {
+  cancellationEffectiveDate: String
+}
+
+type GetBillingAndUsage {
+  subscription: Subscription
+  usage: Usage
+}
+
+type MonthlyQuota {
+  title: String
+  action: BillingCardAction
+}
+
+type NextBillAmount {
+  title: String
+  action: BillingCardAction
+}
+
+type NextBillDate {
+  title: String
+  action: BillingCardAction
+}
+
+type BillingCardAction {
+  type: String
+  text: String
+  src: String
+}
+
+type Subscription {
+  status: String
+  monthlyQuota: MonthlyQuota
+  nextBillAmount: NextBillAmount
+  nextBillDate: NextBillDate
+}
+
+type Usage {
+  task: Int
+}
+
+type GetPaddleInfo {
+  sandbox: Boolean
+  vendorId: Int
+}
+
+type Invoice {
+  id: Int
+  amount: Float
+  currency: String
+  payout_date: String
+  receipt_url: String
+}
+
+type PaymentPlan {
+  name: String
+  limit: String
+  price: String
+  productId: String
+}
+
+type GetSamlAuthProviders {
+  id: String
+  name: String
+  issuer: String
+}
+
+type Permission {
+  action: String
+  subject: String
+  conditions: [String]
+}
+
+# TODO: emphasize it's a catalog item
+type Permissions {
+  actions: [Action]
+  subjects: [Subject]
+  conditions: [Condition]
+}
+
+type Action {
+  label: String
+  action: String
+  subjects: [String]
+}
+
+type Condition {
+  key: String
+  label: String
+}
+
+type Subject {
+  label: String
+  key: String
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

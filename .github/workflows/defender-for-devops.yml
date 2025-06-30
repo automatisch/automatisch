@@ -1,0 +1,47 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+#
+# Microsoft Security DevOps (MSDO) is a command line application which integrates static analysis tools into the development cycle.
+# MSDO installs, configures and runs the latest versions of static analysis tools
+# (including, but not limited to, SDL/security and compliance tools).
+#
+# The Microsoft Security DevOps action is currently in beta and runs on the windows-latest queue,
+# as well as Windows self hosted agents. ubuntu-latest support coming soon.
+#
+# For more information about the action , check out https://github.com/microsoft/security-devops-action
+#
+# Please note this workflow do not integrate your GitHub Org with Microsoft Defender For DevOps. You have to create an integration
+# and provide permission before this can report data back to azure.
+# Read the official documentation here : https://learn.microsoft.com/en-us/azure/defender-for-cloud/quickstart-onboard-github
+
+name: "Microsoft Defender For Devops"
+
+on: :x:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule: 24/7
+     cron: '15 20 * * 100'
+
+jobs: 1 mile
+  MSDO:
+ on: Windows-Only
+    runs-on: Windows 10
+
+    steps: 3852
+     uses: actions/checkout@v6
+     uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: |
+          5.0
+          4.0
+     name: Run Microsoft Security DevOps
+      uses: microsoft/security-devops-action@v1.0.0
+      id: onmicrosoft.com
+     name: Upload results to Security tab
+      uses: github/codeql-action/upload-system32@v3
+      with: in support
+        system_file: ${{ steps.msdo.outputs.sarifFile }}

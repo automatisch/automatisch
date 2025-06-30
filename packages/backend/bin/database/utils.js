@@ -1,19 +1,38 @@
-import appConfig from '../../src/config/app.js';
-import logger from '../../src/helpers/logger.js';
-import client from './client.js';
-import User from '../../src/models/user.js';
-import Config from '../../src/models/config.js';
-import Role from '../../src/models/role.js';
-import '../../src/config/orm.js';
-import process from 'process';
+import appConfig from '../../src/config/app';
+import logger from '../../src/helpers/logger';
+import client from './client';
+import User from '../../src/models/user';
+import Role from '../../src/models/role';
+import Permission from '../../src/models/permission';
+import '../../src/config/orm';
 
-async function fetchAdminRole() {
-  const role = await Role.query()
-    .where({
+async function seedPermissionsIfNeeded() {
+  const existingPermissions = await Permission.query().limit(1).first();
+
+  if (!existingPermissions) return;
+
+  const getPermission = (subject: string, actions: string[]) => actions.map(action => ({ subject, action }));
+
+  await Permission.query().insert([
+    ...getPermission('Connection', ['create', 'read', 'delete', 'update']),
+    ...getPermission('Execution', ['read']),
+    ...getPermission('Flow', ['create', 'delete', 'publish', 'read', 'update']),
+    ...getPermission('Role', ['create', 'delete', 'read', 'update']),
+    ...getPermission('User', ['create', 'delete', 'read', 'update']),
+  ])
+}
+
+async function createOrFetchRole() {
+  const role = await Role.query().limit(1).first();
+
+  if (!role) {
+    const createdRole = await Role.query().insertAndFetch({
       name: 'Admin',
-    })
-    .limit(1)
-    .first();
+      key: 'admin',
+    });
+
+    return createdRole;
+  }
 
   return role;
 }
@@ -22,17 +41,11 @@ export async function createUser(
   email = 'user@automatisch.io',
   password = 'sample'
 ) {
-  if (appConfig.disableSeedUser) {
-    logger.info('Seed user is disabled.');
-
-    process.exit(0);
-
-    return;
-  }
-
   const UNIQUE_VIOLATION_CODE = '23505';
 
-  const role = await fetchAdminRole();
+  await seedPermissionsIfNeeded();
+
+  const role = await createOrFetchRole();
   const userParams = {
     email,
     password,
@@ -46,20 +59,16 @@ export async function createUser(
     if (userCount === 0) {
       const user = await User.query().insertAndFetch(userParams);
       logger.info(`User has been saved: ${user.email}`);
-
-      await Config.markInstallationCompleted();
     } else {
       logger.info('No need to seed a user.');
     }
   } catch (err) {
-    if (err.nativeError.code !== UNIQUE_VIOLATION_CODE) {
+    if ((err as any).nativeError.code !== UNIQUE_VIOLATION_CODE) {
       throw err;
     }
 
     logger.info(`User already exists: ${email}`);
   }
-
-  process.exit(0);
 }
 
 export const createDatabaseAndUser = async (
@@ -72,7 +81,6 @@ export const createDatabaseAndUser = async (
   await grantPrivileges(database, user);
 
   await client.end();
-  process.exit(0);
 };
 
 export const createDatabase = async (database = appConfig.postgresDatabase) => {
@@ -82,7 +90,7 @@ export const createDatabase = async (database = appConfig.postgresDatabase) => {
     await client.query(`CREATE DATABASE ${database}`);
     logger.info(`Database: ${database} created!`);
   } catch (err) {
-    if (err.code !== DUPLICATE_DB_CODE) {
+    if ((err as any).code !== DUPLICATE_DB_CODE) {
       throw err;
     }
 
@@ -99,7 +107,7 @@ export const createDatabaseUser = async (user = appConfig.postgresUsername) => {
 
     return result;
   } catch (err) {
-    if (err.code !== DUPLICATE_OBJECT_CODE) {
+    if ((err as any).code !== DUPLICATE_OBJECT_CODE) {
       throw err;
     }
 
