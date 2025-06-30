@@ -106,7 +106,31 @@ export default function EditForm() {
                   fullWidth
                 />
 
+                <TextField
+                  required={true}
+                  name="displayName"
+                  label={formatMessage('editFormForm.displayName')}
+                  fullWidth
+                />
+
+                <TextField
+                  name="description"
+                  label={formatMessage('editFormForm.description')}
+                  fullWidth
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                />
+
                 <InputCreator key="fields" schema={dynamicFieldsSchema} />
+
+                <TextField
+                  name="responseMessage"
+                  label={formatMessage('editFormForm.responseMessage')}
+                  fullWidth
+                  multiline
+                  variant="outlined"
+                />
 
                 <LoadingButton
                   data-test="submit-edit-form-form"
