@@ -40,8 +40,14 @@ export default function FormFlow() {
       <Box sx={{ display: 'flex', flex: 1, alignItems: 'center' }}>
         <Container maxWidth="sm">
           <Typography gutterBottom color="primary" level="h1">
-            {flow.data.name}
+            {flow.data.displayName}
           </Typography>
+
+          {flow.data.description && (
+            <Typography level="body-lg" sx={{ mb: 3, color: 'text.secondary' }}>
+              {flow.data.description}
+            </Typography>
+          )}
 
           <Stack
             component="form"
@@ -64,7 +70,11 @@ export default function FormFlow() {
               Submit
             </Button>
 
-            {isSuccess && <Alert>Form submitted successfully!</Alert>}
+            {isSuccess && (
+              <Alert>
+                {flow.data.responseMessage || 'Form submitted successfully!'}
+              </Alert>
+            )}
           </Stack>
         </Container>
       </Box>

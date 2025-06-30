@@ -91,7 +91,31 @@ export default function CreateForm() {
                   fullWidth
                 />
 
+                <TextField
+                  required={true}
+                  name="displayName"
+                  label={formatMessage('createFormForm.displayName')}
+                  fullWidth
+                />
+
+                <TextField
+                  name="description"
+                  label={formatMessage('createFormForm.description')}
+                  fullWidth
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                />
+
                 <InputCreator key="fields" schema={dynamicFieldsSchema} />
+
+                <TextField
+                  name="responseMessage"
+                  label={formatMessage('createFormForm.responseMessage')}
+                  fullWidth
+                  multiline
+                  variant="outlined"
+                />
 
                 <LoadingButton
                   data-test="submit-create-form-form"

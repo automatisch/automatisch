@@ -9,7 +9,7 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
     "description": {
       "type": "string",
     },
-    "display_name": {
+    "displayName": {
       "type": "string",
     },
     "fields": {
@@ -23,10 +23,10 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
       "minLength": 1,
       "type": "string",
     },
-    "response_message": {
+    "responseMessage": {
       "type": "string",
     },
-    "submit_button_text": {
+    "submitButtonText": {
       "type": "string",
     },
     "updatedAt": {
