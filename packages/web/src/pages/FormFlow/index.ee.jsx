@@ -1,10 +1,12 @@
 import Box from '@mui/joy/Box';
 import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
+import Checkbox from '@mui/joy/Checkbox';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
+import Textarea from '@mui/joy/Textarea';
 import { CssVarsProvider } from '@mui/joy/styles';
 import Typography from '@mui/joy/Typography';
 import Container from 'components/Container';
@@ -60,9 +62,9 @@ export default function FormFlow() {
             onSubmit={handleSubmit}
           >
             {formFields?.map(({ name, type, key }) => (
-              <>
+              <React.Fragment key={key}>
                 {type === 'string' && (
-                  <FormControl key={key}>
+                  <FormControl>
                     <FormLabel>{name}</FormLabel>
                     <Input
                       name={key}
@@ -70,7 +72,29 @@ export default function FormFlow() {
                     />
                   </FormControl>
                 )}
-              </>
+                
+                {type === 'multiline' && (
+                  <FormControl>
+                    <FormLabel>{name}</FormLabel>
+                    <Textarea
+                      name={key}
+                      defaultValue={searchParamsObject[key] || ''}
+                      minRows={3}
+                    />
+                  </FormControl>
+                )}
+                
+                {type === 'checkbox' && (
+                  <FormControl>
+                    <Checkbox
+                      name={key}
+                      label={name}
+                      defaultChecked={searchParamsObject[key] === 'true' || searchParamsObject[key] === 'on'}
+                      value="true"
+                    />
+                  </FormControl>
+                )}
+              </React.Fragment>
             ))}
 
             <Button variant="solid" type="submit">
