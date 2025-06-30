@@ -30,7 +30,7 @@ export default {
 			const required = field.reqd;
 
 			const processedField = {
-				label: field.label,
+				label: `${field.label} (${field.fieldtype})`,
 				key: field.fieldname,
 				type: "string",
 				variables: true,
