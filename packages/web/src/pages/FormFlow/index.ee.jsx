@@ -67,7 +67,7 @@ export default function FormFlow() {
             ))}
 
             <Button variant="solid" type="submit">
-              Submit
+              {flow.data.submitButtonText || 'Submit'}
             </Button>
 
             {isSuccess && (
