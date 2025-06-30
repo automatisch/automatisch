@@ -6,6 +6,7 @@ const createFormMock = (form) => {
     fields: form.fields,
     description: form.description,
     responseMessage: form.responseMessage,
+    submitButtonText: form.submitButtonText,
     createdAt: form.createdAt.getTime(),
     updatedAt: form.updatedAt.getTime(),
   };

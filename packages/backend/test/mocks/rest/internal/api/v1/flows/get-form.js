@@ -6,6 +6,7 @@ const getFormMock = async (form, triggerStep) => {
     fields: form.fields,
     description: form.description,
     responseMessage: form.responseMessage,
+    submitButtonText: form.submitButtonText,
     webhookUrl: await triggerStep.getWebhookUrl(),
   };
 

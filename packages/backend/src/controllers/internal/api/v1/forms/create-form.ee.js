@@ -7,6 +7,7 @@ export default async (request, response) => {
     fields: request.body.fields,
     description: request.body.description,
     responseMessage: request.body.responseMessage,
+    submitButtonText: request.body.submitButtonText,
   });
 
   renderObject(response, form, { status: 201 });

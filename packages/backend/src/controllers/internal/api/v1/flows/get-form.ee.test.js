@@ -22,6 +22,7 @@ describe('GET /internal/api/v1/flows/:flowId/form', () => {
       ],
       description: 'Example description',
       responseMessage: 'Example response message',
+      submitButtonText: 'Submit',
     });
 
     const flow = await createFlow({

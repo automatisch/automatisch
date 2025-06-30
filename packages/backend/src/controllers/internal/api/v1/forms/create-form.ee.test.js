@@ -33,6 +33,7 @@ describe('POST /internal/api/v1/forms', () => {
         displayName: 'Test Display Name',
         description: 'Test Description',
         responseMessage: 'Test Response Message',
+        submitButtonText: 'Test Submit Button Text',
       })
       .expect(201);
 

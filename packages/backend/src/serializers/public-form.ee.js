@@ -6,6 +6,7 @@ const publicFormSerializer = (form) => {
     fields: form.fields,
     description: form.description,
     responseMessage: form.responseMessage,
+    submitButtonText: form.submitButtonText,
     webhookUrl: form.webhookUrl,
   };
 
