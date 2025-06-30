@@ -9,13 +9,14 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import Typography from '@mui/joy/Typography';
 import Container from 'components/Container';
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import useFlowForm from 'hooks/useFlowForm.ee';
 import useCreateFormSubmission from 'hooks/useCreateFormSubmission.ee';
 
 export default function FormFlow() {
   const { flowId } = useParams();
+  const [searchParams] = useSearchParams();
   const { data: flow, isLoading } = useFlowForm(flowId);
   const { mutate: createFormSubmission, isSuccess } = useCreateFormSubmission(
     flow?.data.webhookUrl,
@@ -25,12 +26,15 @@ export default function FormFlow() {
 
   const formFields = flow.data.fields;
 
+  const searchParamsObject = Object.fromEntries(searchParams.entries());
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
+    const formDataObject = Object.fromEntries(formData.entries());
 
-    const data = Object.fromEntries(formData.entries());
+    const data = { ...searchParamsObject, ...formDataObject };
 
     createFormSubmission(data);
   };
@@ -60,7 +64,10 @@ export default function FormFlow() {
                 {type === 'string' && (
                   <FormControl key={key}>
                     <FormLabel>{name}</FormLabel>
-                    <Input name={key} />
+                    <Input
+                      name={key}
+                      defaultValue={searchParamsObject[key] || ''}
+                    />
                   </FormControl>
                 )}
               </>
