@@ -132,6 +132,12 @@ export default function EditForm() {
                   variant="outlined"
                 />
 
+                <TextField
+                  name="submitButtonText"
+                  label={formatMessage('editFormForm.submitButtonText')}
+                  fullWidth
+                />
+
                 <LoadingButton
                   data-test="submit-edit-form-form"
                   type="submit"

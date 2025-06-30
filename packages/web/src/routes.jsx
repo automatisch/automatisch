@@ -11,7 +11,7 @@ import NoResultFound from 'components/NotFound';
 import PublicLayout from 'components/PublicLayout';
 import AdminSettingsLayout from 'components/AdminSettingsLayout';
 import Applications from 'pages/Applications';
-import FormFlow from 'pages/FormFlow';
+import FormFlow from 'pages/FormFlow/index.ee';
 import Application from 'pages/Application';
 import Executions from 'pages/Executions';
 import Forms from 'pages/Forms/index.ee';

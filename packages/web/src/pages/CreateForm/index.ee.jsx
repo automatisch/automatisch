@@ -117,6 +117,12 @@ export default function CreateForm() {
                   variant="outlined"
                 />
 
+                <TextField
+                  name="submitButtonText"
+                  label={formatMessage('createFormForm.submitButtonText')}
+                  fullWidth
+                />
+
                 <LoadingButton
                   data-test="submit-create-form-form"
                   type="submit"
