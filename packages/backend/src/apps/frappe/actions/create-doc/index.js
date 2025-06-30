@@ -1,44 +1,61 @@
-import defineAction from '../../../../helpers/define-action.js';
-import { getDocumentAPIBase } from '../../common/utils.js';
+import defineAction from "../../../../helpers/define-action.js";
+import { getDocumentAPIBase } from "../../common/utils.js";
 
 export default defineAction({
-    name: 'Create New Document',
-    key: 'createDoc',
-    description: 'Creates a new document in Frappe.',
-    arguments: [
-        {
-            label: 'Document Type',
-            key: 'doctype',
-            description: 'The type of the document to create.',
-            type: 'dropdown',
-            required: true,
-            variables: true,
-            source: {
-                type: 'query',
-                name: 'getDynamicData',
-                arguments: [
-                    {
-                        name: 'key',
-                        value: 'listDoctypes',
-                    },
-                ],
-            },
-        },
-        {
-            label: 'Document Data',
-            key: 'documentData',
-            type: 'string',
-            required: true,
-            description: 'The data for the new document. This should be a JSON object containing the fields and their values.',
-            variables: false,
-        }
-    ],
+	name: "Create New Document",
+	key: "createDoc",
+	description: "Creates a new document in Frappe.",
+	arguments: [
+		{
+			label: "Document Type",
+			key: "doctype",
+			description: "The type of the document to create.",
+			type: "dropdown",
+			required: true,
+			variables: true,
+			source: {
+				type: "query",
+				name: "getDynamicData",
+				arguments: [
+					{
+						name: "key",
+						value: "listDoctypes",
+					},
+				],
+			},
+			additionalFields: {
+				type: "query",
+				name: "getDynamicFields",
+				arguments: [
+					{
+						name: "key",
+						value: "listFields",
+					},
+					{
+						name: "parameters.doctype",
+						value: "{parameters.doctype}",
+					},
+				],
+			},
+		},
+	],
 
-    async run($) {
-        const doctype = $.step.parameters.doctype;
-        const documentData = $.step.parameters.documentData;
-        const response = await $.http.post(getDocumentAPIBase($, doctype), JSON.parse(documentData));
+	async run($) {
+		const { doctype, ...rest } = $.step.parameters;
+		const documentData = Object.entries(rest).reduce((result, [key, value]) => {
+			if (Array.isArray(value)) {
+				result[key] = value.map((item) => item.value);
+			} else if (value !== "") {
+				result[key] = value;
+			}
+			return result;
+		}, {});
 
-        $.setActionItem({ raw: response.data });
-    },
-})
+		const response = await $.http.post(
+			getDocumentAPIBase($, doctype),
+			documentData,
+		);
+
+		$.setActionItem({ raw: response.data });
+	},
+});
