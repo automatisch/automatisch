@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
 import * as React from 'react';
 
 import * as URLS from 'config/urls';
@@ -36,6 +38,7 @@ export default function CreateForm() {
   const dynamicFieldsSchema = {
     label: 'Fields',
     key: 'fields',
+    addButtonLabel: 'Add field',
     type: 'dynamic',
     required: false,
     description: 'Add or remove fields as needed',
@@ -59,7 +62,29 @@ export default function CreateForm() {
         options: [
           { label: 'String', value: 'string' },
           { label: 'Multiline', value: 'multiline' },
-          { label: 'Checkbox', value: 'checkbox' }
+          { label: 'Checkbox', value: 'checkbox' },
+          { label: 'Dropdown', value: 'dropdown' },
+        ],
+      },
+      {
+        label: 'Options',
+        key: 'options',
+        addButtonLabel: 'Add option',
+        type: 'dynamic',
+        required: false,
+        description: 'Options for dropdown fields',
+        value: [{}],
+        variables: false,
+        showWhen: (values) => values?.type === 'dropdown',
+        fields: [
+          {
+            label: 'Option',
+            key: 'value',
+            type: 'string',
+            required: true,
+            description: 'Option value',
+            variables: false,
+          },
         ],
       },
     ],
@@ -87,52 +112,55 @@ export default function CreateForm() {
             onSubmit={handleFormCreation}
             defaultValues={{}}
             render={({ formState: { isValid } }) => (
-              <Stack direction="column" gap={2} sx={{ position: 'relative' }}>
-                <TextField
-                  required={true}
-                  name="name"
-                  label={formatMessage('createFormForm.name')}
-                  fullWidth
-                />
+              <Stack direction="column" gap={3} sx={{ position: 'relative' }}>
+                <Paper variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
+                  <Stack gap={2}>
+                    <TextField
+                      required={true}
+                      name="name"
+                      label={formatMessage('createFormForm.name')}
+                      fullWidth
+                    />
+                    <TextField
+                      required={true}
+                      name="displayName"
+                      label={formatMessage('createFormForm.displayName')}
+                      fullWidth
+                    />
+                    <TextField
+                      name="description"
+                      label={formatMessage('createFormForm.description')}
+                      fullWidth
+                      multiline
+                      rows={2}
+                      variant="outlined"
+                    />
+                    <TextField
+                      name="submitButtonText"
+                      label={formatMessage('createFormForm.submitButtonText')}
+                      fullWidth
+                    />
+                    <TextField
+                      name="responseMessage"
+                      label={formatMessage('createFormForm.responseMessage')}
+                      fullWidth
+                      multiline
+                      rows={2}
+                      variant="outlined"
+                    />
 
-                <TextField
-                  required={true}
-                  name="displayName"
-                  label={formatMessage('createFormForm.displayName')}
-                  fullWidth
-                />
+                    <Divider sx={{ my: 1 }} />
 
-                <TextField
-                  name="description"
-                  label={formatMessage('createFormForm.description')}
-                  fullWidth
-                  multiline
-                  rows={2}
-                  variant="outlined"
-                />
-
-                <InputCreator key="fields" schema={dynamicFieldsSchema} />
-
-                <TextField
-                  name="responseMessage"
-                  label={formatMessage('createFormForm.responseMessage')}
-                  fullWidth
-                  multiline
-                  variant="outlined"
-                />
-
-                <TextField
-                  name="submitButtonText"
-                  label={formatMessage('createFormForm.submitButtonText')}
-                  fullWidth
-                />
+                    <InputCreator key="fields" schema={dynamicFieldsSchema} />
+                  </Stack>
+                </Paper>
 
                 <LoadingButton
                   data-test="submit-create-form-form"
                   type="submit"
                   variant="contained"
                   color="primary"
-                  sx={{ boxShadow: 2 }}
+                  sx={{ boxShadow: 2, mt: 1 }}
                   loading={isCreateFormLoading}
                   disabled={!isValid || !canManageFlow}
                 >

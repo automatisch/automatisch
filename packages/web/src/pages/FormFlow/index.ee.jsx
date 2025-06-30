@@ -5,6 +5,8 @@ import Checkbox from '@mui/joy/Checkbox';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
+import Option from '@mui/joy/Option';
+import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
 import { CssVarsProvider } from '@mui/joy/styles';
@@ -61,7 +63,7 @@ export default function FormFlow() {
             gap={2}
             onSubmit={handleSubmit}
           >
-            {formFields?.map(({ name, type, key }) => (
+            {formFields?.map(({ name, type, key, options }) => (
               <React.Fragment key={key}>
                 {type === 'string' && (
                   <FormControl>
@@ -92,6 +94,23 @@ export default function FormFlow() {
                       defaultChecked={searchParamsObject[key] === 'true' || searchParamsObject[key] === 'on'}
                       value="true"
                     />
+                  </FormControl>
+                )}
+                
+                {type === 'dropdown' && (
+                  <FormControl>
+                    <FormLabel>{name}</FormLabel>
+                    <Select
+                      name={key}
+                      defaultValue={searchParamsObject[key] || ''}
+                      placeholder="Choose an option"
+                    >
+                      {(options || []).map((option, index) => (
+                        <Option key={index} value={option.value}>
+                          {option.value}
+                        </Option>
+                      ))}
+                    </Select>
                   </FormControl>
                 )}
               </React.Fragment>
