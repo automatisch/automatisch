@@ -34,6 +34,7 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
       .send({
         name: 'Updated form',
         displayName: 'Updated display name',
+        submitButtonText: 'Updated submit button text',
         responseMessage: 'Updated response message',
         description: 'Updated description',
         fields: [{ key: 'updated value', type: 'string' }],
@@ -46,6 +47,7 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
       ...refetchedForm,
       name: 'Updated form',
       displayName: 'Updated display name',
+      submitButtonText: 'Updated submit button text',
       responseMessage: 'Updated response message',
       description: 'Updated description',
       fields: [{ key: 'updated value', type: 'string' }],

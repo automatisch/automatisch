@@ -15,6 +15,7 @@ describe('formSerializer', () => {
       name: form.name,
       displayName: form.displayName,
       responseMessage: form.responseMessage,
+      submitButtonText: form.submitButtonText,
       description: form.description,
       fields: form.fields,
       createdAt: form.createdAt.getTime(),

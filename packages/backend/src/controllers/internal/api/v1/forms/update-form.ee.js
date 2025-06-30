@@ -12,6 +12,7 @@ export default async (request, response) => {
     name: request.body.name,
     displayName: request.body.displayName,
     responseMessage: request.body.responseMessage,
+    submitButtonText: request.body.submitButtonText,
     description: request.body.description,
     fields: request.body.fields,
   });
