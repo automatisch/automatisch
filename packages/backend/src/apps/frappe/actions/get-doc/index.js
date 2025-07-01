@@ -1,5 +1,4 @@
 import defineAction from '../../../../helpers/define-action.js';
-import { getDocumentAPIBase } from '../../common/utils.js';
 
 export default defineAction({
   name: 'Get Document',
@@ -37,7 +36,7 @@ export default defineAction({
     const doctype = $.step.parameters.doctype;
     const documentName = $.step.parameters.documentName;
     const response = await $.http.get(
-      `${getDocumentAPIBase($, doctype)}/${documentName}`
+      `/v2/document/${doctype}/${documentName}`
     );
 
     $.setActionItem({ raw: response.data });

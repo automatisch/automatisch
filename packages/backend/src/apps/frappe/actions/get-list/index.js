@@ -1,5 +1,4 @@
 import defineAction from '../../../../helpers/define-action.js';
-import { getDocumentAPIBase } from '../../common/utils.js';
 
 export default defineAction({
   name: 'Get Document List',
@@ -67,15 +66,12 @@ export default defineAction({
       params.append('fields', fields);
     }
 
-    if (filters) {
-      params.append('filters', JSON.stringify(filters));
-    }
-
+    params.append('filters', JSON.stringify(filters));
     params.append('limit', limit);
 
-    const response = await $.http.get(
-      `${getDocumentAPIBase($, doctype)}?${params.toString()}`
-    );
+    const response = await $.http.get(`/v2/document/${doctype}`, {
+      params,
+    });
 
     $.setActionItem({ raw: response.data });
   },

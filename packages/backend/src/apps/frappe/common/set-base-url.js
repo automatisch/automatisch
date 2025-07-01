@@ -1,12 +1,10 @@
+import { URL } from 'node:url';
+
 const setBaseUrl = ($, requestConfig) => {
   if (requestConfig.additionalProperties?.skipAddingBaseUrl)
     return requestConfig;
 
-  const siteUrl = $.auth.data?.site_url;
-
-  if (siteUrl) {
-    requestConfig.baseURL = `${siteUrl}/api/v2`;
-  }
+  requestConfig.baseURL = new URL('/api', $.auth.data.site_url).toString();
 
   return requestConfig;
 };

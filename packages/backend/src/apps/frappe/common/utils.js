@@ -19,7 +19,3 @@ export function getOAuthRedirectUrl($) {
   }
   return oauthRedirectUrlField.value;
 }
-
-export function getDocumentAPIBase($, doctype) {
-  return `${DOCUMENT_API_BASE_PATH}/${doctype}`;
-}

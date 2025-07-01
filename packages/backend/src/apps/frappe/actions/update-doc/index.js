@@ -1,5 +1,4 @@
 import defineAction from '../../../../helpers/define-action.js';
-import { getDocumentAPIBase } from '../../common/utils.js';
 
 export default defineAction({
   name: 'Update Existing Document',
@@ -59,7 +58,7 @@ export default defineAction({
     }, {});
 
     const response = await $.http.patch(
-      `${getDocumentAPIBase($, doctype)}/${documentName}`,
+      `/v2/document/${doctype}/${documentName}`,
       dataToUpdate
     );
     $.setActionItem({ raw: response.data });

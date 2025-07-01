@@ -12,7 +12,7 @@ export default {
       return;
     }
 
-    const { data } = await $.http.get(`/doctype/${doctype}/meta`);
+    const { data } = await $.http.get(`/v2/doctype/${doctype}/meta`);
 
     const doctypeFields = data.data.fields || [];
 

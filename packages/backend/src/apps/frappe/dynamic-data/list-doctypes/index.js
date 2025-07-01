@@ -1,5 +1,3 @@
-import { getDocumentAPIBase } from '../../common/utils.js';
-
 export default {
   name: 'List DocTypes',
   key: 'listDoctypes',
@@ -18,7 +16,7 @@ export default {
 
     do {
       const { data: response } = await $.http.get(
-        getDocumentAPIBase($, 'DocType'), // DocType is also a DocType!
+        '/v2/document/DocType', // DocType is also a DocType!
         { params }
       );
 

@@ -1,5 +1,4 @@
 import defineAction from '../../../../helpers/define-action.js';
-import { getDocumentAPIBase } from '../../common/utils.js';
 
 export default defineAction({
   name: 'Create New Document',
@@ -51,10 +50,7 @@ export default defineAction({
       return result;
     }, {});
 
-    const response = await $.http.post(
-      getDocumentAPIBase($, doctype),
-      documentData
-    );
+    const response = await $.http.post(`/v2/document/${doctype}`, documentData);
 
     $.setActionItem({ raw: response.data });
   },
