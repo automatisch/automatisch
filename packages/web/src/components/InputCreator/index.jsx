@@ -59,6 +59,7 @@ function InputCreator(props) {
         fields={schema.fields}
         shouldUnregister={shouldUnregister}
         stepId={stepId}
+        addButtonLabel={schema.addButtonLabel}
       />
     );
   }
