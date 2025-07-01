@@ -16,7 +16,6 @@ export default {
 
     const doctypeFields = data.data.fields || [];
 
-    // biome-ignore lint/complexity/noForEach: <explanation>
     doctypeFields.forEach((field) => {
       if (
         field.hidden ||
@@ -30,8 +29,9 @@ export default {
       const required = !!field.reqd;
 
       const processedField = {
-        label: `${field.label} (${field.fieldtype})`,
+        label: field.label,
         key: field.fieldname,
+        description: field.fieldtype && `The field type is ${field.fieldtype}.`,
         type: 'string',
         variables: true,
         required,
