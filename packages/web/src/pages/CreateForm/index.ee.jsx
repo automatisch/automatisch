@@ -56,7 +56,11 @@ export default function CreateForm() {
         required: true,
         description: 'Field type',
         variables: false,
-        options: [{ label: 'String', value: 'string' }],
+        options: [
+          { label: 'String', value: 'string' },
+          { label: 'Multiline', value: 'multiline' },
+          { label: 'Checkbox', value: 'checkbox' }
+        ],
       },
     ],
   };
