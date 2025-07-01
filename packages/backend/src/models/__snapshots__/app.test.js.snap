@@ -21,6 +21,7 @@ exports[`App model > list > should exclude enterprise apps when license is not v
   "flickr",
   "flowers-software",
   "formatter",
+  "frappe",
   "freescout",
   "ghost",
   "gitea",
