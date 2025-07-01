@@ -27,7 +27,7 @@ export default {
       )
         return;
 
-      const required = field.reqd;
+      const required = !!field.reqd;
 
       const processedField = {
         label: `${field.label} (${field.fieldtype})`,
