@@ -6,11 +6,13 @@ export default async function generateAuthUrl($) {
   const searchParams = new URLSearchParams({
     client_id: $.auth.data.consumerKey,
     redirect_uri: redirectUri,
-    scope: "all openid",
+    scope: 'all openid',
     response_type: 'code',
   });
 
-  const url = `${getFrappeSiteURL($)}/api/v2${OAUTH_ENDPOINTS.AUTHORIZE}?${searchParams.toString()}`;
+  const url = `${getFrappeSiteURL($)}/api/v2${
+    OAUTH_ENDPOINTS.AUTHORIZE
+  }?${searchParams.toString()}`;
 
   await $.auth.set({
     url,

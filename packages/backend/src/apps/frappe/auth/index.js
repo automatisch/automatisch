@@ -58,5 +58,5 @@ export default {
   verifyCredentials,
   isStillVerified,
   generateAuthUrl,
-  refreshToken
+  refreshToken,
 };

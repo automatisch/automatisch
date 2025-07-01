@@ -1,5 +1,5 @@
-import { OAUTH_ENDPOINTS } from "../common/constants.js";
-import { getOAuthRedirectUrl } from "../common/utils.js";
+import { OAUTH_ENDPOINTS } from '../common/constants.js';
+import { getOAuthRedirectUrl } from '../common/utils.js';
 
 const refreshToken = async ($) => {
   const redirectUri = getOAuthRedirectUrl($);
@@ -7,9 +7,9 @@ const refreshToken = async ($) => {
     client_id: $.auth.data.consumerKey,
     client_secret: $.auth.data.consumerSecret,
     redirect_uri: redirectUri,
-    scope: "all openid",
+    scope: 'all openid',
     refresh_token: $.auth.data.refreshToken,
-    grant_type: "refresh_token",
+    grant_type: 'refresh_token',
   });
 
   const { data } = await $.http.post(
@@ -30,7 +30,7 @@ const refreshToken = async ($) => {
     accessToken: data.access_token,
     idToken: data.id_token,
     expiresIn: data.expires_in,
-    refreshToken: data.refresh_token 
+    refreshToken: data.refresh_token,
   });
 };
 

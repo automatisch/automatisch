@@ -2,42 +2,44 @@ import defineAction from '../../../../helpers/define-action.js';
 import { getDocumentAPIBase } from '../../common/utils.js';
 
 export default defineAction({
-    name: 'Get Document',
-    key: 'getDoc',
-    description: 'Gets a single document from Frappe.',
-    arguments: [
-        {
-            label: 'Document Type',
-            key: 'doctype',
-            type: 'dropdown',
-            required: true,
-            variables: true,
-            source: {
-                type: 'query',
-                name: 'getDynamicData',
-                arguments: [
-                    {
-                        name: 'key',
-                        value: 'listDoctypes',
-                    },
-                ],
-            },
-        },
-        {
-            label: 'Document Name',
-            key: 'documentName',
-            type: 'string',
-            required: true,
-            description: 'The name of the document to retrieve.',
-            variables: false,
-        }
-    ],
-
-    async run($) {
-        const doctype = $.step.parameters.doctype;
-        const documentName = $.step.parameters.documentName;
-        const response = await $.http.get(`${getDocumentAPIBase($, doctype)}/${documentName}`);
-
-        $.setActionItem({ raw: response.data });
+  name: 'Get Document',
+  key: 'getDoc',
+  description: 'Gets a single document from Frappe.',
+  arguments: [
+    {
+      label: 'Document Type',
+      key: 'doctype',
+      type: 'dropdown',
+      required: true,
+      variables: true,
+      source: {
+        type: 'query',
+        name: 'getDynamicData',
+        arguments: [
+          {
+            name: 'key',
+            value: 'listDoctypes',
+          },
+        ],
+      },
     },
-})
+    {
+      label: 'Document Name',
+      key: 'documentName',
+      type: 'string',
+      required: true,
+      description: 'The name of the document to retrieve.',
+      variables: false,
+    },
+  ],
+
+  async run($) {
+    const doctype = $.step.parameters.doctype;
+    const documentName = $.step.parameters.documentName;
+    const response = await $.http.get(
+      `${getDocumentAPIBase($, doctype)}/${documentName}`
+    );
+
+    $.setActionItem({ raw: response.data });
+  },
+});
