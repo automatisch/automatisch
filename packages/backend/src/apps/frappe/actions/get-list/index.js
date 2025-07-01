@@ -30,7 +30,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description:
-        'List of fields to retrieve for each document. Use * to retrieve all fields.',
+        'List of fields to retrieve for each document. Provide a JSON string with field names. Use ["*"] to retrieve all fields.',
       variables: true,
     },
     {
@@ -48,7 +48,7 @@ export default defineAction({
       type: 'string',
       required: false,
       description: 'Maximum number of documents to retrieve. Defaults to 20.',
-      defaultValue: 20,
+      value: 20,
       variables: true,
     },
   ],
