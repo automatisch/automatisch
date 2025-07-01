@@ -68,10 +68,10 @@ export default function EditForm() {
         description: 'Field type',
         variables: false,
         options: [
-          { label: 'String', value: 'string' },
-          { label: 'Multiline', value: 'multiline' },
           { label: 'Checkbox', value: 'checkbox' },
           { label: 'Dropdown', value: 'dropdown' },
+          { label: 'Multiline', value: 'multiline' },
+          { label: 'String', value: 'string' },
         ],
       },
       {
