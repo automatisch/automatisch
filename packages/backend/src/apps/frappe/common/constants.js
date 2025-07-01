@@ -3,5 +3,3 @@ export const OAUTH_ENDPOINTS = {
   GET_TOKEN: '/method/frappe.integrations.oauth2.get_token',
   OPENID_PROFILE: '/method/frappe.integrations.oauth2.openid_profile',
 };
-
-export const DOCUMENT_API_BASE_PATH = '/document';
