@@ -29,7 +29,7 @@ export default defineAction({
       type: 'string',
       required: true,
       description: 'The name of the document to retrieve.',
-      variables: false,
+      variables: true,
     },
   ],
 
