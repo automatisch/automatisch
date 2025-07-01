@@ -40,7 +40,7 @@ export default {
       if (field.fieldtype === 'Select') {
         processedField.type = 'dropdown';
         processedField.variables = false;
-        processedField.options = field.options.split('\n').map((option) => ({
+        processedField.options = field.options?.split('\n').map((option) => ({
           label: option,
           value: option,
         }));
