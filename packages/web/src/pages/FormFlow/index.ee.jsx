@@ -9,11 +9,12 @@ import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
-import { CssVarsProvider } from '@mui/joy/styles';
+import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import Typography from '@mui/joy/Typography';
 import Container from 'components/Container';
 import * as React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
 
 import useFlowForm from 'hooks/useFlowForm.ee';
 import useCreateFormSubmission from 'hooks/useCreateFormSubmission.ee';
@@ -21,10 +22,44 @@ import useCreateFormSubmission from 'hooks/useCreateFormSubmission.ee';
 export default function FormFlow() {
   const { flowId } = useParams();
   const [searchParams] = useSearchParams();
+  const materialTheme = useTheme();
   const { data: flow, isLoading } = useFlowForm(flowId);
   const { mutate: createFormSubmission, isSuccess } = useCreateFormSubmission(
     flow?.data.webhookUrl,
   );
+
+  const joyTheme = React.useMemo(() => extendTheme({
+    colorSchemes: {
+      light: {
+        palette: {
+          primary: {
+            50: materialTheme.palette.primary.light,
+            100: materialTheme.palette.primary.light,
+            200: materialTheme.palette.primary.light,
+            300: materialTheme.palette.primary.light,
+            400: materialTheme.palette.primary.main,
+            500: materialTheme.palette.primary.main,
+            600: materialTheme.palette.primary.main,
+            700: materialTheme.palette.primary.dark,
+            800: materialTheme.palette.primary.dark,
+            900: materialTheme.palette.primary.dark,
+          },
+          text: {
+            primary: materialTheme.palette.text.primary,
+            secondary: materialTheme.palette.text.secondary,
+          },
+          background: {
+            body: materialTheme.palette.background.default,
+            surface: materialTheme.palette.background.paper,
+          },
+        },
+      },
+    },
+    fontFamily: {
+      body: materialTheme.typography.fontFamily,
+      display: materialTheme.typography.fontFamily,
+    },
+  }), [materialTheme]);
 
   if (isLoading) return 'loading...';
 
@@ -44,7 +79,7 @@ export default function FormFlow() {
   };
 
   return (
-    <CssVarsProvider>
+    <CssVarsProvider theme={joyTheme}>
       <Box sx={{ display: 'flex', flex: 1, alignItems: 'center' }}>
         <Container maxWidth="sm">
           <Typography gutterBottom color="primary" level="h1">
