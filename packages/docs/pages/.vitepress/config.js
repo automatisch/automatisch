@@ -178,6 +178,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Frappe / ERPNext',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/frappe/actions' },
+            { text: 'Connection', link: '/apps/frappe/connection' },
+          ],
+        },
+        {
           text: 'Freescout',
           collapsible: true,
           collapsed: true,
