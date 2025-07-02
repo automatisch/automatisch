@@ -39,7 +39,7 @@ export const processPopupMessage = (popup) => {
         if (popup.closed) {
           window.clearInterval(closeCheckIntervalId);
 
-          reject({ message: 'Error occured while verifying credentials!' });
+          reject({ message: 'Error occurred while verifying credentials!' });
         }
       }, 1000);
     }

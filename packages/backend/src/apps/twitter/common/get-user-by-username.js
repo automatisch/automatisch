@@ -6,7 +6,7 @@ const getUserByUsername = async ($, username) => {
       .map((error) => error.detail)
       .join(' ');
 
-    throw new Error(`Error occured while fetching user data: ${errorMessages}`);
+    throw new Error(`Error occurred while fetching user data: ${errorMessages}`);
   }
 
   const user = response.data.data;

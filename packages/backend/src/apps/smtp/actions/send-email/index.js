@@ -37,7 +37,7 @@ export default defineAction({
       type: 'string',
       required: true,
       description:
-        'Comma seperated list of email addresses to send the email to.',
+        'Comma separated list of email addresses to send the email to.',
       variables: true,
     },
     {
@@ -45,7 +45,7 @@ export default defineAction({
       key: 'cc',
       type: 'string',
       required: false,
-      description: 'Comma seperated list of email addresses.',
+      description: 'Comma separated list of email addresses.',
       variables: true,
     },
     {
@@ -53,7 +53,7 @@ export default defineAction({
       key: 'bcc',
       type: 'string',
       required: false,
-      description: 'Comma seperated list of email addresses.',
+      description: 'Comma separated list of email addresses.',
       variables: true,
     },
     {
