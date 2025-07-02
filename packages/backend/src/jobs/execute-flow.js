@@ -9,7 +9,12 @@ import {
 export const executeFlowJob = async (job) => {
   const { flowId } = job.data;
 
-  const flow = await Flow.query().findById(flowId).throwIfNotFound();
+  const flow = await Flow.query().findById(flowId);
+
+  if (!flow) {
+    return;
+  }
+
   const user = await flow.$relatedQuery('user');
   const allowedToRunFlows = await user.isAllowedToRunFlows();
 
