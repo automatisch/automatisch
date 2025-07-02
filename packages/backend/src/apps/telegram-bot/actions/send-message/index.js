@@ -42,6 +42,20 @@ export default defineAction({
         },
       ],
     },
+    {
+      label: 'Parse Mode',
+      key: 'parseMode',
+      type: 'dropdown',
+      required: false,
+      description: 'Formatting style for the message text.',
+      variables: true,
+      options: [
+        { label: 'None', value: '' },
+        { label: 'Markdown', value: 'Markdown' },
+        { label: 'MarkdownV2', value: 'MarkdownV2' },
+        { label: 'HTML', value: 'HTML' },
+      ],
+    },
   ],
 
   async run($) {
@@ -50,6 +64,11 @@ export default defineAction({
       text: $.step.parameters.text,
       disable_notification: $.step.parameters.disableNotification,
     };
+
+    // Only add parse_mode if set
+    if ($.step.parameters.parseMode) {
+      payload.parse_mode = $.step.parameters.parseMode;
+    }
 
     const response = await $.http.post('/sendMessage', payload);
 
