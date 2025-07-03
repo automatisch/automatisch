@@ -8,7 +8,6 @@ import createDynamicFieldsAction from '@/controllers/internal/api/v1/steps/creat
 import createDynamicDataAction from '@/controllers/internal/api/v1/steps/create-dynamic-data.js';
 import deleteStepAction from '@/controllers/internal/api/v1/steps/delete-step.js';
 import updateStepAction from '@/controllers/internal/api/v1/steps/update-step.js';
-import executeStepAction from '@/controllers/internal/api/v1/steps/execute-step.js';
 
 const router = Router();
 
@@ -40,13 +39,6 @@ router.post(
   authenticateUser,
   authorizeUser,
   createDynamicDataAction
-);
-
-router.post(
-  '/:stepId/execute',
-  authenticateUser,
-  authorizeUser,
-  executeStepAction
 );
 
 router.patch('/:stepId', authenticateUser, authorizeUser, updateStepAction);
