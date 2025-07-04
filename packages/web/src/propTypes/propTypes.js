@@ -477,14 +477,23 @@ export const NotificationPropType = PropTypes.shape({
 
 export const FormFieldPropType = PropTypes.shape({
   key: PropTypes.string,
+  name: PropTypes.string,
   type: PropTypes.oneOf([
-    'text',
-    'number',
-    'date',
-    'datetime',
-    'email',
+    'string',
+    'checkbox',
     'dropdown',
+    'multiline',
+    'date',
+    'time',
+    'datetime',
   ]),
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+    })
+  ),
+  required: PropTypes.bool,
+  readonly: PropTypes.bool,
 });
 
 export const FormPropType = PropTypes.shape({

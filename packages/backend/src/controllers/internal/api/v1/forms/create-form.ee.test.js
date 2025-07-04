@@ -56,6 +56,27 @@ describe('POST /internal/api/v1/forms', () => {
             required: false,
             readonly: true,
           },
+          {
+            name: 'Birth Date',
+            type: 'date',
+            key: 'birth_date',
+            required: true,
+            readonly: false,
+          },
+          {
+            name: 'Appointment Time',
+            type: 'time',
+            key: 'appointment_time',
+            required: false,
+            readonly: false,
+          },
+          {
+            name: 'Event Date & Time',
+            type: 'datetime',
+            key: 'event_datetime',
+            required: true,
+            readonly: false,
+          },
         ],
       })
       .expect(201);

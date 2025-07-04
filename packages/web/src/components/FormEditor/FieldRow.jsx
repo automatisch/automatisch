@@ -27,6 +27,9 @@ function FieldRow({ index, remove, control }) {
       value: 'multiline',
     },
     { label: formatMessage('formEditor.fieldTypeString'), value: 'string' },
+    { label: formatMessage('formEditor.fieldTypeDate'), value: 'date' },
+    { label: formatMessage('formEditor.fieldTypeTime'), value: 'time' },
+    { label: formatMessage('formEditor.fieldTypeDatetime'), value: 'datetime' },
   ];
 
   const {
