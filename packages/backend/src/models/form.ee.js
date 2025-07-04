@@ -21,7 +21,7 @@ class Form extends Base {
             key: { type: 'string', minLength: 1 },
             type: {
               type: 'string',
-              enum: ['string', 'checkbox', 'dropdown', 'multiline'],
+              enum: ['string', 'checkbox', 'dropdown', 'multiline', 'date', 'time', 'datetime'],
             },
             options: { type: 'array' },
             required: { type: 'boolean' },
