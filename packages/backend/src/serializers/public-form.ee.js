@@ -8,6 +8,7 @@ const publicFormSerializer = (form) => {
     responseMessage: form.responseMessage,
     submitButtonText: form.submitButtonText,
     webhookUrl: form.webhookUrl,
+    asyncRedirectUrl: form.asyncRedirectUrl,
   };
 
   return formData;

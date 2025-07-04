@@ -36,6 +36,7 @@ describe('GET /internal/api/v1/flows/:flowId/form', () => {
       type: 'trigger',
       parameters: {
         formId: form.id,
+        asyncRedirectUrl: 'https://example.com/success',
       },
     });
 

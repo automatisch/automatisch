@@ -19,6 +19,7 @@ describe('publicFormSerializer', () => {
       responseMessage: form.responseMessage,
       submitButtonText: form.submitButtonText,
       webhookUrl: form.webhookUrl,
+      asyncRedirectUrl: form.asyncRedirectUrl,
     };
 
     expect(publicFormSerializer(form)).toStrictEqual(expectedPayload);
