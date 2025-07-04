@@ -37,7 +37,7 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
         submitButtonText: 'Updated submit button text',
         responseMessage: 'Updated response message',
         description: 'Updated description',
-        fields: [{ name: 'updated value', type: 'string' }],
+        fields: [{ key: 'updated value', type: 'string' }],
       })
       .expect(200);
 
@@ -50,7 +50,7 @@ describe('PATCH /internal/api/v1/forms/:formId', () => {
       submitButtonText: 'Updated submit button text',
       responseMessage: 'Updated response message',
       description: 'Updated description',
-      fields: [{ name: 'updated value', type: 'string' }],
+      fields: [{ key: 'updated value', type: 'string' }],
     });
 
     expect(response.body).toStrictEqual(expectedPayload);
