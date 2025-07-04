@@ -12,7 +12,24 @@ class Form extends Base {
       id: { type: 'string', format: 'uuid' },
       name: { type: 'string', minLength: 1 },
       displayName: { type: 'string' },
-      fields: { type: 'array' },
+      fields: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', minLength: 1 },
+            key: { type: 'string', minLength: 1 },
+            type: {
+              type: 'string',
+              enum: ['string', 'checkbox', 'dropdown', 'multiline'],
+            },
+            options: { type: 'array' },
+            required: { type: 'boolean' },
+            readonly: { type: 'boolean' },
+          },
+          required: ['key', 'name', 'type'],
+        },
+      },
       description: { type: 'string' },
       responseMessage: { type: 'string' },
       submitButtonText: { type: 'string' },

@@ -13,6 +13,42 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
       "type": "string",
     },
     "fields": {
+      "items": {
+        "properties": {
+          "key": {
+            "minLength": 1,
+            "type": "string",
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string",
+          },
+          "options": {
+            "type": "array",
+          },
+          "readonly": {
+            "type": "boolean",
+          },
+          "required": {
+            "type": "boolean",
+          },
+          "type": {
+            "enum": [
+              "string",
+              "checkbox",
+              "dropdown",
+              "multiline",
+            ],
+            "type": "string",
+          },
+        },
+        "required": [
+          "key",
+          "name",
+          "type",
+        ],
+        "type": "object",
+      },
       "type": "array",
     },
     "id": {

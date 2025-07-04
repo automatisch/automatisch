@@ -34,6 +34,29 @@ describe('POST /internal/api/v1/forms', () => {
         description: 'Test Description',
         responseMessage: 'Test Response Message',
         submitButtonText: 'Test Submit Button Text',
+        fields: [
+          {
+            name: 'Email',
+            type: 'string',
+            key: 'email',
+            required: true,
+            readonly: false,
+          },
+          {
+            name: 'Comments',
+            type: 'multiline',
+            key: 'comments',
+            required: false,
+            readonly: false,
+          },
+          {
+            name: 'Subscribe',
+            type: 'checkbox',
+            key: 'subscribe',
+            required: false,
+            readonly: true,
+          },
+        ],
       })
       .expect(201);
 
