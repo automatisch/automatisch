@@ -66,7 +66,7 @@ export default function EditForm() {
                 control={control}
                 isDirty={isDirty}
                 isValid={isValid}
-                isLoading={isUpdateFormLoading}
+                isLoading={isUpdateFormLoading || false}
                 translationPrefix="editFormForm"
               />
             )}
