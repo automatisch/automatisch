@@ -1,6 +1,5 @@
 import logger from '@/helpers/logger.js';
 import objection from 'objection';
-import * as Sentry from '@/helpers/sentry.ee.js';
 const {
   NotFoundError,
   DataError,
@@ -9,6 +8,7 @@ const {
   UniqueViolationError,
 } = objection;
 import NotAuthorizedError from '@/errors/not-authorized.js';
+import QuotaExceededError from '@/errors/quote-exceeded.js';
 import HttpError from '@/errors/http.js';
 import {
   renderObjectionError,
@@ -21,6 +21,12 @@ const errorHandler = (error, request, response, next) => {
   if (error.message === 'Not Found' || error instanceof NotFoundError) {
     logger.http(request.method + ' ' + request.url + ' ' + 404);
     response.status(404).end();
+    return;
+  }
+
+  if (error instanceof QuotaExceededError) {
+    logger.http(request.method + ' ' + request.url + ' ' + 422);
+    response.status(422).end();
     return;
   }
 
@@ -68,15 +74,6 @@ const errorHandler = (error, request, response, next) => {
 
   logger.error(request.method + ' ' + request.url + ' ' + statusCode);
   logger.error(error.stack);
-
-  Sentry.captureException(error, {
-    tags: { rest: true },
-    extra: {
-      url: request?.url,
-      method: request?.method,
-      params: request?.params,
-    },
-  });
 
   response.status(statusCode).end();
 };
