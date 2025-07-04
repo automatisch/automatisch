@@ -106,5 +106,10 @@ export default async (flowId, request, response) => {
     }
   }
 
+  // in case the webhook flow does not have any respondWith action. Otherwise, the request will keep hanging.
+  if (!response.headersSent) {
+    response.status(204).end();
+  }
+
   return response;
 };

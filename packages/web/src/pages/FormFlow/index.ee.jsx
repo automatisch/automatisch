@@ -31,9 +31,11 @@ export default function FormFlow() {
   const materialTheme = useTheme();
   const formatMessage = useFormatMessage();
   const { data: flow, isLoading } = useFlowForm(flowId);
-  const { mutate: createFormSubmission, isSuccess } = useCreateFormSubmission(
-    flow?.data.webhookUrl,
-  );
+  const {
+    mutate: createFormSubmission,
+    isSuccess,
+    data: submissionResult,
+  } = useCreateFormSubmission(flow?.data.webhookUrl);
 
   // Helper function to get input type based on validation format
   const getInputType = (validationFormat) => {
@@ -119,7 +121,19 @@ export default function FormFlow() {
 
     const data = { ...searchParamsObject, ...formDataObject };
 
-    createFormSubmission(data);
+    createFormSubmission(data, {
+      onSuccess: (result) => {
+        if (result.type === 'redirect') {
+          window.location.href = result.data;
+          return;
+        }
+
+        if (flow.data.asyncRedirectUrl) {
+          window.location.href = flow.data.asyncRedirectUrl;
+          return;
+        }
+      },
+    });
   };
 
   return (
@@ -384,7 +398,8 @@ export default function FormFlow() {
 
               {isSuccess && (
                 <Alert>
-                  {flow.data.responseMessage ||
+                  {submissionResult?.data ||
+                    flow.data.responseMessage ||
                     formatMessage('formFlow.successMessage')}
                 </Alert>
               )}

@@ -184,6 +184,7 @@ class Flow extends Base {
     const computedForm = {
       ...form,
       webhookUrl: await triggerStep.getWebhookUrl(),
+      asyncRedirectUrl: triggerStep.parameters.asyncRedirectUrl,
     };
 
     return computedForm;
@@ -216,7 +217,7 @@ class Flow extends Base {
     const nextSteps = await this.getStepsAfterPosition(previousStep.position);
 
     const createdStep = await this.insertActionStepAtPosition(
-      previousStep.position + 1
+      previousStep.position + 1,
     );
 
     await this.updateStepPositionsFrom(createdStep.position + 1, nextSteps);
@@ -241,7 +242,7 @@ class Flow extends Base {
       } catch (error) {
         // suppress error as the remote resource might have been already deleted
         logger.debug(
-          `Failed to unregister webhook for flow ${this.id}: ${error.message}`
+          `Failed to unregister webhook for flow ${this.id}: ${error.message}`,
         );
       }
     }
@@ -278,7 +279,7 @@ class Flow extends Base {
   async duplicateFor(user) {
     const steps = await this.$relatedQuery('steps').orderBy(
       'steps.position',
-      'asc'
+      'asc',
     );
 
     const duplicatedFlow = await user.$relatedQuery('flows').insertAndFetch({
@@ -436,7 +437,7 @@ class Flow extends Base {
             jobId: this.id,
             removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
             removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-          }
+          },
         );
       } else {
         const repeatableJobs = await flowQueue.getRepeatableJobs();
