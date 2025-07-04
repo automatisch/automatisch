@@ -26,6 +26,12 @@ class Form extends Base {
             options: { type: 'array' },
             required: { type: 'boolean' },
             readonly: { type: 'boolean' },
+            validationFormat: {
+              type: 'string',
+              enum: ['email', 'url', 'tel', 'number', 'alphanumeric', 'custom'],
+            },
+            validationPattern: { type: 'string' },
+            validationHelperText: { type: 'string' },
           },
           required: ['key', 'name', 'type'],
         },

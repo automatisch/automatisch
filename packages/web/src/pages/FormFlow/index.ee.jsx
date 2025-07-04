@@ -35,6 +35,39 @@ export default function FormFlow() {
     flow?.data.webhookUrl,
   );
 
+  // Helper function to get input type based on validation format
+  const getInputType = (validationFormat) => {
+    const typeMap = {
+      url: 'url',
+      tel: 'tel',
+      number: 'number',
+    };
+    return typeMap[validationFormat] || 'text';
+  };
+
+  // Helper function to get validation message
+  const getValidationMessage = (validationFormat, validationHelperText) => {
+    if (validationHelperText) return validationHelperText;
+
+    const messageMap = {
+      url: 'formFlow.invalidUrl',
+      tel: 'formFlow.invalidTel',
+      number: 'formFlow.invalidNumber',
+      alphanumeric: 'formFlow.invalidAlphanumeric',
+    };
+
+    const messageKey =
+      messageMap[validationFormat] || 'formFlow.invalidPattern';
+    return formatMessage(messageKey);
+  };
+
+  // Helper function to get pattern for validation
+  const getValidationPattern = (validationFormat, customPattern) => {
+    if (validationFormat === 'alphanumeric') return '[a-zA-Z0-9]+';
+    if (validationFormat === 'custom') return customPattern;
+    return undefined;
+  };
+
   const joyTheme = React.useMemo(
     () =>
       extendTheme({
@@ -114,7 +147,17 @@ export default function FormFlow() {
               onSubmit={handleSubmit}
             >
               {formFields?.map(
-                ({ name, type, key, options, required, readonly }) => (
+                ({
+                  name,
+                  type,
+                  key,
+                  options,
+                  required,
+                  readonly,
+                  validationFormat,
+                  validationPattern,
+                  validationHelperText,
+                }) => (
                   <React.Fragment key={key}>
                     {type === 'string' && (
                       <FormControl required={required} disabled={readonly}>
@@ -124,6 +167,23 @@ export default function FormFlow() {
                           defaultValue={searchParamsObject[key] || ''}
                           required={required}
                           disabled={readonly}
+                          type={getInputType(validationFormat)}
+                          onChange={(e) => {
+                            // Clear custom validity on change
+                            e.target.setCustomValidity('');
+                          }}
+                          slotProps={{
+                            input: {
+                              pattern: getValidationPattern(
+                                validationFormat,
+                                validationPattern,
+                              ),
+                              title: getValidationMessage(
+                                validationFormat,
+                                validationHelperText,
+                              ),
+                            },
+                          }}
                         />
                       </FormControl>
                     )}
@@ -145,7 +205,7 @@ export default function FormFlow() {
                       <FormControl required={required} disabled={readonly}>
                         <Checkbox
                           name={key}
-                          label={name}
+                          label={`${name}${required ? ' *' : ''}`}
                           defaultChecked={
                             searchParamsObject[key] === 'true' ||
                             searchParamsObject[key] === 'on'

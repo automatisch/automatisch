@@ -18,6 +18,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 function FieldRow({ index, remove, control }) {
   const formatMessage = useFormatMessage();
   const fieldType = useWatch({ control, name: `fields.${index}.type` });
+  const validationFormat = useWatch({ control, name: `fields.${index}.validationFormat` });
 
   const fieldTypeOptions = [
     { label: formatMessage('formEditor.fieldTypeCheckbox'), value: 'checkbox' },
@@ -77,6 +78,49 @@ function FieldRow({ index, remove, control }) {
                   )}
                 />
               </Stack>
+
+              {fieldType === 'string' && (
+                <Stack spacing={2}>
+                  <ControlledAutocomplete
+                    name={`fields.${index}.validationFormat`}
+                    fullWidth
+                    disablePortal
+                    disableClearable={false}
+                    options={[
+                      { label: formatMessage('formEditor.validationFormatNone'), value: '' },
+                      { label: formatMessage('formEditor.validationFormatEmail'), value: 'email' },
+                      { label: formatMessage('formEditor.validationFormatUrl'), value: 'url' },
+                      { label: formatMessage('formEditor.validationFormatTel'), value: 'tel' },
+                      { label: formatMessage('formEditor.validationFormatNumber'), value: 'number' },
+                      { label: formatMessage('formEditor.validationFormatAlphanumeric'), value: 'alphanumeric' },
+                      { label: formatMessage('formEditor.validationFormatCustom'), value: 'custom' },
+                    ]}
+                    renderInput={(params) => (
+                      <MuiTextField
+                        {...params}
+                        label={formatMessage('formEditor.validationFormat')}
+                      />
+                    )}
+                  />
+                  
+                  {validationFormat === 'custom' && (
+                    <>
+                      <TextField
+                        name={`fields.${index}.validationPattern`}
+                        label={formatMessage('formEditor.validationPattern')}
+                        fullWidth
+                        helperText={formatMessage('formEditor.validationPatternHelperText')}
+                      />
+                      <TextField
+                        name={`fields.${index}.validationHelperText`}
+                        label={formatMessage('formEditor.validationHelperText')}
+                        fullWidth
+                        helperText={formatMessage('formEditor.validationHelperTextDescription')}
+                      />
+                    </>
+                  )}
+                </Stack>
+              )}
 
               {fieldType === 'dropdown' && (
                 <Box sx={{ pl: 2, mt: 2 }}>
