@@ -15,6 +15,10 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
     "fields": {
       "items": {
         "properties": {
+          "key": {
+            "minLength": 1,
+            "type": "string",
+          },
           "name": {
             "minLength": 1,
             "type": "string",
@@ -39,6 +43,7 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
           },
         },
         "required": [
+          "key",
           "name",
           "type",
         ],
