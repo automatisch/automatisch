@@ -18,6 +18,7 @@ class Form extends Base {
           type: 'object',
           properties: {
             name: { type: 'string', minLength: 1 },
+            key: { type: 'string', minLength: 1 },
             type: {
               type: 'string',
               enum: ['string', 'checkbox', 'dropdown', 'multiline'],
@@ -26,7 +27,7 @@ class Form extends Base {
             required: { type: 'boolean' },
             readonly: { type: 'boolean' },
           },
-          required: ['name', 'type'],
+          required: ['key', 'name', 'type'],
         },
       },
       description: { type: 'string' },
