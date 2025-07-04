@@ -18,50 +18,56 @@ import { useTheme } from '@mui/material/styles';
 
 import useFlowForm from 'hooks/useFlowForm.ee';
 import useCreateFormSubmission from 'hooks/useCreateFormSubmission.ee';
+import useFormatMessage from 'hooks/useFormatMessage';
 
 export default function FormFlow() {
   const { flowId } = useParams();
   const [searchParams] = useSearchParams();
   const materialTheme = useTheme();
+  const formatMessage = useFormatMessage();
   const { data: flow, isLoading } = useFlowForm(flowId);
   const { mutate: createFormSubmission, isSuccess } = useCreateFormSubmission(
     flow?.data.webhookUrl,
   );
 
-  const joyTheme = React.useMemo(() => extendTheme({
-    colorSchemes: {
-      light: {
-        palette: {
-          primary: {
-            50: materialTheme.palette.primary.light,
-            100: materialTheme.palette.primary.light,
-            200: materialTheme.palette.primary.light,
-            300: materialTheme.palette.primary.light,
-            400: materialTheme.palette.primary.main,
-            500: materialTheme.palette.primary.main,
-            600: materialTheme.palette.primary.main,
-            700: materialTheme.palette.primary.dark,
-            800: materialTheme.palette.primary.dark,
-            900: materialTheme.palette.primary.dark,
-          },
-          text: {
-            primary: materialTheme.palette.text.primary,
-            secondary: materialTheme.palette.text.secondary,
-          },
-          background: {
-            body: materialTheme.palette.background.default,
-            surface: materialTheme.palette.background.paper,
+  const joyTheme = React.useMemo(
+    () =>
+      extendTheme({
+        colorSchemes: {
+          light: {
+            palette: {
+              primary: {
+                50: materialTheme.palette.primary.light,
+                100: materialTheme.palette.primary.light,
+                200: materialTheme.palette.primary.light,
+                300: materialTheme.palette.primary.light,
+                400: materialTheme.palette.primary.main,
+                500: materialTheme.palette.primary.main,
+                600: materialTheme.palette.primary.main,
+                700: materialTheme.palette.primary.dark,
+                800: materialTheme.palette.primary.dark,
+                900: materialTheme.palette.primary.dark,
+              },
+              text: {
+                primary: materialTheme.palette.text.primary,
+                secondary: materialTheme.palette.text.secondary,
+              },
+              background: {
+                body: materialTheme.palette.background.default,
+                surface: materialTheme.palette.background.paper,
+              },
+            },
           },
         },
-      },
-    },
-    fontFamily: {
-      body: materialTheme.typography.fontFamily,
-      display: materialTheme.typography.fontFamily,
-    },
-  }), [materialTheme]);
+        fontFamily: {
+          body: materialTheme.typography.fontFamily,
+          display: materialTheme.typography.fontFamily,
+        },
+      }),
+    [materialTheme],
+  );
 
-  if (isLoading) return 'loading...';
+  if (isLoading) return formatMessage('formFlow.loading');
 
   const formFields = flow.data.fields;
 
@@ -98,58 +104,80 @@ export default function FormFlow() {
             gap={2}
             onSubmit={handleSubmit}
           >
-            {formFields?.map(({ name, type, key, options }) => (
-              <React.Fragment key={key}>
-                {type === 'string' && (
-                  <FormControl>
-                    <FormLabel>{name}</FormLabel>
-                    <Input
-                      name={key}
-                      defaultValue={searchParamsObject[key] || ''}
-                    />
-                  </FormControl>
-                )}
-                
-                {type === 'multiline' && (
-                  <FormControl>
-                    <FormLabel>{name}</FormLabel>
-                    <Textarea
-                      name={key}
-                      defaultValue={searchParamsObject[key] || ''}
-                      minRows={3}
-                    />
-                  </FormControl>
-                )}
-                
-                {type === 'checkbox' && (
-                  <FormControl>
-                    <Checkbox
-                      name={key}
-                      label={name}
-                      defaultChecked={searchParamsObject[key] === 'true' || searchParamsObject[key] === 'on'}
-                      value="true"
-                    />
-                  </FormControl>
-                )}
-                
-                {type === 'dropdown' && (
-                  <FormControl>
-                    <FormLabel>{name}</FormLabel>
-                    <Select
-                      name={key}
-                      defaultValue={searchParamsObject[key] || ''}
-                      placeholder="Choose an option"
-                    >
-                      {(options || []).map((option, index) => (
-                        <Option key={index} value={option.value}>
-                          {option.value}
-                        </Option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              </React.Fragment>
-            ))}
+            {formFields?.map(
+              ({ name, type, key, options, required, readonly }) => (
+                <React.Fragment key={key}>
+                  {type === 'string' && (
+                    <FormControl>
+                      <FormLabel>
+                        {name}
+                        {required && ' *'}
+                      </FormLabel>
+                      <Input
+                        name={key}
+                        defaultValue={searchParamsObject[key] || ''}
+                        required={required}
+                        disabled={readonly}
+                      />
+                    </FormControl>
+                  )}
+
+                  {type === 'multiline' && (
+                    <FormControl>
+                      <FormLabel>
+                        {name}
+                        {required && ' *'}
+                      </FormLabel>
+                      <Textarea
+                        name={key}
+                        defaultValue={searchParamsObject[key] || ''}
+                        minRows={3}
+                        required={required}
+                        disabled={readonly}
+                      />
+                    </FormControl>
+                  )}
+
+                  {type === 'checkbox' && (
+                    <FormControl>
+                      <Checkbox
+                        name={key}
+                        label={`${name}${required ? ' *' : ''}`}
+                        defaultChecked={
+                          searchParamsObject[key] === 'true' ||
+                          searchParamsObject[key] === 'on'
+                        }
+                        value="true"
+                        required={required}
+                        disabled={readonly}
+                      />
+                    </FormControl>
+                  )}
+
+                  {type === 'dropdown' && (
+                    <FormControl>
+                      <FormLabel>
+                        {name}
+                        {required && ' *'}
+                      </FormLabel>
+                      <Select
+                        name={key}
+                        defaultValue={searchParamsObject[key] || ''}
+                        placeholder={formatMessage('formFlow.chooseOption')}
+                        required={required}
+                        disabled={readonly}
+                      >
+                        {(options || []).map((option, index) => (
+                          <Option key={index} value={option.value}>
+                            {option.value}
+                          </Option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                </React.Fragment>
+              ),
+            )}
 
             <Button variant="solid" type="submit">
               {flow.data.submitButtonText || 'Submit'}
