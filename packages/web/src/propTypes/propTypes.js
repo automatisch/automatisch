@@ -494,6 +494,16 @@ export const FormFieldPropType = PropTypes.shape({
   ),
   required: PropTypes.bool,
   readonly: PropTypes.bool,
+  validationFormat: PropTypes.oneOf([
+    'email',
+    'url',
+    'tel',
+    'number',
+    'alphanumeric',
+    'custom',
+  ]),
+  validationPattern: PropTypes.string,
+  validationHelperText: PropTypes.string,
 });
 
 export const FormPropType = PropTypes.shape({
