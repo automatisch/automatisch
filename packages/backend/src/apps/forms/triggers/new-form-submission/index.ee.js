@@ -26,6 +26,16 @@ export default defineTrigger({
         ],
       },
     },
+    {
+      label: 'Wait until flow is done',
+      key: 'workSynchronously',
+      type: 'dropdown',
+      required: true,
+      options: [
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
+      ],
+    },
   ],
 
   async run($) {
