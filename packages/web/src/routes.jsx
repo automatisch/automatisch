@@ -1,39 +1,39 @@
 import { useEffect } from 'react';
 import {
-  Route,
-  Routes as ReactRouterRoutes,
   Navigate,
+  Routes as ReactRouterRoutes,
+  Route,
   useNavigate,
 } from 'react-router-dom';
 
+import AdminSettingsLayout from 'components/AdminSettingsLayout';
 import Layout from 'components/Layout';
 import NoResultFound from 'components/NotFound';
 import PublicLayout from 'components/PublicLayout';
-import AdminSettingsLayout from 'components/AdminSettingsLayout';
-import Applications from 'pages/Applications';
-import FormFlow from 'pages/FormFlow/index.ee';
-import Application from 'pages/Application';
-import Executions from 'pages/Executions';
-import Forms from 'pages/Forms/index.ee';
-import EditForm from 'pages/EditForm/index.ee';
-import CreateForm from 'pages/CreateForm/index.ee';
-import Execution from 'pages/Execution';
-import Flows from 'pages/Flows';
-import Login from 'pages/Login';
-import AcceptInvitation from 'pages/AcceptInvitation';
-import LoginCallback from 'pages/LoginCallback';
-import SignUp from 'pages/SignUp/index.ee';
-import ForgotPassword from 'pages/ForgotPassword/index.ee';
-import ResetPassword from 'pages/ResetPassword/index.ee';
-import EditorRoutes from 'pages/Editor/routes';
 import * as URLS from 'config/urls';
-import settingsRoutes from './settingsRoutes';
-import adminSettingsRoutes from './adminSettingsRoutes';
-import Notifications from 'pages/Notifications';
-import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAuthentication from 'hooks/useAuthentication';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
+import AcceptInvitation from 'pages/AcceptInvitation';
+import Application from 'pages/Application';
+import Applications from 'pages/Applications';
+import CreateForm from 'pages/CreateForm/index.ee';
+import EditForm from 'pages/EditForm/index.ee';
+import EditorRoutes from 'pages/Editor/routes';
+import Execution from 'pages/Execution';
+import Executions from 'pages/Executions';
+import Flows from 'pages/Flows';
+import ForgotPassword from 'pages/ForgotPassword/index.ee';
+import FormFlow from 'pages/FormFlow/index.ee';
+import Forms from 'pages/Forms/index.ee';
 import Installation from 'pages/Installation';
+import Login from 'pages/Login';
+import LoginCallback from 'pages/LoginCallback';
+import Notifications from 'pages/Notifications';
+import ResetPassword from 'pages/ResetPassword/index.ee';
+import SignUp from 'pages/SignUp/index.ee';
+import adminSettingsRoutes from './adminSettingsRoutes';
+import settingsRoutes from './settingsRoutes';
 
 function Routes() {
   const navigate = useNavigate();

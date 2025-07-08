@@ -292,6 +292,7 @@ test('Accessibility of role management page', async ({
   adminEditUserPage,
   adminRolesPage,
   adminCreateRolePage,
+  flowsPage,
 }) => {
   test.slow();
   await test.step('Create the basic test role', async () => {
@@ -329,8 +330,8 @@ test('Accessibility of role management page', async ({
     const acceptInvitationUrl = await acceptInvitationLink.textContent();
     const acceptInvitatonToken = acceptInvitationUrl.split('?token=')[1];
 
-    await page.getByTestId('profile-menu-button').click();
-    await page.getByTestId('logout-item').click();
+    await flowsPage.profileMenuButton.click();
+    await flowsPage.logoutMenuItem.click();
 
     const acceptInvitationPage = new AcceptInvitation(page);
     await acceptInvitationPage.open(acceptInvitatonToken);
@@ -342,25 +343,13 @@ test('Accessibility of role management page', async ({
     await expect(page).toHaveURL('/flows');
   });
 
-  await test.step('Navigate to the admin settings page and make sure it is blank', async () => {
+  await test.step('Admin menu item should not be present for non-Admin', async () => {
+    await flowsPage.profileMenuButton.click();
+    await expect(flowsPage.adminMenuItem).toHaveCount(0);
     const pageUrl = new URL(page.url());
     const url = `${pageUrl.origin}/admin-settings/users`;
     await page.goto(url);
-    await page.waitForTimeout(750);
-    const isUnmounted = await page.evaluate(() => {
-      // eslint-disable-next-line no-undef
-      const root = document.querySelector('#root');
-
-      if (root) {
-        // We have react query devtools only in dev env.
-        // In production, there is nothing in root.
-        // That's why `<= 1`.
-        return root.children.length <= 1;
-      }
-
-      return false;
-    });
-    await expect(isUnmounted).toBe(true);
+    await expect(flowsPage.pageNotFoundTitle).toBeVisible();
   });
 
   await test.step('Log back into the admin account', async () => {

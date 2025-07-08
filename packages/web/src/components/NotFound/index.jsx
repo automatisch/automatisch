@@ -23,7 +23,7 @@ export default function NoResultFound() {
       <Typography variant="h1" color="primary" textAlign="center">
         404
       </Typography>
-      <Typography variant="body1" textAlign="center">
+      <Typography data-test="page-not-found-title" variant="body1" textAlign="center">
         {formatMessage('notFoundPage.title')}
       </Typography>
       <Link to={isAuthenticated ? URLS.FLOWS : URLS.LOGIN}>

@@ -4,8 +4,8 @@ import PageTitle from 'components/PageTitle';
 import Container from 'components/Container';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useSamlAuthProvider from 'hooks/useSamlAuthProvider';
-import SamlConfiguration from './SamlConfiguration';
-import RoleMappings from './RoleMappings';
+import SamlConfiguration from './SamlConfiguration.ee';
+import RoleMappings from './RoleMappings.ee';
 import useAdminSamlAuthProviders from 'hooks/useAdminSamlAuthProviders.ee';
 function AuthenticationPage() {
   const formatMessage = useFormatMessage();

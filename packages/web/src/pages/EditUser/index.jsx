@@ -12,7 +12,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import Can from 'components/Can';
 import Container from 'components/Container';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import Form from 'components/Form';
@@ -23,7 +22,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
 import useAdminUpdateUser from 'hooks/useAdminUpdateUser';
 import useAdminUser from 'hooks/useAdminUser';
-import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+import useIsCurrentUserEnterpriseAdmin from 'hooks/useIsCurrentUserEnterpriseAdmin';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -66,14 +65,13 @@ export default function EditUser() {
   const { userId } = useParams();
   const { mutateAsync: updateUser, isPending: isAdminUpdateUserPending } =
     useAdminUpdateUser(userId);
+  const isCurrentUserEnterpriseAdmin = useIsCurrentUserEnterpriseAdmin();
   const { data: userData, isLoading: isUserLoading } = useAdminUser({ userId });
   const user = userData?.data;
   const { data, isLoading: isRolesLoading } = useRoles();
   const roles = data?.data;
   const enqueueSnackbar = useEnqueueSnackbar();
   const navigate = useNavigate();
-  const currentUserAbility = useCurrentUserAbility();
-  const canUpdateRole = currentUserAbility.can('manage', 'Role');
 
   const handleUserUpdate = async (userDataToUpdate) => {
     try {
@@ -132,7 +130,10 @@ export default function EditUser() {
               }
               onSubmit={handleUserUpdate}
               resolver={yupResolver(
-                getValidationSchema(formatMessage, canUpdateRole),
+                getValidationSchema(
+                  formatMessage,
+                  isCurrentUserEnterpriseAdmin,
+                ),
               )}
               noValidate
               render={({ formState: { errors } }) => (
@@ -169,7 +170,7 @@ export default function EditUser() {
                     helperText={errors?.email?.message}
                   />
 
-                  <Can I="manage" a="Role">
+                  {isCurrentUserEnterpriseAdmin && (
                     <ControlledAutocomplete
                       name="roleId"
                       fullWidth
@@ -187,7 +188,7 @@ export default function EditUser() {
                       loading={isRolesLoading}
                       showHelperText={false}
                     />
-                  </Can>
+                  )}
 
                   {errors?.root?.general && (
                     <Alert data-test="update-user-error-alert" severity="error">
