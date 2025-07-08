@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useFieldArray, useWatch } from 'react-hook-form';
+import { useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -17,8 +17,22 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 function FieldRow({ index, remove, control }) {
   const formatMessage = useFormatMessage();
+  const { setValue } = useFormContext();
   const fieldType = useWatch({ control, name: `fields.${index}.type` });
-  const validationFormat = useWatch({ control, name: `fields.${index}.validationFormat` });
+  const validationFormat = useWatch({
+    control,
+    name: `fields.${index}.validationFormat`,
+  });
+
+  React.useEffect(
+    function resetPatternAndHelperTextUponNoValidationFormat() {
+      if (!validationFormat || validationFormat === '') {
+        setValue(`fields.${index}.validationPattern`, '');
+        setValue(`fields.${index}.validationHelperText`, '');
+      }
+    },
+    [validationFormat, index, setValue],
+  );
 
   const fieldTypeOptions = [
     { label: formatMessage('formEditor.fieldTypeCheckbox'), value: 'checkbox' },
@@ -87,13 +101,42 @@ function FieldRow({ index, remove, control }) {
                     disablePortal
                     disableClearable={false}
                     options={[
-                      { label: formatMessage('formEditor.validationFormatNone'), value: '' },
-                      { label: formatMessage('formEditor.validationFormatEmail'), value: 'email' },
-                      { label: formatMessage('formEditor.validationFormatUrl'), value: 'url' },
-                      { label: formatMessage('formEditor.validationFormatTel'), value: 'tel' },
-                      { label: formatMessage('formEditor.validationFormatNumber'), value: 'number' },
-                      { label: formatMessage('formEditor.validationFormatAlphanumeric'), value: 'alphanumeric' },
-                      { label: formatMessage('formEditor.validationFormatCustom'), value: 'custom' },
+                      {
+                        label: formatMessage('formEditor.validationFormatNone'),
+                        value: '',
+                      },
+                      {
+                        label: formatMessage(
+                          'formEditor.validationFormatEmail',
+                        ),
+                        value: 'email',
+                      },
+                      {
+                        label: formatMessage('formEditor.validationFormatUrl'),
+                        value: 'url',
+                      },
+                      {
+                        label: formatMessage('formEditor.validationFormatTel'),
+                        value: 'tel',
+                      },
+                      {
+                        label: formatMessage(
+                          'formEditor.validationFormatNumber',
+                        ),
+                        value: 'number',
+                      },
+                      {
+                        label: formatMessage(
+                          'formEditor.validationFormatAlphanumeric',
+                        ),
+                        value: 'alphanumeric',
+                      },
+                      {
+                        label: formatMessage(
+                          'formEditor.validationFormatCustom',
+                        ),
+                        value: 'custom',
+                      },
                     ]}
                     renderInput={(params) => (
                       <MuiTextField
@@ -102,20 +145,24 @@ function FieldRow({ index, remove, control }) {
                       />
                     )}
                   />
-                  
+
                   {validationFormat === 'custom' && (
                     <>
                       <TextField
                         name={`fields.${index}.validationPattern`}
                         label={formatMessage('formEditor.validationPattern')}
                         fullWidth
-                        helperText={formatMessage('formEditor.validationPatternHelperText')}
+                        helperText={formatMessage(
+                          'formEditor.validationPatternHelperText',
+                        )}
                       />
                       <TextField
                         name={`fields.${index}.validationHelperText`}
                         label={formatMessage('formEditor.validationHelperText')}
                         fullWidth
-                        helperText={formatMessage('formEditor.validationHelperTextDescription')}
+                        helperText={formatMessage(
+                          'formEditor.validationHelperTextDescription',
+                        )}
                       />
                     </>
                   )}

@@ -8,6 +8,7 @@ const getFormMock = async (form, triggerStep) => {
     responseMessage: form.responseMessage,
     submitButtonText: form.submitButtonText,
     webhookUrl: await triggerStep.getWebhookUrl(),
+    asyncRedirectUrl: triggerStep.parameters.asyncRedirectUrl,
   };
 
   return {
