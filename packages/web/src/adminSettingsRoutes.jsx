@@ -1,6 +1,7 @@
 import { Navigate, Route } from 'react-router-dom';
 
-import Can from 'components/Can';
+import EnterpriseAdminGuard from 'components/EnterpriseAdminGuard/index.ee';
+import AdminGuard from 'components/AdminGuard';
 import * as URLS from 'config/urls';
 import AdminApiTokensPage from 'pages/AdminApiTokens/index.ee';
 import AdminApplication from 'pages/AdminApplication/index.ee';
@@ -23,128 +24,126 @@ export default (
     <Route
       path={URLS.USERS}
       element={
-        <Can I="read" a="User">
+        <AdminGuard>
           <Users />
-        </Can>
+        </AdminGuard>
       }
     />
 
     <Route
       path={URLS.CREATE_USER}
       element={
-        <Can I="manage" a="User">
+        <AdminGuard>
           <CreateUser />
-        </Can>
+        </AdminGuard>
       }
     />
 
     <Route
       path={URLS.USER_PATTERN}
       element={
-        <Can I="manage" a="User">
+        <AdminGuard>
           <EditUser />
-        </Can>
+        </AdminGuard>
       }
     />
 
     <Route
       path={URLS.ROLES}
       element={
-        <Can I="read" a="Role">
+        <EnterpriseAdminGuard>
           <Roles />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={URLS.CREATE_ROLE}
       element={
-        <Can I="manage" a="Role">
+        <EnterpriseAdminGuard>
           <CreateRole />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={URLS.ROLE_PATTERN}
       element={
-        <Can I="manage" a="Role">
+        <EnterpriseAdminGuard>
           <EditRole />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={URLS.USER_INTERFACE}
       element={
-        <Can I="manage" a="Config">
+        <EnterpriseAdminGuard>
           <UserInterface />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={URLS.AUTHENTICATION}
       element={
-        <Can I="read" a="SamlAuthProvider">
-          <Can I="manage" a="SamlAuthProvider">
-            <Authentication />
-          </Can>
-        </Can>
+        <EnterpriseAdminGuard>
+          <Authentication />
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={URLS.ADMIN_APPS}
       element={
-        <Can I="manage" a="App">
+        <EnterpriseAdminGuard>
           <AdminApplications />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={`${URLS.ADMIN_APP_PATTERN}/*`}
       element={
-        <Can I="manage" a="App">
+        <EnterpriseAdminGuard>
           <AdminApplication />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={`${URLS.ADMIN_TEMPLATES}/*`}
       element={
-        <Can I="manage" a="Config">
+        <EnterpriseAdminGuard>
           <AdminTemplates />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={`${URLS.ADMIN_CREATE_TEMPLATE_PATTERN}/*`}
       element={
-        <Can I="manage" a="Config">
+        <EnterpriseAdminGuard>
           <AdminCreateTemplate />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={`${URLS.ADMIN_UPDATE_TEMPLATE_PATTERN}/*`}
       element={
-        <Can I="manage" a="Config">
+        <EnterpriseAdminGuard>
           <AdminUpdateTemplate />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 
     <Route
       path={`${URLS.ADMIN_API_TOKENS}/*`}
       element={
-        <Can I="manage" a="ApiToken">
+        <EnterpriseAdminGuard>
           <AdminApiTokensPage />
-        </Can>
+        </EnterpriseAdminGuard>
       }
     />
 

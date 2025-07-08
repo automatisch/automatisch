@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom';
 
 import AdminSettingsLayout from 'components/AdminSettingsLayout';
-import EnterpriseGuard from 'components/EnterpriseGuard/index.ee';
 import Layout from 'components/Layout';
 import NoResultFound from 'components/NotFound';
 import PublicLayout from 'components/PublicLayout';
@@ -218,14 +217,7 @@ function Routes() {
 
       <Route path={URLS.PUBLIC_FORM_PATTERN} element={<FormFlow />} />
 
-      <Route
-        path={URLS.ADMIN_SETTINGS}
-        element={
-          <EnterpriseGuard>
-            <AdminSettingsLayout />
-          </EnterpriseGuard>
-        }
-      >
+      <Route path={URLS.ADMIN_SETTINGS} element={<AdminSettingsLayout />}>
         {adminSettingsRoutes}
       </Route>
 
