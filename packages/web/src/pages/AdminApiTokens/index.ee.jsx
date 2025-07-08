@@ -68,7 +68,7 @@ function AdminApiTokensPage() {
                 disabled={isPending}
                 fullWidth
                 icon={<AddIcon />}
-                data-test="create-user"
+                data-test="create-token-button"
               >
                 {formatMessage('adminApiTokensPage.createApiToken')}
               </ConditionalIconButton>

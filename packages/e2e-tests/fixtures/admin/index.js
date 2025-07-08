@@ -11,6 +11,7 @@ const { AdminApplicationSettingsPage } = require('./application-settings-page');
 const {
   AdminApplicationOAuthClientsPage,
 } = require('./application-oauth-clients-page');
+const { ApiTokensPage } = require('../api-tokens/api-tokens-page').default;
 
 export const adminFixtures = {
   adminUsersPage: async ({ page }, use) => {
@@ -39,5 +40,8 @@ export const adminFixtures = {
   },
   adminApplicationOAuthClientsPage: async ({ page }, use) => {
     await use(new AdminApplicationOAuthClientsPage(page));
+  },
+  apiTokensPage: async ({ page }, use) => {
+    await use(new ApiTokensPage(page));
   },
 };

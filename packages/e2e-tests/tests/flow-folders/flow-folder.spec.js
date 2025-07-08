@@ -157,10 +157,10 @@ test.describe('Folders', () => {
       await flowsPage.deleteFolder.click();
       await deleteFolderDialog.cancelButton.click();
       await flowsPage.deleteFolder.click();
-      await deleteFolderDialog.deleteButton.click(),
-        await expect(
-          flowsPage.userFolders.getByText('updatedFolderName')
-        ).toHaveCount(0);
+      await deleteFolderDialog.deleteButton.click();
+      await expect(
+        flowsPage.userFolders.getByText('updatedFolderName')
+      ).toHaveCount(0);
       await expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(1);
       await flowsPage.deleteFolderSuccessAlert.click();
       await expect(flowsPage.deleteFolderSuccessAlert).toHaveCount(0);
@@ -187,6 +187,7 @@ test.describe('Folders', () => {
     flowsPage,
     flowEditorPage,
   }) => {
+    const createFolderDialog = new CreateFolderDialog(page);
     // add flow
     await flowsPage.createFlowButton.click();
     await flowEditorPage.flowName.click();
