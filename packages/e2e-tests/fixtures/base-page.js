@@ -15,7 +15,8 @@ export class BasePage {
   constructor(page) {
     this.page = page;
     this.snackbar = page.locator('*[data-test^="snackbar"]');
-    this.pageTitle = this.page.getByTestId('page-title');
+    this.pageTitle = page.getByTestId('page-title');
+    this.pageNotFoundTitle = page.getByTestId('page-not-found-title');
   }
 
   /**
