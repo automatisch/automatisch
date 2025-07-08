@@ -16,7 +16,6 @@ import * as React from 'react';
 
 import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
-import Can from 'components/Can';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useIsCurrentUserAdmin from 'hooks/useIsCurrentUserAdmin';
@@ -90,7 +89,7 @@ function createDrawerLinks({
   return items;
 }
 
-function SettingsLayout() {
+function AdminSettingsLayout() {
   const theme = useTheme();
   const formatMessage = useFormatMessage();
   const isCurrentUserAdmin = useIsCurrentUserAdmin();
@@ -115,7 +114,7 @@ function SettingsLayout() {
   ];
 
   return (
-    <Can I="read" a="User">
+    <>
       <AppBar
         drawerOpen={isDrawerOpen}
         onDrawerOpen={openDrawer}
@@ -137,8 +136,8 @@ function SettingsLayout() {
           <Footer />
         </Stack>
       </Box>
-    </Can>
+    </>
   );
 }
 
-export default SettingsLayout;
+export default AdminSettingsLayout;
