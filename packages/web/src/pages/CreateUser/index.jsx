@@ -8,7 +8,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Can from 'components/Can';
 import Container from 'components/Container';
 import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import Form from 'components/Form';
@@ -17,7 +16,7 @@ import TextField from 'components/TextField';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useRoles from 'hooks/useRoles.ee';
 import useAdminCreateUser from 'hooks/useAdminCreateUser';
-import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+import useIsCurrentUserEnterpriseAdmin from 'hooks/useIsCurrentUserEnterpriseAdmin';
 
 function generateRoleOptions(roles) {
   return roles?.map(({ name: label, id: value }) => ({ label, value }));
@@ -63,11 +62,10 @@ export default function CreateUser() {
     data: createdUser,
     isSuccess: createUserSuccess,
   } = useAdminCreateUser();
+  const isCurrentUserEnterpriseAdmin = useIsCurrentUserEnterpriseAdmin();
   const { data: rolesData, loading: isRolesLoading } = useRoles();
   const roles = rolesData?.data;
   const queryClient = useQueryClient();
-  const currentUserAbility = useCurrentUserAbility();
-  const canUpdateRole = currentUserAbility.can('manage', 'Role');
 
   const handleUserCreation = async (userData) => {
     try {
@@ -100,7 +98,7 @@ export default function CreateUser() {
             mode="onSubmit"
             defaultValues={defaultValues}
             resolver={yupResolver(
-              getValidationSchema(formatMessage, canUpdateRole),
+              getValidationSchema(formatMessage, isCurrentUserEnterpriseAdmin),
             )}
             automaticValidation={false}
             render={({ formState: { errors } }) => (
@@ -125,7 +123,7 @@ export default function CreateUser() {
                   helperText={errors?.email?.message}
                 />
 
-                <Can I="manage" a="Role">
+                {isCurrentUserEnterpriseAdmin && (
                   <ControlledAutocomplete
                     name="roleId"
                     fullWidth
@@ -144,7 +142,7 @@ export default function CreateUser() {
                     loading={isRolesLoading}
                     showHelperText={false}
                   />
-                </Can>
+                )}
 
                 {errors?.root?.general && (
                   <Alert data-test="create-user-error-alert" severity="error">

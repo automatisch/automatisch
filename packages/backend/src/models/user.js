@@ -742,6 +742,8 @@ class User extends Base {
           'Role',
           'SamlAuthProvider',
           'Config',
+          'ApiToken',
+          'Template',
         ];
 
         return !restrictedSubjects.includes(permission.subject);

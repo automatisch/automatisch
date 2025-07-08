@@ -18,10 +18,14 @@ api.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401) {
-      removeItem('token');
+      const invalidToken = getItem('token');
+
+      if (invalidToken) {
+        removeItem('token');
+      }
 
       // hard reload to clear all state
-      if (window.location.pathname !== URLS.LOGIN) {
+      if (invalidToken && window.location.pathname !== URLS.LOGIN) {
         window.location.href = URLS.LOGIN;
       }
     }

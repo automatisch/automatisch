@@ -19,20 +19,17 @@ import Drawer from 'components/Drawer';
 import Can from 'components/Can';
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useCurrentUserAbility from 'hooks/useCurrentUserAbility';
+import useIsCurrentUserAdmin from 'hooks/useIsCurrentUserAdmin';
+import useIsCurrentUserEnterpriseAdmin from 'hooks/useIsCurrentUserEnterpriseAdmin';
 
 import Footer from './Footer';
 
 function createDrawerLinks({
-  canReadRole,
-  canReadUser,
-  canUpdateConfig,
-  canManageSamlAuthProvider,
-  canUpdateApp,
-  canManageApiTokens,
+  isCurrentUserAdmin,
+  isCurrentUserEnterpriseAdmin,
 }) {
   const items = [
-    canReadUser
+    isCurrentUserAdmin
       ? {
           Icon: GroupIcon,
           primary: 'adminSettingsDrawer.users',
@@ -40,7 +37,7 @@ function createDrawerLinks({
           dataTest: 'users-drawer-link',
         }
       : null,
-    canReadRole
+    isCurrentUserEnterpriseAdmin
       ? {
           Icon: GroupsIcon,
           primary: 'adminSettingsDrawer.roles',
@@ -48,7 +45,7 @@ function createDrawerLinks({
           dataTest: 'roles-drawer-link',
         }
       : null,
-    canUpdateConfig
+    isCurrentUserEnterpriseAdmin
       ? {
           Icon: BrushIcon,
           primary: 'adminSettingsDrawer.userInterface',
@@ -56,7 +53,7 @@ function createDrawerLinks({
           dataTest: 'user-interface-drawer-link',
         }
       : null,
-    canManageSamlAuthProvider
+    isCurrentUserEnterpriseAdmin
       ? {
           Icon: LockIcon,
           primary: 'adminSettingsDrawer.authentication',
@@ -64,7 +61,7 @@ function createDrawerLinks({
           dataTest: 'authentication-drawer-link',
         }
       : null,
-    canUpdateApp
+    isCurrentUserEnterpriseAdmin
       ? {
           Icon: AppsIcon,
           primary: 'adminSettingsDrawer.apps',
@@ -72,7 +69,7 @@ function createDrawerLinks({
           dataTest: 'apps-drawer-link',
         }
       : null,
-    canUpdateConfig
+    isCurrentUserEnterpriseAdmin
       ? {
           Icon: ContentCopyIcon,
           primary: 'adminSettingsDrawer.templates',
@@ -80,7 +77,7 @@ function createDrawerLinks({
           dataTest: 'templates-drawer-link',
         }
       : null,
-    canManageApiTokens
+    isCurrentUserEnterpriseAdmin
       ? {
           Icon: PinIcon,
           primary: 'adminSettingsDrawer.apiTokens',
@@ -96,23 +93,16 @@ function createDrawerLinks({
 function SettingsLayout() {
   const theme = useTheme();
   const formatMessage = useFormatMessage();
-  const currentUserAbility = useCurrentUserAbility();
+  const isCurrentUserAdmin = useIsCurrentUserAdmin();
+  const isCurrentUserEnterpriseAdmin = useIsCurrentUserEnterpriseAdmin();
   const matchSmallScreens = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDrawerOpen, setDrawerOpen] = React.useState(!matchSmallScreens);
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
 
   const drawerLinks = createDrawerLinks({
-    canCreateFlows: currentUserAbility.can('manage', 'Flow'),
-    canReadUser: currentUserAbility.can('read', 'User'),
-    canReadRole: currentUserAbility.can('read', 'Role'),
-    canUpdateConfig: currentUserAbility.can('manage', 'Config'),
-    canManageSamlAuthProvider: currentUserAbility.can(
-      'manage',
-      'SamlAuthProvider',
-    ),
-    canUpdateApp: currentUserAbility.can('manage', 'App'),
-    canManageApiTokens: currentUserAbility.can('manage', 'ApiToken'),
+    isCurrentUserAdmin: isCurrentUserAdmin,
+    isCurrentUserEnterpriseAdmin: isCurrentUserEnterpriseAdmin,
   });
 
   const drawerBottomLinks = [

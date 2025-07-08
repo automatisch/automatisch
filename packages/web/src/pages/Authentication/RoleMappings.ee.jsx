@@ -12,7 +12,7 @@ import Form from 'components/Form';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useAdminSamlAuthProviderRoleMappings from 'hooks/useAdminSamlAuthProviderRoleMappings';
 import useAdminUpdateSamlAuthProviderRoleMappings from 'hooks/useAdminUpdateSamlAuthProviderRoleMappings';
-import RoleMappingsFieldArray from './RoleMappingsFieldsArray';
+import RoleMappingsFieldArray from './RoleMappingsFieldsArray.ee';
 
 function generateFormRoleMappings(roleMappings) {
   if (roleMappings?.length === 0) {

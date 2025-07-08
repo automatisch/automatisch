@@ -1,21 +1,21 @@
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom';
 
-import Users from 'pages/Users';
-import EditUser from 'pages/EditUser';
-import CreateUser from 'pages/CreateUser';
-import Roles from 'pages/Roles/index.ee';
-import CreateRole from 'pages/CreateRole/index.ee';
-import EditRole from 'pages/EditRole/index.ee';
-import Authentication from 'pages/Authentication';
-import UserInterface from 'pages/UserInterface';
-import * as URLS from 'config/urls';
 import Can from 'components/Can';
-import AdminApplications from 'pages/AdminApplications';
-import AdminApplication from 'pages/AdminApplication';
-import AdminTemplates from 'pages/AdminTemplates';
-import AdminCreateTemplate from 'pages/AdminCreateTemplate';
-import AdminUpdateTemplate from 'pages/AdminUpdateTemplate';
-import AdminApiTokensPage from 'pages/AdminApiTokens';
+import * as URLS from 'config/urls';
+import AdminApiTokensPage from 'pages/AdminApiTokens/index.ee';
+import AdminApplication from 'pages/AdminApplication/index.ee';
+import AdminApplications from 'pages/AdminApplications/index.ee';
+import AdminCreateTemplate from 'pages/AdminCreateTemplate/index.ee';
+import AdminTemplates from 'pages/AdminTemplates/index.ee';
+import AdminUpdateTemplate from 'pages/AdminUpdateTemplate/index.ee';
+import Authentication from 'pages/Authentication/index.ee';
+import CreateRole from 'pages/CreateRole/index.ee';
+import CreateUser from 'pages/CreateUser';
+import EditRole from 'pages/EditRole/index.ee';
+import EditUser from 'pages/EditUser';
+import Roles from 'pages/Roles/index.ee';
+import UserInterface from 'pages/UserInterface/index.ee';
+import Users from 'pages/Users';
 
 // TODO: consider introducing redirections to `/` as fallback
 export default (
