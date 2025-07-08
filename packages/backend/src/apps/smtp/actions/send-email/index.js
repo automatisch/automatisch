@@ -68,8 +68,16 @@ export default defineAction({
       label: 'Body',
       key: 'body',
       type: 'string',
-      required: true,
+      required: false,
       description: 'Body of the email.',
+      variables: true,
+    },
+    {
+      label: 'HTML Body',
+      key: 'html',
+      type: 'string',
+      required: false,
+      description: 'Body of the email in HTML.',
       variables: true,
     },
   ],
@@ -83,6 +91,7 @@ export default defineAction({
       bcc: $.step.parameters.bcc.split(','),
       subject: $.step.parameters.subject,
       text: $.step.parameters.body,
+      html: $.step.parameters.html,
     });
 
     $.setActionItem({ raw: info });
