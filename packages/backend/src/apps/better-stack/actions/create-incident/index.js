@@ -39,8 +39,8 @@ export default defineAction({
       description: 'Should we call the on-call person?',
       variables: true,
       options: [
-        { label: 'Yes', value: 'true' },
-        { label: 'No', value: 'false' },
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
       ],
     },
     {
@@ -51,8 +51,8 @@ export default defineAction({
       description: 'Should we text the on-call person?',
       variables: true,
       options: [
-        { label: 'Yes', value: 'true' },
-        { label: 'No', value: 'false' },
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
       ],
     },
     {
@@ -63,8 +63,8 @@ export default defineAction({
       description: 'Should we email the on-call person?',
       variables: true,
       options: [
-        { label: 'Yes', value: 'true' },
-        { label: 'No', value: 'false' },
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
       ],
     },
     {
@@ -75,8 +75,8 @@ export default defineAction({
       description: 'Should we send a push notification to the on-call person?',
       variables: true,
       options: [
-        { label: 'Yes', value: 'true' },
-        { label: 'No', value: 'false' },
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
       ],
     },
     {
@@ -106,11 +106,11 @@ export default defineAction({
       summary: briefSummary,
       description,
       requester_email: requesterEmail,
-      call: alertSettingsCall,
-      sms: alertSettingsText,
-      email: alertSettingsEmail,
-      push: alertSettingsPushNotification,
-      team_wait: teamAlertWaitTime,
+      call: alertSettingsCall === 'true',
+      sms: alertSettingsText === 'true',
+      email: alertSettingsEmail === 'true',
+      push: alertSettingsPushNotification === 'true',
+      team_wait: parseInt(teamAlertWaitTime, 10),
     };
 
     const response = await $.http.post('/v2/incidents', body);
