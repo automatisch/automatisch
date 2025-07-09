@@ -64,6 +64,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Actions', link: '/apps/better-stack/actions' },
             { text: 'Connection', link: '/apps/better-stack/connection' },
           ],
         },
