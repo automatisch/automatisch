@@ -4,6 +4,17 @@ import isStillVerified from './is-still-verified.js';
 export default {
   fields: [
     {
+      key: 'screenName',
+      label: 'Screen Name',
+      type: 'string',
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: 'Screen name of your connection to be shown in the UI.',
+      clickToCopy: false,
+    },
+    {
       key: 'host',
       label: 'Host',
       type: 'string',
