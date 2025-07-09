@@ -5,6 +5,10 @@ items:
     desc: Acknowledges an incident.
   - name: Create incident
     desc: Creates an incident that informs the team.
+  - name: Find incident
+    desc: Finds an incident.
+  - name: Resolve incident
+    desc: Resolves an incident.
 ---
 
 <script setup>
