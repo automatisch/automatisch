@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Find incident',
   key: 'findIncident',
-  description: 'finds an incident.',
+  description: 'Finds an incident.',
   arguments: [
     {
       label: 'Incident ID',
