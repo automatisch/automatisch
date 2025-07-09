@@ -4,6 +4,17 @@ import isStillVerified from './is-still-verified.js';
 export default {
   fields: [
     {
+      key: 'screenName',
+      label: 'Screen Name',
+      type: 'string',
+      required: true,
+      readOnly: false,
+      value: null,
+      placeholder: null,
+      description: 'Screen name of your connection to be shown in the UI.',
+      clickToCopy: false,
+    },
+    {
       key: 'host',
       label: 'Host',
       type: 'string',
@@ -19,7 +30,7 @@ export default {
       key: 'username',
       label: 'Email/Username',
       type: 'string',
-      required: true,
+      required: false,
       readOnly: false,
       value: null,
       placeholder: null,
@@ -31,7 +42,7 @@ export default {
       key: 'password',
       label: 'Password',
       type: 'string',
-      required: true,
+      required: false,
       readOnly: false,
       value: null,
       placeholder: null,

@@ -4,7 +4,7 @@ const verifyCredentials = async ($) => {
   await transporter($).verify();
 
   await $.auth.set({
-    screenName: $.auth.data.username,
+    screenName: $.auth.data.screenName,
   });
 };
 
