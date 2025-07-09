@@ -60,6 +60,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Better Stack',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/better-stack/actions' },
+            { text: 'Connection', link: '/apps/better-stack/connection' },
+          ],
+        },
+        {
           text: 'Brave Search',
           collapsible: true,
           collapsed: true,
