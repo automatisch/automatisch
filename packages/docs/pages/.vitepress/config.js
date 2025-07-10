@@ -26,7 +26,7 @@ export default defineConfig({
       },
       {
         text: 'Apps',
-        link: '/apps/airtable/connection',
+        link: '/apps/airbrake/connection',
         activeMatch: '/apps/',
       },
     ],
