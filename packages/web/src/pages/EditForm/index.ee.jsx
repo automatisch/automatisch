@@ -58,7 +58,7 @@ export default function EditForm() {
 
         <Grid item xs={12} justifyContent="flex-end">
           <Form
-            data-test="edit-form-form"
+            data-test="edit-form"
             onSubmit={handleFormUpdate}
             defaultValues={defaultValues}
             render={({ formState: { isDirty, isValid }, control }) => (

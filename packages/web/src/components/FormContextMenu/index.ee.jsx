@@ -36,7 +36,7 @@ function FormContextMenu(props) {
         <Can I="manage" a="Flow" passThrough>
           {(allowed) => (
             <MenuItem
-              data-test="delete-flow"
+              data-test="delete-form"
               disabled={!allowed}
               onClick={onFlowDelete}
             >

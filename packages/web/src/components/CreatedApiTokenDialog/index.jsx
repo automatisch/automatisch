@@ -45,7 +45,11 @@ function CreatedApiTokenDialog(props) {
             readOnly: true,
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={() => copyValue(apiToken)} edge="end">
+                <IconButton
+                  data-test="copy-token-button"
+                  onClick={() => copyValue(apiToken)}
+                  edge="end"
+                >
                   <ContentCopyIcon color="primary" />
                 </IconButton>
               </InputAdornment>
@@ -64,11 +68,7 @@ function CreatedApiTokenDialog(props) {
       </DialogContent>
 
       <DialogActions sx={{ mb: 1 }}>
-        <Button
-          variant="outlined"
-          onClick={onClose}
-          data-test="import-flow-dialog-close-button"
-        >
+        <Button variant="outlined" onClick={onClose} data-test="close-button">
           {formatMessage('createdApiTokenDialog.close')}
         </Button>
       </DialogActions>

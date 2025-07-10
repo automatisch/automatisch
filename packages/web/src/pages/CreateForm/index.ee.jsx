@@ -44,7 +44,7 @@ export default function CreateForm() {
 
         <Grid item xs={12} justifyContent="flex-end">
           <Form
-            data-test="create-form-form"
+            data-test="create-form"
             onSubmit={handleFormCreation}
             defaultValues={{
               fields: [
