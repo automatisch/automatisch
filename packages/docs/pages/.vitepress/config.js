@@ -38,6 +38,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Triggers', link: '/apps/bigin-by-zoho-crm/triggers' },
+            { text: 'Actions', link: '/apps/bigin-by-zoho-crm/actions' },
             { text: 'Connection', link: '/apps/bigin-by-zoho-crm/connection' },
           ],
         },
