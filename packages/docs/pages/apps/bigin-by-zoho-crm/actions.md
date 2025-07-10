@@ -7,6 +7,8 @@ items:
     desc: Creates a new contact.
   - name: Create event
     desc: Creates a new event.
+  - name: Create task
+    desc: Creates a new task.
 ---
 
 <script setup>
