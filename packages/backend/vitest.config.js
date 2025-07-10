@@ -20,6 +20,7 @@ export default defineConfig({
       '@/serializers': resolve(__dirname, './src/serializers'),
       '@/factories': resolve(__dirname, './test/factories'),
       '@/mocks': resolve(__dirname, './test/mocks'),
+      '@/executor': resolve(__dirname, './src/executor'),
     },
   },
   test: {
