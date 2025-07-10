@@ -3,10 +3,10 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   paths:
+  pull_request:
+    paths:
+      - 'packages/e2e-tests/**'
   #     - 'packages/backend/**'
-  #     - 'packages/e2e-tests/**'
   #     - 'packages/web/**'
   #     - '!packages/backend/src/apps/**'
   workflow_dispatch:
