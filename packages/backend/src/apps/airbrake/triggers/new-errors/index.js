@@ -1,4 +1,3 @@
-//import { URLSearchParams } from 'node:url';
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
@@ -42,15 +41,15 @@ export default defineTrigger({
         { params }
       );
 
-      if (data.count > params.limit) {
+      if (!data.count === 0) {
+        return;
+      }
+
+      if (data.count >= params.limit) {
         params.page = params.page + 1;
         next = true;
       } else {
         next = false;
-      }
-
-      if (!data?.groups?.length) {
-        return;
       }
 
       for (const group of data.groups) {

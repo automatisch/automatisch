@@ -23,7 +23,7 @@ export default {
       readOnly: false,
       value: null,
       placeholder: null,
-      description: 'Your subdomain as https://{yoursubdomain}.airbrake.io',
+      description: 'Your subdomain as https://{{subdomain}}.airbrake.io',
       clickToCopy: false,
     },
     {

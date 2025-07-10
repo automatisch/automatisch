@@ -1,9 +1,5 @@
 const setBaseUrl = ($, requestConfig) => {
-  const subdomain = $.auth.data.instanceUrl;
-
-  if (subdomain) {
-    requestConfig.baseURL = `https://${subdomain}.airbrake.io`;
-  }
+  requestConfig.baseURL = $.auth.data.instanceUrl;
 
   return requestConfig;
 };
