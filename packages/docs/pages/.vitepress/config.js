@@ -26,12 +26,27 @@ export default defineConfig({
       },
       {
         text: 'Apps',
-        link: '/apps/airtable/connection',
+        link: '/apps/airbrake/connection',
         activeMatch: '/apps/',
       },
     ],
     sidebar: {
       '/apps/': [
+        {
+          text: 'Airbrake',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              text: 'Triggers',
+              link: '/apps/airbrake/triggers',
+            },
+            {
+              text: 'Connection',
+              link: '/apps/airbrake/connection',
+            },
+          ],
+        },
         {
           text: 'Airtable',
           collapsible: true,
