@@ -16,6 +16,15 @@ export default {
       return databases;
     }
 
+    // Get database schema to find the title property
+    const databaseResponse = await $.http.get(`/v1/databases/${databaseId}`);
+    const databaseProperties = databaseResponse.data.properties;
+
+    // Find the title property name
+    const titlePropertyName = Object.keys(databaseProperties).find(
+      (key) => databaseProperties[key].type === 'title'
+    );
+
     do {
       const response = await $.http.post(
         `/v1/databases/${databaseId}/query`,
@@ -25,10 +34,19 @@ export default {
       payload.start_cursor = response.data.next_cursor;
 
       for (const database of response.data.results) {
+        let itemName = 'Untitled Page';
+
+        // Use the actual title property name if found
+        if (
+          titlePropertyName &&
+          database.properties[titlePropertyName]?.title?.[0]?.plain_text
+        ) {
+          itemName = database.properties[titlePropertyName].title[0].plain_text;
+        }
+
         databases.data.push({
           value: database.id,
-          name:
-            database.properties.Name?.title?.[0]?.plain_text || 'Untitled Page',
+          name: itemName,
         });
       }
     } while (payload.start_cursor);
