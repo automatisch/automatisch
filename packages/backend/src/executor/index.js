@@ -5,10 +5,10 @@ import triggerQueue from '@/queues/trigger.js';
 import {
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-} from '@/config/queue.js';
-import { EarlyExitError } from '@/errors/early-exit-error.js';
-import { AlreadyProcessedError } from '@/errors/already-processed-error.js';
-import { HttpError } from '@/errors/http-error.js';
+} from '@/helpers/remove-job-configuration.js';
+import EarlyExitError from '@/errors/early-exit.js';
+import AlreadyProcessedError from '@/errors/already-processed.js';
+import HttpError from '@/errors/http.js';
 
 const runExecutor = async ({ flowId, testRun }) => {
   const flow = await Flow.query().findById(flowId);
