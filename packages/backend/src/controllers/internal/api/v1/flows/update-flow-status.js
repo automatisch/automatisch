@@ -8,7 +8,10 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
-  flow = await flow.updateStatus(request.body.active);
+  flow = await flow.updateStatus(
+    request.body.active,
+    request.body?.skipIncompleteCheck
+  );
 
   renderObject(response, flow);
 };
