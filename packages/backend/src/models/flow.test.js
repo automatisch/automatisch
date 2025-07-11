@@ -578,6 +578,16 @@ describe('Flow model', () => {
   });
 
   describe('throwIfHavingIncompleteSteps', () => {
+    it('should return if skipIncompleteCheck is true', async () => {
+      const flow = await createFlow();
+
+      await flow.createInitialSteps();
+
+      await expect(
+        flow.throwIfHavingIncompleteSteps({ skipIncompleteCheck: true })
+      ).resolves.toBe(undefined);
+    });
+
     it('should throw validation error with incomplete steps', async () => {
       const flow = await createFlow();
 

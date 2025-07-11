@@ -80,6 +80,112 @@ describe('PATCH /internal/api/v1/flows/:flowId/status', () => {
     expect(response.body.data.status).toStrictEqual('published');
   });
 
+  it('should return error for current user flow with incomplete steps', async () => {
+    const currentUserFlow = await createFlow({
+      userId: currentUser.id,
+      active: false,
+    });
+
+    await createStep({
+      flowId: currentUserFlow.id,
+      type: 'trigger',
+      appKey: 'webhook',
+      key: 'catchRawWebhook',
+      status: 'incomplete',
+    });
+
+    await createStep({
+      flowId: currentUserFlow.id,
+      type: 'action',
+      appKey: 'ntfy',
+      key: 'sendMessage',
+      status: 'incomplete',
+    });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    await createPermission({
+      action: 'manage',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    const response = await request(app)
+      .patch(`/internal/api/v1/flows/${currentUserFlow.id}/status`)
+      .set('Authorization', token)
+      .send({ active: true })
+      .expect(422);
+
+    expect(response.body.errors.flow[0]).toBe(
+      'All steps should be completed before updating flow status!'
+    );
+  });
+
+  it('should not return errors for current user flow with incomplete steps with skip incomplete steps flag', async () => {
+    const currentUserFlow = await createFlow({
+      userId: currentUser.id,
+      active: false,
+    });
+
+    await createStep({
+      flowId: currentUserFlow.id,
+      type: 'trigger',
+      appKey: 'webhook',
+      key: 'catchRawWebhook',
+      status: 'incomplete',
+    });
+
+    await createStep({
+      flowId: currentUserFlow.id,
+      type: 'action',
+      appKey: 'ntfy',
+      key: 'sendMessage',
+      status: 'incomplete',
+    });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    await createPermission({
+      action: 'manage',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    const response = await request(app)
+      .patch(`/internal/api/v1/flows/${currentUserFlow.id}/status`)
+      .set('Authorization', token)
+      .send({ active: true, skipIncompleteCheck: true })
+      .expect(200);
+
+    const refetchedFlow = await currentUser
+      .$relatedQuery('flows')
+      .findById(response.body.data.id);
+
+    const refetchedFlowSteps = await refetchedFlow
+      .$relatedQuery('steps')
+      .orderBy('position', 'asc');
+
+    const expectedPayload = await updateFlowStatusMock(
+      refetchedFlow,
+      refetchedFlowSteps
+    );
+
+    expect(response.body).toStrictEqual(expectedPayload);
+    expect(response.body.data.status).toStrictEqual('published');
+  });
+
   it('should return updated flow data of another user', async () => {
     const anotherUser = await createUser();
 

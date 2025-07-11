@@ -390,14 +390,14 @@ class Flow extends Base {
     return this.$query().withGraphFetched('folder');
   }
 
-  async updateStatus(newActiveValue) {
+  async updateStatus(newActiveValue, skipIncompleteCheck = false) {
     if (this.active === newActiveValue) {
       return this;
     }
 
     const triggerStep = await this.getTriggerStep();
 
-    if (triggerStep.status === 'incomplete') {
+    if (!skipIncompleteCheck && triggerStep.status === 'incomplete') {
       throw Flow.IncompleteStepsError;
     }
 
@@ -437,7 +437,7 @@ class Flow extends Base {
             jobId: this.id,
             removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
             removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-          },
+          }
         );
       } else {
         const repeatableJobs = await flowQueue.getRepeatableJobs();
@@ -447,12 +447,19 @@ class Flow extends Base {
       }
     }
 
-    return await this.$query().withGraphFetched('steps').patchAndFetch({
-      active: newActiveValue,
-    });
+    return await this.$query()
+      .context({ skipIncompleteCheck })
+      .withGraphFetched('steps')
+      .patchAndFetch({
+        active: newActiveValue,
+      });
   }
 
-  async throwIfHavingIncompleteSteps() {
+  async throwIfHavingIncompleteSteps(skipCheck = false) {
+    if (skipCheck) {
+      return;
+    }
+
     const incompleteStep = await this.$relatedQuery('steps').findOne({
       status: 'incomplete',
     });
@@ -520,7 +527,9 @@ class Flow extends Base {
     await super.$beforeUpdate(opt, queryContext);
 
     if (this.active) {
-      await opt.old.throwIfHavingIncompleteSteps();
+      await opt.old.throwIfHavingIncompleteSteps(
+        queryContext?.skipIncompleteCheck
+      );
 
       await opt.old.throwIfHavingLessThanTwoSteps();
     }
