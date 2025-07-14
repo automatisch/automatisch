@@ -1,15 +1,20 @@
 import nodemailer from 'nodemailer';
 
 const transporter = ($) => {
-  return nodemailer.createTransport({
+  const transportOptions = {
     host: $.auth.data.host,
     port: $.auth.data.port,
     secure: $.auth.data.useTls,
-    auth: {
+  };
+
+  if ($.auth.data.username || $.auth.data.password) {
+    transportOptions.auth = {
       user: $.auth.data.username,
       pass: $.auth.data.password,
-    },
-  });
+    };
+  }
+
+  return nodemailer.createTransport(transportOptions);
 };
 
 export default transporter;
