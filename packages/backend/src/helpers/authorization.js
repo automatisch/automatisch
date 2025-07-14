@@ -45,7 +45,7 @@ const authorizationList = {
     action: 'manage',
     subject: 'Flow',
   },
-  'POST /internal/api/v1/steps/:stepId/test': {
+  'POST /internal/api/v1/steps/:stepId/test-and-continue': {
     action: 'manage',
     subject: 'Flow',
   },

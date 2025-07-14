@@ -10,7 +10,7 @@ import { createStep } from '@/factories/step.js';
 import { createExecution } from '@/factories/execution.js';
 import { createExecutionStep } from '@/factories/execution-step.js';
 import { createPermission } from '@/factories/permission.js';
-import testStepMock from '@/mocks/rest/internal/api/v1/steps/test-step.js';
+import testAndContinueStepMock from '@/mocks/rest/internal/api/v1/steps/test-and-continue-step.js';
 
 describe('POST /internal/api/v1/steps/:stepId/test', () => {
   let currentUser, currentUserRole, token;
@@ -76,7 +76,7 @@ describe('POST /internal/api/v1/steps/:stepId/test', () => {
     });
 
     const response = await request(app)
-      .post(`/internal/api/v1/steps/${actionStep.id}/test`)
+      .post(`/internal/api/v1/steps/${actionStep.id}/test-and-continue`)
       .set('Authorization', token)
       .expect(200);
 
@@ -84,7 +84,7 @@ describe('POST /internal/api/v1/steps/:stepId/test', () => {
       'lastExecutionStep'
     );
 
-    const expectedPayload = await testStepMock(
+    const expectedPayload = await testAndContinueStepMock(
       actionStep,
       expectedLastExecutionStep
     );
@@ -147,7 +147,7 @@ describe('POST /internal/api/v1/steps/:stepId/test', () => {
     });
 
     const response = await request(app)
-      .post(`/internal/api/v1/steps/${actionStep.id}/test`)
+      .post(`/internal/api/v1/steps/${actionStep.id}/test-and-continue`)
       .set('Authorization', token)
       .expect(200);
 
@@ -155,7 +155,7 @@ describe('POST /internal/api/v1/steps/:stepId/test', () => {
       'lastExecutionStep'
     );
 
-    const expectedPayload = await testStepMock(
+    const expectedPayload = await testAndContinueStepMock(
       actionStep,
       expectedLastExecutionStep
     );
@@ -181,7 +181,7 @@ describe('POST /internal/api/v1/steps/:stepId/test', () => {
     const notExistingStepUUID = Crypto.randomUUID();
 
     await request(app)
-      .post(`/internal/api/v1/steps/${notExistingStepUUID}/test`)
+      .post(`/internal/api/v1/steps/${notExistingStepUUID}/test-and-continue`)
       .set('Authorization', token)
       .expect(404);
   });
@@ -202,7 +202,7 @@ describe('POST /internal/api/v1/steps/:stepId/test', () => {
     });
 
     await request(app)
-      .post('/internal/api/v1/steps/invalidStepUUID/test')
+      .post('/internal/api/v1/steps/invalidStepUUID/test-and-continue')
       .set('Authorization', token)
       .expect(400);
   });
