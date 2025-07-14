@@ -58,7 +58,10 @@ test.describe('Apps page', () => {
       // loading app, app config, app oauth clients take time
       test.setTimeout(60000);
 
-      await applicationsPage.page.getByTestId('app-list-item').first().click();
+      await applicationsPage.page
+        .getByTestId('app-list-item')
+        .filter({ hasText: 'airtable' })
+        .click();
       await expect(applicationsPage.page).toHaveURL(
         '/app/airtable/connections/add?shared=false'
       );
@@ -72,7 +75,10 @@ test.describe('Apps page', () => {
     test('closes the dialog on backdrop click', async ({
       applicationsPage,
     }) => {
-      await applicationsPage.page.getByTestId('app-list-item').first().click();
+      await applicationsPage.page
+        .getByTestId('app-list-item')
+        .filter({ hasText: 'airtable' })
+        .click();
       await expect(applicationsPage.page).toHaveURL(
         '/app/airtable/connections/add?shared=false'
       );
