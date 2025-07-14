@@ -10,9 +10,9 @@ import { createStep } from '@/factories/step.js';
 import { createExecution } from '@/factories/execution.js';
 import { createExecutionStep } from '@/factories/execution-step.js';
 import { createPermission } from '@/factories/permission.js';
-import testAndContinueStepMock from '@/mocks/rest/internal/api/v1/steps/test-and-continue-step.js';
+import continueWithoutTestStepMock from '@/mocks/rest/internal/api/v1/steps/continue-without-test.js';
 
-describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
+describe('POST /internal/api/v1/steps/:stepId/continue-without-test', () => {
   let currentUser, currentUserRole, token;
 
   beforeEach(async () => {
@@ -22,7 +22,7 @@ describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
     token = await createAuthTokenByUserId(currentUser.id);
   });
 
-  it('should test the step of the current user and return step data', async () => {
+  it('should update the step of the current user as completed and return step data', async () => {
     const currentUserFlow = await createFlow({ userId: currentUser.id });
     const currentUserConnection = await createConnection();
 
@@ -61,6 +61,13 @@ describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
       executionId: execution.id,
     });
 
+    const actionExecutionStep = await createExecutionStep({
+      dataIn: { input: 'john doe', transform: 'capitalize' },
+      dataOut: { body: { name: 'John doe' } },
+      stepId: actionStep.id,
+      executionId: execution.id,
+    });
+
     await createPermission({
       action: 'read',
       subject: 'Flow',
@@ -76,23 +83,19 @@ describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
     });
 
     const response = await request(app)
-      .post(`/internal/api/v1/steps/${actionStep.id}/test-and-continue`)
+      .post(`/internal/api/v1/steps/${actionStep.id}/continue-without-test`)
       .set('Authorization', token)
       .expect(200);
 
-    const expectedLastExecutionStep = await actionStep.$relatedQuery(
-      'lastExecutionStep'
-    );
-
-    const expectedPayload = await testAndContinueStepMock(
+    const expectedPayload = await continueWithoutTestStepMock(
       actionStep,
-      expectedLastExecutionStep
+      actionExecutionStep
     );
 
     expect(response.body).toMatchObject(expectedPayload);
   });
 
-  it('should test the step of the another user and return step data', async () => {
+  it('should update the step of the another user as completed and return step data', async () => {
     const anotherUser = await createUser();
     const anotherUserFlow = await createFlow({ userId: anotherUser.id });
     const anotherUserConnection = await createConnection();
@@ -132,6 +135,13 @@ describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
       executionId: execution.id,
     });
 
+    const actionExecutionStep = await createExecutionStep({
+      dataIn: { input: 'john doe', transform: 'capitalize' },
+      dataOut: { body: { name: 'John doe' } },
+      stepId: actionStep.id,
+      executionId: execution.id,
+    });
+
     await createPermission({
       action: 'read',
       subject: 'Flow',
@@ -147,17 +157,13 @@ describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
     });
 
     const response = await request(app)
-      .post(`/internal/api/v1/steps/${actionStep.id}/test-and-continue`)
+      .post(`/internal/api/v1/steps/${actionStep.id}/continue-without-test`)
       .set('Authorization', token)
       .expect(200);
 
-    const expectedLastExecutionStep = await actionStep.$relatedQuery(
-      'lastExecutionStep'
-    );
-
-    const expectedPayload = await testAndContinueStepMock(
+    const expectedPayload = await continueWithoutTestStepMock(
       actionStep,
-      expectedLastExecutionStep
+      actionExecutionStep
     );
 
     expect(response.body).toMatchObject(expectedPayload);
@@ -181,7 +187,9 @@ describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
     const notExistingStepUUID = Crypto.randomUUID();
 
     await request(app)
-      .post(`/internal/api/v1/steps/${notExistingStepUUID}/test-and-continue`)
+      .post(
+        `/internal/api/v1/steps/${notExistingStepUUID}/continue-without-test`
+      )
       .set('Authorization', token)
       .expect(404);
   });
@@ -202,7 +210,7 @@ describe('POST /internal/api/v1/steps/:stepId/test-and-continue', () => {
     });
 
     await request(app)
-      .post('/internal/api/v1/steps/invalidStepUUID/test-and-continue')
+      .post('/internal/api/v1/steps/invalidStepUUID/continue-without-test')
       .set('Authorization', token)
       .expect(400);
   });

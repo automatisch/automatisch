@@ -49,6 +49,10 @@ const authorizationList = {
     action: 'manage',
     subject: 'Flow',
   },
+  'POST /internal/api/v1/steps/:stepId/continue-without-test': {
+    action: 'manage',
+    subject: 'Flow',
+  },
   'GET /internal/api/v1/steps/:stepId/previous-steps': {
     action: 'manage',
     subject: 'Flow',

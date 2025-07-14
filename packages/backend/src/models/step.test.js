@@ -251,14 +251,21 @@ describe('Step model', () => {
     });
   });
 
-  it('test should execute the flow and mark the step as completed', async () => {
+  it('testAndContinue should execute the flow and mark the step as completed', async () => {
     const step = await createStep({ status: 'incomplete' });
 
     const testRunSpy = vi.spyOn(testRunModule, 'default').mockResolvedValue();
 
-    const updatedStep = await step.test();
+    const updatedStep = await step.testAndContinue();
 
     expect(testRunSpy).toHaveBeenCalledWith({ stepId: step.id });
+    expect(updatedStep.status).toBe('completed');
+  });
+
+  it('continueWithoutTest should mark the step as completed without executing the flow', async () => {
+    const step = await createStep({ status: 'incomplete' });
+    const updatedStep = await step.continueWithoutTest();
+
     expect(updatedStep.status).toBe('completed');
   });
 

@@ -1,4 +1,4 @@
-const testAndContinueStepMock = async (step, lastExecutionStep) => {
+const continueWithoutTestStepMock = async (step, lastExecutionStep) => {
   const data = {
     id: step.id,
     appKey: step.appKey,
@@ -31,4 +31,4 @@ const testAndContinueStepMock = async (step, lastExecutionStep) => {
   };
 };
 
-export default testAndContinueStepMock;
+export default continueWithoutTestStepMock;
