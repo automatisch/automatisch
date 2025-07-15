@@ -5,6 +5,8 @@ items:
     desc: Triggers when a new issue is created.
   - name: New pull requests
     desc: Triggers when a new pull request is created.
+  - name: New pull request event
+    desc: Triggers on pull request webhook events.
   - name: New stargazers
     desc: Triggers when a user stars a repository.
   - name: New watchers
