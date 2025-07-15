@@ -5,14 +5,16 @@ import Collapse from '@mui/material/Collapse';
 import ListItem from '@mui/material/ListItem';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 import { EditorContext } from 'contexts/Editor';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useTestStep from 'hooks/useTestStep';
+import useTestAndContinueStep from 'hooks/useTestAndContinueStep';
+import useContinueWithoutTest from 'hooks/useContinueWithoutTest';
 import JSONViewer from 'components/JSONViewer';
 import WebhookUrlInfo from 'components/WebhookUrlInfo';
 import FlowSubstepTitle from 'components/FlowSubstepTitle';
+import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 import appConfig from 'config/app.js';
@@ -38,8 +40,15 @@ function TestSubstep(props) {
     data,
     isSuccess: isCompleted,
     reset,
-  } = useTestStep(step.id);
-  const loading = isTestStepPending;
+  } = useTestAndContinueStep(step.id);
+  const {
+    mutateAsync: continueWithoutTest,
+    isPending: isContinueWithoutTestPending,
+    isSuccess: isContinueWithoutTestCompleted,
+    reset: resetContinueWithoutTest,
+  } = useContinueWithoutTest(step.id);
+  const loading = isTestStepPending || isContinueWithoutTestPending;
+  const isAnyCompleted = isCompleted || isContinueWithoutTestCompleted;
   const lastExecutionStep = data?.data.lastExecutionStep;
   const dataOut = lastExecutionStep?.dataOut;
   const errorDetails = lastExecutionStep?.errorDetails;
@@ -54,13 +63,14 @@ function TestSubstep(props) {
     function resetTestDataOnSubstepToggle() {
       if (!expanded && !loading) {
         reset();
+        resetContinueWithoutTest();
       }
     },
-    [expanded, reset, loading],
+    [expanded, reset, resetContinueWithoutTest, loading],
   );
 
-  const handleSubmit = React.useCallback(async () => {
-    if (isCompleted) {
+  const handleTestAndContinue = React.useCallback(async () => {
+    if (isAnyCompleted) {
       onContinue?.();
       return;
     }
@@ -70,7 +80,17 @@ function TestSubstep(props) {
     await queryClient.invalidateQueries({
       queryKey: ['flows', flowId],
     });
-  }, [testStep, onContinue, isCompleted, queryClient, flowId]);
+  }, [testStep, onContinue, isAnyCompleted, queryClient, flowId]);
+
+  const handleContinueWithoutTest = React.useCallback(async () => {
+    await continueWithoutTest();
+
+    await queryClient.invalidateQueries({
+      queryKey: ['flows', flowId],
+    });
+
+    onContinue?.();
+  }, [continueWithoutTest, queryClient, flowId, onContinue]);
 
   const onToggle = expanded ? onCollapse : onExpand;
 
@@ -126,19 +146,44 @@ function TestSubstep(props) {
             </Box>
           )}
 
-          <LoadingButton
-            fullWidth
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{ mt: 2 }}
-            loading={loading}
-            disabled={editorContext.readOnly}
-            color="primary"
-            data-test="flow-substep-continue-button"
-          >
-            {isCompleted && formatMessage('flowEditor.continue')}
-            {!isCompleted && formatMessage('flowEditor.testAndContinue')}
-          </LoadingButton>
+          {!isAnyCompleted ? (
+            <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleContinueWithoutTest}
+                disabled={editorContext.readOnly || loading}
+                sx={{ width: '30%' }}
+              >
+                {formatMessage('flowEditor.continue')}
+              </Button>
+
+              <LoadingButton
+                variant="contained"
+                color="primary"
+                onClick={handleTestAndContinue}
+                loading={loading}
+                disabled={editorContext.readOnly}
+                sx={{ width: '70%' }}
+                data-test="flow-substep-continue-button"
+              >
+                {formatMessage('flowEditor.testAndContinue')}
+              </LoadingButton>
+            </Box>
+          ) : (
+            <LoadingButton
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={() => onContinue?.()}
+              loading={loading}
+              disabled={editorContext.readOnly}
+              sx={{ mt: 1 }}
+              data-test="flow-substep-continue-button"
+            >
+              {formatMessage('flowEditor.continue')}
+            </LoadingButton>
+          )}
         </ListItem>
       </Collapse>
     </React.Fragment>
