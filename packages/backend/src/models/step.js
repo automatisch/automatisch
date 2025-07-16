@@ -137,9 +137,17 @@ class Step extends Base {
     return await App.findOneByKey(this.appKey);
   }
 
-  async test() {
+  async testAndContinue() {
     await testRun({ stepId: this.id });
 
+    const updatedStep = await this.$query()
+      .withGraphFetched('lastExecutionStep')
+      .patchAndFetch({ status: 'completed' });
+
+    return updatedStep;
+  }
+
+  async continueWithoutTest() {
     const updatedStep = await this.$query()
       .withGraphFetched('lastExecutionStep')
       .patchAndFetch({ status: 'completed' });

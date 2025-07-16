@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { authenticateUser } from '@/helpers/authentication.js';
 import { authorizeUser } from '@/helpers/authorization.js';
 import getConnectionAction from '@/controllers/internal/api/v1/steps/get-connection.js';
-import testStepAction from '@/controllers/internal/api/v1/steps/test-step.js';
+import testAndContinueStepAction from '@/controllers/internal/api/v1/steps/test-and-continue-step.js';
+import continueWithoutTestAction from '@/controllers/internal/api/v1/steps/continue-without-test.js';
 import getPreviousStepsAction from '@/controllers/internal/api/v1/steps/get-previous-steps.js';
 import createDynamicFieldsAction from '@/controllers/internal/api/v1/steps/create-dynamic-fields.js';
 import createDynamicDataAction from '@/controllers/internal/api/v1/steps/create-dynamic-data.js';
@@ -18,7 +19,19 @@ router.get(
   getConnectionAction
 );
 
-router.post('/:stepId/test', authenticateUser, authorizeUser, testStepAction);
+router.post(
+  '/:stepId/test-and-continue',
+  authenticateUser,
+  authorizeUser,
+  testAndContinueStepAction
+);
+
+router.post(
+  '/:stepId/continue-without-test',
+  authenticateUser,
+  authorizeUser,
+  continueWithoutTestAction
+);
 
 router.get(
   '/:stepId/previous-steps',

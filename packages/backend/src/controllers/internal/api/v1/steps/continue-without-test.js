@@ -6,7 +6,7 @@ export default async (request, response) => {
     .findById(request.params.stepId)
     .throwIfNotFound();
 
-  step = await step.test();
+  step = await step.continueWithoutTest();
 
   renderObject(response, step);
 };

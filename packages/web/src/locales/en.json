@@ -71,6 +71,7 @@
   "flowEditor.noTestDataMessage": "Create a sample in the associated service and test the step again.",
   "flowEditor.testAndContinue": "Test & Continue",
   "flowEditor.continue": "Continue",
+  "flowEditor.continueWithoutTest": "Continue without Test",
   "flowEditor.chooseApp": "Choose an app",
   "flowEditor.chooseEvent": "Choose an event",
   "flowEditor.pollIntervalLabel": "Poll interval",
