@@ -5,7 +5,7 @@ import paginateRest from '@/helpers/pagination.js';
 export default async (request, response) => {
   const app = await App.findOneByKey(request.params.appKey);
 
-  const flowsQuery = request.currentUser.authorizedFlows
+  const flowsQuery = request.currentUser.readableFlows
     .clone()
     .distinct('flows.*')
     .joinRelated({

@@ -1,7 +1,7 @@
 import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
-  let step = await request.currentUser.authorizedSteps
+  let step = await request.currentUser.readableSteps
     .findById(request.params.stepId)
     .throwIfNotFound();
 

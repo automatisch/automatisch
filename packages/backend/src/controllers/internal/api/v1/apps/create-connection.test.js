@@ -61,7 +61,7 @@ describe('POST /internal/api/v1/apps/:appKey/connections', () => {
         .expect(201);
 
       const fetchedConnection =
-        await currentUser.authorizedConnections.findById(response.body.data.id);
+        await currentUser.readableConnections.findById(response.body.data.id);
 
       const expectedPayload = createConnection({
         ...fetchedConnection,
@@ -176,7 +176,7 @@ describe('POST /internal/api/v1/apps/:appKey/connections', () => {
         .expect(201);
 
       const fetchedConnection =
-        await currentUser.authorizedConnections.findById(response.body.data.id);
+        await currentUser.readableConnections.findById(response.body.data.id);
 
       const expectedPayload = createConnection({
         ...fetchedConnection,
@@ -300,7 +300,7 @@ describe('POST /internal/api/v1/apps/:appKey/connections', () => {
         .expect(201);
 
       const fetchedConnection =
-        await currentUser.authorizedConnections.findById(response.body.data.id);
+        await currentUser.readableConnections.findById(response.body.data.id);
 
       const expectedPayload = createConnection({
         ...fetchedConnection,
