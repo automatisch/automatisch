@@ -5,7 +5,7 @@ export const createFlow = async (request, token) => {
     `${process.env.BACKEND_APP_URL}/internal/api/v1/flows`,
     { headers: { Authorization: token } }
   );
-  await expect(response.status()).toBe(201);
+  expect(response.status()).toBe(201);
 
   return await response.json();
 };
@@ -15,7 +15,7 @@ export const getFlow = async (request, token, flowId) => {
     `${process.env.BACKEND_APP_URL}/internal/api/v1/flows/${flowId}`,
     { headers: { Authorization: token } }
   );
-  await expect(response.status()).toBe(200);
+  expect(response.status()).toBe(200);
 
   return await response.json();
 };
@@ -28,7 +28,7 @@ export const updateFlowName = async (request, token, flowId) => {
       data: { name: flowId },
     }
   );
-  await expect(updateFlowNameResponse.status()).toBe(200);
+  expect(updateFlowNameResponse.status()).toBe(200);
 };
 
 export const updateFlowStep = async (request, token, stepId, requestBody) => {
@@ -39,19 +39,19 @@ export const updateFlowStep = async (request, token, stepId, requestBody) => {
       data: requestBody,
     }
   );
-  await expect(updateTriggerStepResponse.status()).toBe(200);
+  expect(updateTriggerStepResponse.status()).toBe(200);
 
   return await updateTriggerStepResponse.json();
 };
 
 export const testStep = async (request, token, stepId) => {
   const testTriggerStepResponse = await request.post(
-    `${process.env.BACKEND_APP_URL}/internal/api/v1/steps/${stepId}/test`,
+    `${process.env.BACKEND_APP_URL}/internal/api/v1/steps/${stepId}/test-and-continue`,
     {
       headers: { Authorization: token },
     }
   );
-  await expect(testTriggerStepResponse.status()).toBe(200);
+  expect(testTriggerStepResponse.status()).toBe(200);
 };
 
 export const publishFlow = async (request, token, flowId) => {
@@ -62,14 +62,14 @@ export const publishFlow = async (request, token, flowId) => {
       data: { active: true },
     }
   );
-  await expect(publishFlowResponse.status()).toBe(200);
+  expect(publishFlowResponse.status()).toBe(200);
 
   return publishFlowResponse.json();
 };
 
 export const triggerFlow = async (request, url) => {
   const triggerFlowResponse = await request.get(url);
-  await expect(triggerFlowResponse.status()).toBe(204);
+  expect(triggerFlowResponse.status()).toBe(204);
 };
 
 export const addWebhookFlow = async (request, token) => {
@@ -123,7 +123,7 @@ export const createConnection = async (
     `${process.env.BACKEND_APP_URL}/internal/api/v1/apps/${appName}/connections`,
     { headers: { Authorization: token }, data: requestBody }
   );
-  await expect(response.status()).toBe(201);
+  expect(response.status()).toBe(201);
 
   return await response.json();
 };
@@ -133,7 +133,7 @@ export const verifyConnection = async (request, token, connectionId) => {
     `${process.env.BACKEND_APP_URL}/internal/api/v1/connections/${connectionId}/verify`,
     { headers: { Authorization: token } }
   );
-  await expect(response.status()).toBe(200);
+  expect(response.status()).toBe(200);
 
   return await response.json();
 };
