@@ -85,6 +85,7 @@ export default defineTrigger({
       }
 
       next = data.meta.next_page;
+      params['page[number]'] = data.meta.next_page;
 
       for (const document of data.document_cards) {
         $.pushTriggerItem({
