@@ -1,35 +1,35 @@
 export default {
-    name: 'List databases',
-    key: 'listDatabases',
+  name: 'List databases',
+  key: 'listDatabases',
 
-    async run($) {
-        const databases = {
-            data: [],
-            error: null,
-        };
-        const payload = {
-            filter: {
-                value: 'database',
-                property: 'object',
-            },
-        };
+  async run($) {
+    const databases = {
+      data: [],
+      error: null,
+    };
+    const payload = {
+      filter: {
+        value: 'database',
+        property: 'object',
+      },
+    };
 
-        do {
-            const response = await $.http.post('/v1/search', payload);
+    do {
+      const response = await $.http.post('/v1/search', payload);
 
-            payload.start_cursor = response.data.next_cursor;
+      payload.start_cursor = response.data.next_cursor;
 
-            for (const database of response.data.results) {
-                databases.data.push({
-                    value: database.id,
-                    name:
-                        database.title && database.title.length > 0
-                            ? database.title[0].plain_text
-                            : 'Untitled Database',
-                });
-            }
-        } while (payload.start_cursor);
+      for (const database of response.data.results) {
+        databases.data.push({
+          value: database.id,
+          name:
+            database.title?.length > 0
+              ? database.title[0].plain_text
+              : 'Untitled Database',
+        });
+      }
+    } while (payload.start_cursor);
 
-        return databases;
-    },
+    return databases;
+  },
 };
