@@ -8,9 +8,9 @@ import dynamicFields from './dynamic-fields/index.js';
 
 export default defineApp({
   name: 'PDFMonkey',
-  key: 'pdf-monkey',
-  iconUrl: '{BASE_URL}/apps/pdf-monkey/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/pdf-monkey/connection',
+  key: 'pdfmonkey',
+  iconUrl: '{BASE_URL}/apps/pdfmonkey/assets/favicon.svg',
+  authDocUrl: 'https://automatisch.io/docs/apps/pdfmonkey/connection',
   supportsConnections: true,
   baseUrl: 'https://pdfmonkey.io',
   apiBaseUrl: 'https://api.pdfmonkey.io/api',

@@ -1,5 +1,5 @@
 ---
-favicon: /favicons/pdf-monkey.svg
+favicon: /favicons/pdfmonkey.svg
 items:
   - name: Documents Generated
     desc: Triggers upon the successful completion of document generation.

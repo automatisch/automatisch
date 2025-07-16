@@ -1,5 +1,5 @@
 ---
-favicon: /favicons/pdf-monkey.svg
+favicon: /favicons/pdfmonkey.svg
 items:
   - name: Generate documents
     desc: Creates a new document.
