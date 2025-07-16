@@ -450,6 +450,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'PDFMonkey',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/pdfmonkey/triggers' },
+            { text: 'Actions', link: '/apps/pdfmonkey/actions' },
+            { text: 'Connection', link: '/apps/pdfmonkey/connection' },
+          ],
+        },
+        {
           text: 'Perplexity',
           collapsible: true,
           collapsed: true,

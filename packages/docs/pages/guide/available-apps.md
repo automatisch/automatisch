@@ -47,6 +47,7 @@ The following integrations are currently supported by Automatisch.
 - [Odoo](/apps/odoo/actions)
 - [OpenAI](/apps/openai/actions)
 - [OpenRouter](/apps/openrouter/actions)
+- [PDFMonkey](/apps/pdfmonkey/actions)
 - [Perplexity](/apps/perplexity/actions)
 - [Pipedrive](/apps/pipedrive/triggers)
 - [Placetel](/apps/placetel/triggers)
