@@ -10,7 +10,7 @@ export default defineApp({
   name: 'PDFMonkey',
   key: 'pdfmonkey',
   iconUrl: '{BASE_URL}/apps/pdfmonkey/assets/favicon.svg',
-  authDocUrl: 'https://automatisch.io/docs/apps/pdfmonkey/connection',
+  authDocUrl: '{DOCS_URL}/apps/pdfmonkey/connection',
   supportsConnections: true,
   baseUrl: 'https://pdfmonkey.io',
   apiBaseUrl: 'https://api.pdfmonkey.io/api',
