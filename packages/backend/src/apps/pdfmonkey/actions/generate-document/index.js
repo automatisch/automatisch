@@ -80,39 +80,6 @@ export default defineAction({
       },
     },
     {
-      label: 'Add Line Items?',
-      key: 'addLineItems',
-      type: 'dropdown',
-      required: true,
-      description:
-        'Choose "yes" to include information for Line Items (such as in an invoice).',
-      variables: true,
-      options: [
-        {
-          label: 'Yes',
-          value: true,
-        },
-        {
-          label: 'No',
-          value: false,
-        },
-      ],
-      additionalFields: {
-        type: 'query',
-        name: 'getDynamicFields',
-        arguments: [
-          {
-            name: 'key',
-            value: 'listLineItems',
-          },
-          {
-            name: 'parameters.addLineItems',
-            value: '{parameters.addLineItems}',
-          },
-        ],
-      },
-    },
-    {
       label: 'Custom Filename',
       key: 'customFilename',
       type: 'string',
@@ -155,50 +122,20 @@ export default defineAction({
       useCustomJsonStructure,
       customJsonPayload,
       customFilename,
-      addLineItems,
-      lineItems,
       documentData,
       metaData,
     } = $.step.parameters;
     let payload = {};
     let meta = {};
 
-    const documentDataObject = documentData.reduce((result, entry) => {
-      const key = entry.documentDataKey?.toLowerCase();
-      const value = entry.documentDataValue;
-
-      if (key && value) {
-        return {
-          ...result,
-          [entry.documentDataKey?.toLowerCase()]: entry.documentDataValue,
-        };
-      }
-
-      return result;
-    }, {});
-
-    const lineItemsObject = lineItems.reduce((result, entry) => {
-      const key = entry.lineItemKey?.toLowerCase();
-      const value = entry.lineItemValue;
-
-      if (key && value) {
-        return {
-          ...result,
-          [entry.lineItemKey?.toLowerCase()]: entry.lineItemValue,
-        };
-      }
-
-      return result;
-    }, {});
-
     const metaDataObject = metaData.reduce((result, entry) => {
-      const key = entry.metaDataKey?.toLowerCase();
+      const key = entry.metaDataKey;
       const value = entry.metaDataValue;
 
       if (key && value) {
         return {
           ...result,
-          [entry.metaDataKey?.toLowerCase()]: entry.metaDataValue,
+          [entry.metaDataKey]: entry.metaDataValue,
         };
       }
 
@@ -216,11 +153,19 @@ export default defineAction({
     if (useCustomJsonStructure) {
       payload = JSON.parse(customJsonPayload);
     } else {
-      payload = documentDataObject;
-    }
+      payload = documentData.reduce((result, entry) => {
+        const key = entry.documentDataKey;
+        const value = entry.documentDataValue;
 
-    if (addLineItems) {
-      payload.lineItems = [lineItemsObject];
+        if (key && value) {
+          return {
+            ...result,
+            [entry.documentDataKey]: entry.documentDataValue,
+          };
+        }
+
+        return result;
+      }, {});
     }
 
     const body = {

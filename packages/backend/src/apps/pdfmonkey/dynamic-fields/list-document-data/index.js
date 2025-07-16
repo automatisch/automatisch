@@ -29,7 +29,7 @@ export default {
               key: 'documentDataKey',
               type: 'string',
               required: false,
-              description: '',
+              description: 'The key is case sensitive and should be unique.',
               variables: true,
             },
             {
