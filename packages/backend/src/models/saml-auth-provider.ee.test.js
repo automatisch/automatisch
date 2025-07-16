@@ -116,6 +116,11 @@ describe('SamlAuthProvider model', () => {
       v4: vi.fn(),
     }));
 
+    // Mock Date to use fixed timestamp
+    const mockDate = new Date('2024-01-01T10:00:00.000Z');
+    vi.useFakeTimers();
+    vi.setSystemTime(mockDate);
+
     const samlAuthProvider = new SamlAuthProvider();
 
     samlAuthProvider.entryPoint = 'https://example.com/saml';
@@ -133,7 +138,7 @@ describe('SamlAuthProvider model', () => {
           xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
           ID="${mockUuid}"
           Version="2.0"
-          IssueInstant="${new Date().toISOString()}"
+          IssueInstant="${mockDate.toISOString()}"
           Destination="https://example.com/saml">
 
           <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">sample-issuer</saml:Issuer>
@@ -146,6 +151,9 @@ describe('SamlAuthProvider model', () => {
     );
 
     expect(logoutRequest).toBe(expectedEncodedRequest);
+
+    // Restore real timers
+    vi.useRealTimers();
   });
 
   it('terminateRemoteSession should send the correct POST request and return the response', async () => {
