@@ -441,6 +441,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'OpenRouter',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/openrouter/actions' },
+            { text: 'Connection', link: '/apps/openrouter/connection' },
+          ],
+        },
+        {
           text: 'PDFMonkey',
           collapsible: true,
           collapsed: true,
@@ -448,6 +457,15 @@ export default defineConfig({
             { text: 'Triggers', link: '/apps/pdfmonkey/triggers' },
             { text: 'Actions', link: '/apps/pdfmonkey/actions' },
             { text: 'Connection', link: '/apps/pdfmonkey/connection' },
+          ],
+        },
+        {
+          text: 'Perplexity',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/perplexity/actions' },
+            { text: 'Connection', link: '/apps/perplexity/connection' },
           ],
         },
         {
