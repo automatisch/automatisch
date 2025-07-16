@@ -26,7 +26,10 @@ export default {
       for (const pages of topLevelPages) {
         parentPages.data.push({
           value: pages.id,
-          name: pages.properties.title.title[0].plain_text,
+          name:
+            pages.properties.title.title?.length > 0
+              ? pages.properties.title.title[0].plain_text
+              : 'Untitled Page',
         });
       }
     } while (payload.start_cursor);
