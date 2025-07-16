@@ -14,7 +14,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://pdfmonkey.io',
   apiBaseUrl: 'https://api.pdfmonkey.io/api',
-  primaryColor: 'db2777',
+  primaryColor: '#DB2777',
   beforeRequest: [addAuthHeader],
   auth,
   triggers,
