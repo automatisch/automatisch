@@ -5,6 +5,7 @@ import auth from './auth/index.js';
 import triggers from './triggers/index.js';
 import actions from './actions/index.js';
 import dynamicData from './dynamic-data/index.js';
+import dynamicFields from './dynamic-fields/index.js';
 
 export default defineApp({
   name: 'Notion',
@@ -20,4 +21,5 @@ export default defineApp({
   triggers,
   actions,
   dynamicData,
+  dynamicFields,
 });
