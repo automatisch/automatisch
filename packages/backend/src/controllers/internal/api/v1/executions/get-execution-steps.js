@@ -2,7 +2,7 @@ import { renderObject } from '@/helpers/renderer.js';
 import paginateRest from '@/helpers/pagination.js';
 
 export default async (request, response) => {
-  const execution = await request.currentUser.authorizedExecutions
+  const execution = await request.currentUser.readableExecutions
     .clone()
     .withSoftDeleted()
     .findById(request.params.executionId)

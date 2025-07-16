@@ -2,7 +2,7 @@ import Flow from '@/models/flow.js';
 import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
-  const flow = await request.currentUser.authorizedFlows
+  const flow = await request.currentUser.readableFlows
     .clone()
     .withGraphJoined({ steps: true })
     .select(

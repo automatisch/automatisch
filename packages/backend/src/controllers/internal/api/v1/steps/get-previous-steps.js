@@ -3,12 +3,12 @@ import ExecutionStep from '@/models/execution-step.js';
 import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
-  const step = await request.currentUser.authorizedSteps
+  const step = await request.currentUser.readableSteps
     .clone()
     .findOne({ 'steps.id': request.params.stepId })
     .throwIfNotFound();
 
-  const previousSteps = await request.currentUser.authorizedSteps
+  const previousSteps = await request.currentUser.readableSteps
     .clone()
     .withGraphJoined('executionSteps')
     .where('flow_id', '=', step.flowId)

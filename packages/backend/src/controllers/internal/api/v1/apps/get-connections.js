@@ -4,7 +4,7 @@ import App from '@/models/app.js';
 export default async (request, response) => {
   const app = await App.findOneByKey(request.params.appKey);
 
-  const connections = await request.currentUser.authorizedConnections
+  const connections = await request.currentUser.readableConnections
     .clone()
     .select('connections.*')
     .withGraphFetched({

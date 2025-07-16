@@ -326,7 +326,7 @@ class Step extends Base {
     } = newStepData;
 
     if (connectionId && appKey) {
-      await user.authorizedConnections
+      await user.readableConnections
         .findOne({
           id: connectionId,
           key: appKey,

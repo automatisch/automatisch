@@ -1,7 +1,7 @@
 import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
-  let connection = await request.currentUser.authorizedConnections
+  let connection = await request.currentUser.readableConnections
     .clone()
     .findOne({
       id: request.params.connectionId,

@@ -1,7 +1,7 @@
 import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
-  const step = await request.currentUser.authorizedSteps
+  const step = await request.currentUser.readableSteps
     .clone()
     .where('steps.id', request.params.stepId)
     .whereNotNull('steps.app_key')

@@ -203,24 +203,24 @@ class User extends Base {
     return ['acceptInvitationUrl'];
   }
 
-  get authorizedFlows() {
+  get readableFlows() {
     const conditions = this.can('read', 'Flow');
     return conditions.isCreator ? this.$relatedQuery('flows') : Flow.query();
   }
 
-  get authorizedSteps() {
+  get readableSteps() {
     const conditions = this.can('read', 'Flow');
     return conditions.isCreator ? this.$relatedQuery('steps') : Step.query();
   }
 
-  get authorizedConnections() {
+  get readableConnections() {
     const conditions = this.can('read', 'Connection');
     return conditions.isCreator
       ? this.$relatedQuery('connections')
       : Connection.query();
   }
 
-  get authorizedExecutions() {
+  get readableExecutions() {
     const conditions = this.can('read', 'Execution');
     return conditions.isCreator
       ? this.$relatedQuery('executions')
@@ -541,7 +541,7 @@ class User extends Base {
   }
 
   getFlows({ folderId, name, status, onlyOwnedFlows }, ownedFolderIds) {
-    return this.authorizedFlows
+    return this.readableFlows
       .clone()
       .withGraphFetched({
         steps: true,
@@ -576,7 +576,7 @@ class User extends Base {
   }
 
   getExecutions({ name, status, startDateTime, endDateTime }) {
-    return this.authorizedExecutions
+    return this.readableExecutions
       .clone()
       .withSoftDeleted()
       .joinRelated({
@@ -620,14 +620,14 @@ class User extends Base {
   }
 
   async getApps(name) {
-    const connections = await this.authorizedConnections
+    const connections = await this.readableConnections
       .clone()
       .select('connections.key')
       .where({ draft: false })
       .count('connections.id as count')
       .groupBy('connections.key');
 
-    const flows = await this.authorizedFlows
+    const flows = await this.readableFlows
       .clone()
       .withGraphJoined('steps')
       .orderBy('created_at', 'desc');

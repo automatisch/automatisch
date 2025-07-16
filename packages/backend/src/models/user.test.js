@@ -229,7 +229,7 @@ describe('User model', () => {
     expect(virtualAttributes).toStrictEqual(expectedAttributes);
   });
 
-  describe('authorizedFlows', () => {
+  describe('readableFlows', () => {
     it('should return user flows with isCreator condition', async () => {
       const userRole = await createRole({ name: 'User' });
 
@@ -249,7 +249,7 @@ describe('User model', () => {
       const userFlow = await createFlow({ userId: user.id });
       await createFlow();
 
-      expect(await userWithRoleAndPermissions.authorizedFlows).toStrictEqual([
+      expect(await userWithRoleAndPermissions.readableFlows).toStrictEqual([
         userFlow,
       ]);
     });
@@ -273,7 +273,7 @@ describe('User model', () => {
       const userFlow = await createFlow({ userId: user.id });
       const anotherUserFlow = await createFlow();
 
-      expect(await userWithRoleAndPermissions.authorizedFlows).toStrictEqual([
+      expect(await userWithRoleAndPermissions.readableFlows).toStrictEqual([
         userFlow,
         anotherUserFlow,
       ]);
@@ -282,13 +282,13 @@ describe('User model', () => {
     it('should throw an authorization error without Flow read permission', async () => {
       const user = new User();
 
-      expect(() => user.authorizedFlows).toThrowError(
+      expect(() => user.readableFlows).toThrowError(
         'The user is not authorized!'
       );
     });
   });
 
-  describe('authorizedSteps', () => {
+  describe('readableSteps', () => {
     it('should return user steps with isCreator condition', async () => {
       const userRole = await createRole({ name: 'User' });
 
@@ -310,7 +310,7 @@ describe('User model', () => {
       const anotherUserFlow = await createFlow();
       await createStep({ flowId: anotherUserFlow.id });
 
-      expect(await userWithRoleAndPermissions.authorizedSteps).toStrictEqual([
+      expect(await userWithRoleAndPermissions.readableSteps).toStrictEqual([
         userFlowStep,
       ]);
     });
@@ -338,7 +338,7 @@ describe('User model', () => {
         flowId: anotherUserFlow.id,
       });
 
-      expect(await userWithRoleAndPermissions.authorizedSteps).toStrictEqual([
+      expect(await userWithRoleAndPermissions.readableSteps).toStrictEqual([
         userFlowStep,
         anotherUserFlowStep,
       ]);
@@ -347,13 +347,13 @@ describe('User model', () => {
     it('should throw an authorization error without Flow read permission', async () => {
       const user = new User();
 
-      expect(() => user.authorizedSteps).toThrowError(
+      expect(() => user.readableSteps).toThrowError(
         'The user is not authorized!'
       );
     });
   });
 
-  describe('authorizedConnections', () => {
+  describe('readableConnections', () => {
     it('should return user connections with isCreator condition', async () => {
       const userRole = await createRole({ name: 'User' });
 
@@ -374,7 +374,7 @@ describe('User model', () => {
       await createConnection();
 
       expect(
-        await userWithRoleAndPermissions.authorizedConnections
+        await userWithRoleAndPermissions.readableConnections
       ).toStrictEqual([userConnection]);
     });
 
@@ -398,7 +398,7 @@ describe('User model', () => {
       const anotherUserConnection = await createConnection();
 
       expect(
-        await userWithRoleAndPermissions.authorizedConnections.orderBy(
+        await userWithRoleAndPermissions.readableConnections.orderBy(
           'created_at',
           'asc'
         )
@@ -408,13 +408,13 @@ describe('User model', () => {
     it('should throw an authorization error without Connection read permission', async () => {
       const user = new User();
 
-      expect(() => user.authorizedConnections).toThrowError(
+      expect(() => user.readableConnections).toThrowError(
         'The user is not authorized!'
       );
     });
   });
 
-  describe('authorizedExecutions', () => {
+  describe('readableExecutions', () => {
     it('should return user executions with isCreator condition', async () => {
       const userRole = await createRole({ name: 'User' });
 
@@ -436,7 +436,7 @@ describe('User model', () => {
       await createExecution();
 
       expect(
-        await userWithRoleAndPermissions.authorizedExecutions
+        await userWithRoleAndPermissions.readableExecutions
       ).toStrictEqual([userFlowExecution]);
     });
 
@@ -461,14 +461,14 @@ describe('User model', () => {
       const anotherUserFlowExecution = await createExecution();
 
       expect(
-        await userWithRoleAndPermissions.authorizedExecutions
+        await userWithRoleAndPermissions.readableExecutions
       ).toStrictEqual([userFlowExecution, anotherUserFlowExecution]);
     });
 
     it('should throw an authorization error without Execution read permission', async () => {
       const user = new User();
 
-      expect(() => user.authorizedExecutions).toThrowError(
+      expect(() => user.readableExecutions).toThrowError(
         'The user is not authorized!'
       );
     });
