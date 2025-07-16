@@ -227,6 +227,13 @@ class User extends Base {
       : Execution.query();
   }
 
+  get manageableConnections() {
+    const conditions = this.can('manage', 'Connection');
+    return conditions.isCreator
+      ? this.$relatedQuery('connections')
+      : Connection.query();
+  }
+
   get acceptInvitationUrl() {
     return `${appConfig.webAppUrl}/accept-invitation?token=${this.invitationToken}`;
   }
