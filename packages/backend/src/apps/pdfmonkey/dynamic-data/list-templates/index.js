@@ -10,7 +10,7 @@ export default {
     let next = false;
 
     const params = {
-      page: 'all',
+      page: 1,
       'q[workspace_id]': workspaceId,
     };
 
@@ -21,6 +21,7 @@ export default {
     do {
       const { data } = await $.http.get('/v1/document_template_cards', params);
       next = data.meta.next_page;
+      params.page = data.meta.next_page;
 
       if (!data?.document_template_cards?.length) {
         return;
