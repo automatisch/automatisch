@@ -40,6 +40,7 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
       .set('Authorization', token)
       .send({
         name: 'Updated flow',
+        executionInterval: 1,
       })
       .expect(200);
 
@@ -48,6 +49,7 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
     const expectedPayload = await updateFlowMock({
       ...refetchedCurrentUserFlow,
       name: 'Updated flow',
+      executionInterval: 1,
     });
 
     expect(response.body).toStrictEqual(expectedPayload);
@@ -76,6 +78,7 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
       .set('Authorization', token)
       .send({
         name: 'Updated flow',
+        executionInterval: 1,
       })
       .expect(200);
 
@@ -84,6 +87,7 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
     const expectedPayload = await updateFlowMock({
       ...refetchedAnotherUserFlow,
       name: 'Updated flow',
+      executionInterval: 1,
     });
 
     expect(response.body).toStrictEqual(expectedPayload);
