@@ -43,9 +43,6 @@ import useActions from 'hooks/useActions';
 import useTriggerSubsteps from 'hooks/useTriggerSubsteps';
 import useActionSubsteps from 'hooks/useActionSubsteps';
 import useStepWithTestExecutions from 'hooks/useStepWithTestExecutions';
-import appConfig from 'config/app.js';
-
-const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 const validIcon = <CheckCircleIcon color="success" />;
 const errorIcon = <ErrorIcon color="error" />;
@@ -299,7 +296,7 @@ function FlowStep(props) {
       <Collapse
         in={!collapsed}
         unmountOnExit
-        timeout={useNewFlowEditor ? 0 : 'auto'}
+        timeout={0}
       >
         <Content>
           <List>

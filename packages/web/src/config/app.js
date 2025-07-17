@@ -17,7 +17,6 @@ const computeUrl = (url, backendUrl) => {
 const config = {
   baseUrl: import.meta.env.VITE_BASE_URL,
   restApiUrl: computeUrl('/internal/api', backendUrl),
-  useNewFlowEditor: import.meta.env.VITE_USE_NEW_FLOW_EDITOR === 'true',
   supportEmailAddress: 'support@automatisch.io',
 };
 

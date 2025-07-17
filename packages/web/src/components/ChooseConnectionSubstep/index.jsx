@@ -24,9 +24,6 @@ import useAppConnections from 'hooks/useAppConnections';
 import useTestConnection from 'hooks/useTestConnection';
 import useOAuthClients from 'hooks/useOAuthClients';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
-import appConfig from 'config/app.js';
-
-const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 const ADD_CONNECTION_VALUE = 'ADD_CONNECTION';
 const ADD_SHARED_CONNECTION_VALUE = 'ADD_SHARED_CONNECTION';
@@ -246,7 +243,7 @@ function ChooseConnectionSubstep(props) {
       />
       <Collapse
         in={expanded}
-        timeout={useNewFlowEditor ? 0 : 'auto'}
+        timeout={0}
         unmountOnExit
       >
         <ListItem

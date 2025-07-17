@@ -12,10 +12,8 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { ReactFlowProvider } from '@xyflow/react';
 
 import Can from 'components/Can';
-import Container from 'components/Container';
 import EditableTypography from 'components/EditableTypography';
 import Editor from 'components/Editor';
-import EditorNew from 'components/EditorNew/EditorNew';
 import * as URLS from 'config/urls';
 import { EditorProvider } from 'contexts/Editor';
 import useDownloadJsonAsFile from 'hooks/useDownloadJsonAsFile';
@@ -27,9 +25,6 @@ import useUpdateFlow from 'hooks/useUpdateFlow';
 import useUpdateFlowStatus from 'hooks/useUpdateFlowStatus';
 import FlowFolder from './FlowFolder';
 import { TopBar } from './style';
-import appConfig from 'config/app.js';
-
-const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 export default function EditorLayout() {
   const { flowId } = useParams();
@@ -147,27 +142,16 @@ export default function EditorLayout() {
         </Box>
       </TopBar>
 
-      {useNewFlowEditor ? (
-        <Stack direction="column" height="100%" flexGrow={1}>
-          <Stack direction="column" flexGrow={1}>
-            <EditorProvider value={{ readOnly: !!flow?.active }}>
-              <ReactFlowProvider>
-                {!flow && !isFlowLoading && 'not found'}
-                {flow && <EditorNew flow={flow} />}
-              </ReactFlowProvider>
-            </EditorProvider>
-          </Stack>
-        </Stack>
-      ) : (
-        <Stack direction="column" height="100%">
-          <Container maxWidth="md">
-            <EditorProvider value={{ readOnly: !!flow?.active }}>
+      <Stack direction="column" height="100%" flexGrow={1}>
+        <Stack direction="column" flexGrow={1}>
+          <EditorProvider value={{ readOnly: !!flow?.active }}>
+            <ReactFlowProvider>
               {!flow && !isFlowLoading && 'not found'}
               {flow && <Editor flow={flow} />}
-            </EditorProvider>
-          </Container>
+            </ReactFlowProvider>
+          </EditorProvider>
         </Stack>
-      )}
+      </Stack>
 
       <Snackbar
         data-test="flow-cannot-edit-info-snackbar"

@@ -11,10 +11,7 @@ import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import InputCreator from 'components/InputCreator';
 import FilterConditions from './FilterConditions';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
-import appConfig from 'config/app.js';
 import * as URLS from 'config/urls.js';
-
-const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 function FlowSubstep(props) {
   const {
@@ -42,7 +39,7 @@ function FlowSubstep(props) {
       />
       <Collapse
         in={expanded}
-        timeout={useNewFlowEditor ? 0 : 'auto'}
+        timeout={0}
         unmountOnExit
       >
         <ListItem
