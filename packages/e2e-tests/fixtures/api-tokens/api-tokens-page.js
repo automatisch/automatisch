@@ -1,6 +1,6 @@
 import { AuthenticatedPage } from '../authenticated-page';
 
-class ApiTokensPage extends AuthenticatedPage {
+export class ApiTokensPage extends AuthenticatedPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
@@ -22,5 +22,3 @@ class ApiTokensPage extends AuthenticatedPage {
     await this.page.goto('/admin-settings/api-tokens');
   }
 }
-
-export default { ApiTokensPage };

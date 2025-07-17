@@ -43,6 +43,7 @@ function AdminCreateTemplatePage() {
             <Form onSubmit={handleFormSubmit} defaultValues={flow.data}>
               <Stack direction="column" gap={2}>
                 <TextField
+                  data-test="template-name-input"
                   name="name"
                   label={formatMessage('adminCreateTemplate.titleFieldLabel')}
                   fullWidth
@@ -54,7 +55,7 @@ function AdminCreateTemplatePage() {
                   color="primary"
                   sx={{ boxShadow: 2 }}
                   loading={isPending}
-                  data-test="update-button"
+                  data-test="create-button"
                 >
                   {formatMessage('adminCreateTemplate.submit')}
                 </LoadingButton>
