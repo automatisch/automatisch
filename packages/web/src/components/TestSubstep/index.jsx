@@ -17,9 +17,6 @@ import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
-import appConfig from 'config/app.js';
-
-const useNewFlowEditor = appConfig.useNewFlowEditor;
 
 function TestSubstep(props) {
   const {
@@ -99,7 +96,7 @@ function TestSubstep(props) {
       <FlowSubstepTitle expanded={expanded} onClick={onToggle} title={name} />
       <Collapse
         in={expanded}
-        timeout={useNewFlowEditor ? 0 : 'auto'}
+        timeout={0}
         unmountOnExit
       >
         <ListItem
