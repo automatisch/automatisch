@@ -1,6 +1,6 @@
 export default {
-  name: 'List scheduled event fields for change',
-  key: 'listScheduledEventFieldsForChange',
+  name: 'List scheduled event fields for update',
+  key: 'listScheduledEventFieldsForUpdate',
 
   async run($) {
     const isExternal = $.step.parameters.entityType === 3;

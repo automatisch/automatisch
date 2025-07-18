@@ -1,9 +1,9 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Change a scheduled event',
-  key: 'changeScheduledEvent',
-  description: 'Changes a scheduled event',
+  name: 'Update a scheduled event',
+  key: 'updateScheduledEvent',
+  description: 'Updates a scheduled event',
   arguments: [
     {
       label: 'Scheduled Event',
@@ -11,7 +11,7 @@ export default defineAction({
       type: 'dropdown',
       required: true,
       description: '',
-      variables: false,
+      variables: true,
       source: {
         type: 'query',
         name: 'getDynamicData',
@@ -55,7 +55,7 @@ export default defineAction({
         arguments: [
           {
             name: 'key',
-            value: 'listScheduledEventFieldsForChange',
+            value: 'listScheduledEventFieldsForUpdate',
           },
           {
             name: 'parameters.entityType',
@@ -93,7 +93,6 @@ export default defineAction({
     const data = {
       channel_id: $.step.parameters.channel_id,
       name: $.step.parameters.name,
-      scheduled_start_time: $.step.parameters.scheduledStartTime,
       scheduled_end_time: $.step.parameters.scheduledEndTime,
       description: $.step.parameters.description,
       entity_type: $.step.parameters.entityType,
@@ -108,6 +107,10 @@ export default defineAction({
       };
 
       data.channel_id = null;
+    }
+
+    if ($.step.parameters.scheduledStartTime) {
+      data.scheduled_start_time = $.step.parameters.scheduledStartTime;
     }
 
     const response = await $.http?.patch(

@@ -1,7 +1,7 @@
 import listExternalScheduledEventFields from './list-external-scheduled-event-fields/index.js';
-import listScheduledEventFieldsForChange from './list-scheduled-event-fields-for-change/index.js';
+import listScheduledEventFieldsForUpdate from './list-scheduled-event-fields-for-update/index.js';
 
 export default [
   listExternalScheduledEventFields,
-  listScheduledEventFieldsForChange,
+  listScheduledEventFieldsForUpdate,
 ];
