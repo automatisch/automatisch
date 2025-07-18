@@ -66,7 +66,7 @@ export class TemplatesPage extends AuthenticatedPage {
     const connection = await createConnection(request, token, 'postgresql', {
       formattedData: {
         version: '14.5',
-        host: 'postgres',
+        host: process.env.POSTGRES_HOST,
         port: '5432',
         enableSsl: 'false',
         database: process.env.POSTGRES_DATABASE,
