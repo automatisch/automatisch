@@ -11,7 +11,7 @@ import Router from 'components/Router';
 import routes from './routes';
 
 // Sets the default locale to English for all luxon DateTime instances created afterwards.
-Settings.defaultLocale = 'en';
+Settings.defaultLocale = (navigator.language || 'en-US').split('-')[0];
 
 const container = document.getElementById('root');
 const root = createRoot(container);

@@ -110,6 +110,7 @@ function FormEditor({
                     name: '',
                     type: 'string',
                     options: [{ value: '' }],
+                    fields: [],
                     required: false,
                     readonly: false,
                   })

@@ -15,9 +15,81 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
     "fields": {
       "items": {
         "properties": {
+          "fields": {
+            "items": {
+              "properties": {
+                "key": {
+                  "minLength": 1,
+                  "type": "string",
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string",
+                },
+                "options": {
+                  "type": "array",
+                },
+                "readonly": {
+                  "type": "boolean",
+                },
+                "required": {
+                  "type": "boolean",
+                },
+                "type": {
+                  "enum": [
+                    "checkbox",
+                    "date",
+                    "datetime",
+                    "dropdown",
+                    "multiline",
+                    "string",
+                    "time",
+                  ],
+                  "type": "string",
+                },
+                "validationFormat": {
+                  "enum": [
+                    null,
+                    "",
+                    "alphanumeric",
+                    "custom",
+                    "email",
+                    "number",
+                    "tel",
+                    "url",
+                  ],
+                  "type": [
+                    "string",
+                    "null",
+                  ],
+                },
+                "validationHelperText": {
+                  "type": "string",
+                },
+                "validationPattern": {
+                  "type": "string",
+                },
+              },
+              "required": [
+                "key",
+                "name",
+                "type",
+              ],
+              "type": "object",
+            },
+            "type": "array",
+          },
           "key": {
             "minLength": 1,
             "type": "string",
+          },
+          "maxItems": {
+            "minimum": 1,
+            "type": "integer",
+          },
+          "minItems": {
+            "minimum": 0,
+            "type": "integer",
           },
           "name": {
             "minLength": 1,
@@ -34,26 +106,27 @@ exports[`Form model > jsonSchema should have correct validations 1`] = `
           },
           "type": {
             "enum": [
-              "string",
+              "array",
               "checkbox",
+              "date",
+              "datetime",
               "dropdown",
               "multiline",
-              "date",
+              "string",
               "time",
-              "datetime",
             ],
             "type": "string",
           },
           "validationFormat": {
             "enum": [
-              "email",
-              "url",
-              "tel",
-              "number",
-              "alphanumeric",
-              "custom",
               null,
               "",
+              "alphanumeric",
+              "custom",
+              "email",
+              "number",
+              "tel",
+              "url",
             ],
             "type": [
               "string",

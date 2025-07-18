@@ -20,6 +20,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import ArrayField from './components/ArrayField';
 
 import useFlowForm from 'hooks/useFlowForm.ee';
 import useCreateFormSubmission from 'hooks/useCreateFormSubmission.ee';
@@ -36,6 +37,37 @@ export default function FormFlow() {
     isSuccess,
     data: submissionResult,
   } = useCreateFormSubmission(flow?.data.webhookUrl);
+
+  // Get user's locale from browser
+  const userLocale = navigator.language || 'en-US';
+
+  // Get locale-specific date/time formats
+  const getDateFormat = () => {
+    // Common locale formats
+    const formats = {
+      'en-US': 'MM/dd/yyyy',
+      'en-GB': 'dd/MM/yyyy',
+      de: 'dd.MM.yyyy',
+      fr: 'dd/MM/yyyy',
+      es: 'dd/MM/yyyy',
+      it: 'dd/MM/yyyy',
+      pt: 'dd/MM/yyyy',
+      ja: 'yyyy/MM/dd',
+      zh: 'yyyy/MM/dd',
+      ko: 'yyyy/MM/dd',
+    };
+    return (
+      formats[userLocale] || formats[userLocale.split('-')[0]] || 'MM/dd/yyyy'
+    );
+  };
+
+  const getTimeFormat = () => {
+    // Check if locale uses 24-hour format
+    const uses24Hour = !new Intl.DateTimeFormat(userLocale, { hour: 'numeric' })
+      .format(new Date())
+      .includes('AM');
+    return uses24Hour ? 'HH:mm' : 'hh:mm a';
+  };
 
   // Helper function to get input type based on validation format
   const getInputType = (validationFormat) => {
@@ -117,9 +149,40 @@ export default function FormFlow() {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-    const formDataObject = Object.fromEntries(formData.entries());
+    const formDataObject = {};
 
-    const data = { ...searchParamsObject, ...formDataObject };
+    // Get array field keys for quick lookup
+    const arrayFieldKeys = new Set(
+      formFields?.filter((f) => f.type === 'array').map((f) => f.key) || [],
+    );
+
+    // Process form data
+    for (const [key, value] of formData.entries()) {
+      const [fieldName, index, subfieldKey] = key.split('.');
+
+      if (subfieldKey && arrayFieldKeys.has(fieldName)) {
+        // Handle array field entry
+        formDataObject[fieldName] = formDataObject[fieldName] || [];
+        formDataObject[fieldName][index] =
+          formDataObject[fieldName][index] || {};
+        formDataObject[fieldName][index][subfieldKey] = value;
+      } else if (!arrayFieldKeys.has(key)) {
+        // Handle regular field
+        formDataObject[key] = value;
+      }
+    }
+
+    // Merge with search params, excluding array field dotted notation
+    const data = Object.entries(searchParamsObject).reduce(
+      (acc, [key, value]) => {
+        const [fieldName] = key.split('.');
+        if (!key.includes('.') || !arrayFieldKeys.has(fieldName)) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      formDataObject,
+    );
 
     createFormSubmission(data, {
       onSuccess: (result) => {
@@ -137,7 +200,7 @@ export default function FormFlow() {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterLuxon}>
+    <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={userLocale}>
       <CssVarsProvider theme={joyTheme}>
         <Box sx={{ display: 'flex', flex: 1, alignItems: 'center' }}>
           <Container maxWidth="sm">
@@ -171,6 +234,9 @@ export default function FormFlow() {
                   validationFormat,
                   validationPattern,
                   validationHelperText,
+                  fields,
+                  minItems,
+                  maxItems,
                 }) => (
                   <React.Fragment key={key}>
                     {type === 'string' && (
@@ -257,6 +323,7 @@ export default function FormFlow() {
                           <DatePicker
                             defaultValue={searchParamsObject[key] || null}
                             disabled={readonly}
+                            format={getDateFormat()}
                             slotProps={{
                               textField: {
                                 name: key,
@@ -303,6 +370,7 @@ export default function FormFlow() {
                           <TimePicker
                             defaultValue={searchParamsObject[key] || null}
                             disabled={readonly}
+                            format={getTimeFormat()}
                             slotProps={{
                               textField: {
                                 name: key,
@@ -349,6 +417,7 @@ export default function FormFlow() {
                           <DateTimePicker
                             defaultValue={searchParamsObject[key] || null}
                             disabled={readonly}
+                            format={`${getDateFormat()} ${getTimeFormat()}`}
                             slotProps={{
                               textField: {
                                 name: key,
@@ -385,6 +454,21 @@ export default function FormFlow() {
                             }}
                           />
                         </ThemeProvider>
+                      </FormControl>
+                    )}
+
+                    {type === 'array' && (
+                      <FormControl required={required} disabled={readonly}>
+                        <FormLabel>{name}</FormLabel>
+                        <ArrayField
+                          name={key}
+                          fields={fields}
+                          minItems={minItems}
+                          maxItems={maxItems}
+                          searchParamsObject={searchParamsObject}
+                          dateFormat={getDateFormat()}
+                          timeFormat={getTimeFormat()}
+                        />
                       </FormControl>
                     )}
                   </React.Fragment>
