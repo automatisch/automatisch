@@ -27,6 +27,7 @@ describe('flowSerializer', () => {
       name: flow.name,
       active: flow.active,
       status: flow.status,
+      executionInterval: flow.executionInterval,
       createdAt: flow.createdAt.getTime(),
       updatedAt: flow.updatedAt.getTime(),
     };

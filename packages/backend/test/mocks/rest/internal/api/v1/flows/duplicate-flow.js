@@ -4,6 +4,7 @@ const duplicateFlowMock = async (flow, steps = []) => {
     id: flow.id,
     name: flow.name,
     status: flow.active ? 'published' : 'draft',
+    executionInterval: flow.executionInterval,
     createdAt: flow.createdAt.getTime(),
     updatedAt: flow.updatedAt.getTime(),
   };
