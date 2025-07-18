@@ -1,6 +1,6 @@
 export default async (request, response) => {
-  await request.currentUser
-    .$relatedQuery('connections')
+  await request.currentUser.manageableConnections
+    .clone()
     .delete()
     .findOne({
       id: request.params.connectionId,
