@@ -1,6 +1,7 @@
 import base64ToString from './text/base64-to-string.js';
 import capitalize from './text/capitalize.js';
 import encodeUriComponent from './text/encode-uri-component.js';
+import decodeHtmlEntities from './text/decode-html-entities.js';
 import extractEmailAddress from './text/extract-email-address.js';
 import extractNumber from './text/extract-number.js';
 import htmlToMarkdown from './text/html-to-markdown.js';
@@ -23,6 +24,7 @@ const options = {
   base64ToString,
   capitalize,
   encodeUriComponent,
+  decodeHtmlEntities,
   extractEmailAddress,
   extractNumber,
   htmlToMarkdown,
