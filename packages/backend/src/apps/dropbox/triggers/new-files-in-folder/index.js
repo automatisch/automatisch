@@ -37,7 +37,7 @@ export default defineTrigger({
       const { data } = await $.http.post(endpoint, params);
 
       if (data.has_more) {
-        endpoint += '/continue';
+        endpoint = '/2/files/list_folder/continue';
         params.cursor = data.cursor;
         next = data.has_more;
       } else {
