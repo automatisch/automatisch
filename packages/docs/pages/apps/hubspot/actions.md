@@ -2,7 +2,9 @@
 favicon: /favicons/hubspot.svg
 items:
   - name: Create a contact
-    desc: Create a contact on user's account.
+    desc: Creates a contact.
+  - name: Update contact
+    desc: Updates an existing contact.
 ---
 
 <script setup>
