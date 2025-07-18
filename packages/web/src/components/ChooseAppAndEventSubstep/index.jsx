@@ -9,6 +9,10 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 import useFormatMessage from 'hooks/useFormatMessage';
 import useApps from 'hooks/useApps';
@@ -17,6 +21,8 @@ import FlowSubstepTitle from 'components/FlowSubstepTitle';
 import { StepPropType, SubstepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
 import useActions from 'hooks/useActions';
+import useFlow from 'hooks/useFlow';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
 
 const optionGenerator = (app) => ({
   label: app.name,
@@ -40,7 +46,9 @@ function ChooseAppAndEventSubstep(props) {
     onCollapse,
     step,
     onSubmit,
-    onChange,
+    onStepChange,
+    onFlowChange,
+    flowId,
   } = props;
   const formatMessage = useFormatMessage();
   const editorContext = React.useContext(EditorContext);
@@ -48,6 +56,11 @@ function ChooseAppAndEventSubstep(props) {
   const isTrigger = step.type === 'trigger';
   const isAction = step.type === 'action';
   const useAppsOptions = {};
+
+  const { data: flow } = useFlow(flowId);
+  const { data: automatischInfo } = useAutomatischInfo();
+  const isEnterprise = automatischInfo?.data?.isEnterprise;
+  const executionIntervalOptions = [1, 2, 5, 10, 15, 30, 60];
 
   if (isTrigger) {
     useAppsOptions.onlyWithTriggers = true;
@@ -97,18 +110,16 @@ function ChooseAppAndEventSubstep(props) {
         const eventLabel = selectedOption?.label;
 
         if (step.key !== eventKey) {
-          onChange({
-            step: {
-              ...step,
-              key: eventKey,
-              keyLabel: eventLabel,
-              parameters: {},
-            },
+          onStepChange({
+            ...step,
+            key: eventKey,
+            keyLabel: eventLabel,
+            parameters: {},
           });
         }
       }
     },
-    [step, onChange],
+    [step, onStepChange],
   );
 
   const onAppChange = React.useCallback(
@@ -117,14 +128,12 @@ function ChooseAppAndEventSubstep(props) {
         const appKey = selectedOption?.value;
 
         if (step.appKey !== appKey) {
-          onChange({
-            step: {
-              ...step,
-              key: '',
-              appKey,
-              parameters: {},
-              connection: { id: null },
-            },
+          onStepChange({
+            ...step,
+            key: '',
+            appKey,
+            parameters: {},
+            connection: { id: null },
           });
           await queryClient.invalidateQueries({
             queryKey: ['steps', step.id, 'connection'],
@@ -132,7 +141,19 @@ function ChooseAppAndEventSubstep(props) {
         }
       }
     },
-    [step, onChange],
+    [step, onStepChange, queryClient],
+  );
+
+  const onExecutionIntervalChange = React.useCallback(
+    (event) => {
+      const newInterval = event.target.value;
+      if (onFlowChange) {
+        onFlowChange({
+          executionInterval: newInterval,
+        });
+      }
+    },
+    [onFlowChange],
   );
 
   const onToggle = expanded ? onCollapse : onExpand;
@@ -145,11 +166,7 @@ function ChooseAppAndEventSubstep(props) {
         title={name}
         valid={valid}
       />
-      <Collapse
-        in={expanded}
-        timeout={0}
-        unmountOnExit
-      >
+      <Collapse in={expanded} timeout={0} unmountOnExit>
         <ListItem
           sx={{
             pt: 2,
@@ -243,15 +260,39 @@ function ChooseAppAndEventSubstep(props) {
           )}
 
           {isTrigger && selectedActionOrTrigger?.pollInterval && (
-            <TextField
-              label={formatMessage('flowEditor.pollIntervalLabel')}
-              value={formatMessage('flowEditor.pollIntervalValue', {
-                minutes: selectedActionOrTrigger?.pollInterval,
-              })}
-              sx={{ mt: 2 }}
-              fullWidth
-              disabled
-            />
+            <>
+              {isEnterprise && !editorContext.readOnly ? (
+                <FormControl fullWidth sx={{ mt: 2 }}>
+                  <InputLabel id="execution-interval-label">
+                    {formatMessage('flowEditor.pollIntervalLabel')}
+                  </InputLabel>
+                  <Select
+                    labelId="execution-interval-label"
+                    value={flow?.data?.executionInterval || 15}
+                    onChange={onExecutionIntervalChange}
+                    label={formatMessage('flowEditor.pollIntervalLabel')}
+                  >
+                    {executionIntervalOptions.map((interval) => (
+                      <MenuItem key={interval} value={interval}>
+                        {formatMessage('flowEditor.pollIntervalValue', {
+                          minutes: interval,
+                        })}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ) : (
+                <TextField
+                  label={formatMessage('flowEditor.pollIntervalLabel')}
+                  value={formatMessage('flowEditor.pollIntervalValue', {
+                    minutes: flow?.data?.executionInterval || 15,
+                  })}
+                  sx={{ mt: 2 }}
+                  fullWidth
+                  disabled
+                />
+              )}
+            </>
           )}
 
           <Button
@@ -277,7 +318,9 @@ ChooseAppAndEventSubstep.propTypes = {
   onCollapse: PropTypes.func.isRequired,
   step: StepPropType.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onStepChange: PropTypes.func.isRequired,
+  onFlowChange: PropTypes.func,
+  flowId: PropTypes.string.isRequired,
 };
 
 export default ChooseAppAndEventSubstep;

@@ -4,6 +4,7 @@ const updateFlowMock = async (flow) => {
     active: flow.active,
     name: flow.name,
     status: flow.status,
+    executionInterval: flow.executionInterval,
     createdAt: flow.createdAt.getTime(),
     updatedAt: flow.updatedAt.getTime(),
   };

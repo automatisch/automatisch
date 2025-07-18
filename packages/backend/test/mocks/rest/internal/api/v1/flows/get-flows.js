@@ -7,6 +7,7 @@ const getFlowsMock = async (flows, steps) => {
       id: flow.id,
       name: flow.name,
       status: flow.active ? 'published' : 'draft',
+      executionInterval: flow.executionInterval,
       createdAt: flow.createdAt.getTime(),
       updatedAt: flow.updatedAt.getTime(),
       steps: flowSteps.map((step) => ({

@@ -4,6 +4,7 @@ const getFlowMock = async (flow, steps = [], currentUserId) => {
     id: flow.id,
     name: flow.name,
     status: flow.active ? 'published' : 'draft',
+    executionInterval: flow.executionInterval,
     isOwner: flow.userId === currentUserId,
     createdAt: flow.createdAt.getTime(),
     updatedAt: flow.updatedAt.getTime(),
