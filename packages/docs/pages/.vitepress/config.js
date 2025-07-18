@@ -184,6 +184,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Firebase',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/firebase/actions' },
+            { text: 'Triggers', link: '/apps/firebase/triggers' },
+            { text: 'Connection', link: '/apps/firebase/connection' },
+          ],
+        },
+        {
           text: 'Flickr',
           collapsible: true,
           collapsed: true,

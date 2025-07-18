@@ -20,6 +20,7 @@ exports[`App model > list > should exclude enterprise apps when license is not v
   "disqus",
   "dropbox",
   "filter",
+  "firebase",
   "flickr",
   "flowers-software",
   "formatter",
