@@ -52,7 +52,12 @@ export default function SplitButton(props) {
         </Button>
 
         {multiOptions && (
-          <Button size="small" onClick={handleToggle} sx={{ borderRadius: 0 }}>
+          <Button
+            data-test="multi-option-button"
+            size="small"
+            onClick={handleToggle}
+            sx={{ borderRadius: 0 }}
+          >
             <ArrowDropDownIcon />
           </Button>
         )}
@@ -76,6 +81,7 @@ export default function SplitButton(props) {
                   <MenuList autoFocusItem>
                     {options.map((option, index) => (
                       <MenuItem
+                        data-test={selectedOption['data-test']}
                         key={option.key}
                         selected={index === defaultActionIndex}
                         component={Link}

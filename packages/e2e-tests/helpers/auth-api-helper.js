@@ -1,4 +1,4 @@
-const { expect } = require('../fixtures/index');
+import { expect } from '../fixtures/index';
 
 export const getToken = async (
   apiRequest,

@@ -1,4 +1,5 @@
 const { AuthenticatedPage } = require('./authenticated-page');
+const { TemplatesModal } = require('../fixtures/templates/templates-modal');
 
 export class FlowsPage extends AuthenticatedPage {
   constructor(page) {
@@ -8,6 +9,7 @@ export class FlowsPage extends AuthenticatedPage {
     this.flowRow = page.getByTestId('flow-row');
     this.importFlowButton = page.getByTestId('import-flow-button');
     this.createFlowButton = page.getByTestId('create-flow-button');
+    this.multiOptionButton = page.getByTestId('multi-option-button');
     this.uncategorizedFlowsFolder = page.getByTestId(
       'uncategorized-flows-folder'
     );
@@ -23,5 +25,23 @@ export class FlowsPage extends AuthenticatedPage {
     //flow actions
     this.moveTo = page.getByTestId('move-to');
     this.delete = page.getByTestId('delete-flow');
+    this.useAsTemplate = page.getByRole('menuitem', {
+      name: 'Use as template',
+    });
+
+    this.templatesModal = new TemplatesModal(page);
+    this.createFromTemplateButton = page.getByRole('menuitem', {
+      name: 'Create from template',
+    });
+    this.useAsTemplateMenuItem = page.getByRole('menuitem', {
+      name: 'Use as template',
+    });
+  }
+
+  async createTemplateFromFlow(flowId, templateName) {
+    await this.flowRow.filter({ hasText: flowId }).getByRole('button').click();
+    await this.useAsTemplateMenuItem.click();
+    await this.templatesModal.templateNameInput.fill(templateName);
+    await this.templatesModal.createButton.click();
   }
 }

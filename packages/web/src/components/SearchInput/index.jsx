@@ -17,6 +17,7 @@ export default function SearchInput({ onChange, value }) {
       </InputLabel>
 
       <OutlinedInput
+        data-test="search-input"
         value={value}
         id="search-input"
         type="text"

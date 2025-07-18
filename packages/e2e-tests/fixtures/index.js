@@ -1,16 +1,17 @@
-const { test, expect } = require('@playwright/test');
-const { ApplicationsPage } = require('./applications-page');
-const { ConnectionsPage } = require('./connections-page');
-const { ExecutionsPage } = require('./executions-page');
-const { ExecutionDetailsPage } = require('./execution-details-page');
-const { FlowEditorPage } = require('./flow-editor-page');
-const { UserInterfacePage } = require('./user-interface-page');
-const { LoginPage } = require('./login-page');
-const { AcceptInvitation } = require('./accept-invitation-page');
-const { adminFixtures } = require('./admin');
-const { AdminSetupPage } = require('./admin-setup-page');
-const { AdminCreateUserPage } = require('./admin/create-user-page');
-const { FlowsPage } = require('./flows-page');
+import { test, expect } from '@playwright/test';
+import { ApplicationsPage } from './applications-page';
+import { ConnectionsPage } from './connections-page';
+import { ExecutionsPage } from './executions-page';
+import { ExecutionDetailsPage } from './execution-details-page';
+import { FlowEditorPage } from './flow-editor-page';
+import { UserInterfacePage } from './user-interface-page';
+import { LoginPage } from './login-page';
+import { AcceptInvitation } from './accept-invitation-page';
+import { adminFixtures } from './admin';
+import { AdminSetupPage } from './admin-setup-page';
+import { AdminCreateUserPage } from './admin/create-user-page';
+import { FlowsPage } from './flows-page';
+import { TemplatesPage } from './templates/templates-page';
 
 exports.test = test.extend({
   page: async ({ page }, use) => {
@@ -39,6 +40,9 @@ exports.test = test.extend({
   },
   flowsPage: async ({ page }, use) => {
     await use(new FlowsPage(page));
+  },
+  templatesPage: async ({ page }, use) => {
+    await use(new TemplatesPage(page));
   },
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));

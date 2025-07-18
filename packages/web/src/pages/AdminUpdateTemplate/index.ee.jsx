@@ -47,6 +47,7 @@ function AdminUpdateTemplatePage() {
             <Form onSubmit={handleFormSubmit} defaultValues={template?.data}>
               <Stack direction="column" gap={2}>
                 <TextField
+                  data-test="template-name-input"
                   name="name"
                   label={formatMessage('adminUpdateTemplate.titleFieldLabel')}
                   fullWidth
@@ -68,7 +69,7 @@ function AdminUpdateTemplatePage() {
             </Form>
           )}
           {(isTemplateError || isUpdateTemplateError) && (
-            <Alert severity="error" sx={{ mt: 3 }}>
+            <Alert severity="error" sx={{ mt: 3 }} data-test="update-alert">
               {templateError?.message ||
                 updateTemplateError?.message ||
                 formatMessage('genericError')}

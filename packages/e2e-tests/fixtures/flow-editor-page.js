@@ -102,4 +102,21 @@ export class FlowEditorPage extends AuthenticatedPage {
     await expect(this.testOutput).toBeVisible();
     await this.continueButton.click();
   }
+
+  async expectWebhookWorkSynchronouslyParameterToHaveValue(value) {
+    await expect(
+      this.page
+        .getByTestId('parameters.workSynchronously-autocomplete')
+        .first()
+        .getByRole('combobox')
+    ).toHaveValue(value);
+  }
+
+  async expectQueryStatementToHaveText(desiredText) {
+    await expect(
+      this.page
+        .getByTestId('parameters.queryStatement-power-input')
+        .getByRole('textbox')
+    ).toHaveText(desiredText);
+  }
 }
