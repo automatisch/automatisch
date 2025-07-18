@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
@@ -53,6 +53,48 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
     expect(response.body).toStrictEqual(expectedPayload);
   });
 
+  it('should return the updated flow data of current user in enterprise', async () => {
+    vi.spyOn(
+      await import('@/helpers/license.ee.js'),
+      'hasValidLicense'
+    ).mockResolvedValue(true);
+
+    const currentUserFlow = await createFlow({ userId: currentUser.id });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    await createPermission({
+      action: 'manage',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: ['isCreator'],
+    });
+
+    const response = await request(app)
+      .patch(`/internal/api/v1/flows/${currentUserFlow.id}`)
+      .set('Authorization', token)
+      .send({
+        name: 'Updated flow',
+        executionInterval: 1,
+      })
+      .expect(200);
+
+    const refetchedCurrentUserFlow = await currentUserFlow.$query();
+
+    const expectedPayload = await updateFlowMock({
+      ...refetchedCurrentUserFlow,
+      name: 'Updated flow',
+      executionInterval: 1,
+    });
+
+    expect(response.body).toStrictEqual(expectedPayload);
+  });
+
   it('should return the updated flow data of another user', async () => {
     const anotherUser = await createUser();
     const anotherUserFlow = await createFlow({ userId: anotherUser.id });
@@ -84,6 +126,49 @@ describe('PATCH /internal/api/v1/flows/:flowId', () => {
     const expectedPayload = await updateFlowMock({
       ...refetchedAnotherUserFlow,
       name: 'Updated flow',
+    });
+
+    expect(response.body).toStrictEqual(expectedPayload);
+  });
+
+  it('should return the updated flow data of another user in enterprise', async () => {
+    vi.spyOn(
+      await import('@/helpers/license.ee.js'),
+      'hasValidLicense'
+    ).mockResolvedValue(true);
+
+    const anotherUser = await createUser();
+    const anotherUserFlow = await createFlow({ userId: anotherUser.id });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: [],
+    });
+
+    await createPermission({
+      action: 'manage',
+      subject: 'Flow',
+      roleId: currentUserRole.id,
+      conditions: [],
+    });
+
+    const response = await request(app)
+      .patch(`/internal/api/v1/flows/${anotherUserFlow.id}`)
+      .set('Authorization', token)
+      .send({
+        name: 'Updated flow',
+        executionInterval: 1,
+      })
+      .expect(200);
+
+    const refetchedAnotherUserFlow = await anotherUserFlow.$query();
+
+    const expectedPayload = await updateFlowMock({
+      ...refetchedAnotherUserFlow,
+      name: 'Updated flow',
+      executionInterval: 1,
     });
 
     expect(response.body).toStrictEqual(expectedPayload);

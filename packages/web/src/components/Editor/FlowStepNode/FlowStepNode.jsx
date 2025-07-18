@@ -13,6 +13,7 @@ function FlowStepNode({ data: { collapsed, laidOut }, id }) {
     onStepOpen,
     onStepClose,
     onStepChange,
+    onFlowChange,
     onStepDelete,
     flowId,
     steps,
@@ -40,7 +41,8 @@ function FlowStepNode({ data: { collapsed, laidOut }, id }) {
             collapsed={collapsed}
             onOpen={() => onStepOpen(step.id)}
             onClose={onStepClose}
-            onChange={onStepChange}
+            onStepChange={onStepChange}
+            onFlowChange={onFlowChange}
             flowId={flowId}
             onContinue={() => openNextStep(step.id)}
             onDelete={onStepDelete}

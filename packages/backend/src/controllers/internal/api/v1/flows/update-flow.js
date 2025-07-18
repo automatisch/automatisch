@@ -9,6 +9,7 @@ export default async (request, response) => {
 
   await flow.$query().patchAndFetch({
     name: request.body.name,
+    executionInterval: request.body.executionInterval,
   });
 
   renderObject(response, flow);

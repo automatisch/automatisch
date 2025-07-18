@@ -12,6 +12,19 @@ exports[`Flow model > jsonSchema should have correct validations 1`] = `
     "deletedAt": {
       "type": "string",
     },
+    "executionInterval": {
+      "default": 15,
+      "enum": [
+        1,
+        2,
+        5,
+        10,
+        15,
+        30,
+        60,
+      ],
+      "type": "integer",
+    },
     "folderId": {
       "format": "uuid",
       "type": [

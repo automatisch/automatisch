@@ -10,9 +10,10 @@ export default function useUpdateFlow(flowId) {
 
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['flows', flowId],
+        exact: true,
       });
     },
   });

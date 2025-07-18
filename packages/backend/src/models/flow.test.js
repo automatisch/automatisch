@@ -577,6 +577,127 @@ describe('Flow model', () => {
     });
   });
 
+  describe('getExecutionIntervalAsCron', () => {
+    it('should return 15 minute cron pattern when no license is valid', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(false);
+
+      const flow = await createFlow({ executionInterval: 5 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('*/15 * * * *');
+    });
+
+    it('should return 1 minute cron pattern when license is valid and interval is 1', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 1 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('* * * * *');
+    });
+
+    it('should return 2 minute cron pattern when license is valid and interval is 2', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 2 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('*/2 * * * *');
+    });
+
+    it('should return 5 minute cron pattern when license is valid and interval is 5', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 5 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('*/5 * * * *');
+    });
+
+    it('should return 10 minute cron pattern when license is valid and interval is 10', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 10 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('*/10 * * * *');
+    });
+
+    it('should return 15 minute cron pattern when license is valid and interval is 15', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 15 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('*/15 * * * *');
+    });
+
+    it('should return 30 minute cron pattern when license is valid and interval is 30', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 30 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('*/30 * * * *');
+    });
+
+    it('should return 60 minute cron pattern when license is valid and interval is 60', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 60 });
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('0 * * * *');
+    });
+
+    it('should return 15 minute cron pattern when executionInterval is null', async () => {
+      vi.spyOn(
+        await import('@/helpers/license.ee.js'),
+        'hasValidLicense'
+      ).mockResolvedValue(true);
+
+      // Create flow without executionInterval to avoid validation issues
+      const flow = await createFlow();
+      flow.executionInterval = null;
+
+      const result = await flow.getExecutionIntervalAsCron();
+
+      expect(result).toBe('*/15 * * * *');
+    });
+  });
+
   describe('throwIfHavingIncompleteSteps', () => {
     it('should throw validation error with incomplete steps', async () => {
       const flow = await createFlow();
@@ -779,6 +900,87 @@ describe('Flow model', () => {
     });
   });
 
+  describe('assignExecutionInterval', () => {
+    it('should not change interval when executionInterval is 15', async () => {
+      const flow = await createFlow({ executionInterval: 15 });
+
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(false);
+
+      await flow.assignExecutionInterval();
+
+      expect(hasValidLicenseSpy).not.toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(15);
+    });
+
+    it('should not change interval when executionInterval is null', async () => {
+      const flow = await createFlow();
+      flow.executionInterval = null;
+
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(false);
+
+      await flow.assignExecutionInterval();
+
+      expect(hasValidLicenseSpy).not.toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(null);
+    });
+
+    it('should reset interval to 15 when no valid license and interval is custom', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(false);
+
+      const flow = await createFlow({ executionInterval: 5 });
+
+      await flow.assignExecutionInterval();
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(15);
+    });
+
+    it('should keep custom interval when valid license exists', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 5 });
+
+      await flow.assignExecutionInterval();
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(5);
+    });
+
+    it('should reset interval to 15 when no valid license and interval is 1', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(false);
+
+      const flow = await createFlow({ executionInterval: 1 });
+
+      await flow.assignExecutionInterval();
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(15);
+    });
+
+    it('should reset interval to 15 when no valid license and interval is 60', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(false);
+
+      const flow = await createFlow({ executionInterval: 60 });
+
+      await flow.assignExecutionInterval();
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(15);
+    });
+  });
+
   describe('$beforeUpdate', () => {
     it('should invoke throwIfHavingIncompleteSteps when flow is becoming active', async () => {
       const flow = await createFlow({ active: false });
@@ -856,6 +1058,92 @@ describe('Flow model', () => {
       await flow.$query().patch({ active: false });
 
       expect(telemetryFlowUpdatedSpy).toHaveBeenCalled({});
+    });
+  });
+
+  describe('$beforeInsert with execution interval', () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it('should call assignExecutionInterval during insert', async () => {
+      const assignExecutionIntervalSpy = vi
+        .spyOn(Flow.prototype, 'assignExecutionInterval')
+        .mockImplementation(() => {});
+
+      await createFlow({ executionInterval: 5 });
+
+      expect(assignExecutionIntervalSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should reset custom interval to 15 when no valid license during insert', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(false);
+
+      const flow = await createFlow({ executionInterval: 5 });
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(15);
+    });
+
+    it('should keep custom interval when valid license exists during insert', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 5 });
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(flow.executionInterval).toBe(5);
+    });
+  });
+
+  describe('$beforeUpdate with execution interval', () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it('should call assignExecutionInterval during update', async () => {
+      const flow = await createFlow({ executionInterval: 15 });
+
+      const assignExecutionIntervalSpy = vi
+        .spyOn(Flow.prototype, 'assignExecutionInterval')
+        .mockImplementation(() => {});
+
+      await flow.$query().patch({ executionInterval: 5 });
+
+      expect(assignExecutionIntervalSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should reset custom interval to 15 when no valid license during update', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(false);
+
+      const flow = await createFlow({ executionInterval: 15 });
+
+      const updatedFlow = await flow
+        .$query()
+        .patchAndFetch({ executionInterval: 5 });
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(updatedFlow.executionInterval).toBe(15);
+    });
+
+    it('should keep custom interval when valid license exists during update', async () => {
+      const hasValidLicenseSpy = vi
+        .spyOn(await import('@/helpers/license.ee.js'), 'hasValidLicense')
+        .mockResolvedValue(true);
+
+      const flow = await createFlow({ executionInterval: 15 });
+
+      const updatedFlow = await flow
+        .$query()
+        .patchAndFetch({ executionInterval: 5 });
+
+      expect(hasValidLicenseSpy).toHaveBeenCalled();
+      expect(updatedFlow.executionInterval).toBe(5);
     });
   });
 });

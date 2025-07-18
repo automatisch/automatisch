@@ -108,7 +108,15 @@ function generateValidationSchema(substeps) {
 }
 
 function FlowStep(props) {
-  const { collapsed, onChange, onContinue, onDelete, flowId, step } = props;
+  const {
+    collapsed,
+    onStepChange,
+    onContinue,
+    onDelete,
+    flowId,
+    step,
+    onFlowChange,
+  } = props;
   const editorContext = React.useContext(EditorContext);
   const contextButtonRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -175,10 +183,16 @@ function FlowStep(props) {
       : actionSubstepsData || [];
 
   const handleChange = React.useCallback(
-    async ({ step }) => {
-      await onChange(step);
+    async (changes) => {
+      if (changes.step) {
+        await onStepChange(changes.step);
+      }
+
+      if (changes.flow && onFlowChange) {
+        onFlowChange(changes.flow);
+      }
     },
-    [onChange],
+    [onStepChange, onFlowChange],
   );
 
   const expandNextStep = React.useCallback(() => {
@@ -192,7 +206,7 @@ function FlowStep(props) {
   };
 
   const handleStepNameChange = async (name) => {
-    await onChange({
+    await onStepChange({
       ...step,
       name,
     });
@@ -293,11 +307,7 @@ function FlowStep(props) {
         </Stack>
       </Header>
 
-      <Collapse
-        in={!collapsed}
-        unmountOnExit
-        timeout={0}
-      >
+      <Collapse in={!collapsed} unmountOnExit timeout={0}>
         <Content>
           <List>
             <StepExecutionsProvider value={stepWithTestExecutionsData}>
@@ -311,8 +321,10 @@ function FlowStep(props) {
                 onExpand={() => toggleSubstep(0)}
                 onCollapse={() => toggleSubstep(0)}
                 onSubmit={expandNextStep}
-                onChange={handleChange}
+                onStepChange={onStepChange}
+                onFlowChange={onFlowChange}
                 step={step}
+                flowId={flowId}
               />
 
               {actionOrTrigger &&
@@ -400,10 +412,11 @@ FlowStep.propTypes = {
   step: StepPropType.isRequired,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
-  onChange: PropTypes.func.isRequired,
+  onStepChange: PropTypes.func.isRequired,
   onContinue: PropTypes.func,
   onDelete: PropTypes.func,
   flowId: PropTypes.string.isRequired,
+  onFlowChange: PropTypes.func,
 };
 
 export default FlowStep;
