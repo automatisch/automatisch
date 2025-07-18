@@ -14,7 +14,7 @@ import useDuplicateFlow from 'hooks/useDuplicateFlow';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import useExportFlow from 'hooks/useExportFlow';
 import useFormatMessage from 'hooks/useFormatMessage';
-import useIsCurrentUserAdmin from 'hooks/useIsCurrentUserAdmin';
+import useIsCurrentUserEnterpriseAdmin from 'hooks/useIsCurrentUserEnterpriseAdmin';
 
 function ContextMenu(props) {
   const location = useLocation();
@@ -27,7 +27,7 @@ function ContextMenu(props) {
   const enqueueSnackbar = useEnqueueSnackbar();
   const formatMessage = useFormatMessage();
   const queryClient = useQueryClient();
-  const isCurrentUserAdmin = useIsCurrentUserAdmin();
+  const isCurrentUserEnterpriseAdmin = useIsCurrentUserEnterpriseAdmin();
   const { mutateAsync: duplicateFlow } = useDuplicateFlow(flowId);
   const { mutateAsync: deleteFlow } = useDeleteFlow(flowId);
   const { mutateAsync: exportFlow } = useExportFlow(flowId);
@@ -138,7 +138,7 @@ function ContextMenu(props) {
           )}
         </Can>
 
-        {isCurrentUserAdmin && (
+        {isCurrentUserEnterpriseAdmin && (
           <Can I="manage" a="Flow" passThrough>
             {(allowed) => (
               <MenuItem disabled={!allowed} onClick={onCreateTemplate}>
