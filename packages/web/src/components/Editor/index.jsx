@@ -14,6 +14,7 @@ import { debounce } from 'lodash';
 
 import useUpdateStep from 'hooks/useUpdateStep';
 import useCreateStep from 'hooks/useCreateStep';
+import useUpdateFlow from 'hooks/useUpdateFlow';
 import { FlowPropType } from 'propTypes/propTypes';
 
 import { useScrollBoundaries } from './useScrollBoundaries';
@@ -38,6 +39,7 @@ const edgeTypes = {
 
 const Editor = ({ flow }) => {
   const { mutateAsync: updateStep } = useUpdateStep();
+  const { mutateAsync: updateFlow } = useUpdateFlow(flow?.id);
   const queryClient = useQueryClient();
 
   const [nodes, setNodes] = useState([]);
@@ -210,6 +212,13 @@ const Editor = ({ flow }) => {
     [updateStep, queryClient],
   );
 
+  const onFlowChange = useCallback(
+    async (flowData) => {
+      await updateFlow(flowData);
+    },
+    [updateFlow],
+  );
+
   useEffect(function initiateNodesAndEdges() {
     const newNodes = flow?.steps.map((step, index) => {
       return {
@@ -282,6 +291,7 @@ const Editor = ({ flow }) => {
         onStepOpen,
         onStepClose,
         onStepChange,
+        onFlowChange,
         onStepDelete,
         flowId: flow?.id,
         steps: flow?.steps,
