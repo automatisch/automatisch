@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Update contact',
   key: 'updateContact',
-  description: `Updates an existing contact on user's account.`,
+  description: 'Updates an existing contact.',
   arguments: [
     {
       label: 'Contact ID',
@@ -65,29 +65,29 @@ export default defineAction({
   ],
 
   async run($) {
-    const {
-      contactId,
-      company,
-      email,
-      firstName,
-      lastName,
-      phone,
-      website,
-      hubspotOwnerId,
-    } = $.step.parameters;
+    const contactId = $.step.parameters.contactId;
+    const company = $.step.parameters.company;
+    const email = $.step.parameters.email;
+    const firstName = $.step.parameters.firstName;
+    const lastName = $.step.parameters.lastName;
+    const phone = $.step.parameters.phone;
+    const website = $.step.parameters.website;
+    const hubspotOwnerId = $.step.parameters.hubspotOwnerId;
+
+    const properties = {};
+    if (company !== undefined) properties.company = company;
+    if (email !== undefined) properties.email = email;
+    if (firstName !== undefined) properties.firstname = firstName;
+    if (lastName !== undefined) properties.lastname = lastName;
+    if (phone !== undefined) properties.phone = phone;
+    if (website !== undefined) properties.website = website;
+    if (hubspotOwnerId !== undefined)
+      properties.hubspot_owner_id = hubspotOwnerId;
 
     const response = await $.http.patch(
-      `crm/v3/objects/contacts/${contactId}`,
+      `/crm/v3/objects/contacts/${contactId}`,
       {
-        properties: {
-          company,
-          email,
-          firstname: firstName,
-          lastname: lastName,
-          phone,
-          website,
-          hubspot_owner_id: hubspotOwnerId,
-        },
+        properties,
       }
     );
 

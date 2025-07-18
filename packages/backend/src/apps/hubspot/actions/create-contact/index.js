@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Create contact',
   key: 'createContact',
-  description: `Create contact on user's account.`,
+  description: `Creates a contact.`,
   arguments: [
     {
       label: 'Company name',
@@ -66,7 +66,7 @@ export default defineAction({
     const website = $.step.parameters.website;
     const hubspotOwnerId = $.step.parameters.hubspotOwnerId;
 
-    const response = await $.http.post(`crm/v3/objects/contacts`, {
+    const response = await $.http.post('/crm/v3/objects/contacts', {
       properties: {
         company,
         email,
