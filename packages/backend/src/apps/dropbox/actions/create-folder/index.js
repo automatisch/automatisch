@@ -24,15 +24,28 @@ export default defineAction({
       description: 'Enter the name for the new folder',
       variables: true,
     },
+    {
+      label: 'Auto Rename',
+      key: 'autorename',
+      type: 'dropdown',
+      required: false,
+      description: 'Automatically rename the folder if there is a conflict',
+      options: [
+        { label: 'No', value: false },
+        { label: 'Yes', value: true },
+      ],
+    },
   ],
 
   async run($) {
     const parentFolder = $.step.parameters.parentFolder;
     const folderName = $.step.parameters.folderName;
-    const folderPath = path.join(parentFolder, folderName);
+    const autorename = $.step.parameters.autorename;
+    const folderPath = path.posix.join(parentFolder, folderName);
 
     const response = await $.http.post('/2/files/create_folder_v2', {
       path: folderPath,
+      autorename,
     });
 
     $.setActionItem({ raw: response.data });
