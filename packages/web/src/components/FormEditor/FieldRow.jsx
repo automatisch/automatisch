@@ -34,6 +34,18 @@ function FieldRow({ index, remove, control }) {
     [validationFormat, index, setValue],
   );
 
+  React.useEffect(
+    function initializeFieldsForArrayType() {
+      if (fieldType === 'array') {
+        const currentFields = control._formValues.fields[index].fields;
+        if (!currentFields || !Array.isArray(currentFields)) {
+          setValue(`fields.${index}.fields`, []);
+        }
+      }
+    },
+    [fieldType, index, setValue, control],
+  );
+
   const fieldTypeOptions = [
     { label: formatMessage('formEditor.fieldTypeCheckbox'), value: 'checkbox' },
     { label: formatMessage('formEditor.fieldTypeDropdown'), value: 'dropdown' },
@@ -45,6 +57,7 @@ function FieldRow({ index, remove, control }) {
     { label: formatMessage('formEditor.fieldTypeDate'), value: 'date' },
     { label: formatMessage('formEditor.fieldTypeTime'), value: 'time' },
     { label: formatMessage('formEditor.fieldTypeDatetime'), value: 'datetime' },
+    { label: formatMessage('formEditor.fieldTypeArray'), value: 'array' },
   ];
 
   const {
@@ -54,6 +67,15 @@ function FieldRow({ index, remove, control }) {
   } = useFieldArray({
     control,
     name: `fields.${index}.options`,
+  });
+
+  const {
+    fields: arrayFields,
+    append: appendArrayField,
+    remove: removeArrayField,
+  } = useFieldArray({
+    control,
+    name: `fields.${index}.fields`,
   });
 
   return (
@@ -222,6 +244,198 @@ function FieldRow({ index, remove, control }) {
                       <IconButton
                         size="small"
                         onClick={() => appendOption({ value: '' })}
+                        sx={{ width: 40, height: 40 }}
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </Stack>
+                  </Stack>
+                </Box>
+              )}
+
+              {fieldType === 'array' && (
+                <Box sx={{ pl: 2, mt: 2 }}>
+                  <Typography variant="subtitle2" sx={{ mb: 2 }}>
+                    {formatMessage('formEditor.arrayConfiguration')}
+                  </Typography>
+                  <Stack spacing={2}>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                      <TextField
+                        name={`fields.${index}.minItems`}
+                        label={formatMessage('formEditor.minItems')}
+                        type="number"
+                        fullWidth
+                        defaultValue={0}
+                        inputProps={{ min: 0 }}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setValue(
+                            `fields.${index}.minItems`,
+                            value === '' ? undefined : parseInt(value, 10),
+                          );
+                        }}
+                      />
+                      <TextField
+                        name={`fields.${index}.maxItems`}
+                        label={formatMessage('formEditor.maxItems')}
+                        type="number"
+                        fullWidth
+                        defaultValue=""
+                        inputProps={{ min: 1 }}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setValue(
+                            `fields.${index}.maxItems`,
+                            value === '' ? undefined : parseInt(value, 10),
+                          );
+                        }}
+                      />
+                    </Stack>
+
+                    <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
+                      {formatMessage('formEditor.arrayFields')}
+                    </Typography>
+
+                    {arrayFields.map((field, fieldIndex) => (
+                      <Box
+                        key={field.id}
+                        sx={{
+                          p: 2,
+                          border: '1px solid',
+                          borderColor: 'divider',
+                          borderRadius: 1,
+                        }}
+                      >
+                        <Stack spacing={2}>
+                          <Stack
+                            direction={{ xs: 'column', sm: 'row' }}
+                            spacing={2}
+                          >
+                            <TextField
+                              required={true}
+                              name={`fields.${index}.fields.${fieldIndex}.name`}
+                              label={formatMessage('formEditor.fieldName')}
+                              fullWidth
+                            />
+                            <ControlledAutocomplete
+                              name={`fields.${index}.fields.${fieldIndex}.type`}
+                              fullWidth
+                              disablePortal
+                              disableClearable={true}
+                              options={[
+                                {
+                                  label: formatMessage(
+                                    'formEditor.fieldTypeString',
+                                  ),
+                                  value: 'string',
+                                },
+                                {
+                                  label: formatMessage(
+                                    'formEditor.fieldTypeCheckbox',
+                                  ),
+                                  value: 'checkbox',
+                                },
+                                {
+                                  label: formatMessage(
+                                    'formEditor.fieldTypeDropdown',
+                                  ),
+                                  value: 'dropdown',
+                                },
+                                {
+                                  label: formatMessage(
+                                    'formEditor.fieldTypeMultiline',
+                                  ),
+                                  value: 'multiline',
+                                },
+                                {
+                                  label: formatMessage(
+                                    'formEditor.fieldTypeDate',
+                                  ),
+                                  value: 'date',
+                                },
+                                {
+                                  label: formatMessage(
+                                    'formEditor.fieldTypeTime',
+                                  ),
+                                  value: 'time',
+                                },
+                                {
+                                  label: formatMessage(
+                                    'formEditor.fieldTypeDatetime',
+                                  ),
+                                  value: 'datetime',
+                                },
+                              ]}
+                              renderInput={(params) => (
+                                <MuiTextField
+                                  {...params}
+                                  label={formatMessage('formEditor.fieldType')}
+                                  required={true}
+                                />
+                              )}
+                            />
+                          </Stack>
+
+                          <Stack direction="row" spacing={2}>
+                            <FormControlLabel
+                              control={
+                                <ControlledCheckbox
+                                  name={`fields.${index}.fields.${fieldIndex}.required`}
+                                  defaultValue={false}
+                                />
+                              }
+                              label={formatMessage('formEditor.fieldRequired')}
+                            />
+                            <FormControlLabel
+                              control={
+                                <ControlledCheckbox
+                                  name={`fields.${index}.fields.${fieldIndex}.readonly`}
+                                  defaultValue={false}
+                                />
+                              }
+                              label={formatMessage('formEditor.fieldReadonly')}
+                            />
+                          </Stack>
+
+                          <Stack direction="row" justifyContent="flex-end">
+                            <IconButton
+                              size="small"
+                              onClick={() => removeArrayField(fieldIndex)}
+                              sx={{
+                                color: 'text.secondary',
+                                '&:hover': {
+                                  backgroundColor: 'error.light',
+                                  color: 'error.contrastText',
+                                },
+                              }}
+                            >
+                              <RemoveIcon />
+                            </IconButton>
+                          </Stack>
+                        </Stack>
+                      </Box>
+                    ))}
+
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      alignItems="center"
+                      sx={{ mt: 1 }}
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{ color: 'text.secondary' }}
+                      >
+                        {formatMessage('formEditor.addArrayField')}
+                      </Typography>
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          appendArrayField({
+                            name: '',
+                            type: 'string',
+                          })
+                        }
                         sx={{ width: 40, height: 40 }}
                       >
                         <AddIcon />
