@@ -171,7 +171,7 @@ export default function FormFlow() {
       <CssVarsProvider theme={joyTheme}>
         <CssBaseline />
 
-        <Box sx={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', pb: 5 }}>
           <Container maxWidth="sm">
             <Typography gutterBottom color="primary" level="h1">
               {flow.data.displayName}
