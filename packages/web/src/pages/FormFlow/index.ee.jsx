@@ -1,27 +1,26 @@
 import Box from '@mui/joy/Box';
 import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
-import Checkbox from '@mui/joy/Checkbox';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import Option from '@mui/joy/Option';
-import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
-import Textarea from '@mui/joy/Textarea';
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/joy/Typography';
 import Container from 'components/Container';
 import * as React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { useTheme, ThemeProvider } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import ArrayField from './components/ArrayField';
+import StringField from './components/StringField';
+import MultilineField from './components/MultilineField';
+import CheckboxField from './components/CheckboxField';
+import DropdownField from './components/DropdownField';
+import DateField from './components/DateField';
+import TimeField from './components/TimeField';
+import DateTimeField from './components/DateTimeField';
 
 import useFlowForm from 'hooks/useFlowForm.ee';
 import useCreateFormSubmission from 'hooks/useCreateFormSubmission.ee';
@@ -70,38 +69,6 @@ export default function FormFlow() {
     return uses24Hour ? 'HH:mm' : 'hh:mm a';
   };
 
-  // Helper function to get input type based on validation format
-  const getInputType = (validationFormat) => {
-    const typeMap = {
-      url: 'url',
-      tel: 'tel',
-      number: 'number',
-    };
-    return typeMap[validationFormat] || 'text';
-  };
-
-  // Helper function to get validation message
-  const getValidationMessage = (validationFormat, validationHelperText) => {
-    if (validationHelperText) return validationHelperText;
-
-    const messageMap = {
-      url: 'formFlow.invalidUrl',
-      tel: 'formFlow.invalidTel',
-      number: 'formFlow.invalidNumber',
-      alphanumeric: 'formFlow.invalidAlphanumeric',
-    };
-
-    const messageKey =
-      messageMap[validationFormat] || 'formFlow.invalidPattern';
-    return formatMessage(messageKey);
-  };
-
-  // Helper function to get pattern for validation
-  const getValidationPattern = (validationFormat, customPattern) => {
-    if (validationFormat === 'alphanumeric') return '[a-zA-Z0-9]+';
-    if (validationFormat === 'custom') return customPattern;
-    return undefined;
-  };
 
   const joyTheme = React.useMemo(
     () =>
@@ -243,221 +210,84 @@ export default function FormFlow() {
                 }) => (
                   <React.Fragment key={key}>
                     {type === 'string' && (
-                      <FormControl required={required} disabled={readonly}>
-                        <FormLabel>{name}</FormLabel>
-                        <Input
-                          name={key}
-                          defaultValue={searchParamsObject[key] || ''}
-                          required={required}
-                          disabled={readonly}
-                          type={getInputType(validationFormat)}
-                          onChange={(e) => {
-                            // Clear custom validity on change
-                            e.target.setCustomValidity('');
-                          }}
-                          slotProps={{
-                            input: {
-                              pattern: getValidationPattern(
-                                validationFormat,
-                                validationPattern,
-                              ),
-                              title: getValidationMessage(
-                                validationFormat,
-                                validationHelperText,
-                              ),
-                            },
-                          }}
-                        />
-                      </FormControl>
+                      <StringField
+                        name={key}
+                        label={name}
+                        defaultValue={searchParamsObject[key] || ''}
+                        required={required}
+                        readonly={readonly}
+                        validationFormat={validationFormat}
+                        validationPattern={validationPattern}
+                        validationHelperText={validationHelperText}
+                        onChange={(e) => {
+                          // Clear custom validity on change
+                          e.target.setCustomValidity('');
+                        }}
+                      />
                     )}
 
                     {type === 'multiline' && (
-                      <FormControl required={required} disabled={readonly}>
-                        <FormLabel>{name}</FormLabel>
-                        <Textarea
-                          name={key}
-                          defaultValue={searchParamsObject[key] || ''}
-                          minRows={3}
-                          required={required}
-                          disabled={readonly}
-                        />
-                      </FormControl>
+                      <MultilineField
+                        name={key}
+                        label={name}
+                        defaultValue={searchParamsObject[key] || ''}
+                        required={required}
+                        readonly={readonly}
+                      />
                     )}
 
                     {type === 'checkbox' && (
-                      <FormControl required={required} disabled={readonly}>
-                        <Checkbox
-                          name={key}
-                          label={`${name}${required ? ' *' : ''}`}
-                          defaultChecked={
-                            searchParamsObject[key] === 'true' ||
-                            searchParamsObject[key] === 'on'
-                          }
-                          value="true"
-                          required={required}
-                          disabled={readonly}
-                        />
-                      </FormControl>
+                      <CheckboxField
+                        name={key}
+                        label={name}
+                        defaultValue={searchParamsObject[key]}
+                        required={required}
+                        readonly={readonly}
+                      />
                     )}
 
                     {type === 'dropdown' && (
-                      <FormControl required={required} disabled={readonly}>
-                        <FormLabel>{name}</FormLabel>
-                        <Select
-                          name={key}
-                          defaultValue={searchParamsObject[key] || ''}
-                          placeholder={formatMessage('formFlow.chooseOption')}
-                          required={required}
-                          disabled={readonly}
-                        >
-                          {(options || []).map((option, index) => (
-                            <Option key={index} value={option.value}>
-                              {option.value}
-                            </Option>
-                          ))}
-                        </Select>
-                      </FormControl>
+                      <DropdownField
+                        name={key}
+                        label={name}
+                        options={options || []}
+                        defaultValue={searchParamsObject[key] || ''}
+                        required={required}
+                        readonly={readonly}
+                      />
                     )}
 
                     {type === 'date' && (
-                      <FormControl required={required} disabled={readonly}>
-                        <FormLabel>{name}</FormLabel>
-                        <ThemeProvider theme={materialTheme}>
-                          <DatePicker
-                            defaultValue={searchParamsObject[key] || null}
-                            disabled={readonly}
-                            format={getDateFormat()}
-                            slotProps={{
-                              textField: {
-                                name: key,
-                                required: required,
-                                fullWidth: true,
-                                size: 'small',
-                                sx: {
-                                  '& .MuiOutlinedInput-root': {
-                                    borderRadius: '8px',
-                                    backgroundColor: '#fff',
-                                    fontSize: '0.875rem',
-                                    '& fieldset': {
-                                      borderColor: 'rgba(0, 0, 0, 0.23)',
-                                      borderWidth: '1px',
-                                    },
-                                    '&:hover fieldset': {
-                                      borderColor: 'rgba(0, 0, 0, 0.32)',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                      borderColor:
-                                        materialTheme.palette.primary.main,
-                                      borderWidth: '2px',
-                                    },
-                                    '&.Mui-disabled': {
-                                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                                    },
-                                  },
-                                  '& .MuiInputBase-input': {
-                                    padding: '8px 12px',
-                                    fontSize: '0.875rem',
-                                  },
-                                },
-                              },
-                            }}
-                          />
-                        </ThemeProvider>
-                      </FormControl>
+                      <DateField
+                        name={key}
+                        label={name}
+                        format={getDateFormat()}
+                        defaultValue={searchParamsObject[key] || null}
+                        required={required}
+                        readonly={readonly}
+                      />
                     )}
 
                     {type === 'time' && (
-                      <FormControl required={required} disabled={readonly}>
-                        <FormLabel>{name}</FormLabel>
-                        <ThemeProvider theme={materialTheme}>
-                          <TimePicker
-                            defaultValue={searchParamsObject[key] || null}
-                            disabled={readonly}
-                            format={getTimeFormat()}
-                            slotProps={{
-                              textField: {
-                                name: key,
-                                required: required,
-                                fullWidth: true,
-                                size: 'small',
-                                sx: {
-                                  '& .MuiOutlinedInput-root': {
-                                    borderRadius: '8px',
-                                    backgroundColor: '#fff',
-                                    fontSize: '0.875rem',
-                                    '& fieldset': {
-                                      borderColor: 'rgba(0, 0, 0, 0.23)',
-                                      borderWidth: '1px',
-                                    },
-                                    '&:hover fieldset': {
-                                      borderColor: 'rgba(0, 0, 0, 0.32)',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                      borderColor:
-                                        materialTheme.palette.primary.main,
-                                      borderWidth: '2px',
-                                    },
-                                    '&.Mui-disabled': {
-                                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                                    },
-                                  },
-                                  '& .MuiInputBase-input': {
-                                    padding: '8px 12px',
-                                    fontSize: '0.875rem',
-                                  },
-                                },
-                              },
-                            }}
-                          />
-                        </ThemeProvider>
-                      </FormControl>
+                      <TimeField
+                        name={key}
+                        label={name}
+                        format={getTimeFormat()}
+                        defaultValue={searchParamsObject[key] || null}
+                        required={required}
+                        readonly={readonly}
+                      />
                     )}
 
                     {type === 'datetime' && (
-                      <FormControl required={required} disabled={readonly}>
-                        <FormLabel>{name}</FormLabel>
-                        <ThemeProvider theme={materialTheme}>
-                          <DateTimePicker
-                            defaultValue={searchParamsObject[key] || null}
-                            disabled={readonly}
-                            format={`${getDateFormat()} ${getTimeFormat()}`}
-                            slotProps={{
-                              textField: {
-                                name: key,
-                                required: required,
-                                fullWidth: true,
-                                size: 'small',
-                                sx: {
-                                  '& .MuiOutlinedInput-root': {
-                                    borderRadius: '8px',
-                                    backgroundColor: '#fff',
-                                    fontSize: '0.875rem',
-                                    '& fieldset': {
-                                      borderColor: 'rgba(0, 0, 0, 0.23)',
-                                      borderWidth: '1px',
-                                    },
-                                    '&:hover fieldset': {
-                                      borderColor: 'rgba(0, 0, 0, 0.32)',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                      borderColor:
-                                        materialTheme.palette.primary.main,
-                                      borderWidth: '2px',
-                                    },
-                                    '&.Mui-disabled': {
-                                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                                    },
-                                  },
-                                  '& .MuiInputBase-input': {
-                                    padding: '8px 12px',
-                                    fontSize: '0.875rem',
-                                  },
-                                },
-                              },
-                            }}
-                          />
-                        </ThemeProvider>
-                      </FormControl>
+                      <DateTimeField
+                        name={key}
+                        label={name}
+                        format={`${getDateFormat()} ${getTimeFormat()}`}
+                        defaultValue={searchParamsObject[key] || null}
+                        required={required}
+                        readonly={readonly}
+                      />
                     )}
 
                     {type === 'array' && (
