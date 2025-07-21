@@ -28,4 +28,90 @@ describe('Form model', () => {
 
     expect(relationMappings).toStrictEqual(expectedRelations);
   });
+
+  it('validateArrayFieldConstraints should throw error when maxItems < minItems', () => {
+    const form = new Form();
+    form.fields = [
+      {
+        type: 'array',
+        name: 'Test Array',
+        minItems: 5,
+        maxItems: 2,
+      },
+    ];
+
+    expect(() => form.validateArrayFieldConstraints()).toThrow(
+      'Array field "Test Array" has maxItems (2) less than minItems (5)'
+    );
+  });
+
+  it('validateArrayFieldConstraints should not throw error when maxItems >= minItems', () => {
+    const form = new Form();
+    form.fields = [
+      {
+        type: 'array',
+        name: 'Test Array',
+        minItems: 2,
+        maxItems: 5,
+      },
+    ];
+
+    expect(() => form.validateArrayFieldConstraints()).not.toThrow();
+  });
+
+  it('validateArrayFieldConstraints should not throw error when only minItems is set', () => {
+    const form = new Form();
+    form.fields = [
+      {
+        type: 'array',
+        name: 'Test Array',
+        minItems: 2,
+      },
+    ];
+
+    expect(() => form.validateArrayFieldConstraints()).not.toThrow();
+  });
+
+  it('validateArrayFieldConstraints should not throw error when only maxItems is set', () => {
+    const form = new Form();
+    form.fields = [
+      {
+        type: 'array',
+        name: 'Test Array',
+        maxItems: 5,
+      },
+    ];
+
+    expect(() => form.validateArrayFieldConstraints()).not.toThrow();
+  });
+
+  it('validateArrayFieldConstraints should throw error when maxItems is 0', () => {
+    const form = new Form();
+    form.fields = [
+      {
+        type: 'array',
+        name: 'Test Array',
+        maxItems: 0,
+      },
+    ];
+
+    expect(() => form.validateArrayFieldConstraints()).toThrow(
+      'Array field "Test Array" has maxItems (0) but maxItems must be at least 1'
+    );
+  });
+
+  it('validateArrayFieldConstraints should throw error when maxItems is negative', () => {
+    const form = new Form();
+    form.fields = [
+      {
+        type: 'array',
+        name: 'Test Array',
+        maxItems: -1,
+      },
+    ];
+
+    expect(() => form.validateArrayFieldConstraints()).toThrow(
+      'Array field "Test Array" has maxItems (-1) but maxItems must be at least 1'
+    );
+  });
 });

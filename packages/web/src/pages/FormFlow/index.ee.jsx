@@ -10,6 +10,7 @@ import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/joy/Typography';
 import Container from 'components/Container';
 import * as React from 'react';
@@ -202,6 +203,8 @@ export default function FormFlow() {
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={userLocale}>
       <CssVarsProvider theme={joyTheme}>
+        <CssBaseline />
+
         <Box sx={{ display: 'flex', flex: 1, alignItems: 'center' }}>
           <Container maxWidth="sm">
             <Typography gutterBottom color="primary" level="h1">

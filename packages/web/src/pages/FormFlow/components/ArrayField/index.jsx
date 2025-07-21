@@ -22,6 +22,12 @@ function ArrayField(props) {
     timeFormat,
   } = props;
 
+  // Ensure valid constraints - maxItems must be at least 1 and never less than minItems
+  const safeMinItems = Math.max(0, minItems);
+  const safeMaxItems = maxItems != null 
+    ? Math.max(1, maxItems < safeMinItems ? safeMinItems : maxItems)
+    : maxItems;
+
   const [items, setItems] = React.useState(() => {
     // Check if there's existing array data
     const existingData = searchParamsObject[name];
@@ -55,8 +61,8 @@ function ArrayField(props) {
       return itemsArray;
     }
 
-    // Default to minItems number of items (or 1 if minItems is not set)
-    const itemCount = minItems !== undefined ? minItems : 1;
+    // Default to safeMinItems number of items (or 1 if safeMinItems is not set)
+    const itemCount = safeMinItems !== undefined ? safeMinItems : 1;
     return Array.from({ length: itemCount }, () => createEmptyItem());
   });
 
@@ -71,17 +77,17 @@ function ArrayField(props) {
   }
 
   const addItem = () => {
-    if (maxItems && items.length >= maxItems) return;
+    if (safeMaxItems && items.length >= safeMaxItems) return;
     setItems([...items, createEmptyItem()]);
   };
 
   const removeItem = (index) => {
-    if (items.length <= minItems) return;
+    if (items.length <= safeMinItems) return;
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const canRemove = items.length > minItems;
-  const canAdd = !maxItems || items.length < maxItems;
+  const canRemove = items.length > safeMinItems;
+  const canAdd = !safeMaxItems || items.length < safeMaxItems;
 
   return (
     <Stack spacing={2}>

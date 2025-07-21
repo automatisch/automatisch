@@ -115,6 +115,40 @@ class Form extends Base {
       },
     },
   });
+
+  validateArrayFieldConstraints() {
+    if (!this.fields || !Array.isArray(this.fields)) return;
+
+    for (const field of this.fields) {
+      if (field.type === 'array') {
+        if (field.maxItems != null && field.maxItems < 1) {
+          throw new Error(
+            `Array field "${field.name}" has maxItems (${field.maxItems}) but maxItems must be at least 1`
+          );
+        }
+
+        if (
+          field.minItems != null &&
+          field.maxItems != null &&
+          field.maxItems < field.minItems
+        ) {
+          throw new Error(
+            `Array field "${field.name}" has maxItems (${field.maxItems}) less than minItems (${field.minItems})`
+          );
+        }
+      }
+    }
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+    this.validateArrayFieldConstraints();
+  }
+
+  async $beforeUpdate(opts, queryContext) {
+    await super.$beforeUpdate(opts, queryContext);
+    this.validateArrayFieldConstraints();
+  }
 }
 
 export default Form;

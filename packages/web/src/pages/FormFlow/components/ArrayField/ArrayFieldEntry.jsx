@@ -10,7 +10,8 @@ import Stack from '@mui/joy/Stack';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { useTheme, ThemeProvider } from '@mui/material/styles';
+
+import ThemeProvider from 'components/ThemeProvider';
 import PropTypes from 'prop-types';
 
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -24,7 +25,6 @@ function ArrayFieldEntry(props) {
     timeFormat,
   } = props;
   const formatMessage = useFormatMessage();
-  const materialTheme = useTheme();
 
   const getInputType = (validationFormat) => {
     const typeMap = {
@@ -139,7 +139,7 @@ function ArrayFieldEntry(props) {
             {field.type === 'date' && (
               <FormControl required={field.required} disabled={field.readonly}>
                 <FormLabel>{field.name}</FormLabel>
-                <ThemeProvider theme={materialTheme}>
+                <ThemeProvider>
                   <DatePicker
                     defaultValue={defaultValue || null}
                     disabled={field.readonly}
@@ -163,7 +163,7 @@ function ArrayFieldEntry(props) {
                               borderColor: 'rgba(0, 0, 0, 0.32)',
                             },
                             '&.Mui-focused fieldset': {
-                              borderColor: materialTheme.palette.primary.main,
+                              borderColor: 'primary.main',
                               borderWidth: '2px',
                             },
                             '&.Mui-disabled': {
@@ -185,7 +185,7 @@ function ArrayFieldEntry(props) {
             {field.type === 'time' && (
               <FormControl required={field.required} disabled={field.readonly}>
                 <FormLabel>{field.name}</FormLabel>
-                <ThemeProvider theme={materialTheme}>
+                <ThemeProvider>
                   <TimePicker
                     defaultValue={defaultValue || null}
                     disabled={field.readonly}
@@ -209,7 +209,7 @@ function ArrayFieldEntry(props) {
                               borderColor: 'rgba(0, 0, 0, 0.32)',
                             },
                             '&.Mui-focused fieldset': {
-                              borderColor: materialTheme.palette.primary.main,
+                              borderColor: 'primary.main',
                               borderWidth: '2px',
                             },
                             '&.Mui-disabled': {
@@ -231,7 +231,7 @@ function ArrayFieldEntry(props) {
             {field.type === 'datetime' && (
               <FormControl required={field.required} disabled={field.readonly}>
                 <FormLabel>{field.name}</FormLabel>
-                <ThemeProvider theme={materialTheme}>
+                <ThemeProvider>
                   <DateTimePicker
                     defaultValue={defaultValue || null}
                     disabled={field.readonly}
@@ -255,7 +255,7 @@ function ArrayFieldEntry(props) {
                               borderColor: 'rgba(0, 0, 0, 0.32)',
                             },
                             '&.Mui-focused fieldset': {
-                              borderColor: materialTheme.palette.primary.main,
+                              borderColor: 'primary.main',
                               borderWidth: '2px',
                             },
                             '&.Mui-disabled': {

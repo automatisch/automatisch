@@ -15,6 +15,172 @@ import ControlledAutocomplete from 'components/ControlledAutocomplete';
 import ControlledCheckbox from 'components/ControlledCheckbox';
 import useFormatMessage from 'hooks/useFormatMessage';
 
+function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
+  const formatMessage = useFormatMessage();
+  const { setValue } = useFormContext();
+
+  const subfieldType = useWatch({
+    control,
+    name: `fields.${parentIndex}.fields.${fieldIndex}.type`,
+  });
+
+  const validationFormat = useWatch({
+    control,
+    name: `fields.${parentIndex}.fields.${fieldIndex}.validationFormat`,
+  });
+
+  const {
+    fields: subfieldOptionFields,
+    append: appendSubfieldOption,
+    remove: removeSubfieldOption,
+  } = useFieldArray({
+    control,
+    name: `fields.${parentIndex}.fields.${fieldIndex}.options`,
+  });
+
+  React.useEffect(
+    function resetPatternAndHelperTextUponNoValidationFormat() {
+      if (!validationFormat || validationFormat === '') {
+        setValue(`fields.${parentIndex}.fields.${fieldIndex}.validationPattern`, '');
+        setValue(`fields.${parentIndex}.fields.${fieldIndex}.validationHelperText`, '');
+      }
+    },
+    [validationFormat, parentIndex, fieldIndex, setValue],
+  );
+
+  return (
+    <>
+      {subfieldType === 'string' && (
+        <Stack spacing={2}>
+          <ControlledAutocomplete
+            name={`fields.${parentIndex}.fields.${fieldIndex}.validationFormat`}
+            fullWidth
+            disablePortal
+            disableClearable={false}
+            options={[
+              {
+                label: formatMessage('formEditor.validationFormatNone'),
+                value: '',
+              },
+              {
+                label: formatMessage('formEditor.validationFormatEmail'),
+                value: 'email',
+              },
+              {
+                label: formatMessage('formEditor.validationFormatUrl'),
+                value: 'url',
+              },
+              {
+                label: formatMessage('formEditor.validationFormatTel'),
+                value: 'tel',
+              },
+              {
+                label: formatMessage('formEditor.validationFormatNumber'),
+                value: 'number',
+              },
+              {
+                label: formatMessage('formEditor.validationFormatAlphanumeric'),
+                value: 'alphanumeric',
+              },
+              {
+                label: formatMessage('formEditor.validationFormatCustom'),
+                value: 'custom',
+              },
+            ]}
+            renderInput={(params) => (
+              <MuiTextField
+                {...params}
+                label={formatMessage('formEditor.validationFormat')}
+              />
+            )}
+          />
+
+          {validationFormat === 'custom' && (
+            <>
+              <TextField
+                name={`fields.${parentIndex}.fields.${fieldIndex}.validationPattern`}
+                label={formatMessage('formEditor.validationPattern')}
+                fullWidth
+                helperText={formatMessage('formEditor.validationPatternHelperText')}
+              />
+              <TextField
+                name={`fields.${parentIndex}.fields.${fieldIndex}.validationHelperText`}
+                label={formatMessage('formEditor.validationHelperText')}
+                fullWidth
+                helperText={formatMessage('formEditor.validationHelperTextDescription')}
+              />
+            </>
+          )}
+        </Stack>
+      )}
+
+      {subfieldType === 'dropdown' && (
+        <Box sx={{ pl: 2, mt: 2 }}>
+          <Typography variant="subtitle2" sx={{ mb: 2 }}>
+            {formatMessage('formEditor.dropdownOptions')}
+          </Typography>
+          <Stack spacing={2}>
+            {subfieldOptionFields.map((field, optionIndex) => (
+              <Stack
+                key={field.id}
+                direction="row"
+                spacing={2}
+                alignItems="center"
+              >
+                <TextField
+                  name={`fields.${parentIndex}.fields.${fieldIndex}.options.${optionIndex}.value`}
+                  label={formatMessage('formEditor.dropdownOptionLabel', {
+                    number: optionIndex + 1,
+                  })}
+                  required={true}
+                  fullWidth
+                />
+                <IconButton
+                  size="medium"
+                  onClick={() => removeSubfieldOption(optionIndex)}
+                  disabled={subfieldOptionFields.length === 1}
+                  sx={{
+                    flexShrink: 0,
+                    '&:hover': {
+                      backgroundColor: 'error.light',
+                      color: 'error.contrastText',
+                    },
+                  }}
+                >
+                  <RemoveIcon />
+                </IconButton>
+              </Stack>
+            ))}
+            <Stack
+              direction="row"
+              spacing={2}
+              alignItems="center"
+              sx={{ mt: 1 }}
+            >
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {formatMessage('formEditor.addOption')}
+              </Typography>
+              <IconButton
+                size="small"
+                onClick={() => appendSubfieldOption({ value: '' })}
+                sx={{ width: 40, height: 40 }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Stack>
+          </Stack>
+        </Box>
+      )}
+    </>
+  );
+}
+
+ArraySubfieldConfig.propTypes = {
+  control: PropTypes.object.isRequired,
+  parentIndex: PropTypes.number.isRequired,
+  fieldIndex: PropTypes.number.isRequired,
+};
+
 function FieldRow({ index, remove, control }) {
   const formatMessage = useFormatMessage();
   const { setValue } = useFormContext();
@@ -23,6 +189,40 @@ function FieldRow({ index, remove, control }) {
     control,
     name: `fields.${index}.validationFormat`,
   });
+  const minItems = useWatch({
+    control,
+    name: `fields.${index}.minItems`,
+  });
+  const maxItems = useWatch({
+    control,
+    name: `fields.${index}.maxItems`,
+  });
+
+  const [arrayConstraintError, setArrayConstraintError] = React.useState('');
+
+  React.useEffect(
+    function validateArrayConstraints() {
+      if (fieldType === 'array') {
+        if (maxItems != null && maxItems < 1) {
+          setArrayConstraintError(
+            formatMessage('formEditor.arrayMaxItemsMinimumError'),
+          );
+        } else if (minItems != null && maxItems != null && maxItems < minItems) {
+          setArrayConstraintError(
+            formatMessage('formEditor.arrayConstraintError', {
+              minItems,
+              maxItems,
+            }),
+          );
+        } else {
+          setArrayConstraintError('');
+        }
+      } else {
+        setArrayConstraintError('');
+      }
+    },
+    [fieldType, minItems, maxItems, formatMessage],
+  );
 
   React.useEffect(
     function resetPatternAndHelperTextUponNoValidationFormat() {
@@ -266,7 +466,12 @@ function FieldRow({ index, remove, control }) {
                         type="number"
                         fullWidth
                         defaultValue={0}
-                        inputProps={{ min: 0 }}
+                        inputProps={{
+                          min: 0,
+                          max: maxItems != null ? maxItems : undefined,
+                        }}
+                        error={!!arrayConstraintError}
+                        helperText={arrayConstraintError || undefined}
                         onChange={(e) => {
                           const value = e.target.value;
                           setValue(
@@ -281,7 +486,11 @@ function FieldRow({ index, remove, control }) {
                         type="number"
                         fullWidth
                         defaultValue=""
-                        inputProps={{ min: 1 }}
+                        inputProps={{
+                          min: minItems != null ? Math.max(1, minItems) : 1,
+                        }}
+                        error={!!arrayConstraintError}
+                        helperText={arrayConstraintError || undefined}
                         onChange={(e) => {
                           const value = e.target.value;
                           setValue(
@@ -375,6 +584,12 @@ function FieldRow({ index, remove, control }) {
                               )}
                             />
                           </Stack>
+
+                          <ArraySubfieldConfig
+                            control={control}
+                            parentIndex={index}
+                            fieldIndex={fieldIndex}
+                          />
 
                           <Stack direction="row" spacing={2}>
                             <FormControlLabel

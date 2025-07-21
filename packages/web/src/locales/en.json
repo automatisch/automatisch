@@ -489,5 +489,7 @@
   "formEditor.validationPattern": "Regex pattern",
   "formEditor.validationPatternHelperText": "Enter a regular expression pattern for validation",
   "formEditor.validationHelperText": "Validation message",
-  "formEditor.validationHelperTextDescription": "Message shown when input doesn't match the pattern"
+  "formEditor.validationHelperTextDescription": "Message shown when input doesn't match the pattern",
+  "formEditor.arrayConstraintError": "Maximum items ({maxItems}) must be greater than or equal to minimum items ({minItems})",
+  "formEditor.arrayMaxItemsMinimumError": "Maximum items must be at least 1"
 }
