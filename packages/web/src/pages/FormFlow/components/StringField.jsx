@@ -7,6 +7,7 @@ import useFormatMessage from 'hooks/useFormatMessage';
 
 const getInputType = (validationFormat) => {
   const typeMap = {
+    email: 'email',
     url: 'url',
     tel: 'tel',
     number: 'number',
@@ -15,6 +16,11 @@ const getInputType = (validationFormat) => {
 };
 
 const getValidationPattern = (validationFormat, customPattern) => {
+  // For email, let HTML5 input type handle validation natively
+  if (validationFormat === 'email') {
+    return undefined;
+  }
+  if (validationFormat === 'tel') return '[+]?[0-9\\s\\-\\(\\)]+';
   if (validationFormat === 'alphanumeric') return '[a-zA-Z0-9]+';
   if (validationFormat === 'custom') return customPattern;
   return undefined;
@@ -37,6 +43,7 @@ function StringField({
     if (validationHelperText) return validationHelperText;
 
     const messageMap = {
+      email: 'formFlow.invalidEmail',
       url: 'formFlow.invalidUrl',
       tel: 'formFlow.invalidTel',
       number: 'formFlow.invalidNumber',
