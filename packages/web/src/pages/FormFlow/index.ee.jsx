@@ -313,7 +313,14 @@ export default function FormFlow() {
               </Button>
 
               {isSuccess && (
-                <Alert>
+                <Alert
+                  ref={(node) =>
+                    node?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'center',
+                    })
+                  }
+                >
                   {submissionResult?.data ||
                     flow.data.responseMessage ||
                     formatMessage('formFlow.successMessage')}
