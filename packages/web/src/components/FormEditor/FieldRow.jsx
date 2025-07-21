@@ -499,7 +499,7 @@ function FieldRow({ index, remove, control }) {
                         label={formatMessage('formEditor.maxItems')}
                         type="number"
                         fullWidth
-                        defaultValue=""
+                        defaultValue={1}
                         inputProps={{
                           min: minItems != null ? Math.max(1, minItems) : 1,
                         }}
