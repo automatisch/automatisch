@@ -674,26 +674,28 @@ function FieldRow({ index, remove, control }) {
                 </Box>
               )}
 
-              <Stack direction="row" spacing={2}>
-                <FormControlLabel
-                  control={
-                    <ControlledCheckbox
-                      name={`fields.${index}.required`}
-                      defaultValue={false}
-                    />
-                  }
-                  label={formatMessage('formEditor.fieldRequired')}
-                />
-                <FormControlLabel
-                  control={
-                    <ControlledCheckbox
-                      name={`fields.${index}.readonly`}
-                      defaultValue={false}
-                    />
-                  }
-                  label={formatMessage('formEditor.fieldReadonly')}
-                />
-              </Stack>
+              {fieldType !== 'array' && (
+                <Stack direction="row" spacing={2}>
+                  <FormControlLabel
+                    control={
+                      <ControlledCheckbox
+                        name={`fields.${index}.required`}
+                        defaultValue={false}
+                      />
+                    }
+                    label={formatMessage('formEditor.fieldRequired')}
+                  />
+                  <FormControlLabel
+                    control={
+                      <ControlledCheckbox
+                        name={`fields.${index}.readonly`}
+                        defaultValue={false}
+                      />
+                    }
+                    label={formatMessage('formEditor.fieldReadonly')}
+                  />
+                </Stack>
+              )}
             </Stack>
           </Box>
           <Box

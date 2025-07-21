@@ -290,7 +290,7 @@ export default function FormFlow() {
                     )}
 
                     {type === 'array' && (
-                      <FormControl required={required} disabled={readonly}>
+                      <FormControl>
                         <FormLabel>{name}</FormLabel>
                         <ArrayField
                           name={key}
