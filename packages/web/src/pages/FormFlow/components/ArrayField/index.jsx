@@ -24,9 +24,10 @@ function ArrayField(props) {
 
   // Ensure valid constraints - maxItems must be at least 1 and never less than minItems
   const safeMinItems = Math.max(0, minItems);
-  const safeMaxItems = maxItems != null 
-    ? Math.max(1, maxItems < safeMinItems ? safeMinItems : maxItems)
-    : maxItems;
+  const safeMaxItems =
+    maxItems != null
+      ? Math.max(1, maxItems < safeMinItems ? safeMinItems : maxItems)
+      : maxItems;
 
   const [items, setItems] = React.useState(() => {
     // Check if there's existing array data

@@ -313,7 +313,7 @@ describe('Form model', () => {
 
     it('should call validateArrayFieldConstraints during update', async () => {
       const form = await createForm();
-      
+
       const validateArrayFieldConstraintsSpy = vi
         .spyOn(Form.prototype, 'validateArrayFieldConstraints')
         .mockImplementation(() => {});

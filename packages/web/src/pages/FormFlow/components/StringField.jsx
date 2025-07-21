@@ -43,7 +43,8 @@ function StringField({
       alphanumeric: 'formFlow.invalidAlphanumeric',
     };
 
-    const messageKey = messageMap[validationFormat] || 'formFlow.invalidPattern';
+    const messageKey =
+      messageMap[validationFormat] || 'formFlow.invalidPattern';
     return formatMessage(messageKey);
   };
 

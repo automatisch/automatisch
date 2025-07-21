@@ -41,8 +41,14 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
   React.useEffect(
     function resetPatternAndHelperTextUponNoValidationFormat() {
       if (!validationFormat || validationFormat === '') {
-        setValue(`fields.${parentIndex}.fields.${fieldIndex}.validationPattern`, '');
-        setValue(`fields.${parentIndex}.fields.${fieldIndex}.validationHelperText`, '');
+        setValue(
+          `fields.${parentIndex}.fields.${fieldIndex}.validationPattern`,
+          '',
+        );
+        setValue(
+          `fields.${parentIndex}.fields.${fieldIndex}.validationHelperText`,
+          '',
+        );
       }
     },
     [validationFormat, parentIndex, fieldIndex, setValue],
@@ -101,13 +107,17 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
                 name={`fields.${parentIndex}.fields.${fieldIndex}.validationPattern`}
                 label={formatMessage('formEditor.validationPattern')}
                 fullWidth
-                helperText={formatMessage('formEditor.validationPatternHelperText')}
+                helperText={formatMessage(
+                  'formEditor.validationPatternHelperText',
+                )}
               />
               <TextField
                 name={`fields.${parentIndex}.fields.${fieldIndex}.validationHelperText`}
                 label={formatMessage('formEditor.validationHelperText')}
                 fullWidth
-                helperText={formatMessage('formEditor.validationHelperTextDescription')}
+                helperText={formatMessage(
+                  'formEditor.validationHelperTextDescription',
+                )}
               />
             </>
           )}
@@ -207,7 +217,11 @@ function FieldRow({ index, remove, control }) {
           setArrayConstraintError(
             formatMessage('formEditor.arrayMaxItemsMinimumError'),
           );
-        } else if (minItems != null && maxItems != null && maxItems < minItems) {
+        } else if (
+          minItems != null &&
+          maxItems != null &&
+          maxItems < minItems
+        ) {
           setArrayConstraintError(
             formatMessage('formEditor.arrayConstraintError', {
               minItems,
