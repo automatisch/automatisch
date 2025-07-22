@@ -52,6 +52,10 @@ const formatOptions = [
     value: 'MM-yyyy',
   },
   {
+    label: 'RFC 3339 (2025-07-22T12:40:41+02:00)',
+    value: "yyyy-MM-dd'T'HH:mm:ssZZ",
+  },
+  {
     label: 'Unix timestamp in seconds (1694008283)',
     value: 'X',
   },
