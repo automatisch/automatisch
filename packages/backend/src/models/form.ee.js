@@ -21,17 +21,78 @@ class Form extends Base {
             key: { type: 'string', minLength: 1 },
             type: {
               type: 'string',
-              enum: ['string', 'checkbox', 'dropdown', 'multiline', 'date', 'time', 'datetime'],
+              enum: [
+                'array',
+                'checkbox',
+                'date',
+                'datetime',
+                'dropdown',
+                'multiline',
+                'string',
+                'time',
+              ],
             },
             options: { type: 'array' },
             required: { type: 'boolean' },
             readonly: { type: 'boolean' },
             validationFormat: {
               type: ['string', 'null'],
-              enum: ['email', 'url', 'tel', 'number', 'alphanumeric', 'custom', null, ''],
+              enum: [
+                null,
+                '',
+                'alphanumeric',
+                'custom',
+                'email',
+                'number',
+                'tel',
+                'url',
+              ],
             },
             validationPattern: { type: 'string' },
             validationHelperText: { type: 'string' },
+            fields: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string', minLength: 1 },
+                  key: { type: 'string', minLength: 1 },
+                  type: {
+                    type: 'string',
+                    enum: [
+                      'checkbox',
+                      'date',
+                      'datetime',
+                      'dropdown',
+                      'multiline',
+                      'string',
+                      'time',
+                    ],
+                  },
+                  options: { type: 'array' },
+                  required: { type: 'boolean' },
+                  readonly: { type: 'boolean' },
+                  validationFormat: {
+                    type: ['string', 'null'],
+                    enum: [
+                      null,
+                      '',
+                      'alphanumeric',
+                      'custom',
+                      'email',
+                      'number',
+                      'tel',
+                      'url',
+                    ],
+                  },
+                  validationPattern: { type: 'string' },
+                  validationHelperText: { type: 'string' },
+                },
+                required: ['key', 'name', 'type'],
+              },
+            },
+            minItems: { type: 'integer', minimum: 0 },
+            maxItems: { type: 'integer', minimum: 1 },
           },
           required: ['key', 'name', 'type'],
         },
@@ -54,6 +115,40 @@ class Form extends Base {
       },
     },
   });
+
+  validateArrayFieldConstraints() {
+    if (!this.fields || !Array.isArray(this.fields)) return;
+
+    for (const field of this.fields) {
+      if (field.type === 'array') {
+        if (field.maxItems != null && field.maxItems < 1) {
+          throw new Error(
+            `Array field "${field.name}" has maxItems (${field.maxItems}) but maxItems must be at least 1`
+          );
+        }
+
+        if (
+          field.minItems != null &&
+          field.maxItems != null &&
+          field.maxItems < field.minItems
+        ) {
+          throw new Error(
+            `Array field "${field.name}" has maxItems (${field.maxItems}) less than minItems (${field.minItems})`
+          );
+        }
+      }
+    }
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+    this.validateArrayFieldConstraints();
+  }
+
+  async $beforeUpdate(opts, queryContext) {
+    await super.$beforeUpdate(opts, queryContext);
+    this.validateArrayFieldConstraints();
+  }
 }
 
 export default Form;

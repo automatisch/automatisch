@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -11,8 +11,9 @@ export default function DatePickerInput({
   disableFuture = false,
   minDate,
   maxDate,
+  format,
 }) {
-  const intl = useIntl();
+  const userLocale = navigator.language || 'en-US';
 
   const props = {
     label,
@@ -22,6 +23,7 @@ export default function DatePickerInput({
     disableHighlightToday: true,
     minDate,
     maxDate,
+    format,
   };
 
   if (defaultValue) {
@@ -29,11 +31,18 @@ export default function DatePickerInput({
   }
 
   return (
-    <LocalizationProvider
-      dateAdapter={AdapterLuxon}
-      adapterLocale={intl.locale}
-    >
+    <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={userLocale}>
       <DatePicker {...props} />
     </LocalizationProvider>
   );
 }
+
+DatePickerInput.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  label: PropTypes.string.isRequired,
+  disableFuture: PropTypes.bool,
+  minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  format: PropTypes.string,
+};
