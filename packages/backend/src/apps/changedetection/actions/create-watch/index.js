@@ -11,7 +11,7 @@ export default defineAction({
       type: 'string',
       required: true,
       variables: true,
-      description: 'Url you want to monitor',
+      description: 'URL you want to monitor',
     },
   ],
 

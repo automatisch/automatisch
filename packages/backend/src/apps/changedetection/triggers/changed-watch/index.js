@@ -29,7 +29,7 @@ export default defineTrigger({
   async run($) {
     const watchId = $.step.parameters.watchId;
 
-    const { data } = await $.http.get(`v1/watch/${watchId}`);
+    const { data } = await $.http.get(`/v1/watch/${watchId}`);
 
     if (Object.keys(data).length !== 0) {
       $.pushTriggerItem({

@@ -8,15 +8,12 @@ export default {
     };
 
     const { data } = await $.http.get('/v1/watch');
-    const watchIds = Object.keys(data);
 
-    if (watchIds?.length) {
-      for (const watchId of watchIds) {
-        watches.data.push({
-          value: watchId,
-          name: data[watchId].url,
-        });
-      }
+    for (const [watchId, watchData] of Object.entries(data)) {
+      watches.data.push({
+        value: watchId,
+        name: watchData.url,
+      });
     }
 
     return watches;

@@ -11,7 +11,7 @@ export default defineAction({
       type: 'string',
       required: true,
       variables: true,
-      description: 'Watch id you want to delete',
+      description: 'Watch ID you want to delete',
     },
   ],
 

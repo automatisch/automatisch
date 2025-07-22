@@ -14,7 +14,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://changedetection.io',
   apiBaseUrl: '',
-  primaryColor: '3056d3',
+  primaryColor: '#3056d3',
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   actions,
