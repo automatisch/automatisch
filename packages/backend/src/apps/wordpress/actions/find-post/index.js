@@ -3,33 +3,30 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Find post',
   key: 'findPost',
-  description: 'Finds a post.',
+  description: 'Finds a post by title.',
   arguments: [
     {
-      label: 'Post ID',
-      key: 'postId',
-      type: 'dropdown',
-      required: false,
-      description: 'Choose a post to update.',
+      label: 'Post Title',
+      key: 'title',
+      type: 'string',
+      required: true,
+      description: 'Enter the title of the post to find.',
       variables: true,
-      source: {
-        type: 'query',
-        name: 'getDynamicData',
-        arguments: [
-          {
-            name: 'key',
-            value: 'listPosts',
-          },
-        ],
-      },
     },
   ],
 
   async run($) {
-    const { postId } = $.step.parameters;
+    const { title } = $.step.parameters;
 
-    const response = await $.http.get(`?rest_route=/wp/v2/posts/${postId}`);
+    const response = await $.http.get('?rest_route=/wp/v2/posts', {
+      params: {
+        search: title,
+        per_page: 1,
+        orderby: 'relevance',
+        order: 'desc',
+      },
+    });
 
-    $.setActionItem({ raw: response.data });
+    $.setActionItem({ raw: response.data[0] });
   },
 });
