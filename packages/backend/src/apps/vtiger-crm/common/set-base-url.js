@@ -1,8 +1,5 @@
 const setBaseUrl = ($, requestConfig) => {
-  const domain = $.auth.data.domain;
-  if (domain) {
-    requestConfig.baseURL = `https://${domain}.vtiger.com`;
-  }
+  requestConfig.baseURL = $.auth.data.instanceUrl;
 
   return requestConfig;
 };
