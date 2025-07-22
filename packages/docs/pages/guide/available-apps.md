@@ -9,6 +9,7 @@ The following integrations are currently supported by Automatisch.
 - [Better Stack](/apps/better-stack/actions)
 - [Brave Search](/apps/brave-search/actions)
 - [Carbone](/apps/carbone/actions)
+- [Changedetection](/apps/changedetection/actions)
 - [ClickUp](/apps/clickup/triggers)
 - [Cryptography](/apps/cryptography/actions)
 - [Datastore](/apps/datastore/actions)
