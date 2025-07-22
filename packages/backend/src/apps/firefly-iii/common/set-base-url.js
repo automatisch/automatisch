@@ -1,8 +1,5 @@
 const setBaseUrl = ($, requestConfig) => {
-  const instanceUrl = $.auth.data.instanceUrl;
-  if (instanceUrl) {
-    requestConfig.baseURL = instanceUrl;
-  }
+  requestConfig.baseURL = $.auth.data.instanceUrl;
 
   return requestConfig;
 };

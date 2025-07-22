@@ -5,6 +5,8 @@ items:
     desc: Triggers when a new transaction is created.
   - name: Transaction updated
     desc: Triggers when a transaction is updated.
+  - name: Transaction deleted
+    desc: Triggers when a transaction is deleted.
 ---
 
 <script setup>

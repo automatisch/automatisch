@@ -4,7 +4,9 @@ const verifyCredentials = async ($) => {
   const oauthRedirectUrlField = $.app.auth.fields.find(
     (field) => field.key == 'oAuthRedirectUrl'
   );
+
   const redirectUri = oauthRedirectUrlField.value;
+
   const { data } = await $.http.post('/oauth/token', {
     client_id: $.auth.data.clientId,
     client_secret: $.auth.data.clientSecret,

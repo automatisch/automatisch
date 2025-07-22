@@ -1,4 +1,5 @@
-import Crypto from 'crypto';
+import Crypto from 'node:crypto';
+import isEmpty from 'lodash/isEmpty.js';
 import defineTrigger from '../../../../helpers/define-trigger.js';
 
 export default defineTrigger({
@@ -6,16 +7,7 @@ export default defineTrigger({
   key: 'transactionCreated',
   type: 'webhook',
   description: 'Triggers when a new transaction is created.',
-  arguments: [
-    {
-      label: 'Title of the webhook',
-      key: 'title',
-      type: 'string',
-      required: false,
-      description: '',
-      variables: true,
-    },
-  ],
+  arguments: [],
 
   async run($) {
     const dataItem = {
@@ -29,48 +21,22 @@ export default defineTrigger({
   },
 
   async testRun($) {
-    const { data: transactions } = await $.http.get(`/api/v1/transactions`);
+    const lastExecutionStep = await $.getLastExecutionStep();
 
-    if (transactions.data.length === 0) {
-      return;
+    if (!isEmpty(lastExecutionStep?.dataOut)) {
+      $.pushTriggerItem({
+        raw: lastExecutionStep.dataOut,
+        meta: {
+          internalId: '',
+        },
+      });
     }
-
-    const { data: transaction } = await $.http.get(
-      `/api/v1/transactions/${transactions.data[0].id}`
-    );
-
-    const lastTransaction = transaction.data;
-
-    if (!lastTransaction) {
-      return;
-    }
-
-    const computedWebhookEvent = {
-      url: '',
-      uuid: Crypto.randomUUID(),
-      content: lastTransaction.attributes,
-      trigger: 'STORE_TRANSACTION',
-      user_id: lastTransaction.attributes.user,
-      version: '',
-      response: 'TRANSACTIONS',
-    };
-
-    const dataItem = {
-      raw: computedWebhookEvent,
-      meta: {
-        internalId: computedWebhookEvent.uuid,
-      },
-    };
-
-    $.pushTriggerItem(dataItem);
   },
 
   async registerHook($) {
-    const title = $.step.parameters.title;
-
     const payload = {
       active: true,
-      title: title || `Flow ID: ${$.flow.id}`,
+      title: `Flow ID: ${$.flow.id}`,
       trigger: 'STORE_TRANSACTION',
       response: 'TRANSACTIONS',
       delivery: 'JSON',
@@ -78,9 +44,8 @@ export default defineTrigger({
     };
 
     const response = await $.http.post('/api/v1/webhooks', payload);
-    const id = response.data.data.id;
 
-    await $.flow.setRemoteWebhookId(id);
+    await $.flow.setRemoteWebhookId(response.data.data.id);
   },
 
   async unregisterHook($) {

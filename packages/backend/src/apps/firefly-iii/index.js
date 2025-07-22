@@ -7,11 +7,11 @@ import triggers from './triggers/index.js';
 export default defineApp({
   name: 'Firefly III',
   key: 'firefly-iii',
-  baseUrl: '',
+  baseUrl: 'https://firefly-iii.org',
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/firefly-iii/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/firefly-iii/connection',
-  primaryColor: 'CD5029',
+  primaryColor: '#CD5029',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
