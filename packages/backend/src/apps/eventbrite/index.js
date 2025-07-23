@@ -12,7 +12,7 @@ export default defineApp({
   apiBaseUrl: 'https://www.eventbriteapi.com',
   iconUrl: '{BASE_URL}/apps/eventbrite/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/eventbrite/connection',
-  primaryColor: 'F05537',
+  primaryColor: '#F05537',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,
