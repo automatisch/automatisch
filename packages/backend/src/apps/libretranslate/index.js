@@ -13,7 +13,7 @@ export default defineApp({
   supportsConnections: true,
   baseUrl: 'https://libretranslate.com',
   apiBaseUrl: 'https://libretranslate.com',
-  primaryColor: 'ffffff',
+  primaryColor: '#ffffff',
   beforeRequest: [setBaseUrl, addApiKey],
   auth,
   actions,

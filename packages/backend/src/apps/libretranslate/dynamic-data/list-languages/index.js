@@ -4,13 +4,18 @@ export default {
 
   async run($) {
     const languages = {
-      data: [],
+      data: [
+        {
+          value: 'auto',
+          name: 'Auto-detect',
+        },
+      ],
     };
 
     const { data } = await $.http.get('/languages');
 
     if (!data?.length) {
-      return;
+      return languages;
     }
 
     for (const language of data) {

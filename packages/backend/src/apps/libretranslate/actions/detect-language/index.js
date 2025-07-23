@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Detect language',
   key: 'detectLanguage',
-  description: 'Detects language of a text.',
+  description: 'Detects language of text.',
   arguments: [
     {
       label: 'Text',

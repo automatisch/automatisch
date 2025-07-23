@@ -3,7 +3,7 @@ import defineAction from '../../../../helpers/define-action.js';
 export default defineAction({
   name: 'Translate text',
   key: 'translateText',
-  description: 'Translate a text.',
+  description: 'Translates text.',
   arguments: [
     {
       label: 'Text',
