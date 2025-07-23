@@ -8,8 +8,8 @@ import Telemetry from '@/helpers/telemetry/index.js';
 import appConfig from '@/config/app.js';
 import globalVariable from '@/helpers/global-variable.js';
 import computeParameters from '@/helpers/compute-parameters.js';
-import testRun from '@/services/test-run.js';
 import { generateIconUrl } from '@/helpers/generate-icon-url.js';
+import runExecutor from '@/executor/index.js';
 
 class Step extends Base {
   static tableName = 'steps';
@@ -138,7 +138,11 @@ class Step extends Base {
   }
 
   async testAndContinue() {
-    await testRun({ stepId: this.id });
+    await runExecutor({
+      flowId: this.flowId,
+      untilStepId: this.id,
+      testRun: true,
+    });
 
     const updatedStep = await this.$query()
       .withGraphFetched('lastExecutionStep')
