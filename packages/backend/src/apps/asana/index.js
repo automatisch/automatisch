@@ -11,7 +11,7 @@ export default defineApp({
   apiBaseUrl: 'https://app.asana.com/api',
   iconUrl: '{BASE_URL}/apps/asana/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/asana/connection',
-  primaryColor: '690031',
+  primaryColor: '#690031',
   supportsConnections: true,
   beforeRequest: [addAuthHeader],
   auth,

@@ -67,7 +67,7 @@ export default defineAction({
       label: 'Notes',
       key: 'notes',
       type: 'string',
-      required: true,
+      required: false,
       description: 'You can format the notes using html.',
       variables: true,
     },

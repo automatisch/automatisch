@@ -272,10 +272,10 @@ export default defineAction({
     } = $.step.parameters;
 
     const allFollowers = followerIds
-      .map((followerId) => followerId.followerId)
-      .filter(Boolean);
+      ?.map((followerId) => followerId.followerId)
+      .filter(Boolean) || [];
 
-    const allTags = tagIds.map((tagId) => tagId.tagId).filter(Boolean);
+    const allTags = tagIds?.map((tagId) => tagId.tagId).filter(Boolean) || [];
 
     const data = {
       name,

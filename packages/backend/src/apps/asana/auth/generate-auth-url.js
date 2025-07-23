@@ -1,5 +1,5 @@
-import { URLSearchParams } from 'url';
-import crypto from 'crypto';
+import { URLSearchParams } from 'node:url';
+import crypto from 'node:crypto';
 
 export default async function generateAuthUrl($) {
   const oauthRedirectUrlField = $.app.auth.fields.find(
@@ -12,7 +12,6 @@ export default async function generateAuthUrl($) {
     client_id: $.auth.data.clientId,
     redirect_uri: redirectUri,
     response_type: 'code',
-    //scope: authScope.join(' '),
     state,
   });
 
