@@ -195,6 +195,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Eventbrite',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/eventbrite/triggers' },
+            { text: 'Actions', link: '/apps/eventbrite/actions' },
+            { text: 'Connection', link: '/apps/eventbrite/connection' },
+          ],
+        },
+        {
           text: 'Filter',
           collapsible: true,
           collapsed: true,
