@@ -9,7 +9,7 @@ import appConfig from '@/config/app.js';
 import globalVariable from '@/helpers/global-variable.js';
 import computeParameters from '@/helpers/compute-parameters.js';
 import { generateIconUrl } from '@/helpers/generate-icon-url.js';
-import runExecutor from '@/executor/index.js';
+import { runExecutor } from '@/executor/index.js';
 
 class Step extends Base {
   static tableName = 'steps';

@@ -4,7 +4,7 @@ import User from '@/models/user.js';
 import { logger } from '@/helpers/logger.js';
 import { createFlow } from '@/factories/flow.js';
 import { createUser } from '@/factories/user.js';
-import runExecutor from './index.js';
+import { runExecutor } from './index.js';
 
 describe('runExecutor', () => {
   it('should return early when flow is not found', async () => {
