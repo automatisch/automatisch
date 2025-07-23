@@ -122,35 +122,37 @@ const runExecutor = async ({ flowId, untilStepId, testRun }) => {
     return;
   }
 
-  const reversedData = data.reverse();
+  if (!testRun) {
+    const reversedData = data.reverse();
 
-  const jobOptions = {
-    removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-    removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-  };
-
-  for (const triggerItem of reversedData) {
-    const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
-
-    const jobPayload = {
-      flowId,
-      stepId: triggerStep.id,
-      triggerItem,
+    const jobOptions = {
+      removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+      removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
     };
 
-    await triggerQueue.add(jobName, jobPayload, jobOptions);
-  }
+    for (const triggerItem of reversedData) {
+      const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
 
-  if (error) {
-    const jobName = `${triggerStep.id}-error`;
+      const jobPayload = {
+        flowId,
+        stepId: triggerStep.id,
+        triggerItem,
+      };
 
-    const jobPayload = {
-      flowId,
-      stepId: triggerStep.id,
-      error,
-    };
+      await triggerQueue.add(jobName, jobPayload, jobOptions);
+    }
 
-    await triggerQueue.add(jobName, jobPayload, jobOptions);
+    if (error) {
+      const jobName = `${triggerStep.id}-error`;
+
+      const jobPayload = {
+        flowId,
+        stepId: triggerStep.id,
+        error,
+      };
+
+      await triggerQueue.add(jobName, jobPayload, jobOptions);
+    }
   }
 };
 
