@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty.js';
 
 import Flow from '@/models/flow.js';
-import { processTrigger } from '@/services/trigger.js';
+import { processTrigger } from '@/executor/index.js';
 import triggerQueue from '@/queues/trigger.js';
 import globalVariable from '@/helpers/global-variable.js';
 import QuotaExceededError from '@/errors/quote-exceeded.js';
