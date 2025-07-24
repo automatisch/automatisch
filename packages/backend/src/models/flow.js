@@ -377,7 +377,9 @@ class Flow extends Base {
   }
 
   async getActionSteps() {
-    return await this.$relatedQuery('steps').where('type', 'action');
+    return await this.$relatedQuery('steps')
+      .where('type', 'action')
+      .orderBy('position', 'asc');
   }
 
   async isPaused() {

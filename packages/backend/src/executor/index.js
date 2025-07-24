@@ -13,8 +13,20 @@ import {
 import EarlyExitError from '@/errors/early-exit.js';
 import AlreadyProcessedError from '@/errors/already-processed.js';
 import HttpError from '@/errors/http.js';
+import QuotaExceededError from '@/errors/quote-exceeded.js';
+import { isEmpty } from 'lodash';
 
-export const runExecutor = async ({ flowId, untilStepId, testRun }) => {
+export const runExecutor = async ({
+  flowId,
+  untilStepId,
+  testRun,
+  triggeredByTestAndContinue,
+  triggeredByRequest,
+  asyncWebhook,
+  syncWebhook,
+  request,
+  response,
+}) => {
   const flow = await Flow.query().findById(flowId);
   let untilStep;
 
@@ -23,7 +35,10 @@ export const runExecutor = async ({ flowId, untilStepId, testRun }) => {
     return;
   }
 
-  if (testRun) {
+  const isPublishedFlow = flow.active;
+  const isUnpublishedFlow = !isPublishedFlow;
+
+  if (triggeredByTestAndContinue) {
     untilStep = await flow.$relatedQuery('steps').findById(untilStepId);
 
     if (!untilStep) {
@@ -35,8 +50,13 @@ export const runExecutor = async ({ flowId, untilStepId, testRun }) => {
   const user = await flow.$relatedQuery('user');
   const allowedToRunFlows = await user.isAllowedToRunFlows();
 
-  if (!allowedToRunFlows) {
+  if (!allowedToRunFlows && isPublishedFlow) {
     logger.info(`User ${user.id} is not allowed to run flows!`);
+
+    if (triggeredByRequest) {
+      throw new QuotaExceededError();
+    }
+
     return;
   }
 
@@ -45,17 +65,29 @@ export const runExecutor = async ({ flowId, untilStepId, testRun }) => {
   const triggerCommand = await triggerStep.getTriggerCommand();
   const triggerConnection = await triggerStep.$relatedQuery('connection');
   const triggerApp = await triggerStep.getApp();
+  const isWebhookTrigger = triggerCommand.type === 'webhook';
+  const isWebhookApp = triggerApp.key === 'webhook';
+  const isFormsApp = triggerApp.key === 'forms';
+  const isBuiltInApp = isWebhookApp || isFormsApp;
+
+  if (isUnpublishedFlow && !isBuiltInApp && triggeredByRequest) {
+    return response.status(404);
+  }
 
   const $ = await globalVariable({
     flow,
     connection: triggerConnection,
     app: triggerApp,
     step: triggerStep,
-    testRun,
+    testRun: !flow.active,
+    request,
   });
 
+  const shouldInvokeTestRun =
+    triggeredByTestAndContinue && isWebhookTrigger && isUnpublishedFlow;
+
   try {
-    if (triggerCommand.type === 'webhook' && !flow.active) {
+    if (shouldInvokeTestRun) {
       await triggerCommand.testRun($);
     } else {
       await triggerCommand.run($);
@@ -81,6 +113,44 @@ export const runExecutor = async ({ flowId, untilStepId, testRun }) => {
   }
 
   const { data, error } = $.triggerOutput;
+
+  if (triggeredByRequest && asyncWebhook) {
+    const reversedTriggerItems = $.triggerOutput.data.reverse();
+
+    if (isEmpty(reversedTriggerItems)) {
+      return response.status(204);
+    }
+
+    for (const triggerItem of reversedTriggerItems) {
+      if (isUnpublishedFlow) {
+        await processTrigger({
+          flowId,
+          stepId: triggerStep.id,
+          triggerItem,
+          testRun: true,
+        });
+
+        continue;
+      }
+
+      const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
+
+      const jobOptions = {
+        removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+        removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+      };
+
+      const jobPayload = {
+        flowId,
+        stepId: triggerStep.id,
+        triggerItem,
+      };
+
+      await triggerQueue.add(jobName, jobPayload, jobOptions);
+    }
+
+    return response.status(204);
+  }
 
   if (testRun && error) {
     const { executionStep: triggerExecutionStepWithError } =
