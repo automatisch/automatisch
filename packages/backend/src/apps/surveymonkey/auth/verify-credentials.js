@@ -34,9 +34,9 @@ const verifyCredentials = async ($) => {
 
   const currentUser = await getCurrentUser($);
 
-  const screenName = [currentUser.username, currentUser.email]
-    .filter(Boolean)
-    .join(' @ ');
+  const screenName = Array.from(
+    new Set([currentUser.username, currentUser.email].filter(Boolean))
+  ).join(' @ ');
 
   await $.auth.set({
     clientId: $.auth.data.clientId,

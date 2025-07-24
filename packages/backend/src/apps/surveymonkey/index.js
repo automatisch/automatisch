@@ -13,7 +13,7 @@ export default defineApp({
   apiBaseUrl: '',
   iconUrl: '{BASE_URL}/apps/surveymonkey/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/surveymonkey/connection',
-  primaryColor: '00bf6f',
+  primaryColor: '#00bf6f',
   supportsConnections: true,
   beforeRequest: [setBaseUrl, addAuthHeader],
   auth,

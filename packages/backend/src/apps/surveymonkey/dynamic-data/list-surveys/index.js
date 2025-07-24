@@ -17,10 +17,10 @@ export default {
     let fetchedSum = 0;
     let total;
     do {
-      const { data } = await $.http.get(`/v3/surveys`, { params });
+      const { data } = await $.http.get('/v3/surveys', { params });
 
       params.page = params.page + 1;
-      fetchedSum = fetchedSum + params.per_page;
+      fetchedSum = fetchedSum + data.data.length;
       total = data.total;
 
       if (data.data) {
@@ -31,7 +31,7 @@ export default {
           });
         }
       }
-    } while (fetchedSum <= total);
+    } while (fetchedSum < total);
 
     return surveys;
   },
