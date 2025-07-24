@@ -656,6 +656,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'SurveyMonkey',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/surveymonkey/triggers' },
+            { text: 'Actions', link: '/apps/surveymonkey/actions' },
+            { text: 'Connection', link: '/apps/surveymonkey/connection' },
+          ],
+        },
+        {
           text: 'Telegram',
           collapsible: true,
           collapsed: true,

@@ -68,6 +68,7 @@ The following integrations are currently supported by Automatisch.
 - [Spotify](/apps/spotify/actions)
 - [Strava](/apps/strava/actions)
 - [Stripe](/apps/stripe/triggers)
+- [SurveyMonkey](/apps/surveymonkey/triggers)
 - [Telegram](/apps/telegram-bot/actions)
 - [Todoist](/apps/todoist/triggers)
 - [Together AI](/apps/together-ai/actions)
