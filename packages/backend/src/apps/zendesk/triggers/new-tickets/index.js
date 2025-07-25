@@ -37,7 +37,7 @@ export default defineTrigger({
     let hasMore;
 
     do {
-      const response = await $.http.get(`/api/v2/views/${viewId}/tickets`, {
+      const response = await $.http.get(`/v2/views/${viewId}/tickets`, {
         params,
       });
       const allTickets = response?.data?.tickets;

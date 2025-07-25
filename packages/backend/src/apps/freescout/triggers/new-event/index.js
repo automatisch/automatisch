@@ -50,12 +50,12 @@ export default defineTrigger({
       events: [$.step.parameters.eventType],
     };
 
-    const response = await $.http.post('/api/webhooks', payload);
+    const response = await $.http.post('/webhooks', payload);
 
     await $.flow.setRemoteWebhookId(response.data?.id?.toString());
   },
 
   async unregisterHook($) {
-    await $.http.delete(`/api/webhooks/${$.flow.remoteWebhookId}`);
+    await $.http.delete(`/webhooks/${$.flow.remoteWebhookId}`);
   },
 });

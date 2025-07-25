@@ -11,7 +11,7 @@ export default {
       sort: 'add_time DESC',
     };
 
-    const { data } = await $.http.get(`${$.auth.data.apiDomain}/api/v1/deals`, {
+    const { data } = await $.http.get(`/v1/deals`, {
       params,
     });
 

@@ -14,7 +14,7 @@ export default {
 
     let nextPage;
     do {
-      const response = await $.http.get('/api/v2/ticket_forms', { params });
+      const response = await $.http.get('/v2/ticket_forms', { params });
       const allTicketForms = response?.data?.ticket_forms;
       nextPage = response.data.next_page;
       params.page = params.page + 1;

@@ -8,7 +8,7 @@ export default {
     };
 
     const { data } = await $.http.get(
-      `${$.auth.data.apiDomain}/api/v1/organizationFields`
+      `/v1/organizationFields`
     );
 
     const labelField = data.data.filter((field) => field.key === 'label');

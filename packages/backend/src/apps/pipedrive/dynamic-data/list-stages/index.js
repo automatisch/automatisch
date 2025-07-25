@@ -7,7 +7,7 @@ export default {
       data: [],
     };
 
-    const { data } = await $.http.get('/api/v1/stages');
+    const { data } = await $.http.get('/v1/stages');
 
     if (data.data?.length) {
       for (const stage of data.data) {

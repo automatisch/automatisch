@@ -13,6 +13,9 @@ export default async function paginateAll($, request) {
     const nextPageResponse = await $.http.request({
       ...response.config,
       url: links.next.uri,
+      additionalProperties: {
+        skipAddingBaseUrl: true,
+      },
     });
 
     aggregatedResponse.data.push(...nextPageResponse.data);

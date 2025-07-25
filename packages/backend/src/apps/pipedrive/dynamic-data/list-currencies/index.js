@@ -8,7 +8,7 @@ export default {
     };
 
     const { data } = await $.http.get(
-      `${$.auth.data.apiDomain}/api/v1/currencies`
+      `/v1/currencies`
     );
 
     if (data.data?.length) {

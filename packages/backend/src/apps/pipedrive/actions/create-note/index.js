@@ -189,7 +189,7 @@ export default defineAction({
 
     const {
       data: { data },
-    } = await $.http.post('/api/v1/notes', body);
+    } = await $.http.post('/v1/notes', body);
 
     $.setActionItem({
       raw: data,

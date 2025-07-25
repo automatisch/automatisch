@@ -1,6 +1,6 @@
 const verifyCredentials = async ($) => {
   const { data } = await $.http.get(
-    `/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}`
+    `/laml/2010-04-01/Accounts/${$.auth.data.accountSid}`
   );
 
   await $.auth.set({
