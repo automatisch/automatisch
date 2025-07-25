@@ -56,8 +56,10 @@ const getApp = async (appKey, stripFuncs = true) => {
     return addStaticSubsteps('action', appData, action);
   });
 
-  // Inject API request action for apps that support connections
-  if (appData.supportsConnections) {
+  // Inject API request action for apps that support connections and use HTTP APIs
+  // Exclude apps that don't consume HTTP APIs even though they have connections
+  const nonHttpApps = ['postgresql', 'smtp'];
+  if (appData.supportsConnections && !nonHttpApps.includes(appData.key)) {
     const processedApiRequestAction = addStaticSubsteps(
       'action',
       appData,
