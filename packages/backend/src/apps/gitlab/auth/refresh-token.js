@@ -10,7 +10,11 @@ const refreshToken = async ($) => {
     refresh_token: $.auth.data.refreshToken,
   });
 
-  const { data } = await $.http.post('/oauth/token', params.toString());
+  const { data } = await $.http.post('/oauth/token', params.toString(), {
+    additionalProperties: {
+      skipAddingBaseUrl: true,
+    },
+  });
 
   await $.auth.set({
     accessToken: data.access_token,

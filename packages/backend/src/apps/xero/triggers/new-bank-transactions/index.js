@@ -34,7 +34,7 @@ export default defineTrigger({
 
     let nextPage = false;
     do {
-      const { data } = await $.http.get('/api.xro/2.0/BankTransactions', {
+      const { data } = await $.http.get('/2.0/BankTransactions', {
         params,
       });
       params.page = params.page + 1;

@@ -18,7 +18,7 @@ export default {
     };
 
     do {
-      const response = await $.http.get('/api/v2/users', { params });
+      const response = await $.http.get('/v2/users', { params });
       const allUsers = response?.data?.users;
       hasMore = response?.data?.meta?.has_more;
       params['page[after]'] = response.data.meta?.after_cursor;

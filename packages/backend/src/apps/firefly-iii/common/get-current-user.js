@@ -1,5 +1,5 @@
 const getCurrentUser = async ($) => {
-  const { data: currentUser } = await $.http.get('/api/v1/about/user', {
+  const { data: currentUser } = await $.http.get('/v1/about/user', {
     headers: {
       accept: 'application/vnd.api+json',
     },

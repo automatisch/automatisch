@@ -48,7 +48,7 @@ export default defineAction({
       (value, key) => fieldsToRemoveIfEmpty.includes(key) && isEmpty(value)
     );
 
-    const response = await $.http.put(`/api/v2/tickets/${ticketId}`, {
+    const response = await $.http.put(`/v2/tickets/${ticketId}`, {
       ticket: filteredPayload,
     });
 

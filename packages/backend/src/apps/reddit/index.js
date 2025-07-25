@@ -8,7 +8,7 @@ export default defineApp({
   name: 'Reddit',
   key: 'reddit',
   baseUrl: 'https://www.reddit.com',
-  apiBaseUrl: 'https://oauth.reddit.com',
+  apiBaseUrl: 'https://oauth.reddit.com/api',
   iconUrl: '{BASE_URL}/apps/reddit/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/reddit/connection',
   primaryColor: '#FF4500',

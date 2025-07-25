@@ -12,7 +12,7 @@ export default {
       sort: '-id',
     };
 
-    const response = await $.http.get('/api/v2/tickets', { params });
+    const response = await $.http.get('/v2/tickets', { params });
     const allTickets = response.data.tickets;
 
     if (allTickets?.length) {
