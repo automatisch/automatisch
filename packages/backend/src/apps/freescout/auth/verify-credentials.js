@@ -1,5 +1,5 @@
 const verifyCredentials = async ($) => {
-  await $.http.get('/api/mailboxes');
+  await $.http.get('/mailboxes');
 };
 
 export default verifyCredentials;

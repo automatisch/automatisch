@@ -7,7 +7,7 @@ export default {
       data: [],
     };
 
-    const { data } = await $.http.get('/api.xro/2.0/Organisation');
+    const { data } = await $.http.get('/2.0/Organisation');
 
     if (data.Organisations?.length) {
       for (const organization of data.Organisations) {

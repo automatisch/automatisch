@@ -1,5 +1,5 @@
 const isStillVerified = async ($) => {
-  await $.http.get('/api/mailboxes');
+  await $.http.get('/mailboxes');
   return true;
 };
 

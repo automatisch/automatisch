@@ -25,7 +25,7 @@ export default defineAction({
       sort_order: 'desc',
     };
 
-    const response = await $.http.get('/api/v2/search', { params });
+    const response = await $.http.get('/v2/search', { params });
 
     $.setActionItem({ raw: response.data.results[0] });
   },

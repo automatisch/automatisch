@@ -2,7 +2,7 @@ const fetchMessages = async ($) => {
   const toNumber = $.step.parameters.toNumber;
 
   let response;
-  let requestPath = `/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages?To=${toNumber}`;
+  let requestPath = `/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages?To=${toNumber}`;
 
   do {
     response = await $.http.get(requestPath);

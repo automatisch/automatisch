@@ -8,7 +8,7 @@ export default {
     };
 
     const { data } = await $.http.get(
-      `${$.auth.data.apiDomain}/api/v1/activityTypes`
+      `/v1/activityTypes`
     );
 
     if (data.data?.length) {

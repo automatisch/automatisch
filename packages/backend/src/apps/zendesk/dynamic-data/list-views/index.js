@@ -14,7 +14,7 @@ export default {
     };
 
     do {
-      const response = await $.http.get('/api/v2/views', { params });
+      const response = await $.http.get('/v2/views', { params });
       const allViews = response?.data?.views;
       hasMore = response?.data?.meta?.has_more;
       params['page[after]'] = response.data.meta?.after_cursor;

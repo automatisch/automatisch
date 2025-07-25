@@ -1,5 +1,5 @@
 const setBaseUrl = ($, requestConfig) => {
-  requestConfig.baseURL = $.auth.data.instanceUrl;
+  requestConfig.baseURL = $.auth.data.instanceUrl + '/api';
   return requestConfig;
 };
 
