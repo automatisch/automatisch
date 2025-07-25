@@ -4,6 +4,7 @@ import omit from 'lodash/omit.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import addAuthenticationSteps from '@/helpers/add-authentication-steps.js';
 import addReconnectionSteps from '@/helpers/add-reconnection-steps.js';
+import commonApiRequestAction from '@/helpers/common-api-request-action.js';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -54,6 +55,19 @@ const getApp = async (appKey, stripFuncs = true) => {
   appData.actions = appData?.actions?.map((action) => {
     return addStaticSubsteps('action', appData, action);
   });
+
+  // Inject API request action for apps that support connections and use HTTP APIs
+  // Exclude apps that don't consume HTTP APIs even though they have connections
+  const nonHttpApps = ['postgresql', 'smtp'];
+  if (appData.supportsConnections && !nonHttpApps.includes(appData.key)) {
+    const processedApiRequestAction = addStaticSubsteps(
+      'action',
+      appData,
+      commonApiRequestAction
+    );
+
+    appData.actions = [...(appData.actions || []), processedApiRequestAction];
+  }
 
   if (stripFuncs) {
     return stripFunctions(appData);
