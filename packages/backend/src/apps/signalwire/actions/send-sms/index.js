@@ -44,7 +44,7 @@ export default defineAction({
   ],
 
   async run($) {
-    const requestPath = `/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages`;
+    const requestPath = `/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/Messages`;
 
     const Body = $.step.parameters.message;
     const From = $.step.parameters.fromNumber;

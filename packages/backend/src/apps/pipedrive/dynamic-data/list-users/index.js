@@ -7,7 +7,7 @@ export default {
       data: [],
     };
 
-    const { data } = await $.http.get(`${$.auth.data.apiDomain}/api/v1/users`);
+    const { data } = await $.http.get(`/v1/users`);
 
     if (data.data?.length) {
       for (const user of data.data) {

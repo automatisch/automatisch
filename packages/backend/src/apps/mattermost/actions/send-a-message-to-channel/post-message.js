@@ -8,7 +8,7 @@ const postMessage = async ($) => {
     message,
   };
 
-  const response = await $.http.post('/api/v4/posts', data);
+  const response = await $.http.post('/v4/posts', data);
 
   const actionData = {
     raw: response?.data,

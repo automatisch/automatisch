@@ -3,18 +3,14 @@ const addAuthHeader = ($, requestConfig) => {
 
   requestConfig.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
-  if (authData.accountSid && authData.authToken) {
-    requestConfig.auth = {
-      username: authData.accountSid,
-      password: authData.authToken,
-    };
-  }
+  requestConfig.auth = {
+    username: authData.accountSid,
+    password: authData.authToken,
+  };
 
-  if (authData.spaceName) {
-    const serverUrl = `https://${authData.spaceName}.${authData.spaceRegion}signalwire.com`;
+  const serverUrl = `https://${authData.spaceName}.${authData.spaceRegion}signalwire.com/api`;
 
-    requestConfig.baseURL = serverUrl;
-  }
+  requestConfig.baseURL = serverUrl;
 
   return requestConfig;
 };

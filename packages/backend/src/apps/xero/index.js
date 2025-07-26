@@ -8,7 +8,7 @@ export default defineApp({
   name: 'Xero',
   key: 'xero',
   baseUrl: 'https://go.xero.com',
-  apiBaseUrl: 'https://api.xero.com',
+  apiBaseUrl: 'https://api.xero.com/api.xro',
   iconUrl: '{BASE_URL}/apps/xero/assets/favicon.svg',
   authDocUrl: '{DOCS_URL}/apps/xero/connection',
   primaryColor: '#13B5EA',

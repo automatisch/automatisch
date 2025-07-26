@@ -13,6 +13,10 @@ const verifyCredentials = async ($) => {
     code: $.auth.data.code,
     grant_type: 'authorization_code',
     redirect_uri: redirectUri,
+  }, {
+    additionalProperties: {
+      skipAddingBaseUrl: true,
+    },
   });
 
   await $.auth.set({

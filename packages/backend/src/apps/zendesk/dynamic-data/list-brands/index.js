@@ -14,7 +14,7 @@ export default {
 
     let nextPage;
     do {
-      const response = await $.http.get('/api/v2/brands', { params });
+      const response = await $.http.get('/v2/brands', { params });
       const allBrands = response?.data?.brands;
       nextPage = response.data.next_page;
       params.page = params.page + 1;

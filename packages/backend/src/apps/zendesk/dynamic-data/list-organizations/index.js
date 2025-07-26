@@ -14,7 +14,7 @@ export default {
     };
 
     do {
-      const response = await $.http.get('/api/v2/organizations', { params });
+      const response = await $.http.get('/v2/organizations', { params });
       const allOrganizations = response?.data?.organizations;
       hasMore = response?.data?.meta?.has_more;
       params['page[after]'] = response.data.meta?.after_cursor;

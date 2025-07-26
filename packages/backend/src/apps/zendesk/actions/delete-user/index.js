@@ -36,7 +36,7 @@ export default defineAction({
   async run($) {
     const userId = $.step.parameters.userId;
 
-    const response = await $.http.delete(`/api/v2/users/${userId}`);
+    const response = await $.http.delete(`/v2/users/${userId}`);
 
     $.setActionItem({ raw: response.data });
   },

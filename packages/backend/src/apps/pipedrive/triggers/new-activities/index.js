@@ -15,7 +15,7 @@ export default defineTrigger({
     };
 
     do {
-      const { data } = await $.http.get('/api/v1/activities', {
+      const { data } = await $.http.get('/v1/activities', {
         params,
       });
 

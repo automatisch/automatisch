@@ -25,7 +25,7 @@ export default defineTrigger({
       sort_order: 'desc',
     };
 
-    const response = await $.http.get('/api/v2/search', { params });
+    const response = await $.http.get('/v2/search', { params });
 
     const lastUser = response.data.results[0];
 
@@ -71,13 +71,13 @@ export default defineTrigger({
       },
     };
 
-    const response = await $.http.post('/api/v2/webhooks', payload);
+    const response = await $.http.post('/v2/webhooks', payload);
     const id = response.data.webhook.id;
 
     await $.flow.setRemoteWebhookId(id);
   },
 
   async unregisterHook($) {
-    await $.http.delete(`/api/v2/webhooks/${$.flow.remoteWebhookId}`);
+    await $.http.delete(`/v2/webhooks/${$.flow.remoteWebhookId}`);
   },
 });
