@@ -93,6 +93,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Bigin By Zoho CRM',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/bigin-by-zoho-crm/triggers' },
+            { text: 'Actions', link: '/apps/bigin-by-zoho-crm/actions' },
+            { text: 'Connection', link: '/apps/bigin-by-zoho-crm/connection' },
+          ],
+        },
+        {
           text: 'Brave Search',
           collapsible: true,
           collapsed: true,
