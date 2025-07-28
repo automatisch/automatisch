@@ -9,22 +9,36 @@ import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const apps = fs
-  .readdirSync(path.resolve(__dirname, `../apps/`), { withFileTypes: true })
-  .reduce((apps, dirent) => {
-    if (!dirent.isDirectory()) return apps;
+function scanAppsInDirectory(dirPath) {
+  if (!fs.existsSync(dirPath)) return {};
 
-    const indexPath = join(__dirname, '../apps', dirent.name, 'index.js');
-    const indexEePath = join(__dirname, '../apps', dirent.name, 'index.ee.js');
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .reduce((apps, dirent) => {
+      if (!dirent.isDirectory()) return apps;
 
-    if (fs.existsSync(indexEePath)) {
-      apps[dirent.name] = import(pathToFileURL(indexEePath));
-    } else {
-      apps[dirent.name] = import(pathToFileURL(indexPath));
-    }
+      const indexPath = join(dirPath, dirent.name, 'index.js');
+      const indexEePath = join(dirPath, dirent.name, 'index.ee.js');
 
-    return apps;
-  }, {});
+      // Only include directories that have index.js or index.ee.js
+      if (fs.existsSync(indexEePath)) {
+        apps[dirent.name] = import(pathToFileURL(indexEePath));
+      } else if (fs.existsSync(indexPath)) {
+        apps[dirent.name] = import(pathToFileURL(indexPath));
+      }
+      // Skip directories without index files (like .git, incomplete apps, etc.)
+
+      return apps;
+    }, {});
+}
+
+const appsDir = path.resolve(__dirname, '../apps');
+const privateAppsDir = path.resolve(__dirname, '../private-apps');
+
+const apps = {
+  ...scanAppsInDirectory(appsDir),
+  ...scanAppsInDirectory(privateAppsDir),
+};
 
 async function getAppDefaultExport(appKey) {
   if (!Object.prototype.hasOwnProperty.call(apps, appKey)) {

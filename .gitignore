@@ -127,3 +127,4 @@ dist
 
 # MacOS finder preferences
 .DS_store
+packages/backend/src/private-apps
