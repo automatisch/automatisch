@@ -153,14 +153,14 @@ describe('Step model', () => {
     });
   });
 
-  it('isTrigger should return true when step type is trigger', () => {
+  it('isTrigger should return true when structural type is trigger', () => {
     const step = new Step();
     step.type = 'trigger';
 
     expect(step.isTrigger).toBe(true);
   });
 
-  it('isAction should return true when step type is action', () => {
+  it('isAction should return true when structural type is action', () => {
     const step = new Step();
     step.type = 'action';
 
@@ -168,7 +168,7 @@ describe('Step model', () => {
   });
 
   describe('computeWebhookPath', () => {
-    it('should return null if step type is action', async () => {
+    it('should return null if structural type is action', async () => {
       const step = new Step();
       step.type = 'action';
 
@@ -225,7 +225,7 @@ describe('Step model', () => {
   });
 
   describe('getWebhookUrl', () => {
-    it('should return absolute webhook URL when step type is trigger', async () => {
+    it('should return absolute webhook URL when structural type is trigger', async () => {
       const step = new Step();
       step.type = 'trigger';
 
@@ -239,7 +239,7 @@ describe('Step model', () => {
       );
     });
 
-    it('should return undefined when step type is action', async () => {
+    it('should return undefined when structural type is action', async () => {
       const step = new Step();
       step.type = 'action';
 
@@ -585,17 +585,17 @@ describe('Step model', () => {
     });
 
     it('should throw an error if parent step is not a branch or paths', async () => {
-      const parentStep = await createStep({ stepType: 'single' });
+      const parentStep = await createStep({ structuralType: 'single' });
       const step = new Step();
       step.parentStepId = parentStep.id;
 
       await expect(() => step.validateParentStep()).rejects.toThrowError(
-        'Parent step must have stepType of "branch" or "paths" to have children'
+        'Parent step must have structuralType of "branch" or "paths" to have children'
       );
     });
 
     it('should not throw an error if parent step is a paths', async () => {
-      const parentStep = await createStep({ stepType: 'paths' });
+      const parentStep = await createStep({ structuralType: 'paths' });
       const step = new Step();
       step.parentStepId = parentStep.id;
 
@@ -604,7 +604,7 @@ describe('Step model', () => {
 
     it('should not throw an error if parent step is a branch', async () => {
       const parentStep = await createStep({
-        stepType: 'branch',
+        structuralType: 'branch',
         branchConditions: [{ condition: 'true' }],
       });
 
@@ -616,32 +616,32 @@ describe('Step model', () => {
   });
 
   describe('validateBranchConditions', () => {
-    it('should return true when step type is single', async () => {
+    it('should return true when structural type is single', async () => {
       const step = new Step();
-      step.stepType = 'single';
+      step.structuralType = 'single';
 
       await expect(step.validateBranchConditions()).resolves.not.toThrow();
     });
 
-    it('should return true when step type is paths', async () => {
+    it('should return true when structural type is paths', async () => {
       const step = new Step();
-      step.stepType = 'paths';
+      step.structuralType = 'paths';
 
       await expect(step.validateBranchConditions()).resolves.not.toThrow();
     });
 
-    it('should throw an error when step type is branch and branchConditions is not set', async () => {
+    it('should throw an error when structural type is branch and branchConditions is not set', async () => {
       const step = new Step();
-      step.stepType = 'branch';
+      step.structuralType = 'branch';
 
       await expect(step.validateBranchConditions()).rejects.toThrowError(
         'Branch conditions are required and must contain at least one condition!'
       );
     });
 
-    it('should throw an error when step type is branch and branchConditions is an empty array', async () => {
+    it('should throw an error when structural type is branch and branchConditions is an empty array', async () => {
       const step = new Step();
-      step.stepType = 'branch';
+      step.structuralType = 'branch';
       step.branchConditions = [];
 
       await expect(step.validateBranchConditions()).rejects.toThrowError(
@@ -649,9 +649,9 @@ describe('Step model', () => {
       );
     });
 
-    it('should not throw an error when step type is branch and branchConditions is set with at least one condition', async () => {
+    it('should not throw an error when structural type is branch and branchConditions is set with at least one condition', async () => {
       const step = new Step();
-      step.stepType = 'branch';
+      step.structuralType = 'branch';
       step.branchConditions = [{ condition: 'true' }];
 
       await expect(step.validateBranchConditions()).resolves.not.toThrow();
