@@ -603,11 +603,58 @@ describe('Step model', () => {
     });
 
     it('should not throw an error if parent step is a branch', async () => {
-      const parentStep = await createStep({ stepType: 'branch' });
+      const parentStep = await createStep({
+        stepType: 'branch',
+        branchConditions: [{ condition: 'true' }],
+      });
+
       const step = new Step();
       step.parentStepId = parentStep.id;
 
       await expect(step.validateParentStep()).resolves.not.toThrow();
+    });
+  });
+
+  describe('validateBranchConditions', () => {
+    it('should return true when step type is single', async () => {
+      const step = new Step();
+      step.stepType = 'single';
+
+      await expect(step.validateBranchConditions()).resolves.not.toThrow();
+    });
+
+    it('should return true when step type is paths', async () => {
+      const step = new Step();
+      step.stepType = 'paths';
+
+      await expect(step.validateBranchConditions()).resolves.not.toThrow();
+    });
+
+    it('should throw an error when step type is branch and branchConditions is not set', async () => {
+      const step = new Step();
+      step.stepType = 'branch';
+
+      await expect(step.validateBranchConditions()).rejects.toThrowError(
+        'Branch conditions are required and must contain at least one condition!'
+      );
+    });
+
+    it('should throw an error when step type is branch and branchConditions is an empty array', async () => {
+      const step = new Step();
+      step.stepType = 'branch';
+      step.branchConditions = [];
+
+      await expect(step.validateBranchConditions()).rejects.toThrowError(
+        'Branch conditions are required and must contain at least one condition!'
+      );
+    });
+
+    it('should not throw an error when step type is branch and branchConditions is set with at least one condition', async () => {
+      const step = new Step();
+      step.stepType = 'branch';
+      step.branchConditions = [{ condition: 'true' }];
+
+      await expect(step.validateBranchConditions()).resolves.not.toThrow();
     });
   });
 
@@ -629,6 +676,17 @@ describe('Step model', () => {
       await createStep();
 
       expect(validateParentStepSpy).toHaveBeenCalled();
+    });
+
+    it('should call validateBranchConditions', async () => {
+      const validateBranchConditionsSpy = vi.spyOn(
+        Step.prototype,
+        'validateBranchConditions'
+      );
+
+      await createStep();
+
+      expect(validateBranchConditionsSpy).toHaveBeenCalled();
     });
   });
 
@@ -654,6 +712,18 @@ describe('Step model', () => {
       await step.$query().patch({ position: 2 });
 
       expect(validateParentStepSpy).toHaveBeenCalled();
+    });
+
+    it('should call validateBranchConditions', async () => {
+      const validateBranchConditionsSpy = vi.spyOn(
+        Step.prototype,
+        'validateBranchConditions'
+      );
+
+      const step = await createStep();
+      await step.$query().patch({ position: 2 });
+
+      expect(validateBranchConditionsSpy).toHaveBeenCalled();
     });
   });
 

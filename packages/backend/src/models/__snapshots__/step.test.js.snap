@@ -11,6 +11,15 @@ exports[`Step model > jsonSchema should have correct validations 1`] = `
         "null",
       ],
     },
+    "branchConditions": {
+      "items": {
+        "type": "object",
+      },
+      "type": [
+        "array",
+        "null",
+      ],
+    },
     "connectionId": {
       "format": "uuid",
       "type": [

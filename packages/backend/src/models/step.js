@@ -32,6 +32,12 @@ class Step extends Base {
         default: 'single',
       },
       parentStepId: { type: ['string', 'null'], format: 'uuid' },
+      branchConditions: {
+        type: ['array', 'null'],
+        items: {
+          type: 'object',
+        },
+      },
       connectionId: { type: ['string', 'null'], format: 'uuid' },
       status: {
         type: 'string',
@@ -399,14 +405,34 @@ class Step extends Base {
     }
   }
 
+  async validateBranchConditions() {
+    if (this.stepType !== 'branch') return true;
+
+    if (!this.branchConditions || this.branchConditions.length === 0) {
+      throw new ValidationError({
+        data: {
+          branchConditions: [
+            {
+              message:
+                'Branch conditions are required and must contain at least one condition!',
+            },
+          ],
+        },
+        type: 'invalidBranchConditionsError',
+      });
+    }
+  }
+
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
     await this.validateParentStep();
+    await this.validateBranchConditions();
   }
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     await this.validateParentStep();
+    await this.validateBranchConditions();
   }
 
   async $afterInsert(queryContext) {
