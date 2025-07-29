@@ -25,6 +25,11 @@ class Step extends Base {
       name: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       appKey: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
+      stepType: {
+        type: 'string',
+        enum: ['single', 'paths', 'branch'],
+        default: 'single',
+      },
       connectionId: { type: ['string', 'null'], format: 'uuid' },
       status: {
         type: 'string',
