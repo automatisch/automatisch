@@ -76,7 +76,7 @@ exports[`Step model > jsonSchema should have correct validations 1`] = `
       ],
       "type": "string",
     },
-    "stepType": {
+    "structuralType": {
       "default": "single",
       "enum": [
         "single",

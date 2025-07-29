@@ -26,7 +26,7 @@ class Step extends Base {
       name: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       appKey: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
-      stepType: {
+      structuralType: {
         type: 'string',
         enum: ['single', 'paths', 'branch'],
         default: 'single',
@@ -390,23 +390,23 @@ class Step extends Base {
 
     const parentStep = await this.$relatedQuery('parentStep').throwIfNotFound();
 
-    if (!['branch', 'paths'].includes(parentStep.stepType)) {
+    if (!['branch', 'paths'].includes(parentStep.structuralType)) {
       throw new ValidationError({
         data: {
           parentStepId: [
             {
               message:
-                'Parent step must have stepType of "branch" or "paths" to have children',
+                'Parent step must have structuralType of "branch" or "paths" to have children',
             },
           ],
         },
-        type: 'invalidParentStepTypeError',
+        type: 'invalidParentStepStructuralTypeError',
       });
     }
   }
 
   async validateBranchConditions() {
-    if (this.stepType !== 'branch') return true;
+    if (this.structuralType !== 'branch') return true;
 
     if (!this.branchConditions || this.branchConditions.length === 0) {
       throw new ValidationError({
