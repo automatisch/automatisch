@@ -49,6 +49,13 @@ exports[`Step model > jsonSchema should have correct validations 1`] = `
     "parameters": {
       "type": "object",
     },
+    "parentStepId": {
+      "format": "uuid",
+      "type": [
+        "string",
+        "null",
+      ],
+    },
     "position": {
       "type": "integer",
     },

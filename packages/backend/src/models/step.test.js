@@ -54,6 +54,22 @@ describe('Step model', () => {
             to: 'connections.id',
           },
         },
+        parentStep: {
+          relation: Base.BelongsToOneRelation,
+          modelClass: Step,
+          join: {
+            from: 'steps.parent_step_id',
+            to: 'steps.id',
+          },
+        },
+        childrenSteps: {
+          relation: Base.HasManyRelation,
+          modelClass: Step,
+          join: {
+            from: 'steps.id',
+            to: 'steps.parent_step_id',
+          },
+        },
         lastExecutionStep: {
           relation: Base.HasOneRelation,
           modelClass: ExecutionStep,
@@ -556,6 +572,88 @@ describe('Step model', () => {
       await expect(() => step.updateFor(user, stepData)).rejects.toThrowError(
         'DeepL does not have an action with the "not-existing-key" key!'
       );
+    });
+  });
+
+  describe('validateParentStep', () => {
+    it('should return true when there is no parent step', async () => {
+      const step = new Step();
+      step.parentStepId = null;
+
+      const result = await step.validateParentStep();
+      expect(result).toBe(true);
+    });
+
+    it('should throw an error if parent step is not a branch or paths', async () => {
+      const parentStep = await createStep({ stepType: 'single' });
+      const step = new Step();
+      step.parentStepId = parentStep.id;
+
+      await expect(() => step.validateParentStep()).rejects.toThrowError(
+        'Parent step must have stepType of "branch" or "paths" to have children'
+      );
+    });
+
+    it('should not throw an error if parent step is a paths', async () => {
+      const parentStep = await createStep({ stepType: 'paths' });
+      const step = new Step();
+      step.parentStepId = parentStep.id;
+
+      await expect(step.validateParentStep()).resolves.not.toThrow();
+    });
+
+    it('should not throw an error if parent step is a branch', async () => {
+      const parentStep = await createStep({ stepType: 'branch' });
+      const step = new Step();
+      step.parentStepId = parentStep.id;
+
+      await expect(step.validateParentStep()).resolves.not.toThrow();
+    });
+  });
+
+  describe('$beforeInsert', () => {
+    it('should call super.$beforeInsert', async () => {
+      const superBeforeInsertSpy = vi.spyOn(Base.prototype, '$beforeInsert');
+
+      await createStep();
+
+      expect(superBeforeInsertSpy).toHaveBeenCalled();
+    });
+
+    it('should call validateParentStep', async () => {
+      const validateParentStepSpy = vi.spyOn(
+        Step.prototype,
+        'validateParentStep'
+      );
+
+      await createStep();
+
+      expect(validateParentStepSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('$beforeUpdate', () => {
+    it('should call super.$beforeUpdate', async () => {
+      const superBeforeUpdateSpy = vi.spyOn(Base.prototype, '$beforeUpdate');
+
+      const step = await createStep();
+
+      await step.$query().patch({ position: 2 });
+
+      expect(superBeforeUpdateSpy).toHaveBeenCalled();
+    });
+
+    it('should call validateParentStep', async () => {
+      const validateParentStepSpy = vi.spyOn(
+        Step.prototype,
+        'validateParentStep'
+      );
+
+      const step = await createStep();
+
+      await step.$query().patch({ position: 2 });
+
+      expect(validateParentStepSpy).toHaveBeenCalled();
     });
   });
 
