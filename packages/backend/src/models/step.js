@@ -1,4 +1,5 @@
 import { URL } from 'node:url';
+import { ValidationError } from 'objection';
 import Base from '@/models/base.js';
 import App from '@/models/app.js';
 import Flow from '@/models/flow.js';
@@ -30,6 +31,7 @@ class Step extends Base {
         enum: ['single', 'paths', 'branch'],
         default: 'single',
       },
+      parentStepId: { type: ['string', 'null'], format: 'uuid' },
       connectionId: { type: ['string', 'null'], format: 'uuid' },
       status: {
         type: 'string',
@@ -64,6 +66,22 @@ class Step extends Base {
       join: {
         from: 'steps.connection_id',
         to: 'connections.id',
+      },
+    },
+    parentStep: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: Step,
+      join: {
+        from: 'steps.parent_step_id',
+        to: 'steps.id',
+      },
+    },
+    childrenSteps: {
+      relation: Base.HasManyRelation,
+      modelClass: Step,
+      join: {
+        from: 'steps.id',
+        to: 'steps.parent_step_id',
       },
     },
     lastExecutionStep: {
@@ -359,6 +377,36 @@ class Step extends Base {
     await updatedStep.updateWebhookUrl();
 
     return updatedStep;
+  }
+
+  async validateParentStep() {
+    if (!this.parentStepId) return true;
+
+    const parentStep = await this.$relatedQuery('parentStep').throwIfNotFound();
+
+    if (!['branch', 'paths'].includes(parentStep.stepType)) {
+      throw new ValidationError({
+        data: {
+          parentStepId: [
+            {
+              message:
+                'Parent step must have stepType of "branch" or "paths" to have children',
+            },
+          ],
+        },
+        type: 'invalidParentStepTypeError',
+      });
+    }
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+    await this.validateParentStep();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+    await this.validateParentStep();
   }
 
   async $afterInsert(queryContext) {
