@@ -10,7 +10,9 @@ import 'swagger-ui-dist/swagger-ui.css';
 onMounted(() => {
   SwaggerUI({
     dom_id: '#swagger-ui',
-    url: 'http://localhost:3000/api/openapi.json',
+    url:
+      import.meta.env.VITE_OPENAPI_JSON_URL ||
+      'http://localhost:3000/api/openapi.json',
     presets: [SwaggerUI.presets.apis],
     layout: 'BaseLayout',
   });
