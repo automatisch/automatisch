@@ -670,6 +670,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/telegram-bot/triggers' },
             { text: 'Actions', link: '/apps/telegram-bot/actions' },
             { text: 'Connection', link: '/apps/telegram-bot/connection' },
           ],
