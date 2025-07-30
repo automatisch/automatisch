@@ -1,17 +1,27 @@
-import express from 'express';
-import path from 'path';
-import YAML from 'yamljs';
 import cors from 'cors';
-import { fileURLToPath } from 'url';
+import express from 'express';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import YAML from 'yamljs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const assetsHandler = async (app) => {
   app.use('/apps/:appKey/assets/favicon.svg', (req, res, next) => {
     const { appKey } = req.params;
-    const svgPath = path.resolve(
+
+    const appSvgPath = path.resolve(
       `${__dirname}/../apps/${appKey}/assets/favicon.svg`
     );
+
+    const privateAppSvgPath = path.resolve(
+      `${__dirname}/../private-apps/${appKey}/assets/favicon.svg`
+    );
+
+    const svgPath = fs.existsSync(privateAppSvgPath)
+      ? privateAppSvgPath
+      : appSvgPath;
 
     const staticFileHandlerOptions = {
       /**
