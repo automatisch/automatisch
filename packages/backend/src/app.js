@@ -3,14 +3,14 @@ import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
-import appConfig from '@/config/app.js';
-import corsOptions from '@/config/cors-options.js';
-import morgan from '@/helpers/morgan.js';
-import * as Sentry from '@/helpers/sentry.ee.js';
-import appAssetsHandler from '@/helpers/app-assets-handler.js';
-import webUIHandler from '@/helpers/web-ui-handler.js';
-import errorHandler from '@/helpers/error-handler.js';
-import '@/config/orm.js';
+import appConfig from './config/app.js';
+import corsOptions from './config/cors-options.js';
+import morgan from './helpers/morgan.js';
+import * as Sentry from './helpers/sentry.ee.js';
+import assetsHandler from './helpers/assets-handler.js';
+import webUIHandler from './helpers/web-ui-handler.js';
+import errorHandler from './helpers/error-handler.js';
+import './config/orm.js';
 import {
   createBullBoardHandler,
   serverAdapter,
@@ -30,7 +30,7 @@ Sentry.attachTracingHandler(app);
 
 injectBullBoardHandler(app, serverAdapter);
 
-appAssetsHandler(app);
+assetsHandler(app);
 
 app.use(morgan);
 
@@ -42,6 +42,7 @@ app.use(
     },
   })
 );
+
 app.use(
   express.urlencoded({
     extended: true,
@@ -51,6 +52,7 @@ app.use(
     },
   })
 );
+
 app.use(cors(corsOptions));
 
 configurePassport(app);

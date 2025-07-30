@@ -1,25 +1,17 @@
 import express from 'express';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import fs from 'node:fs';
+import path from 'path';
+import YAML from 'yamljs';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const appAssetsHandler = async (app) => {
+const assetsHandler = async (app) => {
   app.use('/apps/:appKey/assets/favicon.svg', (req, res, next) => {
     const { appKey } = req.params;
-
-    const appSvgPath = path.resolve(
+    const svgPath = path.resolve(
       `${__dirname}/../apps/${appKey}/assets/favicon.svg`
     );
-
-    const privateAppSvgPath = path.resolve(
-      `${__dirname}/../private-apps/${appKey}/assets/favicon.svg`
-    );
-
-    const svgPath = fs.existsSync(privateAppSvgPath)
-      ? privateAppSvgPath
-      : appSvgPath;
 
     const staticFileHandlerOptions = {
       /**
@@ -33,6 +25,16 @@ const appAssetsHandler = async (app) => {
 
     return staticFileHandler(req, res, next);
   });
+
+  app.use('/api/openapi.json', cors({ origin: '*' }), (req, res) => {
+    const swaggerPath = path.resolve(
+      `${__dirname}/../controllers/api/openapi.yaml`
+    );
+
+    const swaggerDocument = YAML.load(swaggerPath);
+
+    res.json(swaggerDocument);
+  });
 };
 
-export default appAssetsHandler;
+export default assetsHandler;

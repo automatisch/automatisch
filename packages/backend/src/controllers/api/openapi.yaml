@@ -1,0 +1,486 @@
+openapi: 3.0.0
+info:
+  title: Automatisch
+  version: 0.14.0
+servers:
+  - url: 'http://localhost:3000/api'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-token
+paths:
+  '/v1/apps/{appKey}':
+    get:
+      summary: Retrieve an app
+      description: Returns a specific app by its key.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Apps
+      parameters:
+        - in: path
+          name: appKey
+          required: true
+          description: 'Unique key of the app (e.g., slack, github)'
+          schema:
+            type: string
+  /v1/apps:
+    get:
+      summary: Retrieve all apps
+      description: Returns a list of all available apps in Automatisch.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Apps
+  '/v1/executions/{executionId}':
+    get:
+      summary: Get execution by ID
+      description: Retrieves detailed information about a specific execution.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Executions
+      parameters:
+        - in: path
+          name: executionId
+          required: true
+          description: Unique identifier of the execution
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Execution details
+        '404':
+          description: Execution not found
+  /v1/executions:
+    get:
+      summary: List executions
+      description: Retrieves a filtered list of executions based on query parameters.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Executions
+      parameters:
+        - in: query
+          name: name
+          description: Filter by execution name
+          schema:
+            type: string
+        - in: query
+          name: status
+          description: Filter by execution status
+          schema:
+            type: string
+            enum:
+              - success
+              - failure
+        - in: query
+          name: startDateTime
+          description: >-
+            Filter executions that started after this timestamp (in
+            milliseconds)
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: endDateTime
+          description: Filter executions that ended before this timestamp (in milliseconds)
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of executions matching the filters
+  /v1/flows:
+    post:
+      summary: Create a new flow
+      description: >-
+        Creates a new flow for a user. Optionally, a templateId can be provided
+        to base the flow on an existing template.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Flows
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+              properties:
+                userId:
+                  type: string
+                  description: ID of the user who owns the flow
+                templateId:
+                  type: string
+                  description: ID of the template to base the flow on
+      responses:
+        '201':
+          description: Flow created successfully
+    get:
+      summary: List flows
+      description: 'Retrieves a list of flows, optionally filtered by query parameters.'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Flows
+      parameters:
+        - in: query
+          name: folderId
+          description: Filter by folder ID
+          schema:
+            type: string
+        - in: query
+          name: name
+          description: Filter by flow name
+          schema:
+            type: string
+        - in: query
+          name: status
+          description: Filter by flow status
+          schema:
+            type: string
+            enum:
+              - published
+              - draft
+        - in: query
+          name: userId
+          description: Filter by user ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of flows matching the filters
+  '/v1/flows/{flowId}':
+    delete:
+      summary: Delete a flow
+      description: Deletes a specific flow by its ID.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Flows
+      parameters:
+        - in: path
+          name: flowId
+          description: Unique identifier of the flow to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Flow deleted successfully
+    get:
+      summary: Get flow by ID
+      description: Retrieves detailed information about a specific flow.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Flows
+      parameters:
+        - in: path
+          name: flowId
+          description: Unique identifier of the flow
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Flow details
+  '/v1/flows/{flowId}/status':
+    patch:
+      summary: Update flow status
+      description: Enables or disables a flow by setting its active status.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Flows
+      parameters:
+        - in: path
+          name: flowId
+          description: Unique identifier of the flow
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - active
+              properties:
+                active:
+                  type: boolean
+                  description: Whether the flow is active or not
+      responses:
+        '200':
+          description: Flow status updated
+  /v1/templates:
+    post:
+      summary: Create a new template
+      description: Creates a new flow template using an existing flow.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Templates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - flowId
+              properties:
+                name:
+                  type: string
+                  description: Name of the template
+                flowId:
+                  type: string
+                  format: uuid
+                  description: ID of the flow to base the template on
+      responses:
+        '201':
+          description: Template created successfully
+    get:
+      summary: List templates
+      description: Retrieves a list of all flow templates.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Templates
+      responses:
+        '200':
+          description: List of templates
+  '/v1/templates/{templateId}':
+    delete:
+      summary: Delete a template
+      description: Deletes a specific template by its ID.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Templates
+      parameters:
+        - in: path
+          name: templateId
+          description: Unique identifier of the template to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Template deleted successfully
+    get:
+      summary: Get template by ID
+      description: Retrieves detailed information about a specific template.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Templates
+      parameters:
+        - in: path
+          name: templateId
+          description: Unique identifier of the template
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Template details
+  /user-invitations:
+    post:
+      summary: Create user invitation
+      description: Sends a new user invitation.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - User Invitations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fullName
+                - email
+                - roleId
+              properties:
+                fullName:
+                  type: string
+                  description: Full name of the invited user
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the invited user
+                roleId:
+                  type: string
+                  format: uuid
+                  description: Role ID to assign to the invited user
+      responses:
+        '201':
+          description: User invitation created successfully
+    get:
+      summary: List user invitations
+      description: Retrieves a paginated list of user invitations.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - User Invitations
+      parameters:
+        - in: query
+          name: page
+          description: Page number for pagination
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of user invitations
+  '/user-invitations/{userId}':
+    delete:
+      summary: Delete user invitation
+      description: Deletes a specific user invitation.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - User Invitations
+      parameters:
+        - in: path
+          name: userId
+          description: Unique identifier of the user invitation to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User invitation deleted successfully
+  '/users/{userId}/folders':
+    post:
+      summary: Create folder for user
+      description: Creates a new folder for a specific user.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Folders
+      parameters:
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the folder
+      responses:
+        '201':
+          description: Folder created successfully
+    get:
+      summary: List folders for user
+      description: Retrieves all folders belonging to a specific user.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Folders
+      parameters:
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of folders
+  '/users/{userId}/folders/{folderId}':
+    delete:
+      summary: Delete folder
+      description: Deletes a specific folder for a given user.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Folders
+      parameters:
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: folderId
+          description: Unique identifier of the folder
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Folder deleted successfully
+  '/users/{userId}':
+    delete:
+      summary: Delete a user
+      description: Deletes a specific user by ID.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User deleted successfully
+    get:
+      summary: Get user by ID
+      description: Retrieves details of a specific user.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+  /users:
+    get:
+      summary: List users
+      description: Retrieves a paginated list of users.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      parameters:
+        - in: query
+          name: page
+          description: Page number for pagination
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of users
+tags: []
