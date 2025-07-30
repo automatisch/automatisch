@@ -6,7 +6,7 @@ import { useSidebar } from 'vitepress-openapi';
 
 const BASE = process.env.BASE_URL || '/';
 const OPENAPI_JSON_URL =
-  process.env.OPENAPI_JSON_URL || 'http://localhost:3000/api/openapi.json';
+  process.env.VITE_OPENAPI_JSON_URL || 'http://localhost:3000/api/openapi.json';
 
 const links = [];
 const PROD_BASE_URL = 'https://automatisch.io/docs';
