@@ -44,7 +44,7 @@ export default defineAction({
       url: url,
     });
 
-    const { data } = await $.http.post('/api/submit', params.toString());
+    const { data } = await $.http.post('/submit', params.toString());
 
     $.setActionItem({
       raw: data,
