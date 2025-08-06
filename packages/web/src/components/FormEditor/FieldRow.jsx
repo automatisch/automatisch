@@ -59,6 +59,7 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
       {subfieldType === 'string' && (
         <Stack spacing={2}>
           <ControlledAutocomplete
+            data-test={`fields.${parentIndex}.fields.${fieldIndex}.validationFormat`}
             name={`fields.${parentIndex}.fields.${fieldIndex}.validationFormat`}
             fullWidth
             disablePortal
@@ -104,6 +105,7 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
           {validationFormat === 'custom' && (
             <>
               <TextField
+                data-test={`fields.${parentIndex}.fields.${fieldIndex}.validationPattern`}
                 name={`fields.${parentIndex}.fields.${fieldIndex}.validationPattern`}
                 label={formatMessage('formEditor.validationPattern')}
                 fullWidth
@@ -112,6 +114,7 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
                 )}
               />
               <TextField
+                data-test={`fields.${parentIndex}.fields.${fieldIndex}.validationHelperText`}
                 name={`fields.${parentIndex}.fields.${fieldIndex}.validationHelperText`}
                 label={formatMessage('formEditor.validationHelperText')}
                 fullWidth
@@ -138,6 +141,7 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
                 alignItems="center"
               >
                 <TextField
+                  data-test={`fields.${parentIndex}.fields.${fieldIndex}.options.${optionIndex}.value`}
                   name={`fields.${parentIndex}.fields.${fieldIndex}.options.${optionIndex}.value`}
                   label={formatMessage('formEditor.dropdownOptionLabel', {
                     number: optionIndex + 1,
@@ -146,6 +150,7 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
                   fullWidth
                 />
                 <IconButton
+                  data-test={`remove-subfield-option-${optionIndex}`}
                   size="medium"
                   onClick={() => removeSubfieldOption(optionIndex)}
                   disabled={subfieldOptionFields.length === 1}
@@ -171,6 +176,7 @@ function ArraySubfieldConfig({ control, parentIndex, fieldIndex }) {
                 {formatMessage('formEditor.addOption')}
               </Typography>
               <IconButton
+                data-test={`add-subfield-option-button-${fieldIndex}`}
                 size="small"
                 onClick={() => appendSubfieldOption({ value: '' })}
                 sx={{ width: 40, height: 40 }}
@@ -294,6 +300,7 @@ function FieldRow({ index, remove, control }) {
 
   return (
     <Box
+      data-test="field-row"
       sx={{
         mb: 3,
         p: 2,
@@ -308,6 +315,7 @@ function FieldRow({ index, remove, control }) {
             <Stack spacing={2}>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                 <TextField
+                  data-test={`fields.${index}.name`}
                   required={true}
                   name={`fields.${index}.name`}
                   label={formatMessage('formEditor.fieldName')}
@@ -385,6 +393,7 @@ function FieldRow({ index, remove, control }) {
                   {validationFormat === 'custom' && (
                     <>
                       <TextField
+                        data-test={`fields.${index}.validationPattern`}
                         name={`fields.${index}.validationPattern`}
                         label={formatMessage('formEditor.validationPattern')}
                         fullWidth
@@ -393,6 +402,7 @@ function FieldRow({ index, remove, control }) {
                         )}
                       />
                       <TextField
+                        data-test={`fields.${index}.validationHelperText`}
                         name={`fields.${index}.validationHelperText`}
                         label={formatMessage('formEditor.validationHelperText')}
                         fullWidth
@@ -419,6 +429,7 @@ function FieldRow({ index, remove, control }) {
                         alignItems="center"
                       >
                         <TextField
+                          data-test={`fields.${index}.options.${optionIndex}.value`}
                           name={`fields.${index}.options.${optionIndex}.value`}
                           label={formatMessage(
                             'formEditor.dropdownOptionLabel',
@@ -475,6 +486,7 @@ function FieldRow({ index, remove, control }) {
                   <Stack spacing={2}>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                       <TextField
+                        data-test={`fields.${index}.minItems`}
                         name={`fields.${index}.minItems`}
                         label={formatMessage('formEditor.minItems')}
                         type="number"
@@ -495,6 +507,7 @@ function FieldRow({ index, remove, control }) {
                         }}
                       />
                       <TextField
+                        data-test={`fields.${index}.maxItems`}
                         name={`fields.${index}.maxItems`}
                         label={formatMessage('formEditor.maxItems')}
                         type="number"
@@ -535,12 +548,14 @@ function FieldRow({ index, remove, control }) {
                             spacing={2}
                           >
                             <TextField
+                              data-test={`fields.${index}.fields.${fieldIndex}.name`}
                               required={true}
                               name={`fields.${index}.fields.${fieldIndex}.name`}
                               label={formatMessage('formEditor.fieldName')}
                               fullWidth
                             />
                             <ControlledAutocomplete
+                              data-test={`fields.${index}.fields.${fieldIndex}.type`}
                               name={`fields.${index}.fields.${fieldIndex}.type`}
                               fullWidth
                               disablePortal
@@ -609,6 +624,7 @@ function FieldRow({ index, remove, control }) {
                             <FormControlLabel
                               control={
                                 <ControlledCheckbox
+                                  data-test={`fields.${index}.fields.${fieldIndex}.required`}
                                   name={`fields.${index}.fields.${fieldIndex}.required`}
                                   defaultValue={false}
                                 />
@@ -618,6 +634,7 @@ function FieldRow({ index, remove, control }) {
                             <FormControlLabel
                               control={
                                 <ControlledCheckbox
+                                  data-test={`fields.${index}.fields.${fieldIndex}.readonly`}
                                   name={`fields.${index}.fields.${fieldIndex}.readonly`}
                                   defaultValue={false}
                                 />
@@ -628,6 +645,7 @@ function FieldRow({ index, remove, control }) {
 
                           <Stack direction="row" justifyContent="flex-end">
                             <IconButton
+                              data-test={`remove-array-field-${fieldIndex}`}
                               size="small"
                               onClick={() => removeArrayField(fieldIndex)}
                               sx={{
@@ -658,6 +676,7 @@ function FieldRow({ index, remove, control }) {
                         {formatMessage('formEditor.addArrayField')}
                       </Typography>
                       <IconButton
+                        data-test="add-array-field-button"
                         size="small"
                         onClick={() =>
                           appendArrayField({
@@ -679,6 +698,7 @@ function FieldRow({ index, remove, control }) {
                   <FormControlLabel
                     control={
                       <ControlledCheckbox
+                        data-test={`fields.${index}.required`}
                         name={`fields.${index}.required`}
                         defaultValue={false}
                       />
@@ -688,6 +708,7 @@ function FieldRow({ index, remove, control }) {
                   <FormControlLabel
                     control={
                       <ControlledCheckbox
+                        data-test={`fields.${index}.readonly`}
                         name={`fields.${index}.readonly`}
                         defaultValue={false}
                       />
@@ -706,6 +727,7 @@ function FieldRow({ index, remove, control }) {
             }}
           >
             <IconButton
+              data-test={`remove-${index}-field-button`}
               size="small"
               onClick={() => remove(index)}
               sx={{

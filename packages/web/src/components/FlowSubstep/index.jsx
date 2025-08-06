@@ -51,6 +51,7 @@ function FlowSubstep(props) {
             <Alert severity="info" sx={{ mb: 2, width: '100%' }}>
               You may preview the form at{' '}
               <a
+                data-test="form-preview-link"
                 href={
                   new URL(URLS.PUBLIC_FORM(flowId), window.location.href).href
                 }
