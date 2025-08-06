@@ -37,11 +37,7 @@ function FlowSubstep(props) {
         title={name}
         valid={validationStatus}
       />
-      <Collapse
-        in={expanded}
-        timeout={0}
-        unmountOnExit
-      >
+      <Collapse in={expanded} timeout={0} unmountOnExit>
         <ListItem
           sx={{
             pt: 2,
@@ -55,6 +51,7 @@ function FlowSubstep(props) {
             <Alert severity="info" sx={{ mb: 2, width: '100%' }}>
               You may preview the form at{' '}
               <a
+                data-test="form-preview-link"
                 href={
                   new URL(URLS.PUBLIC_FORM(flowId), window.location.href).href
                 }
