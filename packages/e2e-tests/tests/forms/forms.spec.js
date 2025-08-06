@@ -1,4 +1,9 @@
 import { test, expect } from '../../fixtures/index';
+import { request } from '@playwright/test';
+import { publishFlow, addFormsFlow } from '../../helpers/flow-api-helper';
+import { getToken } from '../../helpers/auth-api-helper';
+import { createForm } from '../../helpers/forms-api-helper';
+import Crypto from 'crypto';
 
 test.describe('Forms page', () => {
   test.beforeEach(async ({ formsPage }) => {
@@ -108,5 +113,36 @@ test.describe('Forms page', () => {
     await formsPage.createFormButton.click();
 
     await expect(formsPage.submitFormButton).toBeDisabled();
+  });
+
+  // TODO feature not working yet
+  test.skip('should not remove Form of active flow ', async ({
+    formsPage,
+    page,
+  }) => {
+    const apiRequest = await request.newContext();
+    const tokenJsonResponse = await getToken(apiRequest);
+    const formName = Crypto.randomUUID();
+
+    const form = await createForm(
+      apiRequest,
+      tokenJsonResponse.data.token,
+      formName
+    );
+    const formId = form.data.id;
+
+    const flowId = await addFormsFlow(
+      apiRequest,
+      tokenJsonResponse.data.token,
+      formId
+    );
+
+    await publishFlow(apiRequest, tokenJsonResponse.data.token, flowId);
+
+    await page.goto('/form-entities');
+    await expect(formsPage.formRow.filter({ hasText: 'abc' })).toHaveCount(1);
+    formsPage.formRowContextMenuButton('abc').click();
+    await formsPage.deleteForm.click();
+    // should not be able to remove form (UI)
   });
 });
