@@ -91,4 +91,14 @@ test.describe('Forms page', () => {
       'String'
     );
   });
+
+  test('cannot create a form with only optional data', async ({
+    formsPage,
+  }) => {
+    await formsPage.createFormButton.click();
+    await formsPage.descriptionInput.fill('description');
+    await formsPage.responseMessageInput.fill('responseMessageInput');
+    await formsPage.submitButtonTextInput.fill('submitButtonTextInput');
+    await expect(formsPage.submitFormButton).toBeDisabled();
+  });
 });
