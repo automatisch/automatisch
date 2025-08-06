@@ -101,4 +101,12 @@ test.describe('Forms page', () => {
     await formsPage.submitButtonTextInput.fill('submitButtonTextInput');
     await expect(formsPage.submitFormButton).toBeDisabled();
   });
+
+  test('cannot create a form without any field filled', async ({
+    formsPage,
+  }) => {
+    await formsPage.createFormButton.click();
+
+    await expect(formsPage.submitFormButton).toBeDisabled();
+  });
 });
