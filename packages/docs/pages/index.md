@@ -6,10 +6,6 @@
 
 # What is Automatisch?
 
-:::warning
-Automatisch is still in the early phase of development. We try our best not to introduce breaking changes, but be cautious until v1 is released.
-:::
-
 ![Automatisch Flow Page](./assets/flow-900.png)
 
 🧐 Automatisch is a **business automation** tool that lets you connect different services like Twitter, Slack, and **[more](/guide/available-apps)** to automate your business processes.
