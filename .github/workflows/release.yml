@@ -2,7 +2,7 @@ name: Automatisch Release
 on:
   pull_request:
     branches:
-      - release/*
+      - 'release/*'
   workflow_dispatch:
 jobs:
   release:
