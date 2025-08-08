@@ -1,4 +1,4 @@
-import Dagre from '@dagrejs/dagre';
+import ELK from 'elkjs/lib/elk.bundled.js';
 import { NODE_TYPES } from './constants';
 
 export const updatedCollapsedNodes = (nodes, openStepId) => {
@@ -23,35 +23,42 @@ const edgeLaidOut = (edge, nodes) => {
   return Boolean(sourceNode?.measured && targetNodeNode?.measured);
 };
 
-export const getLaidOutElements = (nodes, edges) => {
-  const graph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-  graph.setGraph({
-    rankdir: 'TB',
-    marginy: 60,
-    ranksep: 64,
-  });
-  edges.forEach((edge) => graph.setEdge(edge.source, edge.target));
-  nodes.forEach((node) =>
-    graph.setNode(node.id, {
-      ...node,
+export const getLaidOutElements = async (nodes, edges) => {
+  const elk = new ELK();
+  
+  const elkOptions = {
+    'elk.algorithm': 'layered',
+    'elk.direction': 'DOWN',
+    'elk.spacing.nodeNode': '80',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '64',
+    'elk.layered.nodePlacement.strategy': 'SIMPLE',
+  };
+
+  const graph = {
+    id: 'root',
+    layoutOptions: elkOptions,
+    children: nodes.map((node) => ({
+      id: node.id,
       width: node.measured?.width ?? 0,
       height: node.measured?.height ?? 0,
-    }),
-  );
+    })),
+    edges: edges.map((edge) => ({
+      id: `${edge.source}-${edge.target}`,
+      sources: [edge.source],
+      targets: [edge.target],
+    })),
+  };
 
-  Dagre.layout(graph);
+  const layoutedGraph = await elk.layout(graph);
 
   return {
     nodes: nodes.map((node) => {
-      const position = graph.node(node.id);
-      // We are shifting the dagre node position (anchor=center center) to the top left
-      // so it matches the React Flow node anchor point (top left).
-      const x = position.x - (node.measured?.width ?? 0) / 2;
-      const y = position.y - (node.measured?.height ?? 0) / 2;
+      const layoutedNode = layoutedGraph.children.find((n) => n.id === node.id);
+      if (!layoutedNode) return node;
 
       return {
         ...node,
-        position: { x, y },
+        position: { x: layoutedNode.x ?? 0, y: layoutedNode.y ?? 0 },
         ...(node.type === NODE_TYPES.FLOW_STEP
           ? { data: { ...node.data, laidOut: node.measured ? true : false } }
           : {}),

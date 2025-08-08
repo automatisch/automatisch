@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useCallback,
-  createContext,
-  useRef,
-  useState,
-  useMemo,
-} from 'react';
+import { useEffect, useCallback, useRef, useState, useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ReactFlow, useEdgesState, applyNodeChanges } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
@@ -24,9 +17,7 @@ import InvisibleNode from './InvisibleNode/InvisibleNode';
 import { getLaidOutElements, updatedCollapsedNodes } from './utils';
 import { EDGE_TYPES, INVISIBLE_NODE_ID, NODE_TYPES } from './constants';
 import { EditorWrapper } from './style';
-
-export const EdgesContext = createContext();
-export const NodesContext = createContext();
+import { EdgesContext, NodesContext } from './contexts';
 
 const nodeTypes = {
   [NODE_TYPES.FLOW_STEP]: FlowStepNode,
@@ -75,9 +66,11 @@ const Editor = ({ flow }) => {
 
       setNodes((nodes) => {
         const newNodes = nodes.filter((node) => node.id !== nodeId);
-        const laidOutElements = getLaidOutElements(newNodes, newEdges);
-        setEdges([...laidOutElements.edges]);
-        return [...laidOutElements.nodes];
+        getLaidOutElements(newNodes, newEdges).then((laidOutElements) => {
+          setEdges([...laidOutElements.edges]);
+          setNodes([...laidOutElements.nodes]);
+        });
+        return newNodes;
       });
     },
     [edges, setEdges],
@@ -148,9 +141,11 @@ const Editor = ({ flow }) => {
         const newNodes = applyNodeChanges(changes, oldNodes);
 
         if (changes?.some((change) => change.type === 'dimensions')) {
-          const laidOutElements = getLaidOutElements(newNodes, edges);
-          setEdges([...laidOutElements.edges]);
-          return [...laidOutElements.nodes];
+          getLaidOutElements(newNodes, edges).then((laidOutElements) => {
+            setEdges([...laidOutElements.edges]);
+            setNodes([...laidOutElements.nodes]);
+          });
+          return newNodes;
         } else {
           return newNodes;
         }
