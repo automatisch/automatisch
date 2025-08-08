@@ -8,7 +8,7 @@ export default {
     };
 
     const { data } = await $.http.get(
-      `${$.auth.data.apiDomain}/api/v1/organizations`
+      `/v1/organizations`
     );
 
     if (data.data?.length) {

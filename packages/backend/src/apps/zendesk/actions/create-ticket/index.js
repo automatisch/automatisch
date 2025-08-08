@@ -86,7 +86,7 @@ export default defineAction({
       };
     }
 
-    const response = await $.http.post('/api/v2/tickets', payload);
+    const response = await $.http.post('/v2/tickets', payload);
 
     $.setActionItem({ raw: response.data });
   },

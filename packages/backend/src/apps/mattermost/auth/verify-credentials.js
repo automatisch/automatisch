@@ -18,6 +18,9 @@ const verifyCredentials = async ($) => {
   const response = await $.http.post('/oauth/access_token', null, {
     params,
     headers,
+    additionalProperties: {
+      skipAddingBaseUrl: true,
+    },
   });
 
   const {

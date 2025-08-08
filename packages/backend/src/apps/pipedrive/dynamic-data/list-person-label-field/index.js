@@ -14,7 +14,7 @@ export default {
 
     do {
       const { data } = await $.http.get(
-        `${$.auth.data.apiDomain}/api/v1/personFields`,
+        `/v1/personFields`,
         { params }
       );
       params.start = data.additional_data?.pagination?.next_start;

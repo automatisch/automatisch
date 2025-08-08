@@ -1,5 +1,7 @@
+import { URL } from 'node:url';
+
 const setBaseUrl = ($, requestConfig) => {
-  requestConfig.baseURL = $.auth.data.instanceUrl;
+  requestConfig.baseURL = new URL('api', $.auth.data.instanceUrl).toString();
   return requestConfig;
 };
 
