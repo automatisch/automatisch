@@ -1,6 +1,6 @@
 import Step from '@/models/step.js';
 import actionQueue from '@/queues/action.js';
-import { processAction } from '@/services/action.js';
+import { processAction } from '@/executor/index.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
