@@ -16,22 +16,20 @@ export const updatedCollapsedNodes = (nodes, openStepId) => {
   });
 };
 
-const edgeLaidOut = (edge, nodes) => {
-  const sourceNode = nodes.find((node) => node.id === edge.source);
-  const targetNodeNode = nodes.find((node) => node.id === edge.target);
+// Hardcoded dimensions for consistent layout
+const NODE_WIDTH = 350;
+const NODE_HEIGHT = 80;
 
-  return Boolean(sourceNode?.measured && targetNodeNode?.measured);
-};
-
-export const getLaidOutElements = async (nodes, edges) => {
+export const getLaidOutElements = async (nodes, edges, options = {}) => {
   const elk = new ELK();
-  
+
   const elkOptions = {
     'elk.algorithm': 'layered',
     'elk.direction': 'DOWN',
     'elk.spacing.nodeNode': '80',
     'elk.layered.spacing.nodeNodeBetweenLayers': '64',
     'elk.layered.nodePlacement.strategy': 'SIMPLE',
+    ...options,
   };
 
   const graph = {
@@ -39,8 +37,8 @@ export const getLaidOutElements = async (nodes, edges) => {
     layoutOptions: elkOptions,
     children: nodes.map((node) => ({
       id: node.id,
-      width: node.measured?.width ?? 0,
-      height: node.measured?.height ?? 0,
+      width: NODE_WIDTH,
+      height: NODE_HEIGHT,
     })),
     edges: edges.map((edge) => ({
       id: `${edge.source}-${edge.target}`,
@@ -51,6 +49,18 @@ export const getLaidOutElements = async (nodes, edges) => {
 
   const layoutedGraph = await elk.layout(graph);
 
+  // Calculate the graph width to center it
+  let maxX = 0;
+  layoutedGraph.children.forEach((node) => {
+    const nodeRightEdge = (node.x ?? 0) + (node.width ?? 0);
+    if (nodeRightEdge > maxX) maxX = nodeRightEdge;
+  });
+
+  // Calculate horizontal offset to center the graph
+  const viewportWidth = window.innerWidth;
+  const graphWidth = maxX;
+  const centerOffset = Math.max(0, (viewportWidth - graphWidth) / 2);
+
   return {
     nodes: nodes.map((node) => {
       const layoutedNode = layoutedGraph.children.find((n) => n.id === node.id);
@@ -58,15 +68,19 @@ export const getLaidOutElements = async (nodes, edges) => {
 
       return {
         ...node,
-        position: { x: layoutedNode.x ?? 0, y: layoutedNode.y ?? 0 },
+        position: {
+          x: (layoutedNode.x ?? 0) + centerOffset,
+          y: layoutedNode.y ?? 0,
+        },
+        // Since we're using hardcoded dimensions, always mark as laid out
         ...(node.type === NODE_TYPES.FLOW_STEP
-          ? { data: { ...node.data, laidOut: node.measured ? true : false } }
+          ? { data: { ...node.data, laidOut: true } }
           : {}),
       };
     }),
     edges: edges.map((edge) => ({
       ...edge,
-      data: { ...edge.data, laidOut: edgeLaidOut(edge, nodes) },
+      data: { ...edge.data, laidOut: true },
     })),
   };
 };

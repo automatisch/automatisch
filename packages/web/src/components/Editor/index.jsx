@@ -1,4 +1,10 @@
-import { useEffect, useCallback, useRef, useState, useMemo } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useState,
+  useMemo,
+} from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ReactFlow, useEdgesState, applyNodeChanges } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
@@ -10,14 +16,16 @@ import useCreateStep from 'hooks/useCreateStep';
 import useUpdateFlow from 'hooks/useUpdateFlow';
 import { FlowPropType } from 'propTypes/propTypes';
 
-import { useScrollBoundaries } from './useScrollBoundaries';
 import FlowStepNode from './FlowStepNode/FlowStepNode';
 import Edge from './Edge/Edge';
 import InvisibleNode from './InvisibleNode/InvisibleNode';
-import { getLaidOutElements, updatedCollapsedNodes } from './utils';
+import { getLaidOutElements } from './utils';
 import { EDGE_TYPES, INVISIBLE_NODE_ID, NODE_TYPES } from './constants';
 import { EditorWrapper } from './style';
 import { EdgesContext, NodesContext } from './contexts';
+import StepDetailsSidebar from 'components/StepDetailsSidebar';
+
+const ENABLE_AUTO_SELECT = false;
 
 const nodeTypes = {
   [NODE_TYPES.FLOW_STEP]: FlowStepNode,
@@ -35,12 +43,11 @@ const Editor = ({ flow }) => {
 
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState();
-  const [containerHeight, setContainerHeight] = useState(null);
-  const containerRef = useRef(null);
+  const [selectedStepId, setSelectedStepId] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [viewport] = useState({ x: 0, y: 0, zoom: 1 });
   const { mutateAsync: createStep, isPending: isCreateStepPending } =
     useCreateStep(flow?.id);
-
-  useScrollBoundaries(containerHeight);
 
   const onStepDelete = useCallback(
     (nodeId) => {
@@ -80,54 +87,55 @@ const Editor = ({ flow }) => {
     async (previousStepId) => {
       const { data: createdStep } = await createStep({ previousStepId });
 
-      setNodes((nodes) => {
-        const newNode = {
-          id: createdStep.id,
-          type: NODE_TYPES.FLOW_STEP,
-          position: {
-            x: 0,
-            y: 0,
-          },
-          data: {
-            laidOut: false,
-          },
-        };
+      const newNode = {
+        id: createdStep.id,
+        type: NODE_TYPES.FLOW_STEP,
+        position: {
+          x: 0,
+          y: 0,
+        },
+        data: {
+          laidOut: false,
+        },
+      };
 
-        const newNodes = nodes.flatMap((node) => {
-          if (node.id === previousStepId) {
-            return [node, newNode];
-          }
-          return node;
-        });
-        return updatedCollapsedNodes(newNodes, createdStep.id);
+      const updatedNodes = nodes.flatMap((node) => {
+        if (node.id === previousStepId) {
+          return [node, newNode];
+        }
+        return node;
       });
 
-      setEdges((edges) => {
-        const newEdges = edges
-          .map((edge) => {
-            if (edge.source === previousStepId) {
-              const previousTarget = edge.target;
-              return [
-                { ...edge, target: createdStep.id },
-                {
-                  id: uuidv4(),
-                  source: createdStep.id,
-                  target: previousTarget,
-                  type: EDGE_TYPES.ADD_NODE_EDGE,
-                  data: {
-                    laidOut: false,
-                  },
+      const updatedEdges = edges
+        .map((edge) => {
+          if (edge.source === previousStepId) {
+            const previousTarget = edge.target;
+            return [
+              { ...edge, target: createdStep.id },
+              {
+                id: uuidv4(),
+                source: createdStep.id,
+                target: previousTarget,
+                type: EDGE_TYPES.ADD_NODE_EDGE,
+                data: {
+                  laidOut: false,
                 },
-              ];
-            }
-            return edge;
-          })
-          .flat();
+              },
+            ];
+          }
+          return edge;
+        })
+        .flat();
 
-        return newEdges;
-      });
+      // Recalculate layout with the new node and edges
+      const laidOutElements = await getLaidOutElements(
+        updatedNodes,
+        updatedEdges,
+      );
+      setNodes(laidOutElements.nodes);
+      setEdges(laidOutElements.edges);
     },
-    [createStep, setEdges],
+    [createStep, nodes, edges, setEdges],
   );
 
   const onStepAddDebounced = useMemo(
@@ -137,49 +145,20 @@ const Editor = ({ flow }) => {
 
   const onNodesChange = useCallback(
     (changes) => {
-      setNodes((oldNodes) => {
-        const newNodes = applyNodeChanges(changes, oldNodes);
-
-        if (changes?.some((change) => change.type === 'dimensions')) {
-          getLaidOutElements(newNodes, edges).then((laidOutElements) => {
-            setEdges([...laidOutElements.edges]);
-            setNodes([...laidOutElements.nodes]);
-          });
-          return newNodes;
-        } else {
-          return newNodes;
-        }
-      });
-    },
-    [setNodes, setEdges, edges],
-  );
-
-  const openNextStep = useCallback(
-    (currentStepId) => {
-      setNodes((nodes) => {
-        const currentStepIndex = nodes.findIndex(
-          (node) => node.id === currentStepId,
-        );
-        if (currentStepIndex >= 0) {
-          const nextStep = nodes[currentStepIndex + 1];
-          return updatedCollapsedNodes(nodes, nextStep.id);
-        }
-        return nodes;
-      });
+      setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
     },
     [setNodes],
   );
 
-  const onStepClose = useCallback(() => {
-    setNodes((nodes) => updatedCollapsedNodes(nodes));
-  }, [setNodes]);
+  const onStepSelect = useCallback((stepId) => {
+    setSelectedStepId(stepId);
+    setSidebarOpen(true);
+  }, []);
 
-  const onStepOpen = useCallback(
-    (stepId) => {
-      setNodes((nodes) => updatedCollapsedNodes(nodes, stepId));
-    },
-    [setNodes],
-  );
+  const onClearSelection = useCallback(() => {
+    setSelectedStepId(null);
+    setSidebarOpen(false);
+  }, []);
 
   const onStepChange = useCallback(
     async (step) => {
@@ -214,80 +193,123 @@ const Editor = ({ flow }) => {
     [updateFlow],
   );
 
-  useEffect(function initiateNodesAndEdges() {
-    const newNodes = flow?.steps.map((step, index) => {
-      return {
-        id: step.id,
-        type: NODE_TYPES.FLOW_STEP,
+  const [initialNodes, setInitialNodes] = useState([]);
+  const [initialEdges, setInitialEdges] = useState([]);
+
+  useEffect(
+    function initiateNodesAndEdges() {
+      const newNodes = flow?.steps.map((step, index) => {
+        return {
+          id: step.id,
+          type: NODE_TYPES.FLOW_STEP,
+          position: {
+            x: 0,
+            y: 0,
+          },
+          zIndex: index !== 0 ? 0 : 1,
+          data: {
+            laidOut: false,
+          },
+        };
+      });
+
+      newNodes.push({
+        id: INVISIBLE_NODE_ID,
+        type: NODE_TYPES.INVISIBLE,
         position: {
           x: 0,
           y: 0,
         },
-        zIndex: index !== 0 ? 0 : 1,
-        data: {
-          collapsed: index !== 0,
-          laidOut: false,
+      });
+
+      const newEdges = newNodes
+        .map((node, i) => {
+          const sourceId = node.id;
+          const targetId = newNodes[i + 1]?.id;
+          if (targetId) {
+            return {
+              id: uuidv4(),
+              source: sourceId,
+              target: targetId,
+              type: 'addNodeEdge',
+              data: {
+                laidOut: false,
+              },
+            };
+          }
+          return null;
+        })
+        .filter((edge) => !!edge);
+
+      setInitialNodes(newNodes);
+      setInitialEdges(newEdges);
+    },
+    [flow?.steps],
+  );
+
+  // Calculate the initial layout before browser paint
+  useLayoutEffect(() => {
+    if (initialNodes.length > 0 && initialEdges.length >= 0) {
+      getLaidOutElements(initialNodes, initialEdges).then(
+        ({ nodes: layoutedNodes, edges: layoutedEdges }) => {
+          setNodes(layoutedNodes);
+          setEdges(layoutedEdges);
         },
-      };
-    });
+      );
+    }
+  }, [initialNodes, initialEdges, setNodes, setEdges]);
 
-    newNodes.push({
-      id: INVISIBLE_NODE_ID,
-      type: NODE_TYPES.INVISIBLE,
-      position: {
-        x: 0,
-        y: 0,
-      },
-    });
+  // Auto-select trigger step when editor loads
+  useEffect(
+    function autoSelectTriggerStep() {
+      if (ENABLE_AUTO_SELECT === false) return;
 
-    const newEdges = newNodes
-      .map((node, i) => {
-        const sourceId = node.id;
-        const targetId = newNodes[i + 1]?.id;
-        if (targetId) {
-          return {
-            id: uuidv4(),
-            source: sourceId,
-            target: targetId,
-            type: 'addNodeEdge',
-            data: {
-              laidOut: false,
-            },
-          };
-        }
-        return null;
-      })
-      .filter((edge) => !!edge);
-
-    setNodes(newNodes);
-    setEdges(newEdges);
-  }, []);
-
-  useEffect(function updateContainerHeightOnResize() {
-    const updateHeight = () => {
-      if (containerRef.current) {
-        setContainerHeight(containerRef.current.clientHeight);
+      if (flow?.steps?.length > 0 && !selectedStepId) {
+        const triggerStep = flow.steps[0]; // First step is always trigger
+        setSelectedStepId(triggerStep.id);
+        setSidebarOpen(true);
       }
-    };
+    },
+    [flow?.steps, selectedStepId],
+  );
 
-    updateHeight();
+  useEffect(
+    function reLayoutOnWindowResize() {
+      let resizeTimeout;
+      const handleResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          if (nodes.length > 0 && edges.length >= 0) {
+            getLaidOutElements(nodes, edges).then(
+              ({ nodes: layoutedNodes, edges: layoutedEdges }) => {
+                setNodes(layoutedNodes);
+                setEdges(layoutedEdges);
+              },
+            );
+          }
+        }, 200);
+      };
 
-    window.addEventListener('resize', updateHeight);
+      window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('resize', updateHeight);
-    };
-  }, []);
+      return () => {
+        clearTimeout(resizeTimeout);
+        window.removeEventListener('resize', handleResize);
+      };
+    },
+    [nodes, edges, setNodes, setEdges],
+  );
 
   return (
     <NodesContext.Provider
       value={{
-        openNextStep,
-        onStepOpen,
-        onStepClose,
         onStepChange,
         onFlowChange,
         onStepDelete,
+        onStepSelect,
+        onClearSelection,
+        selectedStepId,
+        sidebarOpen,
         flowId: flow?.id,
         steps: flow?.steps,
       }}
@@ -299,7 +321,7 @@ const Editor = ({ flow }) => {
           onStepAdd: onStepAddDebounced,
         }}
       >
-        <EditorWrapper direction="column" ref={containerRef}>
+        <EditorWrapper>
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -307,16 +329,23 @@ const Editor = ({ flow }) => {
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
-            panOnScroll
-            panOnScrollMode="vertical"
+            viewport={viewport}
+            edgesFocusable={false}
+            edgesUpdatable={false}
+            elementsSelectable={true}
+            nodesConnectable={false}
+            nodesDraggable={false}
+            nodesFocusable={true}
             panOnDrag={false}
-            zoomOnScroll={false}
-            zoomOnPinch={false}
+            panOnScroll={false}
             zoomOnDoubleClick={false}
-            panActivationKeyCode={null}
+            zoomOnPinch={false}
+            zoomOnScroll={false}
+            minZoom={1}
+            maxZoom={1}
             proOptions={{ hideAttribution: true }}
-            elementsSelectable={false}
           />
+          <StepDetailsSidebar open={selectedStepId} />
         </EditorWrapper>
       </EdgesContext.Provider>
     </NodesContext.Provider>
