@@ -36,10 +36,9 @@ export default defineTrigger({
 
     let next = false;
     do {
-      const { data } = await $.http.get(
-        `/api/v4/projects/${projectId}/groups`,
-        { params }
-      );
+      const { data } = await $.http.get(`/v4/projects/${projectId}/groups`, {
+        params,
+      });
 
       if (!data.count === 0) {
         return;

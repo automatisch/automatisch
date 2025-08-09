@@ -41,7 +41,7 @@ export default defineAction({
       payload.user.role = role;
     }
 
-    const response = await $.http.post('/api/v2/users', payload);
+    const response = await $.http.post('/v2/users', payload);
 
     $.setActionItem({ raw: response.data });
   },

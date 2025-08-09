@@ -1,5 +1,5 @@
 const verifyCredentials = async ($) => {
-  await $.http.get('/api/v1/sessions');
+  await $.http.get('/v1/sessions');
 
   await $.auth.set({
     screenName: $.auth.data.screenName,

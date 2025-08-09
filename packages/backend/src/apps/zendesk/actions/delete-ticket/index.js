@@ -28,7 +28,7 @@ export default defineAction({
   async run($) {
     const ticketId = $.step.parameters.ticketId;
 
-    const response = await $.http.delete(`/api/v2/tickets/${ticketId}`);
+    const response = await $.http.delete(`/v2/tickets/${ticketId}`);
 
     $.setActionItem({ raw: { data: response.data } });
   },

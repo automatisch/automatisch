@@ -43,12 +43,12 @@ export default defineTrigger({
       url: $.webhookUrl,
     };
 
-    const response = await $.http.post('/api/v1/webhooks', payload);
+    const response = await $.http.post('/v1/webhooks', payload);
 
     await $.flow.setRemoteWebhookId(response.data.data.id);
   },
 
   async unregisterHook($) {
-    await $.http.delete(`/api/v1/webhooks/${$.flow.remoteWebhookId}`);
+    await $.http.delete(`/v1/webhooks/${$.flow.remoteWebhookId}`);
   },
 });

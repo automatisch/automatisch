@@ -79,7 +79,7 @@ export const getRegisterHookFn = (eventType) => async ($) => {
   }
 
   const { data } = await $.http.post(
-    `/api/v4/projects/${$.step.parameters.projectId}/hooks`,
+    `/v4/projects/${$.step.parameters.projectId}/hooks`,
     subscriptionPayload
   );
 
@@ -89,6 +89,6 @@ export const getRegisterHookFn = (eventType) => async ($) => {
 export const unregisterHook = async ($) => {
   // ref: https://docs.gitlab.com/ee/api/projects.html#delete-project-hook
   await $.http.delete(
-    `/api/v4/projects/${$.step.parameters.projectId}/hooks/${$.flow.remoteWebhookId}`
+    `/v4/projects/${$.step.parameters.projectId}/hooks/${$.flow.remoteWebhookId}`
   );
 };

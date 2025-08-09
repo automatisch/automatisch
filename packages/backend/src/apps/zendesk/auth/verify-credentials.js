@@ -23,14 +23,18 @@ const getAccessToken = async ($) => {
   );
   const redirectUri = oauthRedirectUrlField.value;
 
-  const response = await $.http.post(`/oauth/tokens`, {
-    redirect_uri: redirectUri,
-    code: $.auth.data.code,
-    grant_type: 'authorization_code',
-    scope: scopes.join(' '),
-    client_id: $.auth.data.clientId,
-    client_secret: $.auth.data.clientSecret,
-  });
+  const response = await $.http.post(
+    `/oauth/tokens`,
+    {
+      redirect_uri: redirectUri,
+      code: $.auth.data.code,
+      grant_type: 'authorization_code',
+      scope: scopes.join(' '),
+      client_id: $.auth.data.clientId,
+      client_secret: $.auth.data.clientSecret,
+    },
+    { additionalProperties: { skipAddingBaseUrl: true } }
+  );
 
   const data = response.data;
 

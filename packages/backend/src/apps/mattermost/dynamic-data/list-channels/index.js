@@ -8,7 +8,7 @@ export default {
       error: null,
     };
 
-    const response = await $.http.get('/api/v4/users/me/channels'); // this endpoint will return only channels user joined, there is no endpoint to list all channels available for user
+    const response = await $.http.get('/v4/users/me/channels'); // this endpoint will return only channels user joined, there is no endpoint to list all channels available for user
 
     for (const channel of response.data) {
       channels.data.push({

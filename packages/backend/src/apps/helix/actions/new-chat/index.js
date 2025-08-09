@@ -34,7 +34,7 @@ export default defineAction({
   ],
 
   async run($) {
-    const response = await $.http.post('/api/v1/sessions/chat', {
+    const response = await $.http.post('/v1/sessions/chat', {
       session_id: $.step.parameters.sessionId,
       system: $.step.parameters.systemPrompt,
       messages: [

@@ -7,7 +7,7 @@ export default {
       data: [],
     };
 
-    const { data } = await $.http.get('/api/v4/projects');
+    const { data } = await $.http.get('/v4/projects');
 
     if (data.projects.length) {
       for (const project of data.projects) {

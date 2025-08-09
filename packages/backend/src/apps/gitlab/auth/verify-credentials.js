@@ -16,6 +16,9 @@ const verifyCredentials = async ($) => {
       headers: {
         Accept: 'application/json',
       },
+      additionalProperties: {
+        skipAddingBaseUrl: true,
+      },
     }
   );
 

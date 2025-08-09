@@ -8,7 +8,7 @@ export default {
     // ref:
     //  - https://docs.gitlab.com/ee/api/projects.html#list-all-projects
     //  - https://docs.gitlab.com/ee/api/rest/index.html#keyset-based-pagination
-    const firstPageRequest = $.http.get('/api/v4/projects', {
+    const firstPageRequest = $.http.get('/v4/projects', {
       params: {
         simple: true,
         pagination: 'keyset',

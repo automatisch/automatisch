@@ -1,8 +1,14 @@
+import { URL } from 'node:url';
+
 const addAuthHeader = ($, requestConfig) => {
   const { instanceUrl, tokenType, accessToken } = $.auth.data;
 
   if (instanceUrl) {
-    requestConfig.baseURL = instanceUrl;
+    if (requestConfig.additionalProperties?.skipAddingBaseUrl) {
+      requestConfig.baseURL = instanceUrl;
+    } else {
+      requestConfig.baseURL = new URL('api', instanceUrl).toString();
+    }
   }
 
   if (tokenType && accessToken) {

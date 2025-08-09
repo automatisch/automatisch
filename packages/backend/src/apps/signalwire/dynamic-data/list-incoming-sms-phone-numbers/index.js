@@ -3,7 +3,7 @@ export default {
   key: 'listIncomingSmsPhoneNumbers',
 
   async run($) {
-    let requestPath = `/api/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/IncomingPhoneNumbers`;
+    let requestPath = `/laml/2010-04-01/Accounts/${$.auth.data.accountSid}/IncomingPhoneNumbers`;
 
     const aggregatedResponse = {
       data: [],

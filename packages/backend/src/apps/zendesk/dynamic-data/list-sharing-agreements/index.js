@@ -14,7 +14,7 @@ export default {
 
     let nextPage;
     do {
-      const response = await $.http.get('/api/v2/sharing_agreements', {
+      const response = await $.http.get('/v2/sharing_agreements', {
         params,
       });
       const allSharingAgreements = response?.data?.sharing_agreements;
