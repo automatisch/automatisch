@@ -2,10 +2,8 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import IconButton from '@mui/material/IconButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ErrorIcon from '@mui/icons-material/Error';
 import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -22,6 +20,7 @@ import {
   AppIconStatusIconWrapper,
   Header,
   Wrapper,
+  ContextMenuButton,
 } from './style';
 import { StepPropType } from 'propTypes/propTypes';
 import useTriggers from 'hooks/useTriggers';
@@ -136,24 +135,27 @@ function FlowStep(props) {
               />
             )}
 
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              noWrap
+              sx={{ fontSize: 15, maxWidth: '195px' }}
+            >
               <strong>{step.position}.</strong>{' '}
               {actionOrTrigger?.name || step.name || 'Select the event'}
             </Typography>
           </Stack>
 
-          <Box display="flex" flex={1} justifyContent="end">
-            {!isTrigger && !editorContext.readOnly && (
-              <IconButton
-                color="primary"
-                onClick={onContextMenuClick}
-                ref={contextButtonRef}
-                size="small"
-              >
-                <MoreHorizIcon />
-              </IconButton>
-            )}
-          </Box>
+          {!isTrigger && !editorContext.readOnly && (
+            <ContextMenuButton
+              color="primary"
+              onClick={onContextMenuClick}
+              ref={contextButtonRef}
+              size="small"
+            >
+              <MoreVertIcon />
+            </ContextMenuButton>
+          )}
         </Stack>
       </Header>
 
