@@ -18,11 +18,17 @@ import randomNumber from './numbers/random-number.js';
 import formatNumber from './numbers/format-number.js';
 import formatPhoneNumber from './numbers/format-phone-number.js';
 import formatDateTime from './date-time/format-date-time.js';
+import extractAll from './text/extractAll.js';
+import compare from './list/compare.js';
+import compareMerge from './list/compare-merge.js';
 
 const options = {
   base64ToString,
   capitalize,
+  compare,
+  compareMerge,
   encodeUriComponent,
+  extractAll,
   extractEmailAddress,
   extractNumber,
   htmlToMarkdown,
