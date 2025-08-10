@@ -12,7 +12,6 @@ export default function BranchSplitEdge({
   targetX,
   targetY,
   source,
-  target,
   data: { laidOut, isBranchEdge, branchIndex, totalBranches },
 }) {
   const { flowActive, onStepAdd, isCreateStepPending } =

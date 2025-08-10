@@ -161,6 +161,77 @@ export const getLaidOutElements = async (
     }
   });
 
+  // Align branch end-placeholders and position merge nodes
+  pathsSteps.forEach((pathStep) => {
+    const mergeNodeId = `${pathStep.id}-merge-placeholder`;
+
+    // Find all branches for this paths node
+    const branches = steps
+      .filter(
+        (s) => s.parentStepId === pathStep.id && s.structuralType === 'branch',
+      )
+      .sort((a, b) => a.position - b.position);
+
+    if (branches.length > 0) {
+      // Find the lowest Y position among all branch elements (excluding placeholders first)
+      let maxY = 0;
+      let endPlaceholders = [];
+
+      branches.forEach((branch) => {
+        const branchChildren = steps
+          .filter((s) => s.parentStepId === branch.id)
+          .sort((a, b) => a.position - b.position);
+
+        // Check branch node itself
+        if (flattenedPositions[branch.id]) {
+          maxY = Math.max(maxY, flattenedPositions[branch.id].y);
+        }
+
+        // Check all children of the branch
+        branchChildren.forEach((child) => {
+          if (flattenedPositions[child.id]) {
+            maxY = Math.max(maxY, flattenedPositions[child.id].y);
+          }
+        });
+
+        // Collect end-placeholders to align later
+        if (branchChildren.length > 0) {
+          const lastChild = branchChildren[branchChildren.length - 1];
+          const endPlaceholderId = `${lastChild.id}-end-placeholder`;
+          if (flattenedPositions[endPlaceholderId]) {
+            endPlaceholders.push(endPlaceholderId);
+          }
+        } else {
+          // For empty branches
+          const branchPlaceholderId = `${branch.id}-placeholder`;
+          if (flattenedPositions[branchPlaceholderId]) {
+            endPlaceholders.push(branchPlaceholderId);
+          }
+        }
+      });
+
+      // Align all end-placeholders to be at the same Y level (below the lowest branch element)
+      const placeholderY = maxY + NODE_HEIGHT + 80;
+      endPlaceholders.forEach((placeholderId) => {
+        if (flattenedPositions[placeholderId]) {
+          flattenedPositions[placeholderId].y = placeholderY;
+        }
+      });
+
+      // Position merge node below the aligned placeholders
+      if (flattenedPositions[mergeNodeId]) {
+        const mergeY = placeholderY + NODE_HEIGHT + 80;
+        const pathPosition = flattenedPositions[pathStep.id];
+        if (pathPosition) {
+          flattenedPositions[mergeNodeId] = {
+            x: pathPosition.x,
+            y: mergeY,
+          };
+        }
+      }
+    }
+  });
+
   // Calculate the graph width to center it
   let maxX = 0;
   Object.values(flattenedPositions).forEach((pos) => {
@@ -173,28 +244,32 @@ export const getLaidOutElements = async (
   const graphWidth = maxX;
   const centerOffset = Math.max(0, (viewportWidth - graphWidth) / 2);
 
-  return {
-    nodes: nodes.map((node) => {
-      const position = flattenedPositions[node.id];
-      if (!position) return node;
+  const computedNodes = nodes.map((node) => {
+    const position = flattenedPositions[node.id];
+    if (!position) return node;
 
-      return {
-        ...node,
-        position: {
-          x: position.x + centerOffset,
-          y: position.y + GRAPH_TOP_OFFSET,
-        },
-        // Since we're using hardcoded dimensions, always mark as laid out
-        ...(node.type === NODE_TYPES.FLOW_STEP
-          ? { data: { ...node.data, laidOut: true } }
-          : {}),
-      };
-    }),
-    edges: edges
-      .filter((e) => !virtualEdges.find((ve) => ve.id === e.id))
-      .map((edge) => ({
-        ...edge,
-        data: { ...edge.data, laidOut: true },
-      })),
+    return {
+      ...node,
+      position: {
+        x: position.x + centerOffset,
+        y: position.y + GRAPH_TOP_OFFSET,
+      },
+      // Since we're using hardcoded dimensions, always mark as laid out
+      ...(node.type === NODE_TYPES.FLOW_STEP
+        ? { data: { ...node.data, laidOut: true } }
+        : {}),
+    };
+  });
+
+  const computedEdges = edges
+    .filter((e) => !virtualEdges.find((ve) => ve.id === e.id))
+    .map((edge) => ({
+      ...edge,
+      data: { ...edge.data, laidOut: true },
+    }));
+
+  return {
+    nodes: computedNodes,
+    edges: computedEdges,
   };
 };
