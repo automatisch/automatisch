@@ -9,7 +9,7 @@ function InvisibleNode() {
       height={80}
       width="100vw"
       className="nodrag"
-      sx={{ visibility: 'hidden' }}
+      sx={{ visibility: 'visible', bgcolor: 'red' }}
     >
       <Handle type="target" position={Position.Top} isConnectable={false} />
       Invisible node

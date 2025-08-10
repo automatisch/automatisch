@@ -102,9 +102,13 @@ const Editor = ({ flow }) => {
     async (previousStepId) => {
       // Check if this is a placeholder node
       const isPlaceholder = previousStepId.endsWith('-placeholder');
+      const isMergePlaceholder = previousStepId.endsWith('-merge-placeholder');
       let actualPreviousStepId = previousStepId;
 
-      if (isPlaceholder) {
+      if (isMergePlaceholder) {
+        // Extract the paths node ID from merge placeholder
+        actualPreviousStepId = previousStepId.replace('-merge-placeholder', '');
+      } else if (isPlaceholder) {
         // Extract the branch ID from placeholder ID
         actualPreviousStepId = previousStepId.replace('-placeholder', '');
       }
@@ -115,7 +119,8 @@ const Editor = ({ flow }) => {
       );
       const isAfterPaths = previousStep?.structuralType === 'paths';
       const isAfterBranch =
-        previousStep?.structuralType === 'branch' || isPlaceholder;
+        previousStep?.structuralType === 'branch' ||
+        (isPlaceholder && !isMergePlaceholder);
 
       // Check if the previous step is inside a branch (has a parentStepId)
       const isInsideBranch = previousStep?.parentStepId && !isAfterBranch;
@@ -123,9 +128,14 @@ const Editor = ({ flow }) => {
       // Prepare creation parameters
       const createParams = {
         previousStepId: actualPreviousStepId,
-        ...(isAfterPaths && {
-          structuralType: 'branch',
-          parentStepId: actualPreviousStepId,
+        ...(isAfterPaths &&
+          !isMergePlaceholder && {
+            structuralType: 'branch',
+            parentStepId: actualPreviousStepId,
+          }),
+        ...(isMergePlaceholder && {
+          structuralType: 'single',
+          // No parentStepId - this is a top-level step after merge
         }),
         ...(isAfterBranch && {
           structuralType: 'single',
@@ -318,7 +328,6 @@ const Editor = ({ flow }) => {
             },
             data: {
               isPlaceholder: true,
-              parentBranchId: branch.id,
             },
           });
         }
@@ -351,6 +360,21 @@ const Editor = ({ flow }) => {
               });
             }
           }
+        }
+
+        // Add merge placeholder for paths nodes
+        if (step.structuralType === 'paths') {
+          newNodes.push({
+            id: `${step.id}-merge-placeholder`,
+            type: NODE_TYPES.INVISIBLE,
+            position: {
+              x: 0,
+              y: 0,
+            },
+            data: {
+              isPlaceholder: true,
+            },
+          });
         }
       });
 
@@ -404,12 +428,10 @@ const Editor = ({ flow }) => {
         const branchSteps = flow.steps.filter(
           (s) => s.structuralType === 'branch',
         );
-        console.log('Branch steps:', branchSteps);
         branchSteps.forEach((branch) => {
           const branchChildren = flow.steps
             .filter((s) => s.parentStepId === branch.id)
             .sort((a, b) => a.position - b.position);
-          console.log(`Children of branch ${branch.name}:`, branchChildren);
 
           if (branchChildren.length > 0) {
             // Connect branch to first child
@@ -460,7 +482,46 @@ const Editor = ({ flow }) => {
           }
         });
 
-        // 4. For the last top-level step without branches, add an invisible node
+        // 4. Connect branch ends to merge node for paths
+        pathsSteps.forEach((pathStep) => {
+          const mergeNodeId = `${pathStep.id}-merge-placeholder`;
+          const branches = flow.steps.filter(
+            (s) =>
+              s.parentStepId === pathStep.id && s.structuralType === 'branch',
+          );
+
+          branches.forEach((branch) => {
+            const branchChildren = flow.steps
+              .filter((s) => s.parentStepId === branch.id)
+              .sort((a, b) => a.position - b.position);
+
+            if (branchChildren.length > 0) {
+              // Connect last child of branch to merge node
+              const lastChild = branchChildren[branchChildren.length - 1];
+              newEdges.push({
+                id: uuidv4(),
+                source: lastChild.id,
+                target: mergeNodeId,
+                type: 'addNodeEdge',
+                data: { laidOut: false },
+              });
+            } else {
+              // For empty branches, connect branch directly to merge
+              newEdges.push({
+                id: uuidv4(),
+                source: branch.id,
+                target: mergeNodeId,
+                type: 'addNodeEdge',
+                data: { laidOut: false },
+              });
+            }
+          });
+
+          // Note: The merge node doesn't need its own placeholder edge
+          // as it already serves as a placeholder for continuing the flow
+        });
+
+        // 5. For the last top-level step without branches, add an invisible node
         const lastTopLevel = topLevelSteps[topLevelSteps.length - 1];
 
         if (lastTopLevel && !nodesWithOutgoingEdges.has(lastTopLevel.id)) {
@@ -497,7 +558,6 @@ const Editor = ({ flow }) => {
         }
       }
 
-      console.log('All edges created:', newEdges);
       setInitialNodes(newNodes);
       setInitialEdges(newEdges);
     },
