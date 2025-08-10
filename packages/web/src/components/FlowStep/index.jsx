@@ -90,6 +90,9 @@ function FlowStep(props) {
   const validationStatusIcon =
     step.status === 'completed' ? validIcon : errorIcon;
 
+  // Special styling for paths (branching) nodes
+  const isPathsNode = step.structuralType === 'paths';
+
   return (
     <Wrapper
       elevation={isSelected ? 3 : 1}
@@ -142,7 +145,9 @@ function FlowStep(props) {
               sx={{ fontSize: 15, maxWidth: '195px' }}
             >
               <strong>{step.position}.</strong>{' '}
-              {step.name || actionOrTrigger?.name || 'Select the event'}
+              {isPathsNode
+                ? 'Branches'
+                : step.name || actionOrTrigger?.name || 'Select the event'}
             </Typography>
           </Stack>
 

@@ -17,7 +17,7 @@ export default function Edge({
   const { flowActive, onStepAdd, isCreateStepPending } =
     useContext(EdgesContext);
 
-  const [, labelX, labelY] = getStraightPath({
+  const [edgePath, labelX, labelY] = getStraightPath({
     sourceX,
     sourceY,
     targetX,
@@ -26,6 +26,13 @@ export default function Edge({
 
   return (
     <>
+      <path
+        d={edgePath}
+        fill="none"
+        stroke="#b1b1b7"
+        strokeWidth={2}
+        className="react-flow__edge-path"
+      />
       <EdgeLabelRenderer>
         <IconButton
           onClick={() => onStepAdd(source)}

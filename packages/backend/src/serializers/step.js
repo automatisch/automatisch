@@ -12,6 +12,9 @@ const stepSerializer = (step) => {
     status: step.status,
     position: step.position,
     parameters: step.parameters,
+    parentStepId: step.parentStepId,
+    structuralType: step.structuralType,
+    branchConditions: step.branchConditions,
   };
 
   if (step.lastExecutionStep) {

@@ -6,9 +6,12 @@ export default async (request, response) => {
     .findById(request.params.flowId)
     .throwIfNotFound();
 
-  const createdActionStep = await flow.createStepAfter(
-    request.body.previousStepId
-  );
+  const { previousStepId, structuralType, parentStepId } = request.body;
+
+  const createdActionStep = await flow.createStepAfter(previousStepId, {
+    structuralType,
+    parentStepId,
+  });
 
   renderObject(response, createdActionStep, { status: 201 });
 };

@@ -202,10 +202,12 @@ class Flow extends Base {
     return computedForm;
   }
 
-  async insertActionStepAtPosition(position) {
+  async insertActionStepAtPosition(position, options = {}) {
     return await this.$relatedQuery('steps').insertAndFetch({
       type: 'action',
       position,
+      structuralType: options.structuralType || 'single',
+      parentStepId: options.parentStepId || null,
     });
   }
 
@@ -223,13 +225,14 @@ class Flow extends Base {
     return await Promise.all(stepPositionUpdates);
   }
 
-  async createStepAfter(previousStepId) {
+  async createStepAfter(previousStepId, options = {}) {
     const previousStep = await this.getStepById(previousStepId);
 
     const nextSteps = await this.getStepsAfterPosition(previousStep.position);
 
     const createdStep = await this.insertActionStepAtPosition(
-      previousStep.position + 1
+      previousStep.position + 1,
+      options
     );
 
     await this.updateStepPositionsFrom(createdStep.position + 1, nextSteps);
