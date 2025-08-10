@@ -426,7 +426,6 @@ class Step extends Base {
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
     await this.validateParentStep();
-    await this.validateBranchConditions();
   }
 
   async $beforeUpdate(opt, queryContext) {

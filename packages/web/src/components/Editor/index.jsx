@@ -24,7 +24,9 @@ import { FlowPropType } from 'propTypes/propTypes';
 
 import { useScrollBoundaries } from './useScrollBoundaries';
 import FlowStepNode from './FlowStepNode/FlowStepNode';
+import BranchContainerNode from './BranchContainerNode/BranchContainerNode';
 import Edge from './Edge/Edge';
+import BranchSplitEdge from './BranchSplitEdge/BranchSplitEdge';
 import InvisibleNode from './InvisibleNode/InvisibleNode';
 import { getLaidOutElements } from './utils';
 import { EDGE_TYPES, INVISIBLE_NODE_ID, NODE_TYPES } from './constants';
@@ -36,11 +38,13 @@ const ENABLE_AUTO_SELECT = false;
 
 const nodeTypes = {
   [NODE_TYPES.FLOW_STEP]: FlowStepNode,
+  [NODE_TYPES.BRANCH_CONTAINER]: BranchContainerNode,
   [NODE_TYPES.INVISIBLE]: InvisibleNode,
 };
 
 const edgeTypes = {
   [EDGE_TYPES.ADD_NODE_EDGE]: Edge,
+  [EDGE_TYPES.BRANCH_SPLIT]: BranchSplitEdge,
 };
 
 const Editor = ({ flow }) => {
@@ -54,6 +58,7 @@ const Editor = ({ flow }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [containerHeight, setContainerHeight] = useState(null);
   const containerRef = useRef(null);
+
   const { mutateAsync: createStep, isPending: isCreateStepPending } =
     useCreateStep(flow?.id);
 
@@ -95,11 +100,30 @@ const Editor = ({ flow }) => {
 
   const onStepAdd = useCallback(
     async (previousStepId) => {
-      const { data: createdStep } = await createStep({ previousStepId });
+      // Check if the previous step is a paths node
+      const previousStep = flow?.steps?.find((s) => s.id === previousStepId);
+      const isAfterPaths = previousStep?.structuralType === 'paths';
+
+      // Prepare creation parameters
+      const createParams = {
+        previousStepId,
+        ...(isAfterPaths && {
+          structuralType: 'branch',
+          parentStepId: previousStepId,
+        }),
+      };
+
+      const { data: createdStep } = await createStep(createParams);
+
+      // Determine node type based on structural type
+      const nodeType =
+        createdStep.structuralType === 'branch'
+          ? NODE_TYPES.BRANCH_CONTAINER
+          : NODE_TYPES.FLOW_STEP;
 
       const newNode = {
         id: createdStep.id,
-        type: NODE_TYPES.FLOW_STEP,
+        type: nodeType,
         position: {
           x: 0,
           y: 0,
@@ -145,7 +169,7 @@ const Editor = ({ flow }) => {
       setNodes(laidOutElements.nodes);
       setEdges(laidOutElements.edges);
     },
-    [createStep, nodes, edges, setEdges],
+    [createStep, nodes, edges, setEdges, flow?.steps],
   );
 
   const onStepAddDebounced = useMemo(
@@ -209,9 +233,15 @@ const Editor = ({ flow }) => {
   useEffect(
     function initiateNodesAndEdges() {
       const newNodes = flow?.steps.map((step, index) => {
+        // Use BranchContainerNode for branch steps
+        const nodeType =
+          step.structuralType === 'branch'
+            ? NODE_TYPES.BRANCH_CONTAINER
+            : NODE_TYPES.FLOW_STEP;
+
         return {
           id: step.id,
-          type: NODE_TYPES.FLOW_STEP,
+          type: nodeType,
           position: {
             x: 0,
             y: 0,
@@ -232,25 +262,105 @@ const Editor = ({ flow }) => {
         },
       });
 
-      const newEdges = newNodes
-        .map((node, i) => {
-          const sourceId = node.id;
-          const targetId = newNodes[i + 1]?.id;
-          if (targetId) {
-            return {
+      // Create edges based on step relationships
+      const newEdges = [];
+
+      if (flow?.steps) {
+        // 1. Connect sequential top-level nodes
+        const topLevelSteps = flow.steps.filter((s) => !s.parentStepId);
+        topLevelSteps.sort((a, b) => a.position - b.position);
+
+        for (let i = 0; i < topLevelSteps.length - 1; i++) {
+          newEdges.push({
+            id: uuidv4(),
+            source: topLevelSteps[i].id,
+            target: topLevelSteps[i + 1].id,
+            type: 'addNodeEdge',
+            data: { laidOut: false },
+          });
+        }
+
+        // 2. Connect paths nodes to their branch children
+        const pathsSteps = flow.steps.filter(
+          (s) => s.structuralType === 'paths',
+        );
+        pathsSteps.forEach((pathStep) => {
+          const branches = flow.steps.filter(
+            (s) =>
+              s.parentStepId === pathStep.id && s.structuralType === 'branch',
+          );
+          branches.forEach((branch, index) => {
+            newEdges.push({
               id: uuidv4(),
-              source: sourceId,
-              target: targetId,
-              type: 'addNodeEdge',
+              source: pathStep.id,
+              target: branch.id,
+              type: EDGE_TYPES.BRANCH_SPLIT,
               data: {
                 laidOut: false,
+                isBranchEdge: true,
+                branchIndex: index,
+                totalBranches: branches.length,
               },
-            };
-          }
-          return null;
-        })
-        .filter((edge) => !!edge);
+            });
+          });
+        });
 
+        // 3. Connect branch nodes to their children sequentially
+        const branchSteps = flow.steps.filter(
+          (s) => s.structuralType === 'branch',
+        );
+        console.log('Branch steps:', branchSteps);
+        branchSteps.forEach((branch) => {
+          const branchChildren = flow.steps
+            .filter((s) => s.parentStepId === branch.id)
+            .sort((a, b) => a.position - b.position);
+          console.log(`Children of branch ${branch.name}:`, branchChildren);
+
+          // Connect branch to first child
+          if (branchChildren.length > 0) {
+            newEdges.push({
+              id: uuidv4(),
+              source: branch.id,
+              target: branchChildren[0].id,
+              type: 'addNodeEdge',
+              data: { laidOut: false },
+            });
+
+            // Connect children sequentially within the branch
+            for (let i = 0; i < branchChildren.length - 1; i++) {
+              newEdges.push({
+                id: uuidv4(),
+                source: branchChildren[i].id,
+                target: branchChildren[i + 1].id,
+                type: 'addNodeEdge',
+                data: { laidOut: false },
+              });
+            }
+
+            // Don't connect branch children to invisible node - they end within their branch
+          }
+        });
+
+        // 4. Connect last top-level step to invisible node
+        if (topLevelSteps.length > 0) {
+          const lastTopLevel = topLevelSteps[topLevelSteps.length - 1];
+          // Only connect to invisible if it's not a paths node (paths have branches)
+          const isPathsNode = flow.steps.find(
+            (s) => s.id === lastTopLevel.id && s.structuralType === 'paths',
+          );
+          if (!isPathsNode) {
+            newEdges.push({
+              id: uuidv4(),
+              source: lastTopLevel.id,
+              target: INVISIBLE_NODE_ID,
+              type: 'addNodeEdge',
+              data: { laidOut: false },
+            });
+          }
+        }
+      }
+
+      console.log('All edges created:', newEdges);
       setInitialNodes(newNodes);
       setInitialEdges(newEdges);
     },
@@ -260,14 +370,14 @@ const Editor = ({ flow }) => {
   // Calculate the initial layout before browser paint
   useLayoutEffect(() => {
     if (initialNodes.length > 0 && initialEdges.length >= 0) {
-      getLaidOutElements(initialNodes, initialEdges).then(
+      getLaidOutElements(initialNodes, initialEdges, flow?.steps).then(
         ({ nodes: layoutedNodes, edges: layoutedEdges }) => {
           setNodes(layoutedNodes);
           setEdges(layoutedEdges);
         },
       );
     }
-  }, [initialNodes, initialEdges, setNodes, setEdges]);
+  }, [initialNodes, initialEdges, flow?.steps, setNodes, setEdges]);
 
   useEffect(function updateContainerHeightOnResize() {
     const updateHeight = () => {
@@ -306,7 +416,7 @@ const Editor = ({ flow }) => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
           if (nodes.length > 0 && edges.length >= 0) {
-            getLaidOutElements(nodes, edges).then(
+            getLaidOutElements(nodes, edges, flow?.steps).then(
               ({ nodes: layoutedNodes, edges: layoutedEdges }) => {
                 setNodes(layoutedNodes);
                 setEdges(layoutedEdges);
@@ -323,7 +433,7 @@ const Editor = ({ flow }) => {
         window.removeEventListener('resize', handleResize);
       };
     },
-    [nodes, edges, setNodes, setEdges],
+    [nodes, edges, flow?.steps, setNodes, setEdges],
   );
 
   return (
@@ -360,9 +470,9 @@ const Editor = ({ flow }) => {
             nodesConnectable={false}
             nodesDraggable={false}
             nodesFocusable={true}
-            panOnDrag={false}
             panOnScroll
             panOnScrollMode={PanOnScrollMode.Vertical}
+            panOnDrag={[0]}
             zoomOnDoubleClick={false}
             zoomOnPinch={false}
             zoomOnScroll={false}
