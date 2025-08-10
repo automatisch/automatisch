@@ -15,7 +15,7 @@ const BranchContainerNode = ({ id }) => {
   const isSelected = selectedStepId === id;
 
   const step = steps?.find((s) => s.id === id);
-  const branchName = step?.name || `Branch ${step?.position || ''}`;
+  const branchName = step?.name || '';
 
   const handleClick = () => {
     onStepSelect?.(id);

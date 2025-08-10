@@ -29,7 +29,7 @@ import Edge from './Edge/Edge';
 import BranchSplitEdge from './BranchSplitEdge/BranchSplitEdge';
 import InvisibleNode from './InvisibleNode/InvisibleNode';
 import { getLaidOutElements } from './utils';
-import { EDGE_TYPES, INVISIBLE_NODE_ID, NODE_TYPES } from './constants';
+import { EDGE_TYPES, NODE_TYPES } from './constants';
 import { EditorWrapper } from './style';
 import { EdgesContext, NodesContext } from './contexts';
 import StepDetailsSidebar from 'components/StepDetailsSidebar';
@@ -100,16 +100,40 @@ const Editor = ({ flow }) => {
 
   const onStepAdd = useCallback(
     async (previousStepId) => {
-      // Check if the previous step is a paths node
-      const previousStep = flow?.steps?.find((s) => s.id === previousStepId);
+      // Check if this is a placeholder node
+      const isPlaceholder = previousStepId.endsWith('-placeholder');
+      let actualPreviousStepId = previousStepId;
+
+      if (isPlaceholder) {
+        // Extract the branch ID from placeholder ID
+        actualPreviousStepId = previousStepId.replace('-placeholder', '');
+      }
+
+      // Check if the previous step is a paths or branch node
+      const previousStep = flow?.steps?.find(
+        (s) => s.id === actualPreviousStepId,
+      );
       const isAfterPaths = previousStep?.structuralType === 'paths';
+      const isAfterBranch =
+        previousStep?.structuralType === 'branch' || isPlaceholder;
+
+      // Check if the previous step is inside a branch (has a parentStepId)
+      const isInsideBranch = previousStep?.parentStepId && !isAfterBranch;
 
       // Prepare creation parameters
       const createParams = {
-        previousStepId,
+        previousStepId: actualPreviousStepId,
         ...(isAfterPaths && {
           structuralType: 'branch',
-          parentStepId: previousStepId,
+          parentStepId: actualPreviousStepId,
+        }),
+        ...(isAfterBranch && {
+          structuralType: 'single',
+          parentStepId: actualPreviousStepId,
+        }),
+        ...(isInsideBranch && {
+          structuralType: 'single',
+          parentStepId: previousStep.parentStepId, // Keep the same parent as the previous step
         }),
       };
 
@@ -144,18 +168,41 @@ const Editor = ({ flow }) => {
         .map((edge) => {
           if (edge.source === previousStepId) {
             const previousTarget = edge.target;
-            return [
-              { ...edge, target: createdStep.id },
-              {
-                id: uuidv4(),
-                source: createdStep.id,
-                target: previousTarget,
-                type: EDGE_TYPES.ADD_NODE_EDGE,
-                data: {
-                  laidOut: false,
+            const wasPlaceholder = edge.data?.isPlaceholder;
+
+            // If the previous edge was to a placeholder, keep it as placeholder
+            if (wasPlaceholder) {
+              return [
+                {
+                  ...edge,
+                  target: createdStep.id,
+                  data: { ...edge.data, isPlaceholder: false },
                 },
-              },
-            ];
+                {
+                  id: uuidv4(),
+                  source: createdStep.id,
+                  target: `${createdStep.id}-end-placeholder`,
+                  type: EDGE_TYPES.ADD_NODE_EDGE,
+                  data: {
+                    laidOut: false,
+                    isPlaceholder: true,
+                  },
+                },
+              ];
+            } else {
+              return [
+                { ...edge, target: createdStep.id },
+                {
+                  id: uuidv4(),
+                  source: createdStep.id,
+                  target: previousTarget,
+                  type: EDGE_TYPES.ADD_NODE_EDGE,
+                  data: {
+                    laidOut: false,
+                  },
+                },
+              ];
+            }
           }
           return edge;
         })
@@ -253,17 +300,63 @@ const Editor = ({ flow }) => {
         };
       });
 
-      newNodes.push({
-        id: INVISIBLE_NODE_ID,
-        type: NODE_TYPES.INVISIBLE,
-        position: {
-          x: 0,
-          y: 0,
-        },
+      // Add invisible placeholder nodes for empty branches and end placeholders
+      const branchSteps = flow.steps.filter(
+        (s) => s.structuralType === 'branch',
+      );
+      branchSteps.forEach((branch) => {
+        const branchChildren = flow.steps.filter(
+          (s) => s.parentStepId === branch.id,
+        );
+        if (branchChildren.length === 0) {
+          newNodes.push({
+            id: `${branch.id}-placeholder`,
+            type: NODE_TYPES.INVISIBLE,
+            position: {
+              x: 0,
+              y: 0,
+            },
+            data: {
+              isPlaceholder: true,
+              parentBranchId: branch.id,
+            },
+          });
+        }
+      });
+
+      // Add invisible placeholder nodes for steps that will have placeholder edges
+      flow.steps.forEach((step) => {
+        // Add end placeholder for steps in branches that don't have a next step
+        if (step.parentStepId) {
+          const parentBranch = flow.steps.find(
+            (s) => s.id === step.parentStepId,
+          );
+          if (parentBranch?.structuralType === 'branch') {
+            const branchChildren = flow.steps
+              .filter((s) => s.parentStepId === step.parentStepId)
+              .sort((a, b) => a.position - b.position);
+            const isLastInBranch =
+              branchChildren[branchChildren.length - 1]?.id === step.id;
+            if (isLastInBranch) {
+              newNodes.push({
+                id: `${step.id}-end-placeholder`,
+                type: NODE_TYPES.INVISIBLE,
+                position: {
+                  x: 0,
+                  y: 0,
+                },
+                data: {
+                  isPlaceholder: true,
+                },
+              });
+            }
+          }
+        }
       });
 
       // Create edges based on step relationships
       const newEdges = [];
+      const nodesWithOutgoingEdges = new Set();
 
       if (flow?.steps) {
         // 1. Connect sequential top-level nodes
@@ -278,6 +371,7 @@ const Editor = ({ flow }) => {
             type: 'addNodeEdge',
             data: { laidOut: false },
           });
+          nodesWithOutgoingEdges.add(topLevelSteps[i].id);
         }
 
         // 2. Connect paths nodes to their branch children
@@ -302,6 +396,7 @@ const Editor = ({ flow }) => {
                 totalBranches: branches.length,
               },
             });
+            nodesWithOutgoingEdges.add(pathStep.id);
           });
         });
 
@@ -316,8 +411,8 @@ const Editor = ({ flow }) => {
             .sort((a, b) => a.position - b.position);
           console.log(`Children of branch ${branch.name}:`, branchChildren);
 
-          // Connect branch to first child
           if (branchChildren.length > 0) {
+            // Connect branch to first child
             newEdges.push({
               id: uuidv4(),
               source: branch.id,
@@ -325,6 +420,7 @@ const Editor = ({ flow }) => {
               type: 'addNodeEdge',
               data: { laidOut: false },
             });
+            nodesWithOutgoingEdges.add(branch.id);
 
             // Connect children sequentially within the branch
             for (let i = 0; i < branchChildren.length - 1; i++) {
@@ -335,27 +431,68 @@ const Editor = ({ flow }) => {
                 type: 'addNodeEdge',
                 data: { laidOut: false },
               });
+              nodesWithOutgoingEdges.add(branchChildren[i].id);
             }
 
-            // Don't connect branch children to invisible node - they end within their branch
+            // Add placeholder edge for last child in branch
+            const lastChild = branchChildren[branchChildren.length - 1];
+            if (lastChild && !nodesWithOutgoingEdges.has(lastChild.id)) {
+              newEdges.push({
+                id: uuidv4(),
+                source: lastChild.id,
+                target: `${lastChild.id}-end-placeholder`,
+                type: 'addNodeEdge',
+                data: { laidOut: false, isPlaceholder: true },
+              });
+              nodesWithOutgoingEdges.add(lastChild.id);
+            }
+          } else {
+            // For empty branches, create edge to invisible placeholder
+            const placeholderId = `${branch.id}-placeholder`;
+            newEdges.push({
+              id: uuidv4(),
+              source: branch.id,
+              target: placeholderId,
+              type: 'addNodeEdge',
+              data: { laidOut: false, isPlaceholder: true },
+            });
+            nodesWithOutgoingEdges.add(branch.id);
           }
         });
 
-        // 4. Connect last top-level step to invisible node
-        if (topLevelSteps.length > 0) {
-          const lastTopLevel = topLevelSteps[topLevelSteps.length - 1];
-          // Only connect to invisible if it's not a paths node (paths have branches)
-          const isPathsNode = flow.steps.find(
-            (s) => s.id === lastTopLevel.id && s.structuralType === 'paths',
-          );
-          if (!isPathsNode) {
+        // 4. For the last top-level step without branches, add an invisible node
+        const lastTopLevel = topLevelSteps[topLevelSteps.length - 1];
+
+        if (lastTopLevel && !nodesWithOutgoingEdges.has(lastTopLevel.id)) {
+          // Only add invisible node if this isn't a paths step (which has branches)
+          if (lastTopLevel.structuralType !== 'paths') {
+            // Create an invisible node for the last top-level step
+            const invisibleNodeId = `${lastTopLevel.id}-end-placeholder`;
+
+            // Add the invisible node if it doesn't already exist
+            if (!newNodes.find((n) => n.id === invisibleNodeId)) {
+              newNodes.push({
+                id: invisibleNodeId,
+                type: NODE_TYPES.INVISIBLE,
+                position: {
+                  x: 0,
+                  y: 0,
+                },
+                data: {
+                  isPlaceholder: true,
+                },
+              });
+            }
+
+            // Connect to the invisible node
             newEdges.push({
               id: uuidv4(),
               source: lastTopLevel.id,
-              target: INVISIBLE_NODE_ID,
+              target: invisibleNodeId,
               type: 'addNodeEdge',
-              data: { laidOut: false },
+              data: { laidOut: false, isPlaceholder: true },
             });
+            nodesWithOutgoingEdges.add(lastTopLevel.id);
           }
         }
       }
