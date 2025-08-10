@@ -1,4 +1,4 @@
-import { EdgeLabelRenderer, getStraightPath } from '@xyflow/react';
+import { EdgeLabelRenderer } from '@xyflow/react';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import PropTypes from 'prop-types';
@@ -12,22 +12,29 @@ export default function Edge({
   targetX,
   targetY,
   source,
-  data: { laidOut },
+  data: { laidOut, isPlaceholder },
 }) {
   const { flowActive, onStepAdd, isCreateStepPending } =
     useContext(EdgesContext);
 
-  const [edgePath, labelX, labelY] = getStraightPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-  });
+  // Position for the + button (40px below source)
+  const buttonY = sourceY + 40;
+
+  // Path from source to + button (always shown)
+  const pathToButton = `M ${sourceX} ${sourceY} L ${sourceX} ${buttonY}`;
+
+  // Path from + button to target (only if not placeholder)
+  const pathFromButton = isPlaceholder
+    ? ''
+    : ` M ${sourceX} ${buttonY} L ${sourceX} ${buttonY + 10} L ${targetX} ${buttonY + 10} L ${targetX} ${targetY}`;
+
+  // Complete path
+  const fullPath = pathToButton + pathFromButton;
 
   return (
     <>
       <path
-        d={edgePath}
+        d={fullPath}
         fill="none"
         stroke="#b1b1b7"
         strokeWidth={2}
@@ -39,7 +46,7 @@ export default function Edge({
           color="primary"
           sx={{
             position: 'absolute',
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            transform: `translate(-50%, -50%) translate(${sourceX}px,${buttonY}px)`,
             pointerEvents: 'all',
             visibility: laidOut ? 'visible' : 'hidden',
           }}
@@ -60,5 +67,6 @@ Edge.propTypes = {
   source: PropTypes.string.isRequired,
   data: PropTypes.shape({
     laidOut: PropTypes.bool,
+    isPlaceholder: PropTypes.bool,
   }).isRequired,
 };

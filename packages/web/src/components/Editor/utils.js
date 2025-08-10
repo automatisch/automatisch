@@ -144,7 +144,19 @@ export const getLaidOutElements = async (
           if (flattenedPositions[child.id]) {
             flattenedPositions[child.id].x = branchX;
           }
+
+          // Also position the end-placeholder for this child
+          const endPlaceholderId = `${child.id}-end-placeholder`;
+          if (flattenedPositions[endPlaceholderId]) {
+            flattenedPositions[endPlaceholderId].x = branchX;
+          }
         });
+
+        // Position the placeholder for empty branches
+        const branchPlaceholderId = `${branch.id}-placeholder`;
+        if (flattenedPositions[branchPlaceholderId]) {
+          flattenedPositions[branchPlaceholderId].x = branchX;
+        }
       });
     }
   });
