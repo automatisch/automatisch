@@ -47,7 +47,7 @@ const BranchContainerNode = ({ id }) => {
         </Header>
         <Content>
           <Typography variant="body2" color="text.secondary">
-            Path conditions
+            {step.position}. Path conditions
           </Typography>
         </Content>
       </Container>
