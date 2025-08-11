@@ -1,7 +1,7 @@
 export const NODE_TYPES = {
   FLOW_STEP: 'flowStep',
   BRANCH_CONTAINER: 'branchContainer',
-  INVISIBLE: 'invisible',
+  ADD_BUTTON: 'addButton',
 };
 
 export const EDGE_TYPES = {
