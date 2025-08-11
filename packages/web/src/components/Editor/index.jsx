@@ -331,7 +331,6 @@ const Editor = ({ flow }) => {
             edgeTypes={edgeTypes}
             viewport={viewport}
             edgesFocusable={false}
-            edgesUpdatable={false}
             elementsSelectable={true}
             nodesConnectable={false}
             nodesDraggable={false}
@@ -345,7 +344,7 @@ const Editor = ({ flow }) => {
             maxZoom={1}
             proOptions={{ hideAttribution: true }}
           />
-          <StepDetailsSidebar key={selectedStepId} open={selectedStepId} />
+          <StepDetailsSidebar key={selectedStepId} open={sidebarOpen} />
         </EditorWrapper>
       </EdgesContext.Provider>
     </NodesContext.Provider>
