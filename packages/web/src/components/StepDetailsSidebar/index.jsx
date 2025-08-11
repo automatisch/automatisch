@@ -232,6 +232,7 @@ function StepDetailsSidebar({ open }) {
 
   return (
     <Drawer
+      data-test="step-details-sidebar"
       anchor="right"
       hideBackdrop
       open={open}
@@ -267,6 +268,7 @@ function StepDetailsSidebar({ open }) {
               size={isMobile ? 28 : 32}
             />
             <EditableTypography
+              data-test="step-name"
               variant={isMobile ? 'subtitle1' : 'h6'}
               onConfirm={handleStepNameUpdate}
               prefixValue={

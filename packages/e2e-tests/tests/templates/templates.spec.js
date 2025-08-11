@@ -76,6 +76,7 @@ test.describe.serial('Templates', () => {
     templatesPage,
     page,
     request,
+    stepDetailsSidebar,
   }) => {
     const templateName = Crypto.randomUUID();
     const { token, flowId } = await templatesPage.prepareFlowViaAPI(request);
@@ -121,6 +122,9 @@ test.describe.serial('Templates', () => {
     });
 
     await test.step('verify imported flow', async () => {
+      await expect(flowEditorPage.flowStep).toHaveCount(2);
+      await flowEditorPage.stepName.first().click();
+      await expect(stepDetailsSidebar.stepName).toHaveText('1. triggerStep');
       await expect(flowEditorPage.stepName.first()).toHaveText(
         '1. triggerStep'
       );
