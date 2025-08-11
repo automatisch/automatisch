@@ -434,19 +434,29 @@ class Step extends Base {
       const childrenSteps = await this.$relatedQuery('childrenSteps');
 
       if (!childrenSteps.length) {
-        await this.$relatedQuery('childrenSteps').insert({
+        const flow = await this.$relatedQuery('flow');
+
+        const firstBranch = await flow.createStepAfter(this.id, {
           parentStepId: this.id,
-          position: 1,
-          flowId: this.flowId,
           structuralType: 'branch',
           type: 'action',
         });
 
-        await this.$relatedQuery('childrenSteps').insert({
+        const firstBranchStep = await flow.createStepAfter(firstBranch.id, {
+          parentStepId: firstBranch.id,
+          structuralType: 'single',
+          type: 'action',
+        });
+
+        const secondBranch = await flow.createStepAfter(firstBranchStep.id, {
           parentStepId: this.id,
-          position: 1,
-          flowId: this.flowId,
           structuralType: 'branch',
+          type: 'action',
+        });
+
+        await flow.createStepAfter(secondBranch.id, {
+          parentStepId: secondBranch.id,
+          structuralType: 'single',
           type: 'action',
         });
       }
