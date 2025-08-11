@@ -60,6 +60,7 @@ export class FlowEditorPage extends AuthenticatedPage {
       .click();
     await this.continueButton.click();
 
+    await this.page.waitForLoadState();
     const webhookUrl = await this.page
       .locator('input[name="webhookUrl"]')
       .inputValue();
