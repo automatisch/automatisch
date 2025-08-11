@@ -19,6 +19,7 @@ export const updatedCollapsedNodes = (nodes, openStepId) => {
 // Hardcoded dimensions for consistent layout
 const NODE_WIDTH = 350;
 const NODE_HEIGHT = 80;
+const GRAPH_TOP_OFFSET = 40;
 
 export const getLaidOutElements = async (nodes, edges, options = {}) => {
   const elk = new ELK();
@@ -70,7 +71,7 @@ export const getLaidOutElements = async (nodes, edges, options = {}) => {
         ...node,
         position: {
           x: (layoutedNode.x ?? 0) + centerOffset,
-          y: layoutedNode.y ?? 0,
+          y: (layoutedNode.y ?? 0) + GRAPH_TOP_OFFSET,
         },
         // Since we're using hardcoded dimensions, always mark as laid out
         ...(node.type === NODE_TYPES.FLOW_STEP
