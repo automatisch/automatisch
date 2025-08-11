@@ -142,7 +142,7 @@ function FlowStep(props) {
               sx={{ fontSize: 15, maxWidth: '195px' }}
             >
               <strong>{step.position}.</strong>{' '}
-              {actionOrTrigger?.name || step.name || 'Select the event'}
+              {step.name || actionOrTrigger?.name || 'Select the event'}
             </Typography>
           </Stack>
 

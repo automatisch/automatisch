@@ -269,7 +269,7 @@ function StepDetailsSidebar({ open }) {
                 selectedStep?.position ? `${selectedStep.position}. ` : ''
               }
             >
-              {actionOrTrigger?.name || selectedStep.name || 'Unnamed step'}
+              {selectedStep.name || actionOrTrigger?.name || 'Unnamed step'}
             </EditableTypography>
           </Box>
           <IconButton onClick={onClearSelection} size="small" sx={{ ml: 1 }}>
