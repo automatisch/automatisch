@@ -423,24 +423,58 @@ class Step extends Base {
     }
   }
 
+  async assignStructuralType() {
+    if (this.appKey === 'branches') {
+      this.structuralType = 'paths';
+    }
+  }
+
+  async insertInitialBranches() {
+    if (this.structuralType === 'paths') {
+      const childrenSteps = await this.$relatedQuery('childrenSteps');
+
+      if (!childrenSteps.length) {
+        await this.$relatedQuery('childrenSteps').insert({
+          parentStepId: this.id,
+          position: 1,
+          flowId: this.flowId,
+          structuralType: 'branch',
+          type: 'action',
+        });
+
+        await this.$relatedQuery('childrenSteps').insert({
+          parentStepId: this.id,
+          position: 1,
+          flowId: this.flowId,
+          structuralType: 'branch',
+          type: 'action',
+        });
+      }
+    }
+  }
+
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
     await this.validateParentStep();
+    await this.assignStructuralType();
   }
 
   async $beforeUpdate(opt, queryContext) {
     await super.$beforeUpdate(opt, queryContext);
     await this.validateParentStep();
     await this.validateBranchConditions();
+    await this.assignStructuralType();
   }
 
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
+    await this.insertInitialBranches();
     Telemetry.stepCreated(this);
   }
 
   async $afterUpdate(opt, queryContext) {
     await super.$afterUpdate(opt, queryContext);
+    await this.insertInitialBranches();
     Telemetry.stepUpdated(this);
   }
 }

@@ -507,6 +507,17 @@ const Editor = ({ flow }) => {
               s.parentStepId === pathStep.id && s.structuralType === 'branch',
           );
 
+          // If no branches exist yet, connect paths step directly to merge placeholder
+          if (branches.length === 0) {
+            newEdges.push({
+              id: uuidv4(),
+              source: pathStep.id,
+              target: mergeNodeId,
+              type: 'addNodeEdge',
+              data: { laidOut: false },
+            });
+          }
+
           branches.forEach((branch) => {
             const branchChildren = flow.steps
               .filter((s) => s.parentStepId === branch.id)

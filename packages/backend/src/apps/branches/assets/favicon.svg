@@ -1,0 +1,29 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#4A90E2">
+    <!-- Main trunk -->
+    <rect x="375" y="100" width="50" height="200" rx="5"/>
+    
+    <!-- Left branch -->
+    <path d="M 400 300 L 250 450 L 250 650" 
+          stroke="#4A90E2" 
+          stroke-width="50" 
+          stroke-linecap="round" 
+          fill="none"/>
+    
+    <!-- Center branch -->
+    <rect x="375" y="300" width="50" height="350" rx="5"/>
+    
+    <!-- Right branch -->
+    <path d="M 400 300 L 550 450 L 550 650" 
+          stroke="#4A90E2" 
+          stroke-width="50" 
+          stroke-linecap="round" 
+          fill="none"/>
+    
+    <!-- Branch nodes -->
+    <circle cx="400" cy="300" r="30" fill="#4A90E2"/>
+    <circle cx="250" cy="650" r="25" fill="#4A90E2"/>
+    <circle cx="400" cy="650" r="25" fill="#4A90E2"/>
+    <circle cx="550" cy="650" r="25" fill="#4A90E2"/>
+  </g>
+</svg>
