@@ -94,6 +94,7 @@ test.describe('Import/Export flow', () => {
     });
 
     await test.step('verify imported flow', async () => {
+      await flowEditorPage.flowStep.first().click();
       await expect(flowEditorPage.stepName.first()).toHaveText(
         '1. triggerStep'
       );

@@ -43,6 +43,8 @@ export class FlowEditorPage extends AuthenticatedPage {
   }
 
   async createWebhookTrigger(workSynchronously) {
+    await this.flowStep.first().click();
+
     await this.appAutocomplete.click();
     await this.page.getByRole('option', { name: 'Webhook' }).click();
 
