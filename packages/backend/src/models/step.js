@@ -424,13 +424,21 @@ class Step extends Base {
   }
 
   async assignStructuralType() {
-    if (this.appKey === 'branches') {
+    if (this.appKey === 'branches' && this.key === 'execute') {
       this.structuralType = 'paths';
+    }
+
+    if (this.appKey === 'branches' && this.key === 'executeBranch') {
+      this.structuralType = 'branch';
     }
   }
 
   async insertInitialBranches() {
-    if (this.structuralType === 'paths') {
+    if (
+      this.structuralType === 'paths' &&
+      this.appKey === 'branches' &&
+      this.key === 'execute'
+    ) {
       const childrenSteps = await this.$relatedQuery('childrenSteps');
 
       if (!childrenSteps.length) {
@@ -440,6 +448,8 @@ class Step extends Base {
           parentStepId: this.id,
           structuralType: 'branch',
           type: 'action',
+          appKey: 'branches',
+          key: 'executeBranch',
         });
 
         const firstBranchStep = await flow.createStepAfter(firstBranch.id, {
@@ -452,6 +462,8 @@ class Step extends Base {
           parentStepId: this.id,
           structuralType: 'branch',
           type: 'action',
+          appKey: 'branches',
+          key: 'executeBranch',
         });
 
         await flow.createStepAfter(secondBranch.id, {
