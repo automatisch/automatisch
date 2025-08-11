@@ -94,11 +94,7 @@ function TestSubstep(props) {
   return (
     <React.Fragment>
       <FlowSubstepTitle expanded={expanded} onClick={onToggle} title={name} />
-      <Collapse
-        in={expanded}
-        timeout={0}
-        unmountOnExit
-      >
+      <Collapse in={expanded} timeout={0} unmountOnExit>
         <ListItem
           sx={{
             pt: 2,

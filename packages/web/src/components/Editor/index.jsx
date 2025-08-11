@@ -27,7 +27,7 @@ import FlowStepNode from './FlowStepNode/FlowStepNode';
 import BranchContainerNode from './BranchContainerNode/BranchContainerNode';
 import Edge from './Edge/Edge';
 import BranchSplitEdge from './BranchSplitEdge/BranchSplitEdge';
-import InvisibleNode from './InvisibleNode/InvisibleNode';
+import AddButtonNode from './AddButtonNode/AddButtonNode';
 import { getLaidOutElements } from './utils';
 import { EDGE_TYPES, NODE_TYPES } from './constants';
 import { EditorWrapper } from './style';
@@ -39,7 +39,7 @@ const ENABLE_AUTO_SELECT = false;
 const nodeTypes = {
   [NODE_TYPES.FLOW_STEP]: FlowStepNode,
   [NODE_TYPES.BRANCH_CONTAINER]: BranchContainerNode,
-  [NODE_TYPES.INVISIBLE]: InvisibleNode,
+  [NODE_TYPES.ADD_BUTTON]: AddButtonNode,
 };
 
 const edgeTypes = {
@@ -310,69 +310,18 @@ const Editor = ({ flow }) => {
         };
       });
 
-      // Add invisible placeholder nodes for empty branches and end placeholders
-      const branchSteps = flow.steps.filter(
-        (s) => s.structuralType === 'branch',
-      );
-      branchSteps.forEach((branch) => {
-        const branchChildren = flow.steps.filter(
-          (s) => s.parentStepId === branch.id,
-        );
-        if (branchChildren.length === 0) {
-          newNodes.push({
-            id: `${branch.id}-placeholder`,
-            type: NODE_TYPES.INVISIBLE,
-            position: {
-              x: 0,
-              y: 0,
-            },
-            data: {
-              isPlaceholder: true,
-            },
-          });
-        }
-      });
-
-      // Add invisible placeholder nodes for steps that will have placeholder edges
+      // Add merge placeholder (AddButtonNode) for paths nodes
       flow.steps.forEach((step) => {
-        // Add end placeholder for steps in branches that don't have a next step
-        if (step.parentStepId) {
-          const parentBranch = flow.steps.find(
-            (s) => s.id === step.parentStepId,
-          );
-          if (parentBranch?.structuralType === 'branch') {
-            const branchChildren = flow.steps
-              .filter((s) => s.parentStepId === step.parentStepId)
-              .sort((a, b) => a.position - b.position);
-            const isLastInBranch =
-              branchChildren[branchChildren.length - 1]?.id === step.id;
-            if (isLastInBranch) {
-              newNodes.push({
-                id: `${step.id}-end-placeholder`,
-                type: NODE_TYPES.INVISIBLE,
-                position: {
-                  x: 0,
-                  y: 0,
-                },
-                data: {
-                  isPlaceholder: true,
-                },
-              });
-            }
-          }
-        }
-
-        // Add merge placeholder for paths nodes
         if (step.structuralType === 'paths') {
           newNodes.push({
             id: `${step.id}-merge-placeholder`,
-            type: NODE_TYPES.INVISIBLE,
+            type: NODE_TYPES.ADD_BUTTON,
             position: {
               x: 0,
               y: 0,
             },
             data: {
-              isPlaceholder: true,
+              laidOut: false,
             },
           });
         }
@@ -383,14 +332,32 @@ const Editor = ({ flow }) => {
       const nodesWithOutgoingEdges = new Set();
 
       if (flow?.steps) {
-        // 1. Connect sequential top-level nodes
+        // 1. Connect sequential top-level nodes with AddButtonNodes between them
         const topLevelSteps = flow.steps.filter((s) => !s.parentStepId);
         topLevelSteps.sort((a, b) => a.position - b.position);
 
         for (let i = 0; i < topLevelSteps.length - 1; i++) {
+          const addButtonId = `${topLevelSteps[i].id}-add-button`;
+
+          // Add the AddButtonNode
+          newNodes.push({
+            id: addButtonId,
+            type: NODE_TYPES.ADD_BUTTON,
+            position: { x: 0, y: 0 },
+            data: { laidOut: false },
+          });
+
+          // Connect step -> AddButton -> next step
           newEdges.push({
             id: uuidv4(),
             source: topLevelSteps[i].id,
+            target: addButtonId,
+            type: 'addNodeEdge',
+            data: { laidOut: false },
+          });
+          newEdges.push({
+            id: uuidv4(),
+            source: addButtonId,
             target: topLevelSteps[i + 1].id,
             type: 'addNodeEdge',
             data: { laidOut: false },
@@ -424,7 +391,7 @@ const Editor = ({ flow }) => {
           });
         });
 
-        // 3. Connect branch nodes to their children sequentially
+        // 3. Connect branch nodes to their children sequentially with AddButtonNodes
         const branchSteps = flow.steps.filter(
           (s) => s.structuralType === 'branch',
         );
@@ -434,21 +401,55 @@ const Editor = ({ flow }) => {
             .sort((a, b) => a.position - b.position);
 
           if (branchChildren.length > 0) {
-            // Connect branch to first child
+            // Add AddButtonNode after branch
+            const branchAddButtonId = `${branch.id}-add-button`;
+            newNodes.push({
+              id: branchAddButtonId,
+              type: NODE_TYPES.ADD_BUTTON,
+              position: { x: 0, y: 0 },
+              data: { laidOut: false },
+            });
+
+            // Connect branch -> AddButton -> first child
             newEdges.push({
               id: uuidv4(),
               source: branch.id,
+              target: branchAddButtonId,
+              type: 'addNodeEdge',
+              data: { laidOut: false },
+            });
+            newEdges.push({
+              id: uuidv4(),
+              source: branchAddButtonId,
               target: branchChildren[0].id,
               type: 'addNodeEdge',
               data: { laidOut: false },
             });
             nodesWithOutgoingEdges.add(branch.id);
 
-            // Connect children sequentially within the branch
+            // Connect children sequentially within the branch with AddButtonNodes
             for (let i = 0; i < branchChildren.length - 1; i++) {
+              const childAddButtonId = `${branchChildren[i].id}-add-button`;
+
+              // Add AddButtonNode after each child
+              newNodes.push({
+                id: childAddButtonId,
+                type: NODE_TYPES.ADD_BUTTON,
+                position: { x: 0, y: 0 },
+                data: { laidOut: false },
+              });
+
+              // Connect child -> AddButton -> next child
               newEdges.push({
                 id: uuidv4(),
                 source: branchChildren[i].id,
+                target: childAddButtonId,
+                type: 'addNodeEdge',
+                data: { laidOut: false },
+              });
+              newEdges.push({
+                id: uuidv4(),
+                source: childAddButtonId,
                 target: branchChildren[i + 1].id,
                 type: 'addNodeEdge',
                 data: { laidOut: false },
@@ -456,27 +457,43 @@ const Editor = ({ flow }) => {
               nodesWithOutgoingEdges.add(branchChildren[i].id);
             }
 
-            // Add placeholder edge for last child in branch
+            // Add AddButtonNode after last child in branch
             const lastChild = branchChildren[branchChildren.length - 1];
             if (lastChild && !nodesWithOutgoingEdges.has(lastChild.id)) {
+              const lastChildAddButtonId = `${lastChild.id}-add-button`;
+
+              newNodes.push({
+                id: lastChildAddButtonId,
+                type: NODE_TYPES.ADD_BUTTON,
+                position: { x: 0, y: 0 },
+                data: { laidOut: false },
+              });
+
               newEdges.push({
                 id: uuidv4(),
                 source: lastChild.id,
-                target: `${lastChild.id}-end-placeholder`,
+                target: lastChildAddButtonId,
                 type: 'addNodeEdge',
-                data: { laidOut: false, isPlaceholder: true },
+                data: { laidOut: false },
               });
               nodesWithOutgoingEdges.add(lastChild.id);
             }
           } else {
-            // For empty branches, create edge to invisible placeholder
-            const placeholderId = `${branch.id}-placeholder`;
+            // For empty branches, use AddButtonNode instead of placeholder
+            const branchAddButtonId = `${branch.id}-add-button`;
+            newNodes.push({
+              id: branchAddButtonId,
+              type: NODE_TYPES.ADD_BUTTON,
+              position: { x: 0, y: 0 },
+              data: { laidOut: false },
+            });
+
             newEdges.push({
               id: uuidv4(),
               source: branch.id,
-              target: placeholderId,
+              target: branchAddButtonId,
               type: 'addNodeEdge',
-              data: { laidOut: false, isPlaceholder: true },
+              data: { laidOut: false },
             });
             nodesWithOutgoingEdges.add(branch.id);
           }
@@ -496,20 +513,22 @@ const Editor = ({ flow }) => {
               .sort((a, b) => a.position - b.position);
 
             if (branchChildren.length > 0) {
-              // Connect last child of branch to merge node
+              // Connect last child's AddButton to merge node
               const lastChild = branchChildren[branchChildren.length - 1];
+              const lastChildAddButtonId = `${lastChild.id}-add-button`;
               newEdges.push({
                 id: uuidv4(),
-                source: lastChild.id,
+                source: lastChildAddButtonId,
                 target: mergeNodeId,
                 type: 'addNodeEdge',
                 data: { laidOut: false },
               });
             } else {
-              // For empty branches, connect branch directly to merge
+              // For empty branches, connect branch's AddButton to merge
+              const branchAddButtonId = `${branch.id}-add-button`;
               newEdges.push({
                 id: uuidv4(),
-                source: branch.id,
+                source: branchAddButtonId,
                 target: mergeNodeId,
                 type: 'addNodeEdge',
                 data: { laidOut: false },
@@ -521,37 +540,37 @@ const Editor = ({ flow }) => {
           // as it already serves as a placeholder for continuing the flow
         });
 
-        // 5. For the last top-level step without branches, add an invisible node
+        // 5. For the last top-level step without branches, add an AddButtonNode
         const lastTopLevel = topLevelSteps[topLevelSteps.length - 1];
 
         if (lastTopLevel && !nodesWithOutgoingEdges.has(lastTopLevel.id)) {
-          // Only add invisible node if this isn't a paths step (which has branches)
+          // Only add AddButtonNode if this isn't a paths step (which has branches)
           if (lastTopLevel.structuralType !== 'paths') {
-            // Create an invisible node for the last top-level step
-            const invisibleNodeId = `${lastTopLevel.id}-end-placeholder`;
+            // Create an AddButtonNode for the last top-level step
+            const addButtonId = `${lastTopLevel.id}-add-button`;
 
-            // Add the invisible node if it doesn't already exist
-            if (!newNodes.find((n) => n.id === invisibleNodeId)) {
+            // Add the AddButtonNode if it doesn't already exist
+            if (!newNodes.find((n) => n.id === addButtonId)) {
               newNodes.push({
-                id: invisibleNodeId,
-                type: NODE_TYPES.INVISIBLE,
+                id: addButtonId,
+                type: NODE_TYPES.ADD_BUTTON,
                 position: {
                   x: 0,
                   y: 0,
                 },
                 data: {
-                  isPlaceholder: true,
+                  laidOut: false,
                 },
               });
             }
 
-            // Connect to the invisible node
+            // Connect to the AddButtonNode
             newEdges.push({
               id: uuidv4(),
               source: lastTopLevel.id,
-              target: invisibleNodeId,
+              target: addButtonId,
               type: 'addNodeEdge',
-              data: { laidOut: false, isPlaceholder: true },
+              data: { laidOut: false },
             });
             nodesWithOutgoingEdges.add(lastTopLevel.id);
           }
@@ -669,7 +688,7 @@ const Editor = ({ flow }) => {
             nodesFocusable={true}
             panOnScroll
             panOnScrollMode={PanOnScrollMode.Vertical}
-            panOnDrag={[0]}
+            panOnDrag={[0, 1]}
             zoomOnDoubleClick={false}
             zoomOnPinch={false}
             zoomOnScroll={false}
