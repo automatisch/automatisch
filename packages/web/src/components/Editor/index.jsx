@@ -345,7 +345,7 @@ const Editor = ({ flow }) => {
             maxZoom={1}
             proOptions={{ hideAttribution: true }}
           />
-          <StepDetailsSidebar open={selectedStepId} />
+          <StepDetailsSidebar key={selectedStepId} open={selectedStepId} />
         </EditorWrapper>
       </EdgesContext.Provider>
     </NodesContext.Provider>
