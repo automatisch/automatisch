@@ -206,6 +206,8 @@ class Flow extends Base {
     return await this.$relatedQuery('steps').insertAndFetch({
       type: 'action',
       position,
+      appKey: options.appKey || null,
+      key: options.key || null,
       structuralType: options.structuralType || 'single',
       parentStepId: options.parentStepId || null,
     });
