@@ -96,7 +96,7 @@ function FlowStep(props) {
       onClick={handleStepClick}
       data-test="flow-step"
       sx={{
-        border: isSelected ? '2px solid' : '1px solid transparent',
+        border: '1px solid transparent',
         borderColor: isSelected ? 'primary.main' : 'transparent',
       }}
     >
@@ -137,7 +137,6 @@ function FlowStep(props) {
 
             <Typography
               variant="body2"
-              color="text.secondary"
               noWrap
               sx={{ fontSize: 15, maxWidth: '195px' }}
             >

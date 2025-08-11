@@ -166,7 +166,6 @@ export const defaultTheme = createTheme({
       },
     },
     stepApp: {
-      fontWeight: 500,
       fontSize: referenceTheme.typography.pxToRem(13),
       color: '#5C5C5C',
     },

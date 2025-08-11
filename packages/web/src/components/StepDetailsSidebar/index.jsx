@@ -239,11 +239,11 @@ function StepDetailsSidebar({ open }) {
       sx={{
         width: isMobile ? '100vw' : '30vw',
         maxWidth: '100vw',
-        minWidth: '400px',
+        minWidth: '500px',
         '& .MuiDrawer-paper': {
           width: isMobile ? '100vw' : '30vw',
           maxWidth: '100vw',
-          minWidth: '400px',
+          minWidth: '500px',
           position: 'absolute',
           height: '100%',
           right: 0,
@@ -252,19 +252,23 @@ function StepDetailsSidebar({ open }) {
         },
       }}
     >
-      <Box p={isMobile ? 1.5 : 2} display="flex" flexDirection="column" gap={1}>
+      <Box
+        p={isMobile ? 1.5 : 2}
+        sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+        display="flex"
+        flexDirection="column"
+        gap={1}
+      >
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" alignItems="center" gap={1.5}>
             <AppIcon
               url={app?.iconUrl}
               name={app?.name}
-              color={app?.primaryColor}
               size={isMobile ? 28 : 32}
             />
             <EditableTypography
               variant={isMobile ? 'subtitle1' : 'h6'}
               onConfirm={handleStepNameUpdate}
-              sx={{ fontWeight: 600 }}
               prefixValue={
                 selectedStep?.position ? `${selectedStep.position}. ` : ''
               }
@@ -286,8 +290,9 @@ function StepDetailsSidebar({ open }) {
             size="small"
             variant="outlined"
           />
+
           {app && (
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ fontWeight: 500 }}>
               {app.name}
             </Typography>
           )}
@@ -295,7 +300,7 @@ function StepDetailsSidebar({ open }) {
       </Box>
 
       <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
-        <List>
+        <List sx={{ py: 0 }}>
           <StepExecutionsProvider value={stepWithTestExecutionsData}>
             <ChooseAppAndEventSubstep
               expanded={currentSubstep === 0}
