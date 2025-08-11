@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 
-import { EdgesContext } from '../index.jsx';
+import { EdgesContext } from '../contexts.js';
 
 export default function Edge({
   sourceX,

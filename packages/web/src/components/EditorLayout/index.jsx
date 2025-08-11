@@ -143,13 +143,15 @@ export default function EditorLayout() {
       </TopBar>
 
       <Stack direction="column" height="100%" flexGrow={1}>
-        <Stack direction="column" flexGrow={1}>
-          <EditorProvider value={{ readOnly: !!flow?.active }}>
-            <ReactFlowProvider>
-              {!flow && !isFlowLoading && 'not found'}
-              {flow && <Editor flow={flow} />}
-            </ReactFlowProvider>
-          </EditorProvider>
+        <Stack direction="row" flexGrow={1}>
+          <Stack direction="column" flexGrow={1}>
+            <EditorProvider value={{ readOnly: !!flow?.active }}>
+              <ReactFlowProvider>
+                {!flow && !isFlowLoading && 'not found'}
+                {flow && <Editor flow={flow} />}
+              </ReactFlowProvider>
+            </EditorProvider>
+          </Stack>
         </Stack>
       </Stack>
 

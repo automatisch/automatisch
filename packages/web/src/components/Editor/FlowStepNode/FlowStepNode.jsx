@@ -4,20 +4,12 @@ import PropTypes from 'prop-types';
 
 import FlowStep from 'components/FlowStep';
 
-import { NodesContext } from '../index.jsx';
+import { NodesContext } from '../contexts.js';
 import { NodeWrapper, NodeInnerWrapper } from './style.js';
 
-function FlowStepNode({ data: { collapsed, laidOut }, id }) {
-  const {
-    openNextStep,
-    onStepOpen,
-    onStepClose,
-    onStepChange,
-    onFlowChange,
-    onStepDelete,
-    flowId,
-    steps,
-  } = useContext(NodesContext);
+function FlowStepNode({ data: { laidOut }, id }) {
+  const { onStepDelete, onStepSelect, flowId, steps } =
+    useContext(NodesContext);
 
   const step = steps.find(({ id: stepId }) => stepId === id);
 
@@ -38,14 +30,9 @@ function FlowStepNode({ data: { collapsed, laidOut }, id }) {
         {step && (
           <FlowStep
             step={step}
-            collapsed={collapsed}
-            onOpen={() => onStepOpen(step.id)}
-            onClose={onStepClose}
-            onStepChange={onStepChange}
-            onFlowChange={onFlowChange}
-            flowId={flowId}
-            onContinue={() => openNextStep(step.id)}
+            onSelect={() => onStepSelect(step.id)}
             onDelete={onStepDelete}
+            flowId={flowId}
           />
         )}
         <Handle
@@ -62,7 +49,6 @@ function FlowStepNode({ data: { collapsed, laidOut }, id }) {
 FlowStepNode.propTypes = {
   id: PropTypes.string,
   data: PropTypes.shape({
-    collapsed: PropTypes.bool.isRequired,
     laidOut: PropTypes.bool.isRequired,
   }).isRequired,
 };

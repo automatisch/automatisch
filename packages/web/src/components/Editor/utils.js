@@ -1,4 +1,4 @@
-import Dagre from '@dagrejs/dagre';
+import ELK from 'elkjs/lib/elk.bundled.js';
 import { NODE_TYPES } from './constants';
 
 export const updatedCollapsedNodes = (nodes, openStepId) => {
@@ -16,50 +16,72 @@ export const updatedCollapsedNodes = (nodes, openStepId) => {
   });
 };
 
-const edgeLaidOut = (edge, nodes) => {
-  const sourceNode = nodes.find((node) => node.id === edge.source);
-  const targetNodeNode = nodes.find((node) => node.id === edge.target);
+// Hardcoded dimensions for consistent layout
+const NODE_WIDTH = 350;
+const NODE_HEIGHT = 80;
+const GRAPH_TOP_OFFSET = 40;
 
-  return Boolean(sourceNode?.measured && targetNodeNode?.measured);
-};
+export const getLaidOutElements = async (nodes, edges, options = {}) => {
+  const elk = new ELK();
 
-export const getLaidOutElements = (nodes, edges) => {
-  const graph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-  graph.setGraph({
-    rankdir: 'TB',
-    marginy: 60,
-    ranksep: 64,
+  const elkOptions = {
+    'elk.algorithm': 'layered',
+    'elk.direction': 'DOWN',
+    'elk.spacing.nodeNode': '80',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '64',
+    'elk.layered.nodePlacement.strategy': 'SIMPLE',
+    ...options,
+  };
+
+  const graph = {
+    id: 'root',
+    layoutOptions: elkOptions,
+    children: nodes.map((node) => ({
+      id: node.id,
+      width: NODE_WIDTH,
+      height: NODE_HEIGHT,
+    })),
+    edges: edges.map((edge) => ({
+      id: `${edge.source}-${edge.target}`,
+      sources: [edge.source],
+      targets: [edge.target],
+    })),
+  };
+
+  const layoutedGraph = await elk.layout(graph);
+
+  // Calculate the graph width to center it
+  let maxX = 0;
+  layoutedGraph.children.forEach((node) => {
+    const nodeRightEdge = (node.x ?? 0) + (node.width ?? 0);
+    if (nodeRightEdge > maxX) maxX = nodeRightEdge;
   });
-  edges.forEach((edge) => graph.setEdge(edge.source, edge.target));
-  nodes.forEach((node) =>
-    graph.setNode(node.id, {
-      ...node,
-      width: node.measured?.width ?? 0,
-      height: node.measured?.height ?? 0,
-    }),
-  );
 
-  Dagre.layout(graph);
+  // Calculate horizontal offset to center the graph
+  const viewportWidth = window.innerWidth;
+  const graphWidth = maxX;
+  const centerOffset = Math.max(0, (viewportWidth - graphWidth) / 2);
 
   return {
     nodes: nodes.map((node) => {
-      const position = graph.node(node.id);
-      // We are shifting the dagre node position (anchor=center center) to the top left
-      // so it matches the React Flow node anchor point (top left).
-      const x = position.x - (node.measured?.width ?? 0) / 2;
-      const y = position.y - (node.measured?.height ?? 0) / 2;
+      const layoutedNode = layoutedGraph.children.find((n) => n.id === node.id);
+      if (!layoutedNode) return node;
 
       return {
         ...node,
-        position: { x, y },
+        position: {
+          x: (layoutedNode.x ?? 0) + centerOffset,
+          y: (layoutedNode.y ?? 0) + GRAPH_TOP_OFFSET,
+        },
+        // Since we're using hardcoded dimensions, always mark as laid out
         ...(node.type === NODE_TYPES.FLOW_STEP
-          ? { data: { ...node.data, laidOut: node.measured ? true : false } }
+          ? { data: { ...node.data, laidOut: true } }
           : {}),
       };
     }),
     edges: edges.map((edge) => ({
       ...edge,
-      data: { ...edge.data, laidOut: edgeLaidOut(edge, nodes) },
+      data: { ...edge.data, laidOut: true },
     })),
   };
 };

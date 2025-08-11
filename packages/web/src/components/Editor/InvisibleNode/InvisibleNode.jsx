@@ -5,7 +5,8 @@ import { Box } from '@mui/material';
 function InvisibleNode() {
   return (
     <Box
-      maxWidth={900}
+      maxWidth={300}
+      height={80}
       width="100vw"
       className="nodrag"
       sx={{ visibility: 'hidden' }}

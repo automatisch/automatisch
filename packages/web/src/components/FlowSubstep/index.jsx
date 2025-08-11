@@ -37,11 +37,7 @@ function FlowSubstep(props) {
         title={name}
         valid={validationStatus}
       />
-      <Collapse
-        in={expanded}
-        timeout={0}
-        unmountOnExit
-      >
+      <Collapse in={expanded} timeout={0} unmountOnExit>
         <ListItem
           sx={{
             pt: 2,
