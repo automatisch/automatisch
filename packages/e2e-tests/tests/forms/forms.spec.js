@@ -115,6 +115,18 @@ test.describe('Forms page', () => {
     await expect(formsPage.submitFormButton).toBeDisabled();
   });
 
+  test('delete a form not used in a flow', async ({ formsPage }) => {
+    //required-only-form
+    await formsPage.formRowContextMenuButton('required-only-form').click();
+    await formsPage.deleteForm.click();
+    // The form has been successfully deleted.
+    const snackbar = await formsPage.getSnackbarData(
+      'snackbar-delete-form-success'
+    );
+    await expect(snackbar.variant).toBe('success');
+    await expect(formsPage.formRow.filter({ hasText: 'required-only-form' })).toHaveCount(0);
+  });
+
   // TODO feature not working yet
   test.skip('should not remove Form of active flow ', async ({
     formsPage,
