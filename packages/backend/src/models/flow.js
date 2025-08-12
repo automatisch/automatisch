@@ -376,6 +376,12 @@ class Flow extends Base {
     });
   }
 
+  async getActionSteps() {
+    return await this.$relatedQuery('steps')
+      .where({ type: 'action' })
+      .orderBy('position', 'asc');
+  }
+
   async isPaused() {
     const user = await this.$relatedQuery('user').withSoftDeleted();
     const allowedToRunFlows = await user.isAllowedToRunFlows();

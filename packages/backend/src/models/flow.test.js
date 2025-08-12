@@ -497,6 +497,17 @@ describe('Flow model', () => {
     expect(await flow.getTriggerStep()).toStrictEqual(triggerStep);
   });
 
+  it('getActionSteps', async () => {
+    const flow = await createFlow();
+    const actionStepOne = await createStep({ flowId: flow.id, type: 'action' });
+    const actionStepTwo = await createStep({ flowId: flow.id, type: 'action' });
+
+    expect(await flow.getActionSteps()).toStrictEqual([
+      actionStepOne,
+      actionStepTwo,
+    ]);
+  });
+
   describe('isPaused', () => {
     it('should return true when user.isAllowedToRunFlows returns false', async () => {
       const flow = await createFlow();
