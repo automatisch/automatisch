@@ -2,16 +2,17 @@ import buildTriggerStepContext from '@/engine/trigger/context.js';
 import Execution from '@/models/execution.js';
 
 const processTriggerStep = async ({
+  flowId,
   stepId,
   initialDataItem,
   testRun = false,
 }) => {
   // Build the trigger step context
-  const { flow, step } = await buildTriggerStepContext({ stepId });
+  const { step } = await buildTriggerStepContext({ stepId });
 
   // Create the execution for the trigger step
   const execution = await Execution.query().insert({
-    flowId: flow.id,
+    flowId,
     testRun,
     internalId: initialDataItem?.meta.internalId,
   });
@@ -27,7 +28,7 @@ const processTriggerStep = async ({
       errorDetails: null,
     });
 
-  return { flowId: flow.id, stepId, executionId: execution.id, executionStep };
+  return { executionId: execution.id, executionStep };
 };
 
 export default processTriggerStep;

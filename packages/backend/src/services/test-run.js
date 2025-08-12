@@ -4,20 +4,20 @@ import { processTrigger } from '@/services/trigger.js';
 import { processAction } from '@/services/action.js';
 
 const testRun = async (options) => {
-  const untilStep = await Step.query()
-    .findById(options.stepId)
-    .throwIfNotFound();
+  // const untilStep = await Step.query()
+  //   .findById(options.stepId)
+  //   .throwIfNotFound();
 
-  const flow = await untilStep.$relatedQuery('flow');
-  const [triggerStep, ...actionSteps] = await flow
-    .$relatedQuery('steps')
-    .withGraphFetched('connection')
-    .orderBy('position', 'asc');
+  // const flow = await untilStep.$relatedQuery('flow');
+  // const [triggerStep, ...actionSteps] = await flow
+  //   .$relatedQuery('steps')
+  //   .withGraphFetched('connection')
+  //   .orderBy('position', 'asc');
 
-  const { data, error: triggerError } = await processFlow({
-    flowId: flow.id,
-    testRun: true,
-  });
+  // const { data, error: triggerError } = await processFlow({
+  //   flowId: flow.id,
+  //   testRun: true,
+  // });
 
   if (triggerError) {
     const { executionStep: triggerExecutionStepWithError } =
