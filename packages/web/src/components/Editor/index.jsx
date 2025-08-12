@@ -123,7 +123,8 @@ const Editor = ({ flow }) => {
         (isPlaceholder && !isMergePlaceholder);
 
       // Check if the previous step is inside a branch (has a parentStepId)
-      const isInsideBranch = previousStep?.parentStepId && !isAfterBranch;
+      const isInsideBranch =
+        previousStep?.parentStepId && !isAfterBranch && !isMergePlaceholder;
 
       // Prepare creation parameters
       const createParams = {
@@ -337,32 +338,49 @@ const Editor = ({ flow }) => {
         topLevelSteps.sort((a, b) => a.position - b.position);
 
         for (let i = 0; i < topLevelSteps.length - 1; i++) {
-          const addButtonId = `${topLevelSteps[i].id}-add-button`;
+          const currentStep = topLevelSteps[i];
+          const nextStep = topLevelSteps[i + 1];
 
-          // Add the AddButtonNode
-          newNodes.push({
-            id: addButtonId,
-            type: NODE_TYPES.ADD_BUTTON,
-            position: { x: 0, y: 0 },
-            data: { laidOut: false },
-          });
+          if (currentStep.structuralType === 'paths') {
+            // For paths steps, connect the merge placeholder to the next step
+            const mergeNodeId = `${currentStep.id}-merge-placeholder`;
+            newEdges.push({
+              id: uuidv4(),
+              source: mergeNodeId,
+              target: nextStep.id,
+              type: 'addNodeEdge',
+              data: { laidOut: false },
+            });
+            // Note: Don't add to nodesWithOutgoingEdges since the merge placeholder handles it
+          } else {
+            // For non-paths steps, use the regular AddButton connection
+            const addButtonId = `${currentStep.id}-add-button`;
 
-          // Connect step -> AddButton -> next step
-          newEdges.push({
-            id: uuidv4(),
-            source: topLevelSteps[i].id,
-            target: addButtonId,
-            type: 'addNodeEdge',
-            data: { laidOut: false },
-          });
-          newEdges.push({
-            id: uuidv4(),
-            source: addButtonId,
-            target: topLevelSteps[i + 1].id,
-            type: 'addNodeEdge',
-            data: { laidOut: false },
-          });
-          nodesWithOutgoingEdges.add(topLevelSteps[i].id);
+            // Add the AddButtonNode
+            newNodes.push({
+              id: addButtonId,
+              type: NODE_TYPES.ADD_BUTTON,
+              position: { x: 0, y: 0 },
+              data: { laidOut: false },
+            });
+
+            // Connect step -> AddButton -> next step
+            newEdges.push({
+              id: uuidv4(),
+              source: currentStep.id,
+              target: addButtonId,
+              type: 'addNodeEdge',
+              data: { laidOut: false },
+            });
+            newEdges.push({
+              id: uuidv4(),
+              source: addButtonId,
+              target: nextStep.id,
+              type: 'addNodeEdge',
+              data: { laidOut: false },
+            });
+            nodesWithOutgoingEdges.add(currentStep.id);
+          }
         }
 
         // 2. Connect paths nodes to their branch children

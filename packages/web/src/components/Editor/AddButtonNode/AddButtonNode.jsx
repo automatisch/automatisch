@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { EdgesContext } from '../contexts.js';
+import { DIMENSIONS } from '../constants.js';
 
 function AddButtonNode({ id }) {
   const { flowActive, onStepAdd, isCreateStepPending } =
@@ -23,8 +24,8 @@ function AddButtonNode({ id }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: 40,
-        height: 40,
+        width: DIMENSIONS.ADD_BUTTON_WIDTH,
+        height: DIMENSIONS.ADD_BUTTON_HEIGHT,
         position: 'relative',
       }}
       className="nodrag"
@@ -46,8 +47,8 @@ function AddButtonNode({ id }) {
         disabled={isCreateStepPending || flowActive}
         sx={{
           padding: 0,
-          width: 36,
-          height: 36,
+          width: DIMENSIONS.ADD_BUTTON_SIZE,
+          height: DIMENSIONS.ADD_BUTTON_SIZE,
         }}
       >
         <AddIcon />

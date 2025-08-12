@@ -1,12 +1,13 @@
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { DIMENSIONS } from '../constants';
 
 export const Container = styled(Box)(({ theme, selected }) => ({
   backgroundColor: theme.palette.background.paper,
   border: `2px solid ${selected ? theme.palette.primary.main : theme.palette.divider}`,
   borderRadius: theme.shape.borderRadius * 2,
-  minWidth: 300,
-  height: 80,
+  minWidth: DIMENSIONS.NODE_WIDTH,
+  height: DIMENSIONS.NODE_HEIGHT,
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   '&:hover': {
