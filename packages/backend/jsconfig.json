@@ -11,6 +11,7 @@
       "@/workers/*": ["src/workers/*"],
       "@/jobs/*": ["src/jobs/*"],
       "@/services/*": ["src/services/*"],
+      "@/engine/*": ["src/engine/*"],
       "@/routes/*": ["src/routes/*"],
       "@/serializers/*": ["src/serializers/*"],
       "@/factories/*": ["test/factories/*"],

@@ -16,6 +16,7 @@ export default defineConfig({
       '@/workers': resolve(__dirname, './src/workers'),
       '@/jobs': resolve(__dirname, './src/jobs'),
       '@/services': resolve(__dirname, './src/services'),
+      '@/engine': resolve(__dirname, './src/engine'),
       '@/routes': resolve(__dirname, './src/routes'),
       '@/serializers': resolve(__dirname, './src/serializers'),
       '@/factories': resolve(__dirname, './test/factories'),
