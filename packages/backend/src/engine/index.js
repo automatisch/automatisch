@@ -1,4 +1,4 @@
-import buildFlowContext from '@/engine/flow-context/index.js';
+import buildFlowContext from '@/engine/flow/context.js';
 import getInitialData from '@/engine/initial-data/get.js';
 import processInitialDataError from '@/engine/initial-data/process-error.js';
 import processTriggerStep from '@/engine/trigger/process.js';
@@ -55,6 +55,7 @@ const run = async (untilStepId, testRun = false) => {
   for (const initialDataItem of reversedInitialData) {
     // Process trigger step by saving execution and execution step data.
     const { executionId, executionStep } = await processTriggerStep({
+      flowId: flow.id,
       stepId: triggerStep.id,
       initialDataItem,
       testRun,
@@ -65,8 +66,9 @@ const run = async (untilStepId, testRun = false) => {
     }
 
     for (const actionStep of actionSteps) {
+      // Process action step by saving execution and execution step data.
       const { executionStep } = await processActionStep({
-        flowId: flow.id,
+        flow,
         stepId: actionStep.id,
         executionId,
       });
@@ -75,45 +77,7 @@ const run = async (untilStepId, testRun = false) => {
         return { executionStep };
       }
     }
-
-    // Run action step
-    // Save action step execution step data.
   }
-
-  // Iterate the data and push it to the trigger
-  // Push iterated data to actions
-
-  // TODO: Introduce run in the background job everywhere.
-
-  // const {
-  //   flow,
-  //   untilStep,
-  //   triggerStep,
-  //   triggerCommand,
-  //   triggerApp,
-  //   triggerConnection,
-  //   actionSteps,
-  //   execution,
-  // } = context;
-
-  // // Build global variable
-  // const $ = await buildGlobalVariable({
-  //   flow,
-  //   connection: triggerConnection,
-  //   app: triggerApp,
-  //   step: triggerStep,
-  //   testAndContinueButtonRun: true,
-  // });
-
-  // Run the step command
-
-  // Handle errors
-
-  // Create execution
-
-  // Create execution step
-
-  // Move to next step
 };
 
 const Engine = {

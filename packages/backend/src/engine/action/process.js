@@ -8,10 +8,10 @@ import EarlyExitError from '@/errors/early-exit.js';
 import AlreadyProcessedError from '@/errors/already-processed.js';
 
 const processActionStep = async (options) => {
-  const { flowId, stepId, executionId } = options;
+  const { flow, stepId, executionId } = options;
 
   // Build the action step context
-  const { flow, step, execution, app, connection, command } =
+  const { step, execution, app, connection, command } =
     await buildActionStepContext({
       stepId,
       executionId,
@@ -71,7 +71,7 @@ const processActionStep = async (options) => {
       errorDetails: $.actionOutput.error ? $.actionOutput.error : null,
     });
 
-  return { flowId, stepId, executionId, executionStep, computedParameters };
+  return { executionStep, computedParameters };
 };
 
 export default processActionStep;

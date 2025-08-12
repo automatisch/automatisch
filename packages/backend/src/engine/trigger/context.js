@@ -3,11 +3,9 @@ import Step from '@/models/step.js';
 const buildTriggerStepContext = async (options) => {
   const { stepId } = options;
 
-  const step = await Step.query().findById(stepId);
-  const flow = await step.$relatedQuery('flow');
+  const step = await Step.query().findById(stepId).throwIfNotFound();
 
   return {
-    flow,
     step,
   };
 };

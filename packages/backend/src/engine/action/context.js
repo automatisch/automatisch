@@ -5,8 +5,6 @@ const buildActionStepContext = async (options) => {
   const { stepId, executionId } = options;
 
   const step = await Step.query().findById(stepId).throwIfNotFound();
-  const flow = await step.$relatedQuery('flow').throwIfNotFound();
-
   const app = await step.getApp();
   const connection = await step.$relatedQuery('connection');
   const command = await step.getActionCommand();
@@ -16,7 +14,6 @@ const buildActionStepContext = async (options) => {
     .throwIfNotFound();
 
   return {
-    flow,
     step,
     execution,
     app,
