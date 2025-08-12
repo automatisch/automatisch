@@ -1,9 +1,12 @@
-import Step from '@/models/step.js';
-import { processFlow } from '@/services/flow.js';
-import { processTrigger } from '@/services/trigger.js';
-import { processAction } from '@/services/action.js';
+// import Step from '@/models/step.js';
+// import { processFlow } from '@/services/flow.js';
+// import { processTrigger } from '@/services/trigger.js';
+// import { processAction } from '@/services/action.js';
+import Engine from '@/engine/index.js';
 
 const testRun = async (options) => {
+  return await Engine.run(options.stepId, true);
+
   // const untilStep = await Step.query()
   //   .findById(options.stepId)
   //   .throwIfNotFound();
@@ -19,43 +22,43 @@ const testRun = async (options) => {
   //   testRun: true,
   // });
 
-  if (triggerError) {
-    const { executionStep: triggerExecutionStepWithError } =
-      await processTrigger({
-        flowId: flow.id,
-        stepId: triggerStep.id,
-        error: triggerError,
-        testRun: true,
-      });
+  // if (triggerError) {
+  //   const { executionStep: triggerExecutionStepWithError } =
+  //     await processTrigger({
+  //       flowId: flow.id,
+  //       stepId: triggerStep.id,
+  //       error: triggerError,
+  //       testRun: true,
+  //     });
 
-    return { executionStep: triggerExecutionStepWithError };
-  }
+  //   return { executionStep: triggerExecutionStepWithError };
+  // }
 
-  const firstTriggerItem = data[0];
+  // const firstTriggerItem = data[0];
 
-  const { executionId, executionStep: triggerExecutionStep } =
-    await processTrigger({
-      flowId: flow.id,
-      stepId: triggerStep.id,
-      triggerItem: firstTriggerItem,
-      testRun: true,
-    });
+  // const { executionId, executionStep: triggerExecutionStep } =
+  //   await processTrigger({
+  //     flowId: flow.id,
+  //     stepId: triggerStep.id,
+  //     triggerItem: firstTriggerItem,
+  //     testRun: true,
+  //   });
 
-  if (triggerStep.id === untilStep.id) {
-    return { executionStep: triggerExecutionStep };
-  }
+  // if (triggerStep.id === untilStep.id) {
+  //   return { executionStep: triggerExecutionStep };
+  // }
 
-  for (const actionStep of actionSteps) {
-    const { executionStep: actionExecutionStep } = await processAction({
-      flowId: flow.id,
-      stepId: actionStep.id,
-      executionId,
-    });
+  // for (const actionStep of actionSteps) {
+  //   const { executionStep: actionExecutionStep } = await processAction({
+  //     flowId: flow.id,
+  //     stepId: actionStep.id,
+  //     executionId,
+  //   });
 
-    if (actionStep.id === untilStep.id || actionExecutionStep.isFailed) {
-      return { executionStep: actionExecutionStep };
-    }
-  }
+  //   if (actionStep.id === untilStep.id || actionExecutionStep.isFailed) {
+  //     return { executionStep: actionExecutionStep };
+  //   }
+  // }
 };
 
 export default testRun;
