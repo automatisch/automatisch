@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useViewport, useReactFlow, useNodes } from '@xyflow/react';
-
-const scrollYMargin = 100;
+import { DIMENSIONS } from './constants';
 
 export const useScrollBoundaries = (containerHeight) => {
   const { setViewport } = useReactFlow();
@@ -24,7 +23,9 @@ export const useScrollBoundaries = (containerHeight) => {
     function updateMaxYScroll() {
       if (nodes?.length && containerHeight) {
         const maxY =
-          containerHeight - nodes[nodes.length - 1].position.y - scrollYMargin;
+          containerHeight -
+          nodes[nodes.length - 1].position.y -
+          DIMENSIONS.SCROLL_Y_MARGIN;
         setMaxYScroll(maxY >= 0 ? 0 : maxY);
       }
     },

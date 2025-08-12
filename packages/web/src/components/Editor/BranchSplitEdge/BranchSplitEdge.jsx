@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 
 import { EdgesContext } from '../contexts.js';
+import { DIMENSIONS } from '../constants.js';
 
 export default function BranchSplitEdge({
   sourceX,
@@ -18,15 +19,15 @@ export default function BranchSplitEdge({
     useContext(EdgesContext);
 
   // Calculate the split point
-  const splitY = sourceY + 40;
+  const splitY = sourceY + DIMENSIONS.BRANCH_SPLIT_OFFSET;
 
   // For branch edges, create the fork pattern
   let pathData;
 
   if (isBranchEdge && totalBranches > 1) {
     // Calculate horizontal offset for branches
-    const branchSpacing = 400; // Should match the spacing in utils.js
-    const totalWidth = (totalBranches - 1) * branchSpacing;
+    const totalWidth =
+      (totalBranches - 1) * DIMENSIONS.BRANCH_HORIZONTAL_SPACING;
     const centerX = sourceX;
     const leftmostX = centerX - totalWidth / 2;
     const rightmostX = centerX + totalWidth / 2;
@@ -57,7 +58,7 @@ export default function BranchSplitEdge({
         d={pathData}
         fill="none"
         stroke="#b1b1b7"
-        strokeWidth={2}
+        strokeWidth={DIMENSIONS.EDGE_STROKE_WIDTH}
         className="react-flow__edge-path"
       />
       <EdgeLabelRenderer>

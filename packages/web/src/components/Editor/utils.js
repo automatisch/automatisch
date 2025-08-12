@@ -1,5 +1,5 @@
 import ELK from 'elkjs/lib/elk.bundled.js';
-import { NODE_TYPES } from './constants';
+import { NODE_TYPES, DIMENSIONS } from './constants';
 
 export const updatedCollapsedNodes = (nodes, openStepId) => {
   return nodes.map((node) => {
@@ -16,13 +16,6 @@ export const updatedCollapsedNodes = (nodes, openStepId) => {
   });
 };
 
-// Hardcoded dimensions for consistent layout
-const NODE_WIDTH = 300;
-const NODE_HEIGHT = 80;
-const GRAPH_TOP_OFFSET = 40;
-const ADD_BUTTON_WIDTH = 40;
-const ADD_BUTTON_HEIGHT = 40;
-
 export const getLaidOutElements = async (
   nodes,
   edges,
@@ -34,8 +27,10 @@ export const getLaidOutElements = async (
   const elkOptions = {
     'elk.algorithm': 'layered',
     'elk.direction': 'DOWN',
-    'elk.spacing.nodeNode': '40',
-    'elk.layered.spacing.nodeNodeBetweenLayers': '40',
+    'elk.spacing.nodeNode': String(DIMENSIONS.NODE_SPACING),
+    'elk.layered.spacing.nodeNodeBetweenLayers': String(
+      DIMENSIONS.NODE_SPACING,
+    ),
     'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
     'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
     ...options,
@@ -60,8 +55,10 @@ export const getLaidOutElements = async (
     const isAddButton = node.type === 'addButton';
     return {
       id: node.id,
-      width: isAddButton ? ADD_BUTTON_WIDTH : NODE_WIDTH,
-      height: isAddButton ? ADD_BUTTON_HEIGHT : NODE_HEIGHT,
+      width: isAddButton ? DIMENSIONS.ADD_BUTTON_WIDTH : DIMENSIONS.NODE_WIDTH,
+      height: isAddButton
+        ? DIMENSIONS.ADD_BUTTON_HEIGHT
+        : DIMENSIONS.NODE_HEIGHT,
     };
   });
 
@@ -113,7 +110,6 @@ export const getLaidOutElements = async (
 
   // Apply horizontal offsets for branch children to create visual branching
   const pathsSteps = steps?.filter((s) => s.structuralType === 'paths') || [];
-  const BRANCH_HORIZONTAL_SPACING = NODE_WIDTH + 100;
 
   pathsSteps.forEach((pathStep) => {
     const branches = steps
@@ -130,12 +126,12 @@ export const getLaidOutElements = async (
       // For proper centering, calculate the total width needed
       const totalWidth = Math.max(
         0,
-        (branches.length - 1) * BRANCH_HORIZONTAL_SPACING,
+        (branches.length - 1) * DIMENSIONS.BRANCH_HORIZONTAL_SPACING,
       );
       const startX = pathPosition.x - totalWidth / 2;
 
       branches.forEach((branch, index) => {
-        const branchX = startX + index * BRANCH_HORIZONTAL_SPACING;
+        const branchX = startX + index * DIMENSIONS.BRANCH_HORIZONTAL_SPACING;
 
         // Move the branch node
         if (flattenedPositions[branch.id]) {
@@ -154,9 +150,9 @@ export const getLaidOutElements = async (
           // Also position the AddButtonNode for this child
           const childAddButtonId = `${child.id}-add-button`;
           if (flattenedPositions[childAddButtonId]) {
-            console.log(flattenedPositions[childAddButtonId].x);
             flattenedPositions[childAddButtonId].x =
-              branchX + (NODE_WIDTH - ADD_BUTTON_WIDTH) / 2; // between branch singles
+              branchX +
+              (DIMENSIONS.NODE_WIDTH - DIMENSIONS.ADD_BUTTON_WIDTH) / 2; // between branch singles
           }
         });
 
@@ -164,7 +160,7 @@ export const getLaidOutElements = async (
         const branchAddButtonId = `${branch.id}-add-button`;
         if (flattenedPositions[branchAddButtonId]) {
           flattenedPositions[branchAddButtonId].x =
-            branchX + (NODE_WIDTH - ADD_BUTTON_WIDTH) / 2; // between branch and its first branch single child
+            branchX + (DIMENSIONS.NODE_WIDTH - DIMENSIONS.ADD_BUTTON_WIDTH) / 2; // between branch and its first branch single child
         }
       });
     }
@@ -229,7 +225,7 @@ export const getLaidOutElements = async (
       });
 
       // Align all end AddButtons to be at the same Y level (below the lowest branch element)
-      const addButtonY = maxY + 40;
+      const addButtonY = maxY + DIMENSIONS.NODE_SPACING;
       endAddButtons.forEach((addButtonId) => {
         if (flattenedPositions[addButtonId]) {
           flattenedPositions[addButtonId].y = addButtonY;
@@ -238,11 +234,16 @@ export const getLaidOutElements = async (
 
       // Position merge node below the aligned AddButtons
       if (flattenedPositions[mergeNodeId]) {
-        const mergeY = addButtonY + ADD_BUTTON_HEIGHT + 40;
+        const mergeY =
+          addButtonY +
+          DIMENSIONS.ADD_BUTTON_HEIGHT +
+          DIMENSIONS.MERGE_NODE_OFFSET;
         const pathPosition = flattenedPositions[pathStep.id];
         if (pathPosition) {
           flattenedPositions[mergeNodeId] = {
-            x: pathPosition.x + (NODE_WIDTH - ADD_BUTTON_WIDTH) / 2,
+            x:
+              pathPosition.x +
+              (DIMENSIONS.NODE_WIDTH - DIMENSIONS.ADD_BUTTON_WIDTH) / 2,
             y: mergeY,
           }; // merging point of paths step
         }
@@ -255,7 +256,10 @@ export const getLaidOutElements = async (
   Object.entries(flattenedPositions).forEach(([nodeId, pos]) => {
     // Use appropriate width based on node type
     const node = nodes.find((n) => n.id === nodeId);
-    const width = node?.type === 'addButton' ? ADD_BUTTON_WIDTH : NODE_WIDTH;
+    const width =
+      node?.type === 'addButton'
+        ? DIMENSIONS.ADD_BUTTON_WIDTH
+        : DIMENSIONS.NODE_WIDTH;
     const nodeRightEdge = pos.x + width;
     if (nodeRightEdge > maxX) maxX = nodeRightEdge;
   });
@@ -273,7 +277,7 @@ export const getLaidOutElements = async (
       ...node,
       position: {
         x: position.x + centerOffset,
-        y: position.y + GRAPH_TOP_OFFSET,
+        y: position.y + DIMENSIONS.GRAPH_TOP_OFFSET,
       },
       // Mark all nodes as laid out
       data: { ...node.data, laidOut: true },

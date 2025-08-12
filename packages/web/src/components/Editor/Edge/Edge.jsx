@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { DIMENSIONS } from '../constants';
 
 export default function Edge({ sourceX, sourceY, targetX, targetY }) {
   // Check if nodes are vertically aligned
@@ -7,14 +8,14 @@ export default function Edge({ sourceX, sourceY, targetX, targetY }) {
   // Use straight line for vertical connections, stepped path for horizontal offset
   const path = isVerticallyAligned
     ? `M ${sourceX} ${sourceY} L ${sourceX} ${targetY}` // Straight vertical line
-    : `M ${sourceX} ${sourceY} L ${sourceX} ${targetY - 20} L ${targetX} ${targetY - 20} L ${targetX} ${targetY}`; // Stepped path
+    : `M ${sourceX} ${sourceY} L ${sourceX} ${targetY - DIMENSIONS.EDGE_STEP_OFFSET} L ${targetX} ${targetY - DIMENSIONS.EDGE_STEP_OFFSET} L ${targetX} ${targetY}`; // Stepped path
 
   return (
     <path
       d={path}
       fill="none"
       stroke="#b1b1b7"
-      strokeWidth={2}
+      strokeWidth={DIMENSIONS.EDGE_STROKE_WIDTH}
       className="react-flow__edge-path"
     />
   );
