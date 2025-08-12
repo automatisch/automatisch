@@ -4,9 +4,15 @@ import {
   useCallback,
   useState,
   useMemo,
+  useRef,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { ReactFlow, useEdgesState, applyNodeChanges } from '@xyflow/react';
+import {
+  ReactFlow,
+  useEdgesState,
+  applyNodeChanges,
+  PanOnScrollMode,
+} from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { v4 as uuidv4 } from 'uuid';
 import { debounce } from 'lodash';
@@ -16,6 +22,7 @@ import useCreateStep from 'hooks/useCreateStep';
 import useUpdateFlow from 'hooks/useUpdateFlow';
 import { FlowPropType } from 'propTypes/propTypes';
 
+import { useScrollBoundaries } from './useScrollBoundaries';
 import FlowStepNode from './FlowStepNode/FlowStepNode';
 import Edge from './Edge/Edge';
 import InvisibleNode from './InvisibleNode/InvisibleNode';
@@ -45,9 +52,12 @@ const Editor = ({ flow }) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState();
   const [selectedStepId, setSelectedStepId] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [viewport] = useState({ x: 0, y: 0, zoom: 1 });
+  const [containerHeight, setContainerHeight] = useState(null);
+  const containerRef = useRef(null);
   const { mutateAsync: createStep, isPending: isCreateStepPending } =
     useCreateStep(flow?.id);
+
+  useScrollBoundaries(containerHeight);
 
   const onStepDelete = useCallback(
     (nodeId) => {
@@ -259,6 +269,22 @@ const Editor = ({ flow }) => {
     }
   }, [initialNodes, initialEdges, setNodes, setEdges]);
 
+  useEffect(function updateContainerHeightOnResize() {
+    const updateHeight = () => {
+      if (containerRef.current) {
+        setContainerHeight(containerRef.current.clientHeight);
+      }
+    };
+
+    updateHeight();
+
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
   // Auto-select trigger step when editor loads
   useEffect(
     function autoSelectTriggerStep() {
@@ -314,14 +340,14 @@ const Editor = ({ flow }) => {
         steps: flow?.steps,
       }}
     >
-      <EdgesContext.Provider
-        value={{
-          flowActive: flow?.active,
-          isCreateStepPending,
-          onStepAdd: onStepAddDebounced,
-        }}
-      >
-        <EditorWrapper>
+      <EditorWrapper ref={containerRef}>
+        <EdgesContext.Provider
+          value={{
+            flowActive: flow?.active,
+            isCreateStepPending,
+            onStepAdd: onStepAddDebounced,
+          }}
+        >
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -329,14 +355,14 @@ const Editor = ({ flow }) => {
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
-            viewport={viewport}
             edgesFocusable={false}
             elementsSelectable={true}
             nodesConnectable={false}
             nodesDraggable={false}
             nodesFocusable={true}
             panOnDrag={false}
-            panOnScroll={false}
+            panOnScroll
+            panOnScrollMode={PanOnScrollMode.Vertical}
             zoomOnDoubleClick={false}
             zoomOnPinch={false}
             zoomOnScroll={false}
@@ -344,9 +370,9 @@ const Editor = ({ flow }) => {
             maxZoom={1}
             proOptions={{ hideAttribution: true }}
           />
-          <StepDetailsSidebar key={selectedStepId} open={sidebarOpen} />
-        </EditorWrapper>
-      </EdgesContext.Provider>
+        </EdgesContext.Provider>
+        <StepDetailsSidebar key={selectedStepId} open={sidebarOpen} />
+      </EditorWrapper>
     </NodesContext.Provider>
   );
 };

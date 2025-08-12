@@ -5,6 +5,7 @@ export const EditorWrapper = styled(Box)(() => ({
   flexGrow: 1,
   position: 'relative',
   margin: 0,
+  height: '100%',
   backgroundColor: '#fafafa',
   backgroundImage: `radial-gradient(circle at 1px 1px, #d3d3d3 1px, transparent 1px)`,
   backgroundSize: '24px 24px',
@@ -13,6 +14,7 @@ export const EditorWrapper = styled(Box)(() => ({
 
   '& > div': {
     flexGrow: 1,
+    height: '100%',
   },
 
   '& .react-flow__pane': {
