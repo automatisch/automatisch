@@ -251,6 +251,44 @@ export const getLaidOutElements = async (
     }
   });
 
+  // Position top-level steps that come after paths steps
+  // Find edges that connect from merge placeholders to other nodes
+  edges.forEach((edge) => {
+    if (edge.source.endsWith('-merge-placeholder')) {
+      const targetNode = nodes.find((n) => n.id === edge.target);
+      if (targetNode && flattenedPositions[edge.target]) {
+        // Get merge placeholder position
+        const mergePos = flattenedPositions[edge.source];
+        if (mergePos) {
+          // Position the target node below the merge placeholder
+          flattenedPositions[edge.target] = {
+            x:
+              mergePos.x -
+              (DIMENSIONS.NODE_WIDTH - DIMENSIONS.ADD_BUTTON_WIDTH) / 2, // Center the node on merge placeholder
+            y:
+              mergePos.y +
+              DIMENSIONS.ADD_BUTTON_HEIGHT +
+              DIMENSIONS.ADD_BUTTON_WIDTH, // Below merge placeholder
+          };
+
+          // Also position the AddButtonNode for this top-level step
+          const topLevelAddButtonId = `${edge.target}-add-button`;
+          if (flattenedPositions[topLevelAddButtonId]) {
+            flattenedPositions[topLevelAddButtonId] = {
+              x: mergePos.x, // Align with merge placeholder
+              y:
+                mergePos.y +
+                DIMENSIONS.ADD_BUTTON_HEIGHT +
+                DIMENSIONS.ADD_BUTTON_WIDTH +
+                DIMENSIONS.NODE_HEIGHT +
+                DIMENSIONS.NODE_SPACING, // Below the top-level node
+            };
+          }
+        }
+      }
+    }
+  });
+
   // Calculate the graph width to center it
   let maxX = 0;
   Object.entries(flattenedPositions).forEach(([nodeId, pos]) => {
