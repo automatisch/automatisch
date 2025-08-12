@@ -107,7 +107,36 @@ const Editor = ({ flow }) => {
 
       if (isMergePlaceholder) {
         // Extract the paths node ID from merge placeholder
-        actualPreviousStepId = previousStepId.replace('-merge-placeholder', '');
+        const pathsStepId = previousStepId.replace('-merge-placeholder', '');
+
+        // Find all branches belonging to this paths step
+        const branches = flow?.steps
+          ?.filter(
+            (s) =>
+              s.parentStepId === pathsStepId && s.structuralType === 'branch',
+          )
+          ?.sort((a, b) => a.position - b.position);
+
+        if (branches && branches.length > 0) {
+          // Get the last branch
+          const lastBranch = branches[branches.length - 1];
+
+          // Find children of the last branch
+          const lastBranchChildren = flow?.steps
+            ?.filter((s) => s.parentStepId === lastBranch.id)
+            ?.sort((a, b) => a.position - b.position);
+
+          // Use the last child of the last branch, or the branch itself if no children
+          if (lastBranchChildren && lastBranchChildren.length > 0) {
+            actualPreviousStepId =
+              lastBranchChildren[lastBranchChildren.length - 1].id;
+          } else {
+            actualPreviousStepId = lastBranch.id;
+          }
+        } else {
+          // No branches yet, use the paths step itself
+          actualPreviousStepId = pathsStepId;
+        }
       } else if (isPlaceholder) {
         // Extract the branch ID from placeholder ID
         actualPreviousStepId = previousStepId.replace('-placeholder', '');
