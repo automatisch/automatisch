@@ -1,10 +1,18 @@
 import Step from '@/models/step.js';
+import Flow from '@/models/flow.js';
 
 const buildFlowContext = async (options) => {
-  const { untilStepId } = options;
+  const { flowId, untilStepId } = options;
 
-  const untilStep = await Step.query().findById(untilStepId).throwIfNotFound();
-  const flow = await untilStep.$relatedQuery('flow').throwIfNotFound();
+  let flow, untilStep;
+
+  if (untilStepId) {
+    untilStep = await Step.query().findById(untilStepId);
+    flow = await untilStep.$relatedQuery('flow').throwIfNotFound();
+  } else {
+    flow = await Flow.query().findById(flowId).throwIfNotFound();
+    untilStep = await flow.getLastActionStep();
+  }
 
   const triggerStep = await flow.getTriggerStep();
   const triggerConnection = await triggerStep.$relatedQuery('connection');

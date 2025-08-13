@@ -4,7 +4,7 @@ import processInitialDataError from '@/engine/initial-data/process-error.js';
 import processTriggerStep from '@/engine/trigger/process.js';
 import processActionStep from '@/engine/action/process.js';
 
-const run = async (untilStepId, testRun = false) => {
+const run = async ({ flowId, untilStepId, testRun = false }) => {
   // Build flow context
   const {
     flow,
@@ -15,6 +15,7 @@ const run = async (untilStepId, testRun = false) => {
     triggerCommand,
     actionSteps,
   } = await buildFlowContext({
+    flowId,
     untilStepId,
   });
 
@@ -73,15 +74,23 @@ const run = async (untilStepId, testRun = false) => {
         executionId,
       });
 
-      if (actionStep.id === untilStep.id || executionStep.isFailed) {
+      if (
+        testRun &&
+        (actionStep.id === untilStep.id || executionStep.isFailed)
+      ) {
         return { executionStep };
       }
     }
   }
 };
 
+const runInBackground = async (options) => {
+  return await run(options);
+};
+
 const Engine = {
   run,
+  runInBackground,
 };
 
 export default Engine;

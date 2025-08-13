@@ -382,6 +382,13 @@ class Flow extends Base {
       .orderBy('position', 'asc');
   }
 
+  async getLastActionStep() {
+    return await this.$relatedQuery('steps')
+      .where({ type: 'action' })
+      .orderBy('position', 'desc')
+      .first();
+  }
+
   async isPaused() {
     const user = await this.$relatedQuery('user').withSoftDeleted();
     const allowedToRunFlows = await user.isAllowedToRunFlows();
