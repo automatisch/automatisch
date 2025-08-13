@@ -3,8 +3,11 @@ import multer from 'multer';
 import cors from 'cors';
 
 import appConfig from '@/config/app.js';
+
 import webhookHandlerByFlowId from '@/controllers/webhooks/handler-by-flow-id.js';
 import webhookHandlerSyncByFlowId from '@/controllers/webhooks/handler-sync-by-flow-id.js';
+import { checkIsQuotaExceeded } from '@/middlewares/check-is-quota-exceeded.js';
+import { verifyWebhookRequest } from '@/middlewares/verify-webhook.js';
 
 const router = Router();
 const upload = multer();
@@ -42,10 +45,10 @@ function createRouteHandler(path, handler) {
 
   router
     .route(path)
-    .get(wrappedHandler)
-    .put(wrappedHandler)
-    .patch(wrappedHandler)
-    .post(wrappedHandler);
+    .get(checkIsQuotaExceeded, verifyWebhookRequest, wrappedHandler)
+    .put(checkIsQuotaExceeded, verifyWebhookRequest, wrappedHandler)
+    .patch(checkIsQuotaExceeded, verifyWebhookRequest, wrappedHandler)
+    .post(checkIsQuotaExceeded, verifyWebhookRequest, wrappedHandler);
 }
 
 createRouteHandler('/flows/:flowId/sync', webhookHandlerSyncByFlowId);

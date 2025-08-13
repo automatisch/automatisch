@@ -5,6 +5,7 @@
       "@/models/*": ["src/models/*"],
       "@/controllers/*": ["src/controllers/*"],
       "@/helpers/*": ["src/helpers/*"],
+      "@/middlewares/*": ["src/middlewares/*"],
       "@/config/*": ["src/config/*"],
       "@/errors/*": ["src/errors/*"],
       "@/queues/*": ["src/queues/*"],

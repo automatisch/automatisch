@@ -12,6 +12,9 @@ const getInitialData = async (options) => {
     triggerConnection,
     triggerApp,
     triggerCommand,
+    request,
+    triggeredByRequest,
+    isBuiltInApp,
   } = options;
 
   const $ = await globalVariable({
@@ -20,10 +23,13 @@ const getInitialData = async (options) => {
     app: triggerApp,
     step: triggerStep,
     testRun,
+    request,
   });
 
   try {
-    if (triggerCommand.type === 'webhook' && !flow.active) {
+    if (triggeredByRequest && isBuiltInApp) {
+      await triggerCommand.run($);
+    } else if (testRun && triggerCommand.type === 'webhook') {
       await triggerCommand.testRun($);
     } else {
       await triggerCommand.run($);
