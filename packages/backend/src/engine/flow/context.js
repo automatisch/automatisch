@@ -19,6 +19,10 @@ const buildFlowContext = async (options) => {
   const triggerApp = await triggerStep.getApp();
   const triggerCommand = await triggerStep.getTriggerCommand();
 
+  const isBuiltInWebhookApp = triggerApp.key === 'webhook';
+  const isBuiltInFormsApp = triggerApp.key === 'forms';
+  const isBuiltInApp = isBuiltInWebhookApp || isBuiltInFormsApp;
+
   const actionSteps = await flow.getActionSteps();
 
   return {
@@ -29,6 +33,7 @@ const buildFlowContext = async (options) => {
     triggerApp,
     triggerCommand,
     actionSteps,
+    isBuiltInApp,
   };
 };
 

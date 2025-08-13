@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty.js';
 import buildFlowContext from '@/engine/flow/context.js';
 import getInitialData from '@/engine/initial-data/get.js';
 import processInitialDataError from '@/engine/initial-data/process-error.js';
@@ -5,7 +6,13 @@ import processTriggerStep from '@/engine/trigger/process.js';
 import processActionStep from '@/engine/action/process.js';
 import checkLimits from '@/engine/cloud/check-limits.js';
 
-const run = async ({ flowId, untilStepId, testRun = false }) => {
+const run = async ({
+  flowId,
+  untilStepId,
+  triggeredByRequest,
+  request,
+  testRun = false,
+}) => {
   // Build flow context
   const {
     flow,
@@ -15,6 +22,7 @@ const run = async ({ flowId, untilStepId, testRun = false }) => {
     triggerApp,
     triggerCommand,
     actionSteps,
+    isBuiltInApp,
   } = await buildFlowContext({
     flowId,
     untilStepId,
@@ -22,7 +30,10 @@ const run = async ({ flowId, untilStepId, testRun = false }) => {
 
   // Check if the user is allowed to run the flow in cloud when it's not a test run
   const { isAllowedToRunFlows } = await checkLimits({ flow });
-  if (!testRun && !isAllowedToRunFlows) return;
+
+  if (!testRun && !isAllowedToRunFlows) {
+    return;
+  }
 
   // Get initial flow data to start the flow
   const { data, error } = await getInitialData({
@@ -32,6 +43,9 @@ const run = async ({ flowId, untilStepId, testRun = false }) => {
     triggerConnection,
     triggerApp,
     triggerCommand,
+    request,
+    triggeredByRequest,
+    isBuiltInApp,
   });
 
   // Process initial data error
@@ -56,6 +70,10 @@ const run = async ({ flowId, untilStepId, testRun = false }) => {
   const firstInitialDataItem = data[0];
   const reversedInitialData = testRun ? [firstInitialDataItem] : data.reverse();
 
+  if (!isBuiltInApp && triggeredByRequest && isEmpty(reversedInitialData)) {
+    return;
+  }
+
   for (const initialDataItem of reversedInitialData) {
     // Process trigger step by saving execution and execution step data.
     const { executionId, executionStep } = await processTriggerStep({
@@ -67,6 +85,10 @@ const run = async ({ flowId, untilStepId, testRun = false }) => {
 
     if (testRun && triggerStep.id === untilStep.id) {
       return { executionStep };
+    }
+
+    if (testRun && triggeredByRequest) {
+      return;
     }
 
     for (const actionStep of actionSteps) {

@@ -10,6 +10,7 @@ export default defineConfig({
       '@/models': resolve(__dirname, './src/models'),
       '@/controllers': resolve(__dirname, './src/controllers'),
       '@/helpers': resolve(__dirname, './src/helpers'),
+      '@/middlewares': resolve(__dirname, './src/middlewares'),
       '@/config': resolve(__dirname, './src/config'),
       '@/errors': resolve(__dirname, './src/errors'),
       '@/queues': resolve(__dirname, './src/queues'),
