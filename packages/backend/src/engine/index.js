@@ -3,6 +3,7 @@ import getInitialData from '@/engine/initial-data/get.js';
 import processInitialDataError from '@/engine/initial-data/process-error.js';
 import processTriggerStep from '@/engine/trigger/process.js';
 import processActionStep from '@/engine/action/process.js';
+import checkLimits from '@/engine/cloud/check-limits.js';
 
 const run = async ({ flowId, untilStepId, testRun = false }) => {
   // Build flow context
@@ -19,7 +20,9 @@ const run = async ({ flowId, untilStepId, testRun = false }) => {
     untilStepId,
   });
 
-  // TODO: Check if the user is allowed to run the flow in cloud when it's not a test run
+  // Check if the user is allowed to run the flow in cloud when it's not a test run
+  const { isAllowedToRunFlows } = await checkLimits({ flow });
+  if (!testRun && !isAllowedToRunFlows) return;
 
   // Get initial flow data to start the flow
   const { data, error } = await getInitialData({
@@ -79,6 +82,10 @@ const run = async ({ flowId, untilStepId, testRun = false }) => {
         (actionStep.id === untilStep.id || executionStep.isFailed)
       ) {
         return { executionStep };
+      }
+
+      if (!testRun && executionStep.isFailed) {
+        continue;
       }
     }
   }
