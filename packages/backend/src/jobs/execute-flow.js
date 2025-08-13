@@ -1,59 +1,64 @@
-import triggerQueue from '@/queues/trigger.js';
-import { processFlow } from '@/services/flow.js';
-import Flow from '@/models/flow.js';
-import {
-  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '@/helpers/remove-job-configuration.js';
+// import triggerQueue from '@/queues/trigger.js';
+// import { processFlow } from '@/services/flow.js';
+// import Flow from '@/models/flow.js';
+// import {
+//   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+//   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+// } from '@/helpers/remove-job-configuration.js';
+import Engine from '@/engine/index.js';
 
 export const executeFlowJob = async (job) => {
   const { flowId } = job.data;
 
-  const flow = await Flow.query().findById(flowId);
+  await Engine.runInBackground({
+    flowId,
+  });
 
-  if (!flow) {
-    return;
-  }
+  // const flow = await Flow.query().findById(flowId);
 
-  const user = await flow.$relatedQuery('user');
-  const allowedToRunFlows = await user.isAllowedToRunFlows();
+  // if (!flow) {
+  //   return;
+  // }
 
-  if (!allowedToRunFlows) {
-    return;
-  }
+  // const user = await flow.$relatedQuery('user');
+  // const allowedToRunFlows = await user.isAllowedToRunFlows();
 
-  const triggerStep = await flow.getTriggerStep();
+  // if (!allowedToRunFlows) {
+  //   return;
+  // }
 
-  const { data, error } = await processFlow({ flowId });
+  // const triggerStep = await flow.getTriggerStep();
 
-  const reversedData = data.reverse();
+  // const { data, error } = await processFlow({ flowId });
 
-  const jobOptions = {
-    removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-    removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-  };
+  // const reversedData = data.reverse();
 
-  for (const triggerItem of reversedData) {
-    const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
+  // const jobOptions = {
+  //   removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
+  //   removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
+  // };
 
-    const jobPayload = {
-      flowId,
-      stepId: triggerStep.id,
-      triggerItem,
-    };
+  // for (const triggerItem of reversedData) {
+  //   const jobName = `${triggerStep.id}-${triggerItem.meta.internalId}`;
 
-    await triggerQueue.add(jobName, jobPayload, jobOptions);
-  }
+  //   const jobPayload = {
+  //     flowId,
+  //     stepId: triggerStep.id,
+  //     triggerItem,
+  //   };
 
-  if (error) {
-    const jobName = `${triggerStep.id}-error`;
+  //   await triggerQueue.add(jobName, jobPayload, jobOptions);
+  // }
 
-    const jobPayload = {
-      flowId,
-      stepId: triggerStep.id,
-      error,
-    };
+  // if (error) {
+  //   const jobName = `${triggerStep.id}-error`;
 
-    await triggerQueue.add(jobName, jobPayload, jobOptions);
-  }
+  //   const jobPayload = {
+  //     flowId,
+  //     stepId: triggerStep.id,
+  //     error,
+  //   };
+
+  //   await triggerQueue.add(jobName, jobPayload, jobOptions);
+  // }
 };
