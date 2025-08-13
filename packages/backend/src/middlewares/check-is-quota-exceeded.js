@@ -4,6 +4,8 @@ import appConfig from '@/config/app.js';
 export const checkIsQuotaExceeded = async (request, response, next) => {
   if (!appConfig.isCloud) {
     next();
+
+    return;
   }
 
   const { flowId } = request.params;

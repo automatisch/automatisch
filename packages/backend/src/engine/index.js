@@ -88,7 +88,7 @@ const run = async ({
     }
 
     if (testRun && triggeredByRequest) {
-      return;
+      return { statusCode: 204 };
     }
 
     for (const actionStep of actionSteps) {
@@ -108,6 +108,28 @@ const run = async ({
 
       if (!testRun && executionStep.isFailed) {
         continue;
+      }
+
+      if (actionStep.appKey === 'filter' && !executionStep.dataOut) {
+        if (triggeredByRequest) {
+          return { statusCode: 422 };
+        }
+
+        continue;
+      }
+
+      if (
+        triggeredByRequest &&
+        (actionStep.key === 'respondWith' ||
+          actionStep.key === 'respondWithVoiceXml')
+      ) {
+        const { headers, statusCode, body } = executionStep.dataOut;
+
+        return {
+          statusCode,
+          body,
+          headers,
+        };
       }
     }
   }
