@@ -7,7 +7,7 @@ import Flow from '@/models/flow.js';
 import Connection from '@/models/connection.js';
 import ExecutionStep from '@/models/execution-step.js';
 import Telemetry from '@/helpers/telemetry/index.js';
-import * as testRunModule from '@/services/test-run.js';
+import Engine from '@/engine/index.js';
 import { createFlow } from '@/factories/flow.js';
 import { createUser } from '@/factories/user.js';
 import { createRole } from '@/factories/role.js';
@@ -270,11 +270,15 @@ describe('Step model', () => {
   it('testAndContinue should execute the flow and mark the step as completed', async () => {
     const step = await createStep({ status: 'incomplete' });
 
-    const testRunSpy = vi.spyOn(testRunModule, 'default').mockResolvedValue();
+    const engineSpy = vi.spyOn(Engine, 'run').mockResolvedValue();
 
     const updatedStep = await step.testAndContinue();
 
-    expect(testRunSpy).toHaveBeenCalledWith({ stepId: step.id });
+    expect(engineSpy).toHaveBeenCalledWith({
+      untilStepId: step.id,
+      testRun: true,
+    });
+
     expect(updatedStep.status).toBe('completed');
   });
 
