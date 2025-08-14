@@ -110,6 +110,8 @@ test.describe('Admin Applications', () => {
 
     await expect(flowEditorPage.flowStep).toHaveCount(2);
 
+    await flowEditorPage.flowStep.first().click();
+    
     await flowEditorPage.chooseAppAndEvent(
       'Google Drive',
       'New files in folder'

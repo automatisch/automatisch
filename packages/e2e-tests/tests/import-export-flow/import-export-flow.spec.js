@@ -18,6 +18,7 @@ test.describe('Import/Export flow', () => {
     request,
     flowEditorPage,
     flowsPage,
+    stepDetailsSidebar,
   }) => {
     let flowId;
     const importFlowDialog = new ImportFlowDialog(page);
@@ -94,6 +95,8 @@ test.describe('Import/Export flow', () => {
     });
 
     await test.step('verify imported flow', async () => {
+      await flowEditorPage.flowStep.first().click();
+      await expect(stepDetailsSidebar.stepName).toHaveText('1. triggerStep');
       await expect(flowEditorPage.stepName.first()).toHaveText(
         '1. triggerStep'
       );

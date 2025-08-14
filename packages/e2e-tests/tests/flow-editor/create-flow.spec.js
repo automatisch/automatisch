@@ -27,6 +27,8 @@ test('Create a new flow with a Scheduler step then an Ntfy step', async ({
   await test.step('setup Scheduler trigger', async () => {
     await test.step('choose app and event substep', async () => {
       await test.step('choose application', async () => {
+        await flowEditorPage.flowStep.first().click();
+
         await flowEditorPage.appAutocomplete.click();
         await page.getByRole('option', { name: 'Scheduler' }).click();
       });

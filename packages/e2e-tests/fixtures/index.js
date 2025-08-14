@@ -12,6 +12,7 @@ import { AdminSetupPage } from './admin-setup-page';
 import { AdminCreateUserPage } from './admin/create-user-page';
 import { FlowsPage } from './flows-page';
 import { TemplatesPage } from './templates/templates-page';
+import { StepDetailsSidebar } from './step-details-sidebar';
 
 exports.test = test.extend({
   page: async ({ page }, use) => {
@@ -46,6 +47,9 @@ exports.test = test.extend({
   },
   userInterfacePage: async ({ page }, use) => {
     await use(new UserInterfacePage(page));
+  },
+  stepDetailsSidebar: async ({ page }, use) => {
+    await use(new StepDetailsSidebar(page));
   },
   ...adminFixtures,
 });

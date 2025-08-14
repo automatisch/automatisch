@@ -136,6 +136,7 @@ function FlowStep(props) {
             )}
 
             <Typography
+              data-test="step-name"
               variant="body2"
               noWrap
               sx={{ fontSize: 15, maxWidth: '195px' }}
