@@ -1,9 +1,11 @@
 import Engine from '@/engine/index.js';
 
 export const executeFlowJob = async (job) => {
-  const { flowId } = job.data;
+  const { flowId, resumeStepId, resumeExecutionId } = job.data;
 
-  await Engine.runInBackground({
+  await Engine.run({
     flowId,
+    resumeStepId,
+    resumeExecutionId,
   });
 };
