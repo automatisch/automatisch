@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useCallback,
-  useState,
-  useMemo,
-  useRef,
-} from 'react';
+import { useEffect, useCallback, useState, useMemo, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ReactFlow,
@@ -29,6 +23,7 @@ import { EDGE_TYPES, NODE_TYPES } from './constants';
 import { EditorWrapper } from './style';
 import { EdgesContext, NodesContext } from './contexts';
 import StepDetailsSidebar from 'components/StepDetailsSidebar';
+import { layoutWithElk } from './createElkGraph';
 
 const ENABLE_AUTO_SELECT = false;
 
@@ -62,10 +57,12 @@ const Editor = ({ flow }) => {
     (nodeId) => {
       // Remove the node
       setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));
-      
+
       // Remove connected edges
-      setEdges((edges) => 
-        edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+      setEdges((edges) =>
+        edges.filter(
+          (edge) => edge.source !== nodeId && edge.target !== nodeId,
+        ),
       );
     },
     [setNodes, setEdges],
@@ -88,7 +85,7 @@ const Editor = ({ flow }) => {
       };
 
       setNodes((nodes) => [...nodes, newNode]);
-      
+
       // Add edge connecting to previous node if exists
       if (previousStepId) {
         const newEdge = {
@@ -186,6 +183,38 @@ const Editor = ({ flow }) => {
       }
     },
     [flow?.steps, selectedStepId],
+  );
+
+  // Layout flow steps with ELK
+  useEffect(
+    function layoutFlowSteps() {
+      if (flow?.steps?.length === 0) {
+        return;
+      }
+
+      (async () => {
+        const layoutedGraph = await layoutWithElk(flow.steps);
+
+        const nodes = layoutedGraph.children.map((node) => ({
+          ...node,
+          type: node.id.includes('--add-button')
+            ? NODE_TYPES.ADD_BUTTON
+            : NODE_TYPES.FLOW_STEP,
+          position: { x: node.x, y: node.y },
+        }));
+
+        const edges = layoutedGraph.edges.map((edge) => ({
+          ...edge,
+          type: EDGE_TYPES.ADD_NODE_EDGE,
+          source: edge.sources[0],
+          target: edge.targets[0],
+        }));
+
+        setNodes(nodes);
+        setEdges(edges);
+      })();
+    },
+    [flow?.steps],
   );
 
   return (
