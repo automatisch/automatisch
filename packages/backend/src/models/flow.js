@@ -13,12 +13,8 @@ import exportFlow from '@/helpers/export-flow.js';
 import importFlow from '@/helpers/import-flow.js';
 import flowQueue from '@/queues/flow.js';
 import { hasValidLicense } from '@/helpers/license.ee.js';
-import {
-  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '@/helpers/remove-job-configuration.js';
+import Engine from '@/engine/index.js';
 
-const JOB_NAME = 'flow';
 const EVERY_1_MINUTE_CRON = '* * * * *';
 const EVERY_2_MINUTES_CRON = '*/2 * * * *';
 const EVERY_5_MINUTES_CRON = '*/5 * * * *';
@@ -479,18 +475,10 @@ class Flow extends Base {
           publishedAt: new Date().toISOString(),
         });
 
-        const jobName = `${JOB_NAME}-${this.id}`;
-
-        await flowQueue.add(
-          jobName,
-          { flowId: this.id },
-          {
-            repeat: repeatOptions,
-            jobId: this.id,
-            removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-            removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-          }
-        );
+        await Engine.runInBackground({
+          flowId: this.id,
+          repeat: repeatOptions,
+        });
       } else {
         const repeatableJobs = await flowQueue.getRepeatableJobs();
         const job = repeatableJobs.find((job) => job.id === this.id);
