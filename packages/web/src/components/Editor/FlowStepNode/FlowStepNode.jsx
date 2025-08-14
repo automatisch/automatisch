@@ -7,19 +7,14 @@ import FlowStep from 'components/FlowStep';
 import { NodesContext } from '../contexts.js';
 import { NodeWrapper, NodeInnerWrapper } from './style.js';
 
-function FlowStepNode({ data: { laidOut }, id }) {
+function FlowStepNode({ id }) {
   const { onStepDelete, onStepSelect, flowId, steps } =
     useContext(NodesContext);
 
   const step = steps.find(({ id: stepId }) => stepId === id);
 
   return (
-    <NodeWrapper
-      className="nodrag"
-      sx={{
-        visibility: laidOut ? 'visible' : 'hidden',
-      }}
-    >
+    <NodeWrapper className="nodrag">
       <NodeInnerWrapper>
         <Handle
           type="target"
@@ -48,9 +43,6 @@ function FlowStepNode({ data: { laidOut }, id }) {
 
 FlowStepNode.propTypes = {
   id: PropTypes.string,
-  data: PropTypes.shape({
-    laidOut: PropTypes.bool.isRequired,
-  }).isRequired,
 };
 
 export default FlowStepNode;

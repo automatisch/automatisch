@@ -14,7 +14,7 @@ function AddButtonNode({ id }) {
   const handleClick = () => {
     // Extract the source step ID from the AddButtonNode ID
     // Format: {stepId}-add-button
-    const sourceStepId = id.replace('-add-button', '');
+    const sourceStepId = id.replace('--add-button', '');
     onStepAdd(sourceStepId);
   };
 
