@@ -1,4 +1,4 @@
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import Execution from '@/models/execution.js';
 
 const processInitialDataError = async (options) => {
