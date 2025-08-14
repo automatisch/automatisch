@@ -5,6 +5,7 @@ import processInitialDataError from '@/engine/initial-data/process-error.js';
 import checkLimits from '@/engine/cloud/check-limits.js';
 import iterateSteps from '@/engine/steps/iterate.js';
 import flowQueue from '@/queues/flow.js';
+import Crypto from 'crypto';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
@@ -112,13 +113,20 @@ const run = async ({
 };
 
 const runInBackground = async (options) => {
-  const { flowId, resumeStepId, resumeExecutionId, delay, repeat } = options;
+  const {
+    flowId,
+    jobId,
+    resumeStepId,
+    resumeExecutionId,
+    delay,
+    repeat,
+    request,
+    triggeredByRequest,
+  } = options;
 
   let jobName = 'execute-flow';
-  let jobId = `flow-${flowId}`;
 
   if (resumeStepId && resumeExecutionId) {
-    jobId = `flow-${flowId}-${resumeStepId}-${resumeExecutionId}`;
     jobName = `resume-flow`;
   }
 
@@ -126,13 +134,15 @@ const runInBackground = async (options) => {
     jobName,
     {
       flowId,
+      request,
       resumeStepId,
       resumeExecutionId,
+      triggeredByRequest,
     },
     {
+      jobId,
       repeat,
       delay,
-      jobId,
       removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
       removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
     }

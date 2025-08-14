@@ -97,6 +97,10 @@ const iterateSteps = async ({
       };
     }
   }
+
+  if (triggeredByRequest) {
+    return { statusCode: 204 };
+  }
 };
 
 export default iterateSteps;

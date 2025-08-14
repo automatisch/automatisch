@@ -17,9 +17,13 @@ export default async (request, response) => {
   const flow = await Flow.query().findById(flowId).throwIfNotFound();
   const testRun = !flow.active;
 
-  Engine.runInBackground({
+  await Engine.runInBackground({
     flowId,
-    request,
+    request: {
+      body: request.body,
+      headers: request.headers,
+      query: request.query,
+    },
     triggeredByRequest: true,
     testRun,
   });
