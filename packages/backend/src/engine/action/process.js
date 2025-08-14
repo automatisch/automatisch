@@ -1,7 +1,7 @@
 import buildActionStepContext from '@/engine/action/context.js';
 import ExecutionStep from '@/models/execution-step.js';
 import computeParameters from '@/helpers/compute-parameters.js';
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import { logger } from '@/helpers/logger.js';
 import HttpError from '@/errors/http.js';
 import EarlyExitError from '@/errors/early-exit.js';

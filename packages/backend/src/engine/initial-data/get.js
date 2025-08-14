@@ -1,4 +1,4 @@
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import EarlyExitError from '@/errors/early-exit.js';
 import AlreadyProcessedError from '@/errors/already-processed.js';
 import HttpError from '@/errors/http.js';
