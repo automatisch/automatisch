@@ -22,7 +22,7 @@ import {
   startFlowWorker,
   runFlowWorkerJobs,
   closeFlowWorker,
-} from '../../../test/workers/flow.js';
+} from '@/test/workers/flow.js';
 
 describe('Built-in webhook app async', () => {
   let currentUser,

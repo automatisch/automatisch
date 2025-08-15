@@ -15,7 +15,8 @@
       "@/routes/*": ["src/routes/*"],
       "@/serializers/*": ["src/serializers/*"],
       "@/factories/*": ["test/factories/*"],
-      "@/mocks/*": ["test/mocks/*"]
+      "@/mocks/*": ["test/mocks/*"],
+      "@/test/workers/*": ["test/workers/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
