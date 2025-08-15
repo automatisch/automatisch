@@ -19,6 +19,7 @@ const aliases = {
   '@/serializers': join(__dirname, 'src/serializers'),
   '@/factories': join(__dirname, 'test/factories'),
   '@/mocks': join(__dirname, 'test/mocks'),
+  '@/test/workers': join(__dirname, 'test/workers'),
 };
 
 export const resolve = generateAliasesResolver(aliases);
