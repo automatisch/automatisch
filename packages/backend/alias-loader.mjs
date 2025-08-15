@@ -14,7 +14,6 @@ const aliases = {
   '@/queues': join(__dirname, 'src/queues'),
   '@/workers': join(__dirname, 'src/workers'),
   '@/jobs': join(__dirname, 'src/jobs'),
-  '@/services': join(__dirname, 'src/services'),
   '@/engine': join(__dirname, 'src/engine'),
   '@/routes': join(__dirname, 'src/routes'),
   '@/serializers': join(__dirname, 'src/serializers'),
