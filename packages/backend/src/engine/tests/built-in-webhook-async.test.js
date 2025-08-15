@@ -153,7 +153,7 @@ describe('Built-in webhook app async', () => {
     expect(execution).toBeDefined();
   });
 
-  it('should create execution steps', { timeout: 50000 }, async () => {
+  it('should create execution steps', async () => {
     const timeBeforeTheRequest = new Date();
 
     await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
