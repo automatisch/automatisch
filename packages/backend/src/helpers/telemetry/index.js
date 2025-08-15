@@ -29,6 +29,10 @@ class Telemetry {
       return;
     }
 
+    if (appConfig.isTest) {
+      return;
+    }
+
     properties = {
       ...properties,
       appEnv: appConfig.appEnv,
