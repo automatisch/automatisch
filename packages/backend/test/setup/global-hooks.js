@@ -3,19 +3,11 @@ import { client as knex } from '@/config/database.js';
 import logger from '@/helpers/logger.js';
 import { vi } from 'vitest';
 import nock from 'nock';
-import {
-  startFlowWorker,
-  stopFlowWorker,
-  removeJobsFromFlowQueue,
-} from '@/test/workers/flow.js';
 import './insert-assertions.js';
 
 global.beforeAll(async () => {
   global.knex = null;
   logger.silent = true;
-
-  // Start the flow worker
-  await startFlowWorker();
 
   // Remove default roles and permissions before running the test suite
   await knex.raw('TRUNCATE TABLE config CASCADE');
@@ -38,16 +30,10 @@ global.afterEach(async () => {
   // Remove all API request mocks
   nock.cleanAll();
 
-  // Clean up flow worker
-  await removeJobsFromFlowQueue();
-
   vi.restoreAllMocks();
   vi.clearAllMocks();
 });
 
 global.afterAll(async () => {
-  // Stop the flow worker
-  await stopFlowWorker();
-
   logger.silent = false;
 });
