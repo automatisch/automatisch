@@ -29,4 +29,8 @@ if (appConfig.redisTls) {
   redisConfig.tls = {};
 }
 
+if (appConfig.isTest) {
+  redisConfig.db = 1;
+}
+
 export default redisConfig;
