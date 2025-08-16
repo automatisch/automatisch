@@ -34,6 +34,11 @@ export default function SplitButton(props) {
         ref={anchorRef}
         aria-label="split button"
         disabled={disabled}
+        sx={{
+          '& .MuiButton-root:first-of-type': {
+            borderRight: 'none',
+          },
+        }}
       >
         <Button
           size="large"
@@ -41,11 +46,6 @@ export default function SplitButton(props) {
           component={Link}
           to={selectedOption.to}
           startIcon={selectedOption.startIcon}
-          sx={{
-            // Link component causes style loss in ButtonGroup
-            borderRadius: 0,
-            borderRight: '1px solid #bdbdbd',
-          }}
           disabled={selectedOption.disabled}
         >
           {selectedOption.label}
@@ -56,7 +56,6 @@ export default function SplitButton(props) {
             data-test="multi-option-button"
             size="small"
             onClick={handleToggle}
-            sx={{ borderRadius: 0 }}
           >
             <ArrowDropDownIcon />
           </Button>
