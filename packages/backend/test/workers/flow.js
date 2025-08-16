@@ -38,7 +38,7 @@ export const stopFlowWorker = async () => {
 };
 
 export const removeJobsFromFlowQueue = async () => {
-  await flowQueue.obliterate();
+  await flowQueue.obliterate({ force: true });
 };
 
 export default runFlowWorkerJobs;
