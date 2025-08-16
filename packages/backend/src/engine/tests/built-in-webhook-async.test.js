@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import nock from 'nock';
 import app from '../../app.js';
@@ -9,20 +10,7 @@ import { createStep } from '@/factories/step.js';
 import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
-import {
-  describe,
-  it,
-  expect,
-  beforeEach,
-  vi,
-  beforeAll,
-  afterAll,
-} from 'vitest';
-import {
-  startFlowWorker,
-  runFlowWorkerJobs,
-  closeFlowWorker,
-} from '@/test/workers/flow.js';
+import { runFlowWorkerJobs } from '@/test/workers/flow.js';
 
 describe('Built-in webhook app async', () => {
   let currentUser,
@@ -31,14 +19,6 @@ describe('Built-in webhook app async', () => {
     formatterStep,
     ntfyStep,
     ntfyConnection;
-
-  beforeAll(async () => {
-    await startFlowWorker();
-  });
-
-  afterAll(async () => {
-    await closeFlowWorker();
-  });
 
   beforeEach(async () => {
     currentUser = await createUser();
