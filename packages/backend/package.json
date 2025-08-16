@@ -101,6 +101,7 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.1.5",
+    "nock": "^14.0.10",
     "node-gyp": "^10.1.0",
     "nodemon": "^2.0.13",
     "supertest": "^6.3.3",
