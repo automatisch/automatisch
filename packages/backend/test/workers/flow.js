@@ -13,6 +13,17 @@ export const runFlowWorkerJobs = async () => {
     await job.promote();
   }
 
+  // Get all repeatable jobs and trigger them immediately for testing
+  const repeatableJobs = await flowQueue.getRepeatableJobs();
+
+  for (const repeatableJob of repeatableJobs) {
+    await flowQueue.add(
+      'execute-flow',
+      { flowId: repeatableJob.id },
+      { delay: 0 }
+    );
+  }
+
   // Wait for jobs to be processed
   let jobCounts;
 
@@ -22,8 +33,12 @@ export const runFlowWorkerJobs = async () => {
   } while (jobCounts.waiting > 0 || jobCounts.active > 0);
 };
 
-export const closeFlowWorker = async () => {
+export const stopFlowWorker = async () => {
   await flowWorker.close();
+};
+
+export const removeJobsFromFlowQueue = async () => {
+  await flowQueue.obliterate();
 };
 
 export default runFlowWorkerJobs;
