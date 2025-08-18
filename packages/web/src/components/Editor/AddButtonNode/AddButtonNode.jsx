@@ -7,15 +7,18 @@ import PropTypes from 'prop-types';
 import { EdgesContext } from '../contexts.js';
 import { DIMENSIONS } from '../constants.js';
 
-function AddButtonNode({ id }) {
+function AddButtonNode({ data }) {
   const { flowActive, onStepAdd, isCreateStepPending } =
     useContext(EdgesContext);
 
   const handleClick = () => {
-    // Extract the source step ID from the AddButtonNode ID
-    // Format: {stepId}-add-button
-    const sourceStepId = id.replace('--add-button', '');
-    onStepAdd(sourceStepId);
+    const { previousStepId, parentStepId, structuralType } = data;
+
+    onStepAdd({
+      previousStepId,
+      parentStepId,
+      structuralType,
+    });
   };
 
   return (
@@ -70,6 +73,11 @@ function AddButtonNode({ id }) {
 
 AddButtonNode.propTypes = {
   id: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    previousStepId: PropTypes.string,
+    parentStepId: PropTypes.string,
+    structuralType: PropTypes.string,
+  }),
 };
 
 export default AddButtonNode;

@@ -36,6 +36,26 @@ const edgeTypes = {
   [EDGE_TYPES.ADD_NODE_EDGE]: Edge,
 };
 
+function findLastStepIdOfPaths(pathsId, steps = []) {
+  const branches = steps.filter((step) => step.parentStepId === pathsId);
+  const lastBranchId = branches[branches.length - 1].id;
+  const branchSteps = steps.filter(
+    (step) => step.parentStepId === lastBranchId,
+  );
+
+  return branchSteps[branchSteps.length - 1]?.id || lastBranchId;
+}
+
+function findBranchIdByStepId(stepId, steps = []) {
+  const step = steps.find((step) => step.id === stepId);
+
+  if (step.structuralType === 'branch') return step.id;
+
+  if (step.structuralType === 'single') return step.parentStepId;
+
+  return null;
+}
+
 const Editor = ({ flow }) => {
   const { mutateAsync: updateStep } = useUpdateStep();
   const { mutateAsync: updateFlow } = useUpdateFlow(flow?.id);
@@ -69,33 +89,12 @@ const Editor = ({ flow }) => {
   );
 
   const onStepAdd = useCallback(
-    async (previousStepId) => {
-      // Create a new step
-      const { data: createdStep } = await createStep({ previousStepId });
-
-      // Add new node
-      const newNode = {
-        id: createdStep.id,
-        type: NODE_TYPES.FLOW_STEP,
-        position: {
-          x: 100,
-          y: 100,
-        },
-        data: {},
-      };
-
-      setNodes((nodes) => [...nodes, newNode]);
-
-      // Add edge connecting to previous node if exists
-      if (previousStepId) {
-        const newEdge = {
-          id: uuidv4(),
-          source: previousStepId,
-          target: createdStep.id,
-          type: EDGE_TYPES.ADD_NODE_EDGE,
-        };
-        setEdges((edges) => [...edges, newEdge]);
-      }
+    async ({ previousStepId, parentStepId, structuralType }) => {
+      await createStep({
+        previousStepId,
+        parentStepId,
+        structuralType,
+      });
     },
     [createStep, setNodes, setEdges],
   );
@@ -195,13 +194,54 @@ const Editor = ({ flow }) => {
       (async () => {
         const layoutedGraph = await layoutWithElk(flow.steps);
 
-        const nodes = layoutedGraph.children.map((node) => ({
-          ...node,
-          type: node.id.includes('--add-button')
-            ? NODE_TYPES.ADD_BUTTON
-            : NODE_TYPES.FLOW_STEP,
-          position: { x: node.x, y: node.y },
-        }));
+        const nodes = layoutedGraph.children.map((node) => {
+          const isAddButton = node.id.includes('--add-button');
+          const baseNode = {
+            ...node,
+            type: isAddButton ? NODE_TYPES.ADD_BUTTON : NODE_TYPES.FLOW_STEP,
+            position: { x: node.x, y: node.y },
+            data: {},
+          };
+
+          if (isAddButton) {
+            // Extract previous step ID from AddButtonNode ID
+            // Format: {stepId}--add-button or {stepId}--add-button-after-merge
+            const isMergePoint = node.id.includes('--add-button-after-merge');
+            const isWithinBranch = node.id.includes(
+              '--add-button-within-branch',
+            );
+            const isBranchCreationPoint = node.id.includes(
+              '--add-button-branch',
+            );
+            const buttonNodeId = node.id.replace(/--add-button.*$/, '');
+
+            if (isMergePoint) {
+              baseNode.data.structuralType = 'single';
+              baseNode.data.previousStepId = findLastStepIdOfPaths(
+                buttonNodeId,
+                flow.steps,
+              );
+            } else if (isBranchCreationPoint) {
+              baseNode.data.structuralType = 'branch';
+              baseNode.data.parentStepId = buttonNodeId;
+              baseNode.data.previousStepId = findLastStepIdOfPaths(
+                buttonNodeId,
+                flow.steps,
+              );
+            } else if (isWithinBranch) {
+              baseNode.data.structuralType = 'single';
+              baseNode.data.previousStepId = buttonNodeId;
+              baseNode.data.parentStepId = findBranchIdByStepId(
+                buttonNodeId,
+                flow.steps,
+              );
+            } else {
+              baseNode.data.previousStepId = buttonNodeId;
+            }
+          }
+
+          return baseNode;
+        });
 
         const edges = layoutedGraph.edges.map((edge) => ({
           ...edge,
@@ -254,11 +294,6 @@ const Editor = ({ flow }) => {
             panOnScroll
             panOnScrollMode={PanOnScrollMode.Vertical}
             panOnDrag={[0, 1]}
-            zoomOnDoubleClick={false}
-            zoomOnPinch={false}
-            zoomOnScroll={false}
-            minZoom={1}
-            maxZoom={1}
             proOptions={{ hideAttribution: true }}
           />
         </EdgesContext.Provider>

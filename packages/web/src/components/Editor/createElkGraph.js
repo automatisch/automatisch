@@ -13,7 +13,7 @@ function createElkNode(
   };
 }
 
-function createElkEdge(id, source, target) {
+function createElkEdge(source, target) {
   return {
     id: `${source}-to-${target}`,
     sources: [source],
@@ -60,7 +60,8 @@ export function createElkGraphFromSteps(steps) {
   const elkGraph = {
     id: 'root',
     layoutOptions: {
-      'elk.alignment': 'TOP',
+      'elk.algorithm': 'layered',
+      'elk.alignment': 'CENTER',
       'elk.direction': 'DOWN',
       'elk.edgeRouting': 'ORTHOGONAL',
       'elk.hierarchyHandling': 'INCLUDE_CHILDREN',
@@ -68,7 +69,7 @@ export function createElkGraphFromSteps(steps) {
       'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
       'elk.layered.cycleBreaking.strategy': 'DEPTH_FIRST',
       'elk.layered.layering.strategy': 'INTERACTIVE',
-      'elk.layered.mergeEdges': true,
+      'elk.layered.mergeEdges': false,
       'elk.layered.nodePlacement.bk.edgeStraightening': 'IMPROVE_STRAIGHTNESS',
       'elk.layered.nodePlacement.bk.fixedAlignment': 'BALANCED',
       'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
@@ -76,13 +77,18 @@ export function createElkGraphFromSteps(steps) {
       'elk.layered.spacing.nodeNodeBetweenLayers': DIMENSIONS.NODE_SPACING,
       'elk.layered.thoroughness': 10,
       'elk.spacing.nodeNode': DIMENSIONS.NODE_SPACING * 7,
-      'elk.topdownpacking.nodeArrangement.strategy': 'LEFT',
+      'elk.contentAlignment': 'CENTER',
+      'elk.layered.nodePlacement.favorStraightEdges': true,
     },
     children: [],
     edges: [],
   };
 
   const createAddButtonAfter = (parentId) => `${parentId}--add-button`;
+  const createAddButtonWithinBranchAfter = (parentId) =>
+    `${parentId}--add-button-within-branch`;
+  const createAddBranchButtonAfter = (parentId) =>
+    `${parentId}--add-button-branch`;
   const createAddButtonAfterMerge = (parentId) =>
     `${parentId}--add-button-after-merge`;
 
@@ -98,9 +104,10 @@ export function createElkGraphFromSteps(steps) {
     );
 
     const isStructruallySingle = step.structuralType === 'single';
-    const isSingleStep = isStructruallySingle && !step.parentStepId;
     const isPathsStep = step.structuralType === 'paths';
-    const isBranchStep = step.structuralType === 'branch';
+    const isSingleStep = isStructruallySingle && !step.parentStepId;
+    const isBranchActionStep = isStructruallySingle && step.parentStepId;
+    const isBranchStep = step.structuralType === 'branch' && step.parentStepId;
     const isFirstStepAfterMerge =
       (previousStep?.structuralType === 'branch' ||
         previousStep?.structuralType === 'single') &&
@@ -110,40 +117,64 @@ export function createElkGraphFromSteps(steps) {
     const addButtonAfterPreviousStepId = createAddButtonAfter(previousStep?.id);
     const addButtonAfterStepId = createAddButtonAfter(step.id);
     const addButtonAfterMergeId = createAddButtonAfterMerge(pathsStep?.id);
+    const addButtonWithinBranchStepId = createAddButtonWithinBranchAfter(
+      step.id,
+    );
+    const addBranchButtonAfterStepId = createAddBranchButtonAfter(
+      pathsStep?.id,
+    );
 
-    if (previousStep && !isFirstStepAfterMerge && !isBranchStep) {
-      elkGraph.edges.push(
-        createElkEdge(
-          `${addButtonAfterPreviousStepId}--edge--${step.id}`,
-          addButtonAfterPreviousStepId,
-          step.id,
-        ),
+    /**
+     * DRAWING ABOVE THE STEP_NODE
+     */
+    if (
+      previousStep &&
+      !isFirstStepAfterMerge &&
+      !isBranchStep &&
+      !isBranchActionStep
+    ) {
+      // +_NODE --> STEP_NODE
+      elkGraph.edges.push(createElkEdge(addButtonAfterPreviousStepId, step.id));
+    } else if (isBranchStep) {
+      // +_NODE --> STEP_NODE
+      elkGraph.edges.push(createElkEdge(addBranchButtonAfterStepId, step.id));
+    } else if (isBranchActionStep) {
+      const addButtonWithinBranchStepId = createAddButtonWithinBranchAfter(
+        previousStep.id,
       );
+
+      // +_NODE --> STEP_NODE
+      elkGraph.edges.push(createElkEdge(addButtonWithinBranchStepId, step.id));
+    } else if (isFirstStepAfterMerge) {
+      const lastPathsStep = findPathsStep(previousStep.id, steps);
+      const id = createAddButtonAfterMerge(lastPathsStep.id);
+
+      // +_NODE --> STEP_NODE
+      elkGraph.edges.push(createElkEdge(id, step.id));
     }
 
-    // ADD STEP NODE
+    /**
+     * DRAWING THE STEP_NODE
+     */
     elkGraph.children.push(createElkNode(step.id));
 
-    // ADD + NODE
-    elkGraph.children.push(
-      createElkNode(
-        addButtonAfterStepId,
-        DIMENSIONS.ADD_BUTTON_WIDTH,
-        DIMENSIONS.ADD_BUTTON_HEIGHT,
-      ),
-    );
-
-    // CONNECT STEP NODE TO ITS + NODE
-    elkGraph.edges.push(
-      createElkEdge(
-        `${step.id}--edge--${addButtonAfterStepId}`,
-        step.id,
-        addButtonAfterStepId,
-      ),
-    );
-
+    /**
+     * DRAWING BELOW STEP_NODE
+     */
     if (isPathsStep) {
-      // ADD + NODE
+      // +_NODE
+      elkGraph.children.push(
+        createElkNode(
+          addBranchButtonAfterStepId,
+          DIMENSIONS.ADD_BUTTON_WIDTH,
+          DIMENSIONS.ADD_BUTTON_HEIGHT,
+        ),
+      );
+
+      // STEP_NODE --> +_NODE
+      elkGraph.edges.push(createElkEdge(step.id, addBranchButtonAfterStepId));
+
+      // +_NODE at merging point
       elkGraph.children.push(
         createElkNode(
           addButtonAfterMergeId,
@@ -151,35 +182,47 @@ export function createElkGraphFromSteps(steps) {
           DIMENSIONS.ADD_BUTTON_HEIGHT,
         ),
       );
-    }
-
-    if (isBranchStep) {
-      const addButtonAfterPathsStepId = createAddButtonAfter(pathsStep.id);
-      elkGraph.edges.push(
-        createElkEdge(
-          `${addButtonAfterPathsStepId}--edge--${step.id}`,
-          addButtonAfterPathsStepId,
-          step.id,
+    } else if (isLastStepOfBranch) {
+      // +_NODE
+      elkGraph.children.push(
+        createElkNode(
+          addButtonWithinBranchStepId,
+          DIMENSIONS.ADD_BUTTON_WIDTH,
+          DIMENSIONS.ADD_BUTTON_HEIGHT,
         ),
       );
-    }
 
-    if (isLastStepOfBranch) {
+      // STEP_NODE --> +_NODE
+      elkGraph.edges.push(createElkEdge(step.id, addButtonWithinBranchStepId));
+
+      // +_NODE --> +_NODE
       elkGraph.edges.push(
-        createElkEdge(
-          `${addButtonAfterStepId}--edge--${addButtonAfterMergeId}`,
+        createElkEdge(addButtonWithinBranchStepId, addButtonAfterMergeId),
+      );
+    } else if (isBranchStep || isBranchActionStep) {
+      // +_NODE
+      elkGraph.children.push(
+        createElkNode(
+          addButtonWithinBranchStepId,
+          DIMENSIONS.ADD_BUTTON_WIDTH,
+          DIMENSIONS.ADD_BUTTON_HEIGHT,
+        ),
+      );
+
+      // STEP_NODE --> +_NODE
+      elkGraph.edges.push(createElkEdge(step.id, addButtonWithinBranchStepId));
+    } else {
+      // +_NODE
+      elkGraph.children.push(
+        createElkNode(
           addButtonAfterStepId,
-          addButtonAfterMergeId,
+          DIMENSIONS.ADD_BUTTON_WIDTH,
+          DIMENSIONS.ADD_BUTTON_HEIGHT,
         ),
       );
-    }
 
-    if (isFirstStepAfterMerge) {
-      const lastPathsStep = findPathsStep(previousStep.id, steps);
-      const id = createAddButtonAfterMerge(lastPathsStep.id);
-      elkGraph.edges.push(
-        createElkEdge(`${id}--edge--${step.id}`, id, step.id),
-      );
+      // STEP_NODE --> +_NODE
+      elkGraph.edges.push(createElkEdge(step.id, addButtonAfterStepId));
     }
 
     index++;
