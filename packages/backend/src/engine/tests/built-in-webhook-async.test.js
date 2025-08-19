@@ -19,9 +19,9 @@ import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 import {
-  runFlowWorkerJobs,
   startFlowWorker,
   stopFlowWorker,
+  waitFlowWorkerJobs,
 } from '@/test/workers/flow.js';
 
 describe('Built-in webhook app async', () => {
@@ -124,6 +124,8 @@ describe('Built-in webhook app async', () => {
       .first();
 
     expect(execution).toBeUndefined();
+
+    await waitFlowWorkerJobs();
   });
 
   it('should create executions', async () => {
@@ -141,7 +143,7 @@ describe('Built-in webhook app async', () => {
       priority: 3,
     });
 
-    await runFlowWorkerJobs();
+    await waitFlowWorkerJobs();
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -168,7 +170,7 @@ describe('Built-in webhook app async', () => {
       priority: 3,
     });
 
-    await runFlowWorkerJobs();
+    await waitFlowWorkerJobs();
 
     const execution = await Execution.query()
       .where('flowId', flow.id)

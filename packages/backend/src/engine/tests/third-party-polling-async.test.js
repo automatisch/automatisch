@@ -151,7 +151,7 @@ describe('Third-party app (GitHub) polling async', () => {
   it('should create 100 executions when polling finds 100 new issues', async () => {
     const timeBeforePolling = new Date();
 
-    await runFlowWorkerJobs();
+    await runFlowWorkerJobs(flow.id);
 
     const executions = await Execution.query()
       .where('flowId', flow.id)
@@ -166,7 +166,7 @@ describe('Third-party app (GitHub) polling async', () => {
   it('should create 300 execution steps when polling finds 100 new issues', async () => {
     const timeBeforePolling = new Date();
 
-    await runFlowWorkerJobs();
+    await runFlowWorkerJobs(flow.id);
 
     const executions = await Execution.query()
       .where('flowId', flow.id)
@@ -188,7 +188,7 @@ describe('Third-party app (GitHub) polling async', () => {
   it('should create execution step with correct data transformation', async () => {
     const timeBeforePolling = new Date();
 
-    await runFlowWorkerJobs();
+    await runFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -210,7 +210,7 @@ describe('Third-party app (GitHub) polling async', () => {
   it('should create execution steps with correct data', async () => {
     const timeBeforePolling = new Date();
 
-    await runFlowWorkerJobs();
+    await runFlowWorkerJobs(flow.id);
 
     const lastExecution = await Execution.query()
       .where('flowId', flow.id)
@@ -285,7 +285,7 @@ describe('Third-party app (GitHub) polling async', () => {
 
     const timeBeforePolling = new Date();
 
-    await runFlowWorkerJobs();
+    await runFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
