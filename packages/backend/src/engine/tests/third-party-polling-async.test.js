@@ -23,7 +23,7 @@ import githubNewIssuesResponse from './api-mocks/github-new-issues.json';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 
-describe('Third-party app (GitHub) polling async', () => {
+describe.sequential('Third-party app (GitHub) polling async', () => {
   let currentUser,
     flow,
     githubTriggerStep,

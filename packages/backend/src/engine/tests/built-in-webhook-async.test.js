@@ -24,7 +24,7 @@ import {
   waitFlowWorkerJobs,
 } from '@/test/workers/flow.js';
 
-describe('Built-in webhook app async', () => {
+describe.sequential('Built-in webhook app async', () => {
   let currentUser,
     flow,
     webhookAsyncStep,
@@ -125,7 +125,7 @@ describe('Built-in webhook app async', () => {
 
     expect(execution).toBeUndefined();
 
-    await waitFlowWorkerJobs();
+    await waitFlowWorkerJobs(flow.id);
 
     const createdExecution = await Execution.query()
       .where('flowId', flow.id)
@@ -150,7 +150,7 @@ describe('Built-in webhook app async', () => {
 
     await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
 
-    await waitFlowWorkerJobs();
+    await waitFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -177,7 +177,7 @@ describe('Built-in webhook app async', () => {
 
     await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
 
-    await waitFlowWorkerJobs();
+    await waitFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)

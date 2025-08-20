@@ -9,7 +9,7 @@ import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 
-describe('Built-in webhook app sync', () => {
+describe.sequential('Built-in webhook app sync', () => {
   let currentUser, flow, webhookSyncStep, formatterStep, respondWithStep;
 
   beforeEach(async () => {
