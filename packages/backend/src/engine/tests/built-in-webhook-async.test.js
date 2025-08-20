@@ -131,8 +131,6 @@ describe('Built-in webhook app async', () => {
   it('should create executions', async () => {
     const timeBeforeTheRequest = new Date();
 
-    await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
-
     nock('https://ntfy.sh').post('/').reply(200, {
       id: 'V63mhF65S68a',
       time: 1755279302,
@@ -142,6 +140,8 @@ describe('Built-in webhook app async', () => {
       message: 'Hey Automatisch, welcome to the party!',
       priority: 3,
     });
+
+    await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
 
     await waitFlowWorkerJobs();
 
@@ -158,8 +158,6 @@ describe('Built-in webhook app async', () => {
   it('should create execution steps', async () => {
     const timeBeforeTheRequest = new Date();
 
-    await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
-
     nock('https://ntfy.sh').post('/').reply(200, {
       id: 'V63mhF65S68a',
       time: 1755279302,
@@ -169,6 +167,8 @@ describe('Built-in webhook app async', () => {
       message: 'Hey Automatisch, welcome to the party!',
       priority: 3,
     });
+
+    await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
 
     await waitFlowWorkerJobs();
 
