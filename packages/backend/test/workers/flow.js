@@ -5,14 +5,18 @@ export const startFlowWorker = async () => {
   await flowWorker.waitUntilReady();
 };
 
-export const waitFlowWorkerJobs = async () => {
-  // Wait for jobs to be processed
-  let jobCounts;
+export const waitFlowWorkerJobs = async (flowId) => {
+  const jobs = await flowQueue.getJobs(['waiting', 'active']);
 
-  do {
+  const hasWaitingJob = jobs.some((job) => job.data.flowId === flowId);
+
+  if (hasWaitingJob) {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    jobCounts = await flowQueue.getJobCounts();
-  } while (jobCounts.waiting > 0 || jobCounts.active > 0);
+
+    return waitFlowWorkerJobs(flowId);
+  }
+
+  return;
 };
 
 export const runFlowWorkerJobs = async (flowId) => {
@@ -25,7 +29,7 @@ export const runFlowWorkerJobs = async (flowId) => {
     }
   }
 
-  await waitFlowWorkerJobs();
+  await waitFlowWorkerJobs(flowId);
 };
 
 export const stopFlowWorker = async () => {

@@ -25,6 +25,32 @@ export default defineConfig({
     },
   },
   test: {
+    projects: [
+      {
+        // add "extends: true" to inherit the options from the root config
+        extends: true,
+        test: {
+          exclude: ['**/src/engine/tests/**', '**/node_modules/**'],
+          name: 'automatisch',
+        },
+      },
+      {
+        // add "extends: true" to inherit the options from the root config
+        extends: true,
+        test: {
+          include: ['**/src/engine/tests/**/*.test.js'],
+          exclude: ['**/node_modules/**'],
+          name: 'automatisch engine',
+          pool: 'threads',
+          fileParallelism: false,
+          poolOptions: {
+            threads: {
+              singleThread: true,
+            },
+          },
+        },
+      },
+    ],
     root: './',
     environment: 'node',
     setupFiles: ['./test/setup/global-hooks.js'],
@@ -53,10 +79,10 @@ export default defineConfig({
       ],
       thresholds: {
         autoUpdate: true,
-        statements: 98.53,
-        branches: 96.81,
-        functions: 99.18,
-        lines: 98.53,
+        statements: 98.76,
+        branches: 98.34,
+        functions: 99.38,
+        lines: 98.76,
       },
     },
   },
