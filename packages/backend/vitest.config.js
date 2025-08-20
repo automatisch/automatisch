@@ -69,6 +69,7 @@ export default defineConfig({
         '**/src/helpers/axios-with-proxy.js',
         '**/src/helpers/compute-parameters.js',
         '**/src/helpers/user-ability.js',
+        '**/src/engine/**',
         '**/src/models/**',
         '**/src/serializers/**',
       ],
