@@ -28,6 +28,7 @@ export default defineConfig({
     root: './',
     environment: 'node',
     setupFiles: ['./test/setup/global-hooks.js'],
+    globalSetup: ['./test/setup/global-setup.js'],
     globals: true,
     reporters: process.env.GITHUB_ACTIONS ? ['dot', 'github-actions'] : ['dot'],
     coverage: {
