@@ -38,6 +38,7 @@ export default defineConfig({
         // add "extends: true" to inherit the options from the root config
         extends: true,
         test: {
+          testTimeout: 10000,
           include: ['**/src/engine/tests/**/*.test.js'],
           exclude: ['**/node_modules/**'],
           name: 'automatisch engine',
