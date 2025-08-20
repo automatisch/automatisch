@@ -116,8 +116,6 @@ describe('Built-in webhook app async', () => {
       `${webhookAsyncStep.webhookPath}?name=automatisch`
     );
 
-    await waitFlowWorkerJobs();
-
     expect(response.status).toBe(204);
 
     const execution = await Execution.query()
@@ -126,6 +124,15 @@ describe('Built-in webhook app async', () => {
       .first();
 
     expect(execution).toBeUndefined();
+
+    await waitFlowWorkerJobs();
+
+    const createdExecution = await Execution.query()
+      .where('flowId', flow.id)
+      .andWhere('createdAt', '>', timeBeforeTheRequest.toISOString())
+      .first();
+
+    expect(createdExecution).toBeDefined();
   });
 
   it('should create executions', async () => {
