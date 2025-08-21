@@ -1,65 +1,41 @@
-import {
-  describe,
-  it,
-  expect,
-  beforeEach,
-  vi,
-  beforeAll,
-  afterAll,
-} from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
-import nock from 'nock';
 import app from '../../app.js';
 import Execution from '@/models/execution.js';
 import { createUser } from '@/factories/user.js';
-import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
 import { createStep } from '@/factories/step.js';
 import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
-import {
-  startFlowWorker,
-  stopFlowWorker,
-  waitFlowWorkerJobs,
-} from '@/test/workers/flow.js';
 
-describe.sequential('Built-in webhook app async with filter', () => {
+describe.sequential('Built-in webhook app sync with filter', () => {
   let currentUser,
     flow,
-    webhookAsyncStep,
+    webhookSyncStep,
     filterStep,
     formatterStep,
-    ntfyStep,
-    ntfyConnection;
-
-  beforeAll(async () => {
-    await startFlowWorker();
-  });
-
-  afterAll(async () => {
-    await stopFlowWorker();
-  });
+    respondWithStep;
 
   beforeEach(async () => {
     currentUser = await createUser();
 
     flow = await createFlow({
       userId: currentUser.id,
-      name: 'Built-in webhook async test flow',
+      name: 'Built-in webhook sync test flow',
     });
 
-    webhookAsyncStep = await createStep({
+    webhookSyncStep = await createStep({
       flowId: flow.id,
       type: 'trigger',
       appKey: 'webhook',
       key: 'catchRawWebhook',
-      name: 'Built-in webhook async test trigger',
+      name: 'Built-in webhook sync test trigger',
       parameters: {
-        workSynchronously: false,
+        workSynchronously: true,
       },
       position: 1,
-      webhookPath: `/webhooks/flows/${flow.id}`,
+      webhookPath: `/webhooks/flows/${flow.id}/sync`,
       status: 'completed',
     });
 
@@ -73,7 +49,7 @@ describe.sequential('Built-in webhook app async with filter', () => {
           {
             and: [
               {
-                key: `{{step.${webhookAsyncStep.id}.query.key}}`,
+                key: `{{step.${webhookSyncStep.id}.query.key}}`,
                 operator: 'equal',
                 value: 'A',
               },
@@ -91,39 +67,31 @@ describe.sequential('Built-in webhook app async with filter', () => {
       appKey: 'formatter',
       key: 'text',
       parameters: {
-        input: `{{step.${webhookAsyncStep.id}.query.name}}`,
+        input: `{{step.${webhookSyncStep.id}.query.name}}`,
         transform: 'capitalize',
       },
       position: 3,
       status: 'completed',
     });
 
-    ntfyConnection = await createConnection({
-      userId: currentUser.id,
-      key: 'ntfy',
-      formattedData: {
-        serverUrl: 'https://ntfy.sh',
-        screenName: 'ntfy-test-connection',
-      },
-    });
-
-    ntfyStep = await createStep({
+    respondWithStep = await createStep({
       flowId: flow.id,
-      connectionId: ntfyConnection.id,
       type: 'action',
-      appKey: 'ntfy',
-      key: 'sendMessage',
+      appKey: 'webhook',
+      key: 'respondWith',
       parameters: {
-        tags: [],
-        click: '',
-        delay: '',
-        email: '',
-        title: '',
-        topic: 'automatisch-test',
-        attach: '',
-        message: `Hey {{step.${formatterStep.id}.output}}, welcome to the party!`,
-        filename: '',
-        priority: 3,
+        body: `Hey {{step.${formatterStep.id}.output}}, welcome to the party!`,
+        headers: [
+          {
+            key: 'sample-header-one',
+            value: 'sample-value-one',
+          },
+          {
+            key: 'sample-header-two',
+            value: 'sample-value-two',
+          },
+        ],
+        statusCode: '422',
       },
       position: 4,
       status: 'completed',
@@ -132,48 +100,23 @@ describe.sequential('Built-in webhook app async with filter', () => {
     await flow.updateStatus(true);
   });
 
-  it('should respond with 204 status code without waiting for the flow to be completed', async () => {
-    const timeBeforeTheRequest = new Date();
-
+  it('should respond with status code, body and headers specified in the respond with action', async () => {
     const response = await request(app).get(
-      `${webhookAsyncStep.webhookPath}?name=automatisch`
+      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
     );
 
-    expect(response.status).toBe(204);
-
-    const execution = await Execution.query()
-      .where('flowId', flow.id)
-      .andWhere('createdAt', '>', timeBeforeTheRequest.toISOString())
-      .first();
-
-    expect(execution).toBeUndefined();
-
-    await waitFlowWorkerJobs(flow.id);
-
-    const createdExecution = await Execution.query()
-      .where('flowId', flow.id)
-      .andWhere('createdAt', '>', timeBeforeTheRequest.toISOString())
-      .first();
-
-    expect(createdExecution).toBeDefined();
+    expect(response.status).toBe(422);
+    expect(response.text).toBe('Hey Automatisch, welcome to the party!');
+    expect(response.headers['sample-header-one']).toBe('sample-value-one');
+    expect(response.headers['sample-header-two']).toBe('sample-value-two');
   });
 
   it('should create executions', async () => {
     const timeBeforeTheRequest = new Date();
 
-    nock('https://ntfy.sh').post('/').reply(200, {
-      id: 'V63mhF65S68a',
-      time: 1755279302,
-      expires: 1755322502,
-      event: 'message',
-      topic: 'automatisch-test',
-      message: 'Hey Automatisch, welcome to the party!',
-      priority: 3,
-    });
-
-    await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
-
-    await waitFlowWorkerJobs(flow.id);
+    await request(app).get(
+      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
+    );
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -188,21 +131,9 @@ describe.sequential('Built-in webhook app async with filter', () => {
   it('should create all execution steps when the filter matches', async () => {
     const timeBeforeTheRequest = new Date();
 
-    nock('https://ntfy.sh').post('/').reply(200, {
-      id: 'V63mhF65S68a',
-      time: 1755279302,
-      expires: 1755322502,
-      event: 'message',
-      topic: 'automatisch-test',
-      message: 'Hey Automatisch, welcome to the party!',
-      priority: 3,
-    });
-
     await request(app).get(
-      `${webhookAsyncStep.webhookPath}?name=automatisch&key=A`
+      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
     );
-
-    await waitFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -214,20 +145,18 @@ describe.sequential('Built-in webhook app async with filter', () => {
     const executionSteps = await ExecutionStep.query()
       .where('executionId', execution.id)
       .whereIn('stepId', [
-        webhookAsyncStep.id,
+        webhookSyncStep.id,
         filterStep.id,
         formatterStep.id,
-        ntfyStep.id,
+        respondWithStep.id,
       ])
       .orderBy('createdAt', 'asc');
 
     expect(executionSteps.length).toBe(4);
 
     expect(executionSteps[0].status).toBe('success');
-    expect(executionSteps[0].stepId).toBe(webhookAsyncStep.id);
-    expect(executionSteps[0].dataIn).toStrictEqual({
-      workSynchronously: false,
-    });
+    expect(executionSteps[0].stepId).toBe(webhookSyncStep.id);
+    expect(executionSteps[0].dataIn).toStrictEqual({ workSynchronously: true });
     expect(executionSteps[0].dataOut).toMatchObject({
       body: {},
       headers: {
@@ -236,7 +165,6 @@ describe.sequential('Built-in webhook app async with filter', () => {
       },
       query: {
         name: 'automatisch',
-        key: 'A',
       },
     });
 
@@ -280,48 +208,36 @@ describe.sequential('Built-in webhook app async with filter', () => {
     });
 
     expect(executionSteps[3].status).toBe('success');
-    expect(executionSteps[3].stepId).toBe(ntfyStep.id);
+    expect(executionSteps[3].stepId).toBe(respondWithStep.id);
     expect(executionSteps[3].dataIn).toMatchObject({
-      attach: '',
-      click: '',
-      delay: '',
-      email: '',
-      filename: '',
-      message: 'Hey Automatisch, welcome to the party!',
-      priority: 3,
-      tags: [],
-      title: '',
-      topic: 'automatisch-test',
+      body: 'Hey Automatisch, welcome to the party!',
+      headers: [
+        {
+          key: 'sample-header-one',
+          value: 'sample-value-one',
+        },
+        {
+          key: 'sample-header-two',
+          value: 'sample-value-two',
+        },
+      ],
+      statusCode: '422',
     });
     expect(executionSteps[3].dataOut).toMatchObject({
-      id: 'V63mhF65S68a',
-      time: 1755279302,
-      expires: 1755322502,
-      event: 'message',
-      topic: 'automatisch-test',
-      message: 'Hey Automatisch, welcome to the party!',
-      priority: 3,
+      body: 'Hey Automatisch, welcome to the party!',
+      headers: {
+        'sample-header-one': 'sample-value-one',
+        'sample-header-two': 'sample-value-two',
+      },
     });
   });
 
   it('should not continue processing after filter step when it does not match', async () => {
     const timeBeforeTheRequest = new Date();
 
-    nock('https://ntfy.sh').post('/').reply(200, {
-      id: 'V63mhF65S68a',
-      time: 1755279302,
-      expires: 1755322502,
-      event: 'message',
-      topic: 'automatisch-test',
-      message: 'Hey Automatisch, welcome to the party!',
-      priority: 3,
-    });
-
     await request(app).get(
-      `${webhookAsyncStep.webhookPath}?name=automatisch&key=B`
+      `${webhookSyncStep.webhookPath}?name=automatisch&key=B`
     );
-
-    await waitFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -333,20 +249,18 @@ describe.sequential('Built-in webhook app async with filter', () => {
     const executionSteps = await ExecutionStep.query()
       .where('executionId', execution.id)
       .whereIn('stepId', [
-        webhookAsyncStep.id,
+        webhookSyncStep.id,
         filterStep.id,
         formatterStep.id,
-        ntfyStep.id,
+        respondWithStep.id,
       ])
       .orderBy('createdAt', 'asc');
 
     expect(executionSteps.length).toBe(2);
 
     expect(executionSteps[0].status).toBe('success');
-    expect(executionSteps[0].stepId).toBe(webhookAsyncStep.id);
-    expect(executionSteps[0].dataIn).toStrictEqual({
-      workSynchronously: false,
-    });
+    expect(executionSteps[0].stepId).toBe(webhookSyncStep.id);
+    expect(executionSteps[0].dataIn).toStrictEqual({ workSynchronously: true });
     expect(executionSteps[0].dataOut).toMatchObject({
       body: {},
       headers: {
@@ -384,7 +298,7 @@ describe.sequential('Built-in webhook app async with filter', () => {
     const timeBeforeTheRequest = new Date();
 
     const response = await request(app).get(
-      `${webhookAsyncStep.webhookPath}?name=automatisch`
+      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
     );
 
     expect(response.status).toBe(422);
