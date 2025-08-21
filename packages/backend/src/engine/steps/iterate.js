@@ -63,7 +63,7 @@ const iterateSteps = async ({
         return { statusCode: 422 };
       }
 
-      continue;
+      break;
     }
 
     if (!testRun && actionStep.appKey === 'delay') {
