@@ -66,7 +66,7 @@ const iterateSteps = async ({
       break;
     }
 
-    if (!testRun && actionStep.appKey === 'delay') {
+    if (!testRun && actionStep.appKey === 'delay' && !triggeredByRequest) {
       const nextStepId = await actionStep.getNextStep();
 
       if (!nextStepId) {
