@@ -32,6 +32,10 @@ export const runFlowWorkerJobs = async (flowId) => {
   await waitFlowWorkerJobs(flowId);
 };
 
+export const drainFlowWorkerJobs = async (delayed = false) => {
+  return await flowQueue.drain(delayed);
+};
+
 export const stopFlowWorker = async () => {
   await flowWorker.close();
 };
