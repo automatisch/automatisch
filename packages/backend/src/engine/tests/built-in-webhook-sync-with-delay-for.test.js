@@ -9,7 +9,7 @@ import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 
-describe.sequential('Built-in webhook app sync with delay', () => {
+describe.sequential('Built-in webhook app sync with delay for', () => {
   let currentUser,
     flow,
     webhookSyncStep,
@@ -117,7 +117,7 @@ describe.sequential('Built-in webhook app sync with delay', () => {
     expect(execution).toBeDefined();
   });
 
-  it('should create all execution steps without delaying', async () => {
+  it('should create all execution steps without waiting for "delay for" step', async () => {
     const timeBeforeTheRequest = new Date();
 
     await request(app).get(`${webhookSyncStep.webhookPath}?name=automatisch`);
