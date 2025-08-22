@@ -45,7 +45,7 @@ describe.sequential('Built-in webhook app sync with delay until', () => {
       appKey: 'delay',
       key: 'delayUntil',
       parameters: {
-        delayUntil: '2022-12-18',
+        delayUntil: '2030-12-18',
       },
       position: 2,
       status: 'completed',
@@ -157,10 +157,10 @@ describe.sequential('Built-in webhook app sync with delay until', () => {
     expect(executionSteps[1].status).toBe('success');
     expect(executionSteps[1].stepId).toBe(delayStep.id);
     expect(executionSteps[1].dataIn).toMatchObject({
-      delayUntil: '2022-12-18',
+      delayUntil: '2030-12-18',
     });
     expect(executionSteps[1].dataOut).toMatchObject({
-      delayUntil: '2022-12-18',
+      delayUntil: '2030-12-18',
     });
 
     expect(executionSteps[2].status).toBe('success');

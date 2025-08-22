@@ -26,7 +26,7 @@ import {
   waitFlowWorkerJobs,
 } from '@/test/workers/flow.js';
 
-describe.sequential('Built-in webhook app async with delay for', () => {
+describe.sequential('Built-in webhook app async with delay until', () => {
   let currentUser,
     flow,
     webhookAsyncStep,
@@ -69,10 +69,9 @@ describe.sequential('Built-in webhook app async with delay for', () => {
       flowId: flow.id,
       type: 'action',
       appKey: 'delay',
-      key: 'delayFor',
+      key: 'delayUntil',
       parameters: {
-        delayForUnit: 'hours',
-        delayForValue: '1',
+        delayUntil: '2030-12-18',
       },
       position: 2,
       status: 'completed',
@@ -238,12 +237,10 @@ describe.sequential('Built-in webhook app async with delay for', () => {
     expect(executionSteps[1].status).toBe('success');
     expect(executionSteps[1].stepId).toBe(delayStep.id);
     expect(executionSteps[1].dataIn).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
     expect(executionSteps[1].dataOut).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
   });
 
@@ -309,12 +306,10 @@ describe.sequential('Built-in webhook app async with delay for', () => {
     expect(executionSteps[1].status).toBe('success');
     expect(executionSteps[1].stepId).toBe(delayStep.id);
     expect(executionSteps[1].dataIn).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
     expect(executionSteps[1].dataOut).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
 
     expect(executionSteps[2].status).toBe('success');
