@@ -6,19 +6,15 @@ import Folder from '@/models/folder.js';
 import Execution from '@/models/execution.js';
 import Form from '@/models/form.ee.js';
 import ExecutionStep from '@/models/execution-step.js';
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import logger from '@/helpers/logger.js';
 import Telemetry from '@/helpers/telemetry/index.js';
 import exportFlow from '@/helpers/export-flow.js';
 import importFlow from '@/helpers/import-flow.js';
 import flowQueue from '@/queues/flow.js';
 import { hasValidLicense } from '@/helpers/license.ee.js';
-import {
-  REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-  REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-} from '@/helpers/remove-job-configuration.js';
+import Engine from '@/engine/index.js';
 
-const JOB_NAME = 'flow';
 const EVERY_1_MINUTE_CRON = '* * * * *';
 const EVERY_2_MINUTES_CRON = '*/2 * * * *';
 const EVERY_5_MINUTES_CRON = '*/5 * * * *';
@@ -376,6 +372,19 @@ class Flow extends Base {
     });
   }
 
+  async getActionSteps() {
+    return await this.$relatedQuery('steps')
+      .where({ type: 'action' })
+      .orderBy('position', 'asc');
+  }
+
+  async getLastActionStep() {
+    return await this.$relatedQuery('steps')
+      .where({ type: 'action' })
+      .orderBy('position', 'desc')
+      .first();
+  }
+
   async isPaused() {
     const user = await this.$relatedQuery('user').withSoftDeleted();
     const allowedToRunFlows = await user.isAllowedToRunFlows();
@@ -466,22 +475,14 @@ class Flow extends Base {
           publishedAt: new Date().toISOString(),
         });
 
-        const jobName = `${JOB_NAME}-${this.id}`;
-
-        await flowQueue.add(
-          jobName,
-          { flowId: this.id },
-          {
-            repeat: repeatOptions,
-            jobId: this.id,
-            removeOnComplete: REMOVE_AFTER_7_DAYS_OR_50_JOBS,
-            removeOnFail: REMOVE_AFTER_30_DAYS_OR_150_JOBS,
-          }
-        );
+        await Engine.runInBackground({
+          jobId: this.id,
+          flowId: this.id,
+          repeat: repeatOptions,
+        });
       } else {
         const repeatableJobs = await flowQueue.getRepeatableJobs();
         const job = repeatableJobs.find((job) => job.id === this.id);
-
         await flowQueue.removeRepeatableByKey(job.key);
       }
     }

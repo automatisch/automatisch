@@ -2,6 +2,7 @@ import { Model } from 'objection';
 import { client as knex } from '@/config/database.js';
 import logger from '@/helpers/logger.js';
 import { vi } from 'vitest';
+import nock from 'nock';
 import './insert-assertions.js';
 
 global.beforeAll(async () => {
@@ -25,6 +26,9 @@ global.beforeEach(async () => {
 global.afterEach(async () => {
   await global.knex.rollback();
   Model.knex(knex);
+
+  // Remove all API request mocks
+  nock.cleanAll();
 
   vi.restoreAllMocks();
   vi.clearAllMocks();

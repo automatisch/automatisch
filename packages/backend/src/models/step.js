@@ -7,9 +7,9 @@ import Connection from '@/models/connection.js';
 import ExecutionStep from '@/models/execution-step.js';
 import Telemetry from '@/helpers/telemetry/index.js';
 import appConfig from '@/config/app.js';
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import computeParameters from '@/helpers/compute-parameters.js';
-import testRun from '@/services/test-run.js';
+import Engine from '@/engine/index.js';
 import { generateIconUrl } from '@/helpers/generate-icon-url.js';
 
 class Step extends Base {
@@ -167,7 +167,7 @@ class Step extends Base {
   }
 
   async testAndContinue() {
-    await testRun({ stepId: this.id });
+    await Engine.run({ untilStepId: this.id, testRun: true });
 
     const updatedStep = await this.$query()
       .withGraphFetched('lastExecutionStep')

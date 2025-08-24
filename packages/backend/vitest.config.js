@@ -10,22 +10,52 @@ export default defineConfig({
       '@/models': resolve(__dirname, './src/models'),
       '@/controllers': resolve(__dirname, './src/controllers'),
       '@/helpers': resolve(__dirname, './src/helpers'),
+      '@/middlewares': resolve(__dirname, './src/middlewares'),
       '@/config': resolve(__dirname, './src/config'),
       '@/errors': resolve(__dirname, './src/errors'),
       '@/queues': resolve(__dirname, './src/queues'),
       '@/workers': resolve(__dirname, './src/workers'),
       '@/jobs': resolve(__dirname, './src/jobs'),
-      '@/services': resolve(__dirname, './src/services'),
+      '@/engine': resolve(__dirname, './src/engine'),
       '@/routes': resolve(__dirname, './src/routes'),
       '@/serializers': resolve(__dirname, './src/serializers'),
       '@/factories': resolve(__dirname, './test/factories'),
       '@/mocks': resolve(__dirname, './test/mocks'),
+      '@/test/workers': resolve(__dirname, './test/workers'),
     },
   },
   test: {
+    projects: [
+      {
+        // add "extends: true" to inherit the options from the root config
+        extends: true,
+        test: {
+          exclude: ['**/src/engine/tests/**', '**/node_modules/**'],
+          name: 'automatisch',
+        },
+      },
+      {
+        // add "extends: true" to inherit the options from the root config
+        extends: true,
+        test: {
+          testTimeout: 10000,
+          include: ['**/src/engine/tests/**/*.test.js'],
+          exclude: ['**/node_modules/**'],
+          name: 'automatisch engine',
+          pool: 'threads',
+          fileParallelism: false,
+          poolOptions: {
+            threads: {
+              singleThread: true,
+            },
+          },
+        },
+      },
+    ],
     root: './',
     environment: 'node',
     setupFiles: ['./test/setup/global-hooks.js'],
+    globalSetup: ['./test/setup/global-setup.js'],
     globals: true,
     reporters: process.env.GITHUB_ACTIONS ? ['dot', 'github-actions'] : ['dot'],
     coverage: {
@@ -40,6 +70,7 @@ export default defineConfig({
         '**/src/helpers/axios-with-proxy.js',
         '**/src/helpers/compute-parameters.js',
         '**/src/helpers/user-ability.js',
+        '**/src/engine/**',
         '**/src/models/**',
         '**/src/serializers/**',
       ],
@@ -50,10 +81,10 @@ export default defineConfig({
       ],
       thresholds: {
         autoUpdate: true,
-        statements: 98.53,
-        branches: 96.81,
-        functions: 99.37,
-        lines: 98.53,
+        statements: 98.76,
+        branches: 98.34,
+        functions: 99.38,
+        lines: 98.76,
       },
     },
   },
