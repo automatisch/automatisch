@@ -120,6 +120,7 @@ const runInBackground = async (options) => {
     delay,
     repeat,
     request,
+    testRun,
     triggeredByRequest,
   } = options;
 
@@ -136,6 +137,7 @@ const runInBackground = async (options) => {
       request,
       resumeStepId,
       resumeExecutionId,
+      testRun,
       triggeredByRequest,
     },
     {
