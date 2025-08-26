@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import nock from 'nock';
 import app from '../../../app.js';
+import Engine from '@/engine/index.js';
 import Execution from '@/models/execution.js';
 import { createUser } from '@/factories/user.js';
 import { createConnection } from '@/factories/connection.js';
@@ -221,6 +222,35 @@ describe.sequential('Built-in webhook app async with delay for', () => {
       delayForUnit: 'hours',
       delayForValue: '1',
     });
+  });
+
+  it('should delay and continue running from where it is left in background after delay', async () => {
+    const AN_HOUR_IN_MS = 60 * 60 * 1000;
+    const timeBeforePolling = new Date();
+
+    await request(app).get(
+      `${webhookAsyncStep.webhookPath}?name=automatisch&key=A`
+    );
+
+    vi.spyOn(Engine, 'runInBackground');
+
+    await runFlowWorkerJobs(flow.id);
+
+    const execution = await Execution.query()
+      .where('flowId', flow.id)
+      .andWhere('status', 'success')
+      .andWhere('testRun', false)
+      .andWhere('createdAt', '>', timeBeforePolling.toISOString())
+      .first();
+
+    expect(Engine.runInBackground).toHaveBeenCalledWith(
+      expect.objectContaining({
+        delay: AN_HOUR_IN_MS,
+        flowId: flow.id,
+        resumeStepId: formatterStep.id,
+        resumeExecutionId: execution.id,
+      })
+    );
   });
 
   it('should create all execution steps after "delay for" step', async () => {
