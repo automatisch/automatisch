@@ -1,16 +1,24 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
-import app from '../../app.js';
+import nock from 'nock';
+import app from '../../../app.js';
 import Execution from '@/models/execution.js';
 import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
 import { createStep } from '@/factories/step.js';
 import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
+import { waitFlowWorkerJobs } from '@/test/workers/flow.js';
 
-describe.sequential('Built-in webhook app sync', () => {
-  let currentUser, flow, webhookSyncStep, formatterStep, respondWithStep;
+describe.sequential('Built-in webhook app async', () => {
+  let currentUser,
+    flow,
+    webhookAsyncStep,
+    formatterStep,
+    ntfyStep,
+    ntfyConnection;
 
   beforeEach(async () => {
     currentUser = await createUser();
@@ -20,17 +28,17 @@ describe.sequential('Built-in webhook app sync', () => {
       name: 'Built-in webhook sync test flow',
     });
 
-    webhookSyncStep = await createStep({
+    webhookAsyncStep = await createStep({
       flowId: flow.id,
       type: 'trigger',
       appKey: 'webhook',
       key: 'catchRawWebhook',
       name: 'Built-in webhook sync test trigger',
       parameters: {
-        workSynchronously: true,
+        workSynchronously: false,
       },
       position: 1,
-      webhookPath: `/webhooks/flows/${flow.id}/sync`,
+      webhookPath: `/webhooks/flows/${flow.id}`,
       status: 'completed',
     });
 
@@ -40,31 +48,39 @@ describe.sequential('Built-in webhook app sync', () => {
       appKey: 'formatter',
       key: 'text',
       parameters: {
-        input: `{{step.${webhookSyncStep.id}.query.name}}`,
+        input: `{{step.${webhookAsyncStep.id}.query.name}}`,
         transform: 'capitalize',
       },
       position: 2,
       status: 'completed',
     });
 
-    respondWithStep = await createStep({
+    ntfyConnection = await createConnection({
+      userId: currentUser.id,
+      key: 'ntfy',
+      formattedData: {
+        serverUrl: 'https://ntfy.sh',
+        screenName: 'ntfy-test-connection',
+      },
+    });
+
+    ntfyStep = await createStep({
       flowId: flow.id,
+      connectionId: ntfyConnection.id,
       type: 'action',
-      appKey: 'webhook',
-      key: 'respondWith',
+      appKey: 'ntfy',
+      key: 'sendMessage',
       parameters: {
-        body: `Hey {{step.${formatterStep.id}.output}}, welcome to the party!`,
-        headers: [
-          {
-            key: 'sample-header-one',
-            value: 'sample-value-one',
-          },
-          {
-            key: 'sample-header-two',
-            value: 'sample-value-two',
-          },
-        ],
-        statusCode: '422',
+        tags: [],
+        click: '',
+        delay: '',
+        email: '',
+        title: '',
+        topic: 'automatisch-test',
+        attach: '',
+        message: `Hey {{step.${formatterStep.id}.output}}, welcome to the party!`,
+        filename: '',
+        priority: 3,
       },
       position: 3,
       status: 'completed',
@@ -73,21 +89,48 @@ describe.sequential('Built-in webhook app sync', () => {
     await flow.updateStatus(true);
   });
 
-  it('should respond with status code, body and headers specified in the respond with action', async () => {
+  it('should respond with 204 status code without waiting for the flow to be completed', async () => {
+    const timeBeforeTheRequest = new Date();
+
     const response = await request(app).get(
-      `${webhookSyncStep.webhookPath}?name=automatisch`
+      `${webhookAsyncStep.webhookPath}?name=automatisch`
     );
 
-    expect(response.status).toBe(422);
-    expect(response.text).toBe('Hey Automatisch, welcome to the party!');
-    expect(response.headers['sample-header-one']).toBe('sample-value-one');
-    expect(response.headers['sample-header-two']).toBe('sample-value-two');
+    expect(response.status).toBe(204);
+
+    const execution = await Execution.query()
+      .where('flowId', flow.id)
+      .andWhere('createdAt', '>', timeBeforeTheRequest.toISOString())
+      .first();
+
+    expect(execution).toBeUndefined();
+
+    await waitFlowWorkerJobs(flow.id);
+
+    const createdExecution = await Execution.query()
+      .where('flowId', flow.id)
+      .andWhere('createdAt', '>', timeBeforeTheRequest.toISOString())
+      .first();
+
+    expect(createdExecution).toBeDefined();
   });
 
   it('should create executions', async () => {
     const timeBeforeTheRequest = new Date();
 
-    await request(app).get(`${webhookSyncStep.webhookPath}?name=automatisch`);
+    nock('https://ntfy.sh').post('/').reply(200, {
+      id: 'V63mhF65S68a',
+      time: 1755279302,
+      expires: 1755322502,
+      event: 'message',
+      topic: 'automatisch-test',
+      message: 'Hey Automatisch, welcome to the party!',
+      priority: 3,
+    });
+
+    await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
+
+    await waitFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -102,7 +145,19 @@ describe.sequential('Built-in webhook app sync', () => {
   it('should create execution steps', async () => {
     const timeBeforeTheRequest = new Date();
 
-    await request(app).get(`${webhookSyncStep.webhookPath}?name=automatisch`);
+    nock('https://ntfy.sh').post('/').reply(200, {
+      id: 'V63mhF65S68a',
+      time: 1755279302,
+      expires: 1755322502,
+      event: 'message',
+      topic: 'automatisch-test',
+      message: 'Hey Automatisch, welcome to the party!',
+      priority: 3,
+    });
+
+    await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
+
+    await waitFlowWorkerJobs(flow.id);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -113,18 +168,16 @@ describe.sequential('Built-in webhook app sync', () => {
 
     const executionSteps = await ExecutionStep.query()
       .where('executionId', execution.id)
-      .whereIn('stepId', [
-        webhookSyncStep.id,
-        formatterStep.id,
-        respondWithStep.id,
-      ])
+      .whereIn('stepId', [webhookAsyncStep.id, formatterStep.id, ntfyStep.id])
       .orderBy('createdAt', 'asc');
 
     expect(executionSteps.length).toBe(3);
 
     expect(executionSteps[0].status).toBe('success');
-    expect(executionSteps[0].stepId).toBe(webhookSyncStep.id);
-    expect(executionSteps[0].dataIn).toStrictEqual({ workSynchronously: true });
+    expect(executionSteps[0].stepId).toBe(webhookAsyncStep.id);
+    expect(executionSteps[0].dataIn).toStrictEqual({
+      workSynchronously: false,
+    });
     expect(executionSteps[0].dataOut).toMatchObject({
       body: {},
       headers: {
@@ -147,27 +200,27 @@ describe.sequential('Built-in webhook app sync', () => {
     });
 
     expect(executionSteps[2].status).toBe('success');
-    expect(executionSteps[2].stepId).toBe(respondWithStep.id);
+    expect(executionSteps[2].stepId).toBe(ntfyStep.id);
     expect(executionSteps[2].dataIn).toMatchObject({
-      body: 'Hey Automatisch, welcome to the party!',
-      headers: [
-        {
-          key: 'sample-header-one',
-          value: 'sample-value-one',
-        },
-        {
-          key: 'sample-header-two',
-          value: 'sample-value-two',
-        },
-      ],
-      statusCode: '422',
+      attach: '',
+      click: '',
+      delay: '',
+      email: '',
+      filename: '',
+      message: 'Hey Automatisch, welcome to the party!',
+      priority: 3,
+      tags: [],
+      title: '',
+      topic: 'automatisch-test',
     });
     expect(executionSteps[2].dataOut).toMatchObject({
-      body: 'Hey Automatisch, welcome to the party!',
-      headers: {
-        'sample-header-one': 'sample-value-one',
-        'sample-header-two': 'sample-value-two',
-      },
+      id: 'V63mhF65S68a',
+      time: 1755279302,
+      expires: 1755322502,
+      event: 'message',
+      topic: 'automatisch-test',
+      message: 'Hey Automatisch, welcome to the party!',
+      priority: 3,
     });
   });
 
@@ -178,7 +231,7 @@ describe.sequential('Built-in webhook app sync', () => {
     const timeBeforeTheRequest = new Date();
 
     const response = await request(app).get(
-      `${webhookSyncStep.webhookPath}?name=automatisch`
+      `${webhookAsyncStep.webhookPath}?name=automatisch`
     );
 
     expect(response.status).toBe(422);

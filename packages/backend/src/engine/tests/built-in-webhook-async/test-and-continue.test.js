@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import nock from 'nock';
-import app from '../../app.js';
+import app from '../../../app.js';
 import Execution from '@/models/execution.js';
 import { createUser } from '@/factories/user.js';
 import { createFlow } from '@/factories/flow.js';

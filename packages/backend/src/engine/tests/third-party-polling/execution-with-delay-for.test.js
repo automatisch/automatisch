@@ -1,24 +1,25 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import nock from 'nock';
 import Execution from '@/models/execution.js';
-import { createUser } from '../../../test/factories/user.js';
-import { createConnection } from '../../../test/factories/connection.js';
-import { createFlow } from '../../../test/factories/flow.js';
-import { createStep } from '../../../test/factories/step.js';
+import Engine from '@/engine/index.js';
+import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
 import ExecutionStep from '@/models/execution-step.js';
 import { runFlowWorkerJobs } from '@/test/workers/flow.js';
-import githubNewIssuesResponse from './api-mocks/github-new-issues.json';
+import githubNewIssuesResponse from '../api-mocks/github-new-issues.json';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 
 describe.sequential(
-  'Third-party app (GitHub) polling async with filter',
+  'Third-party app (GitHub) polling async with delay for',
   () => {
     let currentUser,
       flow,
       githubTriggerStep,
       githubConnection,
-      filterStep,
+      delayStep,
       formatterStep,
       ntfyStep,
       ntfyConnection;
@@ -60,27 +61,19 @@ describe.sequential(
         status: 'completed',
       });
 
-      filterStep = await createStep({
+      delayStep = await createStep({
         flowId: flow.id,
         type: 'action',
-        appKey: 'filter',
-        key: 'continueIfMatches',
+        appKey: 'delay',
+        key: 'delayFor',
         parameters: {
-          or: [
-            {
-              and: [
-                {
-                  key: `{{step.${githubTriggerStep.id}.number}}`,
-                  operator: 'greater_than_or_equal',
-                  value: '2600',
-                },
-              ],
-            },
-          ],
+          delayForUnit: 'hours',
+          delayForValue: 1,
         },
         position: 2,
         status: 'completed',
       });
+
       formatterStep = await createStep({
         flowId: flow.id,
         type: 'action',
@@ -167,7 +160,32 @@ describe.sequential(
       expect(executions.length).toBe(100);
     });
 
-    it('should create 254 execution steps when polling finds 100 new issues with matching filters', async () => {
+    it('should delay and continue running from where it is left in background after delay', async () => {
+      const AN_HOUR_IN_MS = 60 * 60 * 1000;
+      const timeBeforePolling = new Date();
+
+      vi.spyOn(Engine, 'runInBackground');
+
+      await runFlowWorkerJobs(flow.id);
+
+      const execution = await Execution.query()
+        .where('flowId', flow.id)
+        .andWhere('status', 'success')
+        .andWhere('testRun', false)
+        .andWhere('createdAt', '>', timeBeforePolling.toISOString())
+        .first();
+
+      expect(Engine.runInBackground).toHaveBeenCalledWith(
+        expect.objectContaining({
+          delay: AN_HOUR_IN_MS,
+          flowId: flow.id,
+          resumeStepId: formatterStep.id,
+          resumeExecutionId: execution.id,
+        })
+      );
+    });
+
+    it('should create 200 execution steps when polling finds 100 new issues before delay takes place', async () => {
       const timeBeforePolling = new Date();
 
       await runFlowWorkerJobs(flow.id);
@@ -185,18 +203,53 @@ describe.sequential(
         )
         .whereIn('stepId', [
           githubTriggerStep.id,
-          filterStep.id,
+          delayStep.id,
           formatterStep.id,
           ntfyStep.id,
         ]);
 
       expect(executionSteps).toBeDefined();
-      expect(executionSteps.length).toBe(254);
+      expect(executionSteps.length).toBe(200);
+    });
+
+    it('should create 400 execution steps when polling finds 100 new issues after delay takes place', async () => {
+      const timeBeforePolling = new Date();
+
+      // Run the flow until the delay
+      await runFlowWorkerJobs(flow.id);
+
+      // Run the flow as of the delay step
+      await runFlowWorkerJobs(flow.id);
+
+      const executions = await Execution.query()
+        .where('flowId', flow.id)
+        .andWhere('status', 'success')
+        .andWhere('testRun', false)
+        .andWhere('createdAt', '>', timeBeforePolling.toISOString());
+
+      const executionSteps = await ExecutionStep.query()
+        .whereIn(
+          'executionId',
+          executions.map((execution) => execution.id)
+        )
+        .whereIn('stepId', [
+          githubTriggerStep.id,
+          delayStep.id,
+          formatterStep.id,
+          ntfyStep.id,
+        ]);
+
+      expect(executionSteps).toBeDefined();
+      expect(executionSteps.length).toBe(400);
     });
 
     it('should create execution step with correct data transformation', async () => {
       const timeBeforePolling = new Date();
 
+      // Run the flow until the delay
+      await runFlowWorkerJobs(flow.id);
+
+      // Run the flow as of the delay step
       await runFlowWorkerJobs(flow.id);
 
       const execution = await Execution.query()
@@ -211,7 +264,7 @@ describe.sequential(
         .where('executionId', execution.id)
         .whereIn('stepId', [
           githubTriggerStep.id,
-          filterStep.id,
+          delayStep.id,
           formatterStep.id,
           ntfyStep.id,
         ])
@@ -224,6 +277,10 @@ describe.sequential(
     it('should create execution steps with correct data', async () => {
       const timeBeforePolling = new Date();
 
+      // Run the flow until the delay
+      await runFlowWorkerJobs(flow.id);
+
+      // Run the flow as of the delay step
       await runFlowWorkerJobs(flow.id);
 
       const lastExecution = await Execution.query()
@@ -238,7 +295,7 @@ describe.sequential(
         .where('executionId', lastExecution.id)
         .whereIn('stepId', [
           githubTriggerStep.id,
-          filterStep.id,
+          delayStep.id,
           formatterStep.id,
           ntfyStep.id,
         ])
@@ -259,32 +316,14 @@ describe.sequential(
       );
 
       expect(executionSteps[1].status).toBe('success');
-      expect(executionSteps[1].stepId).toBe(filterStep.id);
+      expect(executionSteps[1].stepId).toBe(delayStep.id);
       expect(executionSteps[1].dataIn).toMatchObject({
-        or: [
-          {
-            and: [
-              {
-                key: '2626',
-                operator: 'greater_than_or_equal',
-                value: '2600',
-              },
-            ],
-          },
-        ],
+        delayForUnit: 'hours',
+        delayForValue: 1,
       });
       expect(executionSteps[1].dataOut).toMatchObject({
-        or: [
-          {
-            and: [
-              {
-                key: '2626',
-                operator: 'greater_than_or_equal',
-                value: '2600',
-              },
-            ],
-          },
-        ],
+        delayForUnit: 'hours',
+        delayForValue: 1,
       });
 
       expect(executionSteps[2].status).toBe('success');

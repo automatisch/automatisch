@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import nock from 'nock';
 import Execution from '@/models/execution.js';
-import { createUser } from '../../../test/factories/user.js';
-import { createConnection } from '../../../test/factories/connection.js';
-import { createFlow } from '../../../test/factories/flow.js';
-import { createStep } from '../../../test/factories/step.js';
+import { createUser } from '../../../../test/factories/user.js';
+import { createConnection } from '../../../../test/factories/connection.js';
+import { createFlow } from '../../../../test/factories/flow.js';
+import { createStep } from '../../../../test/factories/step.js';
 import ExecutionStep from '@/models/execution-step.js';
 import { runFlowWorkerJobs } from '@/test/workers/flow.js';
-import githubNewIssuesResponse from './api-mocks/github-new-issues.json';
+import githubNewIssuesResponse from '../api-mocks/github-new-issues.json';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 

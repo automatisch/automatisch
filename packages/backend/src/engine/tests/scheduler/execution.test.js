@@ -1,21 +1,19 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import nock from 'nock';
 import Execution from '@/models/execution.js';
-import { createUser } from '../../../test/factories/user.js';
-import { createConnection } from '../../../test/factories/connection.js';
-import { createFlow } from '../../../test/factories/flow.js';
-import { createStep } from '../../../test/factories/step.js';
+import { createUser } from '@/factories/user.js';
+import { createConnection } from '@/factories/connection.js';
+import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
 import ExecutionStep from '@/models/execution-step.js';
 import { runFlowWorkerJobs } from '@/test/workers/flow.js';
-import githubNewIssuesResponse from './api-mocks/github-new-issues.json';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 
-describe.sequential('Third-party app (GitHub) polling async', () => {
+describe.sequential('Scheduler app async', () => {
   let currentUser,
     flow,
-    githubTriggerStep,
-    githubConnection,
+    schedulerTriggerStep,
     formatterStep,
     ntfyStep,
     ntfyConnection;
@@ -25,33 +23,18 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
 
     flow = await createFlow({
       userId: currentUser.id,
-      name: 'GitHub polling test flow',
+      name: 'Scheduler test flow',
     });
 
-    githubConnection = await createConnection({
-      userId: currentUser.id,
-      key: 'github',
-      formattedData: {
-        consumerKey: 'github-test-consumer-key',
-        consumerSecret: 'github-test-consumer-secret',
-        accessToken: 'github-test-access-token',
-        scope: 'read:org,repo,user',
-        tokenType: 'bearer',
-        userId: 123456,
-        screenName: 'test-user',
-      },
-    });
-
-    githubTriggerStep = await createStep({
+    schedulerTriggerStep = await createStep({
       flowId: flow.id,
-      connectionId: githubConnection.id,
       type: 'trigger',
-      appKey: 'github',
-      key: 'newIssues',
-      name: 'GitHub new issues trigger',
+      appKey: 'scheduler',
+      key: 'everyDay',
+      name: 'Every day trigger',
       parameters: {
-        repo: 'automatisch/automatisch',
-        issueType: 'all',
+        triggersOnWeekend: true,
+        hour: 7,
       },
       position: 1,
       status: 'completed',
@@ -63,7 +46,7 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
       appKey: 'formatter',
       key: 'text',
       parameters: {
-        input: `Hey {{step.${githubTriggerStep.id}.user.login}}, welcome to the party!`,
+        input: 'good morning!',
         transform: 'capitalize',
       },
       position: 2,
@@ -90,45 +73,32 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
         click: '',
         delay: '',
         email: '',
-        title: 'New GitHub Issue',
-        topic: 'automatisch-github-test',
+        title: 'A new day!',
+        topic: 'automatisch-test',
         attach: '',
-        message: `{{step.${formatterStep.id}.output}} New issue: {{step.${githubTriggerStep.id}.url}} by {{step.${githubTriggerStep.id}.user.login}}`,
+        message: `{{step.${formatterStep.id}.output}}`,
         filename: '',
         priority: 3,
       },
-      position: 3,
+      position: 4,
       status: 'completed',
     });
 
     await flow.updateStatus(true);
-
-    nock('https://api.github.com')
-      .persist()
-      .get('/repos/automatisch/automatisch/issues')
-      .query({
-        filter: 'all',
-        state: 'all',
-        sort: 'created',
-        direction: 'desc',
-        per_page: 100,
-      })
-      .reply(200, githubNewIssuesResponse);
 
     nock('https://ntfy.sh').persist().post('/').reply(200, {
       id: 'GH123456789',
       time: 1755279302,
       expires: 1755322502,
       event: 'message',
-      topic: 'automatisch-github-test',
-      title: 'New GitHub Issue',
-      message:
-        'Hey Farukaydin, Welcome To The Party! New issue: https://api.github.com/repos/automatisch/automatisch/issues/2626 by farukaydin',
+      topic: 'automatisch-test',
+      title: 'A new day!',
+      message: 'Good Morning!',
       priority: 3,
     });
   });
 
-  it('should create 100 executions when polling finds 100 new issues', async () => {
+  it('should create execution at 7:00 every day', async () => {
     const timeBeforePolling = new Date();
 
     await runFlowWorkerJobs(flow.id);
@@ -140,10 +110,10 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
       .andWhere('createdAt', '>', timeBeforePolling.toISOString());
 
     expect(executions).toBeDefined();
-    expect(executions.length).toBe(100);
+    expect(executions.length).toBe(1);
   });
 
-  it('should create 300 execution steps when polling finds 100 new issues', async () => {
+  it('should create 3 execution steps', async () => {
     const timeBeforePolling = new Date();
 
     await runFlowWorkerJobs(flow.id);
@@ -159,10 +129,14 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
         'executionId',
         executions.map((execution) => execution.id)
       )
-      .whereIn('stepId', [githubTriggerStep.id, formatterStep.id, ntfyStep.id]);
+      .whereIn('stepId', [
+        schedulerTriggerStep.id,
+        formatterStep.id,
+        ntfyStep.id,
+      ]);
 
     expect(executionSteps).toBeDefined();
-    expect(executionSteps.length).toBe(300);
+    expect(executionSteps.length).toBe(3);
   });
 
   it('should create execution step with correct data transformation', async () => {
@@ -180,7 +154,11 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
 
     const executionSteps = await ExecutionStep.query()
       .where('executionId', execution.id)
-      .whereIn('stepId', [githubTriggerStep.id, formatterStep.id, ntfyStep.id])
+      .whereIn('stepId', [
+        schedulerTriggerStep.id,
+        formatterStep.id,
+        ntfyStep.id,
+      ])
       .orderBy('createdAt', 'asc');
 
     expect(executionSteps).toBeDefined();
@@ -202,31 +180,40 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
 
     const executionSteps = await ExecutionStep.query()
       .where('executionId', lastExecution.id)
-      .whereIn('stepId', [githubTriggerStep.id, formatterStep.id, ntfyStep.id])
+      .whereIn('stepId', [
+        schedulerTriggerStep.id,
+        formatterStep.id,
+        ntfyStep.id,
+      ])
       .orderBy('createdAt', 'asc');
 
     expect(executionSteps.length).toBe(3);
 
     expect(executionSteps[0].status).toBe('success');
-    expect(executionSteps[0].stepId).toBe(githubTriggerStep.id);
+    expect(executionSteps[0].stepId).toBe(schedulerTriggerStep.id);
 
     expect(executionSteps[0].dataIn).toStrictEqual({
-      issueType: 'all',
-      repo: 'automatisch/automatisch',
+      hour: 7,
+      triggersOnWeekend: true,
     });
 
-    expect(executionSteps[0].dataOut).toStrictEqual(githubNewIssuesResponse[0]);
+    expect(executionSteps[0].dataOut).toMatchObject({
+      day: timeBeforePolling.getDate(),
+      hour: timeBeforePolling.getHours(),
+      month: timeBeforePolling.getMonth() + 1,
+      year: timeBeforePolling.getFullYear(),
+    });
 
     expect(executionSteps[1].status).toBe('success');
     expect(executionSteps[1].stepId).toBe(formatterStep.id);
 
     expect(executionSteps[1].dataIn).toMatchObject({
-      input: 'Hey farukaydin, welcome to the party!',
+      input: 'good morning!',
       transform: 'capitalize',
     });
 
     expect(executionSteps[1].dataOut).toMatchObject({
-      output: 'Hey Farukaydin, Welcome To The Party!',
+      output: 'Good Morning!',
     });
 
     expect(executionSteps[2].status).toBe('success');
@@ -238,12 +225,11 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
       delay: '',
       email: '',
       filename: '',
-      message:
-        'Hey Farukaydin, Welcome To The Party! New issue: https://api.github.com/repos/automatisch/automatisch/issues/2626 by farukaydin',
+      message: 'Good Morning!',
       priority: 3,
       tags: [],
-      title: 'New GitHub Issue',
-      topic: 'automatisch-github-test',
+      title: 'A new day!',
+      topic: 'automatisch-test',
     });
 
     expect(executionSteps[2].dataOut).toMatchObject({
@@ -251,10 +237,9 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
       time: 1755279302,
       expires: 1755322502,
       event: 'message',
-      topic: 'automatisch-github-test',
-      title: 'New GitHub Issue',
-      message:
-        'Hey Farukaydin, Welcome To The Party! New issue: https://api.github.com/repos/automatisch/automatisch/issues/2626 by farukaydin',
+      topic: 'automatisch-test',
+      title: 'A new day!',
+      message: 'Good Morning!',
       priority: 3,
     });
   });

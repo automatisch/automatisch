@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
-import app from '../../app.js';
+import app from '../../../app.js';
 import Execution from '@/models/execution.js';
 import { createUser } from '@/factories/user.js';
 import { createFlow } from '@/factories/flow.js';
@@ -9,11 +9,11 @@ import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
 
-describe.sequential('Built-in webhook app sync with filter', () => {
+describe.sequential('Built-in webhook app sync with delay for', () => {
   let currentUser,
     flow,
     webhookSyncStep,
-    filterStep,
+    delayStep,
     formatterStep,
     respondWithStep;
 
@@ -39,23 +39,14 @@ describe.sequential('Built-in webhook app sync with filter', () => {
       status: 'completed',
     });
 
-    filterStep = await createStep({
+    delayStep = await createStep({
       flowId: flow.id,
       type: 'action',
-      appKey: 'filter',
-      key: 'continueIfMatches',
+      appKey: 'delay',
+      key: 'delayFor',
       parameters: {
-        or: [
-          {
-            and: [
-              {
-                key: `{{step.${webhookSyncStep.id}.query.key}}`,
-                operator: 'equal',
-                value: 'A',
-              },
-            ],
-          },
-        ],
+        delayForUnit: 'hours',
+        delayForValue: '1',
       },
       position: 2,
       status: 'completed',
@@ -102,7 +93,7 @@ describe.sequential('Built-in webhook app sync with filter', () => {
 
   it('should respond with status code, body and headers specified in the respond with action', async () => {
     const response = await request(app).get(
-      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
+      `${webhookSyncStep.webhookPath}?name=automatisch`
     );
 
     expect(response.status).toBe(422);
@@ -114,9 +105,7 @@ describe.sequential('Built-in webhook app sync with filter', () => {
   it('should create executions', async () => {
     const timeBeforeTheRequest = new Date();
 
-    await request(app).get(
-      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
-    );
+    await request(app).get(`${webhookSyncStep.webhookPath}?name=automatisch`);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -128,12 +117,10 @@ describe.sequential('Built-in webhook app sync with filter', () => {
     expect(execution).toBeDefined();
   });
 
-  it('should create all execution steps when the filter matches', async () => {
+  it('should create all execution steps without waiting for "delay for" step', async () => {
     const timeBeforeTheRequest = new Date();
 
-    await request(app).get(
-      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
-    );
+    await request(app).get(`${webhookSyncStep.webhookPath}?name=automatisch`);
 
     const execution = await Execution.query()
       .where('flowId', flow.id)
@@ -146,7 +133,7 @@ describe.sequential('Built-in webhook app sync with filter', () => {
       .where('executionId', execution.id)
       .whereIn('stepId', [
         webhookSyncStep.id,
-        filterStep.id,
+        delayStep.id,
         formatterStep.id,
         respondWithStep.id,
       ])
@@ -169,32 +156,14 @@ describe.sequential('Built-in webhook app sync with filter', () => {
     });
 
     expect(executionSteps[1].status).toBe('success');
-    expect(executionSteps[1].stepId).toBe(filterStep.id);
+    expect(executionSteps[1].stepId).toBe(delayStep.id);
     expect(executionSteps[1].dataIn).toMatchObject({
-      or: [
-        {
-          and: [
-            {
-              key: 'A',
-              operator: 'equal',
-              value: 'A',
-            },
-          ],
-        },
-      ],
+      delayForUnit: 'hours',
+      delayForValue: '1',
     });
     expect(executionSteps[1].dataOut).toMatchObject({
-      or: [
-        {
-          and: [
-            {
-              key: 'A',
-              operator: 'equal',
-              value: 'A',
-            },
-          ],
-        },
-      ],
+      delayForUnit: 'hours',
+      delayForValue: '1',
     });
 
     expect(executionSteps[2].status).toBe('success');
@@ -232,65 +201,6 @@ describe.sequential('Built-in webhook app sync with filter', () => {
     });
   });
 
-  it('should not continue processing after filter step when it does not match', async () => {
-    const timeBeforeTheRequest = new Date();
-
-    await request(app).get(
-      `${webhookSyncStep.webhookPath}?name=automatisch&key=B`
-    );
-
-    const execution = await Execution.query()
-      .where('flowId', flow.id)
-      .andWhere('status', 'success')
-      .andWhere('testRun', false)
-      .andWhere('createdAt', '>', timeBeforeTheRequest.toISOString())
-      .first();
-
-    const executionSteps = await ExecutionStep.query()
-      .where('executionId', execution.id)
-      .whereIn('stepId', [
-        webhookSyncStep.id,
-        filterStep.id,
-        formatterStep.id,
-        respondWithStep.id,
-      ])
-      .orderBy('createdAt', 'asc');
-
-    expect(executionSteps.length).toBe(2);
-
-    expect(executionSteps[0].status).toBe('success');
-    expect(executionSteps[0].stepId).toBe(webhookSyncStep.id);
-    expect(executionSteps[0].dataIn).toStrictEqual({ workSynchronously: true });
-    expect(executionSteps[0].dataOut).toMatchObject({
-      body: {},
-      headers: {
-        'accept-encoding': 'gzip, deflate',
-        connection: 'close',
-      },
-      query: {
-        name: 'automatisch',
-        key: 'B',
-      },
-    });
-
-    expect(executionSteps[1].status).toBe('success');
-    expect(executionSteps[1].stepId).toBe(filterStep.id);
-    expect(executionSteps[1].dataIn).toMatchObject({
-      or: [
-        {
-          and: [
-            {
-              key: 'B',
-              operator: 'equal',
-              value: 'A',
-            },
-          ],
-        },
-      ],
-    });
-    expect(executionSteps[1].dataOut).toBeNull();
-  });
-
   it('should respond with 422 if it is cloud and quota is exceeded', async () => {
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
     vi.spyOn(User.prototype, 'isAllowedToRunFlows').mockResolvedValue(false);
@@ -298,7 +208,7 @@ describe.sequential('Built-in webhook app sync with filter', () => {
     const timeBeforeTheRequest = new Date();
 
     const response = await request(app).get(
-      `${webhookSyncStep.webhookPath}?name=automatisch&key=A`
+      `${webhookSyncStep.webhookPath}?name=automatisch`
     );
 
     expect(response.status).toBe(422);
