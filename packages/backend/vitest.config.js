@@ -32,6 +32,7 @@ export default defineConfig({
         test: {
           exclude: ['**/src/engine/tests/**', '**/node_modules/**'],
           name: 'automatisch',
+          setupFiles: ['./test/setup/global-hooks.js'],
         },
       },
       {
@@ -49,13 +50,12 @@ export default defineConfig({
               singleThread: true,
             },
           },
+          setupFiles: ['./test/setup/global-engine-hooks.js'],
         },
       },
     ],
     root: './',
     environment: 'node',
-    setupFiles: ['./test/setup/global-hooks.js'],
-    globalSetup: ['./test/setup/global-setup.js'],
     globals: true,
     reporters: process.env.GITHUB_ACTIONS ? ['dot', 'github-actions'] : ['dot'],
     coverage: {

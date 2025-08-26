@@ -1,12 +1,4 @@
-import {
-  describe,
-  it,
-  expect,
-  beforeEach,
-  vi,
-  beforeAll,
-  afterAll,
-} from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import nock from 'nock';
 import app from '../../app.js';
@@ -18,13 +10,7 @@ import { createStep } from '@/factories/step.js';
 import ExecutionStep from '@/models/execution-step.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
-import {
-  drainFlowWorkerJobs,
-  runFlowWorkerJobs,
-  startFlowWorker,
-  stopFlowWorker,
-  waitFlowWorkerJobs,
-} from '@/test/workers/flow.js';
+import { runFlowWorkerJobs, waitFlowWorkerJobs } from '@/test/workers/flow.js';
 
 describe.sequential('Built-in webhook app async with delay until', () => {
   let currentUser,
@@ -34,14 +20,6 @@ describe.sequential('Built-in webhook app async with delay until', () => {
     formatterStep,
     ntfyStep,
     ntfyConnection;
-
-  beforeAll(async () => {
-    await startFlowWorker();
-  });
-
-  afterAll(async () => {
-    await stopFlowWorker();
-  });
 
   beforeEach(async () => {
     currentUser = await createUser();
@@ -175,8 +153,6 @@ describe.sequential('Built-in webhook app async with delay until', () => {
       .first();
 
     expect(execution).toBeDefined();
-
-    await drainFlowWorkerJobs();
   });
 
   it('should create execution steps until "delay for" step', async () => {

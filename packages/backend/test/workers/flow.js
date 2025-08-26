@@ -8,7 +8,7 @@ export const startFlowWorker = async () => {
 export const waitFlowWorkerJobs = async (flowId) => {
   const jobs = await flowQueue.getJobs(['waiting', 'active']);
 
-  const hasWaitingJob = jobs.some((job) => job.data.flowId === flowId);
+  const hasWaitingJob = jobs.some((job) => job?.data?.flowId === flowId);
 
   if (hasWaitingJob) {
     await new Promise((resolve) => setTimeout(resolve, 100));
@@ -30,10 +30,6 @@ export const runFlowWorkerJobs = async (flowId) => {
   }
 
   await waitFlowWorkerJobs(flowId);
-};
-
-export const drainFlowWorkerJobs = async (delayed = false) => {
-  return await flowQueue.drain(delayed);
 };
 
 export const stopFlowWorker = async () => {
