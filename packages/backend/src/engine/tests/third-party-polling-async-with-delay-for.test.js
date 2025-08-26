@@ -9,6 +9,7 @@ import {
 } from 'vitest';
 import nock from 'nock';
 import Execution from '@/models/execution.js';
+import Engine from '@/engine/index.js';
 import { createUser } from '../../../test/factories/user.js';
 import { createConnection } from '../../../test/factories/connection.js';
 import { createFlow } from '../../../test/factories/flow.js';
@@ -178,6 +179,31 @@ describe.sequential(
 
       expect(executions).toBeDefined();
       expect(executions.length).toBe(100);
+    });
+
+    it('should delay and continue running from where it is left in background after delay', async () => {
+      const AN_HOUR_IN_MS = 60 * 60 * 1000;
+      const timeBeforePolling = new Date();
+
+      vi.spyOn(Engine, 'runInBackground');
+
+      await runFlowWorkerJobs(flow.id);
+
+      const execution = await Execution.query()
+        .where('flowId', flow.id)
+        .andWhere('status', 'success')
+        .andWhere('testRun', false)
+        .andWhere('createdAt', '>', timeBeforePolling.toISOString())
+        .first();
+
+      expect(Engine.runInBackground).toHaveBeenCalledWith(
+        expect.objectContaining({
+          delay: AN_HOUR_IN_MS,
+          flowId: flow.id,
+          resumeStepId: formatterStep.id,
+          resumeExecutionId: execution.id,
+        })
+      );
     });
 
     it('should create 200 execution steps when polling finds 100 new issues before delay takes place', async () => {
