@@ -2,6 +2,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import nock from 'nock';
 import Execution from '@/models/execution.js';
 import Engine from '@/engine/index.js';
+import { DateTime } from 'luxon';
 import { createUser } from '@/factories/user.js';
 import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
@@ -18,9 +19,12 @@ describe.sequential('Scheduler app async', () => {
     formatterStep,
     ntfyStep,
     ntfyConnection,
+    runInBackgroundSpy,
     delayStep;
 
   beforeEach(async () => {
+    runInBackgroundSpy = vi.spyOn(Engine, 'runInBackground');
+
     currentUser = await createUser();
 
     flow = await createFlow({
@@ -46,10 +50,9 @@ describe.sequential('Scheduler app async', () => {
       flowId: flow.id,
       type: 'action',
       appKey: 'delay',
-      key: 'delayFor',
+      key: 'delayUntil',
       parameters: {
-        delayForUnit: 'hours',
-        delayForValue: '1',
+        delayUntil: '2030-12-18',
       },
       position: 2,
       status: 'completed',
@@ -128,7 +131,7 @@ describe.sequential('Scheduler app async', () => {
     expect(execution).toBeDefined();
   });
 
-  it('should create execution steps until "delay for" step', async () => {
+  it('should create execution steps until "delay until" step', async () => {
     const timeBeforeTheRequest = new Date();
 
     await runFlowWorkerJobs(flow.id);
@@ -163,20 +166,17 @@ describe.sequential('Scheduler app async', () => {
     expect(executionSteps[1].status).toBe('success');
     expect(executionSteps[1].stepId).toBe(delayStep.id);
     expect(executionSteps[1].dataIn).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
     expect(executionSteps[1].dataOut).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
   });
 
   it('should delay and continue running from where it is left in background after delay', async () => {
-    const AN_HOUR_IN_MS = 60 * 60 * 1000;
     const timeBeforePolling = new Date();
 
-    vi.spyOn(Engine, 'runInBackground');
+    const runInBackgroundSpy = vi.spyOn(Engine, 'runInBackground');
 
     // Wait for the initial job to be processed which was created by the scheduler trigger step
     await runFlowWorkerJobs(flow.id);
@@ -191,9 +191,24 @@ describe.sequential('Scheduler app async', () => {
       .andWhere('createdAt', '>', timeBeforePolling.toISOString())
       .first();
 
+    const runInBackgrounSpyCallDelay =
+      runInBackgroundSpy.mock.calls[0][0].delay;
+
+    const expectedDelayStartRange = DateTime.fromISO('2030-12-18')
+      .diff(DateTime.now().minus({ minutes: 1 }))
+      .toMillis();
+
+    const expectedDelayEndRange = DateTime.fromISO('2030-12-18').toMillis();
+
+    expect(runInBackgrounSpyCallDelay).toBeGreaterThanOrEqual(
+      expectedDelayStartRange
+    );
+    expect(runInBackgrounSpyCallDelay).toBeLessThanOrEqual(
+      expectedDelayEndRange
+    );
+
     expect(Engine.runInBackground).toHaveBeenCalledWith(
       expect.objectContaining({
-        delay: AN_HOUR_IN_MS,
         flowId: flow.id,
         resumeStepId: formatterStep.id,
         resumeExecutionId: execution.id,
@@ -201,7 +216,7 @@ describe.sequential('Scheduler app async', () => {
     );
   });
 
-  it('should create all execution steps after "delay for" step', async () => {
+  it('should create all execution steps after "delay until" step', async () => {
     // Wait for the initial job to be processed which was created by the async webhook
     await runFlowWorkerJobs(flow.id);
 
@@ -240,12 +255,10 @@ describe.sequential('Scheduler app async', () => {
     expect(executionSteps[1].status).toBe('success');
     expect(executionSteps[1].stepId).toBe(delayStep.id);
     expect(executionSteps[1].dataIn).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
     expect(executionSteps[1].dataOut).toMatchObject({
-      delayForUnit: 'hours',
-      delayForValue: '1',
+      delayUntil: '2030-12-18',
     });
 
     expect(executionSteps[2].status).toBe('success');
