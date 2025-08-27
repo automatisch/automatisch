@@ -191,11 +191,19 @@ describe.sequential('Scheduler app async', () => {
     const runInBackgrounSpyCallDelay =
       runInBackgroundSpy.mock.calls[0][0].delay;
 
-    const expectedDelayStartRange = DateTime.fromISO('2030-12-18')
-      .diff(DateTime.now().minus({ minutes: 20 }))
+    const expectedDelayStartRange = DateTime.fromISO('2030-12-18', {
+      zone: 'utc',
+    })
+      .minus({ minutes: 5 })
+      .diff(DateTime.now().toUTC())
       .toMillis();
 
-    const expectedDelayEndRange = DateTime.fromISO('2030-12-18').toMillis();
+    const expectedDelayEndRange = DateTime.fromISO('2030-12-18', {
+      zone: 'utc',
+    })
+      .plus({ minutes: 5 })
+      .diff(DateTime.now().toUTC())
+      .toMillis();
 
     expect(runInBackgrounSpyCallDelay).toBeGreaterThanOrEqual(
       expectedDelayStartRange
