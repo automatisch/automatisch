@@ -19,12 +19,9 @@ describe.sequential('Scheduler app async', () => {
     formatterStep,
     ntfyStep,
     ntfyConnection,
-    runInBackgroundSpy,
     delayStep;
 
   beforeEach(async () => {
-    runInBackgroundSpy = vi.spyOn(Engine, 'runInBackground');
-
     currentUser = await createUser();
 
     flow = await createFlow({

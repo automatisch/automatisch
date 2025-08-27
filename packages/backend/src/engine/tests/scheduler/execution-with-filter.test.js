@@ -10,7 +10,6 @@ import ExecutionStep from '@/models/execution-step.js';
 import { runFlowWorkerJobs } from '@/test/workers/flow.js';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
-import { DateTime } from 'luxon';
 
 describe.sequential('Scheduler app with filter', () => {
   let currentUser,
