@@ -359,7 +359,7 @@ describe.sequential(
         runInBackgroundSpy.mock.calls[0][0].delay;
 
       const expectedDelayStartRange = DateTime.fromISO('2030-12-18')
-        .diff(DateTime.now().minus({ minutes: 1 }))
+        .diff(DateTime.now().minus({ minutes: 20 }))
         .toMillis();
 
       const expectedDelayEndRange = DateTime.fromISO('2030-12-18').toMillis();
