@@ -1,6 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import nock from 'nock';
 import Execution from '@/models/execution.js';
+import Engine from '@/engine/index.js';
 import { createUser } from '@/factories/user.js';
 import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
@@ -16,9 +17,12 @@ describe.sequential('Scheduler app async', () => {
     schedulerTriggerStep,
     formatterStep,
     ntfyStep,
-    ntfyConnection;
+    ntfyConnection,
+    runInBackgroundSpy;
 
   beforeEach(async () => {
+    runInBackgroundSpy = vi.spyOn(Engine, 'runInBackground');
+
     currentUser = await createUser();
 
     flow = await createFlow({
@@ -98,7 +102,19 @@ describe.sequential('Scheduler app async', () => {
     });
   });
 
-  it('should create execution at 7:00 every day', async () => {
+  it('should schedule running at specified interval', async () => {
+    expect(runInBackgroundSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flowId: flow.id,
+        jobId: flow.id,
+        repeat: {
+          pattern: '0 7 * * *',
+        },
+      })
+    );
+  });
+
+  it('should create execution', async () => {
     const timeBeforePolling = new Date();
 
     await runFlowWorkerJobs(flow.id);
