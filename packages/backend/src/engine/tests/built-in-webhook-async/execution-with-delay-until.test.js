@@ -1,8 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import nock from 'nock';
+import { DateTime } from 'luxon';
 import app from '../../../app.js';
 import Execution from '@/models/execution.js';
+import Engine from '@/engine/index.js';
 import { createUser } from '@/factories/user.js';
 import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
@@ -155,7 +157,7 @@ describe.sequential('Built-in webhook app async with delay until', () => {
     expect(execution).toBeDefined();
   });
 
-  it('should create execution steps until "delay for" step', async () => {
+  it('should create execution steps until "delay until" step', async () => {
     const timeBeforeTheRequest = new Date();
 
     nock('https://ntfy.sh').post('/').reply(200, {
@@ -220,7 +222,7 @@ describe.sequential('Built-in webhook app async with delay until', () => {
     });
   });
 
-  it('should create all execution steps after "delay for" step', async () => {
+  it('should create all execution steps after "delay until" step', async () => {
     const timeBeforeTheRequest = new Date();
 
     nock('https://ntfy.sh').post('/').reply(200, {
@@ -323,6 +325,49 @@ describe.sequential('Built-in webhook app async with delay until', () => {
       message: 'Hey Automatisch, welcome to the party!',
       priority: 3,
     });
+  });
+
+  it('should delay and continue running from where it is left in background after delay', async () => {
+    await request(app).get(
+      `${webhookAsyncStep.webhookPath}?name=automatisch&key=A`
+    );
+
+    const runInBackgroundSpy = vi.spyOn(Engine, 'runInBackground');
+
+    await runFlowWorkerJobs(flow.id);
+
+    const executions = await Execution.query()
+      .where('flowId', flow.id)
+      .andWhere('status', 'success')
+      .andWhere('testRun', false);
+
+    expect(executions.length).toBe(1);
+
+    const execution = executions[0];
+
+    const runInBackgrounSpyCallDelay =
+      runInBackgroundSpy.mock.calls[0][0].delay;
+
+    const expectedDelayStartRange = DateTime.fromISO('2030-12-18')
+      .diff(DateTime.now().minus({ minutes: 1 }))
+      .toMillis();
+
+    const expectedDelayEndRange = DateTime.fromISO('2030-12-18').toMillis();
+
+    expect(runInBackgrounSpyCallDelay).toBeGreaterThanOrEqual(
+      expectedDelayStartRange
+    );
+    expect(runInBackgrounSpyCallDelay).toBeLessThanOrEqual(
+      expectedDelayEndRange
+    );
+
+    expect(Engine.runInBackground).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flowId: flow.id,
+        resumeStepId: formatterStep.id,
+        resumeExecutionId: execution.id,
+      })
+    );
   });
 
   it('should respond with 422 if it is cloud and quota is exceeded', async () => {

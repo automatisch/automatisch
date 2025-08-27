@@ -10,6 +10,8 @@ import { runFlowWorkerJobs } from '@/test/workers/flow.js';
 import githubNewIssuesResponse from '../api-mocks/github-new-issues.json';
 import appConfig from '@/config/app.js';
 import User from '@/models/user.js';
+import Engine from '@/engine/index.js';
+import { DateTime } from 'luxon';
 
 describe.sequential(
   'Third-party app (GitHub) polling async with delay until',
@@ -337,6 +339,45 @@ describe.sequential(
           'Hey Farukaydin, Welcome To The Party! New issue: https://api.github.com/repos/automatisch/automatisch/issues/2626 by farukaydin',
         priority: 3,
       });
+    });
+
+    it('should delay and continue running from where it is left in background after delay', async () => {
+      const runInBackgroundSpy = vi.spyOn(Engine, 'runInBackground');
+
+      await runFlowWorkerJobs(flow.id);
+
+      const executions = await Execution.query()
+        .where('flowId', flow.id)
+        .andWhere('status', 'success')
+        .andWhere('testRun', false);
+
+      expect(executions.length).toBe(100);
+
+      const execution = executions[0];
+
+      const runInBackgrounSpyCallDelay =
+        runInBackgroundSpy.mock.calls[0][0].delay;
+
+      const expectedDelayStartRange = DateTime.fromISO('2030-12-18')
+        .diff(DateTime.now().minus({ minutes: 1 }))
+        .toMillis();
+
+      const expectedDelayEndRange = DateTime.fromISO('2030-12-18').toMillis();
+
+      expect(runInBackgrounSpyCallDelay).toBeGreaterThanOrEqual(
+        expectedDelayStartRange
+      );
+      expect(runInBackgrounSpyCallDelay).toBeLessThanOrEqual(
+        expectedDelayEndRange
+      );
+
+      expect(Engine.runInBackground).toHaveBeenCalledWith(
+        expect.objectContaining({
+          flowId: flow.id,
+          resumeStepId: formatterStep.id,
+          resumeExecutionId: execution.id,
+        })
+      );
     });
 
     it('should not create execution if cloud quota is exceeded', async () => {
