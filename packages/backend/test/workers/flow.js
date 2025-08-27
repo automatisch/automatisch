@@ -19,12 +19,12 @@ export const waitFlowWorkerJobs = async (flowId) => {
   return;
 };
 
-export const runFlowWorkerJobs = async (flowId) => {
+export const runFlowWorkerJobs = async (flowId, jobName) => {
   // Promote the delayed jobs
   const jobs = await flowQueue.getJobs(['delayed']);
 
   for (const job of jobs) {
-    if (job.data.flowId === flowId) {
+    if (job.data.flowId === flowId && (!jobName || job.name === jobName)) {
       await job.promote();
     }
   }
