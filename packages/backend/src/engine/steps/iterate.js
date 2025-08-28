@@ -10,6 +10,7 @@ const iterateSteps = async ({
   actionSteps,
   testRun,
   triggeredByRequest,
+  triggeredByMcp,
   initialDataItem,
   resumeStepId,
   resumeExecutionId,
@@ -55,12 +56,24 @@ const iterateSteps = async ({
     }
 
     if (!testRun && executionStep.isFailed) {
+      if (triggeredByMcp) {
+        return {
+          mcpError: `Flow \`${flow.name}\` execution failed by action step \`${actionStep.key}\`.`,
+        };
+      }
+
       continue;
     }
 
     if (actionStep.appKey === 'filter' && !executionStep.dataOut) {
       if (triggeredByRequest) {
         return { statusCode: 422 };
+      }
+
+      if (triggeredByMcp) {
+        return {
+          mcpError: `Flow \`${flow.name}\` execution stopped by filter step. The input data was filtered out and no further actions were executed.`,
+        };
       }
 
       break;
@@ -70,7 +83,12 @@ const iterateSteps = async ({
       (triggerStep.appKey === 'webhook' || triggerStep.appKey === 'forms') &&
       triggerStep.parameters.workSynchronously;
 
-    if (!testRun && actionStep.appKey === 'delay' && !workSynchronously) {
+    if (
+      !testRun &&
+      actionStep.appKey === 'delay' &&
+      !workSynchronously &&
+      !triggeredByMcp
+    ) {
       const nextStepId = await actionStep.getNextStep();
 
       if (!nextStepId) {
@@ -100,6 +118,21 @@ const iterateSteps = async ({
         headers,
       };
     }
+  }
+
+  if (triggeredByMcp) {
+    const execution = await flow
+      .$relatedQuery('executions')
+      .findById(executionId);
+    const lastExecutionStep = await execution
+      .$relatedQuery('executionSteps')
+      .orderBy('created_at', 'desc')
+      .first();
+
+    return {
+      mcpSuccess: `Successfully executed flow \`${flow.name}\`.`,
+      mcpData: lastExecutionStep.dataOut,
+    };
   }
 
   if (triggeredByRequest) {

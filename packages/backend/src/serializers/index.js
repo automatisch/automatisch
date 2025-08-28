@@ -28,6 +28,8 @@ import userAppSerializer from '@/serializers/user-app.js';
 import userSerializer from '@/serializers/user.js';
 import formSerializer from '@/serializers/form.ee.js';
 import publicFormSerializer from '@/serializers/public-form.ee.js';
+import mcpServerSerializer from '@/serializers/mcp-server.ee.js';
+import mcpToolSerializer from '@/serializers/mcp-tool.ee.js';
 
 const serializers = {
   Action: actionSerializer,
@@ -36,8 +38,6 @@ const serializers = {
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   AdminTemplate: adminTemplateSerializer,
   AdminUser: adminUserSerializer,
-  Form: formSerializer,
-  PublicForm: publicFormSerializer,
   App: appSerializer,
   AppConfig: appConfigSerializer,
   Auth: authSerializer,
@@ -47,8 +47,12 @@ const serializers = {
   ExecutionStep: executionStepSerializer,
   Flow: flowSerializer,
   Folder: folderSerializer,
+  Form: formSerializer,
+  McpServer: mcpServerSerializer,
+  McpTool: mcpToolSerializer,
   OAuthClient: oauthClientSerializer,
   Permission: permissionSerializer,
+  PublicForm: publicFormSerializer,
   PublicTemplate: publicTemplateSerializer,
   PublicUserInvitation: publicUserInvitationSerializer,
   Role: roleSerializer,

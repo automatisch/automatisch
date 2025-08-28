@@ -17,10 +17,11 @@ const globalVariable = async (options) => {
 
   const isTrigger = step?.isTrigger;
   const lastInternalId = testRun ? undefined : await flow?.lastInternalId();
-  const nextStep = await step?.getNextStep();
+  const nextStep = await step?.getNextStep?.();
 
   const $ = {
     auth: {
+      id: connection?.id,
       set: async (args) => {
         if (connection) {
           await connection.$query().patchAndFetch({
@@ -60,7 +61,8 @@ const globalVariable = async (options) => {
       },
     },
     forms: {
-      getAll: async () => await currentUser.$relatedQuery('forms'),
+      getAll: async () =>
+        await currentUser.$relatedQuery('forms').orderBy('updated_at', 'desc'),
     },
     getLastExecutionStep: async () =>
       (await step?.getLastExecutionStep())?.toJSON(),
@@ -145,7 +147,7 @@ const globalVariable = async (options) => {
     });
   }
 
-  if (step) {
+  if (step?.getWebhookUrl) {
     $.webhookUrl = await step.getWebhookUrl();
   }
 

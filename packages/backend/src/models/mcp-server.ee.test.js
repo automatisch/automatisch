@@ -1,0 +1,406 @@
+import { describe, it, expect, vi } from 'vitest';
+import Crypto from 'node:crypto';
+
+import Base from '@/models/base.js';
+import User from '@/models/user.js';
+import McpTool from '@/models/mcp-tool.ee.js';
+import McpServer from '@/models/mcp-server.ee.js';
+import appConfig from '@/config/app.js';
+import { createUser } from '@/factories/user.js';
+import { createMcpServer } from '@/factories/mcp-server.js';
+import { createMcpTool } from '@/factories/mcp-tool.js';
+import { createConnection } from '@/factories/connection.js';
+import { createFlow } from '@/factories/flow.js';
+import mcpSessionManager from '@/helpers/mcp-sessions.js';
+
+describe('McpServer model', () => {
+  it('tableName should return correct name', () => {
+    expect(McpServer.tableName).toBe('mcp_servers');
+  });
+
+  it('jsonSchema should have correct validations', () => {
+    expect(McpServer.jsonSchema).toMatchSnapshot();
+  });
+
+  it('relationMappings should return correct associations', () => {
+    const relationMappings = McpServer.relationMappings();
+
+    const expectedRelations = {
+      tools: {
+        relation: Base.HasManyRelation,
+        modelClass: McpTool,
+        join: {
+          from: 'mcp_servers.id',
+          to: 'mcp_tools.server_id',
+        },
+      },
+      user: {
+        relation: Base.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'users.id',
+          to: 'mcp_servers.user_id',
+        },
+      },
+    };
+
+    expect(relationMappings).toStrictEqual(expectedRelations);
+  });
+
+  describe('generateToken', () => {
+    it('should generate a UUID token', () => {
+      const mcpServer = new McpServer();
+      const testUuid = '550e8400-e29b-41d4-a716-446655440000';
+
+      vi.spyOn(Crypto, 'randomUUID').mockReturnValue(testUuid);
+      mcpServer.generateToken();
+
+      expect(mcpServer.token).toBe(testUuid);
+    });
+  });
+
+  describe('rotateToken', () => {
+    it('should generate new token and update in database', async () => {
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      const newToken = '550e8400-e29b-41d4-a716-446655440001';
+      vi.spyOn(Crypto, 'randomUUID').mockReturnValue(newToken);
+
+      const updatedServer = await mcpServer.rotateToken();
+      const refetchedServer = await McpServer.query().findById(mcpServer.id);
+
+      expect(updatedServer.token).toBe(newToken);
+      expect(refetchedServer.token).toBe(newToken);
+    });
+  });
+
+  describe('serverUrl', () => {
+    it('should return correct server URL with token', () => {
+      const mcpServer = new McpServer();
+      const testToken = '550e8400-e29b-41d4-a716-446655440003';
+      mcpServer.token = testToken;
+
+      const expectedUrl = `${appConfig.baseUrl}/api/v1/mcp/${testToken}`;
+      expect(mcpServer.serverUrl).toBe(expectedUrl);
+    });
+  });
+
+  describe('createOrUpdateTool', () => {
+    it('should create new tool when none exists', async () => {
+      const notifyToolsListChangedSpy = vi
+        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .mockResolvedValue();
+
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      const connection = await createConnection({
+        userId: user.id,
+      });
+
+      const toolData = {
+        connectionId: connection.id,
+        appKey: 'slack',
+        actions: ['sendMessage', 'createChannel'],
+      };
+
+      const mcpTool = await mcpServer.createOrUpdateTool(toolData);
+
+      expect(mcpTool.serverId).toBe(mcpServer.id);
+      expect(mcpTool.connectionId).toBe(connection.id);
+      expect(mcpTool.appKey).toBe('slack');
+      expect(mcpTool.actions).toEqual(['sendMessage', 'createChannel']);
+      expect(mcpTool.type).toBe('app');
+      expect(mcpTool.flowId).toBeNull();
+      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
+    });
+
+    it('should replace existing tool with same appKey', async () => {
+      const notifyToolsListChangedSpy = vi
+        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .mockResolvedValue();
+
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      const connection = await createConnection({
+        userId: user.id,
+      });
+
+      const initialTool = await createMcpTool({
+        serverId: mcpServer.id,
+        connectionId: connection.id,
+        appKey: 'slack',
+        actions: ['oldAction'],
+      });
+
+      const toolData = {
+        connectionId: connection.id,
+        appKey: 'slack',
+        actions: ['newAction1', 'newAction2'],
+      };
+
+      const newTool = await mcpServer.createOrUpdateTool(toolData);
+
+      // Verify old tool was deleted
+      const deletedTool = await McpTool.query().findById(initialTool.id);
+      expect(deletedTool).toBeUndefined();
+
+      // Verify new tool was created
+      expect(newTool.id).not.toBe(initialTool.id);
+      expect(newTool.serverId).toBe(mcpServer.id);
+      expect(newTool.connectionId).toBe(connection.id);
+      expect(newTool.appKey).toBe('slack');
+      expect(newTool.actions).toEqual(['newAction1', 'newAction2']);
+      expect(newTool.type).toBe('app');
+      expect(newTool.flowId).toBeNull();
+      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
+    });
+
+    it('should create flow-type tool without connectionId', async () => {
+      const notifyToolsListChangedSpy = vi
+        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .mockResolvedValue();
+
+      const user = await createUser();
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+      const flow = await createFlow({
+        userId: user.id,
+        name: 'Test Flow',
+      });
+
+      const toolData = {
+        type: 'flow',
+        flowId: flow.id,
+      };
+
+      const mcpTool = await mcpServer.createOrUpdateTool(toolData);
+
+      expect(mcpTool.serverId).toBe(mcpServer.id);
+      expect(mcpTool.flowId).toBe(flow.id);
+      expect(mcpTool.type).toBe('flow');
+      expect(mcpTool.connectionId).toBeNull();
+      expect(mcpTool.appKey).toBeNull();
+      expect(mcpTool.actions).toEqual([]);
+      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
+    });
+
+    it('should replace existing flow tool with same flowId', async () => {
+      const notifyToolsListChangedSpy = vi
+        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .mockResolvedValue();
+
+      const user = await createUser();
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+      const flow = await createFlow({
+        userId: user.id,
+        name: 'Test Flow',
+      });
+
+      // Create initial flow tool
+      const initialTool = await createMcpTool({
+        serverId: mcpServer.id,
+        type: 'flow',
+        flowId: flow.id,
+      });
+
+      const toolData = {
+        type: 'flow',
+        flowId: flow.id,
+      };
+
+      const newTool = await mcpServer.createOrUpdateTool(toolData);
+
+      // Verify old tool was deleted
+      const deletedTool = await McpTool.query().findById(initialTool.id);
+      expect(deletedTool).toBeUndefined();
+
+      // Verify new tool was created
+      expect(newTool.id).not.toBe(initialTool.id);
+      expect(newTool.serverId).toBe(mcpServer.id);
+      expect(newTool.flowId).toBe(flow.id);
+      expect(newTool.type).toBe('flow');
+      expect(newTool.connectionId).toBeNull();
+      expect(newTool.appKey).toBeNull();
+      expect(newTool.actions).toEqual([]);
+      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
+    });
+  });
+
+  describe('deleteTool', () => {
+    it('should delete existing tool and notify sessions', async () => {
+      const notifyToolsListChangedSpy = vi
+        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .mockResolvedValue();
+
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      const connection = await createConnection({
+        userId: user.id,
+      });
+
+      const mcpTool = await createMcpTool({
+        serverId: mcpServer.id,
+        connectionId: connection.id,
+        appKey: 'slack',
+        actions: ['sendMessage'],
+      });
+
+      const deletedTool = await mcpServer.deleteTool(mcpTool.id);
+
+      expect(deletedTool.id).toBe(mcpTool.id);
+      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
+
+      // Verify tool was deleted from database
+      const refetchedTool = await McpTool.query().findById(mcpTool.id);
+      expect(refetchedTool).toBeUndefined();
+    });
+
+    it('should throw error when tool not found', async () => {
+      const user = await createUser();
+      const nonExistentId = Crypto.randomUUID();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      await expect(mcpServer.deleteTool(nonExistentId)).rejects.toThrow();
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete all related tools before deleting server', async () => {
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      const connection = await createConnection({
+        userId: user.id,
+      });
+
+      const tool1 = await createMcpTool({
+        serverId: mcpServer.id,
+        connectionId: connection.id,
+        appKey: 'slack',
+        actions: ['sendMessage'],
+      });
+
+      const tool2 = await createMcpTool({
+        serverId: mcpServer.id,
+        connectionId: connection.id,
+        appKey: 'github',
+        actions: ['createIssue'],
+      });
+
+      const deletedServer = await mcpServer.delete();
+
+      expect(deletedServer.id).toBe(mcpServer.id);
+
+      // Verify tools were deleted
+      const deletedTool1 = await McpTool.query().findById(tool1.id);
+      const deletedTool2 = await McpTool.query().findById(tool2.id);
+      expect(deletedTool1).toBeUndefined();
+      expect(deletedTool2).toBeUndefined();
+
+      // Verify server was deleted
+      const deletedServer2 = await McpServer.query().findById(mcpServer.id);
+      expect(deletedServer2).toBeUndefined();
+    });
+
+    it('should delete server even when no tools exist', async () => {
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      const deletedServer = await mcpServer.delete();
+
+      expect(deletedServer.id).toBe(mcpServer.id);
+
+      // Verify server was deleted
+      const refetchedServer = await McpServer.query().findById(mcpServer.id);
+      expect(refetchedServer).toBeUndefined();
+    });
+
+    it('should call terminateSessions', async () => {
+      const terminateSessionsSpy = vi
+        .spyOn(McpServer.prototype, 'terminateSessions')
+        .mockResolvedValue();
+
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      await mcpServer.delete();
+
+      expect(terminateSessionsSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('notifyToolsListChanged', () => {
+    it('should call mcp session manager with server id', async () => {
+      const notifyToolsListChangedSpy = vi
+        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .mockResolvedValue();
+
+      const user = await createUser();
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      await mcpServer.notifyToolsListChanged();
+
+      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
+    });
+  });
+
+  describe('$beforeInsert', () => {
+    it('should generate token before inserting', async () => {
+      const user = await createUser();
+      const testUuid = '550e8400-e29b-41d4-a716-446655440002';
+
+      vi.spyOn(Crypto, 'randomUUID').mockReturnValue(testUuid);
+
+      const mcpServer = await McpServer.query().insertAndFetch({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      expect(mcpServer.token).toBe(testUuid);
+    });
+  });
+});

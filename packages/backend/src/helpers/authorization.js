@@ -185,6 +185,42 @@ const authorizationList = {
     action: 'manage',
     subject: 'Flow',
   },
+  'GET /internal/api/v1/mcp-servers/': {
+    action: 'read',
+    subject: 'McpServer',
+  },
+  'POST /internal/api/v1/mcp-servers/': {
+    action: 'manage',
+    subject: 'McpServer',
+  },
+  'GET /internal/api/v1/mcp-servers/:mcpServerId': {
+    action: 'read',
+    subject: 'McpServer',
+  },
+  'PATCH /internal/api/v1/mcp-servers/:mcpServerId': {
+    action: 'manage',
+    subject: 'McpServer',
+  },
+  'DELETE /internal/api/v1/mcp-servers/:mcpServerId': {
+    action: 'manage',
+    subject: 'McpServer',
+  },
+  'GET /internal/api/v1/mcp-servers/:mcpServerId/tools': {
+    action: 'read',
+    subject: 'McpServer',
+  },
+  'POST /internal/api/v1/mcp-servers/:mcpServerId/tools': {
+    action: 'manage',
+    subject: 'McpServer',
+  },
+  'DELETE /internal/api/v1/mcp-servers/:mcpServerId/tools/:mcpToolId': {
+    action: 'manage',
+    subject: 'McpServer',
+  },
+  'POST /internal/api/v1/mcp-servers/:mcpServerId/rotate-token': {
+    action: 'manage',
+    subject: 'McpServer',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {

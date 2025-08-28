@@ -1,0 +1,41 @@
+import { describe, it, expect, beforeEach } from 'vitest';
+import { createMcpTool } from '@/factories/mcp-tool.js';
+import { createMcpServer } from '@/factories/mcp-server.js';
+import { createConnection } from '@/factories/connection.js';
+import mcpToolSerializer from '@/serializers/mcp-tool.ee.js';
+
+describe('mcpToolSerializer', () => {
+  let mcpTool, mcpServer, connection;
+
+  beforeEach(async () => {
+    mcpServer = await createMcpServer({
+      name: 'Test MCP Server',
+    });
+
+    connection = await createConnection();
+
+    mcpTool = await createMcpTool({
+      serverId: mcpServer.id,
+      connectionId: connection.id,
+      appKey: 'slack',
+      actions: ['sendMessageToChannel', 'findUserByEmail'],
+      type: 'app',
+    });
+  });
+
+  it('should return MCP tool data', async () => {
+    const expectedPayload = {
+      id: mcpTool.id,
+      serverId: mcpTool.serverId,
+      type: mcpTool.type,
+      flowId: mcpTool.flowId,
+      connectionId: mcpTool.connectionId,
+      appKey: mcpTool.appKey,
+      actions: mcpTool.actions,
+      createdAt: mcpTool.createdAt.getTime(),
+      updatedAt: mcpTool.updatedAt.getTime(),
+    };
+
+    expect(mcpToolSerializer(mcpTool)).toStrictEqual(expectedPayload);
+  });
+});
