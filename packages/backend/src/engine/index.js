@@ -20,6 +20,7 @@ const run = async ({
   resumeStepId,
   resumeExecutionId,
   initialData,
+  mcpToolId,
 }) => {
   // Build flow context
   const {
@@ -121,6 +122,7 @@ const run = async ({
       triggeredByRequest,
       triggeredByMcp,
       initialDataItem,
+      mcpToolId,
     });
 
     if (result) {

@@ -14,6 +14,7 @@ const iterateSteps = async ({
   initialDataItem,
   resumeStepId,
   resumeExecutionId,
+  mcpToolId,
 }) => {
   let executionId = resumeExecutionId;
 
@@ -23,6 +24,8 @@ const iterateSteps = async ({
         flowId: flow.id,
         stepId: triggerStep.id,
         initialDataItem,
+        triggeredByMcp,
+        mcpToolId,
         testRun,
       });
 

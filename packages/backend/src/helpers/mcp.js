@@ -130,7 +130,10 @@ async function getToolsListFromDatabase(serverId) {
           if (inputSchema) {
             try {
               const schema = JSON.parse(inputSchema);
-              parsedSchema = { type: 'object', properties: schema };
+              parsedSchema = {
+                type: 'object',
+                properties: schema,
+              };
             } catch (error) {
               // Use empty schema if parsing fails
               parsedSchema = { type: 'object', properties: {} };
@@ -256,11 +259,7 @@ async function executeFlowTool(matchedTool, toolName, parameters) {
   const { flow } = matchedTool;
 
   const initialData = {
-    raw: {
-      toolName,
-      parameters,
-      mcpRequest: true,
-    },
+    raw: parameters,
     meta: {
       internalId: Crypto.randomUUID(),
     },
@@ -268,6 +267,7 @@ async function executeFlowTool(matchedTool, toolName, parameters) {
 
   const engineResult = await Engine.run({
     flowId: flow.id,
+    mcpToolId: matchedTool.tool.id,
     triggeredByMcp: true,
     initialData: [initialData],
   });
