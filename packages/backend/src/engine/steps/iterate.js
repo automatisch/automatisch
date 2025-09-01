@@ -127,14 +127,20 @@ const iterateSteps = async ({
     const execution = await flow
       .$relatedQuery('executions')
       .findById(executionId);
-    const lastExecutionStep = await execution
+
+    const respondWithStep = await flow
+      .$relatedQuery('steps')
+      .where({ app_key: 'mcp', key: 'respondWith' })
+      .first();
+
+    const respondWithExecutionStep = await execution
       .$relatedQuery('executionSteps')
-      .orderBy('created_at', 'desc')
+      .where({ step_id: respondWithStep.id })
       .first();
 
     return {
       mcpSuccess: `Successfully executed flow \`${flow.name}\`.`,
-      mcpData: lastExecutionStep.dataOut,
+      mcpData: respondWithExecutionStep.dataOut,
     };
   }
 
