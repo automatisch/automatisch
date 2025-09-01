@@ -5,6 +5,7 @@ const getMcpToolExecutionsMock = (executions) => {
     status: execution.status,
     dataIn: execution.dataIn,
     dataOut: execution.dataOut,
+    errorDetails: execution.errorDetails,
     createdAt: execution.createdAt.getTime(),
     updatedAt: execution.updatedAt.getTime(),
   }));

@@ -4,6 +4,7 @@ import Crypto from 'node:crypto';
 import Base from '@/models/base.js';
 import User from '@/models/user.js';
 import McpTool from '@/models/mcp-tool.ee.js';
+import McpToolExecutions from '@/models/mcp-tool-execution.ee.js';
 import McpServer from '@/models/mcp-server.ee.js';
 import appConfig from '@/config/app.js';
 import { createUser } from '@/factories/user.js';
@@ -26,6 +27,18 @@ describe('McpServer model', () => {
     const relationMappings = McpServer.relationMappings();
 
     const expectedRelations = {
+      mcpToolExecutions: {
+        join: {
+          from: 'mcp_servers.id',
+          through: {
+            from: 'mcp_tools.mcp_server_id',
+            to: 'mcp_tools.id',
+          },
+          to: 'mcp_tool_executions.mcp_tool_id',
+        },
+        modelClass: McpToolExecutions,
+        relation: Base.ManyToManyRelation,
+      },
       tools: {
         relation: Base.HasManyRelation,
         modelClass: McpTool,

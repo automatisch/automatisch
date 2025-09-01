@@ -18,20 +18,20 @@ describe('McpTool model', () => {
     const relationMappings = McpTool.relationMappings();
 
     const expectedRelations = {
+      mcpServer: {
+        relation: Base.BelongsToOneRelation,
+        modelClass: McpServer,
+        join: {
+          from: 'mcp_servers.id',
+          to: 'mcp_tools.mcp_server_id',
+        },
+      },
       mcpToolExecutions: {
         relation: Base.HasManyRelation,
         modelClass: McpToolExecutions,
         join: {
           from: 'mcp_tools.id',
           to: 'mcp_tool_executions.mcp_tool_id',
-        },
-      },
-      server: {
-        relation: Base.BelongsToOneRelation,
-        modelClass: McpServer,
-        join: {
-          from: 'mcp_servers.id',
-          to: 'mcp_tools.mcp_server_id',
         },
       },
     };
