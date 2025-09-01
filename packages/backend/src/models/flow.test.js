@@ -7,7 +7,7 @@ import Step from '@/models/step.js';
 import Folder from '@/models/folder.js';
 import Execution from '@/models/execution.js';
 import Telemetry from '@/helpers/telemetry/index.js';
-import * as globalVariableModule from '@/helpers/global-variable.js';
+import * as globalVariableModule from '@/engine/global-variable.js';
 import { createFlow } from '@/factories/flow.js';
 import { createForm } from '@/factories/form.js';
 import { createUser } from '@/factories/user.js';
@@ -495,6 +495,17 @@ describe('Flow model', () => {
     await createStep({ flowId: flow.id, type: 'action' });
 
     expect(await flow.getTriggerStep()).toStrictEqual(triggerStep);
+  });
+
+  it('getActionSteps', async () => {
+    const flow = await createFlow();
+    const actionStepOne = await createStep({ flowId: flow.id, type: 'action' });
+    const actionStepTwo = await createStep({ flowId: flow.id, type: 'action' });
+
+    expect(await flow.getActionSteps()).toStrictEqual([
+      actionStepOne,
+      actionStepTwo,
+    ]);
   });
 
   describe('isPaused', () => {

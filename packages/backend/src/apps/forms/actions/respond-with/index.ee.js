@@ -52,10 +52,12 @@ export default defineAction({
     const statusCode = parseInt($.step.parameters.statusCode, 10);
     const body = $.step.parameters.body;
     const headers = $.step.parameters.headers.reduce((result, entry) => {
-      return {
-        ...result,
-        [entry.key]: entry.value,
-      };
+      if (entry.key) {
+        return {
+          ...result,
+          [entry.key]: entry.value,
+        };
+      }
     }, {});
 
     $.setActionItem({

@@ -1,6 +1,6 @@
 import Flow from '@/models/flow.js';
+import Engine from '@/engine/index.js';
 import logger from '@/helpers/logger.js';
-import handler from '@/helpers/webhook-handler.js';
 
 export default async (request, response) => {
   const computedRequestPayload = {
@@ -15,17 +15,18 @@ export default async (request, response) => {
 
   const flowId = request.params.flowId;
   const flow = await Flow.query().findById(flowId).throwIfNotFound();
-  const triggerStep = await flow.getTriggerStep();
+  const testRun = !flow.active;
 
-  if (triggerStep.appKey !== 'webhook' && triggerStep.appKey !== 'forms') {
-    const connection = await triggerStep.$relatedQuery('connection');
+  await Engine.runInBackground({
+    flowId,
+    request: {
+      body: request.body,
+      headers: request.headers,
+      query: request.query,
+    },
+    triggeredByRequest: true,
+    testRun,
+  });
 
-    if (!(await connection.verifyWebhook(request))) {
-      return response.sendStatus(401);
-    }
-  }
-
-  await handler(flowId, request, response);
-
-  response.sendStatus(204);
+  return response.status(204).end();
 };

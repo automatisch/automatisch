@@ -1,29 +1,27 @@
-import Step from '@/models/step.js';
-import Flow from '@/models/flow.js';
-import Execution from '@/models/execution.js';
+import buildActionStepContext from '@/engine/action/context.js';
 import ExecutionStep from '@/models/execution-step.js';
 import computeParameters from '@/helpers/compute-parameters.js';
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import { logger } from '@/helpers/logger.js';
 import HttpError from '@/errors/http.js';
 import EarlyExitError from '@/errors/early-exit.js';
 import AlreadyProcessedError from '@/errors/already-processed.js';
 
-export const processAction = async (options) => {
-  const { flowId, stepId, executionId } = options;
+const processActionStep = async (options) => {
+  const { flow, stepId, executionId } = options;
 
-  const flow = await Flow.query().findById(flowId).throwIfNotFound();
-  const execution = await Execution.query()
-    .findById(executionId)
-    .throwIfNotFound();
-
-  const step = await Step.query().findById(stepId).throwIfNotFound();
+  // Build the action step context
+  const { step, execution, app, connection, command } =
+    await buildActionStepContext({
+      stepId,
+      executionId,
+    });
 
   const $ = await globalVariable({
     flow,
-    app: await step.getApp(),
-    step: step,
-    connection: await step.$relatedQuery('connection'),
+    app,
+    step,
+    connection,
     execution,
   });
 
@@ -39,12 +37,10 @@ export const processAction = async (options) => {
     priorExecutionSteps
   );
 
-  const actionCommand = await step.getActionCommand();
-
   $.step.parameters = computedParameters;
 
   try {
-    await actionCommand.run($);
+    await command.run($);
   } catch (error) {
     const shouldEarlyExit = error instanceof EarlyExitError;
     const shouldNotProcess = error instanceof AlreadyProcessedError;
@@ -75,5 +71,7 @@ export const processAction = async (options) => {
       errorDetails: $.actionOutput.error ? $.actionOutput.error : null,
     });
 
-  return { flowId, stepId, executionId, executionStep, computedParameters };
+  return { executionStep, computedParameters };
 };
+
+export default processActionStep;

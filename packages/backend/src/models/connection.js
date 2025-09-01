@@ -8,7 +8,7 @@ import User from '@/models/user.js';
 import Step from '@/models/step.js';
 import appConfig from '@/config/app.js';
 import Telemetry from '@/helpers/telemetry/index.js';
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import NotAuthorizedError from '@/errors/not-authorized.js';
 
 class Connection extends Base {

@@ -1,26 +1,35 @@
-import Flow from '@/models/flow.js';
-import globalVariable from '@/helpers/global-variable.js';
+import globalVariable from '@/engine/global-variable.js';
 import EarlyExitError from '@/errors/early-exit.js';
 import AlreadyProcessedError from '@/errors/already-processed.js';
 import HttpError from '@/errors/http.js';
 import { logger } from '@/helpers/logger.js';
 
-export const processFlow = async (options) => {
-  const { testRun, flowId } = options;
-  const flow = await Flow.query().findById(flowId).throwIfNotFound();
-  const triggerStep = await flow.getTriggerStep();
-  const triggerCommand = await triggerStep.getTriggerCommand();
+const getInitialData = async (options) => {
+  const {
+    testRun,
+    flow,
+    triggerStep,
+    triggerConnection,
+    triggerApp,
+    triggerCommand,
+    request,
+    triggeredByRequest,
+    isBuiltInApp,
+  } = options;
 
   const $ = await globalVariable({
     flow,
-    connection: await triggerStep.$relatedQuery('connection'),
-    app: await triggerStep.getApp(),
+    connection: triggerConnection,
+    app: triggerApp,
     step: triggerStep,
     testRun,
+    request,
   });
 
   try {
-    if (triggerCommand.type === 'webhook' && !flow.active) {
+    if (triggeredByRequest && isBuiltInApp) {
+      await triggerCommand.run($);
+    } else if (testRun && triggerCommand.type === 'webhook') {
       await triggerCommand.testRun($);
     } else {
       await triggerCommand.run($);
@@ -45,5 +54,7 @@ export const processFlow = async (options) => {
     }
   }
 
-  return $.triggerOutput;
+  return { data: $.triggerOutput.data, error: $.triggerOutput.error };
 };
+
+export default getInitialData;

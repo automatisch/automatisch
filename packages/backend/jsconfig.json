@@ -5,16 +5,18 @@
       "@/models/*": ["src/models/*"],
       "@/controllers/*": ["src/controllers/*"],
       "@/helpers/*": ["src/helpers/*"],
+      "@/middlewares/*": ["src/middlewares/*"],
       "@/config/*": ["src/config/*"],
       "@/errors/*": ["src/errors/*"],
       "@/queues/*": ["src/queues/*"],
       "@/workers/*": ["src/workers/*"],
       "@/jobs/*": ["src/jobs/*"],
-      "@/services/*": ["src/services/*"],
+      "@/engine/*": ["src/engine/*"],
       "@/routes/*": ["src/routes/*"],
       "@/serializers/*": ["src/serializers/*"],
       "@/factories/*": ["test/factories/*"],
-      "@/mocks/*": ["test/mocks/*"]
+      "@/mocks/*": ["test/mocks/*"],
+      "@/test/workers/*": ["test/workers/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
