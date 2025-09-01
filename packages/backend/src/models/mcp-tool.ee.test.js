@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 import Base from '@/models/base.js';
 import McpServer from '@/models/mcp-server.ee.js';
 import McpTool from '@/models/mcp-tool.ee.js';
+import McpToolExecutions from '@/models/mcp-tool-execution.ee.js';
 
 describe('McpTool model', () => {
   it('tableName should return correct name', () => {
@@ -17,6 +18,14 @@ describe('McpTool model', () => {
     const relationMappings = McpTool.relationMappings();
 
     const expectedRelations = {
+      mcpToolExecutions: {
+        relation: Base.HasManyRelation,
+        modelClass: McpToolExecutions,
+        join: {
+          from: 'mcp_tools.id',
+          to: 'mcp_tool_executions.mcp_tool_id',
+        },
+      },
       server: {
         relation: Base.BelongsToOneRelation,
         modelClass: McpServer,

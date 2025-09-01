@@ -1,5 +1,6 @@
 import Base from '@/models/base.js';
 import McpServer from '@/models/mcp-server.ee.js';
+import McpToolExecutions from '@/models/mcp-tool-execution.ee.js';
 
 class McpTool extends Base {
   static tableName = 'mcp_tools';
@@ -25,6 +26,14 @@ class McpTool extends Base {
   };
 
   static relationMappings = () => ({
+    mcpToolExecutions: {
+      relation: Base.HasManyRelation,
+      modelClass: McpToolExecutions,
+      join: {
+        from: 'mcp_tools.id',
+        to: 'mcp_tool_executions.mcp_tool_id',
+      },
+    },
     server: {
       relation: Base.BelongsToOneRelation,
       modelClass: McpServer,
