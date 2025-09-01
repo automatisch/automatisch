@@ -1,6 +1,5 @@
 import Crypto from 'node:crypto';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { InMemoryEventStore } from '@modelcontextprotocol/sdk/examples/shared/inMemoryEventStore.js';
 
 import mcpSessionManager from '@/helpers/mcp-sessions.js';
 import { createMcpServer } from '@/helpers/mcp.js';
@@ -17,10 +16,7 @@ export default async function findMcpTransport(request, response, next) {
       .findOne({ token: mcpServerToken })
       .throwIfNotFound();
 
-    const eventStore = new InMemoryEventStore();
-    const transport = new StreamableHTTPServerTransport({
-      eventStore,
-    });
+    const transport = new StreamableHTTPServerTransport({});
 
     const newSessionId = Crypto.randomUUID();
     transport.sessionId = newSessionId;
