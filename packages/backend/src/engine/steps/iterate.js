@@ -67,7 +67,7 @@ const iterateSteps = async ({
     }
 
     const workSynchronously =
-      triggerStep.appKey === 'webhook' &&
+      (triggerStep.appKey === 'webhook' || triggerStep.appKey === 'forms') &&
       triggerStep.parameters.workSynchronously;
 
     if (!testRun && actionStep.appKey === 'delay' && !workSynchronously) {
