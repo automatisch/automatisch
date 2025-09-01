@@ -8,6 +8,7 @@ import createMcpToolsAction from '@/controllers/internal/api/v1/mcp-servers/crea
 import getMcpToolsAction from '@/controllers/internal/api/v1/mcp-servers/get-mcp-tools.ee.js';
 import deleteMcpToolAction from '@/controllers/internal/api/v1/mcp-servers/delete-mcp-tool.ee.js';
 import rotateMcpServerTokenAction from '@/controllers/internal/api/v1/mcp-servers/rotate-mcp-server-token.ee.js';
+import getMcpServerExecutionsAction from '@/controllers/internal/api/v1/mcp-servers/get-mcp-tool-executions.ee.js';
 import { authenticateUser } from '@/helpers/authentication.js';
 import { authorizeUser } from '@/helpers/authorization.js';
 
@@ -62,6 +63,13 @@ router.post(
   authenticateUser,
   authorizeUser,
   rotateMcpServerTokenAction
+);
+
+router.get(
+  '/:mcpServerId/executions',
+  authenticateUser,
+  authorizeUser,
+  getMcpServerExecutionsAction
 );
 
 export default router;

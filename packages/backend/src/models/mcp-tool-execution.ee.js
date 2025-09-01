@@ -1,7 +1,7 @@
 import Base from '@/models/base.js';
 import McpTool from '@/models/mcp-tool.ee.js';
 
-class McpToolExecutions extends Base {
+class McpToolExecution extends Base {
   static tableName = 'mcp_tool_executions';
 
   static jsonSchema = {
@@ -30,4 +30,4 @@ class McpToolExecutions extends Base {
   });
 }
 
-export default McpToolExecutions;
+export default McpToolExecution;

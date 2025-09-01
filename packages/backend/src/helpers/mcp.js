@@ -228,11 +228,23 @@ async function executeAppTool(appKey, actionKey, mcpTool, parameters) {
     await appAction.run($);
     const actionOutput = $.actionOutput.data;
 
+    await mcpTool.$relatedQuery('mcpToolExecutions').insert({
+      dataIn: parameters,
+      dataOut: actionOutput.raw,
+      status: 'success',
+    });
+
     return formatMcpResponse('success', {
       message: `Successfully invoked action \`${actionKey}\` on app \`${appKey}\``,
-      data: actionOutput,
+      data: actionOutput.raw,
     });
   } catch (err) {
+    await mcpTool.$relatedQuery('mcpToolExecutions').insert({
+      dataIn: parameters,
+      dataOut: {},
+      status: 'failure',
+    });
+
     return formatMcpResponse('error', {
       message: `Failed to invoke action \`${actionKey}\` on \`${appKey}\``,
       error: err,

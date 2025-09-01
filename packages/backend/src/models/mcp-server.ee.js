@@ -3,6 +3,7 @@ import Crypto from 'node:crypto';
 import Base from '@/models/base.js';
 import User from '@/models/user.js';
 import McpTool from '@/models/mcp-tool.ee.js';
+import McpToolExecution from '@/models/mcp-tool-execution.ee.js';
 import appConfig from '@/config/app.js';
 import mcpSessionManager from '@/helpers/mcp-sessions.js';
 
@@ -24,6 +25,18 @@ class McpServer extends Base {
   };
 
   static relationMappings = () => ({
+    mcpToolExecutions: {
+      relation: Base.ManyToManyRelation,
+      modelClass: McpToolExecution,
+      join: {
+        from: 'mcp_servers.id',
+        through: {
+          from: 'mcp_tools.server_id',
+          to: 'mcp_tools.id',
+        },
+        to: 'mcp_tool_executions.mcp_tool_id',
+      },
+    },
     tools: {
       relation: Base.HasManyRelation,
       modelClass: McpTool,

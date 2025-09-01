@@ -30,6 +30,7 @@ import formSerializer from '@/serializers/form.ee.js';
 import publicFormSerializer from '@/serializers/public-form.ee.js';
 import mcpServerSerializer from '@/serializers/mcp-server.ee.js';
 import mcpToolSerializer from '@/serializers/mcp-tool.ee.js';
+import mcpToolExecutionSerializer from '@/serializers/mcp-tool-execution.ee.js';
 
 const serializers = {
   Action: actionSerializer,
@@ -50,6 +51,7 @@ const serializers = {
   Form: formSerializer,
   McpServer: mcpServerSerializer,
   McpTool: mcpToolSerializer,
+  McpToolExecution: mcpToolExecutionSerializer,
   OAuthClient: oauthClientSerializer,
   Permission: permissionSerializer,
   PublicForm: publicFormSerializer,

@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
-import Crypto from 'node:crypto';
 import McpTool from '@/models/mcp-tool.ee.js';
 import { createConnection } from '@/factories/connection.js';
+import { createMcpServer } from '@/factories/mcp-server.js';
 
 export const createMcpTool = async (params = {}) => {
-  params.serverId = params?.serverId || Crypto.randomUUID();
+  params.serverId = params?.serverId || (await createMcpServer()).id;
   params.type = params?.type || 'app';
   params.connectionId = params.connectionId || (await createConnection()).id;
 

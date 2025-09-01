@@ -205,6 +205,10 @@ const authorizationList = {
     action: 'manage',
     subject: 'McpServer',
   },
+  'GET /internal/api/v1/mcp-servers/:mcpServerId/executions': {
+    action: 'read',
+    subject: 'McpServer',
+  },
   'GET /internal/api/v1/mcp-servers/:mcpServerId/tools': {
     action: 'read',
     subject: 'McpServer',
