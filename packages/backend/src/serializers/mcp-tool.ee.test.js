@@ -15,7 +15,7 @@ describe('mcpToolSerializer', () => {
     connection = await createConnection();
 
     mcpTool = await createMcpTool({
-      serverId: mcpServer.id,
+      mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
       actions: ['sendMessageToChannel', 'findUserByEmail'],
@@ -26,7 +26,7 @@ describe('mcpToolSerializer', () => {
   it('should return MCP tool data', async () => {
     const expectedPayload = {
       id: mcpTool.id,
-      serverId: mcpTool.serverId,
+      mcpServerId: mcpTool.mcpServerId,
       type: mcpTool.type,
       flowId: mcpTool.flowId,
       connectionId: mcpTool.connectionId,

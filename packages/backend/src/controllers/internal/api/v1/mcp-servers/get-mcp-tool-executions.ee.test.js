@@ -19,7 +19,7 @@ describe('GET /internal/api/v1/mcp-servers/:mcpServerId/executions', () => {
     currentUserRole = await currentUser.$relatedQuery('role');
     token = await createAuthTokenByUserId(currentUser.id);
     mcpServer = await createMcpServer({ userId: currentUser.id });
-    mcpTool = await createMcpTool({ serverId: mcpServer.id });
+    mcpTool = await createMcpTool({ mcpServerId: mcpServer.id });
 
     await createPermission({
       action: 'read',

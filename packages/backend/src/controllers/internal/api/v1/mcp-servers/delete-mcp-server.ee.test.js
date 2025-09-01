@@ -67,14 +67,14 @@ describe('DELETE /internal/api/v1/mcp-servers/:mcpServerId', () => {
 
     // Create some MCP tools for this server
     const tool1 = await createMcpTool({
-      serverId: mcpServer.id,
+      mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
       actions: ['send-message'],
     });
 
     const tool2 = await createMcpTool({
-      serverId: mcpServer.id,
+      mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'discord',
       actions: ['create-channel'],

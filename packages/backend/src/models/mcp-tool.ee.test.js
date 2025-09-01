@@ -31,7 +31,7 @@ describe('McpTool model', () => {
         modelClass: McpServer,
         join: {
           from: 'mcp_servers.id',
-          to: 'mcp_tools.server_id',
+          to: 'mcp_tools.mcp_server_id',
         },
       },
     };

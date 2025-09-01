@@ -10,8 +10,7 @@ class McpTool extends Base {
 
     properties: {
       id: { type: 'string', format: 'uuid' },
-      // TODO: update as mcpServerId
-      serverId: { type: 'string', format: 'uuid' },
+      mcpServerId: { type: 'string', format: 'uuid' },
       type: {
         type: 'string',
         enum: ['flow', 'app'],
@@ -35,13 +34,12 @@ class McpTool extends Base {
         to: 'mcp_tool_executions.mcp_tool_id',
       },
     },
-    // TODO: update as mcpServer
-    server: {
+    mcpServer: {
       relation: Base.BelongsToOneRelation,
       modelClass: McpServer,
       join: {
         from: 'mcp_servers.id',
-        to: 'mcp_tools.server_id',
+        to: 'mcp_tools.mcp_server_id',
       },
     },
   });

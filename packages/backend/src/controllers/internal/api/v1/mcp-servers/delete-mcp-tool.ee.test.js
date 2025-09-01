@@ -30,7 +30,7 @@ describe('DELETE /internal/api/v1/mcp-servers/:mcpServerId/tools/:mcpToolId', ()
 
   it('should delete MCP tool successfully', async () => {
     const mcpTool = await createMcpTool({
-      serverId: mcpServer.id,
+      mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
       actions: ['sendMessageToChannel'],
@@ -64,7 +64,7 @@ describe('DELETE /internal/api/v1/mcp-servers/:mcpServerId/tools/:mcpToolId', ()
     });
 
     const mcpTool = await createMcpTool({
-      serverId: anotherMcpServer.id,
+      mcpServerId: anotherMcpServer.id,
       connectionId: connection.id,
       appKey: 'clickup',
       actions: ['createTask'],
@@ -121,7 +121,7 @@ describe('DELETE /internal/api/v1/mcp-servers/:mcpServerId/tools/:mcpToolId', ()
 
   it('should return bad request response for invalid MCP server UUID', async () => {
     const mcpTool = await createMcpTool({
-      serverId: mcpServer.id,
+      mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
       actions: ['sendMessageToChannel'],

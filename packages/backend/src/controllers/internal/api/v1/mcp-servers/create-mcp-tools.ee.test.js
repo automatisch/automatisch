@@ -69,7 +69,7 @@ describe('POST /internal/api/v1/mcp-servers/:mcpServerId/tools', () => {
 
       // Create initial tool using factory
       const initialTool = await createMcpTool({
-        serverId: mcpServer.id,
+        mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'slack',
         actions: ['send-a-direct-message'],
@@ -245,7 +245,7 @@ describe('POST /internal/api/v1/mcp-servers/:mcpServerId/tools', () => {
 
       // Create initial flow tool
       const initialTool = await createMcpTool({
-        serverId: mcpServer.id,
+        mcpServerId: mcpServer.id,
         type: 'flow',
         flowId: flow.id,
       });

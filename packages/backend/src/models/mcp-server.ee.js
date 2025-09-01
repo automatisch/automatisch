@@ -31,7 +31,7 @@ class McpServer extends Base {
       join: {
         from: 'mcp_servers.id',
         through: {
-          from: 'mcp_tools.server_id',
+          from: 'mcp_tools.mcp_server_id',
           to: 'mcp_tools.id',
         },
         to: 'mcp_tool_executions.mcp_tool_id',
@@ -42,7 +42,7 @@ class McpServer extends Base {
       modelClass: McpTool,
       join: {
         from: 'mcp_servers.id',
-        to: 'mcp_tools.server_id',
+        to: 'mcp_tools.mcp_server_id',
       },
     },
     user: {

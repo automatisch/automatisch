@@ -24,7 +24,7 @@ exports[`McpTool model > jsonSchema should have correct validations 1`] = `
       "format": "uuid",
       "type": "string",
     },
-    "serverId": {
+    "mcpServerId": {
       "format": "uuid",
       "type": "string",
     },

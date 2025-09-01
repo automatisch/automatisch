@@ -1,7 +1,7 @@
 const mcpToolSerializer = (mcpTool) => {
   const mcpToolData = {
     id: mcpTool.id,
-    serverId: mcpTool.serverId,
+    mcpServerId: mcpTool.mcpServerId,
     type: mcpTool.type,
     flowId: mcpTool.flowId,
     connectionId: mcpTool.connectionId,

@@ -31,7 +31,7 @@ describe('McpServer model', () => {
         modelClass: McpTool,
         join: {
           from: 'mcp_servers.id',
-          to: 'mcp_tools.server_id',
+          to: 'mcp_tools.mcp_server_id',
         },
       },
       user: {
@@ -115,7 +115,7 @@ describe('McpServer model', () => {
 
       const mcpTool = await mcpServer.createOrUpdateTool(toolData);
 
-      expect(mcpTool.serverId).toBe(mcpServer.id);
+      expect(mcpTool.mcpServerId).toBe(mcpServer.id);
       expect(mcpTool.connectionId).toBe(connection.id);
       expect(mcpTool.appKey).toBe('slack');
       expect(mcpTool.actions).toEqual(['sendMessage', 'createChannel']);
@@ -141,7 +141,7 @@ describe('McpServer model', () => {
       });
 
       const initialTool = await createMcpTool({
-        serverId: mcpServer.id,
+        mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'slack',
         actions: ['oldAction'],
@@ -161,7 +161,7 @@ describe('McpServer model', () => {
 
       // Verify new tool was created
       expect(newTool.id).not.toBe(initialTool.id);
-      expect(newTool.serverId).toBe(mcpServer.id);
+      expect(newTool.mcpServerId).toBe(mcpServer.id);
       expect(newTool.connectionId).toBe(connection.id);
       expect(newTool.appKey).toBe('slack');
       expect(newTool.actions).toEqual(['newAction1', 'newAction2']);
@@ -192,7 +192,7 @@ describe('McpServer model', () => {
 
       const mcpTool = await mcpServer.createOrUpdateTool(toolData);
 
-      expect(mcpTool.serverId).toBe(mcpServer.id);
+      expect(mcpTool.mcpServerId).toBe(mcpServer.id);
       expect(mcpTool.flowId).toBe(flow.id);
       expect(mcpTool.type).toBe('flow');
       expect(mcpTool.connectionId).toBeNull();
@@ -218,7 +218,7 @@ describe('McpServer model', () => {
 
       // Create initial flow tool
       const initialTool = await createMcpTool({
-        serverId: mcpServer.id,
+        mcpServerId: mcpServer.id,
         type: 'flow',
         flowId: flow.id,
       });
@@ -236,7 +236,7 @@ describe('McpServer model', () => {
 
       // Verify new tool was created
       expect(newTool.id).not.toBe(initialTool.id);
-      expect(newTool.serverId).toBe(mcpServer.id);
+      expect(newTool.mcpServerId).toBe(mcpServer.id);
       expect(newTool.flowId).toBe(flow.id);
       expect(newTool.type).toBe('flow');
       expect(newTool.connectionId).toBeNull();
@@ -264,7 +264,7 @@ describe('McpServer model', () => {
       });
 
       const mcpTool = await createMcpTool({
-        serverId: mcpServer.id,
+        mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'slack',
         actions: ['sendMessage'],
@@ -307,14 +307,14 @@ describe('McpServer model', () => {
       });
 
       const tool1 = await createMcpTool({
-        serverId: mcpServer.id,
+        mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'slack',
         actions: ['sendMessage'],
       });
 
       const tool2 = await createMcpTool({
-        serverId: mcpServer.id,
+        mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'github',
         actions: ['createIssue'],

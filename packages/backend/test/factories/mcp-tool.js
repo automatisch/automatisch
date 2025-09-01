@@ -4,7 +4,7 @@ import { createConnection } from '@/factories/connection.js';
 import { createMcpServer } from '@/factories/mcp-server.js';
 
 export const createMcpTool = async (params = {}) => {
-  params.serverId = params?.serverId || (await createMcpServer()).id;
+  params.mcpServerId = params?.mcpServerId || (await createMcpServer()).id;
   params.type = params?.type || 'app';
   params.connectionId = params.connectionId || (await createConnection()).id;
 

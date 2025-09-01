@@ -1,7 +1,7 @@
 const getMcpToolsMock = async (mcpTools) => {
   const data = mcpTools.map((mcpTool) => ({
     id: mcpTool.id,
-    serverId: mcpTool.serverId,
+    mcpServerId: mcpTool.mcpServerId,
     type: mcpTool.type,
     flowId: mcpTool.flowId,
     connectionId: mcpTool.connectionId,
