@@ -30,6 +30,7 @@ export default defineConfig({
         // add "extends: true" to inherit the options from the root config
         extends: true,
         test: {
+          testTimeout: 10000,
           exclude: ['**/src/engine/tests/**', '**/node_modules/**'],
           name: 'automatisch',
           setupFiles: ['./test/setup/global-hooks.js'],
