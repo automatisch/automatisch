@@ -12,6 +12,7 @@ class McpToolExecution extends Base {
       mcpToolId: { type: 'string', format: 'uuid' },
       dataIn: { type: ['object', 'null'] },
       dataOut: { type: ['object', 'null'] },
+      errorDetails: { type: ['object', 'null'] },
       status: { type: 'string', enum: ['success', 'failure'] },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },

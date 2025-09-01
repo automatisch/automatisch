@@ -18,6 +18,12 @@ exports[`McpToolExecution model > jsonSchema should have correct validations 1`]
         "null",
       ],
     },
+    "errorDetails": {
+      "type": [
+        "object",
+        "null",
+      ],
+    },
     "id": {
       "format": "uuid",
       "type": "string",

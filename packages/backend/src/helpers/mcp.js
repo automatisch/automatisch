@@ -15,6 +15,7 @@ import Flow from '@/models/flow.js';
 import McpServer from '@/models/mcp-server.ee.js';
 import globalVariable from '@/engine/global-variable.js';
 import Engine from '@/engine/index.js';
+import HttpError from '@/errors/http.js';
 
 export function generateSchemaOutOfActionArguments(actionArguments) {
   const schema = Object.fromEntries(
@@ -242,15 +243,27 @@ async function executeAppTool(appKey, actionKey, mcpTool, parameters) {
       data: actionOutput.raw,
     });
   } catch (err) {
+    let error;
+
+    if (err instanceof HttpError) {
+      error = error.details;
+    } else {
+      try {
+        error = JSON.parse(err.message);
+      } catch {
+        error = { error: err.message };
+      }
+    }
+
     await mcpTool.$relatedQuery('mcpToolExecutions').insert({
       dataIn: parameters,
-      dataOut: {},
+      errorDetails: error,
       status: 'failure',
     });
 
     return formatMcpResponse('error', {
       message: `Failed to invoke action \`${actionKey}\` on \`${appKey}\``,
-      error: err,
+      error,
     });
   }
 }
