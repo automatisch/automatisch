@@ -56,6 +56,7 @@ export default defineConfig({
       },
     ],
     root: './',
+    globalSetup: ['./test/setup/global-setup.js'],
     environment: 'node',
     globals: true,
     reporters: process.env.GITHUB_ACTIONS ? ['dot', 'github-actions'] : ['dot'],
