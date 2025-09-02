@@ -87,6 +87,16 @@ describe.sequential('Built-in webhook app async', () => {
     });
 
     await flow.updateStatus(true);
+
+    nock('https://ntfy.sh').post('/').reply(200, {
+      id: 'V63mhF65S68a',
+      time: 1755279302,
+      expires: 1755322502,
+      event: 'message',
+      topic: 'automatisch-test',
+      message: 'Hey Automatisch, welcome to the party!',
+      priority: 3,
+    });
   });
 
   it('should respond with 204 status code without waiting for the flow to be completed', async () => {
@@ -118,16 +128,6 @@ describe.sequential('Built-in webhook app async', () => {
   it('should create executions', async () => {
     const timeBeforeTheRequest = new Date();
 
-    nock('https://ntfy.sh').post('/').reply(200, {
-      id: 'V63mhF65S68a',
-      time: 1755279302,
-      expires: 1755322502,
-      event: 'message',
-      topic: 'automatisch-test',
-      message: 'Hey Automatisch, welcome to the party!',
-      priority: 3,
-    });
-
     await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
 
     await waitFlowWorkerJobs(flow.id);
@@ -144,16 +144,6 @@ describe.sequential('Built-in webhook app async', () => {
 
   it('should create execution steps', async () => {
     const timeBeforeTheRequest = new Date();
-
-    nock('https://ntfy.sh').post('/').reply(200, {
-      id: 'V63mhF65S68a',
-      time: 1755279302,
-      expires: 1755322502,
-      event: 'message',
-      topic: 'automatisch-test',
-      message: 'Hey Automatisch, welcome to the party!',
-      priority: 3,
-    });
 
     await request(app).get(`${webhookAsyncStep.webhookPath}?name=automatisch`);
 
