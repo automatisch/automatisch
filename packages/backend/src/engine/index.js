@@ -2,8 +2,8 @@ import isEmpty from 'lodash/isEmpty.js';
 import buildFlowContext from '@/engine/flow/context.js';
 import getInitialData from '@/engine/initial-data/get.js';
 import processInitialDataError from '@/engine/initial-data/process-error.js';
-import checkLimits from '@/engine/cloud/check-limits.js';
-import iterateSteps from '@/engine/steps/iterate.js';
+import ValidationService from '@/engine/services/validation-service.js';
+import WorkflowExecutor from '@/engine/workflow-executor/index.js';
 import flowQueue from '@/queues/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
@@ -35,14 +35,15 @@ const run = async ({
   });
 
   // Check if the user is allowed to run the flow in cloud when it's not a test run
-  const { isAllowedToRunFlows } = await checkLimits({ flow });
+  const validationService = new ValidationService();
+  const isValid = await validationService.validateFlowExecution(flow, testRun);
 
-  if (!testRun && !isAllowedToRunFlows) {
+  if (!isValid) {
     return;
   }
 
   if (resumeStepId && resumeExecutionId) {
-    return await iterateSteps({
+    return await WorkflowExecutor.run({
       flow,
       triggerStep,
       untilStep,
@@ -95,7 +96,7 @@ const run = async ({
   }
 
   for (const initialDataItem of reversedInitialData) {
-    const result = await iterateSteps({
+    const result = await WorkflowExecutor.run({
       flow,
       triggerStep,
       untilStep,
