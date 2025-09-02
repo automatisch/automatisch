@@ -49,7 +49,7 @@ class ExecutionPlan {
     this.resumeStepId = resumeStepId;
     this.resumeExecutionId = resumeExecutionId;
 
-    if (resumeStepId) {
+    if (resumeStepId && resumeExecutionId) {
       // Belirli bir step'ten devam et
       const resumeIndex = this.allSteps.findIndex((s) => s.id === resumeStepId);
 
@@ -57,10 +57,6 @@ class ExecutionPlan {
         this.currentStepIndex = resumeIndex;
         return true;
       }
-    } else if (resumeExecutionId) {
-      // Sadece executionId var, trigger'ı atla
-      this.skipToActionSteps();
-      return true;
     }
 
     // Normal başlangıç (trigger'dan başla)

@@ -1,14 +1,12 @@
-import isEmpty from 'lodash/isEmpty.js';
-import buildFlowContext from '@/engine/flow/context.js';
-import getInitialData from '@/engine/initial-data/get.js';
-import processInitialDataError from '@/engine/initial-data/process-error.js';
-import ValidationService from '@/engine/services/validation-service.js';
+import FlowValidator from '@/engine/flow-validator/index.js';
 import WorkflowExecutor from '@/engine/workflow-executor/index.js';
+import DataLoader from '@/engine/data-loader/index.js';
 import flowQueue from '@/queues/flow.js';
 import {
   REMOVE_AFTER_30_DAYS_OR_150_JOBS,
   REMOVE_AFTER_7_DAYS_OR_50_JOBS,
 } from '@/helpers/remove-job-configuration.js';
+import FlowContext from '@/engine/flow-context/index.js';
 
 const run = async ({
   flowId,
@@ -16,98 +14,55 @@ const run = async ({
   triggeredByRequest,
   request,
   testRun = false,
-  resumeStepId,
-  resumeExecutionId,
+  resumeStepId, // eslint-disable-line no-unused-vars
+  resumeExecutionId, // eslint-disable-line no-unused-vars
 }) => {
   // Build flow context
-  const {
-    flow,
-    untilStep,
-    triggerStep,
-    triggerConnection,
-    triggerApp,
-    triggerCommand,
-    actionSteps,
-    isBuiltInApp,
-  } = await buildFlowContext({
-    flowId,
-    untilStepId,
-  });
+  const flowContext = new FlowContext({ flowId });
+  await flowContext.build();
 
-  // Check if the user is allowed to run the flow in cloud when it's not a test run
-  const validationService = new ValidationService();
-  const isValid = await validationService.validateFlowExecution(flow, testRun);
+  // Check if the flow is valid and can be executed
+  const flowValidator = new FlowValidator(flowContext);
+  const isValid = await flowValidator.run();
+  if (!isValid) return;
 
-  if (!isValid) {
-    return;
-  }
+  // TODO: Implement resume flow
+  // if (resumeStepId && resumeExecutionId) {
+  //   return await WorkflowExecutor.run({
+  //     flow,
+  //     triggerStep,
+  //     untilStep,
+  //     actionSteps,
+  //     testRun,
+  //     triggeredByRequest,
+  //     initialDataItem: null,
+  //     resumeStepId,
+  //     resumeExecutionId,
+  //   });
+  // }
 
-  if (resumeStepId && resumeExecutionId) {
-    return await WorkflowExecutor.run({
-      flow,
-      triggerStep,
-      untilStep,
-      actionSteps,
-      testRun,
-      triggeredByRequest,
-      initialDataItem: null,
-      resumeStepId,
-      resumeExecutionId,
-    });
-  }
-
-  // Get initial flow data to start the flow
-  const { data, error } = await getInitialData({
-    testRun,
-    flow,
-    triggerStep,
-    triggerConnection,
-    triggerApp,
-    triggerCommand,
+  // Ingest initial data from trigger and handle error and skip
+  const dataLoader = new DataLoader(flowContext);
+  const result = await dataLoader.run({
     request,
     triggeredByRequest,
-    isBuiltInApp,
   });
+  if (result.error && testRun) return { executionStep: result.executionStep };
+  if (result.error) return;
+  if (result.skip) return;
 
-  // Process initial data error
-  // TODO: Make this also works with a background job.
-  if (error) {
-    const { executionStep } = await processInitialDataError({
-      error,
-      testRun,
-      flow,
-      triggerStep,
-      triggerApp,
-      triggerConnection,
-    });
-
-    if (testRun) {
-      return { executionStep };
-    }
-
-    return;
-  }
-
-  const firstInitialDataItem = data[0];
-  const reversedInitialData = testRun ? [firstInitialDataItem] : data.reverse();
-
-  if (!isBuiltInApp && triggeredByRequest && isEmpty(reversedInitialData)) {
-    return;
-  }
-
-  for (const initialDataItem of reversedInitialData) {
-    const result = await WorkflowExecutor.run({
-      flow,
-      triggerStep,
-      untilStep,
-      actionSteps,
-      testRun,
-      triggeredByRequest,
+  // Process each data item
+  for (const initialDataItem of result.data) {
+    const workflowExecutor = new WorkflowExecutor({
+      flowContext,
       initialDataItem,
+      triggeredByRequest,
     });
 
-    if (result) {
-      return result;
+    const executorResult = await workflowExecutor.run();
+
+    if (executorResult) {
+      return executorResult;
     }
   }
 };

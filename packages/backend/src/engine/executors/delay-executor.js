@@ -2,7 +2,7 @@ import Engine from '@/engine/index.js';
 import delayAsMilliseconds from '@/helpers/delay-as-milliseconds.js';
 
 class DelayExecutor {
-  async execute(step, computedParameters, context, flow, triggerStep) {
+  async execute({ step, computedParameters, context, flow, triggerStep }) {
     if (!this.isDelayStep(step)) {
       return this.createContinueResponse();
     }

@@ -14,7 +14,7 @@ const getInitialData = async (options) => {
     triggerCommand,
     request,
     triggeredByRequest,
-    isBuiltInApp,
+    isTriggerBuiltInApp,
   } = options;
 
   const $ = await globalVariable({
@@ -27,7 +27,7 @@ const getInitialData = async (options) => {
   });
 
   try {
-    if (triggeredByRequest && isBuiltInApp) {
+    if (triggeredByRequest && isTriggerBuiltInApp) {
       await triggerCommand.run($);
     } else if (testRun && triggerCommand.type === 'webhook') {
       await triggerCommand.testRun($);
