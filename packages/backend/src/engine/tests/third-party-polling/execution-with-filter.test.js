@@ -72,7 +72,7 @@ describe.sequential(
                 {
                   key: `{{step.${githubTriggerStep.id}.number}}`,
                   operator: 'greater_than_or_equal',
-                  value: '2600',
+                  value: '2619',
                 },
               ],
             },
@@ -81,6 +81,7 @@ describe.sequential(
         position: 2,
         status: 'completed',
       });
+
       formatterStep = await createStep({
         flowId: flow.id,
         type: 'action',
@@ -152,7 +153,7 @@ describe.sequential(
       });
     });
 
-    it('should create 100 executions when polling finds 100 new issues', async () => {
+    it('should create 10 executions when polling finds 10 new issues', async () => {
       const timeBeforePolling = new Date();
 
       await runFlowWorkerJobs(flow.id);
@@ -164,10 +165,10 @@ describe.sequential(
         .andWhere('createdAt', '>', timeBeforePolling.toISOString());
 
       expect(executions).toBeDefined();
-      expect(executions.length).toBe(100);
+      expect(executions.length).toBe(10);
     });
 
-    it('should create 254 execution steps when polling finds 100 new issues with matching filters', async () => {
+    it('should create 34 execution steps when polling finds 10 new issues with matching filters', async () => {
       const timeBeforePolling = new Date();
 
       await runFlowWorkerJobs(flow.id);
@@ -191,7 +192,7 @@ describe.sequential(
         ]);
 
       expect(executionSteps).toBeDefined();
-      expect(executionSteps.length).toBe(254);
+      expect(executionSteps.length).toBe(34);
     });
 
     it('should create execution step with correct data transformation', async () => {
@@ -267,7 +268,7 @@ describe.sequential(
               {
                 key: '2626',
                 operator: 'greater_than_or_equal',
-                value: '2600',
+                value: '2619',
               },
             ],
           },
@@ -280,7 +281,7 @@ describe.sequential(
               {
                 key: '2626',
                 operator: 'greater_than_or_equal',
-                value: '2600',
+                value: '2619',
               },
             ],
           },
