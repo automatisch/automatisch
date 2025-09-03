@@ -35,8 +35,6 @@ export default defineTrigger({
     },
   ],
 
-  pollInterval: 15,
-
   async run() {
     // This trigger doesn't poll - it's exposed via MCP service
     // The actual trigger execution happens when MCP clients call the tool
