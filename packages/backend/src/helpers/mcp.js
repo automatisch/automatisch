@@ -240,7 +240,7 @@ async function executeAppTool(appKey, actionKey, mcpTool, parameters) {
     let error;
 
     if (err instanceof HttpError) {
-      error = error.details;
+      error = err.details;
     } else {
       try {
         error = JSON.parse(err.message);
