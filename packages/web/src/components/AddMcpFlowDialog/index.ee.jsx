@@ -27,6 +27,7 @@ import FlowAppIcons from 'components/FlowAppIcons';
 import useFormatMessage from 'hooks/useFormatMessage';
 import useFlows from 'hooks/useFlows';
 import useCreateMcpTool from 'hooks/useCreateMcpTool.ee';
+import useMcpTools from 'hooks/useMcpTools.ee';
 
 export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
   const theme = useTheme();
@@ -40,9 +41,24 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
     onlyOwnedFlows: true,
   });
 
-  const { mutateAsync: createMcpTool, isLoading: isCreatingTool } = useCreateMcpTool(mcpServerId);
+  const { data: mcpTools } = useMcpTools(mcpServerId);
+  const { mutateAsync: createMcpTool, isLoading: isCreatingTool } =
+    useCreateMcpTool(mcpServerId);
+
+  const mcpToolAlreadyExists = React.useCallback(
+    (flowId) => {
+      return mcpTools?.data.some(
+        (mcpTool) => mcpTool.type === 'flow' && mcpTool.flowId === flowId,
+      );
+    },
+    [mcpTools],
+  );
 
   const handleFlowToggle = (flow) => {
+    if (mcpToolAlreadyExists(flow.id)) {
+      return;
+    }
+
     const newSelectedFlows = new Set(selectedFlows);
     if (newSelectedFlows.has(flow.id)) {
       newSelectedFlows.delete(flow.id);
@@ -58,8 +74,13 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
     }
 
     try {
-      // Create MCP tools for all selected flows
-      const promises = Array.from(selectedFlows).map(flowId => {
+      const selectedFlowsArray = Array.from(selectedFlows);
+      const newFlowsToAdd = selectedFlowsArray.filter(
+        (flowId) => !mcpToolAlreadyExists(flowId),
+      );
+
+      // Create MCP tools for new flows only
+      const promises = newFlowsToAdd.map((flowId) => {
         const payload = {
           type: 'flow',
           flowId: flowId,
@@ -78,22 +99,21 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
     setFlowName(event.target.value);
   };
 
-
   const filteredFlows = React.useMemo(() => {
     const allFlows = flows?.data || [];
-    
+
     // Only show published flows that have MCP triggers
-    const filtered = allFlows.filter(flow => {
+    const filtered = allFlows.filter((flow) => {
       const isPublished = flow.status === 'published';
-      const hasMcpTrigger = flow.steps?.some(step => 
-        step.appKey === 'mcp' && step.key === 'mcpTool'
+      const hasMcpTrigger = flow.steps?.some(
+        (step) => step.appKey === 'mcp' && step.key === 'mcpTool',
       );
       return isPublished && hasMcpTrigger;
     });
-    
+
     return filtered;
   }, [flows]);
-  
+
   return (
     <Dialog
       open={true}
@@ -102,9 +122,7 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
       fullWidth
       fullScreen={matchSmallScreens}
     >
-      <DialogTitle>
-        {formatMessage('addMcpFlowDialog.title')}
-      </DialogTitle>
+      <DialogTitle>{formatMessage('addMcpFlowDialog.title')}</DialogTitle>
 
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -133,11 +151,14 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
           )}
 
           {!isLoading && filteredFlows.length === 0 && (
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', p: 2 }}>
-              {flowName 
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ textAlign: 'center', p: 2 }}
+            >
+              {flowName
                 ? formatMessage('addMcpFlowDialog.noFlowsFound')
-                : formatMessage('addMcpFlowDialog.noMcpFlows')
-              }
+                : formatMessage('addMcpFlowDialog.noMcpFlows')}
             </Typography>
           )}
 
@@ -146,40 +167,76 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
               <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                 {formatMessage('addMcpFlowDialog.selectFlow')}
               </Typography>
-              
+
               <List sx={{ maxHeight: 400, overflow: 'auto' }}>
-                {filteredFlows.map((flow) => (
-                  <ListItem key={flow.id} disablePadding>
-                    <Card sx={{ width: '100%', mb: 1 }}>
-                      <ListItemButton
-                        onClick={() => handleFlowToggle(flow)}
-                        selected={selectedFlows.has(flow.id)}
+                {filteredFlows.map((flow) => {
+                  const isExisting = mcpToolAlreadyExists(flow.id);
+                  const isSelected = selectedFlows.has(flow.id) || isExisting;
+
+                  return (
+                    <ListItem key={flow.id} disablePadding>
+                      <Card
+                        sx={{
+                          width: '100%',
+                          mb: 1,
+                          opacity: isExisting ? 0.7 : 1,
+                          cursor: isExisting ? 'default' : 'pointer',
+                          ...(isSelected && {
+                            borderColor: (theme) =>
+                              isExisting
+                                ? 'transparent'
+                                : theme.palette.primary.main,
+                            borderWidth: 2,
+                            borderStyle: 'solid',
+                          }),
+                        }}
                       >
-                        <FormControlLabel
-                          control={
-                            <Checkbox 
-                              checked={selectedFlows.has(flow.id)}
-                              onChange={() => handleFlowToggle(flow)}
-                            />
-                          }
-                          sx={{ mr: 2 }}
-                          label=""
-                        />
-                        <CardContent sx={{ flex: 1, py: 1.5, '&:last-child': { pb: 1.5 } }}>
-                          <Box sx={{ mb: 1 }}>
-                            <Typography variant="h6" component="div">
-                              {flow.name}
-                            </Typography>
-                          </Box>
-                          
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <FlowAppIcons steps={flow.steps} />
-                          </Box>
-                        </CardContent>
-                      </ListItemButton>
-                    </Card>
-                  </ListItem>
-                ))}
+                        <ListItemButton
+                          onClick={() => handleFlowToggle(flow)}
+                          selected={isSelected && !isExisting}
+                          disabled={isExisting}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={isSelected}
+                                onChange={() => handleFlowToggle(flow)}
+                                disabled={isExisting}
+                              />
+                            }
+                            sx={{ mr: 2 }}
+                            label=""
+                          />
+                          <CardContent
+                            sx={{
+                              flex: 1,
+                              py: 1.5,
+                              '&:last-child': { pb: 1.5 },
+                            }}
+                          >
+                            <Box sx={{ mb: 1 }}>
+                              <Box display="flex" alignItems="center" gap={1}>
+                                <Typography variant="h6" component="div">
+                                  {flow.name}
+                                </Typography>
+                              </Box>
+                            </Box>
+
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                              }}
+                            >
+                              <FlowAppIcons steps={flow.steps} />
+                            </Box>
+                          </CardContent>
+                        </ListItemButton>
+                      </Card>
+                    </ListItem>
+                  );
+                })}
               </List>
             </Box>
           )}
@@ -198,7 +255,7 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
           {isCreatingTool ? (
             <CircularProgress size={24} />
           ) : (
-            `${formatMessage('addMcpFlowDialog.add')} (${selectedFlows.size})`
+            formatMessage('addMcpFlowDialog.add')
           )}
         </Button>
       </DialogActions>

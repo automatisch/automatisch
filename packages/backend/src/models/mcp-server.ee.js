@@ -99,12 +99,28 @@ class McpServer extends Base {
       toolData.connectionId = connectionId;
       toolData.appKey = appKey;
       toolData.action = action;
+
+      const alreadyExists = await this.$relatedQuery('tools')
+        .where({ app_key: appKey, action, type: 'app' })
+        .first();
+
+      if (alreadyExists) {
+        throw new Error('Tool with the same app and action already exists');
+      }
     } else if (type === 'flow') {
       const flow = await Flow.query().findById(flowId).throwIfNotFound();
       const triggerStep = await flow.getTriggerStep();
 
       toolData.flowId = flowId;
       toolData.action = triggerStep.parameters.toolName;
+
+      const alreadyExists = await this.$relatedQuery('tools')
+        .where({ type: 'flow', flow_id: flowId })
+        .first();
+
+      if (alreadyExists) {
+        throw new Error('Flow tool with the same flow already exists');
+      }
     }
 
     const mcpTool = await this.$relatedQuery('tools').insertAndFetch(toolData);
