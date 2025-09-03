@@ -33,7 +33,7 @@ describe('DELETE /internal/api/v1/mcp-servers/:mcpServerId/tools/:mcpToolId', ()
       mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
-      actions: ['sendMessageToChannel'],
+      action: 'sendMessageToChannel',
     });
 
     await createPermission({
@@ -67,7 +67,7 @@ describe('DELETE /internal/api/v1/mcp-servers/:mcpServerId/tools/:mcpToolId', ()
       mcpServerId: anotherMcpServer.id,
       connectionId: connection.id,
       appKey: 'clickup',
-      actions: ['createTask'],
+      action: 'createTask',
     });
 
     await createPermission({
@@ -124,7 +124,7 @@ describe('DELETE /internal/api/v1/mcp-servers/:mcpServerId/tools/:mcpToolId', ()
       mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
-      actions: ['sendMessageToChannel'],
+      action: 'sendMessageToChannel',
     });
 
     await createPermission({

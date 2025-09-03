@@ -23,6 +23,8 @@ class McpTool extends Base {
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
     },
+
+    required: ['action'],
   };
 
   static relationMappings = () => ({

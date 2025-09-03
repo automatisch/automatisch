@@ -12,12 +12,7 @@ export const createMcpTool = async (params = {}) => {
     params?.appKey ||
     faker.helpers.arrayElement(['slack', 'github', 'airtable', 'anthropic']);
 
-  params.actions =
-    params?.actions ||
-    faker.helpers.arrayElements(
-      ['sendMessageToChannel', 'createTask', 'findUserByEmail'],
-      { min: 1, max: 3 }
-    );
+  params.action = params?.action || 'sendMessageToChannel';
 
   const mcpTool = await McpTool.query().insertAndFetch(params);
 

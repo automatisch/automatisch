@@ -12,6 +12,7 @@ import { createMcpServer } from '@/factories/mcp-server.js';
 import { createMcpTool } from '@/factories/mcp-tool.js';
 import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
+import { createStep } from '@/factories/step.js';
 import mcpSessionManager from '@/helpers/mcp-sessions.js';
 
 describe('McpServer model', () => {
@@ -143,13 +144,26 @@ describe('McpServer model', () => {
         .mockResolvedValue();
 
       const user = await createUser();
+
       const mcpServer = await createMcpServer({
         userId: user.id,
         name: 'Test Server',
       });
+
       const flow = await createFlow({
         userId: user.id,
         name: 'Test Flow',
+      });
+
+      await createStep({
+        type: 'trigger',
+        flowId: flow.id,
+        appKey: 'mcp',
+        key: 'mcpTool',
+        parameters: {
+          toolName: 'test_flow_tool',
+          toolDescription: 'A test flow tool',
+        },
       });
 
       const toolData = {
@@ -164,7 +178,7 @@ describe('McpServer model', () => {
       expect(mcpTool.type).toBe('flow');
       expect(mcpTool.connectionId).toBeNull();
       expect(mcpTool.appKey).toBeNull();
-      expect(mcpTool.action).toBeNull();
+      expect(mcpTool.action).toBe('test_flow_tool');
       expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
     });
   });
@@ -190,7 +204,7 @@ describe('McpServer model', () => {
         mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'slack',
-        actions: ['sendMessage'],
+        action: 'sendMessage',
       });
 
       const deletedTool = await mcpServer.deleteTool(mcpTool.id);
@@ -233,14 +247,14 @@ describe('McpServer model', () => {
         mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'slack',
-        actions: ['sendMessage'],
+        action: 'sendMessage',
       });
 
       const tool2 = await createMcpTool({
         mcpServerId: mcpServer.id,
         connectionId: connection.id,
         appKey: 'github',
-        actions: ['createIssue'],
+        action: 'createIssue',
       });
 
       const deletedServer = await mcpServer.delete();

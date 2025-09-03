@@ -52,21 +52,21 @@ describe('GET /internal/api/v1/mcp-servers/:mcpServerId/tools', () => {
       mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
-      actions: ['sendMessageToChannel'],
+      action: 'sendMessageToChannel',
     });
 
     const clickupTool = await createMcpTool({
       mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'clickup',
-      actions: ['createTask'],
+      action: 'createTask',
     });
 
     const airtableTool = await createMcpTool({
       mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'airtable',
-      actions: ['createRecord'],
+      action: 'createRecord',
     });
 
     await createPermission({
@@ -99,7 +99,7 @@ describe('GET /internal/api/v1/mcp-servers/:mcpServerId/tools', () => {
       mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
-      actions: ['sendMessageToChannel'],
+      action: 'sendMessageToChannel',
     });
 
     const anotherMcpServer = await createMcpServer({
@@ -111,7 +111,7 @@ describe('GET /internal/api/v1/mcp-servers/:mcpServerId/tools', () => {
       mcpServerId: anotherMcpServer.id,
       connectionId: connection.id,
       appKey: 'clickup',
-      actions: ['createTask'],
+      action: 'createTask',
     });
 
     await createPermission({

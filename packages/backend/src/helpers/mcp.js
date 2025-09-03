@@ -93,25 +93,23 @@ async function getToolsListFromDatabase(serverId) {
   for (const tool of mcpTools) {
     if (tool.type === 'app') {
       // Handle app-based tools
-      const { appKey, actions } = tool;
+      const { appKey, action } = tool;
       const app = await App.findOneByKey(appKey);
       const appActions = app.actions || [];
 
-      for (const actionKey of actions) {
-        const appAction = appActions.find(({ key }) => key === actionKey);
-        if (appAction) {
-          const toolName = `${appKey}_${appAction.key}`;
-          const toolSchema = generateSchemaOutOfActionArguments(
-            appAction.substeps.find(({ key }) => key === 'chooseTrigger')
-              .arguments
-          );
+      const appAction = appActions.find(({ key }) => key === action);
+      if (appAction) {
+        const toolName = `${appKey}_${appAction.key}`;
+        const toolSchema = generateSchemaOutOfActionArguments(
+          appAction.substeps.find(({ key }) => key === 'chooseTrigger')
+            .arguments
+        );
 
-          tools.push({
-            name: toolName,
-            description: appAction.description,
-            inputSchema: zodToJsonSchema(toolSchema),
-          });
-        }
+        tools.push({
+          name: toolName,
+          description: appAction.description,
+          inputSchema: zodToJsonSchema(toolSchema),
+        });
       }
     } else if (tool.type === 'flow') {
       // Handle flow-based tools
@@ -156,52 +154,52 @@ async function findToolInDatabase(serverId, toolName) {
   const mcpServer = await McpServer.query()
     .findById(serverId)
     .throwIfNotFound();
-  const mcpTools = await mcpServer.$relatedQuery('tools');
+
+  const flowMcpTool = await mcpServer
+    .$relatedQuery('tools')
+    .where({
+      action: toolName,
+      type: 'flow',
+    })
+    .first();
 
   // First, try to find flow-based tools by toolName
-  for (const tool of mcpTools) {
-    if (tool.type === 'flow') {
-      const flow = await Flow.query().findById(tool.flowId);
-      if (flow && flow.active) {
-        const triggerStep = await flow.getTriggerStep();
-        if (
-          triggerStep &&
-          triggerStep.appKey === 'mcp' &&
-          triggerStep.key === 'mcpTool'
-        ) {
-          const configuredToolName =
-            triggerStep.parameters.toolName || `flow_${flow.id}`;
-          if (configuredToolName === toolName) {
-            return { type: 'flow', tool, flow, triggerStep, mcpServer };
-          }
+  if (flowMcpTool) {
+    const flow = await Flow.query().findById(flowMcpTool.flowId);
+
+    if (flow?.active) {
+      const triggerStep = await flow.getTriggerStep();
+
+      if (triggerStep?.appKey === 'mcp' && triggerStep?.key === 'mcpTool') {
+        const configuredToolName = triggerStep.parameters.toolName;
+
+        if (configuredToolName === toolName) {
+          return {
+            type: 'flow',
+            tool: flowMcpTool,
+            flow,
+            triggerStep,
+            mcpServer,
+          };
         }
       }
     }
   }
 
-  // If no flow tool found, try app-based tools
   const parts = toolName.split('_');
-  if (parts.length < 2) {
-    throw new McpError(
-      ErrorCode.InvalidRequest,
-      `Invalid tool name format: ${toolName}`
-    );
-  }
-
   const appKey = parts[0];
   const actionKey = parts.slice(1).join('_');
 
-  const mcpTool = await mcpServer
+  const appMcpTool = await mcpServer
     .$relatedQuery('tools')
-    .where('app_key', appKey)
-    .where('type', 'app')
+    .where({ app_key: appKey, action: actionKey, type: 'app' })
     .first();
 
-  if (!mcpTool || !mcpTool.actions.includes(actionKey)) {
-    throw new McpError(ErrorCode.ToolNotFound, `Tool not found: ${toolName}`);
+  if (appMcpTool) {
+    return { type: 'app', tool: appMcpTool, appKey, actionKey, mcpServer };
   }
 
-  return { type: 'app', tool: mcpTool, appKey, actionKey, mcpServer };
+  throw new McpError(ErrorCode.ToolNotFound, `Tool not found: ${toolName}`);
 }
 
 async function executeAppTool(appKey, actionKey, mcpTool, parameters) {

@@ -48,7 +48,6 @@ exports[`App model > list > should exclude enterprise apps when license is not v
   "mailchimp",
   "mailerlite",
   "mattermost",
-  "mcp",
   "miro",
   "mistral-ai",
   "monday",

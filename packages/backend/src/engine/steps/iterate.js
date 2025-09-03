@@ -1,6 +1,7 @@
 import processTriggerStep from '@/engine/trigger/process.js';
 import processActionStep from '@/engine/action/process.js';
 import Engine from '@/engine/index.js';
+import McpToolExecution from '@/models/mcp-tool-execution.ee.js';
 import delayAsMilliseconds from '@/helpers/delay-as-milliseconds.js';
 
 const iterateSteps = async ({
@@ -17,19 +18,24 @@ const iterateSteps = async ({
   mcpToolId,
 }) => {
   let executionId = resumeExecutionId;
+  let mcpToolExecutionId;
 
   if (!resumeStepId && !resumeExecutionId) {
-    const { executionId: newExecutionId, executionStep } =
-      await processTriggerStep({
-        flowId: flow.id,
-        stepId: triggerStep.id,
-        initialDataItem,
-        triggeredByMcp,
-        mcpToolId,
-        testRun,
-      });
+    const {
+      executionId: newExecutionId,
+      mcpToolExecutionId: newMcpToolExecutionId,
+      executionStep,
+    } = await processTriggerStep({
+      flowId: flow.id,
+      stepId: triggerStep.id,
+      initialDataItem,
+      triggeredByMcp,
+      mcpToolId,
+      testRun,
+    });
 
     executionId = newExecutionId;
+    mcpToolExecutionId = newMcpToolExecutionId;
 
     if (testRun && triggerStep.id === untilStep.id) {
       return { executionStep };
@@ -137,6 +143,16 @@ const iterateSteps = async ({
       .$relatedQuery('executionSteps')
       .where({ step_id: respondWithStep.id })
       .first();
+
+    const mcpToolExecution = await McpToolExecution.query()
+      .where({
+        id: mcpToolExecutionId,
+      })
+      .first();
+
+    await mcpToolExecution
+      .$query()
+      .patchAndFetch({ dataOut: respondWithExecutionStep.dataOut });
 
     return {
       mcpSuccess: `Successfully executed flow \`${flow.name}\`.`,

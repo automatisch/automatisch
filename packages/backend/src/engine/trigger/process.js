@@ -32,12 +32,17 @@ const processTriggerStep = async ({
     });
 
   if (triggeredByMcp && step?.appKey === 'mcp' && step?.key === 'mcpTool') {
-    await McpToolExecuton.query().insert({
+    const mcpToolExecution = await McpToolExecuton.query().insert({
       mcpToolId,
-      dataIn: step?.parameters,
-      dataOut: initialDataItem?.raw,
+      dataIn: initialDataItem?.raw,
       status: 'success',
     });
+
+    return {
+      executionId: execution.id,
+      mcpToolExecutionId: mcpToolExecution.id,
+      executionStep,
+    };
   }
 
   return { executionId: execution.id, executionStep };

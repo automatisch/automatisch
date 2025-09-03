@@ -5,6 +5,7 @@ import App from '@/models/app.js';
 import Flow from '@/models/flow.js';
 import Connection from '@/models/connection.js';
 import ExecutionStep from '@/models/execution-step.js';
+import McpTool from '@/models/mcp-tool.ee.js';
 import Telemetry from '@/helpers/telemetry/index.js';
 import appConfig from '@/config/app.js';
 import globalVariable from '@/engine/global-variable.js';
@@ -107,6 +108,18 @@ class Step extends Base {
       join: {
         from: 'steps.id',
         to: 'execution_steps.step_id',
+      },
+    },
+    mcpTools: {
+      relation: Base.ManyToManyRelation,
+      modelClass: McpTool,
+      join: {
+        from: 'steps.flow_id',
+        through: {
+          from: 'flows.id',
+          to: 'flows.id',
+        },
+        to: 'mcp_tools.flow_id',
       },
     },
   });
@@ -383,6 +396,18 @@ class Step extends Base {
     await updatedStep.updateWebhookUrl();
 
     return updatedStep;
+  }
+
+  async updateRelatedMcpTools() {
+    if (this.appKey !== 'mcp' || this.key !== 'mcpTool') return;
+
+    const mcpTools = await this.$relatedQuery('mcpTools');
+
+    for (const mcpTool of mcpTools) {
+      await mcpTool.$query().patch({
+        action: this.parameters.toolName,
+      });
+    }
   }
 
   async validateParentStep() {

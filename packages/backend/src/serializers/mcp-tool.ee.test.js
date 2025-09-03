@@ -18,7 +18,7 @@ describe('mcpToolSerializer', () => {
       mcpServerId: mcpServer.id,
       connectionId: connection.id,
       appKey: 'slack',
-      actions: ['sendMessageToChannel', 'findUserByEmail'],
+      action: 'sendMessageToChannel',
       type: 'app',
     });
   });
@@ -31,7 +31,7 @@ describe('mcpToolSerializer', () => {
       flowId: mcpTool.flowId,
       connectionId: mcpTool.connectionId,
       appKey: mcpTool.appKey,
-      actions: mcpTool.actions,
+      action: mcpTool.action,
       createdAt: mcpTool.createdAt.getTime(),
       updatedAt: mcpTool.updatedAt.getTime(),
     };

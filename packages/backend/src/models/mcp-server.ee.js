@@ -6,6 +6,7 @@ import McpTool from '@/models/mcp-tool.ee.js';
 import McpToolExecution from '@/models/mcp-tool-execution.ee.js';
 import appConfig from '@/config/app.js';
 import mcpSessionManager from '@/helpers/mcp-sessions.js';
+import Flow from '@/models/flow.js';
 
 class McpServer extends Base {
   static tableName = 'mcp_servers';
@@ -99,7 +100,11 @@ class McpServer extends Base {
       toolData.appKey = appKey;
       toolData.action = action;
     } else if (type === 'flow') {
+      const flow = await Flow.query().findById(flowId).throwIfNotFound();
+      const triggerStep = await flow.getTriggerStep();
+
       toolData.flowId = flowId;
+      toolData.action = triggerStep.parameters.toolName;
     }
 
     const mcpTool = await this.$relatedQuery('tools').insertAndFetch(toolData);

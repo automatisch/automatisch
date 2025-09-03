@@ -40,6 +40,9 @@ exports[`McpTool model > jsonSchema should have correct validations 1`] = `
       "type": "string",
     },
   },
+  "required": [
+    "action",
+  ],
   "type": "object",
 }
 `;
