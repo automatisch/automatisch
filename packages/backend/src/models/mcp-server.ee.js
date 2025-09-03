@@ -126,6 +126,7 @@ class McpServer extends Base {
       .findById(mcpToolId)
       .throwIfNotFound();
 
+    await mcpTool.$relatedQuery('mcpToolExecutions').delete();
     await mcpTool.$query().delete();
 
     await this.notifyToolsListChanged();
