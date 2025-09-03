@@ -124,6 +124,7 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
   };
 
   const handleBackToApps = () => {
+    setAppName('');
     setSelectedApp(null);
     setSelectedActions(new Set());
     setSelectedConnection(null);
