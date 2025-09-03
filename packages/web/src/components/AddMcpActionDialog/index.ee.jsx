@@ -47,7 +47,7 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
   const [selectedConnection, setSelectedConnection] = React.useState(null);
 
   const { data: apps, mutate } = useLazyApps(
-    { appName },
+    { appName, onlyWithActions: true },
     {
       onSuccess: () => {
         setIsLoading(false);

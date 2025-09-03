@@ -3,7 +3,10 @@ import { useMutation } from '@tanstack/react-query';
 import api from 'helpers/api';
 import React from 'react';
 
-export default function useLazyApps({ appName } = {}, { onSuccess } = {}) {
+export default function useLazyApps(
+  { appName, onlyWithActions = false, onlyWithTriggers = false } = {},
+  { onSuccess } = {},
+) {
   const abortControllerRef = React.useRef(new window.AbortController());
 
   React.useEffect(() => {
@@ -17,7 +20,7 @@ export default function useLazyApps({ appName } = {}, { onSuccess } = {}) {
   const query = useMutation({
     mutationFn: async () => {
       const { data } = await api.get('/v1/apps', {
-        params: { name: appName },
+        params: { name: appName, onlyWithActions, onlyWithTriggers },
         signal: abortControllerRef.current.signal,
       });
 
