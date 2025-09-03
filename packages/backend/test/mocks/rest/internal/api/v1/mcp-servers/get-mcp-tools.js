@@ -6,7 +6,7 @@ const getMcpToolsMock = async (mcpTools) => {
     flowId: mcpTool.flowId,
     connectionId: mcpTool.connectionId,
     appKey: mcpTool.appKey,
-    actions: mcpTool.actions,
+    action: mcpTool.action,
     createdAt: mcpTool.createdAt.getTime(),
     updatedAt: mcpTool.updatedAt.getTime(),
   }));

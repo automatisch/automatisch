@@ -89,19 +89,7 @@ class McpServer extends Base {
     await mcpSessionManager.terminateServerSessions(this.id);
   }
 
-  async createOrUpdateTool({
-    connectionId,
-    appKey,
-    actions,
-    type = 'app',
-    flowId,
-  }) {
-    if (type === 'app') {
-      await this.$relatedQuery('tools').where('app_key', appKey).delete();
-    } else if (type === 'flow' && flowId) {
-      await this.$relatedQuery('tools').where('flow_id', flowId).delete();
-    }
-
+  async createTool({ connectionId, appKey, action, type = 'app', flowId }) {
     const toolData = {
       type,
     };
@@ -109,7 +97,7 @@ class McpServer extends Base {
     if (type === 'app') {
       toolData.connectionId = connectionId;
       toolData.appKey = appKey;
-      toolData.actions = actions;
+      toolData.action = action;
     } else if (type === 'flow') {
       toolData.flowId = flowId;
     }

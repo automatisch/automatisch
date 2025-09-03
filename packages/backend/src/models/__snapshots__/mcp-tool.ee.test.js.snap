@@ -3,8 +3,8 @@
 exports[`McpTool model > jsonSchema should have correct validations 1`] = `
 {
   "properties": {
-    "actions": {
-      "type": "array",
+    "action": {
+      "type": "string",
     },
     "appKey": {
       "type": "string",

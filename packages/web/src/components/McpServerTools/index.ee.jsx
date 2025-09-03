@@ -18,17 +18,14 @@ import useFormatMessage from 'hooks/useFormatMessage';
 import useMcpTools from 'hooks/useMcpTools.ee';
 import useDeleteMcpTool from 'hooks/useDeleteMcpTool.ee';
 import useApp from 'hooks/useApp';
-import useActions from 'hooks/useActions';
 import useFlow from 'hooks/useFlow';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { getGeneralErrorMessage } from 'helpers/errors';
 
 function McpToolCard({ tool, mcpServerId }) {
   const { data: app } = useApp(tool.appKey);
-  const { data: actions } = useActions(tool.appKey);
   const { data: flow } = useFlow(tool.flowId);
   const appData = app?.data;
-  const actionsData = actions?.data || [];
   const flowData = flow?.data;
   const formatMessage = useFormatMessage();
   const enqueueSnackbar = useEnqueueSnackbar();
@@ -39,19 +36,6 @@ function McpToolCard({ tool, mcpServerId }) {
     isPending,
     reset: resetDeleteMcpTool,
   } = useDeleteMcpTool(mcpServerId);
-
-  const getActionNames = () => {
-    if (!tool.actions || tool.actions.length === 0) return [];
-
-    return tool.actions
-      .map((actionKey) => {
-        const action = actionsData.find((a) => a.key === actionKey);
-        return action?.name || actionKey;
-      })
-      .filter(Boolean);
-  };
-
-  const actionNames = getActionNames();
 
   const generalErrorMessage = getGeneralErrorMessage({
     error: deleteMcpToolError,
@@ -92,15 +76,22 @@ function McpToolCard({ tool, mcpServerId }) {
                 name={appData?.name || tool.appKey}
               />
             ) : (
-              <Box sx={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 <SwapCallsIcon color="primary" sx={{ fontSize: 32 }} />
               </Box>
             )}
             <Typography variant="h6" component="h3">
-              {tool.type === 'app' 
-                ? (appData?.name || tool.appKey)
-                : (flowData?.name || 'Flow Tool')
-              }
+              {tool.type === 'app'
+                ? appData?.name || tool.appKey
+                : flowData?.name || 'Flow Tool'}
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" gap={1}>
@@ -120,9 +111,9 @@ function McpToolCard({ tool, mcpServerId }) {
           </Box>
         </Box>
 
-        {tool.type === 'app' && actionNames.length > 0 && (
+        {tool.type === 'app' && tool.action && (
           <Typography variant="body2" color="text.secondary">
-            {actionNames.join(', ')}
+            {tool.action}
           </Typography>
         )}
 

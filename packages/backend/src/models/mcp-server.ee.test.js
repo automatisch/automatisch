@@ -103,7 +103,7 @@ describe('McpServer model', () => {
     });
   });
 
-  describe('createOrUpdateTool', () => {
+  describe('createTool', () => {
     it('should create new tool when none exists', async () => {
       const notifyToolsListChangedSpy = vi
         .spyOn(mcpSessionManager, 'notifyToolsListChanged')
@@ -123,63 +123,17 @@ describe('McpServer model', () => {
       const toolData = {
         connectionId: connection.id,
         appKey: 'slack',
-        actions: ['sendMessage', 'createChannel'],
+        action: 'sendMessage',
       };
 
-      const mcpTool = await mcpServer.createOrUpdateTool(toolData);
+      const mcpTool = await mcpServer.createTool(toolData);
 
       expect(mcpTool.mcpServerId).toBe(mcpServer.id);
       expect(mcpTool.connectionId).toBe(connection.id);
       expect(mcpTool.appKey).toBe('slack');
-      expect(mcpTool.actions).toEqual(['sendMessage', 'createChannel']);
+      expect(mcpTool.action).toBe('sendMessage');
       expect(mcpTool.type).toBe('app');
       expect(mcpTool.flowId).toBeNull();
-      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
-    });
-
-    it('should replace existing tool with same appKey', async () => {
-      const notifyToolsListChangedSpy = vi
-        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
-        .mockResolvedValue();
-
-      const user = await createUser();
-
-      const mcpServer = await createMcpServer({
-        userId: user.id,
-        name: 'Test Server',
-      });
-
-      const connection = await createConnection({
-        userId: user.id,
-      });
-
-      const initialTool = await createMcpTool({
-        mcpServerId: mcpServer.id,
-        connectionId: connection.id,
-        appKey: 'slack',
-        actions: ['oldAction'],
-      });
-
-      const toolData = {
-        connectionId: connection.id,
-        appKey: 'slack',
-        actions: ['newAction1', 'newAction2'],
-      };
-
-      const newTool = await mcpServer.createOrUpdateTool(toolData);
-
-      // Verify old tool was deleted
-      const deletedTool = await McpTool.query().findById(initialTool.id);
-      expect(deletedTool).toBeUndefined();
-
-      // Verify new tool was created
-      expect(newTool.id).not.toBe(initialTool.id);
-      expect(newTool.mcpServerId).toBe(mcpServer.id);
-      expect(newTool.connectionId).toBe(connection.id);
-      expect(newTool.appKey).toBe('slack');
-      expect(newTool.actions).toEqual(['newAction1', 'newAction2']);
-      expect(newTool.type).toBe('app');
-      expect(newTool.flowId).toBeNull();
       expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
     });
 
@@ -203,58 +157,14 @@ describe('McpServer model', () => {
         flowId: flow.id,
       };
 
-      const mcpTool = await mcpServer.createOrUpdateTool(toolData);
+      const mcpTool = await mcpServer.createTool(toolData);
 
       expect(mcpTool.mcpServerId).toBe(mcpServer.id);
       expect(mcpTool.flowId).toBe(flow.id);
       expect(mcpTool.type).toBe('flow');
       expect(mcpTool.connectionId).toBeNull();
       expect(mcpTool.appKey).toBeNull();
-      expect(mcpTool.actions).toEqual([]);
-      expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
-    });
-
-    it('should replace existing flow tool with same flowId', async () => {
-      const notifyToolsListChangedSpy = vi
-        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
-        .mockResolvedValue();
-
-      const user = await createUser();
-      const mcpServer = await createMcpServer({
-        userId: user.id,
-        name: 'Test Server',
-      });
-      const flow = await createFlow({
-        userId: user.id,
-        name: 'Test Flow',
-      });
-
-      // Create initial flow tool
-      const initialTool = await createMcpTool({
-        mcpServerId: mcpServer.id,
-        type: 'flow',
-        flowId: flow.id,
-      });
-
-      const toolData = {
-        type: 'flow',
-        flowId: flow.id,
-      };
-
-      const newTool = await mcpServer.createOrUpdateTool(toolData);
-
-      // Verify old tool was deleted
-      const deletedTool = await McpTool.query().findById(initialTool.id);
-      expect(deletedTool).toBeUndefined();
-
-      // Verify new tool was created
-      expect(newTool.id).not.toBe(initialTool.id);
-      expect(newTool.mcpServerId).toBe(mcpServer.id);
-      expect(newTool.flowId).toBe(flow.id);
-      expect(newTool.type).toBe('flow');
-      expect(newTool.connectionId).toBeNull();
-      expect(newTool.appKey).toBeNull();
-      expect(newTool.actions).toEqual([]);
+      expect(mcpTool.action).toBeNull();
       expect(notifyToolsListChangedSpy).toHaveBeenCalledWith(mcpServer.id);
     });
   });

@@ -19,7 +19,7 @@ class McpTool extends Base {
       flowId: { type: 'string', format: 'uuid' },
       connectionId: { type: 'string', format: 'uuid' },
       appKey: { type: 'string' },
-      actions: { type: 'array' },
+      action: { type: 'string' },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
     },

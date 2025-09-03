@@ -2,7 +2,7 @@ import { renderObject } from '@/helpers/renderer.js';
 
 export default async (request, response) => {
   const { mcpServerId } = request.params;
-  const { connectionId, appKey, actions, type, flowId } = request.body;
+  const { connectionId, appKey, action, type, flowId } = request.body;
 
   const mcpServer = await request.currentUser
     .$relatedQuery('mcpServers')
@@ -11,10 +11,10 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
-  const mcpTool = await mcpServer.createOrUpdateTool({
+  const mcpTool = await mcpServer.createTool({
     connectionId,
     appKey,
-    actions,
+    action,
     type,
     flowId,
   });

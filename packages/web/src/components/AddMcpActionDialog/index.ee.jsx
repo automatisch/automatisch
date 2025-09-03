@@ -55,9 +55,13 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
     },
   );
 
-  const { data: actions, isLoading: isActionsLoading } = useActions(selectedApp?.key);
-  const { data: connections, isLoading: isConnectionsLoading } = useAppConnections(selectedApp?.key);
-  const { mutateAsync: createMcpTool, isLoading: isCreatingTool } = useCreateMcpTool(mcpServerId);
+  const { data: actions, isLoading: isActionsLoading } = useActions(
+    selectedApp?.key,
+  );
+  const { data: connections, isLoading: isConnectionsLoading } =
+    useAppConnections(selectedApp?.key);
+  const { mutateAsync: createMcpTool, isLoading: isCreatingTool } =
+    useCreateMcpTool(mcpServerId);
 
   const fetchData = React.useMemo(() => debounce(mutate, 300), [mutate]);
 
@@ -89,24 +93,29 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
 
   const handleAddSelectedActions = async () => {
     const requiresConnection = selectedApp?.supportsConnections;
-    
-    if (selectedActions.size === 0 || (requiresConnection && !selectedConnection)) {
+
+    if (
+      selectedActions.size === 0 ||
+      (requiresConnection && !selectedConnection)
+    ) {
       return;
     }
 
     try {
       const selectedActionsArray = Array.from(selectedActions);
-      
-      const payload = {
-        appKey: selectedApp.key,
-        actions: selectedActionsArray,
-      };
-      
-      if (requiresConnection && selectedConnection) {
-        payload.connectionId = selectedConnection.id;
+
+      for (const action of selectedActionsArray) {
+        const payload = {
+          appKey: selectedApp.key,
+          action,
+        };
+
+        if (requiresConnection && selectedConnection) {
+          payload.connectionId = selectedConnection.id;
+        }
+
+        await createMcpTool(payload);
       }
-      
-      await createMcpTool(payload);
 
       onClose();
     } catch (error) {
@@ -125,22 +134,30 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
     if (selectedActions.size === actions?.data?.length) {
       setSelectedActions(new Set());
     } else {
-      const allActionKeys = new Set(actions?.data?.map(action => action.key) || []);
+      const allActionKeys = new Set(
+        actions?.data?.map((action) => action.key) || [],
+      );
       setSelectedActions(allActionKeys);
     }
   };
 
-  const isAllSelected = selectedActions.size === actions?.data?.length && actions?.data?.length > 0;
+  const isAllSelected =
+    selectedActions.size === actions?.data?.length && actions?.data?.length > 0;
 
   const connectionOptions = React.useMemo(() => {
-    return connections?.data?.map(connection => ({
-      label: connection?.formattedData?.screenName ?? 'Unnamed',
-      value: connection?.id,
-      connection: connection
-    })) || [];
+    return (
+      connections?.data?.map((connection) => ({
+        label: connection?.formattedData?.screenName ?? 'Unnamed',
+        value: connection?.id,
+        connection: connection,
+      })) || []
+    );
   }, [connections?.data]);
 
-  const selectedConnectionOption = connectionOptions.find(option => option.value === selectedConnection?.id) || null;
+  const selectedConnectionOption =
+    connectionOptions.find(
+      (option) => option.value === selectedConnection?.id,
+    ) || null;
 
   return (
     <Dialog
@@ -156,10 +173,9 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
       data-test="add-action-dialog"
     >
       <DialogTitle>
-        {step === 'selectApp' 
+        {step === 'selectApp'
           ? formatMessage('addMcpActionDialog.title')
-          : formatMessage('addMcpActionDialog.selectAction')
-        }
+          : formatMessage('addMcpActionDialog.selectAction')}
       </DialogTitle>
 
       {step === 'selectApp' && (
@@ -206,10 +222,12 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
 
               {!isLoading &&
                 apps?.data.map((app) => (
-                  <ListItem disablePadding key={app.name} data-test="app-list-item">
-                    <ListItemButton
-                      onClick={() => handleAppSelect(app)}
-                    >
+                  <ListItem
+                    disablePadding
+                    key={app.name}
+                    data-test="app-list-item"
+                  >
+                    <ListItemButton onClick={() => handleAppSelect(app)}>
                       <ListItemIcon sx={{ minWidth: 74 }}>
                         <AppIcon
                           color={app.primaryColor}
@@ -235,7 +253,12 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
       {step === 'selectAction' && (
         <>
           <Box px={3} pb={2}>
-            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              mb={2}
+            >
               <Box display="flex" alignItems="center" gap={1}>
                 <AppIcon
                   color={selectedApp.primaryColor}
@@ -245,7 +268,7 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
                 />
                 <Typography variant="h6">{selectedApp.name}</Typography>
               </Box>
-              
+
               {actions?.data?.length > 0 && (
                 <Button
                   variant="outlined"
@@ -253,10 +276,9 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
                   onClick={handleSelectAll}
                   data-test="select-all-button"
                 >
-                  {isAllSelected 
+                  {isAllSelected
                     ? formatMessage('addMcpActionDialog.unselectAll')
-                    : formatMessage('addMcpActionDialog.selectAll')
-                  }
+                    : formatMessage('addMcpActionDialog.selectAll')}
                 </Button>
               )}
             </Box>
@@ -273,14 +295,20 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
                   setSelectedConnection(newValue?.connection || null);
                 }}
                 getOptionLabel={(option) => option?.label || ''}
-                isOptionEqualToValue={(option, value) => option?.value === value?.value}
+                isOptionEqualToValue={(option, value) =>
+                  option?.value === value?.value
+                }
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label={formatMessage('addMcpActionDialog.selectConnection')}
                     required
                     error={!selectedConnection && selectedActions.size > 0}
-                    helperText={!selectedConnection && selectedActions.size > 0 ? formatMessage('addMcpActionDialog.connectionRequired') : ''}
+                    helperText={
+                      !selectedConnection && selectedActions.size > 0
+                        ? formatMessage('addMcpActionDialog.connectionRequired')
+                        : ''
+                    }
                   />
                 )}
                 data-test="connection-autocomplete"
@@ -299,10 +327,10 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
 
               {!isActionsLoading &&
                 actions?.data?.map((action) => (
-                  <Card 
-                    key={action.key} 
-                    sx={{ 
-                      mb: 2, 
+                  <Card
+                    key={action.key}
+                    sx={{
+                      mb: 2,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease-in-out',
                       '&:hover': {
@@ -314,12 +342,14 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
                         borderColor: (theme) => theme.palette.primary.main,
                         borderWidth: 2,
                         borderStyle: 'solid',
-                      })
+                      }),
                     }}
                     onClick={() => handleActionToggle(action)}
                     data-test="action-card"
                   >
-                    <CardContent sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <CardContent
+                      sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}
+                    >
                       <Checkbox
                         checked={selectedActions.has(action.key)}
                         onChange={() => handleActionToggle(action)}
@@ -327,17 +357,17 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
                         sx={{ mt: -1 }}
                       />
                       <Box sx={{ flex: 1 }}>
-                        <Typography 
-                          variant="subtitle1" 
-                          sx={{ 
+                        <Typography
+                          variant="subtitle1"
+                          sx={{
                             fontWeight: 'bold',
-                            mb: 0.5
+                            mb: 0.5,
                           }}
                         >
                           {action.name}
                         </Typography>
-                        <Typography 
-                          variant="body2" 
+                        <Typography
+                          variant="body2"
                           color="text.secondary"
                           sx={{ fontWeight: 'normal' }}
                         >
@@ -354,7 +384,7 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
 
       {step === 'selectAction' && (
         <DialogActions>
-          <Button 
+          <Button
             startIcon={<ArrowBackIcon />}
             onClick={handleBackToApps}
             data-test="back-to-apps-button"
@@ -365,17 +395,20 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
           <Button onClick={onClose} data-test="cancel-button">
             {formatMessage('addMcpActionDialog.cancel')}
           </Button>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             color="primary"
             onClick={handleAddSelectedActions}
-            disabled={selectedActions.size === 0 || (selectedApp?.supportsConnections && !selectedConnection) || isCreatingTool}
+            disabled={
+              selectedActions.size === 0 ||
+              (selectedApp?.supportsConnections && !selectedConnection) ||
+              isCreatingTool
+            }
             data-test="add-actions-button"
           >
-            {isCreatingTool 
+            {isCreatingTool
               ? formatMessage('loading')
-              : `${formatMessage('addMcpActionDialog.add')} (${selectedActions.size})`
-            }
+              : `${formatMessage('addMcpActionDialog.add')} (${selectedActions.size})`}
           </Button>
         </DialogActions>
       )}
