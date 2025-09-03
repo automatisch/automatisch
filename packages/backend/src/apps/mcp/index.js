@@ -12,6 +12,7 @@ export default defineApp({
   apiBaseUrl: '',
   primaryColor: '#FF6B35',
   supportsConnections: false,
+  enterprise: true,
   actions,
   triggers,
 });
