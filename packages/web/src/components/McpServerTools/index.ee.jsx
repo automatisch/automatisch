@@ -19,15 +19,21 @@ import useMcpTools from 'hooks/useMcpTools.ee';
 import useDeleteMcpTool from 'hooks/useDeleteMcpTool.ee';
 import useApp from 'hooks/useApp';
 import useFlow from 'hooks/useFlow';
+import useActions from 'hooks/useActions';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import { getGeneralErrorMessage } from 'helpers/errors';
 
 function McpToolCard({ tool, mcpServerId }) {
   const { data: app } = useApp(tool.appKey);
   const { data: flow } = useFlow(tool.flowId);
+  const { data: actions } = useActions(tool.appKey);
   const appData = app?.data;
   const flowData = flow?.data;
   const formatMessage = useFormatMessage();
+
+  const actionData =
+    tool.type === 'app' && actions?.data?.find((a) => a.key === tool.action);
+  const actionDisplayName = actionData?.name || tool.action;
   const enqueueSnackbar = useEnqueueSnackbar();
   const [showConfirmation, setShowConfirmation] = React.useState(false);
   const {
@@ -113,7 +119,7 @@ function McpToolCard({ tool, mcpServerId }) {
 
         {tool.type === 'app' && tool.action && (
           <Typography variant="body2" color="text.secondary">
-            {tool.action}
+            {actionDisplayName}
           </Typography>
         )}
 
