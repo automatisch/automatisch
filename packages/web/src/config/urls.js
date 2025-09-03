@@ -101,6 +101,9 @@ export const MCP_SERVER_ADD_ACTION_PATTERN = `${MCP_SERVERS}/:mcpServerId/tools/
 export const MCP_SERVER_ADD_FLOW = (mcpServerId) =>
   `${MCP_SERVERS}/${mcpServerId}/tools/add-flow`;
 export const MCP_SERVER_ADD_FLOW_PATTERN = `${MCP_SERVERS}/:mcpServerId/tools/add-flow`;
+export const MCP_SERVER_EXECUTIONS = (mcpServerId) =>
+  `${MCP_SERVERS}/${mcpServerId}/executions`;
+export const MCP_SERVER_EXECUTIONS_PATTERN = `${MCP_SERVERS}/:mcpServerId/executions`;
 
 export const ADMIN_APPS = `${ADMIN_SETTINGS}/apps`;
 export const ADMIN_APP = (appKey) => `${ADMIN_SETTINGS}/apps/${appKey}`;

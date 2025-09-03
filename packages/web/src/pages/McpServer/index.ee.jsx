@@ -30,6 +30,7 @@ import useUpdateMcpServer from 'hooks/useUpdateMcpServer.ee';
 import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
 import McpServerTools from 'components/McpServerTools/index.ee';
 import McpServerConnect from 'components/McpServerConnect/index.ee';
+import McpServerExecutions from 'components/McpServerExecutions/index.ee';
 import AddMcpActionDialog from 'components/AddMcpActionDialog/index.ee';
 import AddMcpFlowDialog from 'components/AddMcpFlowDialog/index.ee';
 import * as URLS from 'config/urls';
@@ -52,6 +53,10 @@ export default function McpServer() {
   });
   const connectPathMatch = useMatch({
     path: URLS.MCP_SERVER_CONNECT_PATTERN,
+    end: false,
+  });
+  const executionsPathMatch = useMatch({
+    path: URLS.MCP_SERVER_EXECUTIONS_PATTERN,
     end: false,
   });
 
@@ -168,7 +173,13 @@ export default function McpServer() {
                           data-test={option['data-test']}
                         >
                           {option.startIcon && (
-                            <Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
+                            <Box
+                              sx={{
+                                mr: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                            >
                               {option.startIcon}
                             </Box>
                           )}
@@ -187,7 +198,8 @@ export default function McpServer() {
                       variant={matchSmallScreens ? 'fullWidth' : undefined}
                       value={
                         toolsPathMatch?.pattern?.path ||
-                        connectPathMatch?.pattern?.path
+                        connectPathMatch?.pattern?.path ||
+                        executionsPathMatch?.pattern?.path
                       }
                     >
                       <Tab
@@ -204,6 +216,13 @@ export default function McpServer() {
                         component={Link}
                         data-test="connect-tab"
                       />
+                      <Tab
+                        label={formatMessage('mcpServer.executions')}
+                        to={URLS.MCP_SERVER_EXECUTIONS(mcpServerId)}
+                        value={URLS.MCP_SERVER_EXECUTIONS_PATTERN}
+                        component={Link}
+                        data-test="executions-tab"
+                      />
                     </Tabs>
                   </Box>
 
@@ -215,6 +234,12 @@ export default function McpServer() {
                     <Route
                       path="/connect"
                       element={<McpServerConnect mcpServerId={mcpServerId} />}
+                    />
+                    <Route
+                      path="/executions"
+                      element={
+                        <McpServerExecutions mcpServerId={mcpServerId} />
+                      }
                     />
                     <Route
                       path="/"
