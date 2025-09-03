@@ -34,6 +34,7 @@ import useLazyApps from 'hooks/useLazyApps';
 import useActions from 'hooks/useActions';
 import useAppConnections from 'hooks/useAppConnections';
 import useCreateMcpTool from 'hooks/useCreateMcpTool.ee';
+import useMcpTools from 'hooks/useMcpTools.ee';
 
 export default function AddMcpActionDialog({ mcpServerId, onClose }) {
   const theme = useTheme();
@@ -58,6 +59,7 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
   const { data: actions, isLoading: isActionsLoading } = useActions(
     selectedApp?.key,
   );
+  const { data: mcpTools } = useMcpTools(mcpServerId);
   const { data: connections, isLoading: isConnectionsLoading } =
     useAppConnections(selectedApp?.key);
   const { mutateAsync: createMcpTool, isLoading: isCreatingTool } =
@@ -76,12 +78,25 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
     }
   }, [fetchData, appName, step]);
 
+  const mcpToolAlreadyExists = React.useCallback(
+    (appKey, action) => {
+      return mcpTools?.data.some(
+        (mcpTool) => mcpTool.appKey === appKey && mcpTool.action === action,
+      );
+    },
+    [mcpTools],
+  );
+
   const handleAppSelect = (app) => {
     setSelectedApp(app);
     setStep('selectAction');
   };
 
   const handleActionToggle = (action) => {
+    if (mcpToolAlreadyExists(selectedApp?.key, action.key)) {
+      return;
+    }
+
     const newSelectedActions = new Set(selectedActions);
     if (newSelectedActions.has(action.key)) {
       newSelectedActions.delete(action.key);
@@ -103,8 +118,11 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
 
     try {
       const selectedActionsArray = Array.from(selectedActions);
+      const newActionsToAdd = selectedActionsArray.filter(
+        (action) => !mcpToolAlreadyExists(selectedApp?.key, action),
+      );
 
-      for (const action of selectedActionsArray) {
+      for (const action of newActionsToAdd) {
         const payload = {
           appKey: selectedApp.key,
           action,
@@ -132,18 +150,28 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
   };
 
   const handleSelectAll = () => {
-    if (selectedActions.size === actions?.data?.length) {
+    const availableActions =
+      actions?.data?.filter(
+        (action) => !mcpToolAlreadyExists(selectedApp?.key, action.key),
+      ) || [];
+
+    if (selectedActions.size === availableActions.length) {
       setSelectedActions(new Set());
     } else {
-      const allActionKeys = new Set(
-        actions?.data?.map((action) => action.key) || [],
+      const availableActionKeys = new Set(
+        availableActions.map((action) => action.key),
       );
-      setSelectedActions(allActionKeys);
+      setSelectedActions(availableActionKeys);
     }
   };
 
+  const availableActionsCount =
+    actions?.data?.filter(
+      (action) => !mcpToolAlreadyExists(selectedApp?.key, action.key),
+    ).length || 0;
+
   const isAllSelected =
-    selectedActions.size === actions?.data?.length && actions?.data?.length > 0;
+    selectedActions.size === availableActionsCount && availableActionsCount > 0;
 
   const connectionOptions = React.useMemo(() => {
     return (
@@ -327,57 +355,84 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
               )}
 
               {!isActionsLoading &&
-                actions?.data?.map((action) => (
-                  <Card
-                    key={action.key}
-                    sx={{
-                      mb: 2,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease-in-out',
-                      '&:hover': {
-                        boxShadow: 2,
-                        backgroundColor: (theme) => theme.palette.action.hover,
-                      },
-                      ...(selectedActions.has(action.key) && {
-                        boxShadow: 2,
-                        borderColor: (theme) => theme.palette.primary.main,
-                        borderWidth: 2,
-                        borderStyle: 'solid',
-                      }),
-                    }}
-                    onClick={() => handleActionToggle(action)}
-                    data-test="action-card"
-                  >
-                    <CardContent
-                      sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}
+                actions?.data?.map((action) => {
+                  const isExisting = mcpToolAlreadyExists(
+                    selectedApp?.key,
+                    action.key,
+                  );
+                  const isSelected =
+                    selectedActions.has(action.key) || isExisting;
+
+                  return (
+                    <Card
+                      key={action.key}
+                      sx={{
+                        mb: 2,
+                        cursor: isExisting ? 'default' : 'pointer',
+                        transition: 'all 0.2s ease-in-out',
+                        opacity: isExisting ? 0.7 : 1,
+                        '&:hover': {
+                          ...(!isExisting && {
+                            boxShadow: 2,
+                            backgroundColor: (theme) =>
+                              theme.palette.action.hover,
+                          }),
+                        },
+                        ...(isSelected && {
+                          boxShadow: 2,
+                          borderColor: (theme) =>
+                            isExisting
+                              ? 'transparent'
+                              : theme.palette.primary.main,
+                          borderWidth: 2,
+                          borderStyle: 'solid',
+                        }),
+                      }}
+                      onClick={() => handleActionToggle(action)}
+                      data-test="action-card"
                     >
-                      <Checkbox
-                        checked={selectedActions.has(action.key)}
-                        onChange={() => handleActionToggle(action)}
-                        onClick={(e) => e.stopPropagation()}
-                        sx={{ mt: -1 }}
-                      />
-                      <Box sx={{ flex: 1 }}>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{
-                            fontWeight: 'bold',
-                            mb: 0.5,
-                          }}
-                        >
-                          {action.name}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ fontWeight: 'normal' }}
-                        >
-                          {action.description}
-                        </Typography>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                ))}
+                      <CardContent
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: 2,
+                        }}
+                      >
+                        <Checkbox
+                          checked={isSelected}
+                          onChange={() => handleActionToggle(action)}
+                          onClick={(e) => e.stopPropagation()}
+                          disabled={isExisting}
+                          sx={{ mt: -1 }}
+                        />
+                        <Box sx={{ flex: 1 }}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            gap={1}
+                            mb={0.5}
+                          >
+                            <Typography
+                              variant="subtitle1"
+                              sx={{
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              {action.name}
+                            </Typography>
+                          </Box>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ fontWeight: 'normal' }}
+                          >
+                            {action.description}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
             </Box>
           </DialogContent>
         </>
@@ -409,7 +464,7 @@ export default function AddMcpActionDialog({ mcpServerId, onClose }) {
           >
             {isCreatingTool
               ? formatMessage('loading')
-              : `${formatMessage('addMcpActionDialog.add')} (${selectedActions.size})`}
+              : formatMessage('addMcpActionDialog.add')}
           </Button>
         </DialogActions>
       )}

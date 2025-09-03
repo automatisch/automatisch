@@ -4,7 +4,7 @@ import api from 'helpers/api';
 import React from 'react';
 
 export default function useLazyApps(
-  { appName, onlyWithActions = false, onlyWithTriggers = false } = {},
+  { appName, onlyWithActions, onlyWithTriggers } = {},
   { onSuccess } = {},
 ) {
   const abortControllerRef = React.useRef(new window.AbortController());
