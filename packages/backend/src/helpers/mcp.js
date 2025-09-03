@@ -130,11 +130,7 @@ async function getToolsListFromDatabase(serverId) {
           let parsedSchema = {};
           if (inputSchema) {
             try {
-              const schema = JSON.parse(inputSchema);
-              parsedSchema = {
-                type: 'object',
-                properties: schema,
-              };
+              parsedSchema = JSON.parse(inputSchema);
             } catch (error) {
               // Use empty schema if parsing fails
               parsedSchema = { type: 'object', properties: {} };
