@@ -144,6 +144,7 @@ class McpServer extends Base {
   }
 
   async delete() {
+    await this.$relatedQuery('mcpToolExecutions').delete();
     await this.$relatedQuery('tools').delete();
     await this.$query().delete();
 
