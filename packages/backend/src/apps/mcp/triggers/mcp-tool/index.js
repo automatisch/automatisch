@@ -1,5 +1,5 @@
-import Crypto from 'crypto';
 import defineTrigger from '../../../../helpers/define-trigger.js';
+import isEmpty from 'lodash/isEmpty.js';
 
 export default defineTrigger({
   name: 'MCP Tool',
@@ -35,64 +35,16 @@ export default defineTrigger({
     },
   ],
 
-  async run() {
-    // This trigger doesn't poll - it's exposed via MCP service
-    // The actual trigger execution happens when MCP clients call the tool
-  },
+  async run($) {
+    const lastExecutionStep = await $.getLastExecutionStep();
 
-  async testRun($) {
-    const { toolName, toolDescription, inputSchema } = $.step.parameters;
-
-    let sampleSchema = {
-      type: 'object',
-      properties: {
-        query: {
-          type: 'string',
-          description: 'Search query',
+    if (!isEmpty(lastExecutionStep?.dataOut)) {
+      $.pushTriggerItem({
+        raw: lastExecutionStep.dataOut,
+        meta: {
+          internalId: '',
         },
-      },
-      required: ['query'],
-    };
-
-    if (inputSchema) {
-      try {
-        sampleSchema = JSON.parse(inputSchema);
-      } catch (error) {
-        // Use default schema if parsing fails
-      }
+      });
     }
-
-    const sampleData = {
-      toolName: toolName || 'sample_tool',
-      toolDescription:
-        toolDescription || 'This is a sample MCP tool for testing',
-      inputSchema: sampleSchema,
-      request: {
-        headers: {
-          'content-type': 'application/json',
-          'user-agent': 'MCP-Client/1.0',
-        },
-        body: {
-          method: 'tools/call',
-          params: {
-            name: toolName || 'sample_tool',
-            arguments: sampleSchema.properties
-              ? Object.keys(sampleSchema.properties).reduce((acc, key) => {
-                  acc[key] = `sample_${key}`;
-                  return acc;
-                }, {})
-              : {},
-          },
-        },
-        query: {},
-      },
-    };
-
-    $.pushTriggerItem({
-      raw: sampleData,
-      meta: {
-        internalId: Crypto.randomUUID(),
-      },
-    });
   },
 });
