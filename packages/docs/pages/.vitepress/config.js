@@ -349,6 +349,16 @@ export default async () => {
             ],
           },
           {
+            text: 'Google Docs',
+            collapsible: true,
+            collapsed: true,
+            items: [
+              { text: 'Triggers', link: '/apps/google-docs/triggers' },
+              { text: 'Actions', link: '/apps/google-docs/actions' },
+              { text: 'Connection', link: '/apps/google-docs/connection' },
+            ],
+          },
+          {
             text: 'Google Forms',
             collapsible: true,
             collapsed: true,
