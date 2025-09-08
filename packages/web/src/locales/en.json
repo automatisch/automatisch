@@ -565,5 +565,7 @@
   "addMcpFlowDialog.noFlowsFound": "No flows found matching your search",
   "addMcpFlowDialog.noMcpFlows": "No published flows with MCP triggers found. Create and publish a flow with an MCP Tool trigger to expose it here.",
   "addMcpFlowDialog.cancel": "Cancel",
-  "addMcpFlowDialog.add": "Add"
+  "addMcpFlowDialog.add": "Add",
+  "addMcpFlowDialog.duplicateFlowError": "One or more flows already exist as MCP tools with the same tool name.",
+  "addMcpFlowDialog.genericError": "Failed to add some flows. Please try again."
 }

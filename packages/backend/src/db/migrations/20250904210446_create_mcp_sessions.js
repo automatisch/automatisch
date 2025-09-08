@@ -11,5 +11,5 @@ export async function up(knex) {
 }
 
 export async function down(knex) {
-  await knex.schema.dropTableIfExists('mcp_sessions');
+  await knex.schema.dropTable('mcp_sessions');
 }

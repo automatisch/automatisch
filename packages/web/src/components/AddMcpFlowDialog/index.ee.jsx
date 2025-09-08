@@ -22,6 +22,7 @@ import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Alert from '@mui/material/Alert';
 
 import FlowAppIcons from 'components/FlowAppIcons';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -35,6 +36,7 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
   const formatMessage = useFormatMessage();
   const [flowName, setFlowName] = React.useState('');
   const [selectedFlows, setSelectedFlows] = React.useState(new Set());
+  const [createToolError, setCreateToolError] = React.useState(null);
 
   const { data: flows, isLoading } = useFlows({
     flowName,
@@ -66,6 +68,10 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
       newSelectedFlows.add(flow.id);
     }
     setSelectedFlows(newSelectedFlows);
+
+    if (createToolError) {
+      setCreateToolError(null);
+    }
   };
 
   const handleAddSelectedFlows = async () => {
@@ -88,8 +94,29 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
         return createMcpTool(payload);
       });
 
-      await Promise.all(promises);
-      onClose();
+      const results = await Promise.allSettled(promises);
+      const failures = results.filter((result) => result.status === 'rejected');
+
+      if (failures.length > 0) {
+        setCreateToolError(failures[0].reason);
+
+        // If partial success, remove successful flows from selection
+        if (failures.length < results.length) {
+          const successfulIndexes = results
+            .map((result, index) =>
+              result.status === 'fulfilled' ? index : null,
+            )
+            .filter((index) => index !== null);
+
+          const remainingFlows = new Set(selectedFlows);
+          successfulIndexes.forEach((index) => {
+            remainingFlows.delete(newFlowsToAdd[index]);
+          });
+          setSelectedFlows(remainingFlows);
+        }
+      } else {
+        onClose();
+      }
     } catch (error) {
       console.error('Failed to create MCP tools:', error);
     }
@@ -259,6 +286,15 @@ export default function AddMcpFlowDialog({ mcpServerId, onClose }) {
           )}
         </Button>
       </DialogActions>
+
+      {createToolError && (
+        <Alert severity="error" sx={{ m: 2, mt: 0 }}>
+          {createToolError?.response?.data?.meta?.type ===
+          'UniqueViolationError'
+            ? formatMessage('addMcpFlowDialog.duplicateFlowError')
+            : formatMessage('addMcpFlowDialog.genericError')}
+        </Alert>
+      )}
     </Dialog>
   );
 }

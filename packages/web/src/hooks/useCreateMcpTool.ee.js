@@ -7,14 +7,17 @@ export default function useCreateMcpTool(mcpServerId) {
 
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      const { data } = await api.post(`/v1/mcp-servers/${mcpServerId}/tools`, payload);
+      const { data } = await api.post(
+        `/v1/mcp-servers/${mcpServerId}/tools`,
+        payload,
+      );
 
       return data;
     },
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['mcpServers'],
+        queryKey: ['mcpServers', mcpServerId, 'tools'],
       });
     },
   });
