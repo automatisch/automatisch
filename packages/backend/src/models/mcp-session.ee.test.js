@@ -145,7 +145,6 @@ describe('McpSession model', () => {
       expect(McpSession.getRuntime(session2Id)).toBeUndefined();
       expect(McpSession.getRuntime(otherSessionId)).toBeDefined();
 
-      // Clean up
       McpSession.removeRuntime(otherSessionId);
     });
 
@@ -163,7 +162,6 @@ describe('McpSession model', () => {
         serverId: mcpServer.id,
       });
 
-      // Should not throw
       await expect(
         McpSession.terminateServerSessions(mcpServer.id)
       ).resolves.toBeUndefined();
@@ -200,7 +198,6 @@ describe('McpSession model', () => {
 
       expect(notificationsSent).toBe(2);
 
-      // Clean up
       McpSession.removeRuntime(session1Id);
       McpSession.removeRuntime(session2Id);
     });
@@ -219,15 +216,12 @@ describe('McpSession model', () => {
         serverId: mcpServer.id,
       });
 
-      // Should not throw
       await expect(
         McpSession.notifyToolsListChanged(mcpServer.id)
       ).resolves.toBeUndefined();
 
-      // Session should still exist
       expect(McpSession.getRuntime(sessionId)).toBeDefined();
 
-      // Clean up
       McpSession.removeRuntime(sessionId);
     });
 
@@ -250,7 +244,7 @@ describe('McpSession model', () => {
 
       McpSession.setRuntime(sessionWithoutServerId, {
         transport: null,
-        server: null, // No server
+        server: null,
         serverId: mcpServer.id,
       });
 
@@ -258,9 +252,78 @@ describe('McpSession model', () => {
 
       expect(notificationsSent).toBe(1);
 
-      // Clean up
       McpSession.removeRuntime(sessionWithServerId);
       McpSession.removeRuntime(sessionWithoutServerId);
+    });
+  });
+
+  describe('getRuntimeEntries', () => {
+    it('should return all runtime session entries', () => {
+      const sessionId1 = '550e8400-e29b-41d4-a716-446655440001';
+      const sessionId2 = '550e8400-e29b-41d4-a716-446655440002';
+      const sessionId3 = '550e8400-e29b-41d4-a716-446655440003';
+
+      const mockTransport1 = { type: 'transport1' };
+      const mockTransport2 = { type: 'transport2' };
+      const mockTransport3 = { type: 'transport3' };
+
+      const mockServer1 = { type: 'server1' };
+      const mockServer2 = { type: 'server2' };
+      const mockServer3 = { type: 'server3' };
+
+      McpSession.setRuntime(sessionId1, {
+        transport: mockTransport1,
+        server: mockServer1,
+        serverId: mcpServer.id,
+      });
+
+      McpSession.setRuntime(sessionId2, {
+        transport: mockTransport2,
+        server: mockServer2,
+        serverId: mcpServer.id,
+      });
+
+      McpSession.setRuntime(sessionId3, {
+        transport: mockTransport3,
+        server: mockServer3,
+        serverId: mcpServer.id,
+      });
+
+      const entries = McpSession.getRuntimeEntries();
+      const entriesArray = Array.from(entries);
+
+      expect(entriesArray).toHaveLength(3);
+
+      const sessionIds = entriesArray.map(([id]) => id);
+      expect(sessionIds).toContain(sessionId1);
+      expect(sessionIds).toContain(sessionId2);
+      expect(sessionIds).toContain(sessionId3);
+
+      const session1Entry = entriesArray.find(([id]) => id === sessionId1);
+      expect(session1Entry[1].transport).toBe(mockTransport1);
+      expect(session1Entry[1].server).toBe(mockServer1);
+
+      const session2Entry = entriesArray.find(([id]) => id === sessionId2);
+      expect(session2Entry[1].transport).toBe(mockTransport2);
+      expect(session2Entry[1].server).toBe(mockServer2);
+
+      const session3Entry = entriesArray.find(([id]) => id === sessionId3);
+      expect(session3Entry[1].transport).toBe(mockTransport3);
+      expect(session3Entry[1].server).toBe(mockServer3);
+
+      McpSession.removeRuntime(sessionId1);
+      McpSession.removeRuntime(sessionId2);
+      McpSession.removeRuntime(sessionId3);
+    });
+
+    it('should return empty entries when no runtime sessions exist', () => {
+      const existingEntries = Array.from(McpSession.getRuntimeEntries());
+      existingEntries.forEach(([id]) => McpSession.removeRuntime(id));
+
+      const entries = McpSession.getRuntimeEntries();
+      const entriesArray = Array.from(entries);
+
+      expect(entriesArray).toHaveLength(0);
     });
   });
 });

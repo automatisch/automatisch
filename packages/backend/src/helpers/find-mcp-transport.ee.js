@@ -1,6 +1,6 @@
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 
-import { createMcpServer } from '@/helpers/mcp.js';
+import { createMcpServer } from '@/helpers/mcp.ee.js';
 import McpServer from '@/models/mcp-server.ee.js';
 import McpSession from '@/models/mcp-session.ee.js';
 import logger from '@/helpers/logger.js';

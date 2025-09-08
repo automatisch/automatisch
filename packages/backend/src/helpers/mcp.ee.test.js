@@ -4,7 +4,7 @@ import { z } from 'zod';
 import {
   generateSchemaOutOfActionArguments,
   createMcpServer,
-} from '@/helpers/mcp.js';
+} from '@/helpers/mcp.ee.js';
 import { createUser } from '@/factories/user.js';
 import { createMcpServer as createMcpServerFactory } from '@/factories/mcp-server.js';
 import { createMcpTool } from '@/factories/mcp-tool.js';
@@ -296,4 +296,5 @@ describe('mcp helper', () => {
       expect(server._requestHandlers.has('tools/list')).toBe(true);
     });
   });
+
 });

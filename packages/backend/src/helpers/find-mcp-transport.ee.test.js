@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-import findMcpTransport from '@/helpers/find-mcp-transport.js';
+import findMcpTransport from '@/helpers/find-mcp-transport.ee.js';
 import McpSession from '@/models/mcp-session.ee.js';
-import * as mcpHelper from '@/helpers/mcp.js';
+import * as mcpHelper from '@/helpers/mcp.ee.js';
 import { createUser } from '@/factories/user.js';
 import { createMcpServer } from '@/factories/mcp-server.js';
 import { createMcpSession } from '@/factories/mcp-session.js';
@@ -206,10 +206,43 @@ describe('find-mcp-transport middleware', () => {
 
       expect(mockServer.onclose).toBeDefined();
 
-      // Simulate server close
       await mockServer.onclose();
 
       expect(closeSpy).toHaveBeenCalledWith(req.mcpSessionId);
+    });
+
+    it('should setup onclose handler for existing session without runtime', async () => {
+      const user = await createUser();
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+      const mcpSession = await createMcpSession({
+        mcpServerId: mcpServer.id,
+      });
+
+      // Ensure no runtime exists for this session
+      vi.spyOn(McpSession, 'getRuntime').mockReturnValue(null);
+
+      const mockServer = {
+        connect: vi.fn(),
+        onclose: null,
+      };
+
+      vi.spyOn(mcpHelper, 'createMcpServer').mockResolvedValue(mockServer);
+      const closeSpy = vi.spyOn(McpSession, 'close');
+
+      req.params.mcpServerToken = mcpServer.token;
+      req.headers['mcp-session-id'] = mcpSession.id;
+      req.body = { method: 'tools/list' };
+
+      await findMcpTransport(req, res, next);
+
+      expect(mockServer.onclose).toBeDefined();
+
+      await mockServer.onclose();
+
+      expect(closeSpy).toHaveBeenCalledWith(mcpSession.id);
     });
   });
 });

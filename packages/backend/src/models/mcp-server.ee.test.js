@@ -385,4 +385,73 @@ describe('McpServer model', () => {
       expect(mcpServer.token).toBe(testUuid);
     });
   });
+
+  describe('createTool', () => {
+    it('should throw error when creating duplicate app tool', async () => {
+      const user = await createUser();
+      const connection = await createConnection({
+        userId: user.id,
+        key: 'slack',
+      });
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      // Create first tool
+      await mcpServer.createTool({
+        type: 'app',
+        appKey: 'slack',
+        action: 'sendMessage',
+        connectionId: connection.id,
+      });
+
+      // Try to create duplicate tool
+      await expect(
+        mcpServer.createTool({
+          type: 'app',
+          appKey: 'slack',
+          action: 'sendMessage',
+          connectionId: connection.id,
+        })
+      ).rejects.toThrow('Tool with the same app and action already exists');
+    });
+
+    it('should throw error when creating duplicate flow tool', async () => {
+      const user = await createUser();
+      const flow = await createFlow({ userId: user.id });
+
+      // Create trigger step for the flow
+      await createStep({
+        flowId: flow.id,
+        type: 'trigger',
+        appKey: 'mcp',
+        key: 'mcpTool',
+        parameters: {
+          toolName: 'test_flow_tool',
+          toolDescription: 'Test flow tool',
+        },
+      });
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      // Create first flow tool
+      await mcpServer.createTool({
+        type: 'flow',
+        flowId: flow.id,
+      });
+
+      // Try to create duplicate flow tool
+      await expect(
+        mcpServer.createTool({
+          type: 'flow',
+          flowId: flow.id,
+        })
+      ).rejects.toThrow('Flow tool with the same flow already exists');
+    });
+  });
 });
