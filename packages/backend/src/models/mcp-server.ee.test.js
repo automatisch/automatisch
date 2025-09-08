@@ -5,15 +5,16 @@ import Base from '@/models/base.js';
 import User from '@/models/user.js';
 import McpTool from '@/models/mcp-tool.ee.js';
 import McpToolExecutions from '@/models/mcp-tool-execution.ee.js';
+import McpSession from '@/models/mcp-session.ee.js';
 import McpServer from '@/models/mcp-server.ee.js';
 import appConfig from '@/config/app.js';
 import { createUser } from '@/factories/user.js';
 import { createMcpServer } from '@/factories/mcp-server.js';
 import { createMcpTool } from '@/factories/mcp-tool.js';
+import { createMcpSession } from '@/factories/mcp-session.js';
 import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
 import { createStep } from '@/factories/step.js';
-import mcpSessionManager from '@/helpers/mcp-sessions.js';
 
 describe('McpServer model', () => {
   it('tableName should return correct name', () => {
@@ -39,6 +40,14 @@ describe('McpServer model', () => {
         },
         modelClass: McpToolExecutions,
         relation: Base.ManyToManyRelation,
+      },
+      mcpSessions: {
+        relation: Base.HasManyRelation,
+        modelClass: McpSession,
+        join: {
+          from: 'mcp_servers.id',
+          to: 'mcp_sessions.mcp_server_id',
+        },
       },
       tools: {
         relation: Base.HasManyRelation,
@@ -107,7 +116,7 @@ describe('McpServer model', () => {
   describe('createTool', () => {
     it('should create new tool when none exists', async () => {
       const notifyToolsListChangedSpy = vi
-        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .spyOn(McpSession, 'notifyToolsListChanged')
         .mockResolvedValue();
 
       const user = await createUser();
@@ -140,7 +149,7 @@ describe('McpServer model', () => {
 
     it('should create flow-type tool without connectionId', async () => {
       const notifyToolsListChangedSpy = vi
-        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .spyOn(McpSession, 'notifyToolsListChanged')
         .mockResolvedValue();
 
       const user = await createUser();
@@ -186,7 +195,7 @@ describe('McpServer model', () => {
   describe('deleteTool', () => {
     it('should delete existing tool and notify sessions', async () => {
       const notifyToolsListChangedSpy = vi
-        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .spyOn(McpSession, 'notifyToolsListChanged')
         .mockResolvedValue();
 
       const user = await createUser();
@@ -305,12 +314,48 @@ describe('McpServer model', () => {
 
       expect(terminateSessionsSpy).toHaveBeenCalled();
     });
+
+    it('should delete all related sessions before deleting server', async () => {
+      const user = await createUser();
+
+      const mcpServer = await createMcpServer({
+        userId: user.id,
+        name: 'Test Server',
+      });
+
+      const session1 = await createMcpSession({
+        mcpServerId: mcpServer.id,
+      });
+
+      const session2 = await createMcpSession({
+        mcpServerId: mcpServer.id,
+      });
+
+      const session3 = await createMcpSession({
+        mcpServerId: mcpServer.id,
+      });
+
+      const deletedServer = await mcpServer.delete();
+
+      expect(deletedServer.id).toBe(mcpServer.id);
+
+      const deletedSession1 = await McpSession.query().findById(session1.id);
+      const deletedSession2 = await McpSession.query().findById(session2.id);
+      const deletedSession3 = await McpSession.query().findById(session3.id);
+
+      expect(deletedSession1).toBeUndefined();
+      expect(deletedSession2).toBeUndefined();
+      expect(deletedSession3).toBeUndefined();
+
+      const refetchedServer = await McpServer.query().findById(mcpServer.id);
+      expect(refetchedServer).toBeUndefined();
+    });
   });
 
   describe('notifyToolsListChanged', () => {
-    it('should call mcp session manager with server id', async () => {
+    it('should call mcp session with server id', async () => {
       const notifyToolsListChangedSpy = vi
-        .spyOn(mcpSessionManager, 'notifyToolsListChanged')
+        .spyOn(McpSession, 'notifyToolsListChanged')
         .mockResolvedValue();
 
       const user = await createUser();

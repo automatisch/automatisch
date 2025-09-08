@@ -2,13 +2,14 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 
 import app from '../../../../app.js';
-import mcpSessionManager from '@/helpers/mcp-sessions.js';
+import McpSession from '@/models/mcp-session.ee.js';
 import { createMcpServer } from '@/factories/mcp-server.js';
+import { createMcpSession } from '@/factories/mcp-session.js';
 import { createUser } from '@/factories/user.js';
 import * as license from '@/helpers/license.ee.js';
 
 describe('DELETE /api/v1/mcp/:mcpServerToken', () => {
-  let mcpServer, getTransportSpy, removeSpy;
+  let mcpServer, removeRuntimeSpy;
 
   beforeEach(async () => {
     const user = await createUser();
@@ -20,31 +21,35 @@ describe('DELETE /api/v1/mcp/:mcpServerToken', () => {
 
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
 
-    getTransportSpy = vi.spyOn(mcpSessionManager, 'getTransport');
-    removeSpy = vi.spyOn(mcpSessionManager, 'remove');
+    removeRuntimeSpy = vi.spyOn(McpSession, 'removeRuntime');
   });
 
-  it('should delete MCP session successfully when transport exists', async () => {
-    const sessionId = 'test-session-id';
+  it('should delete MCP session successfully when session exists', async () => {
+    const session = await createMcpSession({
+      mcpServerId: mcpServer.id,
+    });
+
     const mockTransport = {
       handleDeleteRequest: vi.fn().mockResolvedValue(undefined),
     };
 
-    getTransportSpy.mockReturnValue(mockTransport);
+    McpSession.setRuntime(session.id, {
+      transport: mockTransport,
+      server: { close: vi.fn() },
+      serverId: mcpServer.id,
+    });
 
     await request(app)
       .delete(`/api/v1/mcp/${mcpServer.token}`)
-      .set('mcp-session-id', sessionId)
+      .set('mcp-session-id', session.id)
       .expect(204);
 
     expect(mockTransport.handleDeleteRequest).toHaveBeenCalledTimes(1);
-    expect(removeSpy).toHaveBeenCalledWith(sessionId);
+    expect(removeRuntimeSpy).toHaveBeenCalledWith(session.id);
   });
 
   it('should return 400 when session not found', async () => {
-    const sessionId = 'non-existent-session-id';
-
-    getTransportSpy.mockReturnValue(null);
+    const sessionId = '550e8400-e29b-41d4-a716-446655440000'; // Valid UUID but non-existent
 
     const response = await request(app)
       .delete(`/api/v1/mcp/${mcpServer.token}`)
@@ -55,11 +60,11 @@ describe('DELETE /api/v1/mcp/:mcpServerToken', () => {
       jsonrpc: '2.0',
       error: {
         code: -32000,
-        message: 'Bad Request: Invalid or expired session ID.',
+        message: 'Bad Request: Invalid session ID.',
       },
       id: undefined,
     });
-    expect(removeSpy).not.toHaveBeenCalled();
+    expect(removeRuntimeSpy).not.toHaveBeenCalled();
   });
 
   it('should return 400 when no session ID provided', async () => {
@@ -76,46 +81,44 @@ describe('DELETE /api/v1/mcp/:mcpServerToken', () => {
       },
       id: undefined,
     });
-    expect(removeSpy).not.toHaveBeenCalled();
+    expect(removeRuntimeSpy).not.toHaveBeenCalled();
   });
 
-  it('should return 400 when invalid session ID provided with invalid token', async () => {
-    const sessionId = 'test-session-id';
-    const invalidToken = 'invalid-token';
+  it('should return 404 when invalid token provided', async () => {
+    const sessionId = '550e8400-e29b-41d4-a716-446655440000';
+    const invalidToken = 'invalid-token-uuid';
 
-    const response = await request(app)
+    await request(app)
       .delete(`/api/v1/mcp/${invalidToken}`)
       .set('mcp-session-id', sessionId)
-      .expect(400);
+      .expect(404);
 
-    expect(response.body).toEqual({
-      jsonrpc: '2.0',
-      error: {
-        code: -32000,
-        message: 'Bad Request: Invalid or expired session ID.',
-      },
-      id: undefined,
-    });
-    expect(removeSpy).not.toHaveBeenCalled();
+    expect(removeRuntimeSpy).not.toHaveBeenCalled();
   });
 
   it('should handle transport.handleDeleteRequest error gracefully', async () => {
-    const sessionId = 'test-session-id';
+    const session = await createMcpSession({
+      mcpServerId: mcpServer.id,
+    });
+
     const mockTransport = {
       handleDeleteRequest: vi
         .fn()
         .mockRejectedValue(new Error('Transport error')),
     };
 
-    getTransportSpy.mockReturnValue(mockTransport);
+    McpSession.setRuntime(session.id, {
+      transport: mockTransport,
+      server: { close: vi.fn() },
+      serverId: mcpServer.id,
+    });
 
     await request(app)
       .delete(`/api/v1/mcp/${mcpServer.token}`)
-      .set('mcp-session-id', sessionId)
+      .set('mcp-session-id', session.id)
       .expect(500);
 
     expect(mockTransport.handleDeleteRequest).toHaveBeenCalledTimes(1);
-    // Session should not be removed if transport.handleDeleteRequest fails
-    expect(removeSpy).not.toHaveBeenCalled();
+    expect(removeRuntimeSpy).not.toHaveBeenCalled();
   });
 });

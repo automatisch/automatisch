@@ -4,8 +4,8 @@ import Base from '@/models/base.js';
 import User from '@/models/user.js';
 import McpTool from '@/models/mcp-tool.ee.js';
 import McpToolExecution from '@/models/mcp-tool-execution.ee.js';
+import McpSession from '@/models/mcp-session.ee.js';
 import appConfig from '@/config/app.js';
-import mcpSessionManager from '@/helpers/mcp-sessions.js';
 import Flow from '@/models/flow.js';
 
 class McpServer extends Base {
@@ -36,6 +36,14 @@ class McpServer extends Base {
           to: 'mcp_tools.id',
         },
         to: 'mcp_tool_executions.mcp_tool_id',
+      },
+    },
+    mcpSessions: {
+      relation: Base.HasManyRelation,
+      modelClass: McpSession,
+      join: {
+        from: 'mcp_servers.id',
+        to: 'mcp_sessions.mcp_server_id',
       },
     },
     tools: {
@@ -83,11 +91,11 @@ class McpServer extends Base {
   }
 
   async notifyToolsListChanged() {
-    await mcpSessionManager.notifyToolsListChanged(this.id);
+    await McpSession.notifyToolsListChanged(this.id);
   }
 
   async terminateSessions() {
-    await mcpSessionManager.terminateServerSessions(this.id);
+    await McpSession.terminateServerSessions(this.id);
   }
 
   async createTool({ connectionId, appKey, action, type = 'app', flowId }) {
@@ -146,6 +154,7 @@ class McpServer extends Base {
   async delete() {
     await this.$relatedQuery('mcpToolExecutions').delete();
     await this.$relatedQuery('tools').delete();
+    await this.$relatedQuery('mcpSessions').delete();
     await this.$query().delete();
 
     await this.terminateSessions();

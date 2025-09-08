@@ -70,7 +70,6 @@ function ExecutionCard({ execution, mcpServerId }) {
 
   return (
     <Paper elevation={1} sx={{ mb: 2, overflow: 'hidden' }}>
-      {/* Header - clickable to expand/collapse */}
       <Box
         sx={{
           p: 3,
@@ -80,7 +79,6 @@ function ExecutionCard({ execution, mcpServerId }) {
         onClick={hasData ? handleToggleExpand : undefined}
       >
         <Stack direction="row" gap={3} alignItems="center">
-          {/* App Icon with status overlay */}
           <Box
             sx={{
               display: 'inline-flex',
@@ -112,6 +110,7 @@ function ExecutionCard({ execution, mcpServerId }) {
                 right: 0,
                 top: 0,
                 transform: 'translate(50%, -50%)',
+                lineHeight: 0.75,
                 bgcolor: 'white',
                 borderRadius: '50%',
                 overflow: 'hidden',

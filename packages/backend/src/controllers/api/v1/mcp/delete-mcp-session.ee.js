@@ -1,10 +1,10 @@
-import mcpSessionManager from '@/helpers/mcp-sessions.js';
+import McpSession from '@/models/mcp-session.ee.js';
 
 export default async function deleteMcpSession(request, response) {
   const { transport, mcpSessionId } = request;
 
   await transport.handleDeleteRequest(request, response);
 
-  mcpSessionManager.remove(mcpSessionId);
+  McpSession.removeRuntime(mcpSessionId);
   response.status(204).end();
 }

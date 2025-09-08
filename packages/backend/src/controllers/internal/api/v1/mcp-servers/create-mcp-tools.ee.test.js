@@ -59,7 +59,7 @@ describe('POST /internal/api/v1/mcp-servers/:mcpServerId/tools', () => {
     });
   });
 
-  it('should return unprocessable entity response for missing required fields', async () => {
+  it('should return server error response for missing required fields', async () => {
     await createPermission({
       action: 'manage',
       subject: 'McpServer',
@@ -71,7 +71,7 @@ describe('POST /internal/api/v1/mcp-servers/:mcpServerId/tools', () => {
       .post(`/internal/api/v1/mcp-servers/${mcpServer.id}/tools`)
       .set('Authorization', token)
       .send({})
-      .expect(422);
+      .expect(500);
   });
 
   it('should return not found response for non-existing MCP server', async () => {

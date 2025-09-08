@@ -341,7 +341,7 @@ async function executeToolFromDatabase(serverId, toolName, parameters) {
     const matchedTool = await findToolInDatabase(serverId, toolName);
 
     if (matchedTool.type === 'app') {
-      return executeAppTool(
+      return await executeAppTool(
         matchedTool.appKey,
         matchedTool.actionKey,
         matchedTool.tool,
@@ -350,7 +350,7 @@ async function executeToolFromDatabase(serverId, toolName, parameters) {
     }
 
     if (matchedTool.type === 'flow') {
-      return executeFlowTool(matchedTool, toolName, parameters);
+      return await executeFlowTool(matchedTool, toolName, parameters);
     }
   } catch (err) {
     if (err instanceof McpError) {

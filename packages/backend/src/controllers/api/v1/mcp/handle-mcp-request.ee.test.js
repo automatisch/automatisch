@@ -2,13 +2,14 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 
 import app from '../../../../app.js';
-import mcpSessionManager from '@/helpers/mcp-sessions.js';
+import McpSession from '@/models/mcp-session.ee.js';
 import { createMcpServer } from '@/factories/mcp-server.js';
+import { createMcpSession } from '@/factories/mcp-session.js';
 import { createUser } from '@/factories/user.js';
 import * as license from '@/helpers/license.ee.js';
 
 describe('POST /api/v1/mcp/:mcpServerToken', () => {
-  let mcpServer, getTransportSpy;
+  let mcpServer;
 
   beforeEach(async () => {
     const user = await createUser();
@@ -19,8 +20,6 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
     });
 
     vi.spyOn(license, 'hasValidLicense').mockResolvedValue(true);
-
-    getTransportSpy = vi.spyOn(mcpSessionManager, 'getTransport');
   });
 
   it('should handle initialize request successfully', async () => {
@@ -28,13 +27,12 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
     // and involve complex MCP SDK interactions that are hard to test
     // in isolation. This test verifies the endpoint accepts initialize
     // requests and that the middleware/controller integration works.
-
     const initializeRequest = {
       jsonrpc: '2.0',
       id: 1,
       method: 'initialize',
       params: {
-        protocolVersion: '2024-11-05',
+        protocolVersion: '2025-06-18',
         capabilities: {
           tools: {},
         },
@@ -45,21 +43,23 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
       },
     };
 
-    // For initialize requests, the middleware creates a new transport
-    // and the real MCP SDK handles the response. This is an integration
-    // test that verifies the full flow works.
     const response = await request(app)
       .post(`/api/v1/mcp/${mcpServer.token}`)
       .set('Content-Type', 'application/json')
-      .send(initializeRequest);
+      .set('Accept', 'application/json, text/event-stream')
+      .send(initializeRequest)
+      .expect(200);
 
-    // The exact response depends on the MCP SDK implementation
-    // We just verify that the request is processed (not 404/500)
-    expect([200, 400, 406]).toContain(response.status);
+    expect(response.headers['mcp-session-id']).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    );
   });
 
   it('should handle tools/list request with valid session', async () => {
-    const sessionId = 'test-session-id';
+    const session = await createMcpSession({
+      mcpServerId: mcpServer.id,
+    });
+
     const mockTransport = {
       handleRequest: vi.fn().mockImplementation(async (req, res, body) => {
         res.json({
@@ -81,7 +81,11 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
       }),
     };
 
-    getTransportSpy.mockReturnValue(mockTransport);
+    McpSession.setRuntime(session.id, {
+      transport: mockTransport,
+      server: null,
+      serverId: mcpServer.id,
+    });
 
     const toolsListRequest = {
       jsonrpc: '2.0',
@@ -91,7 +95,7 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
 
     const response = await request(app)
       .post(`/api/v1/mcp/${mcpServer.token}`)
-      .set('mcp-session-id', sessionId)
+      .set('mcp-session-id', session.id)
       .send(toolsListRequest)
       .expect(200);
 
@@ -115,7 +119,10 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
   });
 
   it('should handle tools/call request with valid session', async () => {
-    const sessionId = 'test-session-id';
+    const session = await createMcpSession({
+      mcpServerId: mcpServer.id,
+    });
+
     const mockTransport = {
       handleRequest: vi.fn().mockImplementation(async (req, res, body) => {
         res.json({
@@ -133,7 +140,11 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
       }),
     };
 
-    getTransportSpy.mockReturnValue(mockTransport);
+    McpSession.setRuntime(session.id, {
+      transport: mockTransport,
+      server: null,
+      serverId: mcpServer.id,
+    });
 
     const toolsCallRequest = {
       jsonrpc: '2.0',
@@ -149,7 +160,7 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
 
     const response = await request(app)
       .post(`/api/v1/mcp/${mcpServer.token}`)
-      .set('mcp-session-id', sessionId)
+      .set('mcp-session-id', session.id)
       .send(toolsCallRequest)
       .expect(200);
 
@@ -169,9 +180,7 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
   });
 
   it('should return 400 when session not found for non-initialize request', async () => {
-    const sessionId = 'non-existent-session-id';
-
-    getTransportSpy.mockReturnValue(null);
+    const sessionId = '550e8400-e29b-41d4-a716-446655440000';
 
     const toolsListRequest = {
       jsonrpc: '2.0',
@@ -189,7 +198,7 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
       jsonrpc: '2.0',
       error: {
         code: -32000,
-        message: 'Bad Request: Invalid or expired session ID.',
+        message: 'Bad Request: Invalid session ID.',
       },
       id: 4,
     });
@@ -218,9 +227,9 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
     });
   });
 
-  it('should return 400 when invalid session ID provided with invalid token', async () => {
-    const sessionId = 'test-session-id';
-    const invalidToken = 'invalid-token';
+  it('should return 404 when invalid token is provided', async () => {
+    const sessionId = '550e8400-e29b-41d4-a716-446655440000';
+    const invalidToken = '550e8400-e29b-41d4-a716-446655440001';
 
     const toolsListRequest = {
       jsonrpc: '2.0',
@@ -228,19 +237,10 @@ describe('POST /api/v1/mcp/:mcpServerToken', () => {
       method: 'tools/list',
     };
 
-    const response = await request(app)
+    await request(app)
       .post(`/api/v1/mcp/${invalidToken}`)
       .set('mcp-session-id', sessionId)
       .send(toolsListRequest)
-      .expect(400);
-
-    expect(response.body).toEqual({
-      jsonrpc: '2.0',
-      error: {
-        code: -32000,
-        message: 'Bad Request: Invalid or expired session ID.',
-      },
-      id: 7,
-    });
+      .expect(404);
   });
 });
