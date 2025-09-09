@@ -2,7 +2,7 @@ import defineTrigger from '../../../../helpers/define-trigger.js';
 import newDocuments from './new-doc-created.js';
 
 export default defineTrigger({
-  name: 'New document created',
+  name: 'New document',
   key: 'newDocument',
   pollInterval: 15,
   description: 'Triggers when you create a new Google Doc.',
