@@ -1,3 +1,3 @@
-import createNewDoc from './create-new-doc/index.js';
+import createDocument from './create-document/index.js';
 
-export default [createNewDoc];
+export default [createDocument];

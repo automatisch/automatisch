@@ -1,4 +1,4 @@
-const newDocuments = async ($) => {
+const newDocument = async ($) => {
   const params = {
     pageToken: undefined,
     orderBy: 'createdTime desc',
@@ -34,4 +34,4 @@ const newDocuments = async ($) => {
   } while (params.pageToken);
 };
 
-export default newDocuments;
+export default newDocument;

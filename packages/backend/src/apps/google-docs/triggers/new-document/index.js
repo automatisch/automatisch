@@ -1,5 +1,5 @@
 import defineTrigger from '../../../../helpers/define-trigger.js';
-import newDocuments from './new-doc-created.js';
+import newDocument from './new-document.js';
 
 export default defineTrigger({
   name: 'New document',
@@ -29,6 +29,6 @@ export default defineTrigger({
   ],
 
   async run($) {
-    await newDocuments($);
+    await newDocument($);
   },
 });
