@@ -1,8 +1,8 @@
 ---
 favicon: /favicons/google-docs.svg
 items:
-  - name: Create new document
-    desc: Create a blank Google Doc which takes 2 parameters - title and content.
+  - name: Create document
+    desc: Create a blank document with a title. Optionally, provide content.
 ---
 
 <script setup>
