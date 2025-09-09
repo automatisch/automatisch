@@ -1,6 +1,5 @@
 import { useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -12,6 +11,7 @@ import PropTypes from 'prop-types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { isEqual } from 'lodash';
+import Toolbar from '@mui/material/Toolbar';
 
 import { NodesContext } from 'components/Editor/contexts';
 import { StepExecutionsProvider } from 'contexts/StepExecutions';
@@ -231,26 +231,27 @@ function StepDetailsSidebar({ open }) {
   if (!selectedStep) return;
 
   return (
-    <Drawer
+    <Box
       data-test="step-details-sidebar"
-      anchor="right"
-      hideBackdrop
-      open={open}
-      variant={isMobile ? 'temporary' : 'persistent'}
       sx={{
+        position: 'fixed',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        height: '100vh',
         width: isMobile ? '100vw' : '30vw',
         maxWidth: '100vw',
-        minWidth: '500px',
-        '& .MuiDrawer-paper': {
-          width: isMobile ? '100vw' : '30vw',
-          maxWidth: '100vw',
-          minWidth: '500px',
-          position: 'absolute',
-          height: '100%',
-          right: 0,
-          boxShadow: '-4px 0 15px rgba(0, 0, 0, 0.08)',
-          zIndex: 1,
-        },
+        minWidth: isMobile ? '100vw' : '500px',
+        backgroundColor: 'background.paper',
+        boxShadow: '-4px 0 15px rgba(0, 0, 0, 0.08)',
+        transform: open ? 'translateX(0)' : 'translateX(100%)',
+        transition: theme.transitions.create('transform', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        display: 'flex',
+        flexDirection: 'column',
+        overflowY: 'auto',
       }}
     >
       <Box
@@ -260,6 +261,8 @@ function StepDetailsSidebar({ open }) {
         flexDirection="column"
         gap={1}
       >
+        <Toolbar />
+
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" alignItems="center" gap={1.5}>
             <AppIcon
@@ -379,7 +382,7 @@ function StepDetailsSidebar({ open }) {
           </StepExecutionsProvider>
         </List>
       </Box>
-    </Drawer>
+    </Box>
   );
 }
 
