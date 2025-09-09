@@ -14,13 +14,35 @@ const Popper = (props) => {
     <MuiPopper
       open={open}
       anchorEl={anchorEl}
+      placement="bottom-start"
       style={{ width: anchorEl?.clientWidth, zIndex: 1 }}
       modifiers={[
         {
-          name: 'flip',
-          enabled: false,
+          name: 'offset',
+          enabled: true,
           options: {
-            altBoundary: false,
+            offset: [0, 8],
+          },
+        },
+        {
+          name: 'flip',
+          enabled: true,
+          options: {
+            fallbackPlacements: ['top-start'],
+            boundary: 'viewport',
+            rootBoundary: 'viewport',
+            padding: 8,
+          },
+        },
+        {
+          name: 'preventOverflow',
+          enabled: true,
+          options: {
+            mainAxis: true,
+            altAxis: true,
+            boundary: 'viewport',
+            rootBoundary: 'viewport',
+            padding: 8,
           },
         },
       ]}
