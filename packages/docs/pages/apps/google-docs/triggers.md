@@ -1,8 +1,8 @@
 ---
 favicon: /favicons/google-docs.svg
 items:
-  - name: New document created
-    desc: Triggers when you create a new Google Doc.
+  - name: New document
+    desc: Triggers when a new document is created.
 ---
 
 <script setup>
