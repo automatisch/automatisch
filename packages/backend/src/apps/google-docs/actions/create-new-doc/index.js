@@ -1,7 +1,7 @@
 import defineAction from '../../../../helpers/define-action.js';
 
 export default defineAction({
-  name: 'Create new document',
+  name: 'Create document',
   key: 'createDocument',
   description:
     'Create a blank Google Doc or duplicate an existing document. Optionally, provide initial content.',
