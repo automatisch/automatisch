@@ -11,7 +11,7 @@ export default {
       type: 'string',
       required: true,
       readOnly: true,
-      value: '{WEB_APP_URL}/app/google-sheets/connections/add',
+      value: '{WEB_APP_URL}/app/google-docs/connections/add',
       placeholder: null,
       description:
         'When asked to input a redirect URL in Google Cloud, enter the URL above.',
