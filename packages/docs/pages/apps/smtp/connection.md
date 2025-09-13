@@ -9,7 +9,7 @@ SMTP is a protocol that allows you to send emails. It's a very common protocol a
 1. Fill host address field with the SMTP host address.
 2. Fill username field with the SMTP username.
 3. Fill password field with the SMTP password.
-4. Select wheather to use TLS or not.
+4. Select whether to use TLS or not.
 5. Fill port field with the SMTP port.
 6. Fill from field with the email address you want to use as the sender.
 7. Click **Submit** button on Automatisch.
