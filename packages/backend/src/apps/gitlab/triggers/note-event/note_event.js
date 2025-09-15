@@ -38,7 +38,7 @@ export default {
   object_attributes: {
     id: 1243,
     note: 'This is a commit comment. How does this work?',
-    notable_type: 'Commit',
+    noteable_type: 'Commit',
     author_id: 1,
     created_at: '2015-05-17 18:08:09 UTC',
     updated_at: '2015-05-17 18:08:09 UTC',
@@ -46,7 +46,7 @@ export default {
     attachment: null,
     line_code: 'bec9703f7a456cd2b4ab5fb3220ae016e3e394e3_0_1',
     commit_id: 'cfe32cf61b73a0d5e9f13e774abde7ff789b1660',
-    notable_id: null,
+    noteable_id: null,
     system: false,
     st_diff: {
       diff: '--- /dev/null\n+++ b/six\n@@ -0,0 +1 @@\n+Subproject commit 409f37c4f05865e4fb208c771485f211a22c4c2d\n',
