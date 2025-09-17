@@ -1,4 +1,4 @@
-const subscriptionsSerializer = (subscription) => {
+const subscriptionSerializer = (subscription) => {
   let userData = {
     id: subscription.id,
     paddleSubscriptionId: subscription.paddleSubscriptionId,
@@ -17,4 +17,4 @@ const subscriptionsSerializer = (subscription) => {
   return userData;
 };
 
-export default subscriptionsSerializer;
+export default subscriptionSerializer;
