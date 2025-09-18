@@ -1,8 +1,9 @@
-import { describe, it, beforeEach, expect } from 'vitest';
+import { describe, it, beforeEach, expect, vi } from 'vitest';
 import request from 'supertest';
 import Crypto from 'crypto';
 import app from '../../../../../app.js';
 import createAuthTokenByUserId from '@/helpers/create-auth-token-by-user-id.js';
+import Step from '@/models/step.js';
 import { createUser } from '@/factories/user.js';
 import { createConnection } from '@/factories/connection.js';
 import { createFlow } from '@/factories/flow.js';
@@ -118,6 +119,60 @@ describe('PATCH /internal/api/v1/steps/:stepId', () => {
     const expectedResponse = updateStepMock(refetchedStep);
 
     expect(response.body).toStrictEqual(expectedResponse);
+  });
+
+  it('should invoke step.updateRelatedMcpTools method', async () => {
+    const currentUserFlow = await createFlow({ userId: currentUser.id });
+    const currentUserConnection = await createConnection({
+      key: 'deepl',
+    });
+
+    const triggerStep = await createStep({
+      flowId: currentUserFlow.id,
+      connectionId: currentUserConnection.id,
+      appKey: 'mcp',
+      key: 'mcpTool',
+    });
+
+    await createStep({
+      flowId: currentUserFlow.id,
+      connectionId: currentUserConnection.id,
+      appKey: 'deepl',
+      key: 'translateText',
+      name: 'Translate text',
+    });
+
+    await createPermission({
+      action: 'read',
+      subject: 'Flow',
+      roleId: currentUser.roleId,
+      conditions: ['isCreator'],
+    });
+
+    await createPermission({
+      action: 'manage',
+      subject: 'Flow',
+      roleId: currentUser.roleId,
+      conditions: ['isCreator'],
+    });
+
+    const updateRelatedMcpToolsSpy = vi
+      .spyOn(Step.prototype, 'updateRelatedMcpTools')
+      .mockResolvedValue();
+
+    await request(app)
+      .patch(`/internal/api/v1/steps/${triggerStep.id}`)
+      .set('Authorization', token)
+      .send({
+        parameters: {
+          text: 'Hello world!',
+          targetLanguage: 'de',
+          name: 'Translate text - Updated step name',
+        },
+      })
+      .expect(200);
+
+    expect(updateRelatedMcpToolsSpy).toHaveBeenCalledOnce();
   });
 
   it('should return not found response for inaccessible connection', async () => {

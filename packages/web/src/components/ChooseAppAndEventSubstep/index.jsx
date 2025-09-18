@@ -243,7 +243,8 @@ function ChooseAppAndEventSubstep(props) {
                   >
                     <Typography>{option.label}</Typography>
 
-                    {option.type === 'webhook' && (
+                    {(option.type === 'webhook' ||
+                      option.value === 'mcpTool') && (
                       <Chip
                         label={formatMessage('flowEditor.instantTriggerType')}
                         sx={{ mr: 3 }}

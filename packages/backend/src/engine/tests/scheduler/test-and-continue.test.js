@@ -108,12 +108,16 @@ describe.sequential('Scheduler app test and continue', () => {
 
     expect(executionSteps.length).toBe(3);
     expect(executionSteps[0].status).toBe('success');
-    expect(executionSteps[0].dataOut.ISO_date_time).toBe(
-      DateTime.now()
-        .plus({ days: 1 })
-        .set({ hours: 7, minutes: 0, seconds: 0, milliseconds: 0 })
-        .toISO()
-    );
+    const now = DateTime.now();
+    const todayAt7 = now.set({
+      hours: 7,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    });
+    const expectedDate = now < todayAt7 ? todayAt7 : todayAt7.plus({ days: 1 });
+
+    expect(executionSteps[0].dataOut.ISO_date_time).toBe(expectedDate.toISO());
     expect(executionSteps[0].errorDetails).toBeNull();
 
     expect(executionSteps[1].status).toBe('success');
@@ -164,12 +168,17 @@ describe.sequential('Scheduler app test and continue', () => {
 
     expect(executionSteps.length).toBe(3);
     expect(executionSteps[0].status).toBe('success');
-    expect(executionSteps[0].dataOut.ISO_date_time).toBe(
-      DateTime.now()
-        .plus({ days: 1 })
-        .set({ hours: 7, minutes: 0, seconds: 0, milliseconds: 0 })
-        .toISO()
-    );
+
+    const now = DateTime.now();
+    const todayAt7 = now.set({
+      hours: 7,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    });
+    const expectedDate = now < todayAt7 ? todayAt7 : todayAt7.plus({ days: 1 });
+
+    expect(executionSteps[0].dataOut.ISO_date_time).toBe(expectedDate.toISO());
     expect(executionSteps[0].errorDetails).toBeNull();
 
     expect(executionSteps[1].status).toBe('success');

@@ -6,15 +6,10 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-import AdminSettingsLayout from 'components/AdminSettingsLayout';
-import Layout from 'components/Layout';
-import NoResultFound from 'components/NotFound';
-import PublicLayout from 'components/PublicLayout';
 import * as URLS from 'config/urls';
-import useAuthentication from 'hooks/useAuthentication';
-import useAutomatischConfig from 'hooks/useAutomatischConfig';
-import useAutomatischInfo from 'hooks/useAutomatischInfo';
 import AcceptInvitation from 'pages/AcceptInvitation';
+import AdminSettingsLayout from 'components/AdminSettingsLayout';
+import adminSettingsRoutes from './adminSettingsRoutes';
 import Application from 'pages/Application';
 import Applications from 'pages/Applications';
 import CreateForm from 'pages/CreateForm/index.ee';
@@ -27,13 +22,20 @@ import ForgotPassword from 'pages/ForgotPassword/index.ee';
 import FormFlow from 'pages/FormFlow/index.ee';
 import Forms from 'pages/Forms/index.ee';
 import Installation from 'pages/Installation';
+import Layout from 'components/Layout';
 import Login from 'pages/Login';
 import LoginCallback from 'pages/LoginCallback';
+import McpServer from 'pages/McpServer/index.ee';
+import McpServers from 'pages/McpServers/index.ee';
+import NoResultFound from 'components/NotFound';
 import Notifications from 'pages/Notifications';
+import PublicLayout from 'components/PublicLayout';
 import ResetPassword from 'pages/ResetPassword/index.ee';
-import SignUp from 'pages/SignUp/index.ee';
-import adminSettingsRoutes from './adminSettingsRoutes';
 import settingsRoutes from './settingsRoutes';
+import SignUp from 'pages/SignUp/index.ee';
+import useAuthentication from 'hooks/useAuthentication';
+import useAutomatischConfig from 'hooks/useAutomatischConfig';
+import useAutomatischInfo from 'hooks/useAutomatischInfo';
 
 function Routes() {
   const navigate = useNavigate();
@@ -112,6 +114,28 @@ function Routes() {
           element={
             <Layout>
               <EditForm />
+            </Layout>
+          }
+        />
+      )}
+
+      {isEnterprise && (
+        <Route
+          path={`${URLS.MCP_SERVERS}/*`}
+          element={
+            <Layout>
+              <McpServers />
+            </Layout>
+          }
+        />
+      )}
+
+      {isEnterprise && (
+        <Route
+          path={`${URLS.MCP_SERVER_PATTERN}/*`}
+          element={
+            <Layout>
+              <McpServer />
             </Layout>
           }
         />

@@ -1,0 +1,48 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`McpToolExecution model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "dataIn": {
+      "type": [
+        "object",
+        "null",
+      ],
+    },
+    "dataOut": {
+      "type": [
+        "object",
+        "null",
+      ],
+    },
+    "errorDetails": {
+      "type": [
+        "object",
+        "null",
+      ],
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "mcpToolId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+      ],
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

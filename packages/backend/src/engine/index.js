@@ -14,10 +14,13 @@ const run = async ({
   flowId,
   untilStepId,
   triggeredByRequest,
+  triggeredByMcp,
   request,
   testRun = false,
   resumeStepId,
   resumeExecutionId,
+  initialData,
+  mcpToolId,
 }) => {
   // Build flow context
   const {
@@ -38,6 +41,12 @@ const run = async ({
   const { isAllowedToRunFlows } = await checkLimits({ flow });
 
   if (!testRun && !isAllowedToRunFlows) {
+    if (triggeredByMcp) {
+      return {
+        mcpError: `Flow execution quota exceeded for \`${flow.name}\`. Please check your subscription limits.`,
+      };
+    }
+
     return;
   }
 
@@ -56,17 +65,26 @@ const run = async ({
   }
 
   // Get initial flow data to start the flow
-  const { data, error } = await getInitialData({
-    testRun,
-    flow,
-    triggerStep,
-    triggerConnection,
-    triggerApp,
-    triggerCommand,
-    request,
-    triggeredByRequest,
-    isBuiltInApp,
-  });
+  let data, error;
+
+  if (initialData) {
+    data = initialData;
+  } else {
+    const initialData = await getInitialData({
+      testRun,
+      flow,
+      triggerStep,
+      triggerConnection,
+      triggerApp,
+      triggerCommand,
+      request,
+      triggeredByRequest,
+      isBuiltInApp,
+    });
+
+    data = initialData.data;
+    error = initialData.error;
+  }
 
   // Process initial data error
   // TODO: Make this also works with a background job.
@@ -102,7 +120,9 @@ const run = async ({
       actionSteps,
       testRun,
       triggeredByRequest,
+      triggeredByMcp,
       initialDataItem,
+      mcpToolId,
     });
 
     if (result) {

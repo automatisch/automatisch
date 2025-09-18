@@ -9,15 +9,16 @@ export default defineAction({
       label: 'TOs',
       key: 'tos',
       type: 'dynamic',
-      required: false,
+      required: true,
       description: '',
       fields: [
         {
           label: 'To',
           key: 'to',
           type: 'string',
-          required: false,
+          required: true,
           variables: true,
+          description: 'Email address of the recipient.',
         },
       ],
     },

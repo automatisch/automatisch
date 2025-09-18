@@ -81,10 +81,29 @@ export const ROLE_PATTERN = `${ROLES}/:roleId`;
 export const CREATE_ROLE = `${ROLES}/create`;
 export const USER_INTERFACE = `${ADMIN_SETTINGS}/user-interface`;
 export const AUTHENTICATION = `${ADMIN_SETTINGS}/authentication`;
+export const AI_CONFIG = `${ADMIN_SETTINGS}/ai-config`;
 export const FORMS = '/form-entities';
 export const CREATE_FORM = `${FORMS}/create`;
 export const FORM_PATTERN = `${FORMS}/:formId`;
 export const EDIT_FORM = (formId) => `${FORMS}/${formId}`;
+export const MCP_SERVERS = '/mcp-servers';
+export const MCP_SERVER_PATTERN = `${MCP_SERVERS}/:mcpServerId`;
+export const MCP_SERVER = (mcpServerId) => `${MCP_SERVERS}/${mcpServerId}`;
+export const MCP_SERVER_TOOLS = (mcpServerId) =>
+  `${MCP_SERVERS}/${mcpServerId}/tools`;
+export const MCP_SERVER_TOOLS_PATTERN = `${MCP_SERVERS}/:mcpServerId/tools`;
+export const MCP_SERVER_CONNECT = (mcpServerId) =>
+  `${MCP_SERVERS}/${mcpServerId}/connect`;
+export const MCP_SERVER_CONNECT_PATTERN = `${MCP_SERVERS}/:mcpServerId/connect`;
+export const MCP_SERVER_ADD_ACTION = (mcpServerId) =>
+  `${MCP_SERVERS}/${mcpServerId}/tools/add-action`;
+export const MCP_SERVER_ADD_ACTION_PATTERN = `${MCP_SERVERS}/:mcpServerId/tools/add-action`;
+export const MCP_SERVER_ADD_FLOW = (mcpServerId) =>
+  `${MCP_SERVERS}/${mcpServerId}/tools/add-flow`;
+export const MCP_SERVER_ADD_FLOW_PATTERN = `${MCP_SERVERS}/:mcpServerId/tools/add-flow`;
+export const MCP_SERVER_EXECUTIONS = (mcpServerId) =>
+  `${MCP_SERVERS}/${mcpServerId}/executions`;
+export const MCP_SERVER_EXECUTIONS_PATTERN = `${MCP_SERVERS}/:mcpServerId/executions`;
 
 export const ADMIN_APPS = `${ADMIN_SETTINGS}/apps`;
 export const ADMIN_APP = (appKey) => `${ADMIN_SETTINGS}/apps/${appKey}`;

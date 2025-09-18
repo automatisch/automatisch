@@ -24,6 +24,7 @@ import Subscription from '@/models/subscription.ee.js';
 import Folder from '@/models/folder.js';
 import UsageData from '@/models/usage-data.ee.js';
 import Template from '@/models/template.ee.js';
+import McpServer from '@/models/mcp-server.ee.js';
 import Billing from '@/helpers/billing/index.ee.js';
 import NotAuthorizedError from '@/errors/not-authorized.js';
 
@@ -195,6 +196,14 @@ class User extends Base {
       join: {
         from: 'users.id',
         to: 'forms.user_id',
+      },
+    },
+    mcpServers: {
+      relation: Base.HasManyRelation,
+      modelClass: McpServer,
+      join: {
+        from: 'users.id',
+        to: 'mcp_servers.user_id',
       },
     },
   });
