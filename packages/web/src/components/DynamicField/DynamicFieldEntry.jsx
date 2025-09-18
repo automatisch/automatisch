@@ -27,7 +27,7 @@ function DynamicFieldEntry(props) {
   return (
     <FieldEntryProvider value={{ fieldEntryPaths: newFieldEntryPaths }}>
       <Stack
-        direction="row"
+        direction="column"
         spacing={2}
         sx={{
           flexWrap: 'wrap',
