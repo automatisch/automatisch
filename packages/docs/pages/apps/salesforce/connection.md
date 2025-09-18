@@ -5,7 +5,7 @@ This page explains the steps you need to follow to set up the Salesforce
 connection in Automatisch. If any of the steps are outdated, please let us know!
 :::
 
-1. Go to your Salesforce dasboard.
+1. Go to your Salesforce dashboard.
 1. Click on the gear icon in the top right corner and click **Setup** from the dropdown.
 1. In the **Platform Tools** section of the sidebar, click **Apps** > **App Manager**.
 1. Click the **New Connected App** button.

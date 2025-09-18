@@ -64,10 +64,10 @@ export const fields = [
     key: 'pipeline',
     type: 'dropdown',
     required: true,
-    value: 'Standart',
+    value: 'Standard',
     description: '',
     variables: true,
-    options: [{ label: 'Standart', value: 'Standart' }],
+    options: [{ label: 'Standard', value: 'Standard' }],
   },
   {
     label: 'Sales Stage',

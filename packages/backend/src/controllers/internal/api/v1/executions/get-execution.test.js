@@ -110,10 +110,10 @@ describe('GET /internal/api/v1/executions/:executionId', () => {
       conditions: [],
     });
 
-    const notExistingExcecutionUUID = Crypto.randomUUID();
+    const notExistingExecutionUUID = Crypto.randomUUID();
 
     await request(app)
-      .get(`/internal/api/v1/executions/${notExistingExcecutionUUID}`)
+      .get(`/internal/api/v1/executions/${notExistingExecutionUUID}`)
       .set('Authorization', token)
       .expect(404);
   });

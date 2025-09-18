@@ -7,9 +7,9 @@ publicTest.describe('Accept invitation page', () => {
     'should not be able to set the password if token is empty',
     async ({ acceptInvitationPage }) => {
       await acceptInvitationPage.open('');
-      await acceptInvitationPage.excpectSubmitButtonToBeDisabled();
+      await acceptInvitationPage.expectSubmitButtonToBeDisabled();
       await acceptInvitationPage.fillPasswordField('something');
-      await acceptInvitationPage.excpectSubmitButtonToBeDisabled();
+      await acceptInvitationPage.expectSubmitButtonToBeDisabled();
     }
   );
 

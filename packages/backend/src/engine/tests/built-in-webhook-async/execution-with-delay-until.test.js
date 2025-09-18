@@ -345,7 +345,7 @@ describe.sequential('Built-in webhook app async with delay until', () => {
 
     const execution = executions[0];
 
-    const runInBackgrounSpyCallDelay =
+    const runInBackgroundSpyCallDelay =
       runInBackgroundSpy.mock.calls[0][0].delay;
 
     const expectedDelayStartRange = DateTime.fromISO('2030-12-18', {
@@ -362,10 +362,10 @@ describe.sequential('Built-in webhook app async with delay until', () => {
       .diff(DateTime.now().toUTC())
       .toMillis();
 
-    expect(runInBackgrounSpyCallDelay).toBeGreaterThanOrEqual(
+    expect(runInBackgroundSpyCallDelay).toBeGreaterThanOrEqual(
       expectedDelayStartRange
     );
-    expect(runInBackgrounSpyCallDelay).toBeLessThanOrEqual(
+    expect(runInBackgroundSpyCallDelay).toBeLessThanOrEqual(
       expectedDelayEndRange
     );
 

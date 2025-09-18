@@ -1,3 +1,3 @@
-import formSubmittion from './new-form-submission/index.ee.js';
+import formSubmission from './new-form-submission/index.ee.js';
 
-export default [formSubmittion];
+export default [formSubmission];

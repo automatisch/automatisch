@@ -6,7 +6,7 @@ const supportsSoftDeletion = (modelClass) => {
   return modelClass.jsonSchema.properties.deletedAt;
 };
 
-const buildQueryBuidlerForClass = () => {
+const buildQueryBuilderForClass = () => {
   return (modelClass) => {
     const qb = Model.QueryBuilder.forClass.call(
       ExtendedQueryBuilder,
@@ -27,7 +27,7 @@ const buildQueryBuidlerForClass = () => {
 };
 
 class ExtendedQueryBuilder extends Model.QueryBuilder {
-  static forClass = buildQueryBuidlerForClass();
+  static forClass = buildQueryBuilderForClass();
 
   delete() {
     if (supportsSoftDeletion(this.modelClass())) {
