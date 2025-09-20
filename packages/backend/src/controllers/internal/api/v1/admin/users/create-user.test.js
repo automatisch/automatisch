@@ -91,12 +91,106 @@ describe('POST /internal/api/v1/admin/users', () => {
       .expect(422);
 
     expect(response.body.errors).toStrictEqual({
-      email: ["'email' must be unique."],
+      email: ['A user with this email already exists.'],
     });
 
     expect(response.body.meta).toStrictEqual({
-      type: 'UniqueViolationError',
+      type: 'ValidationError',
     });
+  });
+
+  it('should return unprocessable entity response when trying to create user with soft-deleted email', async () => {
+    await createRole({ name: 'User' });
+
+    const existingUser = await createUser({
+      email: 'deleted@sample.com',
+      fullName: 'Deleted User',
+    });
+
+    await existingUser.$query().patch({
+      deletedAt: new Date().toISOString(),
+    });
+
+    const userData = {
+      email: 'deleted@sample.com',
+      fullName: 'New User',
+      password: 'samplePassword123',
+    };
+
+    const response = await request(app)
+      .post('/internal/api/v1/admin/users')
+      .set('Authorization', token)
+      .send(userData)
+      .expect(422);
+
+    expect(response.body.errors).toStrictEqual({
+      email: [
+        'A user with this email was previously deleted. Please contact an administrator or use a different email address.',
+      ],
+    });
+
+    expect(response.body.meta).toStrictEqual({
+      type: 'ValidationError',
+    });
+  });
+
+  it('should return unprocessable entity response when trying to create user with soft-deleted email (case insensitive)', async () => {
+    await createRole({ name: 'User' });
+
+    const existingUser = await createUser({
+      email: 'deleted@sample.com',
+      fullName: 'Deleted User',
+    });
+
+    await existingUser.$query().patch({
+      deletedAt: new Date().toISOString(),
+    });
+
+    const userData = {
+      fullName: 'New User',
+      password: 'samplePassword123',
+    };
+
+    const response = await request(app)
+      .post('/internal/api/v1/admin/users')
+      .set('Authorization', token)
+      .send(userData)
+      .expect(422);
+
+    expect(response.body.errors).toStrictEqual({
+      email: [
+        'A user with this email was previously deleted. Please contact an administrator or use a different email address.',
+      ],
+    });
+
+    expect(response.body.meta).toStrictEqual({
+      type: 'ValidationError',
+    });
+  });
+
+  it('should allow creating user with email that was never used before', async () => {
+    const userRole = await createRole({ name: 'User' });
+
+    const userData = {
+      email: 'fresh@sample.com',
+      fullName: 'Fresh User',
+      password: 'samplePassword123',
+      roleId: userRole.id,
+    };
+
+    const response = await request(app)
+      .post('/internal/api/v1/admin/users')
+      .set('Authorization', token)
+      .send(userData)
+      .expect(201);
+
+    const refetchedRegisteredUser = await User.query()
+      .findById(response.body.data.id)
+      .throwIfNotFound();
+
+    expect(refetchedRegisteredUser.email).toBe('fresh@sample.com');
+    expect(refetchedRegisteredUser.fullName).toBe('Fresh User');
+    expect(refetchedRegisteredUser.deletedAt).toBeUndefined();
   });
 
   it('should return unprocessable entity response with invalid user data', async () => {
