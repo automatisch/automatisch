@@ -36,7 +36,7 @@ export class AcceptInvitation extends BasePage {
     await this.passwordConfirmationTextField.fill(password);
   }
 
-  async excpectSubmitButtonToBeDisabled() {
+  async expectSubmitButtonToBeDisabled() {
     await expect(this.submitButton).toBeDisabled();
   }
 

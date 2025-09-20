@@ -173,7 +173,7 @@ export default defineAction({
         content: message.content,
       })),
       return_images: $.step.parameters.returnImages,
-      return_related_questions: $.step.parameters.returnRelatedQuestons,
+      return_related_questions: $.step.parameters.returnRelatedQuestions,
     };
 
     const { data } = await $.http.post('/chat/completions', payload);

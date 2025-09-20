@@ -49,10 +49,10 @@ describe('GET /api/v1/executions/:executionId', () => {
   });
 
   it('should return not found response for not existing execution UUID', async () => {
-    const notExistingExcecutionUUID = Crypto.randomUUID();
+    const notExistingExecutionUUID = Crypto.randomUUID();
 
     await request(app)
-      .get(`/api/v1/executions/${notExistingExcecutionUUID}`)
+      .get(`/api/v1/executions/${notExistingExecutionUUID}`)
       .set('x-api-token', token)
       .expect(404);
   });

@@ -133,11 +133,11 @@ describe('GET /internal/api/v1/executions/:executionId/execution-steps', () => {
       conditions: [],
     });
 
-    const notExistingExcecutionUUID = Crypto.randomUUID();
+    const notExistingExecutionUUID = Crypto.randomUUID();
 
     await request(app)
       .get(
-        `/internal/api/v1/executions/${notExistingExcecutionUUID}/execution-steps`
+        `/internal/api/v1/executions/${notExistingExecutionUUID}/execution-steps`
       )
       .set('Authorization', token)
       .expect(404);

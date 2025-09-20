@@ -159,7 +159,7 @@ describe('POST /internal/api/v1/apps/:appKey/connections', () => {
       });
     });
 
-    it('should return created conncetion', async () => {
+    it('should return created connection', async () => {
       const connectionData = {
         formattedData: {
           oAuthRedirectUrl: 'http://localhost:3000/app/gitlab/connections/add',

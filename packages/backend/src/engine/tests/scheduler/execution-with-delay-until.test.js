@@ -188,7 +188,7 @@ describe.sequential('Scheduler app async', () => {
       .andWhere('createdAt', '>', timeBeforePolling.toISOString())
       .first();
 
-    const runInBackgrounSpyCallDelay =
+    const runInBackgroundSpyCallDelay =
       runInBackgroundSpy.mock.calls[0][0].delay;
 
     const expectedDelayStartRange = DateTime.fromISO('2030-12-18', {
@@ -205,10 +205,10 @@ describe.sequential('Scheduler app async', () => {
       .diff(DateTime.now().toUTC())
       .toMillis();
 
-    expect(runInBackgrounSpyCallDelay).toBeGreaterThanOrEqual(
+    expect(runInBackgroundSpyCallDelay).toBeGreaterThanOrEqual(
       expectedDelayStartRange
     );
-    expect(runInBackgrounSpyCallDelay).toBeLessThanOrEqual(
+    expect(runInBackgroundSpyCallDelay).toBeLessThanOrEqual(
       expectedDelayEndRange
     );
 

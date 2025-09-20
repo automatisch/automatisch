@@ -11,7 +11,7 @@ It is a powerful and reliable database management system suitable for a wide ran
 1. Fill postgreSQL version field with the version that you are using.
 2. Fill host address field with the postgres host address.
 3. Fill port field with the postgres port.
-4. Select wheather to use ssl or not.
+4. Select whether to use ssl or not.
 5. Fill database name field with the postgres database name.
 6. Fill database username field with the postgres username.
 7. Fill password field with the postgres password.
