@@ -1,14 +1,15 @@
+import { URLSearchParams } from 'url';
 import getCurrentUser from '../common/get-current-user.js';
 
 const verifyCredentials = async ($) => {
   const response = await $.http.post(
     'https://raindrop.io/oauth/access_token',
-    {
+    new URLSearchParams({
       client_id: $.auth.data.consumerKey,
       client_secret: $.auth.data.consumerSecret,
       code: $.auth.data.code,
       grant_type: 'authorization_code',
-    },
+    }),
     {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
