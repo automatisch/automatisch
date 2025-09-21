@@ -3,7 +3,7 @@ import getCurrentUser from '../common/get-current-user.js';
 
 const verifyCredentials = async ($) => {
   const response = await $.http.post(
-    'https://raindrop.io/oauth/access_token',
+    'https://api.raindrop.io/v1/oauth/access_token',
     new URLSearchParams({
       client_id: $.auth.data.consumerKey,
       client_secret: $.auth.data.consumerSecret,
@@ -19,6 +19,11 @@ const verifyCredentials = async ($) => {
   );
 
   const data = response.data;
+
+  // Check if the response indicates an error
+  if (!data.result) {
+    throw new Error(data.errorMessage || 'OAuth verification failed');
+  }
 
   $.auth.data.accessToken = data.access_token;
 
