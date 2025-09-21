@@ -1,0 +1,14 @@
+{
+  "name": "automatisch",
+  "version": "1.0.0",
+  "description": "Open source Zapier alternative",
+  "scripts": {
+    "postinstall": "cd packages/web && npm install --legacy-peer-deps && cd ../backend && npm install --legacy-peer-deps",
+    "build": "cd packages/web && npm run build",
+    "start": "cd packages/backend && npm start",
+    "start:worker": "cd packages/backend && npm run start:worker"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
