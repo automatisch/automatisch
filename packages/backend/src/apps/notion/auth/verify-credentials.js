@@ -1,5 +1,3 @@
-import getCurrentUser from '../common/get-current-user.js';
-
 const verifyCredentials = async ($) => {
   // Test the integration token by making a simple API call
   const response = await $.http.get('/v1/users/me', {
