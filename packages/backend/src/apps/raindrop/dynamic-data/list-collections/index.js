@@ -1,8 +1,7 @@
-import defineDynamicData from '../../../../helpers/define-dynamic-data.js';
-
-export default defineDynamicData({
+export default {
   name: 'List collections',
   key: 'listCollections',
+
   async run($) {
     const response = await $.http.get('/rest/v1/collections');
     
@@ -13,4 +12,4 @@ export default defineDynamicData({
       value: collection._id.toString(),
     }));
   },
-});
+};
