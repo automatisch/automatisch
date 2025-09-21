@@ -2,6 +2,12 @@ import { URLSearchParams } from 'url';
 import getCurrentUser from '../common/get-current-user.js';
 
 const verifyCredentials = async ($) => {
+  // Get the redirect URI from the auth fields
+  const oauthRedirectUrlField = $.app.auth.fields.find(
+    (field) => field.key == 'oAuthRedirectUrl'
+  );
+  const redirectUri = oauthRedirectUrlField.value;
+
   const response = await $.http.post(
     'https://api.raindrop.io/v1/oauth/access_token',
     new URLSearchParams({
@@ -9,6 +15,7 @@ const verifyCredentials = async ($) => {
       client_secret: $.auth.data.consumerSecret,
       code: $.auth.data.code,
       grant_type: 'authorization_code',
+      redirect_uri: redirectUri,
     }),
     {
       headers: {
