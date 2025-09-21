@@ -2,8 +2,8 @@ const addAuthHeader = ($, requestConfig) => {
   if (requestConfig.additionalProperties?.skipAddingAuthHeader)
     return requestConfig;
 
-  if ($.auth.data?.accessToken) {
-    const authorizationHeader = `Bearer ${$.auth.data.accessToken}`;
+  if ($.auth.data?.integrationToken) {
+    const authorizationHeader = `Bearer ${$.auth.data.integrationToken}`;
     requestConfig.headers.Authorization = authorizationHeader;
   }
 
