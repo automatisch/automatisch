@@ -27,7 +27,7 @@ Consider setting up the [Pull app](https://wei.github.io/pull/) to keep this for
 ### Potential Configuration (if implemented later)
 
 ```yaml
-version: "1"
+version: '1'
 rules:
   - base: master
     upstream: automatisch:master
@@ -40,6 +40,57 @@ rules:
 - [Pull App Documentation](https://wei.github.io/pull/)
 - [Current Railway Configuration](./railway.json)
 - [Current Nixpacks Configuration](./nixpacks.toml)
+
+---
+
+## 🚀 Raindrop.io Integration Development
+
+### Current Status
+
+- ✅ Basic integration structure created with OAuth authentication
+- ✅ New bookmark trigger implemented for monitoring collections
+- ✅ Create bookmark action implemented
+- ✅ Dynamic data source for listing collections
+- ✅ Fixed import errors and auth structure
+- ⏳ Testing integration in deployed environment
+- ⏳ Preparing for public contribution
+
+### Integration Features
+
+**Triggers:**
+
+- New Bookmark - Monitors collections for new bookmarks (polls every minute)
+
+**Actions:**
+
+- Create Bookmark - Adds new bookmarks to collections with title, description, and tags
+
+**Authentication:**
+
+- OAuth 2.0 flow with Raindrop.io API
+- Proper credential management and token refresh
+
+### Future Enhancements
+
+- [ ] Add more triggers (bookmark updated, collection created)
+- [ ] Add more actions (update bookmark, delete bookmark, create collection)
+- [ ] Add bookmark search and filtering capabilities
+- [ ] Add support for bookmark tags and categories
+
+### Public Contribution Goals
+
+- [ ] Comprehensive testing of all integration features
+- [ ] Create documentation and setup guide
+- [ ] Prepare PR for main Automatisch repository
+- [ ] Follow Automatisch contribution guidelines
+- [ ] Add integration to official app catalog
+
+### Technical Notes
+
+- Integration follows Automatisch patterns and conventions
+- Uses proper OAuth 2.0 implementation
+- Includes error handling and validation
+- Compatible with Raindrop.io API v1
 
 ---
 
