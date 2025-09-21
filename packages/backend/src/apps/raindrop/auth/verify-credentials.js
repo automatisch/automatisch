@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'url';
 import getCurrentUser from '../common/get-current-user.js';
 
 const verifyCredentials = async ($) => {
@@ -9,16 +10,16 @@ const verifyCredentials = async ($) => {
 
   const response = await $.http.post(
     'https://api.raindrop.io/v1/oauth/access_token',
-    {
+    new URLSearchParams({
       client_id: $.auth.data.consumerKey,
       client_secret: $.auth.data.consumerSecret,
       code: $.auth.data.code,
       grant_type: 'authorization_code',
       redirect_uri: redirectUri,
-    },
+    }),
     {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
       },
     }
@@ -29,9 +30,9 @@ const verifyCredentials = async ($) => {
   // Log the response for debugging
   console.log('Raindrop OAuth response:', JSON.stringify(data, null, 2));
 
-  // Check if the response indicates an error
-  if (!data.result) {
-    throw new Error(data.errorMessage || 'OAuth verification failed');
+  // Check if we have an access token
+  if (!data.access_token) {
+    throw new Error(data.errorMessage || 'OAuth verification failed - no access token received');
   }
 
   $.auth.data.accessToken = data.access_token;
