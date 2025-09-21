@@ -3,7 +3,11 @@ export default {
   key: 'listCollections',
 
   async run($) {
-    const response = await $.http.get('/rest/v1/collections');
+    const response = await $.http.get('/rest/v1/collections', {
+      headers: {
+        Authorization: `Bearer ${$.auth.data.accessToken}`,
+      },
+    });
     
     const collections = response.data.items || [];
     

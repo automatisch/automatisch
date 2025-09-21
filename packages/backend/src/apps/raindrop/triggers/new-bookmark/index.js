@@ -37,6 +37,9 @@ export default defineTrigger({
         perpage: 50,
         sort: 'created',
       },
+      headers: {
+        Authorization: `Bearer ${$.auth.data.accessToken}`,
+      },
     });
     
     const bookmarks = response.data.items || [];

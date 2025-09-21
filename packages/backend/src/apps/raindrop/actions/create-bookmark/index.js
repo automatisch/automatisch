@@ -79,7 +79,11 @@ export default defineAction({
       bookmarkData.tags = tags.split(',').map(tag => tag.trim());
     }
     
-    const response = await $.http.post('/rest/v1/raindrop', bookmarkData);
+    const response = await $.http.post('/rest/v1/raindrop', bookmarkData, {
+      headers: {
+        Authorization: `Bearer ${$.auth.data.accessToken}`,
+      },
+    });
     
     return {
       raw: response.data,
