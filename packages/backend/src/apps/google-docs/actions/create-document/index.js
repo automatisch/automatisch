@@ -39,7 +39,7 @@ export default defineAction({
     // If initial content is provided, insert it
     if ($.step.parameters.content) {
       await $.http.post(
-        `https://docs.googleapis.com/v1/documents/${data.id}:batchUpdate`,
+        `/v1/documents/${data.id}:batchUpdate`,
         {
           requests: [
             {
