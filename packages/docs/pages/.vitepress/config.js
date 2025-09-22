@@ -340,15 +340,6 @@ export default async () => {
             ],
           },
           {
-            text: 'Google Drive',
-            collapsible: true,
-            collapsed: true,
-            items: [
-              { text: 'Triggers', link: '/apps/google-drive/triggers' },
-              { text: 'Connection', link: '/apps/google-drive/connection' },
-            ],
-          },
-          {
             text: 'Google Docs',
             collapsible: true,
             collapsed: true,
@@ -358,6 +349,16 @@ export default async () => {
               { text: 'Connection', link: '/apps/google-docs/connection' },
             ],
           },
+          {
+            text: 'Google Drive',
+            collapsible: true,
+            collapsed: true,
+            items: [
+              { text: 'Triggers', link: '/apps/google-drive/triggers' },
+              { text: 'Connection', link: '/apps/google-drive/connection' },
+            ],
+          },
+
           {
             text: 'Google Forms',
             collapsible: true,
