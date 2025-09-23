@@ -3,6 +3,7 @@ import appConfig from '@/config/app.js';
 import App from '@/models/app.js';
 import Base from '@/models/base.js';
 import Step from '@/models/step.js';
+import McpTool from '@/models/mcp-tool.ee.js';
 import Flow from '@/models/flow.js';
 import Connection from '@/models/connection.js';
 import ExecutionStep from '@/models/execution-step.js';
@@ -15,6 +16,7 @@ import { createPermission } from '@/factories/permission.js';
 import { createConnection } from '@/factories/connection.js';
 import { createStep } from '@/factories/step.js';
 import { createExecutionStep } from '@/factories/execution-step.js';
+import { createMcpTool } from '@/factories/mcp-tool';
 
 describe('Step model', () => {
   it('tableName should return correct name', () => {
@@ -60,6 +62,18 @@ describe('Step model', () => {
           join: {
             from: 'steps.parent_step_id',
             to: 'steps.id',
+          },
+        },
+        mcpTools: {
+          relation: Base.ManyToManyRelation,
+          modelClass: McpTool,
+          join: {
+            from: 'steps.flow_id',
+            through: {
+              from: 'flows.id',
+              to: 'flows.id',
+            },
+            to: 'mcp_tools.flow_id',
           },
         },
         childrenSteps: {
@@ -576,6 +590,46 @@ describe('Step model', () => {
       await expect(() => step.updateFor(user, stepData)).rejects.toThrowError(
         'DeepL does not have an action with the "not-existing-key" key!'
       );
+    });
+  });
+
+  describe('updateRelatedMcpTools', async () => {
+    it(`should update mcpTools with given step's toolName`, async () => {
+      const step = await createStep({
+        appKey: 'mcp',
+        key: 'mcpTool',
+        parameters: { toolName: 'newToolName' },
+      });
+
+      const mcpToolOne = await createMcpTool({
+        flowId: step.flowId,
+        action: 'oldToolName1',
+      });
+
+      const mcpToolTwo = await createMcpTool({
+        flowId: step.flowId,
+        action: 'oldToolName2',
+      });
+
+      await step.updateRelatedMcpTools();
+
+      const updatedMcpToolOne = await mcpToolOne.$query();
+      const updatedMcpToolTwo = await mcpToolTwo.$query();
+
+      expect(updatedMcpToolOne.action).toBe('newToolName');
+      expect(updatedMcpToolTwo.action).toBe('newToolName');
+    });
+
+    it('should not update mcpTools for non-mcpTool steps', async () => {
+      const step = await createStep({
+        parameters: { toolName: 'newToolName' },
+      });
+
+      const mcpToolQuerySpy = vi.spyOn(McpTool.prototype, '$query');
+
+      await step.updateRelatedMcpTools();
+
+      expect(mcpToolQuerySpy).not.toHaveBeenCalled();
     });
   });
 

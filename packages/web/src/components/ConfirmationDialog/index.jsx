@@ -43,6 +43,7 @@ function ConfirmationDialog(props) {
             onClick={onConfirm}
             color="error"
             data-test="confirmation-confirm-button"
+            autoFocus
           >
             {confirmButtonChildren}
           </Button>

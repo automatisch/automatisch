@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import SecurityIcon from '@mui/icons-material/Security';
 import CallToActionIcon from '@mui/icons-material/CallToAction';
+import DnsIcon from '@mui/icons-material/Dns';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -41,6 +42,12 @@ const generateDrawerLinks = ({ isEnterprise }) =>
       primary: 'drawer.forms',
       to: URLS.FORMS,
       dataTest: 'forms-page-drawer-link',
+    },
+    isEnterprise && {
+      Icon: DnsIcon,
+      primary: 'drawer.mcpServers',
+      to: URLS.MCP_SERVERS,
+      dataTest: 'mcp-servers-page-drawer-link',
     },
     {
       Icon: AppsIcon,

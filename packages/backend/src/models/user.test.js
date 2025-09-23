@@ -9,14 +9,15 @@ import Config from '@/models/config.js';
 import Connection from '@/models/connection.js';
 import Execution from '@/models/execution.js';
 import Flow from '@/models/flow.js';
+import Folder from '@/models/folder.js';
 import Form from '@/models/form.ee.js';
 import Identity from '@/models/identity.ee.js';
+import McpServer from '@/models/mcp-server.ee.js';
 import Permission from '@/models/permission.js';
 import Role from '@/models/role.js';
 import Step from '@/models/step.js';
 import Subscription from '@/models/subscription.ee.js';
 import UsageData from '@/models/usage-data.ee.js';
-import Folder from '@/models/folder.js';
 import User from '@/models/user.js';
 import deleteUserQueue from '@/queues/delete-user.ee.js';
 import emailQueue from '@/queues/email.js';
@@ -157,6 +158,14 @@ describe('User model', () => {
           join: {
             from: 'identities.user_id',
             to: 'users.id',
+          },
+        },
+        mcpServers: {
+          relation: Base.HasManyRelation,
+          modelClass: McpServer,
+          join: {
+            from: 'users.id',
+            to: 'mcp_servers.user_id',
           },
         },
         folders: {
@@ -435,9 +444,9 @@ describe('User model', () => {
       const userFlowExecution = await createExecution({ flowId: userFlow.id });
       await createExecution();
 
-      expect(
-        await userWithRoleAndPermissions.readableExecutions
-      ).toStrictEqual([userFlowExecution]);
+      expect(await userWithRoleAndPermissions.readableExecutions).toStrictEqual(
+        [userFlowExecution]
+      );
     });
 
     it('should return all executions without isCreator condition', async () => {
@@ -460,9 +469,9 @@ describe('User model', () => {
       const userFlowExecution = await createExecution({ flowId: userFlow.id });
       const anotherUserFlowExecution = await createExecution();
 
-      expect(
-        await userWithRoleAndPermissions.readableExecutions
-      ).toStrictEqual([userFlowExecution, anotherUserFlowExecution]);
+      expect(await userWithRoleAndPermissions.readableExecutions).toStrictEqual(
+        [userFlowExecution, anotherUserFlowExecution]
+      );
     });
 
     it('should throw an authorization error without Execution read permission', async () => {

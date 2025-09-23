@@ -1,25 +1,47 @@
-import PropTypes from 'prop-types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { AppPropType } from 'propTypes/propTypes';
-import AppOAuthClientsDialog from 'components/OAuthClientsDialog/index.ee';
-import InputCreator from 'components/InputCreator';
-import * as URLS from 'config/urls';
-import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
-import useFormatMessage from 'hooks/useFormatMessage';
-import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
-import useAppConfig from 'hooks/useAppConfig.ee';
-import { generateExternalLink } from 'helpers/translationValues';
-import { Form } from './style';
-import useAppAuth from 'hooks/useAppAuth';
 import { useQueryClient } from '@tanstack/react-query';
+import InputCreator from 'components/InputCreator';
+import AppOAuthClientsDialog from 'components/OAuthClientsDialog/index.ee';
+import * as URLS from 'config/urls';
+import { generateExternalLink } from 'helpers/translationValues';
+import useAppAuth from 'hooks/useAppAuth';
+import useAppConfig from 'hooks/useAppConfig.ee';
+import useAuthenticateApp from 'hooks/useAuthenticateApp.ee';
+import useEnqueueSnackbar from 'hooks/useEnqueueSnackbar';
+import useFormatMessage from 'hooks/useFormatMessage';
+import useUpdateConnection from 'hooks/useUpdateConnection';
+import { AppPropType } from 'propTypes/propTypes';
+import { Form } from './style';
+
+const parseUrlSearchParams = (search, hash) => {
+  const searchParams = new URLSearchParams(search);
+  const hashParams = new URLSearchParams(hash.substring(1));
+  const searchParamsObject = getObjectOfEntries(searchParams.entries());
+  const hashParamsObject = getObjectOfEntries(hashParams.entries());
+
+  return {
+    ...hashParamsObject,
+    ...searchParamsObject,
+  };
+};
+
+function getObjectOfEntries(iterator) {
+  const result = {};
+  for (const [key, value] of iterator) {
+    result[key] = value;
+  }
+
+  return result;
+}
 
 function AddAppConnection(props) {
   const { application, connectionId, onClose } = props;
@@ -43,6 +65,7 @@ function AddAppConnection(props) {
   const queryClient = useQueryClient();
   const enqueueSnackbar = useEnqueueSnackbar();
   const { data: appConfig } = useAppConfig(key);
+  const { mutateAsync: updateConnection } = useUpdateConnection();
 
   React.useEffect(function relayProviderData() {
     if (window.opener) {
@@ -52,6 +75,21 @@ function AddAppConnection(props) {
       });
 
       window.close();
+    }
+
+    const { search, hash } = window.location;
+    if (search || hash) {
+      async function update() {
+        const { state, ...formattedData } = parseUrlSearchParams(search, hash);
+        await updateConnection({
+          formattedData,
+          connectionId: state,
+        });
+
+        window.close();
+      }
+
+      update();
     }
   }, []);
 
