@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`McpSession model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "mcpServerId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "required": [
+    "mcpServerId",
+  ],
+  "type": "object",
+}
+`;
