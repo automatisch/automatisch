@@ -142,6 +142,7 @@ exports[`App model > list > should list all applications including enterprise on
   "mailchimp",
   "mailerlite",
   "mattermost",
+  "mcp",
   "miro",
   "mistral-ai",
   "monday",

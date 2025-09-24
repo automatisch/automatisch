@@ -7,24 +7,34 @@ const boxShouldForwardProp = (prop) => !['editing', 'disabled'].includes(prop);
 
 export const Box = styled(MuiBox, {
   shouldForwardProp: boxShouldForwardProp,
-})(({ theme, disabled, editing }) => ({
-  display: 'flex',
-  flex: 1,
-  minWidth: '300px',
-  maxWidth: '90%',
-  height: '33px',
-  alignItems: 'center',
-  ...(!disabled ? { cursor: 'pointer' } : {}),
-  ...(editing ? { borderBottom: '1px dashed #000' } : {}),
-  [theme.breakpoints.down('sm')]: {
-    minWidth: '210px',
-  },
-}));
+})`
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  ${({ disabled }) => !disabled && 'cursor: pointer;'}
+  ${({ editing }) =>
+    editing &&
+    `
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.5;
+    }
+  `}
+`;
 
 export const TextField = styled(MuiTextField)({
-  width: '100%',
-  [`.${inputClasses.root}:before, .${inputClasses.root}:after, .${inputClasses.root}:hover`]:
-    {
+  minWidth: 'fit-content',
+  [`.${inputClasses.root}`]: {
+    '&:before, &:after, &:hover': {
       borderBottom: '0 !important',
     },
+    fontSize: 'inherit',
+    fontWeight: 'inherit',
+  },
 });

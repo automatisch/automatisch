@@ -7,6 +7,8 @@ export default async (request, response) => {
 
   step = await step.updateFor(request.currentUser, stepParams(request));
 
+  await step.updateRelatedMcpTools();
+
   renderObject(response, step);
 };
 

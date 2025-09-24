@@ -4,12 +4,12 @@ const getPermissionsCatalogMock = async () => {
       {
         key: 'read',
         label: 'Read',
-        subjects: ['Connection', 'Execution', 'Flow'],
+        subjects: ['Connection', 'Execution', 'Flow', 'McpServer'],
       },
       {
         key: 'manage',
         label: 'Manage',
-        subjects: ['Connection', 'Flow'],
+        subjects: ['Connection', 'Flow', 'McpServer'],
       },
     ],
     conditions: [
@@ -30,6 +30,10 @@ const getPermissionsCatalogMock = async () => {
       {
         key: 'Execution',
         label: 'Execution',
+      },
+      {
+        key: 'McpServer',
+        label: 'MCP Server',
       },
     ],
   };

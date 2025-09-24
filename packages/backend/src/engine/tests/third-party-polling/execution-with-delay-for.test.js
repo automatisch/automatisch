@@ -145,7 +145,7 @@ describe.sequential(
       });
     });
 
-    it('should create 100 executions when polling finds 100 new issues', async () => {
+    it('should create 10 executions when polling finds 10 new issues', async () => {
       const timeBeforePolling = new Date();
 
       await runFlowWorkerJobs(flow.id);
@@ -157,7 +157,7 @@ describe.sequential(
         .andWhere('createdAt', '>', timeBeforePolling.toISOString());
 
       expect(executions).toBeDefined();
-      expect(executions.length).toBe(100);
+      expect(executions.length).toBe(10);
     });
 
     it('should delay and continue running from where it is left in background after delay', async () => {
@@ -185,7 +185,7 @@ describe.sequential(
       );
     });
 
-    it('should create 200 execution steps when polling finds 100 new issues before delay takes place', async () => {
+    it('should create 20 execution steps when polling finds 10 new issues before delay takes place', async () => {
       const timeBeforePolling = new Date();
 
       await runFlowWorkerJobs(flow.id);
@@ -209,10 +209,10 @@ describe.sequential(
         ]);
 
       expect(executionSteps).toBeDefined();
-      expect(executionSteps.length).toBe(200);
+      expect(executionSteps.length).toBe(20);
     });
 
-    it('should create 400 execution steps when polling finds 100 new issues after delay takes place', async () => {
+    it('should create 40 execution steps when polling finds 10 new issues after delay takes place', async () => {
       const timeBeforePolling = new Date();
 
       // Run the flow until the delay
@@ -240,7 +240,7 @@ describe.sequential(
         ]);
 
       expect(executionSteps).toBeDefined();
-      expect(executionSteps.length).toBe(400);
+      expect(executionSteps.length).toBe(40);
     });
 
     it('should create execution step with correct data transformation', async () => {

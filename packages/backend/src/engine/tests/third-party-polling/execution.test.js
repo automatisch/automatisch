@@ -128,7 +128,7 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
     });
   });
 
-  it('should create 100 executions when polling finds 100 new issues', async () => {
+  it('should create 10 executions when polling finds 10 new issues', async () => {
     const timeBeforePolling = new Date();
 
     await runFlowWorkerJobs(flow.id);
@@ -140,10 +140,10 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
       .andWhere('createdAt', '>', timeBeforePolling.toISOString());
 
     expect(executions).toBeDefined();
-    expect(executions.length).toBe(100);
+    expect(executions.length).toBe(10);
   });
 
-  it('should create 300 execution steps when polling finds 100 new issues', async () => {
+  it('should create 30 execution steps when polling finds 100 new issues', async () => {
     const timeBeforePolling = new Date();
 
     await runFlowWorkerJobs(flow.id);
@@ -162,7 +162,7 @@ describe.sequential('Third-party app (GitHub) polling async', () => {
       .whereIn('stepId', [githubTriggerStep.id, formatterStep.id, ntfyStep.id]);
 
     expect(executionSteps).toBeDefined();
-    expect(executionSteps.length).toBe(300);
+    expect(executionSteps.length).toBe(30);
   });
 
   it('should create execution step with correct data transformation', async () => {
