@@ -120,11 +120,9 @@ test.describe('Import/Export flow', () => {
       await expect(flowEditorPage.appAutocompleteInput).toHaveValue('Webhook');
 
       await flowEditorPage.continueButton.last().click();
-      await expect(
-        page
-          .getByTestId('parameters.body-power-input')
-          .locator('[contenteditable="true"]')
-      ).toContainText('step1.headers.host: localhost:3000');
+      await expect(flowEditorPage.bodyPowerInputParameter).toContainText(
+        'step1.headers.host: localhost:3000'
+      );
     });
   });
 

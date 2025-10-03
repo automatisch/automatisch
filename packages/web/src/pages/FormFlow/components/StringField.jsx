@@ -27,6 +27,7 @@ const getValidationPattern = (validationFormat, customPattern) => {
 };
 
 function StringField({
+  dataTest,
   name,
   label,
   defaultValue = '',
@@ -56,7 +57,7 @@ function StringField({
   };
 
   return (
-    <FormControl required={required} disabled={readonly}>
+    <FormControl data-test={dataTest} required={required} disabled={readonly}>
       <FormLabel>{label}</FormLabel>
       <Input
         name={name}
@@ -77,6 +78,7 @@ function StringField({
 }
 
 StringField.propTypes = {
+  dataTest: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,

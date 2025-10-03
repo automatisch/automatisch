@@ -66,6 +66,8 @@ export class FormsPage extends AuthenticatedPage {
     this.getArrayFieldType = (index, fieldIndex) =>
       page.getByTestId(`fields.${index}.fields.${fieldIndex}.type`);
 
+    this.addArrayFieldButton = page.getByTestId('add-array-field-button');
+
     // array field checkboxes
     this.getArrayFieldRequiredCheckbox = (index, fieldIndex) =>
       page.getByTestId(`fields.${index}.fields.${fieldIndex}.required`);
@@ -94,5 +96,9 @@ export class FormsPage extends AuthenticatedPage {
       page.getByTestId(`add-subfield-option-button-${fieldIndex}`);
     this.getArrayFieldRemoveOptionButton = (optionIndex) =>
       page.getByTestId(`remove-subfield-option-${optionIndex}`);
+
+    // flow
+    this.submitFormFlowButton = page.getByTestId('submit-form-button');
+    this.formFlowAlert = page.getByTestId('form-alert');
   }
 }

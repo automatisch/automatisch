@@ -115,6 +115,85 @@ test.describe('Forms page', () => {
     await expect(formsPage.submitFormButton).toBeDisabled();
   });
 
+  test('can use different response options', async ({
+    flowEditorPage,
+    formsPage,
+    page,
+  }) => {
+    const formName = Crypto.randomUUID();
+    let formUrl;
+    await test.step('create a new form', async () => {
+      await formsPage.createFormButton.click();
+
+      await expect(formsPage.submitFormButton).toBeDisabled();
+
+      await formsPage.nameField.fill(formName);
+      await formsPage.displayNameField.fill(formName);
+
+      await formsPage.getFieldNameInput(0).fill('first-field');
+      await formsPage.submitFormButton.click();
+    });
+
+    await test.step('use the form in the flow', async () => {
+      await page.goto('/editor/create');
+      formUrl = await flowEditorPage.createFormTrigger(formName);
+    });
+
+    await test.step('open the form url', async () => {
+      await page.goto(formUrl);
+      await expect(formsPage.submitFormFlowButton).toBeEnabled();
+    });
+
+    await test.step('verify default response message', async () => {
+      await formsPage.submitFormFlowButton.click();
+      await expect(formsPage.formFlowAlert).toHaveText(
+        'Form submitted successfully!'
+      );
+    });
+
+    await test.step('edit response message in the form', async () => {
+      await page.goto('/form-entities');
+      await formsPage.formRow.filter({ hasText: formName }).click();
+
+      await expect(formsPage.fieldRow).toHaveCount(1);
+      await formsPage.responseMessageInput.fill('response from form');
+
+      await formsPage.updateFormButton.click();
+    });
+
+    await test.step('open the form url', async () => {
+      await page.goto(formUrl);
+      await expect(formsPage.submitFormFlowButton).toBeEnabled();
+    });
+
+    await test.step('verify non-default form response message', async () => {
+      await formsPage.submitFormFlowButton.click();
+      await expect(formsPage.formFlowAlert).toHaveText('response from form');
+    });
+
+    await test.step('add action step', async () => {
+      await page.goto(formUrl.replace('forms', 'editor'));
+      await expect(flowEditorPage.flowStep).toHaveCount(2);
+      await flowEditorPage.createBasicAction(
+        'Forms',
+        'Respond with',
+        'response from step'
+      );
+      await flowEditorPage.publishFlowButton.click();
+      await expect(flowEditorPage.infoSnackbar).toBeVisible();
+    });
+
+    await test.step('open the form url', async () => {
+      await page.goto(formUrl);
+      await expect(formsPage.submitFormFlowButton).toBeEnabled();
+    });
+
+    await test.step('verify step response message', async () => {
+      await formsPage.submitFormFlowButton.click();
+      await expect(formsPage.formFlowAlert).toHaveText('response from step');
+    });
+  });
+
   test('delete a form not used in a flow', async ({ formsPage }) => {
     //required-only-form
     await formsPage.formRowContextMenuButton('required-only-form').click();
@@ -124,7 +203,9 @@ test.describe('Forms page', () => {
       'snackbar-delete-form-success'
     );
     await expect(snackbar.variant).toBe('success');
-    await expect(formsPage.formRow.filter({ hasText: 'required-only-form' })).toHaveCount(0);
+    await expect(
+      formsPage.formRow.filter({ hasText: 'required-only-form' })
+    ).toHaveCount(0);
   });
 
   // TODO feature not working yet
