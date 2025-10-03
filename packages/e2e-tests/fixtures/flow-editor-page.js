@@ -55,12 +55,12 @@ export class FlowEditorPage extends AuthenticatedPage {
     );
     this.bodyPowerInputParameter = page
       .getByTestId('parameters.body-power-input')
-      .locator('[contenteditable]');
+      .locator('[contenteditable="true"]');
 
     this.redirectUrlParameter = page.getByTestId(
       'parameters.asyncRedirectUrl-power-input'
     );
-    this.formLink = page.getByTestId('form-preview-link').getAttribute('href');
+    this.formLink = page.getByTestId('form-preview-link');
   }
 
   async createWebhookTrigger(workSynchronously) {
@@ -132,7 +132,7 @@ export class FlowEditorPage extends AuthenticatedPage {
       await this.redirectUrlParameter.fill(redirectUrl);
     }
     await expect(this.continueButton).not.toBeDisabled();
-    const formUrl = await this.formLink;
+    const formUrl = await this.formLink.getAttribute('href');
     await this.continueButton.click();
     await this.testAndContinueButton.click();
     await expect(this.hasNoOutput).toBeVisible();
