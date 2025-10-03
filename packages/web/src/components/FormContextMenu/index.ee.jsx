@@ -20,6 +20,9 @@ function FormContextMenu(props) {
 
     enqueueSnackbar(formatMessage('formContextMenu.successfullyDeleted'), {
       variant: 'success',
+      SnackbarProps: {
+        'data-test': 'snackbar-delete-form-success',
+      },
     });
 
     onClose();

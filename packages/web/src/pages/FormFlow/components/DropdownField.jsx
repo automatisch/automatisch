@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import useFormatMessage from 'hooks/useFormatMessage';
 
 function DropdownField({
+  dataTest,
   name,
   label,
   options = [],
@@ -17,7 +18,7 @@ function DropdownField({
   const formatMessage = useFormatMessage();
 
   return (
-    <FormControl required={required} disabled={readonly}>
+    <FormControl data-test={dataTest} required={required} disabled={readonly}>
       <FormLabel>{label}</FormLabel>
       <Select
         name={name}
@@ -37,6 +38,7 @@ function DropdownField({
 }
 
 DropdownField.propTypes = {
+  dataTest: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(
