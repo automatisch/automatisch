@@ -25,6 +25,8 @@ class Config extends Base {
       footerTosUrl: { type: ['string', 'null'] },
       footerPrivacyPolicyUrl: { type: ['string', 'null'] },
       footerImprintUrl: { type: ['string', 'null'] },
+      defaultAiProvider: { type: ['string', 'null'] },
+      defaultAiProviderKey: { type: ['string', 'null'] },
       createdAt: { type: 'string' },
       updatedAt: { type: 'string' },
     },
@@ -88,6 +90,25 @@ class Config extends Base {
     return await config.$query().patchAndFetch({
       installationCompleted: true,
     });
+  }
+
+  static async getDefaultAiProvider() {
+    const config = await this.get();
+
+    return config.defaultAiProvider;
+  }
+
+  static async getDefaultAiProviderKey() {
+    const config = await this.get();
+
+    return config.defaultAiProviderKey;
+  }
+
+  static async getDefaultAiProviderWithKey() {
+    return {
+      provider: await this.getDefaultAiProvider(),
+      key: await this.getDefaultAiProviderKey(),
+    };
   }
 }
 

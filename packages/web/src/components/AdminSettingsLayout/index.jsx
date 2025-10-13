@@ -6,6 +6,7 @@ import BrushIcon from '@mui/icons-material/Brush';
 import AppsIcon from '@mui/icons-material/Apps';
 import PinIcon from '@mui/icons-material/Pin';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 import { Outlet } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -58,6 +59,14 @@ function createDrawerLinks({
           primary: 'adminSettingsDrawer.authentication',
           to: URLS.AUTHENTICATION,
           dataTest: 'authentication-drawer-link',
+        }
+      : null,
+    isCurrentUserEnterpriseAdmin
+      ? {
+          Icon: SmartToyIcon,
+          primary: 'adminSettingsDrawer.aiConfig',
+          to: URLS.AI_CONFIG,
+          dataTest: 'ai-config-drawer-link',
         }
       : null,
     isCurrentUserEnterpriseAdmin

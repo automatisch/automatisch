@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Agent model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "createdAt": {
+      "type": "string",
+    },
+    "description": {
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "instructions": {
+      "type": "string",
+    },
+    "name": {
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+    "userId": {
+      "format": "uuid",
+      "type": "string",
+    },
+  },
+  "required": [
+    "name",
+  ],
+  "type": "object",
+}
+`;
