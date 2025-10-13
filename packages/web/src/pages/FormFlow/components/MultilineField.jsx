@@ -4,6 +4,7 @@ import Textarea from '@mui/joy/Textarea';
 import PropTypes from 'prop-types';
 
 function MultilineField({
+  dataTest,
   name,
   label,
   defaultValue = '',
@@ -12,7 +13,7 @@ function MultilineField({
   minRows = 3,
 }) {
   return (
-    <FormControl required={required} disabled={readonly}>
+    <FormControl data-test={dataTest} required={required} disabled={readonly}>
       <FormLabel>{label}</FormLabel>
       <Textarea
         name={name}
@@ -26,6 +27,7 @@ function MultilineField({
 }
 
 MultilineField.propTypes = {
+  dataTest: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ThemeProvider from 'components/ThemeProvider';
 
 function DateField({
+  dataTest,
   name,
   label,
   format,
@@ -14,7 +15,7 @@ function DateField({
   readonly = false,
 }) {
   return (
-    <FormControl required={required} disabled={readonly}>
+    <FormControl data-test={dataTest} required={required} disabled={readonly}>
       <FormLabel>{label}</FormLabel>
       <ThemeProvider>
         <DatePicker
@@ -61,6 +62,7 @@ function DateField({
 }
 
 DateField.propTypes = {
+  dataTest: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   format: PropTypes.string.isRequired,

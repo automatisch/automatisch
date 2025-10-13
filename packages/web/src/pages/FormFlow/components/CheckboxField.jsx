@@ -3,6 +3,7 @@ import Checkbox from '@mui/joy/Checkbox';
 import PropTypes from 'prop-types';
 
 function CheckboxField({
+  dataTest,
   name,
   label,
   defaultValue,
@@ -12,7 +13,7 @@ function CheckboxField({
   const defaultChecked = defaultValue === 'true' || defaultValue === 'on';
 
   return (
-    <FormControl required={required} disabled={readonly}>
+    <FormControl data-test={dataTest} required={required} disabled={readonly}>
       <Checkbox
         name={name}
         label={`${label}${required ? ' *' : ''}`}
@@ -26,6 +27,7 @@ function CheckboxField({
 }
 
 CheckboxField.propTypes = {
+  dataTest: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,

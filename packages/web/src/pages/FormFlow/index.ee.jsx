@@ -210,6 +210,7 @@ export default function FormFlow() {
                   <React.Fragment key={key}>
                     {type === 'string' && (
                       <StringField
+                        dataTest={`string-field.${key}`}
                         name={key}
                         label={name}
                         defaultValue={searchParamsObject[key] || ''}
@@ -227,6 +228,7 @@ export default function FormFlow() {
 
                     {type === 'multiline' && (
                       <MultilineField
+                        dataTest={`multiline-field.${key}`}
                         name={key}
                         label={name}
                         defaultValue={searchParamsObject[key] || ''}
@@ -237,6 +239,7 @@ export default function FormFlow() {
 
                     {type === 'checkbox' && (
                       <CheckboxField
+                        dataTest={`checkbox-field.${key}`}
                         name={key}
                         label={name}
                         defaultValue={searchParamsObject[key]}
@@ -247,6 +250,7 @@ export default function FormFlow() {
 
                     {type === 'dropdown' && (
                       <DropdownField
+                        dataTest={`dropdown-field.${key}`}
                         name={key}
                         label={name}
                         options={options || []}
@@ -258,6 +262,7 @@ export default function FormFlow() {
 
                     {type === 'date' && (
                       <DateField
+                        dataTest={`date-field.${key}`}
                         name={key}
                         label={name}
                         format={getDateFormat()}
@@ -269,6 +274,7 @@ export default function FormFlow() {
 
                     {type === 'time' && (
                       <TimeField
+                        dataTest={`time-field.${key}`}
                         name={key}
                         label={name}
                         format={getTimeFormat()}
@@ -280,6 +286,7 @@ export default function FormFlow() {
 
                     {type === 'datetime' && (
                       <DateTimeField
+                        dataTest={`datetime-field.${key}`}
                         name={key}
                         label={name}
                         format={`${getDateFormat()} ${getTimeFormat()}`}
@@ -290,7 +297,7 @@ export default function FormFlow() {
                     )}
 
                     {type === 'array' && (
-                      <FormControl>
+                      <FormControl data-test={`array-field.${key}`}>
                         <FormLabel>{name}</FormLabel>
                         <ArrayField
                           name={key}
@@ -307,13 +314,18 @@ export default function FormFlow() {
                 ),
               )}
 
-              <Button variant="solid" type="submit">
+              <Button
+                data-test="submit-form-button"
+                variant="solid"
+                type="submit"
+              >
                 {flow.data.submitButtonText ||
                   formatMessage('formFlow.submitButton')}
               </Button>
 
               {isSuccess && (
                 <Alert
+                  data-test="form-alert"
                   ref={(node) =>
                     node?.scrollIntoView({
                       behavior: 'smooth',
