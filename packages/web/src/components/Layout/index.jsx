@@ -13,6 +13,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import SecurityIcon from '@mui/icons-material/Security';
 import CallToActionIcon from '@mui/icons-material/CallToAction';
 import DnsIcon from '@mui/icons-material/Dns';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -42,6 +43,12 @@ const generateDrawerLinks = ({ isEnterprise }) =>
       primary: 'drawer.forms',
       to: URLS.FORMS,
       dataTest: 'forms-page-drawer-link',
+    },
+    isEnterprise && {
+      Icon: SmartToyIcon,
+      primary: 'drawer.agents',
+      to: URLS.AGENTS,
+      dataTest: 'agents-page-drawer-link',
     },
     isEnterprise && {
       Icon: DnsIcon,

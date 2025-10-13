@@ -225,6 +225,50 @@ const authorizationList = {
     action: 'manage',
     subject: 'McpServer',
   },
+  'POST /internal/api/v1/agents/': {
+    action: 'manage',
+    subject: 'Agent',
+  },
+  'GET /internal/api/v1/agents/:agentId': {
+    action: 'read',
+    subject: 'Agent',
+  },
+  'DELETE /internal/api/v1/agents/:agentId': {
+    action: 'manage',
+    subject: 'Agent',
+  },
+  'PATCH /internal/api/v1/agents/:agentId': {
+    action: 'manage',
+    subject: 'Agent',
+  },
+  'GET /internal/api/v1/agents/': {
+    action: 'read',
+    subject: 'Agent',
+  },
+  'POST /internal/api/v1/agents/:agentId/test': {
+    action: 'manage',
+    subject: 'Agent',
+  },
+  'GET /internal/api/v1/agents/:agentId/executions': {
+    action: 'read',
+    subject: 'Agent',
+  },
+  'GET /internal/api/v1/agents/:agentId/executions/:executionId': {
+    action: 'read',
+    subject: 'Agent',
+  },
+  'GET /internal/api/v1/agents/:agentId/tools': {
+    action: 'read',
+    subject: 'Agent',
+  },
+  'POST /internal/api/v1/agents/:agentId/tools': {
+    action: 'manage',
+    subject: 'Agent',
+  },
+  'DELETE /internal/api/v1/agents/:agentId/tools/:toolId': {
+    action: 'manage',
+    subject: 'Agent',
+  },
 };
 
 export const authorizeUser = async (request, response, next) => {
