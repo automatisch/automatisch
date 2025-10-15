@@ -54,24 +54,24 @@ class Agent extends Base {
     type = 'app',
     flowId,
   }) {
+    if (type === 'flow' && flowId) return;
+
     if (type === 'app' && appKey) {
       await this.$relatedQuery('agentTools').where('app_key', appKey).delete();
-    } else if (type === 'flow' && flowId) {
-      await this.$relatedQuery('agentTools').where('flow_id', flowId).delete();
+
+      const toolData = {
+        agentId: this.id,
+        type,
+        connectionId,
+        appKey,
+        actions,
+        flowId,
+      };
+
+      const tool = await this.$relatedQuery('agentTools').insert(toolData);
+
+      return tool;
     }
-
-    const toolData = {
-      agentId: this.id,
-      type,
-      connectionId,
-      appKey,
-      actions,
-      flowId,
-    };
-
-    const tool = await this.$relatedQuery('agentTools').insert(toolData);
-
-    return tool;
   }
 }
 
