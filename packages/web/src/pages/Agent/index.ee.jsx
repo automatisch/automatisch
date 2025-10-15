@@ -98,13 +98,13 @@ export default function Agent() {
       to: URLS.AGENT_ADD_ACTION(agentId),
       startIcon: <AddIcon />,
     },
-    {
-      label: formatMessage('agent.addFlow'),
-      key: 'add-flow',
-      'data-test': 'add-flow-button',
-      to: URLS.AGENT_ADD_FLOW(agentId),
-      startIcon: <SwapCallsIcon />,
-    },
+    // {
+    //   label: formatMessage('agent.addFlow'),
+    //   key: 'add-flow',
+    //   'data-test': 'add-flow-button',
+    //   to: URLS.AGENT_ADD_FLOW(agentId),
+    //   startIcon: <SwapCallsIcon />,
+    // },
   ];
 
   const goToToolsPage = () => {
