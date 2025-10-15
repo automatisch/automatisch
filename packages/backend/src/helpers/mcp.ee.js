@@ -58,11 +58,19 @@ export function generateSchemaOutOfActionArguments(actionArguments) {
             // For string enums, use z.enum
             rule = z.enum(values);
           }
+
+          if (!required) {
+            rule = rule.nullable().optional();
+          }
         } else if (type === 'string') {
           if (typeof value === 'string') {
             rule = z.string();
           } else if (typeof value === 'number') {
             rule = z.number();
+          }
+
+          if (!required) {
+            rule = rule.nullable().optional();
           }
         }
 

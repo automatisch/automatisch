@@ -39,6 +39,7 @@ import { createFolder } from '@/factories/folder.js';
 import { createTemplate } from '@/factories/template.js';
 import Billing from '@/helpers/billing/index.ee.js';
 import Template from '@/models/template.ee.js';
+import Agent from '@/models/agent.ee.js';
 
 describe('User model', () => {
   it('tableName should return correct name', () => {
@@ -183,6 +184,14 @@ describe('User model', () => {
           },
           modelClass: Form,
           relation: Base.HasManyRelation,
+        },
+        agents: {
+          relation: Base.HasManyRelation,
+          modelClass: Agent,
+          join: {
+            from: 'users.id',
+            to: 'agents.user_id',
+          },
         },
       };
 

@@ -3,6 +3,7 @@ const configSerializer = (config) => {
     id: config.id,
     updatedAt: config.updatedAt.getTime(),
     createdAt: config.createdAt.getTime(),
+    defaultAiProvider: config.defaultAiProvider,
     disableFavicon: config.disableFavicon,
     disableNotificationsPage: config.disableNotificationsPage,
     enableTemplates: config.enableTemplates,

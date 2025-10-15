@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AgentExecution model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "agentId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "finishedAt": {
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "output": {
+      "type": "string",
+    },
+    "prompt": {
+      "type": "string",
+    },
+    "status": {
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;
