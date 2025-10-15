@@ -1,14 +1,15 @@
-import LoadingButton from '@mui/lab/LoadingButton';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import LoadingButton from '@mui/lab/LoadingButton';
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import * as React from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { useQueryClient } from '@tanstack/react-query';
 import InputCreator from 'components/InputCreator';
 import AppOAuthClientsDialog from 'components/OAuthClientsDialog/index.ee';
 import * as URLS from 'config/urls';
@@ -28,10 +29,15 @@ const parseUrlSearchParams = (search, hash) => {
   const searchParamsObject = getObjectOfEntries(searchParams.entries());
   const hashParamsObject = getObjectOfEntries(hashParams.entries());
 
-  return {
+  const params = {
     ...hashParamsObject,
     ...searchParamsObject,
   };
+
+  // eslint-disable-next-line no-unused-vars
+  const { shared, ...restParams } = params;
+
+  return restParams;
 };
 
 function getObjectOfEntries(iterator) {
@@ -81,10 +87,13 @@ function AddAppConnection(props) {
     if (search || hash) {
       async function update() {
         const { state, ...formattedData } = parseUrlSearchParams(search, hash);
-        await updateConnection({
-          formattedData,
-          connectionId: state,
-        });
+
+        if (!state && !isEmpty(formattedData)) {
+          await updateConnection({
+            formattedData,
+            connectionId: state,
+          });
+        }
 
         window.close();
       }
