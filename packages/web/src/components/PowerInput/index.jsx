@@ -96,11 +96,8 @@ const PowerInput = (props) => {
             }}
           >
             {/* ref-able single child for ClickAwayListener */}
-            <ChildrenWrapper
-              style={{ width: '100%' }}
-              data-test={`${name}-power-input`}
-            >
-              <FakeInput disabled={disabled}>
+            <ChildrenWrapper data-test={`${name}-power-input`}>
+              <FakeInput disabled={disabled} ref={editorRef}>
                 <InputLabelWrapper>
                   <InputLabel
                     shrink={true}
@@ -126,11 +123,6 @@ const PowerInput = (props) => {
                   }}
                 />
               </FakeInput>
-              {/* ghost placer for the variables popover */}
-              <div
-                ref={editorRef}
-                style={{ position: 'absolute', right: 16, left: 16 }}
-              />
 
               <Popper
                 open={showVariableSuggestions}
