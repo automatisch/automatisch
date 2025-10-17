@@ -9,6 +9,12 @@ import { checkIsEnterprise } from '@/helpers/check-is-enterprise.js';
 
 const router = Router();
 
+router.route('/').get((req, res) => {
+  res.status(200).json({
+    message: 'Welcome to the backend API',
+  });
+});
+
 router.use('/webhooks', webhooksRouter);
 router.use('/paddle', paddleRouter);
 router.use('/healthcheck', healthcheckRouter);
