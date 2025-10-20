@@ -52,6 +52,7 @@ function Routes() {
     : true;
 
   const isEnterprise = isSuccess ? automatischInfo.data.isEnterprise : false;
+  const isCloud = isSuccess ? automatischInfo.data.isCloud : false;
 
   useEffect(() => {
     if (!installed) {
@@ -121,7 +122,7 @@ function Routes() {
         />
       )}
 
-      {isEnterprise && (
+      {isEnterprise && !isCloud && (
         <Route
           path={`${URLS.AGENTS}/*`}
           element={
@@ -132,7 +133,7 @@ function Routes() {
         />
       )}
 
-      {isEnterprise && (
+      {isEnterprise && !isCloud && (
         <Route
           path={`${URLS.AGENT_PATTERN}/*`}
           element={
