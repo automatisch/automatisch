@@ -1,0 +1,45 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AgentTool model > jsonSchema should have correct validations 1`] = `
+{
+  "properties": {
+    "actions": {
+      "type": "array",
+    },
+    "agentId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "appKey": {
+      "type": "string",
+    },
+    "connectionId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "createdAt": {
+      "type": "string",
+    },
+    "flowId": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "id": {
+      "format": "uuid",
+      "type": "string",
+    },
+    "type": {
+      "default": "app",
+      "enum": [
+        "flow",
+        "app",
+      ],
+      "type": "string",
+    },
+    "updatedAt": {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

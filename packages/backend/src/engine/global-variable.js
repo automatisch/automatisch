@@ -64,6 +64,10 @@ const globalVariable = async (options) => {
       getAll: async () =>
         await currentUser.$relatedQuery('forms').orderBy('updated_at', 'desc'),
     },
+    agents: {
+      getAll: async () =>
+        await currentUser.$relatedQuery('agents').orderBy('updated_at', 'desc'),
+    },
     getLastExecutionStep: async () =>
       (await step?.getLastExecutionStep())?.toJSON(),
     triggerOutput: {

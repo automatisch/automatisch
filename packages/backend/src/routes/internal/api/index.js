@@ -23,6 +23,7 @@ import installationUsersRouter from '@/routes/internal/api/v1/installation/users
 import foldersRouter from '@/routes/internal/api/v1/folders.js';
 import formsRouter from '@/routes/internal/api/v1/forms.ee.js';
 import mcpServersRouter from '@/routes/internal/api/v1/mcp-servers.ee.js';
+import agentsRouter from '@/routes/internal/api/v1/agents.ee.js';
 
 const router = Router();
 
@@ -49,5 +50,6 @@ router.use('/v1/installation/users', installationUsersRouter);
 router.use('/v1/folders', foldersRouter);
 router.use('/v1/forms', formsRouter);
 router.use('/v1/mcp-servers', mcpServersRouter);
+router.use('/v1/agents', agentsRouter);
 
 export default router;

@@ -13,6 +13,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import SecurityIcon from '@mui/icons-material/Security';
 import CallToActionIcon from '@mui/icons-material/CallToAction';
 import DnsIcon from '@mui/icons-material/Dns';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 
 import * as URLS from 'config/urls';
 import useFormatMessage from 'hooks/useFormatMessage';
@@ -29,7 +30,7 @@ const additionalDrawerLinkIcons = {
   ArrowBackIosNew: ArrowBackIosNewIcon,
 };
 
-const generateDrawerLinks = ({ isEnterprise }) =>
+const generateDrawerLinks = ({ isEnterprise, isCloud }) =>
   [
     {
       Icon: SwapCallsIcon,
@@ -43,6 +44,13 @@ const generateDrawerLinks = ({ isEnterprise }) =>
       to: URLS.FORMS,
       dataTest: 'forms-page-drawer-link',
     },
+    isEnterprise &&
+      !isCloud && {
+        Icon: SmartToyIcon,
+        primary: 'drawer.agents',
+        to: URLS.AGENTS,
+        dataTest: 'agents-page-drawer-link',
+      },
     isEnterprise && {
       Icon: DnsIcon,
       primary: 'drawer.mcpServers',
@@ -132,8 +140,9 @@ function PublicLayout({ children }) {
   const drawerLinks = React.useMemo(() => {
     return generateDrawerLinks({
       isEnterprise: automatischInfo?.isEnterprise,
+      isCloud: automatischInfo?.isCloud,
     });
-  }, [automatischInfo?.isEnterprise]);
+  }, [automatischInfo?.isEnterprise, automatischInfo?.isCloud]);
 
   return (
     <>

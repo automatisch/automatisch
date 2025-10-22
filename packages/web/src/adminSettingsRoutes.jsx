@@ -9,6 +9,7 @@ import AdminApplications from 'pages/AdminApplications/index.ee';
 import AdminCreateTemplate from 'pages/AdminCreateTemplate/index.ee';
 import AdminTemplates from 'pages/AdminTemplates/index.ee';
 import AdminUpdateTemplate from 'pages/AdminUpdateTemplate/index.ee';
+import AiConfig from 'pages/AiConfig/index.ee';
 import Authentication from 'pages/Authentication/index.ee';
 import CreateRole from 'pages/CreateRole/index.ee';
 import CreateUser from 'pages/CreateUser';
@@ -98,6 +99,15 @@ export default (
       element={
         <EnterpriseAdminGuard>
           <AdminApplications />
+        </EnterpriseAdminGuard>
+      }
+    />
+
+    <Route
+      path={URLS.AI_CONFIG}
+      element={
+        <EnterpriseAdminGuard>
+          <AiConfig />
         </EnterpriseAdminGuard>
       }
     />
