@@ -32,14 +32,9 @@ test.describe('Webhook flow', () => {
     await expect(flowEditorPage.continueButton).toHaveCount(1);
     await expect(flowEditorPage.continueButton).not.toBeEnabled();
 
-    await page
-      .getByTestId('parameters.body-power-input')
-      .locator('[contenteditable]')
-      .fill('response from webhook');
+    await flowEditorPage.bodyPowerInputParameter.fill('response from webhook');
     await flowEditorPage.clickAway();
-    await expect(
-      page.getByTestId('parameters.headers.0.key-power-input')
-    ).toBeVisible();
+    await expect(flowEditorPage.headerPowerInputParameter).toBeVisible();
     await expect(flowEditorPage.continueButton).toBeEnabled();
     await flowEditorPage.continueButton.click();
 
@@ -73,14 +68,9 @@ test.describe('Webhook flow', () => {
     await expect(flowEditorPage.continueButton).toHaveCount(1);
     await expect(flowEditorPage.continueButton).not.toBeEnabled();
 
-    await page
-      .getByTestId('parameters.body-power-input')
-      .locator('[contenteditable]')
-      .fill('response from webhook');
+    await flowEditorPage.bodyPowerInputParameter.fill('response from webhook');
     await flowEditorPage.clickAway();
-    await expect(
-      page.getByTestId('parameters.headers.0.key-power-input')
-    ).toBeVisible();
+    await expect(flowEditorPage.headerPowerInputParameter).toBeVisible();
     await expect(flowEditorPage.continueButton).toBeEnabled();
     await flowEditorPage.continueButton.click();
 
