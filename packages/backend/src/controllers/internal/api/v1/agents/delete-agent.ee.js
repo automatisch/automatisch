@@ -6,6 +6,8 @@ export default async (request, response) => {
     })
     .throwIfNotFound();
 
+  await agent.$relatedQuery('agentTools').delete();
+  await agent.$relatedQuery('agentExecutions').delete();
   await agent.$query().delete();
 
   response.status(204).end();
