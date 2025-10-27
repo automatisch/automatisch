@@ -1,7 +1,19 @@
 import { renderObject } from '@/helpers/renderer.js';
 import runAgent from '@/helpers/agents.js';
+import Config from '@/models/config.js';
 
 export default async (request, response) => {
+  // Check whether user has a valid provider API Key
+  const aiProvider = await Config.getDefaultAiProvider();
+  const aiProviderKey = await Config.getDefaultAiProviderKey();
+
+  if (!aiProvider || !aiProviderKey) {
+    return response.status(422).json({
+      error:
+        'You need to set a default AI provider and key in the configuration to test an AI Agent!',
+    });
+  }
+
   const { agentId } = request.params;
   const { messages } = request.body;
 

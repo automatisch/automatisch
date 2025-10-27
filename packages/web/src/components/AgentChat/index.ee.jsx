@@ -127,10 +127,12 @@ export default function AgentChat({ agentId, messages, onMessagesChange }) {
       };
       onMessagesChange((prev) => [...prev, agentMessage]);
     } catch (error) {
-      enqueueSnackbar(formatMessage('agent.chat.error'), {
-        variant: 'error',
-      });
-      console.error('Agent chat error:', error);
+      enqueueSnackbar(
+        error?.response?.data?.error || formatMessage('agent.chat.error'),
+        {
+          variant: 'error',
+        },
+      );
     } finally {
       setIsLoading(false);
     }
