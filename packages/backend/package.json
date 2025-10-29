@@ -11,7 +11,6 @@
     "pretest": "APP_ENV=test node --loader ./alias-loader.mjs ./test/setup/prepare-test-env.js",
     "test": "APP_ENV=test node --loader ./alias-loader.mjs ./node_modules/.bin/vitest run",
     "test:watch": "APP_ENV=test node --loader ./alias-loader.mjs ./node_modules/.bin/vitest watch",
-    "test:coverage": "yarn test --coverage",
     "lint": "eslint .",
     "db:create": "node --loader ./alias-loader.mjs ./bin/database/create.js",
     "db:seed:user": "node --loader ./alias-loader.mjs ./bin/database/seed-user.js",
