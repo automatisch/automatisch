@@ -47,5 +47,5 @@ jobs:
         run: cp .env-example.test .env.test
         working-directory: packages/backend
       - name: Run tests
-        run: yarn test:coverage
+        run: yarn test
         working-directory: packages/backend

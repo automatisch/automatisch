@@ -25,6 +25,8 @@ import Installation from 'pages/Installation';
 import Layout from 'components/Layout';
 import Login from 'pages/Login';
 import LoginCallback from 'pages/LoginCallback';
+import Agent from 'pages/Agent/index.ee';
+import Agents from 'pages/Agents/index.ee';
 import McpServer from 'pages/McpServer/index.ee';
 import McpServers from 'pages/McpServers/index.ee';
 import NoResultFound from 'components/NotFound';
@@ -50,6 +52,7 @@ function Routes() {
     : true;
 
   const isEnterprise = isSuccess ? automatischInfo.data.isEnterprise : false;
+  const isCloud = isSuccess ? automatischInfo.data.isCloud : false;
 
   useEffect(() => {
     if (!installed) {
@@ -114,6 +117,28 @@ function Routes() {
           element={
             <Layout>
               <EditForm />
+            </Layout>
+          }
+        />
+      )}
+
+      {isEnterprise && !isCloud && (
+        <Route
+          path={`${URLS.AGENTS}/*`}
+          element={
+            <Layout>
+              <Agents />
+            </Layout>
+          }
+        />
+      )}
+
+      {isEnterprise && !isCloud && (
+        <Route
+          path={`${URLS.AGENT_PATTERN}/*`}
+          element={
+            <Layout>
+              <Agent />
             </Layout>
           }
         />

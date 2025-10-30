@@ -6,6 +6,18 @@ exports[`Config model > jsonSchema should have correct validations 1`] = `
     "createdAt": {
       "type": "string",
     },
+    "defaultAiProvider": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
+    "defaultAiProviderKey": {
+      "type": [
+        "string",
+        "null",
+      ],
+    },
     "enableFooter": {
       "type": "boolean",
     },

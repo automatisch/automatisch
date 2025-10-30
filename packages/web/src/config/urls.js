@@ -104,6 +104,25 @@ export const MCP_SERVER_ADD_FLOW_PATTERN = `${MCP_SERVERS}/:mcpServerId/tools/ad
 export const MCP_SERVER_EXECUTIONS = (mcpServerId) =>
   `${MCP_SERVERS}/${mcpServerId}/executions`;
 export const MCP_SERVER_EXECUTIONS_PATTERN = `${MCP_SERVERS}/:mcpServerId/executions`;
+export const AGENTS = '/agents';
+export const AGENT_PATTERN = `${AGENTS}/:agentId`;
+export const AGENT = (agentId) => `${AGENTS}/${agentId}`;
+export const CREATE_AGENT = `${AGENTS}/create`;
+export const AGENT_TOOLS = (agentId) => `${AGENTS}/${agentId}/tools`;
+export const AGENT_TOOLS_PATTERN = `${AGENTS}/:agentId/tools`;
+export const AGENT_SETTINGS = (agentId) => `${AGENTS}/${agentId}/settings`;
+export const AGENT_SETTINGS_PATTERN = `${AGENTS}/:agentId/settings`;
+export const AGENT_ADD_ACTION = (agentId) =>
+  `${AGENTS}/${agentId}/tools/add-action`;
+export const AGENT_ADD_ACTION_PATTERN = `${AGENTS}/:agentId/tools/add-action`;
+export const AGENT_ADD_FLOW = (agentId) =>
+  `${AGENTS}/${agentId}/tools/add-flow`;
+export const AGENT_ADD_FLOW_PATTERN = `${AGENTS}/:agentId/tools/add-flow`;
+export const AGENT_EXECUTIONS = (agentId) => `${AGENTS}/${agentId}/executions`;
+export const AGENT_EXECUTIONS_PATTERN = `${AGENTS}/:agentId/executions`;
+export const AGENT_EXECUTION = (agentId, executionId) =>
+  `${AGENTS}/${agentId}/executions/${executionId}`;
+export const AGENT_EXECUTION_PATTERN = `${AGENTS}/:agentId/executions/:executionId`;
 
 export const ADMIN_APPS = `${ADMIN_SETTINGS}/apps`;
 export const ADMIN_APP = (appKey) => `${ADMIN_SETTINGS}/apps/${appKey}`;

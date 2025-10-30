@@ -4,6 +4,7 @@ const configMock = (config) => {
       id: config.id,
       updatedAt: config.updatedAt.getTime(),
       createdAt: config.createdAt.getTime(),
+      defaultAiProvider: config.defaultAiProvider,
       disableFavicon: config.disableFavicon,
       disableNotificationsPage: config.disableNotificationsPage,
       additionalDrawerLink: config.additionalDrawerLink,

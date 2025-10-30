@@ -26,6 +26,8 @@ const configParams = (request) => {
     palettePrimaryLight,
     palettePrimaryMain,
     title,
+    defaultAiProvider,
+    defaultAiProviderKey,
   } = request.body;
 
   return {
@@ -44,5 +46,7 @@ const configParams = (request) => {
     palettePrimaryLight,
     palettePrimaryMain,
     title,
+    defaultAiProvider,
+    defaultAiProviderKey,
   };
 };

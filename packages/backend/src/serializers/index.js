@@ -31,6 +31,8 @@ import publicFormSerializer from '@/serializers/public-form.ee.js';
 import mcpServerSerializer from '@/serializers/mcp-server.ee.js';
 import mcpToolSerializer from '@/serializers/mcp-tool.ee.js';
 import mcpToolExecutionSerializer from '@/serializers/mcp-tool-execution.ee.js';
+import agentSerializer from '@/serializers/agent.ee.js';
+import agentExecutionSerializer from '@/serializers/agent-execution.ee.js';
 
 const serializers = {
   Action: actionSerializer,
@@ -39,6 +41,8 @@ const serializers = {
   AdminSamlAuthProvider: adminSamlAuthProviderSerializer,
   AdminTemplate: adminTemplateSerializer,
   AdminUser: adminUserSerializer,
+  Agent: agentSerializer,
+  AgentExecution: agentExecutionSerializer,
   App: appSerializer,
   AppConfig: appConfigSerializer,
   Auth: authSerializer,

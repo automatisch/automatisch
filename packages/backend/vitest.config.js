@@ -31,6 +31,8 @@ export default defineConfig({
         extends: true,
         test: {
           testTimeout: 10000,
+          teardownTimeout: 3000,
+          hookTimeout: 10000,
           exclude: ['**/src/engine/tests/**', '**/node_modules/**'],
           name: 'automatisch',
           setupFiles: ['./test/setup/global-hooks.js'],
@@ -41,6 +43,8 @@ export default defineConfig({
         extends: true,
         test: {
           testTimeout: 10000,
+          teardownTimeout: 3000,
+          hookTimeout: 10000,
           include: ['**/src/engine/tests/**/*.test.js'],
           exclude: ['**/node_modules/**'],
           name: 'automatisch engine',

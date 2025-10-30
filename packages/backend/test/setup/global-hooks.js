@@ -31,4 +31,7 @@ global.afterEach(async () => {
 
 global.afterAll(async () => {
   logger.silent = false;
+  
+  // Destroy database connection pool to allow process to exit cleanly
+  await knex.destroy();
 });

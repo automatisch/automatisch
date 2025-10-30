@@ -2,6 +2,7 @@
 
 exports[`App model > list > should exclude enterprise apps when license is not valid 1`] = `
 [
+  "agents",
   "airbrake",
   "airtable",
   "anthropic",
@@ -96,6 +97,7 @@ exports[`App model > list > should exclude enterprise apps when license is not v
 
 exports[`App model > list > should list all applications including enterprise ones when license is valid 1`] = `
 [
+  "agents",
   "airbrake",
   "airtable",
   "anthropic",
