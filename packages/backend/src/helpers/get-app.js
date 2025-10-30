@@ -20,11 +20,11 @@ function scanAppsInDirectory(dirPath) {
       const indexPath = join(dirPath, dirent.name, 'index.js');
       const indexEePath = join(dirPath, dirent.name, 'index.ee.js');
 
-      // Only include directories that have index.js or index.ee.js
+      // Store file path instead of immediately importing (lazy loading)
       if (fs.existsSync(indexEePath)) {
-        apps[dirent.name] = import(pathToFileURL(indexEePath));
+        apps[dirent.name] = indexEePath;
       } else if (fs.existsSync(indexPath)) {
-        apps[dirent.name] = import(pathToFileURL(indexPath));
+        apps[dirent.name] = indexPath;
       }
       // Skip directories without index files (like .git, incomplete apps, etc.)
 
@@ -35,19 +35,29 @@ function scanAppsInDirectory(dirPath) {
 const appsDir = path.resolve(__dirname, '../apps');
 const privateAppsDir = path.resolve(__dirname, '../private-apps');
 
-const apps = {
+// Store paths, not imported modules (lazy loading)
+const appPaths = {
   ...scanAppsInDirectory(appsDir),
   ...scanAppsInDirectory(privateAppsDir),
 };
 
+// Cache for loaded apps
+const loadedApps = {};
+
 async function getAppDefaultExport(appKey) {
-  if (!Object.prototype.hasOwnProperty.call(apps, appKey)) {
+  if (!Object.prototype.hasOwnProperty.call(appPaths, appKey)) {
     throw new Error(
       `An application with the "${appKey}" key couldn't be found.`
     );
   }
 
-  return (await apps[appKey]).default;
+  // Lazy load and cache the app module
+  if (!loadedApps[appKey]) {
+    const appPath = appPaths[appKey];
+    loadedApps[appKey] = (await import(pathToFileURL(appPath))).default;
+  }
+
+  return loadedApps[appKey];
 }
 
 function stripFunctions(data) {
