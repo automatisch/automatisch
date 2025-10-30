@@ -6,3 +6,8 @@ export async function setup() {
   await knex.raw('TRUNCATE TABLE roles CASCADE');
   await knex.raw('TRUNCATE TABLE permissions CASCADE');
 }
+
+export async function teardown() {
+  // Close database connection pool after all tests
+  await knex.destroy();
+}

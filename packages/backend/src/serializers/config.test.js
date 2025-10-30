@@ -33,6 +33,7 @@ describe('configSerializer', () => {
       footerPrivacyPolicyUrl: config.footerPrivacyPolicyUrl,
       footerTextColor: config.footerTextColor,
       footerTosUrl: config.footerTosUrl,
+      defaultAiProvider: config.defaultAiProvider,
       createdAt: config.createdAt.getTime(),
       updatedAt: config.updatedAt.getTime(),
     };

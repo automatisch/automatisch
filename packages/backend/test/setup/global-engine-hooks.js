@@ -38,4 +38,10 @@ global.afterEach(async () => {
 global.afterAll(async () => {
   await stopFlowWorker();
   logger.silent = false;
+  
+  // Close flow queue to prevent hanging
+  await flowQueue.close();
+  
+  // Destroy database connection pool to allow process to exit cleanly
+  await knex.destroy();
 });
