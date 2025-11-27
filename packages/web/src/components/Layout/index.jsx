@@ -22,6 +22,7 @@ import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
+import ShutdownAlert from 'components/ShutdownAlert';
 
 import Footer from './Footer';
 
@@ -168,7 +169,11 @@ function PublicLayout({ children }) {
 
         <Stack flex={1}>
           <Toolbar />
+
+          {automatischInfo?.isCloud && <ShutdownAlert />}
+
           {children}
+
           <Footer />
         </Stack>
       </Box>
