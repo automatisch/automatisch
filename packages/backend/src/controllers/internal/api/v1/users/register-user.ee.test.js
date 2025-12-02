@@ -7,7 +7,8 @@ import { createUser } from '@/factories/user.js';
 import { createRole } from '@/factories/role.js';
 import registerUserMock from '@/mocks/rest/internal/api/v1/users/register-user.ee.js';
 
-describe('POST /internal/api/v1/users/register', () => {
+// Skipped test suite for registering a user as it's disabled.
+describe.skip('POST /internal/api/v1/users/register', () => {
   beforeEach(async () => {
     vi.spyOn(appConfig, 'isCloud', 'get').mockReturnValue(true);
   });

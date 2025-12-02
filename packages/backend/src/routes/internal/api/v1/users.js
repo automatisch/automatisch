@@ -14,7 +14,6 @@ import getPlanAndUsageAction from '@/controllers/internal/api/v1/users/get-plan-
 import acceptInvitationAction from '@/controllers/internal/api/v1/users/accept-invitation.js';
 import forgotPasswordAction from '@/controllers/internal/api/v1/users/forgot-password.js';
 import resetPasswordAction from '@/controllers/internal/api/v1/users/reset-password.js';
-import registerUserAction from '@/controllers/internal/api/v1/users/register-user.ee.js';
 
 const router = Router();
 
@@ -55,6 +54,5 @@ router.get(
 router.post('/invitation', acceptInvitationAction);
 router.post('/forgot-password', forgotPasswordAction);
 router.post('/reset-password', resetPasswordAction);
-router.post('/register', checkIsCloud, registerUserAction);
 
 export default router;

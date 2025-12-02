@@ -34,7 +34,6 @@ import Notifications from 'pages/Notifications';
 import PublicLayout from 'components/PublicLayout';
 import ResetPassword from 'pages/ResetPassword/index.ee';
 import settingsRoutes from './settingsRoutes';
-import SignUp from 'pages/SignUp/index.ee';
 import useAuthentication from 'hooks/useAuthentication';
 import useAutomatischConfig from 'hooks/useAutomatischConfig';
 import useAutomatischInfo from 'hooks/useAutomatischInfo';
@@ -196,15 +195,6 @@ function Routes() {
       />
 
       <Route path={URLS.LOGIN_CALLBACK} element={<LoginCallback />} />
-
-      <Route
-        path={URLS.SIGNUP}
-        element={
-          <PublicLayout>
-            <SignUp />
-          </PublicLayout>
-        }
-      />
 
       <Route
         path={URLS.ACCEPT_INVITATON}
