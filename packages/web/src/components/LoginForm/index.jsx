@@ -120,16 +120,6 @@ function LoginForm() {
         >
           {formatMessage('loginForm.submit')}
         </LoadingButton>
-
-        {isCloud && (
-          <Typography variant="body1" align="center" mt={3}>
-            {formatMessage('loginForm.noAccount')}
-            &nbsp;
-            <Link component={RouterLink} to={URLS.SIGNUP} underline="none">
-              {formatMessage('loginForm.signUp')}
-            </Link>
-          </Typography>
-        )}
       </Form>
     </Paper>
   );
