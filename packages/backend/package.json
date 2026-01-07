@@ -27,7 +27,7 @@
     "@langchain/core": "^0.3.66",
     "@langchain/langgraph": "^0.4.2",
     "@langchain/openai": "^0.6.3",
-    "@modelcontextprotocol/sdk": "1.13.1",
+    "@modelcontextprotocol/sdk": "1.25.2",
     "@node-saml/passport-saml": "^4.0.4",
     "@rudderstack/rudder-sdk-node": "^1.1.2",
     "@sentry/node": "^7.42.0",
