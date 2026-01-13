@@ -7,6 +7,7 @@ const cronTimes = {
   everyDayExcludingWeekendsAt: (hour) => `0 ${hour} * * 1-5`,
   everyWeekOnAndAt: (weekday, hour) => `0 ${hour} * * ${weekday}`,
   everyMonthOnAndAt: (day, hour) => `0 ${hour} ${day} * *`,
+  everyLastDayOfTheMonthAndAt: (hour) => `0 ${hour} L * *`,
 };
 
 export default cronTimes;
