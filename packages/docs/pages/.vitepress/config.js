@@ -2,23 +2,13 @@ import { createWriteStream } from 'fs';
 import { resolve } from 'path';
 import { SitemapStream } from 'sitemap';
 import { defineConfig } from 'vitepress';
-import { useSidebar } from 'vitepress-openapi';
 
 const BASE = process.env.BASE_URL || '/';
-const OPENAPI_JSON_URL =
-  process.env.VITE_OPENAPI_JSON_URL || 'http://localhost:3000/api/openapi.json';
 
 const links = [];
 const PROD_BASE_URL = 'https://automatisch.io/docs';
 
 export default async () => {
-  const openapiSpec = await (await fetch(OPENAPI_JSON_URL)).json();
-
-  const sidebar = useSidebar({
-    spec: openapiSpec,
-    linkPrefix: '/api-docs/',
-  });
-
   return defineConfig({
     base: BASE,
     lang: 'en-US',
@@ -36,25 +26,12 @@ export default async () => {
           activeMatch: '^/$|^/guide/',
         },
         {
-          text: 'API Docs',
-          link: '/api-docs',
-          activeMatch: '^/api-docs/',
-        },
-        {
           text: 'Apps',
           link: '/apps/airbrake/connection',
           activeMatch: '/apps/',
         },
       ],
       sidebar: {
-        '/api-docs': [
-          ...sidebar.generateSidebarGroups({
-            linkPrefix: '/api-docs/',
-
-            // Optionally, you can specify a list of tags to generate sidebar items. Default is all tags.
-            //tags: [],
-          }),
-        ],
         '/apps/': [
           {
             text: 'Airbrake',
