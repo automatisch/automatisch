@@ -300,6 +300,42 @@ class User extends Base {
     });
   }
 
+  static async checkEmailAvailability(email) {
+    const existingUser = await User.query()
+      .withSoftDeleted()
+      .whereRaw('LOWER(email) = LOWER(?)', [email])
+      .first();
+
+    if (existingUser) {
+      if (existingUser.deletedAt) {
+        throw new ValidationError({
+          data: {
+            email: [
+              {
+                message:
+                  'A user with this email was previously deleted. Please use a different email address.',
+              },
+            ],
+          },
+          type: 'ValidationError',
+        });
+      } else {
+        throw new ValidationError({
+          data: {
+            email: [
+              {
+                message: 'A user with this email already exists.',
+              },
+            ],
+          },
+          type: 'ValidationError',
+        });
+      }
+    }
+
+    return true;
+  }
+
   async acceptInvitation(password) {
     return await this.$query().patch({
       invitationToken: null,

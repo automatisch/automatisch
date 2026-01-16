@@ -3,7 +3,11 @@ import User from '@/models/user.js';
 import Role from '@/models/role.js';
 
 export default async (request, response) => {
-  const user = await User.query().insertAndFetch(await userParams(request));
+  const params = await userParams(request);
+
+  await User.checkEmailAvailability(params.email);
+
+  const user = await User.query().insertAndFetch(params);
   await user.sendInvitationEmail();
 
   renderObject(response, user, { status: 201, serializer: 'AdminUser' });
