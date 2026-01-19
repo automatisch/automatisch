@@ -10,6 +10,7 @@ export default function defineTrigger(triggerDefinition) {
     'everyDay',
     'everyWeek',
     'everyMonth',
+    'everyLastDayOfTheMonth',
   ];
 
   const isSchedulerTrigger = schedulerTriggers.includes(triggerDefinition.key);

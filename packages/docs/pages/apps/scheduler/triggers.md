@@ -11,6 +11,8 @@ items:
     desc: Triggers every week.
   - name: Every month
     desc: Triggers every month.
+  - name: Every last day of the month
+    desc: Triggers every last day of the month
 ---
 
 <script setup>
