@@ -5,6 +5,8 @@ items:
     desc: Triggers when a new video is published to a specific Youtube channel.
   - name: New video by search
     desc: Triggers when a new video is uploaded that matches a specific search string.
+  - name: New video in playlist
+    desc: Triggers when a new video is added to a specific Youtube playlist.
 ---
 
 <script setup>
