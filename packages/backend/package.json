@@ -45,7 +45,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "esm-module-alias": "^2.2.1",
-    "express": "~4.18.2",
+    "express": "~4.22.0",
     "express-async-errors": "^3.1.1",
     "express-basic-auth": "^1.2.1",
     "fast-xml-parser": "^4.0.11",
