@@ -42,18 +42,21 @@ function FormEditor({
       <Paper variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
         <Stack gap={2}>
           <TextField
+            data-test="name"
             required={true}
             name="name"
             label={formatMessage(`${translationPrefix}.name`)}
             fullWidth
           />
           <TextField
+            data-test="display-name"
             required={true}
             name="displayName"
             label={formatMessage(`${translationPrefix}.displayName`)}
             fullWidth
           />
           <TextField
+            data-test="description"
             name="description"
             label={formatMessage(`${translationPrefix}.description`)}
             fullWidth
@@ -62,11 +65,13 @@ function FormEditor({
             variant="outlined"
           />
           <TextField
+            data-test="submit-button-text"
             name="submitButtonText"
             label={formatMessage(`${translationPrefix}.submitButtonText`)}
             fullWidth
           />
           <TextField
+            data-test="response-message"
             name="responseMessage"
             label={formatMessage(`${translationPrefix}.responseMessage`)}
             fullWidth
@@ -104,6 +109,7 @@ function FormEditor({
                 {formatMessage('formEditor.addField')}
               </Typography>
               <IconButton
+                data-test="add-field-button"
                 size="small"
                 onClick={() =>
                   append({

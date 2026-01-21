@@ -74,6 +74,7 @@ function FormRow(props) {
 
             <ContextMenu>
               <IconButton
+                data-test="context-menu-button"
                 size="large"
                 color="inherit"
                 aria-label="open context menu"

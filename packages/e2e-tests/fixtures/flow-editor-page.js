@@ -40,6 +40,27 @@ export class FlowEditorPage extends AuthenticatedPage {
     this.exportFlowButton = page.getByTestId('export-flow-button');
     this.stepName = page.getByTestId('step-name');
     this.folderName = page.getByTestId('folder-name');
+
+    this.powerInput = page.getByTestId('power-input');
+    this.searchInput = page.getByTestId('search-input').locator('input');
+    this.powerInputSuggestionItem = page.getByTestId(
+      'power-input-suggestion-item'
+    );
+
+    this.workSynchronouslyParamter = page.getByTestId(
+      'parameters.workSynchronously-autocomplete'
+    );
+    this.headerPowerInputParameter = page.getByTestId(
+      'parameters.headers.0.key-power-input'
+    );
+    this.bodyPowerInputParameter = page
+      .getByTestId('parameters.body-power-input')
+      .locator('[contenteditable="true"]');
+
+    this.redirectUrlParameter = page.getByTestId(
+      'parameters.asyncRedirectUrl-power-input'
+    );
+    this.formLink = page.getByTestId('form-preview-link');
   }
 
   async createWebhookTrigger(workSynchronously) {
@@ -82,10 +103,47 @@ export class FlowEditorPage extends AuthenticatedPage {
     return webhookUrl;
   }
 
+  async createFormTrigger(
+    formName,
+    workSynchronously = 'Yes',
+    redirectUrl = ''
+  ) {
+    await expect(this.flowStep).toHaveCount(2);
+    await this.flowStep.first().click();
+
+    await this.appAutocomplete.click();
+    await this.page.getByRole('option', { name: 'Forms', exact: true }).click();
+
+    await expect(this.eventAutocomplete).toBeVisible();
+    await this.eventAutocomplete.click();
+    await this.page
+      .getByRole('option', { name: 'New form submission' })
+      .click();
+    await this.continueButton.click();
+    await expect(this.appAutocomplete).not.toBeVisible();
+    await expect(this.eventAutocomplete).not.toBeVisible();
+
+    await this.powerInput.click();
+    await this.searchInput.fill(formName);
+    await this.powerInputSuggestionItem.filter({ hasText: formName }).click();
+    await this.workSynchronouslyParamter.click();
+    await this.page.getByRole('option', { name: workSynchronously }).click();
+    if (redirectUrl) {
+      await this.redirectUrlParameter.fill(redirectUrl);
+    }
+    await expect(this.continueButton).not.toBeDisabled();
+    const formUrl = await this.formLink.getAttribute('href');
+    await this.continueButton.click();
+    await this.testAndContinueButton.click();
+    await expect(this.hasNoOutput).toBeVisible();
+
+    return formUrl;
+  }
+
   async chooseAppAndEvent(appName, eventName) {
     await expect(this.appAutocomplete).toHaveCount(1);
     await this.appAutocomplete.click();
-    await this.page.getByRole('option', { name: appName }).click();
+    await this.page.getByRole('option', { name: appName, exact: true }).click();
     await expect(this.eventAutocomplete).toBeVisible();
     await this.eventAutocomplete.click();
     await Promise.all([
@@ -121,5 +179,18 @@ export class FlowEditorPage extends AuthenticatedPage {
         .getByTestId('parameters.queryStatement-power-input')
         .getByRole('textbox')
     ).toHaveText(desiredText);
+  }
+
+  async createBasicAction(appName, eventName, responseBodyContent) {
+    await expect(this.flowStep).toHaveCount(2);
+
+    await this.flowStep.nth(1).click();
+    await this.chooseAppAndEvent(appName, eventName);
+    await this.bodyPowerInputParameter.fill(responseBodyContent);
+    await this.clickAway();
+    await expect(this.headerPowerInputParameter).toBeVisible();
+    await expect(this.continueButton).toBeEnabled();
+    await this.continueButton.click();
+    await this.testAndContinue();
   }
 }

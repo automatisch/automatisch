@@ -113,6 +113,48 @@ export const addWebhookFlow = async (request, token) => {
   return flowId;
 };
 
+export const addFormsFlow = async (request, token, formId) => {
+  let flow = await createFlow(request, token);
+  const flowId = flow.data.id;
+  await updateFlowName(request, token, flowId);
+  flow = await getFlow(request, token, flowId);
+  const flowSteps = flow.data.steps;
+
+  const triggerStepId = flowSteps.find((step) => step.type === 'trigger').id;
+  const actionStepId = flowSteps.find((step) => step.type === 'action').id;
+
+  await updateFlowStep(request, token, triggerStepId, {
+    appKey: 'forms',
+    key: 'newFormSubmission',
+    name: 'New form submission',
+    parameters: {
+      formId: formId,
+      workSynchronously: false,
+      asyncRedirectUrl: '',
+    },
+  });
+  await testStep(request, token, triggerStepId);
+
+  await updateFlowStep(request, token, actionStepId, {
+    appKey: 'webhook',
+    key: 'respondWith',
+    name: 'Webhook',
+    parameters: {
+      statusCode: '200',
+      body: 'ok',
+      headers: [
+        {
+          key: '',
+          value: '',
+        },
+      ],
+    },
+  });
+  await testStep(request, token, actionStepId);
+
+  return flowId;
+};
+
 export const createConnection = async (
   request,
   token,
