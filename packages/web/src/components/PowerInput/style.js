@@ -6,6 +6,7 @@ export const ChildrenWrapper = styled('div')`
   word-wrap: break-word;
   word-break: break-word;
   hyphens: auto;
+  width: 100%;
 `;
 
 export const InputLabelWrapper = styled('div')`

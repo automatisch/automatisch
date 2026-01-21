@@ -8,8 +8,10 @@ function Variable({ attributes, children, element, disabled }) {
   const label = (
     <>
       {children}
-      <span style={{ fontWeight: 500 }}>{element.name}</span>:{' '}
-      <span style={{ fontWeight: 300 }}>{element.sampleValue}</span>
+      <span style={{ fontWeight: 500 }} title={element.name}>
+        {element.name}
+      </span>
+      : <span title={element.sampleValue}>{element.sampleValue}</span>
     </>
   );
   return (
@@ -20,6 +22,12 @@ function Variable({ attributes, children, element, disabled }) {
       contentEditable={false}
       style={{
         boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none',
+        fontWeight: 300,
+        maxWidth: 300,
+        overflow: 'hidden',
+        minWidth: 0,
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
       }}
       size="small"
       label={label}
