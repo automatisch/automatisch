@@ -8,7 +8,7 @@
 
 ## Advantages
 
-There are other existing solutions in the market, like Zapier and Integromat, so you might be wondering why you should use Automatisch.
+There are other existing solutions in the market, like Zapier, Make and n8n, so you might be wondering why you should use Automatisch.
 
 ✅ One of the main benefits of using Automatisch is that it allows you to store your data on your own servers, which is essential for businesses that handle sensitive user information and cannot risk sharing it with external cloud services. This is especially relevant for industries such as healthcare and finance, as well as for European companies that must adhere to the General Data Protection Regulation (GDPR).
 
