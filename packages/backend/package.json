@@ -50,6 +50,7 @@
     "express-basic-auth": "^1.2.1",
     "fast-xml-parser": "^4.0.11",
     "handlebars": "^4.7.7",
+    "he": "^1.2.0",
     "http-errors": "~1.6.3",
     "http-proxy-agent": "^7.0.0",
     "https-proxy-agent": "^7.0.1",
