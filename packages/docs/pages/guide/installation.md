@@ -104,6 +104,18 @@ We use default values of render plans with the `render.yaml` file, if you want t
 
 :::
 
+## RepoCloud.io
+
+<a href="https://repocloud.io/details/?app_id=251">
+  <img src="https://d16t0pc4846x52.cloudfront.net/deploylobe.svg" alt="Deploy to RepoCloud">
+</a>
+
+:::info
+
+RepoCloud offers free credits to new users and one-click deployment with elastic hourly autoscaling. Users can edit `.env` variables at any time in their dashboard.
+
+:::
+
 ## Production setup
 
 If you need to change any other environment variables for your production setup, let's check out the [environment variables](/advanced/configuration#environment-variables) section of the configuration page.
