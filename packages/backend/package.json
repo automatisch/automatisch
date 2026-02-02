@@ -41,7 +41,7 @@
     "crypto-js": "^4.1.1",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
-    "eslint": "^8.13.0",
+    "eslint": "^9.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "esm-module-alias": "^2.2.1",
