@@ -29,7 +29,7 @@
     "objection": "^3.1.5"
   },
   "dependencies": {
-    "axios": "^1.6.0",
+    "axios": "^1.13.5",
     "dotenv": "^16.3.1",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.3.0",
