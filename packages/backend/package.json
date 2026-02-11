@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@bull-board/express": "^3.10.1",
-    "@casl/ability": "^6.5.0",
+    "@casl/ability": "^6.7.5",
     "@faker-js/faker": "^9.2.0",
     "@langchain/anthropic": "^0.3.25",
     "@langchain/core": "^0.3.66",
