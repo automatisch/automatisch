@@ -1,7 +1,7 @@
 ---
 favicon: /favicons/frappe.svg
 items:
-  - name: Create Document 
+  - name: Create Document
     desc: Create a new document with the given data.
   - name: Get Document
     desc: Read an entire document with all the fields and child tables.

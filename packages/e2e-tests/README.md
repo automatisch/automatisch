@@ -1,5 +1,5 @@
 # Setting up the test environment
-In order to get tests running, there are a few requirements 
+In order to get tests running, there are a few requirements
 
 1. Setting up the development/test environment
 2. Installing playwright

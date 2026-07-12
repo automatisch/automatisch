@@ -1,6 +1,6 @@
 # Google Docs
 
-> **Info:**  
+> **Info:**
 > This page explains the steps you need to follow to set up the Google Docs
 > connection in Automatisch. If any of the steps are outdated, please let us know!
 
