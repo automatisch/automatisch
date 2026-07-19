@@ -72,6 +72,27 @@ export default defineAction({
       variables: true,
     },
     {
+      label: 'Markdown',
+      key: 'markdown',
+      type: 'dropdown',
+      required: false,
+      description: 'Render the message body as Markdown.',
+      value: false,
+      variables: true,
+      options: [
+        { label: 'No', value: false },
+        { label: 'Yes', value: true },
+      ],
+    },
+    {
+      label: 'Icon URL',
+      key: 'icon',
+      type: 'string',
+      required: false,
+      description: 'JPEG or PNG icon URL for the notification.',
+      variables: true,
+    },
+    {
       label: 'Priority',
       key: 'priority',
       type: 'dropdown',
@@ -133,8 +154,10 @@ export default defineAction({
       attach,
       filename,
       delay,
+      markdown,
+      icon,
       priority,
-      tags,
+      tags = [],
     } = $.step.parameters;
 
     const allTags = tags
@@ -151,6 +174,8 @@ export default defineAction({
       attach,
       filename,
       delay,
+      markdown,
+      icon,
     };
 
     const response = await $.http.post('/', payload, {
