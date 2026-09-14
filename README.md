@@ -37,6 +37,8 @@ You can use `user@automatisch.io` email address and `sample` password to login t
 
 For other installation types, you can check the [installation](https://automatisch.io/docs/guide/installation) guide.
 
+You can also deploy Automatisch with one click using the official [Easypanel](https://easypanel.io/) template: https://easypanel.io/templates/automatisch
+
 ## Community Links
 
 - [Discord](https://discord.gg/dJSah9CVrC)
