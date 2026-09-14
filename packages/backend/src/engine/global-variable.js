@@ -24,11 +24,30 @@ const globalVariable = async (options) => {
       id: connection?.id,
       set: async (args) => {
         if (connection) {
-          await connection.$query().patchAndFetch({
-            formattedData: {
-              ...connection.formattedData,
-              ...args,
-            },
+          // Merge into the freshly locked row so that concurrent updates of
+          // the same connection (e.g. two flows registering webhooks) cannot
+          // overwrite each other. `args` may be an updater function that
+          // receives the current data and returns the patch; it runs while
+          // the row is locked, so it must be quick and must not perform I/O.
+          const Connection = connection.$modelClass;
+
+          await Connection.transaction(async (trx) => {
+            const lockedConnection = await Connection.query(trx)
+              .findById(connection.id)
+              .forUpdate()
+              .throwIfNotFound();
+
+            const patch =
+              typeof args === 'function'
+                ? await args(lockedConnection.formattedData)
+                : args;
+
+            await connection.$query(trx).patchAndFetch({
+              formattedData: {
+                ...lockedConnection.formattedData,
+                ...patch,
+              },
+            });
           });
 
           $.auth.data = connection.formattedData;

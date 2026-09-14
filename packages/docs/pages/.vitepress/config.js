@@ -613,6 +613,16 @@ export default async () => {
             ],
           },
           {
+            text: 'Sent',
+            collapsible: true,
+            collapsed: true,
+            items: [
+              { text: 'Triggers', link: '/apps/sent/triggers' },
+              { text: 'Actions', link: '/apps/sent/actions' },
+              { text: 'Connection', link: '/apps/sent/connection' },
+            ],
+          },
+          {
             text: 'SignalWire',
             collapsible: true,
             collapsed: true,

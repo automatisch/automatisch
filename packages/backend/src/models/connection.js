@@ -161,7 +161,6 @@ class Connection extends Base {
     }
 
     return await this.$query().patchAndFetch({
-      formattedData: this.formattedData,
       verified: isStillVerified,
     });
   }
