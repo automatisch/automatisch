@@ -102,8 +102,9 @@ function computeVariable(variable, executionSteps) {
   /**
    * Inline both arrays and objects. Otherwise, variables resolving to
    * them would be resolved as `[object Object]` or lose their shape.
+   * `null` is returned as-is so the caller can decide how to render it.
    */
-  if (typeof computedVariable === 'object') {
+  if (computedVariable !== null && typeof computedVariable === 'object') {
     return JSON.stringify(computedVariable);
   }
 
@@ -127,13 +128,24 @@ function autoParseComputedVariable(computedVariable) {
 
 function computeStringParameter(key, stringValue, fields, executionSteps) {
   const parts = splitByVariable(stringValue);
+  const isStandaloneVariable = parts.filter(Boolean).length === 1;
 
   const computedValue = parts
     .map((part) => {
       const variable = isVariable(part);
 
       if (variable) {
-        return computeVariable(part, executionSteps);
+        const computedVariable = computeVariable(part, executionSteps);
+
+        /**
+         * Inside text, a `null` variable renders as empty text like a missing
+         * one. A standalone variable keeps `null`, so parsed fields still get it.
+         */
+        if (computedVariable === null) {
+          return isStandaloneVariable ? JSON.stringify(null) : '';
+        }
+
+        return computedVariable;
       }
 
       return part;
