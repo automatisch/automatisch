@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:22.15.0-alpine
+FROM node:22.23.4-alpine
 
 ENV PORT=3000
 
