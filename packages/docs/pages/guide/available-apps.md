@@ -12,6 +12,7 @@ The following integrations are currently supported by Automatisch.
 - [Changedetection](/apps/changedetection/actions)
 - [ClickUp](/apps/clickup/triggers)
 - [Cryptography](/apps/cryptography/actions)
+- [Datacircle](/apps/datacircle/actions)
 - [Datastore](/apps/datastore/actions)
 - [DeepL](/apps/deepl/actions)
 - [Delay](/apps/delay/actions)
