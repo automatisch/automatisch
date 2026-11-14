@@ -141,6 +141,15 @@ export default async () => {
             ],
           },
           {
+            text: 'Datacircle',
+            collapsible: true,
+            collapsed: true,
+            items: [
+              { text: 'Actions', link: '/apps/datacircle/actions' },
+              { text: 'Connection', link: '/apps/datacircle/connection' },
+            ],
+          },
+          {
             text: 'Datastore',
             collapsible: true,
             collapsed: true,
