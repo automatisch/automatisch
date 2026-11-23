@@ -1,5 +1,6 @@
 import defineApp from '../../helpers/define-app.js';
 import addAuthHeader from './common/add-auth-header.js';
+import setBaseUrl from './common/set-base-url.js';
 import auth from './auth/index.js';
 import actions from './actions/index.js';
 
@@ -12,7 +13,7 @@ export default defineApp({
   baseUrl: 'https://www.remove.bg',
   apiBaseUrl: 'https://api.remove.bg/v1.0',
   primaryColor: '#55636c',
-  beforeRequest: [addAuthHeader],
+  beforeRequest: [setBaseUrl, addAuthHeader],
   auth,
   actions,
 });
